@@ -2,8 +2,8 @@
   <label class="cc-input cc-search-input">
     <div class="cc-input__body" :class="{'focused': isFocused}">
       <icon>
-        <svg class="icon icon-search-md md">
-          <use xlink:href="#icon-search-md"></use>
+        <svg class="icon icon-search_md md">
+          <use xlink:href="#icon-search_md"></use>
         </svg>
       </icon>
       <input

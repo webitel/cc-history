@@ -9,7 +9,7 @@
         :close-on-select="false"
         :limit="1"
         :limitText="limitText"
-        :loading="isLoading"
+        :loading="false"
         :internal-search="false"
         @search-change="fetch"
         multiple
@@ -17,10 +17,19 @@
         <template slot="option" slot-scope="{ option }">
           <div class="multiselect__option__content">
             <span>{{option.name || option }}</span>
-            <div class="multiselect__option__tick"></div>
+            <icon class="multiselect__option__tick">
+              <svg class="icon icon-tick_sm sm">
+                <use xlink:href="#icon-tick_sm"></use>
+              </svg>
+            </icon>
           </div>
         </template>
       </vue-multiselect>
+      <icon class="hs-multiselect__arrow-down">
+        <svg class="icon icon-arrow-down_md md">
+          <use xlink:href="#icon-arrow-down_md"></use>
+        </svg>
+      </icon>
     </div>
   </div>
 </template>
@@ -103,6 +112,18 @@
     color: $label-color;
   }
 
+  .hs-multiselect__arrow-down {
+    position: absolute;
+    top: 50%;
+    right: calcRem(3px);
+    transform: translateY(-50%);
+
+    .icon {
+      fill: #000;
+      stroke: #000
+    }
+  }
+
   .multiselect {
     position: absolute;
     width: calcRem(270px);
@@ -168,22 +189,23 @@
           justify-content: space-between;
           align-items: center;
           padding: $select-paddings;
+          padding-right: calcRem(8px);
           box-sizing: border-box;
         }
 
-        &__tick {
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-          transition: $transition;
+        .multiselect__option__tick .icon {
+          fill: transparent;
+          stroke: transparent;
         }
 
-        &:hover .multiselect__option__tick {
-          background: $transfer-color;
+        &:hover .multiselect__option__tick .icon {
+          fill: $transfer-color;
+          stroke: $transfer-color;
         }
 
-        &.multiselect__option--selected .multiselect__option__tick {
-          background: $true-color;
+        &.multiselect__option--selected .multiselect__option__tick .icon {
+          fill: $true-color;
+          stroke: $true-color;
         }
       }
     }

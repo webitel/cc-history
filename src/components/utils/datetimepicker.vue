@@ -8,15 +8,28 @@
       @keyup.enter="isOpened = true"
     >
       <div class="dt-picker__preview__wrap">
-        <div class="dt-picker__preview__icon"></div>
+        <icon class="dt-picker__preview__icon">
+          <svg class="icon icon-calendar_md sm">
+            <use xlink:href="#icon-calendar_md"></use>
+          </svg>
+        </icon>
         <div class="dt-picker__preview__title">From:</div>
         <div class="dt-picker__preview__value">{{computeFrom}}</div>
       </div>
       <div class="dt-picker__preview__wrap">
-        <div class="dt-picker__preview__icon"></div>
+        <icon class="dt-picker__preview__icon">
+          <svg class="icon icon-calendar_md sm">
+            <use xlink:href="#icon-calendar_md"></use>
+          </svg>
+        </icon>
         <div class="dt-picker__preview__title">To:</div>
         <div class="dt-picker__preview__value">{{computeTo}}</div>
       </div>
+      <icon class="dt-picker__preview__icon">
+        <svg class="icon icon-arrow-down_md md">
+          <use xlink:href="#icon-arrow-down_md"></use>
+        </svg>
+      </icon>
     </div>
     <div
       class="dt-picker__form__shadow"
@@ -183,7 +196,6 @@
     &__icon {
       width: calcRem(24px);
       height: calcRem(24px);
-      background: $border-color;
       border-radius: 50%;
     }
 
@@ -282,16 +294,14 @@
               }
 
               &:after {
-                content: '\e903';
+                content: '';
                 position: absolute;
-                font-size: calcRem(24px);
-                font-family: 'icomoon', sans-serif;
-                text-indent: 0;
-                color: $icon-color;
-                border: none;
-                transition: $transition;
-                cursor: pointer;
-                pointer-events: none;
+                top: calcRem(5px);
+                width: calcRem(24px);
+                height: calcRem(24px);
+                background: url("../../assets/arrows/arrow-left.svg") center center;
+                background-size: contain;
+                border: none; // hide default arrows
                 transform: translateX(-50%);
               }
 
