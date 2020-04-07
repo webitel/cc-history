@@ -1,11 +1,10 @@
 <template>
-  <section class="stats-filters">
-  </section>
+  <section class="history-main"></section>
 </template>
 
 <script>
   export default {
-    name: 'stats-filters',
+    name: 'history-main',
   };
 </script>
 

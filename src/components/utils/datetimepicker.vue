@@ -116,7 +116,7 @@
     methods: {
       filter() {
         this.$router.replace({
-          name: 'statistics',
+          name: 'history',
           query: {
             from: `${this.from}`,
             to: `${this.to}`,
