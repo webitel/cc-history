@@ -1,0 +1,52 @@
+.multiselect__spinner {
+  position: absolute;
+  right: 0;
+  top: calcRem(20px); // 40px / 2
+  width: calcRem(48px);
+  height: calcRem(35px);
+  background: #fff;
+  display: block;
+  transform: translateY(-55%);
+}
+
+.multiselect__spinner:after, .multiselect__spinner:before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  margin: calcRem(-8px) 0 0 calcRem(-8px);
+  width: calcRem(16px);
+  height: calcRem(16px);
+  border-radius: 100%;
+  border: calcRem(2px) solid transparent;
+  border-top-color: $accent-color;
+  box-shadow: 0 0 0 calcRem(1px) transparent;
+}
+
+.multiselect__spinner:before {
+  animation: spinning 2.4s cubic-bezier(.41, .26, .2, .62);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__spinner:after {
+  animation: spinning 2.4s cubic-bezier(.51, .09, .21, .8);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__loading-enter-active, .multiselect__loading-leave-active {
+  transition: opacity .4s ease-in-out;
+  opacity: 1;
+}
+
+.multiselect__loading-enter, .multiselect__loading-leave-active {
+  opacity: 0;
+}
+
+@keyframes spinning {
+  0% {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(2turn);
+  }
+}
