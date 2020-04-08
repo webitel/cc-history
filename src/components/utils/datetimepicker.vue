@@ -1,5 +1,5 @@
 <template>
-  <div class="dt-picker">
+  <div class="dt-picker" v-clickaway="close">
     <label class="dt-picker__label">Date & Time:</label>
     <div
       class="dt-picker__preview"
@@ -31,11 +31,6 @@
         </svg>
       </icon>
     </div>
-    <div
-      class="dt-picker__form__shadow"
-      v-show="isOpened"
-      @click="close"
-    ></div>
     <div
       class="dt-picker__form"
       v-show="isOpened"
@@ -90,11 +85,15 @@
   import Datepicker from 'vuejs-datepicker';
   import Timepicker from './timepicker.vue';
   import Btn from './btn.vue';
+  import clickaway from '../../directives/clickaway';
 
   const msInMin = 60 * 10 ** 3;
 
   export default {
     name: 'hs-datetimepicker',
+    directives: {
+      clickaway,
+    },
     components: {
       Datepicker,
       Timepicker,
@@ -208,16 +207,6 @@
       @extend .typo-body-sm;
       color: $date-value-color;
     }
-  }
-
-  .dt-picker__form__shadow {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: $datepicker-bg-shadow-color;
-    z-index: 1;
   }
 
   .dt-picker__form {

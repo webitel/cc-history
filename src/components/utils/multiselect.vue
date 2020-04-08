@@ -3,6 +3,7 @@
     <label class="hs-multiselect__label">{{label}}</label>
     <div class="hs-multiselect-wrap">
       <vue-multiselect
+        :class="{'opened': isOpened}"
         v-model="value"
         :options="options"
         :placeholder="placeholder || label"
@@ -12,6 +13,7 @@
         :loading="false"
         :internal-search="false"
         @search-change="fetch"
+        @open="isOpened = true"
         @close="filter"
         multiple
       >
@@ -67,6 +69,7 @@
     data: () => ({
       value: [],
       isLoading: false,
+      isOpened: false,
     }),
 
     created() {
@@ -93,6 +96,7 @@
           name: 'history',
           query,
         });
+        this.isOpened = false;
       },
       setValueFromQuery() {
         let query = this.$route.query[this.filterQuery];
@@ -125,7 +129,7 @@
 
   .hs-multiselect-wrap {
     position: relative;
-    width: calcRem(270px);
+    width: 100%;
     height: calcRem(40px);
   }
 
@@ -150,11 +154,15 @@
 
   .multiselect {
     position: absolute;
-    width: calcRem(270px);
+    width: 100%;
     border: 1px solid $border-color;
     border-radius: $border-radius;
     background: #fff;
     cursor: pointer;
+
+    &.opened {
+      z-index: 1;
+    }
 
     // visible area
     &__tags {
