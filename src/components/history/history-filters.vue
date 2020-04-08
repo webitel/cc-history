@@ -90,6 +90,16 @@
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-xl-none': !isOpened}"
       >
+        <input-timerange
+          v-model="duration"
+          :label="'Duration'"
+          :filter-query="'duration'"
+        ></input-timerange>
+      </div>
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-xl-none': !isOpened}"
+      >
         <multiselect
           :options="options"
           :label="'Tags'"
@@ -139,12 +149,14 @@
 <script>
   import DtPicker from '../utils/datetimepicker.vue';
   import Multiselect from '../utils/multiselect.vue';
+  import InputTimerange from '../utils/input-timerange.vue';
 
   export default {
     name: 'history-filters',
     components: {
       DtPicker,
       Multiselect,
+      InputTimerange,
     },
 
     data: () => ({
@@ -161,6 +173,10 @@
           value: 'cc',
         },
       ],
+      duration: {
+        from: 60,
+        to: 120,
+      },
     }),
   };
 </script>

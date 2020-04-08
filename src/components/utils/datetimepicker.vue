@@ -9,7 +9,7 @@
     >
       <div class="dt-picker__preview__wrap">
         <icon class="dt-picker__preview__icon">
-          <svg class="icon icon-calendar_md sm">
+          <svg class="icon icon-calendar_md md">
             <use xlink:href="#icon-calendar_md"></use>
           </svg>
         </icon>
@@ -18,7 +18,7 @@
       </div>
       <div class="dt-picker__preview__wrap">
         <icon class="dt-picker__preview__icon">
-          <svg class="icon icon-calendar_md sm">
+          <svg class="icon icon-calendar_md md">
             <use xlink:href="#icon-calendar_md"></use>
           </svg>
         </icon>
@@ -199,7 +199,7 @@
     }
 
     &__title {
-      @extend .typo-heading-xs;
+      @extend .typo-heading-sm;
       margin: 0 calcRem(10px);
     }
 

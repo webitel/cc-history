@@ -1,23 +1,23 @@
 <template>
   <form class="timepicker">
-    <label class="timepicker__input-wrap">
-      <span class="timepicker__label">Hour</span>
+    <div class="timepicker__input-wrap">
+      <label class="timepicker__label">Hour</label>
       <input
         class="timepicker__input"
         :value="computeHour"
         @input="setHour($event.target.value)"
         type="number"
       >
-    </label>
-    <label class="timepicker__input-wrap">
-      <span class="timepicker__label">Min</span>
+    </div>
+    <div class="timepicker__input-wrap">
+      <label class="timepicker__label">Min</label>
       <input
         class="timepicker__input"
         :value="computeMin"
         @input="setMin($event.target.value)"
         type="number"
       >
-    </label>
+    </div>
   </form>
 </template>
 
