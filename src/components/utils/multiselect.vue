@@ -1,6 +1,6 @@
 <template>
   <div class="hs-multiselect">
-    <label class="hs-multiselect__label">{{label}}</label>
+    <label class="label">{{label}}</label>
     <div class="hs-multiselect-wrap">
       <vue-multiselect
         :class="{'opened': isOpened}"
@@ -131,13 +131,6 @@
     position: relative;
     width: 100%;
     height: calcRem(40px);
-  }
-
-  .hs-multiselect__label {
-    @extend .typo-body-sm;
-    display: block;
-    margin-bottom: calcRem(13px);
-    color: $label-color;
   }
 
   .hs-multiselect__arrow-down {

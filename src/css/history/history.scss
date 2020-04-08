@@ -3,3 +3,11 @@
   border-radius: $border-radius;
   background: #fff;
 }
+$label-color: #ACACAC;
+
+.label {
+  @extend .typo-body-sm;
+  display: block;
+  margin-bottom: calcRem(13px);
+  color: $label-color;
+}

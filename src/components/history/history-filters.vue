@@ -4,7 +4,13 @@
       <div class="col-md-12 col-lg-8 col-xl-6">
         <dt-picker/>
       </div>
-      <div class="col-md-6 col-lg-4 col-xl-3">
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{
+          'd-md-none': !isOpened,
+          'd-lg-block': !isOpened,
+        }"
+      >
         <multiselect
           :options="options"
           :label="'Type'"
@@ -12,7 +18,7 @@
         ></multiselect>
       </div>
       <div
-        class="col-lg-4 col-xl-3"
+        class="col-md-6 col-lg-4 col-xl-3"
         :class="{
           'd-md-none': !isOpened,
           'd-lg-none': !isOpened,
@@ -27,7 +33,9 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{
+          'd-md-none': !isOpened,
+        }"
       >
         <multiselect
           :options="options"
@@ -37,7 +45,7 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           :options="options"
@@ -47,10 +55,9 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{'d-md-none': !isOpened}"
       >
         <multiselect
-          class="zz"
           :options="options"
           :label="'Gateway'"
           :filter-query="'gateway'"
@@ -58,7 +65,7 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           :options="options"
@@ -68,7 +75,7 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           :options="options"
@@ -78,7 +85,7 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           :options="options"
@@ -88,7 +95,17 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{'d-md-none': !isOpened}"
+      >
+        <input-timerange
+          v-model="duration"
+          :label="'Duration'"
+          :filter-query="'duration'"
+        ></input-timerange>
+      </div>
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           :options="options"
@@ -98,7 +115,7 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           :options="options"
@@ -139,12 +156,14 @@
 <script>
   import DtPicker from '../utils/datetimepicker.vue';
   import Multiselect from '../utils/multiselect.vue';
+  import InputTimerange from '../utils/input-timerange.vue';
 
   export default {
     name: 'history-filters',
     components: {
       DtPicker,
       Multiselect,
+      InputTimerange,
     },
 
     data: () => ({
@@ -161,6 +180,10 @@
           value: 'cc',
         },
       ],
+      duration: {
+        from: 60,
+        to: 120,
+      },
     }),
   };
 </script>
