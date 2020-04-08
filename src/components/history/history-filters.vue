@@ -4,6 +4,7 @@
     <multiselect
       :options="options"
       :label="'Type'"
+      :filter-query="'type'"
     ></multiselect>
   </section>
 </template>
@@ -21,7 +22,7 @@
 
     data: () => ({
       options: [
-        'aa', 'bb', 'cc',
+        { name: 'aa', value: 'aa' }, { name: 'bb', value: 'bb' }, { name: 'cc', value: 'cc' },
       ],
     }),
   };

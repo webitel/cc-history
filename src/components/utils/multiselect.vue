@@ -12,6 +12,7 @@
         :loading="false"
         :internal-search="false"
         @search-change="fetch"
+        @close="filter"
         multiple
       >
         <template slot="option" slot-scope="{ option }">
@@ -49,6 +50,11 @@
         required: true,
       },
 
+      filterQuery: {
+        type: String,
+        required: true,
+      },
+
       label: {
         type: String,
       },
@@ -59,12 +65,13 @@
     },
 
     data: () => ({
-      value: '',
+      value: [],
       isLoading: false,
     }),
 
     created() {
       this.fetch = debounce(this.fetch);
+      this.setValueFromQuery();
     },
 
     methods: {
@@ -76,6 +83,23 @@
           console.log(search);
           this.isLoading = false;
         }, 1000);
+      },
+
+      filter() {
+        const filter = this.value.map((item) => item.value).join('|');
+        const query = { ...this.$route.query };
+        query[this.filterQuery] = filter;
+        this.$router.replace({
+          name: 'history',
+          query,
+        });
+      },
+      setValueFromQuery() {
+        let query = this.$route.query[this.filterQuery];
+        if (query) {
+          query = query.split('|');
+          this.value = query.map((item) => ({ value: item }));
+        }
       },
     },
   };
