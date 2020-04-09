@@ -40,7 +40,19 @@
               :key="headerKey"
             >
               <slot :name="col.value">
-                {{row[col.value]}}
+                <div
+                  v-if="!Array.isArray(row[col.value])"
+                >{{row[col.value]}}
+                </div>
+                <div class="grid__td__array-value" v-else>
+                  {{row[col.value][0]}}
+                  <span
+                    v-if="row[col.value].length > 1"
+                    class="table-badge"
+                  >
+                    +{{row[col.value].length - 1}}
+                  </span>
+                </div>
               </slot>
             </div>
 
@@ -180,6 +192,26 @@
     .grid__expansion {
       display: flex;
       padding: calcRem(30px) calcRem(74px);
+    }
+  }
+
+  $badge-bg: #FFE69C;
+  $option-color: #FFF9E6;
+
+  $select-paddings: calcRem(7px) calcRem(30px) calcRem(7px) calcRem(8px);
+
+  .grid__td__array-value {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .table-badge {
+      //@extend .count-badge;
+      @extend .typo-body-sm;
+      display: block;
+      background: $badge-bg;
+      padding: calcRem(4px) calcRem(15px);
+      border-radius: calcRem(20px);
     }
   }
 

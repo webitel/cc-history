@@ -97,7 +97,7 @@
         {
           _isSelected: false,
           name: 'Frozen Yogurt',
-          calories: 159,
+          calories: [159, 122, 1222, 123],
           fat: 6.0,
           carbs: 24,
           protein: 4.0,
