@@ -22,9 +22,25 @@
         </button>
       </template>
 
-      <template slot="row-expansion">
-        <div>
-          {{'[AS][AS]'}}
+      <template slot="row-expansion" slot-scope="{ item }">
+        <div class="expansion__content-wrap">
+          <h1 class="expansion__heading">Call info</h1>
+          {{item}}
+        </div>
+        <div class="expansion__comments">
+          <h1 class="expansion__heading">Operator comment</h1>
+          <article class="agent-comment">
+            <div class="agent-comment__pic">
+              <img src="../../assets/default-avatar.svg" alt="agent pic">
+            </div>
+            <div class="agent-comment__comment">
+              <h2 class="agent-comment__comment__heading">Agent name</h2>
+              <p class="agent-comment__comment__text">Рынок финансовых услуг интересен всем
+                федеральным игрокам. Но возможности мобильных
+                платежей с использованием операторского счета ограничивает конкуренция с
+                традиционным и мобильным банкингом, говорит Анкилов.</p>
+            </div>
+          </article>
         </div>
       </template>
     </grid-table>
@@ -106,6 +122,7 @@
           iron: '8%',
         },
         {
+          _isSelected: true,
           name: 'Gingerbread',
           calories: 356,
           fat: 16.0,
@@ -194,6 +211,42 @@
 
     &:first-child {
       margin-left: 0;
+    }
+  }
+
+  .expansion__call-info,
+  .expansion__comments {
+    flex: 0 0 50%;
+  }
+
+  .expansion__comments {
+    margin-left: calcRem(60px);
+  }
+
+  .expansion__heading {
+    @extend .typo-heading-sm;
+    margin-bottom: calcRem(30px);
+  }
+
+  .agent-comment {
+    display: flex;
+
+    &__pic {
+      width: calcRem(60px);
+      height: calcRem(60px);
+      flex: 0 0 calcRem(60px);
+      margin-right: calcRem(20px);
+    }
+
+    &__comment {
+      &__heading {
+        @extend .typo-heading-sm;
+        margin-bottom: calcRem(10px);
+      }
+
+      &__text {
+        @extend .typo-body-md;
+      }
     }
   }
 </style>

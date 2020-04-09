@@ -6,7 +6,6 @@
         class="rows-per-page__input"
         ref="input"
         :value="value"
-        type="number"
         :placeholder="'10'"
         @input="$emit('input', $event.target.value)"
       />
@@ -112,7 +111,7 @@
       .rows-per-page__input {
         @extend .typo-input;
         text-align: center;
-        width: calcRem(65px);
+        width: calcRem(50px);
         padding: calcRem(10px) calcRem(5px);
         border: 1px solid $border-color;
         border-radius: $border-radius;

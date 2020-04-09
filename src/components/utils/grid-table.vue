@@ -25,6 +25,7 @@
 
           <div
             class="grid__tr grid__tr__body"
+            :class="{'expanded': expanded && expandedIndex === dataKey}"
             @click="expand(dataKey)"
           >
             <div class="grid__td grid__td__checkbox">
@@ -52,13 +53,14 @@
             class="grid__expansion"
             v-if="expanded && expandedIndex === dataKey"
           >
-            <slot name="row-expansion" slot-scope="">
+            <slot name="row-expansion" :item="row">
             </slot>
           </div>
         </div>
       </section>
     </div>
-    <table-pagination
+    <pagination
+      v-model="size"
       :is-next="true"
       :is-prev="true"
     />
@@ -67,13 +69,13 @@
 
 <script>
   import Checkbox from './checkbox.vue';
-  import TablePagination from './table-pagination.vue';
+  import Pagination from './table-pagination.vue';
 
   export default {
     name: 'grid-table',
     components: {
       Checkbox,
-      TablePagination,
+      Pagination,
     },
     props: {
       headers: {
@@ -91,6 +93,7 @@
     },
 
     data: () => ({
+      size: '10',
       expandedIndex: null,
     }),
 
@@ -142,6 +145,10 @@
       padding: calcRem(14px) calcRem(10px);
       transition: $transition;
 
+      &.expanded .grid__td {
+        @extend .typo-heading-sm;
+      }
+
       &__body {
         cursor: pointer;
 
@@ -171,7 +178,12 @@
     }
 
     .grid__expansion {
-      background: green;
+      display: flex;
+      padding: calcRem(30px) calcRem(74px);
     }
+  }
+
+  .pagination {
+    margin-top: calcRem(20px);
   }
 </style>
