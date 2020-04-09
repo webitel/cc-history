@@ -1,41 +1,33 @@
 <template>
-  <section class="history-main">
-    <div class="grid">
-      <header class="grid__tr grid__tr__header">
-        <div class="grid__th"
-             v-for="(col, key) of headers"
-             :key="key"
-        >{{col.text}}
+  <section class="history-section history-main">
+    <grid-table
+      :headers="headers"
+      :data="data"
+      expanded
+    >
+      <template slot="actions">
+        <div>
+          {{'[AS][AS]'}}
         </div>
-      </header>
-      <section class="grid__body">
-        <div class="grid__row-wrap"
-             v-for="(row, dataKey) of data"
-             :key="dataKey"
-        >
-          <div class="grid__tr grid__tr__body"
-               @click="expand(dataKey)"
-          >
-            <div class="grid__td"
-                 v-for="(col, headerKey) of headers"
-                 :key="headerKey"
-            > {{row[col.value]}}
-            </div>
-          </div>
-          <div class="grid__expansion"
-               v-if="expandedIndex === dataKey"
-          >
-            EXPANSION GOES HERE!
-          </div>
+      </template>
+
+      <template slot="row-expansion">
+        <div>
+          {{'[AS][AS]'}}
         </div>
-      </section>
-    </div>
+      </template>
+    </grid-table>
   </section>
 </template>
 
 <script>
+  import GridTable from '../utils/grid-table.vue';
+
   export default {
     name: 'history-main',
+    components: {
+      GridTable,
+    },
     data: () => ({
       headers: [
         {
@@ -67,6 +59,7 @@
       ],
       data: [
         {
+          _isSelected: false,
           name: 'Frozen Yogurt',
           calories: 159,
           fat: 6.0,
@@ -75,6 +68,7 @@
           iron: '1%',
         },
         {
+          _isSelected: true,
           name: 'Ice cream sandwich',
           calories: 237,
           fat: 9.0,
@@ -83,6 +77,7 @@
           iron: '1%',
         },
         {
+          _isSelected: false,
           name: 'Eclair',
           calories: 262,
           fat: 16.0,
@@ -91,6 +86,7 @@
           iron: '7%',
         },
         {
+          _isSelected: true,
           name: 'Cupcake',
           calories: 305,
           fat: 3.7,
@@ -107,6 +103,7 @@
           iron: '16%',
         },
         {
+          _isSelected: false,
           name: 'Jelly bean',
           calories: 375,
           fat: 0.0,
@@ -115,6 +112,7 @@
           iron: '0%',
         },
         {
+          _isSelected: true,
           name: 'Lollipop',
           calories: 392,
           fat: 0.2,
@@ -123,6 +121,7 @@
           iron: '2%',
         },
         {
+          _isSelected: false,
           name: 'Honeycomb',
           calories: 408,
           fat: 3.2,
@@ -131,6 +130,7 @@
           iron: '45%',
         },
         {
+          _isSelected: true,
           name: 'Donut',
           calories: 452,
           fat: 25.0,
@@ -139,6 +139,7 @@
           iron: '22%',
         },
         {
+          _isSelected: false,
           name: 'KitKat',
           calories: 518,
           fat: 26.0,
@@ -147,7 +148,6 @@
           iron: '6%',
         },
       ],
-      expandedIndex: null,
       colNum: 6,
     }),
 
@@ -158,10 +158,6 @@
     },
 
     methods: {
-      expand(index) {
-        this.expandedIndex = this.expandedIndex === index ? null : index;
-      },
-
       // TEMPLATE, NOT FOR USING
       changeColumnsNum() {
         if (this.colNum // if not 0 and not bigger than data columns
@@ -176,19 +172,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .grid {
-    &__tr {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      border: 1px solid red;
-    }
-
-    &__th, &__td {
-      border: 1px solid blue;
-    }
-
-    .grid__expansion {
-      background: green;
-    }
+  .history-main {
+    padding: calcRem(20px) calcRem(30px);
   }
 </style>

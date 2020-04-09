@@ -17,6 +17,7 @@ module.exports = {
     'no-shadow': 'off',
     'no-empty': 'off',
     'indent': 'off',
+    'no-underscore-dangle': 'off',
   },
   overrides: [
     {
