@@ -44,16 +44,25 @@
         </div>
       </template>
     </grid-table>
+    <audio-player
+      v-show="isShowPlayer"
+      :file="audioLink"
+      @play="currentlyPlaying = true"
+      @pause="currentlyPlaying = false"
+      @close="isShowPlayer = false"
+    ></audio-player>
   </section>
 </template>
 
 <script>
   import GridTable from '../utils/grid-table.vue';
+  import AudioPlayer from '../utils/audio-player.vue';
 
   export default {
     name: 'history-main',
     components: {
       GridTable,
+      AudioPlayer,
     },
     data: () => ({
       headers: [
@@ -176,6 +185,9 @@
           iron: '6%',
         },
       ],
+      audioLink: 'https://dl3s1.muzofond.fm/aHR0cDovL2YubXAzcG9pc2submV0L21wMy8wMDMvMDYyLzk5My8zMDYyOTkzLm1wMw==',
+      isShowPlayer: true,
+      currentlyPlaying: false,
       colNum: 6,
     }),
 
@@ -209,6 +221,7 @@
   .history-main {
     flex: 1 1 auto;
     display: flex;
+    flex-direction: column;
     padding: calcRem(20px) calcRem(30px);
   }
 

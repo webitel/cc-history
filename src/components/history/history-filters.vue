@@ -115,7 +115,7 @@
       </div>
       <div
         class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-xl-none': !isOpened}"
+        :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           :options="options"
