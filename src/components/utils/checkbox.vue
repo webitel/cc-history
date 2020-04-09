@@ -1,7 +1,7 @@
 <template>
   <label
     class="checkbox-label"
-    @click.prevent="input"
+    @click.prevent.stop="input"
   >
     <input
       type="checkbox"

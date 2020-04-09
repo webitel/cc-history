@@ -6,14 +6,14 @@
       expanded
     >
       <template slot="actions">
-        <button class="icon-btn table-action">
+        <button class="icon-btn table-action" @click.prevent.stop="download">
           <icon>
             <svg class="icon icon-download_md md">
               <use xlink:href="#icon-download_md"></use>
             </svg>
           </icon>
         </button>
-        <button class="icon-btn table-action">
+        <button class="icon-btn table-action" @click.prevent.stop="play">
           <icon>
             <svg class="icon icon-play_md md">
               <use xlink:href="#icon-play_md"></use>
@@ -186,6 +186,12 @@
     },
 
     methods: {
+      play() {
+      },
+
+      download() {
+      },
+
       // TEMPLATE, NOT FOR USING
       changeColumnsNum() {
         if (this.colNum // if not 0 and not bigger than data columns
