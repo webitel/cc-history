@@ -185,6 +185,7 @@
 <style lang="scss" scoped>
   .history-main {
     flex: 1 1 auto;
+    display: flex;
     padding: calcRem(20px) calcRem(30px);
   }
 
