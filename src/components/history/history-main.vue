@@ -6,9 +6,20 @@
       expanded
     >
       <template slot="actions">
-        <div>
-          {{'[AS][AS]'}}
-        </div>
+        <button class="icon-btn table-action">
+          <icon>
+            <svg class="icon icon-download_md md">
+              <use xlink:href="#icon-download_md"></use>
+            </svg>
+          </icon>
+        </button>
+        <button class="icon-btn table-action">
+          <icon>
+            <svg class="icon icon-play_md md">
+              <use xlink:href="#icon-play_md"></use>
+            </svg>
+          </icon>
+        </button>
       </template>
 
       <template slot="row-expansion">
@@ -173,6 +184,15 @@
 
 <style lang="scss" scoped>
   .history-main {
+    flex: 1 1 auto;
     padding: calcRem(20px) calcRem(30px);
+  }
+
+  .table-action {
+    margin-left: calcRem(20px);
+
+    &:first-child {
+      margin-left: 0;
+    }
   }
 </style>
