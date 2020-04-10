@@ -1,29 +1,76 @@
 <template>
   <aside class="player">
     <div class="player-controls">
-      <div @click.prevent="stop" title="Stop">
-        <i class="icon-icon_close"></i>
-      </div>
-      <div @click.prevent="playing = !playing" title="Play/Pause">
-        <!--                <i class="icon-icon_" v-if="!playing"></i>-->
-        <i class="icon-icon_pause"></i>
-      </div>
+      <button class="icon-btn" @click.prevent="stop">
+        <icon>
+          <svg class="icon icon-stop_md md">
+            <use xlink:href="#icon-stop_md"></use>
+          </svg>
+        </icon>
+      </button>
+      <button class="icon-btn" @click.prevent="playing = !playing">
+        <icon v-if="!playing">
+          <svg class="icon icon-play_md md">
+            <use xlink:href="#icon-play_md"></use>
+          </svg>
+        </icon>
+        <icon v-else>
+          <svg class="icon icon-pause_md md">
+            <use xlink:href="#icon-pause_md"></use>
+          </svg>
+        </icon>
+      </button>
       <div class="player-time">
         <div class="player-time-current">{{convertTimeHHMMSS}}</div>
-        <!--                <div class="player-time-total">{{''}}</div>-->
       </div>
-      <div @click="seek" class="player-progress" title="Time played : Total time">
+      <div
+        class="player-progress"
+        @mouseleave="seekbarLeave"
+        @mouseover="seekbarOver"
+        @mousemove="seekbarHover"
+        @click="seek"
+      >
+
         <div
           class="player-seeker"
           :style="{width: this.percentComplete+'%'}"
         ></div>
+        <div
+          class="player-hover"
+          :style="{width: this.percentHover+'%'}"
+        >
+          <div
+            class="player-timer"
+            v-show="showHoverTimer"
+          >{{convertHoverTimeHHMMSS}}
+          </div>
+        </div>
       </div>
       <div class="range-wrap" :class="{'hidden': !showVolume}">
-        <range v-model="volume"></range>
+        <range
+          v-model="volume"
+          :min-range="0"
+        ></range>
       </div>
-      <div @click.prevent="showVolume = !showVolume" title="Stop">
-        <i class="volume-icon icon-icon_close"></i>
-      </div>
+      <button class="icon-btn" @click.prevent="showVolume = !showVolume">
+        <icon v-if="muted">
+          <svg class="icon icon-mute_md md">
+            <use xlink:href="#icon-mute_md"></use>
+          </svg>
+        </icon>
+        <icon v-else>
+          <svg class="icon icon-volume_md md">
+            <use xlink:href="#icon-volume_md"></use>
+          </svg>
+        </icon>
+      </button>
+      <button class="icon-btn" @click.prevent="close">
+        <icon>
+          <svg class="icon icon-close_md md">
+            <use xlink:href="#icon-close_md"></use>
+          </svg>
+        </icon>
+      </button>
     </div>
     <audio
       class="audio"
@@ -65,39 +112,50 @@
       volume: 50,
       showVolume: false,
       isFirstLoad: true,
+      hoverSeconds: 0,
+      showHoverTimer: false,
     }),
-
     computed: {
       percentComplete() {
         return parseInt((this.currentSeconds / this.durationSeconds) * 100, 10);
       },
+      percentHover() {
+        return parseInt((this.hoverSeconds / this.durationSeconds) * 100, 10);
+      },
       muted() {
-        return this.value / 100 === 0;
+        return this.volume === 0;
       },
       convertTimeHHMMSS() {
         const time = new Date(this.currentSeconds * 1000).toISOString()
           .substr(11, 8);
         return time.includes('00:0') ? time.substr(3) : time;
       },
+      convertHoverTimeHHMMSS() {
+        const time = new Date(this.hoverSeconds * 1000).toISOString()
+          .substr(11, 8);
+        return time.includes('00:0') ? time.substr(3) : time;
+      },
     },
-
     watch: {
       file() {
         this.playing = true;
       },
-
       playing(value) {
+        if (this.value) {
+          this.$emit('play');
+        } else {
+          this.$emit('pause');
+        }
         return value ? this.audio.play() : this.audio.pause();
       },
-
       volume() {
         // this.showVolume = false;
         this.audio.volume = this.volume / 100;
       },
     },
-
     mounted() {
-      [this.audio] = this.$el.querySelectorAll('audio');
+      // eslint-disable-next-line prefer-destructuring
+      this.audio = this.$el.querySelectorAll('audio')[0];
       this.audio.addEventListener('timeupdate', this.update);
       this.audio.addEventListener('loadeddata', this.load);
       this.audio.addEventListener('pause', () => {
@@ -107,7 +165,6 @@
         this.playing = true;
       });
     },
-
     beforeDestroy() {
       this.audio.removeEventListener('timeupdate', this.update);
       this.audio.removeEventListener('loadeddata', this.load);
@@ -118,7 +175,6 @@
         this.playing = true;
       });
     },
-
     methods: {
       load() {
         if (this.audio.readyState >= 2) {
@@ -131,79 +187,103 @@
           throw new Error('Failed to load sound file.');
         }
       },
-
       seek(event) {
         // if (!this.playing || event.target.tagName === 'SPAN') return;
-
         this.playing = true;
         const el = event.target.getBoundingClientRect();
         const seekPos = (event.clientX - el.left) / el.width;
         this.audio.currentTime = parseInt(this.audio.duration * seekPos, 10);
       },
-
+      seekbarLeave() {
+        this.showHoverTimer = false;
+        this.hoverSeconds = 0;
+      },
+      seekbarOver() {
+        this.showHoverTimer = true;
+      },
+      seekbarHover(event) {
+        const el = event.target.getBoundingClientRect();
+        const seekPos = (event.clientX - el.left) / el.width;
+        this.hoverSeconds = parseInt(this.audio.duration * seekPos, 10);
+      },
       stop() {
         this.playing = false;
         this.audio.currentTime = 0;
       },
-
       update() {
         this.currentSeconds = parseInt(this.audio.currentTime, 10);
+      },
+      close() {
+        this.stop();
+        this.$emit('close');
       },
     },
   };
 </script>
 
 <style lang="scss" scoped>
-
   $player-bg: rgba(0, 0, 0, 0.6);
   $player-border-color: darken($player-bg, 12%);
   $player-link-color: darken($player-bg, 75%);
   $player-progress-color: $player-border-color;
   $player-seeker-color: $accent-color;
+  $player-seeker-hover-color: #92939A;
   //$player-text-color: $player-link-color;
-
   .player {
     position: sticky;
-    bottom: 66px;
+    bottom: calcRem(66px);
     /*width: 100%;*/
-    padding: 7px 16px;
-    margin: 0 20px;
+    padding: calcRem(7px) calcRem(16px);
+    margin: 0 calcRem(20px);
     background-color: $player-bg;
     box-shadow: $box-shadow;
     border-radius: $border-radius;
     z-index: 10000;
+
+    .icon-btn .icon {
+      fill: #fff;
+      stroke: #fff;
+      transition: $transition;
+      cursor: pointer;
+
+      &:hover {
+        fill: $accent-color;
+        stroke: $accent-color;
+      }
+    }
   }
 
   .player-controls {
     display: flex;
     align-items: center;
 
-    > div {
+    > button {
       display: flex;
       align-items: center;
 
       &:first-child {
-        margin-right: 18px;
-      }
-    }
-
-    i {
-      cursor: pointer;
-
-      &:before {
-        color: #fff;
+        margin-right: calcRem(18px);
       }
     }
   }
 
   .player-progress {
     position: relative;
-    height: 5px;
+    height: calcRem(5px);
     /*height: 3px;*/
     flex-grow: 1;
-    margin: auto 78px;
+    margin: auto calcRem(21px) auto calcRem(78px);
     background-color: $player-progress-color;
     cursor: pointer;
+
+    &:after { // make clickable area bigger
+      content: '';
+      position: absolute;
+      top: calcRem(-5px);
+      bottom: calcRem(-5px);
+      left: 0;
+      right: 0;
+    }
 
     .player-seeker {
       position: absolute;
@@ -212,38 +292,57 @@
       top: 0;
       background-color: $player-seeker-color;
       border-radius: $border-radius;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .player-hover {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      top: 0;
+      background-color: $player-seeker-hover-color;
+      border-radius: $border-radius;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .player-timer {
+      @extend .typo-body-md;
+      position: absolute;
+      right: 0;
+      bottom: calcRem(33px);
+      padding: calcRem(13px) calcRem(17px) calcRem(9px);
+      color: #fff;
+      transform: translateX(50%);
+      background: $player-bg;
+      border-radius: $border-radius;
     }
   }
 
   .player-time {
     display: flex;
     justify-content: space-between;
-    margin-left: 33px;
+    width: calcRem(40px);
+    margin-left: calcRem(33px);
     color: #fff;
 
     .player-time-current {
       @extend .typo-body-sm;
-      /*font-weight: 700;*/
-      /*padding-left: 5px;*/
     }
-
-    /*.player-time-total {*/
-    /*    opacity: 0.5;*/
-    /*    padding-right: 5px;*/
-    /*}*/
   }
-
 
   .range-wrap {
     position: absolute;
-    bottom: 56px;
+    bottom: calcRem(56px);
     right: 0;
-    padding: 8px 16px 11px;
+    padding: calcRem(8px) calcRem(16px) calcRem(11px);
     background: $player-bg;
     border-radius: $border-radius;
   }
 
   .volume-icon {
+    margin-right: calcRem(33px);
     cursor: pointer;
   }
 
