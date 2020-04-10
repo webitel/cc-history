@@ -37,6 +37,7 @@ $input-border-color__active: #000000;
   padding: calcRem(7px);
   border: calcRem(1px) solid $input-border-color;
   border-radius: $border-radius;
+  transition: $transition;
 
   &.focused, &:hover {
     border-color: $input-border-color__active;
@@ -70,7 +71,7 @@ $input-border-color__active: #000000;
 
 .cc-input__body {
   &.focused, &:hover {
-    border-color: $input-border-color;
+    border-color: $input-icon-color__active;
 
     .icon {
       fill: $input-icon-color__active;

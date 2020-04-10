@@ -9,7 +9,7 @@
       >
         <span class="input-timerange__label">From: </span>
         <input
-          class="timepicker__input"
+          class="input__short timepicker__input"
           :value="computeFrom"
           @input="setFrom($event.target.value)"
           type="number"
@@ -28,7 +28,7 @@
       >
         <span class="input-timerange__label">To: </span>
         <input
-          class="timepicker__input"
+          class="input__short timepicker__input"
           :value="computeTo"
           @input="setTo($event.target.value)"
           type="number"
@@ -86,10 +86,7 @@
   };
 </script>
 
-<style lang="scss" >
-  $label-color: #ACACAC;
-  $border-color: #E6E6E6;
-
+<style lang="scss" scoped>
   .input-timerange__wrap {
     display: flex;
   }
@@ -111,13 +108,8 @@
   }
 
   .timepicker__input {
-    @extend .typo-input;
-    text-align: center;
     width: calcRem(40px);
     padding: calcRem(10px) calcRem(5px + 24px) calcRem(10px) calcRem(5px);
-    border: 1px solid $border-color;
-    border-radius: $border-radius;
-    box-sizing: content-box;
   }
 
   .input-timerange__reset {

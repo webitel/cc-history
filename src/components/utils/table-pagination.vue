@@ -3,7 +3,7 @@
     <div class="rows-per-page">
       <div class="rows-per-page__text">Rows per page:</div>
       <input
-        class="rows-per-page__input"
+        class="input__short rows-per-page__input"
         ref="input"
         :value="value"
         :placeholder="'10'"
@@ -109,12 +109,7 @@
       }
 
       .rows-per-page__input {
-        @extend .typo-input;
-        text-align: center;
         width: calcRem(50px);
-        padding: calcRem(10px) calcRem(5px);
-        border: 1px solid $border-color;
-        border-radius: $border-radius;
       }
     }
 

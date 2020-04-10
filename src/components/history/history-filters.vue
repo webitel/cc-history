@@ -107,16 +107,6 @@
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
       >
-        <input-timerange
-          v-model="duration"
-          :label="'Duration'"
-          :filter-query="'duration'"
-        ></input-timerange>
-      </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
         <multiselect
           :options="options"
           :label="'Tags'"
