@@ -127,6 +127,7 @@
     <div class="history-filters__controls">
       <button
         class="icon-btn history-filters__icon-btn"
+        :class="{'active': isOpened}"
         @click.prevent="isOpened = !isOpened"
       >
         <icon>
