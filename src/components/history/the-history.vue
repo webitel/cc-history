@@ -28,6 +28,8 @@
 
 <style lang="scss" scoped>
   .history-container {
+    display: flex;
+    flex-direction: column;
     padding: calcRem(20px) calcRem(30px) calcRem(60px);
     background: $page-bg-color;
   }

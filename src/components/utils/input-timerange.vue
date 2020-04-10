@@ -86,7 +86,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
   $label-color: #ACACAC;
   $border-color: #E6E6E6;
 
