@@ -26,33 +26,6 @@
       background: $default-btn-color__hover;
     }
 
-    &.call, &.true {
-      color: #fff;
-      background: $call-btn-color;
-
-      &:hover {
-        background: $call-btn-color__hover;
-      }
-    }
-
-    &.end, &.false {
-      color: #fff;
-      background: $end-btn-color;
-
-      &:hover {
-        background: $end-btn-color__hover;
-      }
-    }
-
-    &.transfer {
-      color: #fff;
-      background: $transfer-btn-color;
-
-      &:hover {
-        background: $transfer-btn-color__hover;
-      }
-    }
-
     &.secondary {
       color: $secondary-btn-color;
       background: #fff;

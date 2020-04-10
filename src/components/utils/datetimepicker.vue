@@ -269,7 +269,7 @@
             line-height: 0;
 
             .day__month_btn {
-              @extend .typo-body-lg;
+              @extend .typo-heading-sm;
               padding-top: calcRem(5px);
             }
 

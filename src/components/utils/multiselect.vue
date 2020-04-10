@@ -224,8 +224,8 @@
         }
 
         &:hover .multiselect__option__tick .icon {
-          fill: $transfer-color;
-          stroke: $transfer-color;
+          fill: #000;
+          stroke: #000;
         }
 
         &.multiselect__option--selected .multiselect__option__tick .icon {
