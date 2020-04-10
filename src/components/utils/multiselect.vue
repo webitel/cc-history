@@ -89,7 +89,8 @@
       },
 
       filter() {
-        const filter = this.value.map((item) => item.value).join('|');
+        const filter = this.value.map((item) => item.value)
+          .join('|');
         const query = { ...this.$route.query };
         query[this.filterQuery] = filter;
         this.$router.replace({
@@ -112,20 +113,7 @@
 <style lang="scss">
   @import "../../css/ui-components/multiselect-spinner";
 
-  $label-color: #ACACAC;
-  $border-color: #E6E6E6;
-  $badge-bg: #FFE69C;
-  $option-color: #FFF9E6;
-
   $select-paddings: calcRem(7px) calcRem(30px) calcRem(7px) calcRem(8px);
-
-  .count-badge {
-    @extend .typo-body-sm;
-    display: block;
-    background: $badge-bg;
-    padding: calcRem(4px) calcRem(15px);
-    border-radius: calcRem(20px);
-  }
 
   .hs-multiselect-wrap {
     position: relative;
@@ -148,13 +136,18 @@
   .multiselect {
     position: absolute;
     width: 100%;
-    border: 1px solid $border-color;
+    border: 1px solid $input-border-color;
     border-radius: $border-radius;
     background: #fff;
     cursor: pointer;
+    transition: $transition;
 
     &.opened {
       z-index: 1;
+    }
+
+    &:hover, &.opened {
+      border-color: #000;
     }
 
     // visible area
@@ -168,6 +161,7 @@
 
       .multiselect__strong {
         @extend .count-badge;
+        font-weight: normal;
       }
 
       .multiselect__placeholder {
@@ -206,7 +200,7 @@
         display: block;
 
         &:hover {
-          background: $option-color;
+          background: $list-option__hover;
         }
 
         &__content {
@@ -224,11 +218,12 @@
         }
 
         &:hover .multiselect__option__tick .icon {
-          fill: $transfer-color;
-          stroke: $transfer-color;
+          fill: #000;
+          stroke: #000;
         }
 
-        &.multiselect__option--selected .multiselect__option__tick .icon {
+        &.multiselect__option--selected
+        .multiselect__option__tick .icon {
           fill: $true-color;
           stroke: $true-color;
         }

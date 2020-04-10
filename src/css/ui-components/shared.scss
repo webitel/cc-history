@@ -1,0 +1,31 @@
+
+.label {
+  @extend .typo-body-sm;
+  display: block;
+  margin-bottom: calcRem(13px);
+  color: $label-color;
+}
+
+.input__short {
+  @extend .typo-input;
+  text-align: center;
+  width: calcRem(40px);
+  padding: calcRem(10px) calcRem(5px);
+  border: 1px solid $input-border-color;
+  border-radius: $border-radius;
+  box-sizing: content-box;
+  transition: $transition;
+
+  &:hover, &:focus {
+    border-color: #000;
+  }
+}
+
+$badge-bg: #FFE69C;
+.count-badge {
+  @extend .typo-body-sm;
+  display: block;
+  background: $badge-bg;
+  padding: calcRem(4px) calcRem(15px);
+  border-radius: calcRem(20px);
+}

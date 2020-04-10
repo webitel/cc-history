@@ -1,11 +1,5 @@
 @import '../utils/mixins';
 
-.typo-heading-lg {
-  font-family: 'Montserrat Semi', monospace;
-  @include fontSize(24px);
-  @include lineHeight(26px);
-}
-
 .typo-heading-md {
   font-family: 'Montserrat Semi', monospace;
   @include fontSize(20px);
@@ -24,12 +18,6 @@
   @include lineHeight(22px);
 }
 
-.typo-body-lg {
-  font-family: 'Montserrat Regular', monospace;
-  @include fontSize(14px);
-  @include lineHeight(30px);
-}
-
 .typo-body-md {
   font-family: 'Montserrat Regular', monospace;
   @include fontSize(14px);
@@ -39,7 +27,7 @@
 .typo-body-sm {
   font-family: 'Montserrat Regular', monospace;
   @include fontSize(12px);
-  @include lineHeight(18px);
+  @include lineHeight(20px);
 }
 
 .typo-input {

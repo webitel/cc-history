@@ -3,7 +3,7 @@
     <div class="timepicker__input-wrap">
       <label class="timepicker__label">Hour</label>
       <input
-        class="timepicker__input"
+        class="input__short timepicker__input"
         :value="computeHour"
         @input="setHour($event.target.value)"
         type="number"
@@ -12,7 +12,7 @@
     <div class="timepicker__input-wrap">
       <label class="timepicker__label">Min</label>
       <input
-        class="timepicker__input"
+        class="input__short timepicker__input"
         :value="computeMin"
         @input="setMin($event.target.value)"
         type="number"
@@ -79,11 +79,6 @@
   }
 
   .timepicker__input {
-    @extend .typo-input;
-    text-align: center;
     width: calcRem(50px);
-    padding: calcRem(10px) calcRem(5px);
-    border: 1px solid $border-color;
-    border-radius: $border-radius;
   }
 </style>

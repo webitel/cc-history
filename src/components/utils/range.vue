@@ -80,19 +80,21 @@
 </script>
 
 <style lang="scss" scoped>
+  $range-bg: #d3d3d3;
+
   .range-input {
     width: 100%;
-    height: 3px;
+    height: calcRem(3px);
     border-radius: $border-radius;
-    background: #d3d3d3;
+    background: $range-bg;
     outline: none;
     transition: $transition;
     -webkit-appearance: none;
   }
 
   .range-input::-webkit-slider-thumb {
-    width: 14px;
-    height: 14px;
+    width: calcRem(14px);
+    height: calcRem(14px);
     border-radius: 50%;
     background: $accent-color;
     cursor: pointer;

@@ -44,7 +44,7 @@
 
 <style lang="scss" scoped>
   $checkbox-color: rgba(0, 0, 0, 0.3);
-  $checkbox-color--checked: #000;
+  $checkbox-color__checked: #000;
 
   .checkbox-label {
     display: flex;
@@ -92,14 +92,14 @@
       left: 50%;
       width: calcRem(6px);
       height: calcRem(12px);
-      border: solid $checkbox-color--checked;
+      border: solid $checkbox-color__checked;
       border-width: 0 calcRem(2.5px) calcRem(2.5px) 0;
       transform: translate(-50%, -60%) rotate(45deg);
 
     }
 
     input:checked ~ .checkbox {
-      border-color: $checkbox-color--checked;
+      border-color: $checkbox-color__checked;
     }
 
     /* Show the checkmark when checked */
