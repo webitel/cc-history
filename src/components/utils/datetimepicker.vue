@@ -156,12 +156,8 @@
 </script>
 
 <style lang="scss">
-  $label-color: #ACACAC;
-  $border-color: #E6E6E6;
   $date-value-color: #808080;
-  $datepicker-bg-shadow-color: rgba(23, 26, 42, 0.4);
-
-  $info-color: $label-color;
+  $datepicker-bg-shadow-color: rgba(23, 26, 42, 0.8);
 
   .dt-picker {
     position: relative;
@@ -181,7 +177,7 @@
     align-items: center;
     box-sizing: border-box;
     padding: calcRem(7px); // 8px - border
-    border: calcRem(1px) solid $border-color;
+    border: calcRem(1px) solid $input-border-color;
     border-radius: $border-radius;
     cursor: pointer;
 
@@ -243,7 +239,7 @@
       width: 50%;
 
       &:first-child {
-        border-right: 1px solid $border-color;
+        border-right: 1px solid $input-border-color;
       }
 
       .datepicker {
@@ -338,7 +334,7 @@
 
             &.month {
               &.selected {
-                border-bottom-color: $info-color;
+                border-bottom-color: $label-color;
 
                 &:hover {
                   border-bottom-color: $accent-color !important;

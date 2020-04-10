@@ -46,12 +46,11 @@
                 </div>
                 <div class="grid__td__array-value" v-else>
                   {{row[col.value][0]}}
-                  <span
+                  <count-badge
                     v-if="row[col.value].length > 1"
                     class="table-badge"
-                  >
-                    +{{row[col.value].length - 1}}
-                  </span>
+                    :length="row[col.value].length"
+                  ></count-badge>
                 </div>
               </slot>
             </div>
@@ -82,10 +81,12 @@
 <script>
   import Checkbox from './checkbox.vue';
   import Pagination from './table-pagination.vue';
+  import CountBadge from './count-badge.vue';
 
   export default {
     name: 'grid-table',
     components: {
+      CountBadge,
       Checkbox,
       Pagination,
     },
@@ -130,10 +131,9 @@
 </script>
 
 <style lang="scss" scoped>
-  $border-color: #EAEAEA;
-  $hover-bg-color: #FFF9E6;
-  $active-bg-color: #FFE69C;
-  $header-color: #ACACAC;
+  $hover-bg-color: $list-option__hover;
+  $active-bg-color: $list-option__hover;
+  $header-color: $label-color;
   $second-row-bg-color: #F9F9F9;
 
   .grid-table {
@@ -195,24 +195,11 @@
     }
   }
 
-  $badge-bg: #FFE69C;
-  $option-color: #FFF9E6;
-
-  $select-paddings: calcRem(7px) calcRem(30px) calcRem(7px) calcRem(8px);
 
   .grid__td__array-value {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    .table-badge {
-      //@extend .count-badge;
-      @extend .typo-body-sm;
-      display: block;
-      background: $badge-bg;
-      padding: calcRem(4px) calcRem(15px);
-      border-radius: calcRem(20px);
-    }
   }
 
   .pagination {
