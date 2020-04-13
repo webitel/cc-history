@@ -72,37 +72,37 @@
           sortable: false,
           value: 'name',
           show: true,
-          width: '1fr',
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Calories',
           value: 'calories',
           show: true,
-          width: '1fr',
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Fat (g)',
           value: 'fat',
           show: true,
-          width: '1fr',
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Carbs (g)',
           value: 'carbs',
           show: true,
-          width: '1fr',
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Protein (g)',
           value: 'protein',
           show: true,
-          width: '1fr',
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Iron (%)',
           value: 'iron',
           show: true,
-          width: '1fr',
+          width: 'minmax(120px, 1fr)',
         },
       ],
       data: [
@@ -197,20 +197,15 @@
           iron: '6%',
         },
       ],
-      audioLink: 'https://dl3s1.muzofond.fm/aHR0cDovL2YubXAzcG9pc2submV0L21wMy8wMDMvMDYyLzk5My8zMDYyOTkzLm1wMw==',
+      audioLink: '',
       isShowPlayer: true,
       currentlyPlaying: false,
-      colNum: 6,
     }),
 
     watch: {
       // eslint-disable-next-line func-names
       '$route.query.cols': function () {
         this.hadleColumnsFilter();
-      },
-
-      num() {
-        this.changeColumnsNum();
       },
     },
 

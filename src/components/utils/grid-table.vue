@@ -2,7 +2,7 @@
   <div class="grid-table">
     <div class="grid">
       <header class="grid__tr grid__tr__header">
-        <div class="grid__th grid__th__checkbox">
+        <div class="grid__th__checkbox">
           <checkbox
             :value="isAllSelected"
             @input="selectAll"
@@ -31,7 +31,7 @@
             :class="{'expanded': expanded && expandedIndex === dataKey}"
             @click="expand(dataKey)"
           >
-            <div class="grid__td grid__td__checkbox">
+            <div class="grid__td__checkbox">
               <checkbox
                 v-model="row._isSelected"
               ></checkbox>
@@ -44,6 +44,7 @@
             >
               <slot :name="col.value">
                 <div
+                  class="grid__td__word-wrap"
                   v-if="!Array.isArray(row[col.value])"
                 >{{row[col.value]}}
                 </div>
@@ -58,7 +59,7 @@
               </slot>
             </div>
 
-            <div class="grid__td grid__td__actions">
+            <div class="grid__td__actions">
               <slot name="actions"></slot>
             </div>
           </div>
@@ -169,6 +170,8 @@
   $header-color: $label-color;
   $second-row-bg-color: #F9F9F9;
 
+  $min-td-width: calcRem(120px);
+
   .grid-table {
     display: flex;
     flex-direction: column;
@@ -177,7 +180,12 @@
   }
 
   .grid {
+    @extend .cc-scrollbar;
+    overflow: auto;
+
     &__row-wrap {
+      min-width: fit-content;
+
       &:nth-child(2n) {
         background: $second-row-bg-color;
       }
@@ -216,6 +224,15 @@
 
     &__th, &__td {
       @extend .typo-body-md;
+      min-width: $min-td-width;
+      width: 100%;
+      max-width: 100%;
+
+      &__word-wrap {
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+      }
 
       &__actions {
         display: flex;
@@ -228,11 +245,14 @@
     }
   }
 
-
   .grid__td__array-value {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .column-select {
+    margin-left: auto;
   }
 
   .pagination {
