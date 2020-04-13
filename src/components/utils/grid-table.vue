@@ -2,7 +2,7 @@
   <div class="grid-table">
     <div class="grid">
       <header class="grid__tr grid__tr__header">
-        <div class="grid__th grid__th__checkbox">
+        <div class="grid__th__checkbox">
           <checkbox
             :value="isAllSelected"
             @input="selectAll"
@@ -10,12 +10,15 @@
         </div>
         <div
           class="grid__th"
-          v-for="(col, key) of headers"
+          v-for="(col, key) of shownHeaders"
           :key="key"
         >{{col.text}}
         </div>
-        <div class="grid__th grid__th__actions"></div>
+        <div class="grid__th__actions">
+          <column-select :headers="headers"/>
+        </div>
       </header>
+
       <section class="grid__body">
         <div
           class="grid__row-wrap"
@@ -28,7 +31,7 @@
             :class="{'expanded': expanded && expandedIndex === dataKey}"
             @click="expand(dataKey)"
           >
-            <div class="grid__td grid__td__checkbox">
+            <div class="grid__td__checkbox">
               <checkbox
                 v-model="row._isSelected"
               ></checkbox>
@@ -36,11 +39,12 @@
 
             <div
               class="grid__td"
-              v-for="(col, headerKey) of headers"
+              v-for="(col, headerKey) of shownHeaders"
               :key="headerKey"
             >
               <slot :name="col.value">
                 <div
+                  class="grid__td__word-wrap"
                   v-if="!Array.isArray(row[col.value])"
                 >{{row[col.value]}}
                 </div>
@@ -55,7 +59,7 @@
               </slot>
             </div>
 
-            <div class="grid__td grid__td__actions">
+            <div class="grid__td__actions">
               <slot name="actions"></slot>
             </div>
           </div>
@@ -82,10 +86,12 @@
   import Checkbox from './checkbox.vue';
   import Pagination from './table-pagination.vue';
   import CountBadge from './count-badge.vue';
+  import ColumnSelect from './table-column-select.vue';
 
   export default {
     name: 'grid-table',
     components: {
+      ColumnSelect,
       CountBadge,
       Checkbox,
       Pagination,
@@ -110,9 +116,23 @@
       expandedIndex: null,
     }),
 
+    watch: {
+      headers() {
+        this.changeColumnsNumStyle();
+      },
+    },
+
+    mounted() {
+      this.changeColumnsNumStyle();
+    },
+
     computed: {
       isAllSelected() {
         return this.data.every((item) => item._isSelected);
+      },
+
+      shownHeaders() {
+        return this.headers.filter((header) => header.show);
       },
     },
 
@@ -126,6 +146,20 @@
         // eslint-disable-next-line no-param-reassign,no-return-assign
         this.data.forEach((item) => item._isSelected = !isAllSelected);
       },
+
+      changeColumnsNumStyle() {
+        const calcRem = (size) => `${parseInt(size, 10) / 16}rem`; // calc function
+
+        let gridTemplateColumns = calcRem('24px'); // checkbox
+        this.shownHeaders.forEach((header) => {
+          gridTemplateColumns += ` ${header.width}`;
+        });
+        gridTemplateColumns += ` ${calcRem('68px')}`; // actions
+
+        const rows = document.getElementsByClassName('grid__tr');
+        // eslint-disable-next-line no-param-reassign,no-return-assign
+        rows.forEach((row) => row.style.gridTemplateColumns = gridTemplateColumns);
+      },
     },
   };
 </script>
@@ -136,6 +170,8 @@
   $header-color: $label-color;
   $second-row-bg-color: #F9F9F9;
 
+  $min-td-width: calcRem(120px);
+
   .grid-table {
     display: flex;
     flex-direction: column;
@@ -144,7 +180,12 @@
   }
 
   .grid {
+    @extend .cc-scrollbar;
+    overflow: auto;
+
     &__row-wrap {
+      min-width: fit-content;
+
       &:nth-child(2n) {
         background: $second-row-bg-color;
       }
@@ -183,6 +224,15 @@
 
     &__th, &__td {
       @extend .typo-body-md;
+      min-width: $min-td-width;
+      width: 100%;
+      max-width: 100%;
+
+      &__word-wrap {
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+      }
 
       &__actions {
         display: flex;
@@ -195,11 +245,14 @@
     }
   }
 
-
   .grid__td__array-value {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .column-select {
+    margin-left: auto;
   }
 
   .pagination {

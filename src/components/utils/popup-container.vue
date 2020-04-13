@@ -57,6 +57,13 @@
     z-index: 10;
   }
 
+  .popup-header {
+    &__h1 {
+      @extend .typo-heading-md;
+      text-align: center;
+    }
+  }
+
   .popup__main {
     margin: calcRem(30px) 0;
   }
