@@ -1,7 +1,11 @@
 <template>
   <div class="column-select">
-    <button class="icon-btn">+</button>
-    <popup-container>
+    <button
+      class="icon-btn"
+      @click.prevent="isOpened = true"
+    >+
+    </button>
+    <popup-container v-if="isOpened">
       <template slot="popup-header">
         <h1 class="popup-header__h1">Select columns to show: </h1>
       </template>
@@ -9,18 +13,27 @@
         <ul class="column-select__list">
           <li
             class="column-select__list__item"
-            v-for="(col, key) of headers"
+            v-for="(col, key) of value"
             :key="key"
+            @click.stop="col._isShown = !col._isShown"
           >
-            <checkbox v-model="col._isShown"/>
+            <checkbox :value="col._isShown"/>
             <span>{{col.text}}</span>
           </li>
         </ul>
       </template>
       <template slot="popup-footer">
         <div class="popup-actions">
-          <btn class="primary">Add</btn>
-          <btn class="secondary">Close</btn>
+          <btn
+            class="primary"
+            @click.native="filter"
+          >Add
+          </btn>
+          <btn
+            class="secondary"
+            @click.native="isOpened = false"
+          >Close
+          </btn>
         </div>
       </template>
     </popup-container>
@@ -31,9 +44,11 @@
   import PopupContainer from './popup-container.vue';
   import Btn from './btn.vue';
   import Checkbox from './checkbox.vue';
+  import filterMixin from '../../mixins/filterMixin';
 
   export default {
     name: 'table-column-select',
+    mixins: [filterMixin],
     components: {
       PopupContainer,
       Btn,
@@ -43,6 +58,27 @@
       headers: {
         type: Array,
         required: true,
+      },
+    },
+
+    data: () => ({
+      isOpened: false,
+      filterQuery: 'cols',
+      joinSymbol: ',',
+      value: [], // headers draft
+    }),
+
+    created() {
+      this.setHeadersDraft();
+    },
+
+    methods: {
+      setHeadersDraft() {
+        this.value = this.headers.map((header) => ({
+          text: header.text,
+          value: header.value,
+          _isShown: !!header._isShown,
+        }));
       },
     },
   };
@@ -59,6 +95,7 @@
       display: flex;
       align-items: center;
       margin-bottom: calcRem(16px);
+      cursor: pointer;
 
       .checkbox {
         margin-right: calcRem(10px);

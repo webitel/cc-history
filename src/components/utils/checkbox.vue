@@ -1,5 +1,5 @@
 <template>
-  <label
+  <div
     class="checkbox-label"
     @click.prevent.stop="input"
   >
@@ -8,8 +8,8 @@
       :checked="value"
     >
     <span class="checkbox"></span>
-    <span class="label">{{computeLabel}}</span>
-  </label>
+    <label class="label">{{computeLabel}}</label>
+  </div>
 </template>
 
 <script>
