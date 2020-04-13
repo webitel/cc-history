@@ -15,9 +15,9 @@
             class="column-select__list__item"
             v-for="(col, key) of value"
             :key="key"
-            @click.stop="col._isShown = !col._isShown"
+            @click.capture.prevent="col._isShown = !col._isShown"
           >
-            <checkbox :value="col._isShown"/>
+            <checkbox :value="col._isShown" />
             <span>{{col.text}}</span>
           </li>
         </ul>

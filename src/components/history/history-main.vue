@@ -72,31 +72,37 @@
           sortable: false,
           value: 'name',
           _isShown: true,
+          width: '1fr',
         },
         {
           text: 'Calories',
           value: 'calories',
           _isShown: true,
+          width: '1fr',
         },
         {
           text: 'Fat (g)',
           value: 'fat',
           _isShown: true,
+          width: '1fr',
         },
         {
           text: 'Carbs (g)',
           value: 'carbs',
           _isShown: true,
+          width: '1fr',
         },
         {
           text: 'Protein (g)',
           value: 'protein',
           _isShown: true,
+          width: '1fr',
         },
         {
           text: 'Iron (%)',
           value: 'iron',
           _isShown: true,
+          width: '1fr',
         },
       ],
       data: [
@@ -198,9 +204,18 @@
     }),
 
     watch: {
+      // eslint-disable-next-line func-names
+      '$route.query.cols': function () {
+        this.hadleColumnsFilter();
+      },
+
       num() {
         this.changeColumnsNum();
       },
+    },
+
+    created() {
+      this.hadleColumnsFilter();
     },
 
     methods: {
@@ -210,14 +225,13 @@
       download() {
       },
 
-      // TEMPLATE, NOT FOR USING
-      changeColumnsNum() {
-        if (this.colNum // if not 0 and not bigger than data columns
-          && this.colNum <= this.headers.length) {
-          const rows = document.getElementsByClassName('grid__tr');
-          // eslint-disable-next-line no-param-reassign,no-return-assign
-          rows.forEach((row) => row.style.gridTemplateColumns = `repeat(${this.colNum}, 1fr)`);
-        }
+      hadleColumnsFilter() {
+        const { cols } = this.$route.query;
+        const isDefaultCols = !cols;
+        this.headers = this.headers.map((header) => ({
+          ...header,
+          _isShown: isDefaultCols || cols.includes(header.value),
+        }));
       },
     },
   };

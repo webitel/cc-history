@@ -10,14 +10,15 @@
         </div>
         <div
           class="grid__th"
-          v-for="(col, key) of headers"
+          v-for="(col, key) of shownHeaders"
           :key="key"
         >{{col.text}}
         </div>
         <div class="grid__th__actions">
-            <column-select :headers="headers" />
+          <column-select :headers="headers"/>
         </div>
       </header>
+
       <section class="grid__body">
         <div
           class="grid__row-wrap"
@@ -38,7 +39,7 @@
 
             <div
               class="grid__td"
-              v-for="(col, headerKey) of headers"
+              v-for="(col, headerKey) of shownHeaders"
               :key="headerKey"
             >
               <slot :name="col.value">
@@ -114,9 +115,23 @@
       expandedIndex: null,
     }),
 
+    watch: {
+      headers() {
+        this.changeColumnsNumStyle();
+      },
+    },
+
+    mounted() {
+      this.changeColumnsNumStyle();
+    },
+
     computed: {
       isAllSelected() {
         return this.data.every((item) => item._isSelected);
+      },
+
+      shownHeaders() {
+        return this.headers.filter((header) => header._isShown);
       },
     },
 
@@ -129,6 +144,20 @@
         const { isAllSelected } = this;
         // eslint-disable-next-line no-param-reassign,no-return-assign
         this.data.forEach((item) => item._isSelected = !isAllSelected);
+      },
+
+      changeColumnsNumStyle() {
+        const calcRem = (size) => `${parseInt(size, 10) / 16}rem`; // calc function
+
+        let gridTemplateColumns = calcRem('24px'); // checkbox
+        this.shownHeaders.forEach((header) => {
+          gridTemplateColumns += ` ${header.width}`;
+        });
+        gridTemplateColumns += ` ${calcRem('68px')}`; // actions
+
+        const rows = document.getElementsByClassName('grid__tr');
+        // eslint-disable-next-line no-param-reassign,no-return-assign
+        rows.forEach((row) => row.style.gridTemplateColumns = gridTemplateColumns);
       },
     },
   };
