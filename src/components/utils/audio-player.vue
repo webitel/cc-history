@@ -238,7 +238,7 @@
     background-color: $player-bg;
     box-shadow: $box-shadow;
     border-radius: $border-radius;
-    z-index: 10000;
+    z-index: 90;
 
     .icon-btn .icon {
       fill: #fff;

@@ -71,26 +71,38 @@
           align: 'start',
           sortable: false,
           value: 'name',
+          show: true,
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Calories',
           value: 'calories',
+          show: true,
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Fat (g)',
           value: 'fat',
+          show: true,
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Carbs (g)',
           value: 'carbs',
+          show: true,
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Protein (g)',
           value: 'protein',
+          show: true,
+          width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Iron (%)',
           value: 'iron',
+          show: true,
+          width: 'minmax(120px, 1fr)',
         },
       ],
       data: [
@@ -185,16 +197,20 @@
           iron: '6%',
         },
       ],
-      audioLink: 'https://dl3s1.muzofond.fm/aHR0cDovL2YubXAzcG9pc2submV0L21wMy8wMDMvMDYyLzk5My8zMDYyOTkzLm1wMw==',
+      audioLink: '',
       isShowPlayer: true,
       currentlyPlaying: false,
-      colNum: 6,
     }),
 
     watch: {
-      num() {
-        this.changeColumnsNum();
+      // eslint-disable-next-line func-names
+      '$route.query.cols': function () {
+        this.hadleColumnsFilter();
       },
+    },
+
+    created() {
+      this.hadleColumnsFilter();
     },
 
     methods: {
@@ -204,14 +220,13 @@
       download() {
       },
 
-      // TEMPLATE, NOT FOR USING
-      changeColumnsNum() {
-        if (this.colNum // if not 0 and not bigger than data columns
-          && this.colNum <= this.headers.length) {
-          const rows = document.getElementsByClassName('grid__tr');
-          // eslint-disable-next-line no-param-reassign,no-return-assign
-          rows.forEach((row) => row.style.gridTemplateColumns = `repeat(${this.colNum}, 1fr)`);
-        }
+      hadleColumnsFilter() {
+        const { cols } = this.$route.query;
+        const isDefaultCols = !cols;
+        this.headers = this.headers.map((header) => ({
+          ...header,
+          show: isDefaultCols || cols.includes(header.value),
+        }));
       },
     },
   };
