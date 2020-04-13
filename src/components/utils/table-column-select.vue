@@ -3,7 +3,12 @@
     <button
       class="icon-btn"
       @click.prevent="isOpened = true"
-    >+
+    >
+      <icon>
+        <svg class="icon icon-col-select_md md">
+          <use xlink:href="#icon-col-select_md"></use>
+        </svg>
+      </icon>
     </button>
     <popup-container v-if="isOpened">
       <template slot="popup-header">
