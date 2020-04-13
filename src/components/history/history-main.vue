@@ -71,37 +71,37 @@
           align: 'start',
           sortable: false,
           value: 'name',
-          _isShown: true,
+          show: true,
           width: '1fr',
         },
         {
           text: 'Calories',
           value: 'calories',
-          _isShown: true,
+          show: true,
           width: '1fr',
         },
         {
           text: 'Fat (g)',
           value: 'fat',
-          _isShown: true,
+          show: true,
           width: '1fr',
         },
         {
           text: 'Carbs (g)',
           value: 'carbs',
-          _isShown: true,
+          show: true,
           width: '1fr',
         },
         {
           text: 'Protein (g)',
           value: 'protein',
-          _isShown: true,
+          show: true,
           width: '1fr',
         },
         {
           text: 'Iron (%)',
           value: 'iron',
-          _isShown: true,
+          show: true,
           width: '1fr',
         },
       ],
@@ -230,7 +230,7 @@
         const isDefaultCols = !cols;
         this.headers = this.headers.map((header) => ({
           ...header,
-          _isShown: isDefaultCols || cols.includes(header.value),
+          show: isDefaultCols || cols.includes(header.value),
         }));
       },
     },

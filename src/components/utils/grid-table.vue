@@ -131,7 +131,7 @@
       },
 
       shownHeaders() {
-        return this.headers.filter((header) => header._isShown);
+        return this.headers.filter((header) => header.show);
       },
     },
 

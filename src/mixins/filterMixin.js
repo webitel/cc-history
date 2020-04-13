@@ -7,7 +7,7 @@ export default {
   methods: {
     filter() {
       const filter = this.value
-        .filter((item) => item._isShown)
+        .filter((item) => item.show)
         .map((item) => item.value)
         .join(this.joinSymbol);
       const query = { ...this.$route.query };

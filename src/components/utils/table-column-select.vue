@@ -15,9 +15,9 @@
             class="column-select__list__item"
             v-for="(col, key) of value"
             :key="key"
-            @click.capture.prevent="col._isShown = !col._isShown"
+            @click.capture.prevent="col.show = !col.show"
           >
-            <checkbox :value="col._isShown" />
+            <checkbox :value="col.show" />
             <span>{{col.text}}</span>
           </li>
         </ul>
@@ -77,7 +77,7 @@
         this.value = this.headers.map((header) => ({
           text: header.text,
           value: header.value,
-          _isShown: !!header._isShown,
+          show: !!header.show,
         }));
       },
     },
