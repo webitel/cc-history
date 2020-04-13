@@ -14,7 +14,9 @@
           :key="key"
         >{{col.text}}
         </div>
-        <div class="grid__th grid__th__actions"></div>
+        <div class="grid__th__actions">
+            <column-select :headers="headers" />
+        </div>
       </header>
       <section class="grid__body">
         <div
@@ -82,10 +84,12 @@
   import Checkbox from './checkbox.vue';
   import Pagination from './table-pagination.vue';
   import CountBadge from './count-badge.vue';
+  import ColumnSelect from './table-column-select.vue';
 
   export default {
     name: 'grid-table',
     components: {
+      ColumnSelect,
       CountBadge,
       Checkbox,
       Pagination,

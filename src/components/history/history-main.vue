@@ -71,26 +71,32 @@
           align: 'start',
           sortable: false,
           value: 'name',
+          _isShown: true,
         },
         {
           text: 'Calories',
           value: 'calories',
+          _isShown: true,
         },
         {
           text: 'Fat (g)',
           value: 'fat',
+          _isShown: true,
         },
         {
           text: 'Carbs (g)',
           value: 'carbs',
+          _isShown: true,
         },
         {
           text: 'Protein (g)',
           value: 'protein',
+          _isShown: true,
         },
         {
           text: 'Iron (%)',
           value: 'iron',
+          _isShown: true,
         },
       ],
       data: [
