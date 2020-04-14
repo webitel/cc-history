@@ -4,7 +4,7 @@
     <div class="hs-multiselect-wrap">
       <vue-multiselect
         :class="{'opened': isOpened}"
-        v-model="value"
+        :value="value"
         :options="options"
         :placeholder="placeholder || label"
         :close-on-select="false"
@@ -12,9 +12,10 @@
         :limitText="limitText"
         :loading="false"
         :internal-search="false"
+        @input="$emit('input', $event)"
         @search-change="fetch"
         @open="isOpened = true"
-        @close="filter"
+        @close="close"
         multiple
       >
         <template slot="option" slot-scope="{ option }">
@@ -47,13 +48,13 @@
       VueMultiselect,
     },
     props: {
-      options: {
-        type: Array,
+      value: {
+        type: [Array, Object],
         required: true,
       },
 
-      filterQuery: {
-        type: String,
+      options: {
+        type: Array,
         required: true,
       },
 
@@ -67,14 +68,12 @@
     },
 
     data: () => ({
-      value: [],
       isLoading: false,
       isOpened: false,
     }),
 
     created() {
       this.fetch = debounce(this.fetch);
-      this.setValueFromQuery();
     },
 
     methods: {
@@ -88,23 +87,9 @@
         }, 1000);
       },
 
-      filter() {
-        const filter = this.value.map((item) => item.value)
-          .join('|');
-        const query = { ...this.$route.query };
-        query[this.filterQuery] = filter;
-        this.$router.replace({
-          name: 'history',
-          query,
-        });
+      close() {
+        this.$emit('closed');
         this.isOpened = false;
-      },
-      setValueFromQuery() {
-        let query = this.$route.query[this.filterQuery];
-        if (query) {
-          query = query.split('|');
-          this.value = query.map((item) => ({ value: item }));
-        }
       },
     },
   };

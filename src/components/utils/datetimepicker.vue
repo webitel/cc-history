@@ -48,13 +48,13 @@
           <datepicker
             class="datepicker"
             id="datepicker-from"
-            :value="from"
+            :value="draftFrom"
             :maximum-view="'day'"
             monday-first
             @input="setFrom($event.getTime())"
           ></datepicker>
           <timepicker
-            :value="from"
+            :value="draftFrom"
             @input="setFrom"
           ></timepicker>
         </div>
@@ -62,20 +62,20 @@
           <datepicker
             class="datepicker"
             id="datepicker-to"
-            :value="to"
+            :value="draftTo"
             :maximum-view="'day'"
             monday-first
             @input="setTo($event.getTime())"
           ></datepicker>
           <timepicker
-            :value="to"
+            :value="draftTo"
             @input="setTo"
           ></timepicker>
         </div>
       </div>
       <div class="dt-picker__form__actions">
         <btn class="secondary" @click.native="close">Cancel</btn>
-        <btn class="primary" @click.native="filter">Add</btn>
+        <btn class="primary" @click.native="input">Add</btn>
       </div>
     </div>
   </div>
@@ -86,8 +86,6 @@
   import Timepicker from './timepicker.vue';
   import Btn from './btn.vue';
   import clickaway from '../../directives/clickaway';
-
-  const msInMin = 60 * 10 ** 3;
 
   export default {
     name: 'hs-datetimepicker',
@@ -100,56 +98,70 @@
       Btn,
     },
 
+    props: {
+      value: {
+        type: Object,
+        required: true,
+      },
+    },
+
+    watch: {
+      value() {
+        this.setDraft();
+      },
+    },
+
     data: () => ({
       isOpened: false,
-      from: 0,
-      to: 0,
+      draftFrom: 0,
+      draftTo: 0,
     }),
 
     created() {
-      this.setTimeFromQuery();
+      this.setDraft();
     },
 
     computed: {
+      // prop value representation on picker preview
       computeFrom() {
-        const date = new Date(this.from).toLocaleDateString();
-        const time = new Date(this.from).toTimeString()
+        const date = new Date(this.value.from).toLocaleDateString();
+        const time = new Date(this.value.from).toTimeString()
           .slice(0, 5);
         return `${date} ${time}`;
       },
+
+      // prop value representation on picker preview
       computeTo() {
-        const date = new Date(this.to).toLocaleDateString();
-        const time = new Date(this.to).toTimeString()
+        const date = new Date(this.value.to).toLocaleDateString();
+        const time = new Date(this.value.to).toTimeString()
           .slice(0, 5);
         return `${date} ${time}`;
       },
     },
 
     methods: {
-      filter() {
-        this.$router.replace({
-          name: 'history',
-          query: {
-            from: `${this.from}`,
-            to: `${this.to}`,
-          },
+      input() {
+        this.$emit('input', {
+          from: this.draftFrom,
+          to: this.draftTo,
         });
+        this.close();
       },
 
       close() {
         this.isOpened = false;
       },
 
-      setTimeFromQuery() {
-        this.from = +this.$route.query.from || Math.floor(Date.now() / msInMin) * msInMin;
-        this.to = +this.$route.query.to || Math.floor(Date.now() / msInMin) * msInMin;
+      setDraft() {
+        this.draftFrom = this.value.from;
+        this.draftTo = this.value.to;
       },
 
       setFrom(time) {
-        this.from = time;
+        this.draftFrom = time;
       },
       setTo(time) {
-        this.to = time;
+        this.draftTo = time;
       },
     },
   };

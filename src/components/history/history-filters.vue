@@ -1,9 +1,17 @@
 <template>
   <section class="history-section history-filters">
     <form class="history-filters__filters">
+      <!--      dt picker-->
       <div class="col-md-12 col-lg-8 col-xl-6">
-        <dt-picker/>
+        <dt-picker
+          :value="{
+            from: this.from,
+            to: this.to,
+          }"
+          @input="setDateTime"
+        ></dt-picker>
       </div>
+      <!--      type multiselect-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{
@@ -12,87 +20,89 @@
         }"
       >
         <multiselect
+          v-model="type"
           :options="options"
           :label="'Type'"
-          :filter-query="'type'"
+          @closed="setQueryFromValue({value: type, filterQuery: 'type', separator: '|'})"
         ></multiselect>
       </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{
-          'd-md-none': !isOpened,
-          'd-lg-none': !isOpened,
-          'd-xl-block': !isOpened
-        }"
-      >
-        <multiselect
-          :options="options"
-          :label="'Direction'"
-          :filter-query="'direction'"
-        ></multiselect>
-      </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{
-          'd-md-none': !isOpened,
-        }"
-      >
-        <multiselect
-          :options="options"
-          :label="'User'"
-          :filter-query="'user'"
-        ></multiselect>
-      </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
-        <multiselect
-          :options="options"
-          :label="'Destination'"
-          :filter-query="'destination'"
-        ></multiselect>
-      </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
-        <multiselect
-          :options="options"
-          :label="'Gateway'"
-          :filter-query="'gateway'"
-        ></multiselect>
-      </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
-        <multiselect
-          :options="options"
-          :label="'Agent'"
-          :filter-query="'agent'"
-        ></multiselect>
-      </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
-        <multiselect
-          :options="options"
-          :label="'Team'"
-          :filter-query="'team'"
-        ></multiselect>
-      </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
-        <multiselect
-          :options="options"
-          :label="'Queue'"
-          :filter-query="'queue'"
-        ></multiselect>
-      </div>
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{-->
+      <!--          'd-md-none': !isOpened,-->
+      <!--          'd-lg-none': !isOpened,-->
+      <!--          'd-xl-block': !isOpened-->
+      <!--        }"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'Direction'"-->
+      <!--          :filter-query="'direction'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{-->
+      <!--          'd-md-none': !isOpened,-->
+      <!--        }"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'User'"-->
+      <!--          :filter-query="'user'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{'d-md-none': !isOpened}"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'Destination'"-->
+      <!--          :filter-query="'destination'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{'d-md-none': !isOpened}"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'Gateway'"-->
+      <!--          :filter-query="'gateway'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{'d-md-none': !isOpened}"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'Agent'"-->
+      <!--          :filter-query="'agent'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{'d-md-none': !isOpened}"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'Team'"-->
+      <!--          :filter-query="'team'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{'d-md-none': !isOpened}"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'Queue'"-->
+      <!--          :filter-query="'queue'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
+      <!--      duration inputs -->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
@@ -103,26 +113,26 @@
           :filter-query="'duration'"
         ></input-timerange>
       </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
-        <multiselect
-          :options="options"
-          :label="'Tags'"
-          :filter-query="'tags'"
-        ></multiselect>
-      </div>
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
-        <multiselect
-          :options="options"
-          :label="'Hangup cause'"
-          :filter-query="'cause'"
-        ></multiselect>
-      </div>
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{'d-md-none': !isOpened}"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'Tags'"-->
+      <!--          :filter-query="'tags'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{'d-md-none': !isOpened}"-->
+      <!--      >-->
+      <!--        <multiselect-->
+      <!--          :options="options"-->
+      <!--          :label="'Hangup cause'"-->
+      <!--          :filter-query="'cause'"-->
+      <!--        ></multiselect>-->
+      <!--      </div>-->
     </form>
     <div class="history-filters__controls">
       <button
@@ -158,9 +168,13 @@
   import DtPicker from '../utils/datetimepicker.vue';
   import Multiselect from '../utils/multiselect.vue';
   import InputTimerange from '../utils/input-timerange.vue';
+  import filterMixin from '../../mixins/filterMixin';
+
+  const msInMin = 60 * 10 ** 3;
 
   export default {
     name: 'history-filters',
+    mixins: [filterMixin],
     components: {
       DtPicker,
       Multiselect,
@@ -169,6 +183,9 @@
 
     data: () => ({
       isOpened: false,
+      from: Date.now(),
+      to: Date.now(),
+      type: [],
       options: [
         {
           name: 'aa',
@@ -186,6 +203,74 @@
         to: 120,
       },
     }),
+
+    watch: {
+      // eslint-disable-next-line func-names
+      '$route.query.from': function (from) {
+        this.getDateTimeFrom(from);
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.to': function (to) {
+        this.getDateTimeTo(to);
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.type': function (value) {
+        this.getValueFromQuery({
+          prop: 'type',
+          value,
+          separator: '|',
+        });
+      },
+    },
+
+    created() {
+      this.getValueFromQuery({
+        prop: 'type',
+        separator: '|',
+      });
+    },
+
+    methods: {
+      getDateTimeFrom(from = this.$route.query.from) {
+        this.from = from || Math.floor(Date.now() / msInMin) * msInMin;
+      },
+
+      getDateTimeTo(to = this.$route.query.to) {
+        this.to = to || Math.floor(Date.now() / msInMin) * msInMin;
+      },
+
+      getValueFromQuery({ prop, value = this.$route.query[prop], separator = ',' }) {
+        if (value) {
+          this[prop] = value.split(separator)
+            .map((item) => ({ value: item }));
+        }
+      },
+
+      setDateTime({ from, to }) {
+        let filterQuery = 'from';
+        let filter = from;
+        this.filter({
+          filter,
+          filterQuery,
+        });
+
+        filterQuery = 'to';
+        filter = to;
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+
+      setQueryFromValue({ value, filterQuery, separator = ',' }) {
+        const filter = value.map((item) => item.value)
+          .join(separator);
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+    },
   };
 </script>
 

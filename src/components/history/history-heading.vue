@@ -2,7 +2,10 @@
   <header class="history-section history-heading">
     <h1 class="history-heading__h1">History</h1>
     <div class="history-heading__actions-wrap">
-      <search v-model="search"/>
+      <search
+        v-model="search"
+        @search="filter({ filter: search, filterQuery: 'search'})"
+      />
       <btn class="secondary">Download</btn>
       <btn class="primary">Export CSV</btn>
     </div>
@@ -12,9 +15,11 @@
 <script>
   import Search from '../utils/search-input.vue';
   import Btn from '../utils/btn.vue';
+  import filterMixin from '../../mixins/filterMixin';
 
   export default {
     name: 'history-heading',
+    mixins: [filterMixin],
     components: {
       Search,
       Btn,
@@ -23,6 +28,22 @@
     data: () => ({
       search: '',
     }),
+
+    watch: {
+      // eslint-disable-next-line func-names
+      '$route.query.search': {
+        handler(search) {
+          this.getSearch(search);
+        },
+        immediate: true,
+      },
+    },
+
+    methods: {
+      getSearch(search) {
+        if (search) this.search = search;
+      },
+    },
   };
 </script>
 
