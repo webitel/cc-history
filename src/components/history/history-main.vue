@@ -6,9 +6,9 @@
       :page="page"
       :size="size"
       expanded
-      @pageChange="setPage"
+      @pageChange="setQueryValue({ filterQuery: 'page', value: $event })"
       @sizeInput="size = $event"
-      @sizeChange="setSize"
+      @sizeChange="setQueryValue({ filterQuery: 'size', value: $event })"
       @sort="setSort"
       @shownColumns="setShownColumns"
     >
@@ -224,26 +224,43 @@
 
     watch: {
       // eslint-disable-next-line func-names
-      '$route.query.page': function (page) {
-        this.getPage(page);
+      '$route.query.page': {
+        handler(page) {
+          this.getQueryValue({
+            prop: 'page',
+            value: +page,
+          });
+        },
+        immediate: true,
       },
       // eslint-disable-next-line func-names
-      '$route.query.size': function (size) {
-        this.getSize(size);
+      '$route.query.size': {
+        handler(size) {
+          this.getQueryValue({
+            prop: 'size',
+            value: size,
+          });
+        },
+        immediate: true,
       },
       // eslint-disable-next-line func-names
-      '$route.query.cols': function (cols) {
-        this.getShownColumns(cols);
+      '$route.query.cols': {
+        handler(cols) {
+          this.getShownColumns(cols);
+        },
+        immediate: true,
       },
       // eslint-disable-next-line func-names
-      '$route.query.sort': function (sort) {
-        this.getSortColumns(sort);
+      '$route.query.sort': {
+        handler(sort) {
+          this.getSortColumns(sort);
+        },
+        immediate: true,
       },
     },
 
     created() {
-      this.restoreFilters();
-      this.loadDataList();
+      // this.loadDataList();
     },
 
     methods: {
@@ -257,38 +274,13 @@
         await getHistory({});
       },
 
-      restoreFilters() {
-        this.getPage();
-        this.getSize();
-        this.getShownColumns();
-        this.getSortColumns();
-      },
-
-      setPage(page) {
-        const filterQuery = 'page';
-        const filter = page;
-        this.filter({
-          filter,
-          filterQuery,
-        });
-      },
-
-      setSize(size) {
-        const filterQuery = 'size';
-        const filter = size;
-        this.filter({
-          filter,
-          filterQuery,
-        });
-      },
-
       setShownColumns(headers) {
         const filterQuery = 'cols';
-        const filter = headers.filter((item) => item.show)
+        const value = headers.filter((item) => item.show)
           .map((item) => item.value)
           .join(',');
         this.filter({
-          filter,
+          value,
           filterQuery,
         });
       },
@@ -296,25 +288,17 @@
       setSort({ column, order }) {
         const filterQuery = 'sort';
         this.headers.find((col) => col === column).sort = order;
-        const filter = this.headers
+        const value = this.headers
           .filter((item) => item.show && item.sort)
           .map((item) => `${item.value}=${item.sort}`)
           .join(',');
-        this.filter({
-          filter,
+        this.setQueryValue({
+          value,
           filterQuery,
         });
       },
 
-      getPage(page = this.$route.query.page) {
-        if (page) this.page = +page;
-      },
-
-      getSize(size = this.$route.query.size) {
-        if (size) this.size = size;
-      },
-
-      getShownColumns(cols = this.$route.query.cols) {
+      getShownColumns(cols) {
         if (cols) {
           const isDefaultCols = !cols;
           this.headers = this.headers.map((header) => ({
@@ -324,7 +308,7 @@
         }
       },
 
-      getSortColumns(sort = this.$route.query.sort) {
+      getSortColumns(sort) {
         if (sort) {
           const sortedColumns = {};
           sort.split(',')

@@ -23,7 +23,7 @@
           v-model="type"
           :options="options"
           :label="'Type'"
-          @closed="setQueryFromValue({value: type, filterQuery: 'type', separator: '|'})"
+          @closed="setQueryArray({ value: type, filterQuery: 'type' })"
         ></multiselect>
       </div>
       <!--      <div-->
@@ -206,69 +206,38 @@
 
     watch: {
       // eslint-disable-next-line func-names
-      '$route.query.from': function (from) {
-        this.getDateTimeFrom(from);
+      '$route.query.from': {
+        handler(from) {
+          const value = from || Math.floor(Date.now() / msInMin) * msInMin;
+          this.getQueryValue({ prop: 'from', value });
+        },
+        immediate: true,
       },
       // eslint-disable-next-line func-names
-      '$route.query.to': function (to) {
-        this.getDateTimeTo(to);
+      '$route.query.to': {
+        handler(to) {
+          const value = to || Math.floor(Date.now() / msInMin) * msInMin;
+          this.getQueryValue({ prop: 'to', value });
+        },
+        immediate: true,
       },
       // eslint-disable-next-line func-names
-      '$route.query.type': function (value) {
-        this.getValueFromQuery({
-          prop: 'type',
-          value,
-          separator: '|',
-        });
+      '$route.query.type': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'type',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
       },
-    },
-
-    created() {
-      this.getValueFromQuery({
-        prop: 'type',
-        separator: '|',
-      });
     },
 
     methods: {
-      getDateTimeFrom(from = this.$route.query.from) {
-        this.from = from || Math.floor(Date.now() / msInMin) * msInMin;
-      },
-
-      getDateTimeTo(to = this.$route.query.to) {
-        this.to = to || Math.floor(Date.now() / msInMin) * msInMin;
-      },
-
-      getValueFromQuery({ prop, value = this.$route.query[prop], separator = ',' }) {
-        if (value) {
-          this[prop] = value.split(separator)
-            .map((item) => ({ value: item }));
-        }
-      },
-
       setDateTime({ from, to }) {
-        let filterQuery = 'from';
-        let filter = from;
-        this.filter({
-          filter,
-          filterQuery,
-        });
-
-        filterQuery = 'to';
-        filter = to;
-        this.filter({
-          filter,
-          filterQuery,
-        });
-      },
-
-      setQueryFromValue({ value, filterQuery, separator = ',' }) {
-        const filter = value.map((item) => item.value)
-          .join(separator);
-        this.filter({
-          filter,
-          filterQuery,
-        });
+        this.setQueryValue({ filterQuery: 'from', value: from });
+        this.setQueryValue({ filterQuery: 'to', value: to });
       },
     },
   };
