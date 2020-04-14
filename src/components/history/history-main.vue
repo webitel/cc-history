@@ -72,36 +72,42 @@
           sortable: false,
           value: 'name',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Calories',
           value: 'calories',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Fat (g)',
           value: 'fat',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Carbs (g)',
           value: 'carbs',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Protein (g)',
           value: 'protein',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Iron (%)',
           value: 'iron',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
       ],
@@ -207,10 +213,15 @@
       '$route.query.cols': function () {
         this.hadleColumnsFilter();
       },
+      // eslint-disable-next-line func-names
+      '$route.query.sort': function () {
+        this.hadleColumnsSort();
+      },
     },
 
     created() {
       this.hadleColumnsFilter();
+      this.hadleColumnsSort();
     },
 
     methods: {
@@ -227,6 +238,32 @@
           ...header,
           show: isDefaultCols || cols.includes(header.value),
         }));
+      },
+
+      hadleColumnsSort() {
+        const { sort } = this.$route.query;
+        const isNoSort = !sort;
+        // if no sort in params, set null
+        if (isNoSort) {
+          this.headers = this.headers.map((header) => ({
+            ...header,
+            sort: null,
+          }));
+        } else { // if it is a sort, find sorted columns and its orders
+          const sortedColumns = {};
+          sort.split(',')
+            .forEach((colStr) => {
+              const col = {
+                value: colStr.split('=')[0],
+                order: colStr.split('=')[1],
+              };
+              sortedColumns[col.value] = col.order;
+            });
+          this.headers = this.headers.map((header) => ({
+            ...header,
+            sort: sortedColumns[header.value] || null,
+          }));
+        }
       },
     },
   };

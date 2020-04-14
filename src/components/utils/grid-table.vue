@@ -10,8 +10,10 @@
         </div>
         <div
           class="grid__th"
+          :class="`grid__th__sort--${col.sort}`"
           v-for="(col, key) of shownHeaders"
           :key="key"
+          @click="sort(col)"
         >{{col.text}}
         </div>
         <div class="grid__th__actions">
@@ -76,8 +78,11 @@
     </div>
     <pagination
       v-model="size"
-      :is-next="true"
-      :is-prev="true"
+      :is-next="isNext"
+      :is-prev="isPrev"
+      @next="next"
+      @prev="prev"
+      @loadDataList="setSize"
     />
   </div>
 </template>
@@ -87,9 +92,11 @@
   import Pagination from './table-pagination.vue';
   import CountBadge from './count-badge.vue';
   import ColumnSelect from './table-column-select.vue';
+  import filterMixin from '../../mixins/filterMixin';
 
   export default {
     name: 'grid-table',
+    mixins: [filterMixin],
     components: {
       ColumnSelect,
       CountBadge,
@@ -112,8 +119,10 @@
     },
 
     data: () => ({
+      page: 1,
       size: '10',
       expandedIndex: null,
+      joinSymbol: ',',
     }),
 
     watch: {
@@ -134,9 +143,72 @@
       shownHeaders() {
         return this.headers.filter((header) => header.show);
       },
+
+      isNext() {
+        return true;
+      },
+
+      isPrev() {
+        return this.page > 1;
+      },
     },
 
     methods: {
+      sort(column) {
+        const filterQuery = 'sort';
+        // eslint-disable-next-line no-param-reassign
+        column.sort = this.changeSort(column.sort);
+        const filter = this.headers
+          .filter((item) => item.show && item.sort)
+          .map((item) => `${item.value}=${item.sort}`)
+          .join(this.joinSymbol);
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+
+      changeSort(sort) {
+        switch (sort) {
+          case null:
+            return 'asc';
+          case 'asc':
+            return 'desc';
+          case 'desc':
+            return null;
+          default:
+            return 'asc';
+        }
+      },
+
+      next() {
+        this.page += 1;
+        this.setPage();
+      },
+
+      prev() {
+        this.page -= 1;
+        this.setPage();
+      },
+
+      setSize() {
+        const filterQuery = 'size';
+        const filter = this.size;
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+
+      setPage() {
+        const filterQuery = 'page';
+        const filter = this.page;
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+
       expand(index) {
         this.expandedIndex = this.expandedIndex === index ? null : index;
       },
@@ -216,6 +288,16 @@
       text-decoration: underline;
       transition: $transition;
       cursor: pointer;
+
+      &__sort {
+        /*color:;*/
+        &--asc {
+          color: red;
+        }
+        &--desc {
+          color: blue;
+        }
+      }
 
       &:hover {
         color: #000;
