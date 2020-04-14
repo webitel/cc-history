@@ -17,7 +17,10 @@
         >{{col.text}}
         </div>
         <div class="grid__th__actions">
-          <column-select :headers="headers"/>
+          <column-select
+            :headers="headers"
+            @change="$emit('shownColumns', $event)"
+          />
         </div>
       </header>
 
@@ -77,12 +80,13 @@
       </section>
     </div>
     <pagination
-      v-model="size"
+      :value="size"
       :is-next="isNext"
       :is-prev="isPrev"
       @next="next"
       @prev="prev"
-      @loadDataList="setSize"
+      @input="$emit('sizeInput', $event)"
+      @changeSize="sizeChange"
     />
   </div>
 </template>
@@ -92,11 +96,9 @@
   import Pagination from './table-pagination.vue';
   import CountBadge from './count-badge.vue';
   import ColumnSelect from './table-column-select.vue';
-  import filterMixin from '../../mixins/filterMixin';
 
   export default {
     name: 'grid-table',
-    mixins: [filterMixin],
     components: {
       ColumnSelect,
       CountBadge,
@@ -116,13 +118,18 @@
         type: Boolean,
         default: false,
       },
+      page: {
+        type: Number,
+        required: true,
+      },
+      size: {
+        type: String,
+        required: true,
+      },
     },
 
     data: () => ({
-      page: 1,
-      size: '10',
       expandedIndex: null,
-      joinSymbol: ',',
     }),
 
     watch: {
@@ -141,7 +148,7 @@
       },
 
       shownHeaders() {
-        return this.headers.filter((header) => header.show);
+         return this.headers.filter((header) => header.show);
       },
 
       isNext() {
@@ -155,20 +162,22 @@
 
     methods: {
       sort(column) {
-        const filterQuery = 'sort';
-        // eslint-disable-next-line no-param-reassign
-        column.sort = this.changeSort(column.sort);
-        const filter = this.headers
-          .filter((item) => item.show && item.sort)
-          .map((item) => `${item.value}=${item.sort}`)
-          .join(this.joinSymbol);
-        this.filter({
-          filter,
-          filterQuery,
+        const order = this.sortOrder(column.sort);
+        this.$emit('sort', {
+          column,
+          order,
         });
       },
 
-      changeSort(sort) {
+      next() {
+        this.$emit('pageChange', this.page + 1);
+      },
+
+      prev() {
+        this.$emit('pageChange', this.page - 1);
+      },
+
+      sortOrder(sort) {
         switch (sort) {
           case null:
             return 'asc';
@@ -181,32 +190,8 @@
         }
       },
 
-      next() {
-        this.page += 1;
-        this.setPage();
-      },
-
-      prev() {
-        this.page -= 1;
-        this.setPage();
-      },
-
-      setSize() {
-        const filterQuery = 'size';
-        const filter = this.size;
-        this.filter({
-          filter,
-          filterQuery,
-        });
-      },
-
-      setPage() {
-        const filterQuery = 'page';
-        const filter = this.page;
-        this.filter({
-          filter,
-          filterQuery,
-        });
+      sizeChange() {
+        this.$emit('sizeChange', this.size);
       },
 
       expand(index) {
@@ -294,6 +279,7 @@
         &--asc {
           color: red;
         }
+
         &--desc {
           color: blue;
         }

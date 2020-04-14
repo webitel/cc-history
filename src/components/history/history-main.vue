@@ -3,7 +3,14 @@
     <grid-table
       :headers="headers"
       :data="data"
+      :page="page"
+      :size="size"
       expanded
+      @pageChange="setPage"
+      @sizeInput="size = $event"
+      @sizeChange="setSize"
+      @sort="setSort"
+      @shownColumns="setShownColumns"
     >
       <template slot="actions">
         <button class="icon-btn table-action" @click.prevent.stop="download">
@@ -57,9 +64,14 @@
 <script>
   import GridTable from '../utils/grid-table.vue';
   import AudioPlayer from '../utils/audio-player.vue';
+  import { getHistory } from '../../api/history/history';
+  import filterMixin from '../../mixins/filterMixin';
 
   export default {
     name: 'history-main',
+    mixins: [
+      filterMixin,
+    ],
     components: {
       GridTable,
       AudioPlayer,
@@ -203,6 +215,8 @@
           iron: '6%',
         },
       ],
+      page: 1,
+      size: '10',
       audioLink: '',
       isShowPlayer: true,
       currentlyPlaying: false,
@@ -210,18 +224,26 @@
 
     watch: {
       // eslint-disable-next-line func-names
-      '$route.query.cols': function () {
-        this.hadleColumnsFilter();
+      '$route.query.page': function (page) {
+        this.getPage(page);
       },
       // eslint-disable-next-line func-names
-      '$route.query.sort': function () {
-        this.hadleColumnsSort();
+      '$route.query.size': function (size) {
+        this.getSize(size);
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.cols': function (cols) {
+        this.getShownColumns(cols);
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.sort': function (sort) {
+        this.getSortColumns(sort);
       },
     },
 
     created() {
-      this.hadleColumnsFilter();
-      this.hadleColumnsSort();
+      this.restoreFilters();
+      this.loadDataList();
     },
 
     methods: {
@@ -231,25 +253,79 @@
       download() {
       },
 
-      hadleColumnsFilter() {
-        const { cols } = this.$route.query;
-        const isDefaultCols = !cols;
-        this.headers = this.headers.map((header) => ({
-          ...header,
-          show: isDefaultCols || cols.includes(header.value),
-        }));
+      async loadDataList() {
+        await getHistory({});
       },
 
-      hadleColumnsSort() {
-        const { sort } = this.$route.query;
-        const isNoSort = !sort;
-        // if no sort in params, set null
-        if (isNoSort) {
+      restoreFilters() {
+        this.getPage();
+        this.getSize();
+        this.getShownColumns();
+        this.getSortColumns();
+      },
+
+      setPage(page) {
+        const filterQuery = 'page';
+        const filter = page;
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+
+      setSize(size) {
+        const filterQuery = 'size';
+        const filter = size;
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+
+      setShownColumns(headers) {
+        const filterQuery = 'cols';
+        const filter = headers.filter((item) => item.show)
+          .map((item) => item.value)
+          .join(',');
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+
+      setSort({ column, order }) {
+        const filterQuery = 'sort';
+        this.headers.find((col) => col === column).sort = order;
+        const filter = this.headers
+          .filter((item) => item.show && item.sort)
+          .map((item) => `${item.value}=${item.sort}`)
+          .join(',');
+        this.filter({
+          filter,
+          filterQuery,
+        });
+      },
+
+      getPage(page = this.$route.query.page) {
+        if (page) this.page = +page;
+      },
+
+      getSize(size = this.$route.query.size) {
+        if (size) this.size = size;
+      },
+
+      getShownColumns(cols = this.$route.query.cols) {
+        if (cols) {
+          const isDefaultCols = !cols;
           this.headers = this.headers.map((header) => ({
             ...header,
-            sort: null,
+            show: isDefaultCols || cols.includes(header.value),
           }));
-        } else { // if it is a sort, find sorted columns and its orders
+        }
+      },
+
+      getSortColumns(sort = this.$route.query.sort) {
+        if (sort) {
           const sortedColumns = {};
           sort.split(',')
             .forEach((colStr) => {
