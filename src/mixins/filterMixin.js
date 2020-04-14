@@ -63,7 +63,7 @@ export default {
      * @public
      * @param {Object} payload
      * @param {String} payload.prop this.data[prop] to set
-     * @param {String} payload.value prop value,
+     * @param payload.value prop value,
      */
     getQueryValue({ prop, value }) {
       if (value) this[prop] = value;

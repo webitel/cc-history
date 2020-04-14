@@ -25,6 +25,7 @@
       <form
         class="input-timerange__input-wrap"
         @submit.prevent="setTo($event.target[0].value)"
+        @reset="setFrom('')"
       >
         <span class="input-timerange__label">To: </span>
         <input
@@ -46,6 +47,8 @@
 </template>
 
 <script>
+  import debounce from '../../utils/debounce';
+
   export default {
     name: 'input-timerange',
     props: {
@@ -56,6 +59,10 @@
       label: {
         type: String,
       },
+    },
+
+    created() {
+      this.change = debounce(this.change);
     },
 
     computed: {
@@ -74,13 +81,20 @@
           from: value,
         };
         this.$emit('input', newValue);
+        this.change();
       },
+
       setTo(value) {
         const newValue = {
           ...this.value,
           to: value,
         };
         this.$emit('input', newValue);
+        this.change();
+      },
+
+      change() {
+        this.$emit('change', this.value);
       },
     },
   };

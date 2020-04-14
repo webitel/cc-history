@@ -5,13 +5,13 @@
       <div class="col-md-12 col-lg-8 col-xl-6">
         <dt-picker
           :value="{
-            from: this.from,
-            to: this.to,
+            from,
+            to,
           }"
           @input="setDateTime"
         ></dt-picker>
       </div>
-      <!--      type multiselect-->
+      <!--      type multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{
@@ -26,82 +26,96 @@
           @closed="setQueryArray({ value: type, filterQuery: 'type' })"
         ></multiselect>
       </div>
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{-->
-      <!--          'd-md-none': !isOpened,-->
-      <!--          'd-lg-none': !isOpened,-->
-      <!--          'd-xl-block': !isOpened-->
-      <!--        }"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'Direction'"-->
-      <!--          :filter-query="'direction'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{-->
-      <!--          'd-md-none': !isOpened,-->
-      <!--        }"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'User'"-->
-      <!--          :filter-query="'user'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{'d-md-none': !isOpened}"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'Destination'"-->
-      <!--          :filter-query="'destination'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{'d-md-none': !isOpened}"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'Gateway'"-->
-      <!--          :filter-query="'gateway'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{'d-md-none': !isOpened}"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'Agent'"-->
-      <!--          :filter-query="'agent'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{'d-md-none': !isOpened}"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'Team'"-->
-      <!--          :filter-query="'team'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{'d-md-none': !isOpened}"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'Queue'"-->
-      <!--          :filter-query="'queue'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
+      <!--      direction multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{
+                'd-md-none': !isOpened,
+                'd-lg-none': !isOpened,
+                'd-xl-block': !isOpened
+              }"
+      >
+        <multiselect
+          v-model="direction"
+          :options="options"
+          :label="'Direction'"
+          @closed="setQueryArray({ value: direction, filterQuery: 'direction' })"
+        ></multiselect>
+      </div>
+      <!--      user multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{
+                'd-md-none': !isOpened,
+              }"
+      >
+        <multiselect
+          v-model="user"
+          :options="options"
+          :label="'User'"
+          @closed="setQueryArray({ value: user, filterQuery: 'user' })"
+        ></multiselect>
+      </div>
+      <!--      destination multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-md-none': !isOpened}"
+      >
+        <multiselect
+          v-model="destination"
+          :options="options"
+          :label="'Destination'"
+          @closed="setQueryArray({ value: destination, filterQuery: 'destination' })"
+        ></multiselect>
+      </div>
+      <!--      gateway multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-md-none': !isOpened}"
+      >
+        <multiselect
+          v-model="gateway"
+          :options="options"
+          :label="'Gateway'"
+          @closed="setQueryArray({ value: gateway, filterQuery: 'gateway' })"
+        ></multiselect>
+      </div>
+      <!--      agent multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-md-none': !isOpened}"
+      >
+        <multiselect
+          v-model="agent"
+          :options="options"
+          :label="'Agent'"
+          @closed="setQueryArray({ value: agent, filterQuery: 'agent' })"
+        ></multiselect>
+      </div>
+      <!--      team multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-md-none': !isOpened}"
+      >
+        <multiselect
+          v-model="team"
+          :options="options"
+          :label="'Team'"
+          @closed="setQueryArray({ value: team, filterQuery: 'team' })"
+        ></multiselect>
+      </div>
+      <!--      queue multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-md-none': !isOpened}"
+      >
+        <multiselect
+          v-model="queue"
+          :options="options"
+          :label="'Queue'"
+          @closed="setQueryArray({ value: queue, filterQuery: 'queue' })"
+        ></multiselect>
+      </div>
       <!--      duration inputs -->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
@@ -110,29 +124,33 @@
         <input-timerange
           v-model="duration"
           :label="'Duration'"
-          :filter-query="'duration'"
+          @change="setDuration"
         ></input-timerange>
       </div>
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{'d-md-none': !isOpened}"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'Tags'"-->
-      <!--          :filter-query="'tags'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
-      <!--      <div-->
-      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
-      <!--        :class="{'d-md-none': !isOpened}"-->
-      <!--      >-->
-      <!--        <multiselect-->
-      <!--          :options="options"-->
-      <!--          :label="'Hangup cause'"-->
-      <!--          :filter-query="'cause'"-->
-      <!--        ></multiselect>-->
-      <!--      </div>-->
+      <!--      tags multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-md-none': !isOpened}"
+      >
+        <multiselect
+          v-model="tags"
+          :options="options"
+          :label="'Tags'"
+          @closed="setQueryArray({ value: tags, filterQuery: 'tags' })"
+        ></multiselect>
+      </div>
+      <!--      hangup cause multi select-->
+      <div
+        class="col-md-6 col-lg-4 col-xl-3"
+        :class="{'d-md-none': !isOpened}"
+      >
+        <multiselect
+          v-model="cause"
+          :options="options"
+          :label="'Hangup cause'"
+          @closed="setQueryArray({ value: cause, filterQuery: 'cause' })"
+        ></multiselect>
+      </div>
     </form>
     <div class="history-filters__controls">
       <button
@@ -186,6 +204,19 @@
       from: Date.now(),
       to: Date.now(),
       type: [],
+      direction: [],
+      user: [],
+      destination: [],
+      gateway: [],
+      agent: [],
+      team: [],
+      queue: [],
+      tags: [],
+      cause: [],
+      duration: {
+        from: '0',
+        to: '60',
+      },
       options: [
         {
           name: 'aa',
@@ -198,10 +229,6 @@
           value: 'cc',
         },
       ],
-      duration: {
-        from: 60,
-        to: 120,
-      },
     }),
 
     watch: {
@@ -209,7 +236,10 @@
       '$route.query.from': {
         handler(from) {
           const value = from || Math.floor(Date.now() / msInMin) * msInMin;
-          this.getQueryValue({ prop: 'from', value });
+          this.getQueryValue({
+            prop: 'from',
+            value,
+          });
         },
         immediate: true,
       },
@@ -217,7 +247,10 @@
       '$route.query.to': {
         handler(to) {
           const value = to || Math.floor(Date.now() / msInMin) * msInMin;
-          this.getQueryValue({ prop: 'to', value });
+          this.getQueryValue({
+            prop: 'to',
+            value,
+          });
         },
         immediate: true,
       },
@@ -232,12 +265,163 @@
         },
         immediate: true,
       },
+      // eslint-disable-next-line func-names
+      '$route.query.direction': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'direction',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.user': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'user',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.destination': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'destination',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.gateway': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'gateway',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.agent': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'agent',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.team': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'team',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.queue': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'queue',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.duration_from': {
+        handler(value) {
+          const duration = {
+            ...this.duration,
+            from: value || '0',
+          };
+          this.getQueryValue({
+            prop: 'duration',
+            value: duration,
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.duration_to': {
+        handler(value) {
+          const duration = {
+            ...this.duration,
+            to: value || '0',
+          };
+          this.getQueryValue({
+            prop: 'duration',
+            value: duration,
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.tags': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'tags',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.cause': {
+        handler(value) {
+          this.getQueryArray({
+            prop: 'cause',
+            value,
+            separator: '|',
+          });
+        },
+        immediate: true,
+      },
     },
 
     methods: {
       setDateTime({ from, to }) {
-        this.setQueryValue({ filterQuery: 'from', value: from });
-        this.setQueryValue({ filterQuery: 'to', value: to });
+        this.setQueryValue({
+          filterQuery: 'from',
+          value: from,
+        });
+        this.setQueryValue({
+          filterQuery: 'to',
+          value: to,
+        });
+      },
+
+      setDuration(duration) {
+        const queryDurationFrom = this.$route.query.duration_from;
+        if (queryDurationFrom !== duration.from) {
+          this.setQueryValue({
+            filterQuery: 'duration_from',
+            value: duration.from,
+          });
+        }
+
+        const queryDurationTo = this.$route.query.duration_to;
+        if (queryDurationTo !== duration.to) {
+          this.setQueryValue({
+            filterQuery: 'duration_to',
+            value: duration.to,
+          });
+        }
       },
     },
   };
