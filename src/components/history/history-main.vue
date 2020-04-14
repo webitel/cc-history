@@ -65,12 +65,12 @@
   import GridTable from '../utils/grid-table.vue';
   import AudioPlayer from '../utils/audio-player.vue';
   import { getHistory } from '../../api/history/history';
-  import filterMixin from '../../mixins/filterMixin';
+  import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
 
   export default {
     name: 'history-main',
     mixins: [
-      filterMixin,
+      urlQueryControllerMixin,
     ],
     components: {
       GridTable,

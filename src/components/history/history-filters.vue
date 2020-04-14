@@ -186,13 +186,13 @@
   import DtPicker from '../utils/datetimepicker.vue';
   import Multiselect from '../utils/multiselect.vue';
   import InputTimerange from '../utils/input-timerange.vue';
-  import filterMixin from '../../mixins/filterMixin';
+  import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
 
   const msInMin = 60 * 10 ** 3;
 
   export default {
     name: 'history-filters',
-    mixins: [filterMixin],
+    mixins: [urlQueryControllerMixin],
     components: {
       DtPicker,
       Multiselect,

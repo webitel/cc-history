@@ -15,11 +15,11 @@
 <script>
   import Search from '../utils/search-input.vue';
   import Btn from '../utils/btn.vue';
-  import filterMixin from '../../mixins/filterMixin';
+  import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
 
   export default {
     name: 'history-heading',
-    mixins: [filterMixin],
+    mixins: [urlQueryControllerMixin],
     components: {
       Search,
       Btn,
