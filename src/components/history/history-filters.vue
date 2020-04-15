@@ -11,7 +11,7 @@
           @input="setDateTime"
         ></dt-picker>
       </div>
-      <!--      type multi select-->
+      <!--      [ARRAY] type multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{
@@ -21,12 +21,13 @@
       >
         <multiselect
           v-model="type"
-          :options="typeOptions"
+          :options="TypeOptions"
           :label="'Type'"
-          @closed="setQueryArray({ value: type, filterQuery: 'type' })"
+          :api-mode="false"
+          @closed="setQueryArray({ value: type, filterQuery: 'type', queriedProp: 'value' })"
         ></multiselect>
       </div>
-      <!--      direction multi select-->
+      <!--      [ARRAY] direction multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{
@@ -37,12 +38,17 @@
       >
         <multiselect
           v-model="direction"
-          :options="directionOptions"
+          :options="DirectionOptions"
           :label="'Direction'"
-          @closed="setQueryArray({ value: direction, filterQuery: 'direction' })"
+          :api-mode="false"
+          @closed="setQueryArray({
+            value: direction,
+            filterQuery: 'direction',
+            queriedProp: 'value',
+          })"
         ></multiselect>
       </div>
-      <!--      [API FETCH] user multi select-->
+      <!--     [ARRAY] [API FETCH] user multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{
@@ -56,7 +62,7 @@
           @closed="setQueryArray({ value: user, filterQuery: 'user' })"
         ></multiselect>
       </div>
-      <!--      [API FETCH] gateway multi select-->
+      <!--      [ARRAY] [API FETCH] gateway multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
@@ -68,7 +74,7 @@
           @closed="setQueryArray({ value: gateway, filterQuery: 'gateway' })"
         ></multiselect>
       </div>
-      <!--      [API FETCH] agent multi select-->
+      <!--      [ARRAY] [API FETCH] agent multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
@@ -80,7 +86,7 @@
           @closed="setQueryArray({ value: agent, filterQuery: 'agent' })"
         ></multiselect>
       </div>
-      <!--      [API FETCH] team multi select-->
+      <!--     [ARRAY]  [API FETCH] team multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
@@ -92,7 +98,7 @@
           @closed="setQueryArray({ value: team, filterQuery: 'team' })"
         ></multiselect>
       </div>
-      <!--      [API FETCH] queue multi select-->
+      <!--    [ARRAY]   [API FETCH] queue multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
@@ -115,7 +121,7 @@
           @change="setDuration"
         ></input-timerange>
       </div>
-      <!--      tags multi select-->
+      <!--     [ARRAY]  tags multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
@@ -124,10 +130,11 @@
           v-model="tags"
           :options="options"
           :label="'Tags'"
-          @closed="setQueryArray({ value: tags, filterQuery: 'tags' })"
+          :api-mode="false"
+          @closed="setQueryArray({ value: tags, filterQuery: 'tags', queriedProp: 'value' })"
         ></multiselect>
       </div>
-      <!--      hangup cause multi select-->
+      <!--     [ARRAY]  hangup cause multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
@@ -136,7 +143,8 @@
           v-model="cause"
           :options="options"
           :label="'Hangup cause'"
-          @closed="setQueryArray({ value: cause, filterQuery: 'cause' })"
+          :api-mode="false"
+          @closed="setQueryArray({ value: cause, filterQuery: 'cause', queriedProp: 'value' })"
         ></multiselect>
       </div>
     </form>
@@ -176,8 +184,8 @@
   import InputTimerange from '../utils/input-timerange.vue';
   import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
 
-  import typeOptions from '../../api/filter-getters/typeFilter';
-  import directionOptions from '../../api/filter-getters/directionFilter';
+  import TypeOptions from '../../api/filter-getters/TypeOptions.enum';
+  import DirectionOptions from '../../api/filter-getters/DirectionOptions.enum';
   import { fetchUsers } from '../../api/filter-getters/userFilter';
   import { fetchGateways } from '../../api/filter-getters/gatewayFilter';
   import { fetchAgents } from '../../api/filter-getters/agentFilter';
@@ -225,8 +233,8 @@
           value: 'cc',
         },
       ],
-      typeOptions,
-      directionOptions,
+      TypeOptions,
+      DirectionOptions,
     }),
 
     watch: {
@@ -258,23 +266,25 @@
           this.getQueryArray({
             prop: 'type',
             value,
+            queriedProp: 'value',
             separator: '|',
           });
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
+      // [ARRAY] // eslint-disable-next-line func-names
       '$route.query.direction': {
         handler(value) {
           this.getQueryArray({
             prop: 'direction',
             value,
+            queriedProp: 'value',
             separator: '|',
           });
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
+      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.user': {
         handler(value) {
           this.getQueryArray({
@@ -285,18 +295,7 @@
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
-      '$route.query.destination': {
-        handler(value) {
-          this.getQueryArray({
-            prop: 'destination',
-            value,
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // eslint-disable-next-line func-names
+      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.gateway': {
         handler(value) {
           this.getQueryArray({
@@ -307,7 +306,7 @@
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
+      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.agent': {
         handler(value) {
           this.getQueryArray({
@@ -318,7 +317,7 @@
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
+      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.team': {
         handler(value) {
           this.getQueryArray({
@@ -329,7 +328,7 @@
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
+      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.queue': {
         handler(value) {
           this.getQueryArray({
@@ -368,23 +367,25 @@
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
+      // [ARRAY] // eslint-disable-next-line func-names
       '$route.query.tags': {
         handler(value) {
           this.getQueryArray({
             prop: 'tags',
             value,
+            queriedProp: 'value',
             separator: '|',
           });
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
+      // [ARRAY] // eslint-disable-next-line func-names
       '$route.query.cause': {
         handler(value) {
           this.getQueryArray({
             prop: 'cause',
             value,
+            queriedProp: 'value',
             separator: '|',
           });
         },

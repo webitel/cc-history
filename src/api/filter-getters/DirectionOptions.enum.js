@@ -5,13 +5,15 @@ import { CallDirection } from 'webitel-sdk';
  * @enum
  * @readonly
  */
-export default Object.freeze([
+const DirectionOptions = Object.freeze([
   {
-    text: 'Inbound',
+    name: 'Inbound',
     value: CallDirection.Inbound,
   },
   {
-    text: 'Outbound',
+    name: 'Outbound',
     value: CallDirection.Outbound,
   },
 ]);
+
+export default DirectionOptions;

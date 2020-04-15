@@ -45,7 +45,7 @@ export default {
     setQueryArray({
                     filterQuery,
                     value,
-                    queriedProp = 'value',
+                    queriedProp = 'id',
                     separator = '|',
                   }) {
       const filter = value.map((item) => item[queriedProp])
@@ -84,7 +84,7 @@ export default {
     getQueryArray({
                     prop,
                     value,
-                    queriedProp = 'value',
+                    queriedProp = 'id',
                     separator = '|',
                   }) {
       if (value) {
