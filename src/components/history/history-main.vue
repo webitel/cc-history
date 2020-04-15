@@ -226,18 +226,16 @@
       // eslint-disable-next-line func-names
       '$route.query.page': {
         handler(page) {
-          this.getQueryValue({
-            prop: 'page',
+          this.page = this.parseQueryValue({
             value: +page,
-          });
+          }) || 0;
         },
         immediate: true,
       },
       // eslint-disable-next-line func-names
       '$route.query.size': {
         handler(size) {
-          this.getQueryValue({
-            prop: 'size',
+          this.size = this.parseQueryValue({
             value: size,
           });
         },

@@ -242,8 +242,7 @@
       '$route.query.from': {
         handler(from) {
           const value = from || Math.floor(Date.now() / msInMin) * msInMin;
-          this.getQueryValue({
-            prop: 'from',
+          this.from = this.parseQueryValue({
             value,
           });
         },
@@ -253,8 +252,7 @@
       '$route.query.to': {
         handler(to) {
           const value = to || Math.floor(Date.now() / msInMin) * msInMin;
-          this.getQueryValue({
-            prop: 'to',
+          this.to = this.parseQueryValue({
             value,
           });
         },
@@ -263,8 +261,7 @@
       // eslint-disable-next-line func-names
       '$route.query.type': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'type',
+          this.type = this.parseQueryArray({
             value,
             queriedProp: 'value',
             separator: '|',
@@ -275,8 +272,7 @@
       // [ARRAY] // eslint-disable-next-line func-names
       '$route.query.direction': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'direction',
+          this.direction = this.parseQueryArray({
             value,
             queriedProp: 'value',
             separator: '|',
@@ -287,8 +283,7 @@
       // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.user': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'user',
+          this.user = this.parseQueryArray({
             value,
             separator: '|',
           });
@@ -298,8 +293,7 @@
       // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.gateway': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'gateway',
+          this.gateway = this.parseQueryArray({
             value,
             separator: '|',
           });
@@ -309,8 +303,7 @@
       // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.agent': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'agent',
+          this.agent = this.parseQueryArray({
             value,
             separator: '|',
           });
@@ -320,8 +313,7 @@
       // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.team': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'team',
+          this.team = this.parseQueryArray({
             value,
             separator: '|',
           });
@@ -331,8 +323,7 @@
       // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
       '$route.query.queue': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'queue',
+          this.queue = this.parseQueryArray({
             value,
             separator: '|',
           });
@@ -346,8 +337,7 @@
             ...this.duration,
             from: value || '0',
           };
-          this.getQueryValue({
-            prop: 'duration',
+          this.duration = this.parseQueryValue({
             value: duration,
           });
         },
@@ -360,8 +350,7 @@
             ...this.duration,
             to: value || '0',
           };
-          this.getQueryValue({
-            prop: 'duration',
+          this.duration = this.parseQueryValue({
             value: duration,
           });
         },
@@ -370,8 +359,7 @@
       // [ARRAY] // eslint-disable-next-line func-names
       '$route.query.tags': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'tags',
+          this.tags = this.parseQueryArray({
             value,
             queriedProp: 'value',
             separator: '|',
@@ -382,8 +370,7 @@
       // [ARRAY] // eslint-disable-next-line func-names
       '$route.query.cause': {
         handler(value) {
-          this.getQueryArray({
-            prop: 'cause',
+          this.cause = this.parseQueryArray({
             value,
             queriedProp: 'value',
             separator: '|',
@@ -406,21 +393,15 @@
       },
 
       setDuration(duration) {
-        const queryDurationFrom = this.$route.query.duration_from;
-        if (queryDurationFrom !== duration.from) {
-          this.setQueryValue({
-            filterQuery: 'duration_from',
-            value: duration.from,
-          });
-        }
+        this.setQueryValue({
+          filterQuery: 'duration_from',
+          value: duration.from,
+        });
 
-        const queryDurationTo = this.$route.query.duration_to;
-        if (queryDurationTo !== duration.to) {
-          this.setQueryValue({
-            filterQuery: 'duration_to',
-            value: duration.to,
-          });
-        }
+        this.setQueryValue({
+          filterQuery: 'duration_to',
+          value: duration.to,
+        });
       },
 
       fetchUsers,

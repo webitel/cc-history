@@ -33,8 +33,7 @@
       // eslint-disable-next-line func-names
       '$route.query.search': {
         handler(search) {
-          this.getQueryValue({
-            prop: 'search',
+          this.search = this.parseQueryValue({
             value: search,
           });
         },

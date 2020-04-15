@@ -1,5 +1,5 @@
 export default {
-   methods: {
+  methods: {
     /**
      * replaces $router with updated query params
      * @Function
@@ -26,10 +26,12 @@ export default {
      * @param {String} payload.value updated query property value,
      */
     setQueryValue({ filterQuery, value }) {
-      this.filter({
-        value,
-        filterQuery,
-      });
+      if (this.getValueByQuery({ filterQuery }) !== value) {
+        this.filter({
+          value,
+          filterQuery,
+        });
+      }
     },
 
     /**
@@ -50,10 +52,12 @@ export default {
                   }) {
       const filter = value.map((item) => item[queriedProp])
         .join(separator);
-      this.filter({
-        value: filter,
-        filterQuery,
-      });
+      if (this.getValueByQuery({ filterQuery }) !== filter) {
+        this.filter({
+          value: filter,
+          filterQuery,
+        });
+      }
     },
 
     /**
@@ -62,11 +66,12 @@ export default {
      * @Function
      * @public
      * @param {Object} payload
-     * @param {String} payload.prop this.data[prop] to set
      * @param payload.value prop value,
+     * @returns parsed value from query
      */
-    getQueryValue({ prop, value }) {
-      if (value) this[prop] = value;
+    parseQueryValue({ value }) {
+      if (value) return value;
+      return '';
     },
 
 
@@ -76,21 +81,31 @@ export default {
      * @Function
      * @public
      * @param {Object} payload
-     * @param {String} payload.prop this.data[prop] to set
      * @param {Array} payload.value prop value,
      * @param {String} [payload.queriedProp = 'value'] value property to set and retrieve from url
      * @param {String} [payload.separator = '|'] separates array values in url
+     * @returns parsed value from query, converted to array or empty array
      */
-    getQueryArray({
-                    prop,
-                    value,
-                    queriedProp = 'id',
-                    separator = '|',
-                  }) {
+    parseQueryArray({
+                      value,
+                      queriedProp = 'id',
+                      separator = '|',
+                    }) {
       if (value) {
-        this[prop] = value.split(separator)
+        return value.split(separator)
           .map((item) => ({ [queriedProp]: item }));
       }
+      return [];
+    },
+
+    /**
+     * Gets value from url query by its property aka filterQuery
+     * @Function
+     * @private
+     * @returns value from query, converted to array or empty array
+     */
+    getValueByQuery({ filterQuery }) {
+      return this.$route.query[filterQuery];
     },
   },
 };
