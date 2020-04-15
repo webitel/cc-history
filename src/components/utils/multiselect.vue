@@ -5,13 +5,13 @@
       <vue-multiselect
         :class="{'opened': isOpened}"
         :value="value"
-        :options="options"
+        :options="options || fetchedOptions"
         :placeholder="placeholder || label"
         :close-on-select="false"
         :limit="1"
         :limitText="limitText"
         :loading="false"
-        :internal-search="false"
+        :internal-search="!apiMode"
         @input="$emit('input', $event)"
         @search-change="fetch"
         @open="isOpened = true"
@@ -55,7 +55,6 @@
 
       options: {
         type: Array,
-        required: true,
       },
 
       label: {
@@ -65,14 +64,25 @@
       placeholder: {
         type: String,
       },
+
+      apiMode: {
+        type: Boolean,
+        default: true,
+      },
+
+      fetchMethod: {
+        type: Function,
+      },
     },
 
     data: () => ({
       isLoading: false,
       isOpened: false,
+      fetchedOptions: [],
     }),
 
     created() {
+      this.fetch();
       this.fetch = debounce(this.fetch);
     },
 
@@ -80,11 +90,9 @@
       limitText: (count) => `${count}`,
 
       async fetch(search) {
-        this.isLoading = true;
-        await setTimeout(() => {
-          console.log(search);
-          this.isLoading = false;
-        }, 1000);
+        if (this.apiMode) {
+          this.fetchedOptions = await this.fetchMethod(search);
+        }
       },
 
       close() {
@@ -175,6 +183,12 @@
       width: 100%;
     }
 
+    // empty/not found texts
+    li:not(.multiselect__element) {
+      @extend .typo-body-sm;
+      padding: $select-paddings;
+    }
+
     &__element {
       @extend .typo-body-sm;
       width: 100%;
@@ -183,6 +197,7 @@
 
       .multiselect__option {
         display: block;
+        border-radius: $border-radius;
 
         &:hover {
           background: $list-option__hover;

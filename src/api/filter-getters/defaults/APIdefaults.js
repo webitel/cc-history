@@ -4,14 +4,14 @@ import { PAGE, SIZE, formatOptions } from './defaults';
 const getFromAPI = async (url) => {
   try {
     const response = await instance.get(url);
-    return formatOptions(response.items);
+    return formatOptions(response);
   } catch (err) {
     throw err;
   }
 };
 
 export const getOptionsFromAPI = async ({ BASE_URL, search }) => {
-  const url = `${BASE_URL}?page=${PAGE}size=${SIZE}&name=${search}`;
+  const url = `${BASE_URL}?page=${PAGE}&size=${SIZE}&name=${search}`;
   return getFromAPI(url);
 };
 

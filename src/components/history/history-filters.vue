@@ -21,7 +21,7 @@
       >
         <multiselect
           v-model="type"
-          :options="options"
+          :options="typeOptions"
           :label="'Type'"
           @closed="setQueryArray({ value: type, filterQuery: 'type' })"
         ></multiselect>
@@ -37,12 +37,12 @@
       >
         <multiselect
           v-model="direction"
-          :options="options"
+          :options="directionOptions"
           :label="'Direction'"
           @closed="setQueryArray({ value: direction, filterQuery: 'direction' })"
         ></multiselect>
       </div>
-      <!--      user multi select-->
+      <!--      [API FETCH] user multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{
@@ -51,67 +51,55 @@
       >
         <multiselect
           v-model="user"
-          :options="options"
+          :fetch-method="fetchUsers"
           :label="'User'"
           @closed="setQueryArray({ value: user, filterQuery: 'user' })"
         ></multiselect>
       </div>
-      <!--      destination multi select-->
-      <div
-        class="col-md-6 col-lg-4 col-xl-3"
-        :class="{'d-md-none': !isOpened}"
-      >
-        <multiselect
-          v-model="destination"
-          :options="options"
-          :label="'Destination'"
-          @closed="setQueryArray({ value: destination, filterQuery: 'destination' })"
-        ></multiselect>
-      </div>
-      <!--      gateway multi select-->
+      <!--      [API FETCH] gateway multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           v-model="gateway"
-          :options="options"
+          :fetch-method="fetchGateways"
           :label="'Gateway'"
           @closed="setQueryArray({ value: gateway, filterQuery: 'gateway' })"
         ></multiselect>
       </div>
-      <!--      agent multi select-->
+      <!--      [API FETCH] agent multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           v-model="agent"
-          :options="options"
+          :fetch-method="fetchAgents"
           :label="'Agent'"
           @closed="setQueryArray({ value: agent, filterQuery: 'agent' })"
         ></multiselect>
       </div>
-      <!--      team multi select-->
+      <!--      [API FETCH] team multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           v-model="team"
-          :options="options"
+          :fetch-method="fetchTeams"
           :label="'Team'"
           @closed="setQueryArray({ value: team, filterQuery: 'team' })"
         ></multiselect>
       </div>
-      <!--      queue multi select-->
+      <!--      [API FETCH] queue multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
         :class="{'d-md-none': !isOpened}"
       >
         <multiselect
           v-model="queue"
-          :options="options"
+          :fetch-method="fetchQueues"
           :label="'Queue'"
           @closed="setQueryArray({ value: queue, filterQuery: 'queue' })"
         ></multiselect>
@@ -188,6 +176,14 @@
   import InputTimerange from '../utils/input-timerange.vue';
   import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
 
+  import typeOptions from '../../api/filter-getters/typeFilter';
+  import directionOptions from '../../api/filter-getters/directionFilter';
+  import { fetchUsers } from '../../api/filter-getters/userFilter';
+  import { fetchGateways } from '../../api/filter-getters/gatewayFilter';
+  import { fetchAgents } from '../../api/filter-getters/agentFilter';
+  import { fetchTeams } from '../../api/filter-getters/teamFilter';
+  import { fetchQueues } from '../../api/filter-getters/queueFilter';
+
   const msInMin = 60 * 10 ** 3;
 
   export default {
@@ -229,6 +225,8 @@
           value: 'cc',
         },
       ],
+      typeOptions,
+      directionOptions,
     }),
 
     watch: {
@@ -423,6 +421,12 @@
           });
         }
       },
+
+      fetchUsers,
+      fetchGateways,
+      fetchAgents,
+      fetchTeams,
+      fetchQueues,
     },
   };
 </script>
