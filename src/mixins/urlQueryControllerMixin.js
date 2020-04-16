@@ -69,7 +69,8 @@ export default {
      * @param payload.value prop value,
      * @returns parsed value from query
      */
-    parseQueryValue({ value }) {
+    parseQueryValue({ filterQuery }) {
+      const value = this.getValueByQuery({ filterQuery });
       if (value) return value;
       return '';
     },
@@ -87,15 +88,14 @@ export default {
      * @returns parsed value from query, converted to array or empty array
      */
     parseQueryArray({
-                      value,
-                      queriedProp = 'id',
+                      filterQuery,
                       separator = '|',
                     }) {
+      const value = this.getValueByQuery({ filterQuery });
       if (value) {
-        return value.split(separator)
-          .map((item) => ({ [queriedProp]: item }));
+        return value.split(separator);
       }
-      return [];
+      return null;
     },
 
     /**

@@ -225,19 +225,15 @@
     watch: {
       // eslint-disable-next-line func-names
       '$route.query.page': {
-        handler(page) {
-          this.page = this.parseQueryValue({
-            value: +page,
-          }) || 0;
+        handler() {
+          this.page = +this.parseQueryValue({ filterQuery: 'page' }) || 0;
         },
         immediate: true,
       },
       // eslint-disable-next-line func-names
       '$route.query.size': {
-        handler(size) {
-          this.size = this.parseQueryValue({
-            value: size,
-          });
+        handler() {
+          this.size = this.parseQueryValue({ filterQuery: 'size' });
         },
         immediate: true,
       },

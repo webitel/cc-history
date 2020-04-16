@@ -23,6 +23,7 @@
           v-model="type"
           :options="TypeOptions"
           :label="'Type'"
+          :track-by="'value'"
           :api-mode="false"
           @closed="setQueryArray({ value: type, filterQuery: 'type', queriedProp: 'value' })"
         ></multiselect>
@@ -40,6 +41,7 @@
           v-model="direction"
           :options="DirectionOptions"
           :label="'Direction'"
+          :track-by="'value'"
           :api-mode="false"
           @closed="setQueryArray({
             value: direction,
@@ -128,7 +130,7 @@
       >
         <multiselect
           v-model="tags"
-          :options="options"
+          :options="[]"
           :label="'Tags'"
           :api-mode="false"
           @closed="setQueryArray({ value: tags, filterQuery: 'tags', queriedProp: 'value' })"
@@ -141,10 +143,10 @@
       >
         <multiselect
           v-model="cause"
-          :options="options"
+          :options="HangupCauseOptions"
           :label="'Hangup cause'"
           :api-mode="false"
-          @closed="setQueryArray({ value: cause, filterQuery: 'cause', queriedProp: 'value' })"
+          @closed="setQueryArray({ value: cause, filterQuery: 'cause', queriedProp: 'id' })"
         ></multiselect>
       </div>
     </form>
@@ -186,11 +188,12 @@
 
   import TypeOptions from '../../api/filter-getters/TypeOptions.enum';
   import DirectionOptions from '../../api/filter-getters/DirectionOptions.enum';
-  import { fetchUsers } from '../../api/filter-getters/userFilter';
-  import { fetchGateways } from '../../api/filter-getters/gatewayFilter';
-  import { fetchAgents } from '../../api/filter-getters/agentFilter';
-  import { fetchTeams } from '../../api/filter-getters/teamFilter';
-  import { fetchQueues } from '../../api/filter-getters/queueFilter';
+  import HangupCauseOptions from '../../api/filter-getters/HangupCauseOption.enum';
+  import { fetchUsers, getSelectedUsers } from '../../api/filter-getters/userFilter';
+  import { fetchGateways, getSelectedGateways } from '../../api/filter-getters/gatewayFilter';
+  import { fetchAgents, getSelectedAgents } from '../../api/filter-getters/agentFilter';
+  import { fetchTeams, getSelectedTeams } from '../../api/filter-getters/teamFilter';
+  import { fetchQueues, getSelectedQueues } from '../../api/filter-getters/queueFilter';
 
   const msInMin = 60 * 10 ** 3;
 
@@ -205,8 +208,8 @@
 
     data: () => ({
       isOpened: false,
-      from: Date.now(),
-      to: Date.now(),
+      from: Math.floor(Date.now() / msInMin) * msInMin,
+      to: Math.floor(Date.now() / msInMin) * msInMin,
       type: [],
       direction: [],
       user: [],
@@ -221,166 +224,116 @@
         from: '0',
         to: '60',
       },
-      options: [
-        {
-          name: 'aa',
-          value: 'aa',
-        }, {
-          name: 'bb',
-          value: 'bb',
-        }, {
-          name: 'cc',
-          value: 'cc',
-        },
-      ],
       TypeOptions,
       DirectionOptions,
+      HangupCauseOptions,
     }),
 
-    watch: {
-      // eslint-disable-next-line func-names
-      '$route.query.from': {
-        handler(from) {
-          const value = from || Math.floor(Date.now() / msInMin) * msInMin;
-          this.from = this.parseQueryValue({
-            value,
-          });
-        },
-        immediate: true,
-      },
-      // eslint-disable-next-line func-names
-      '$route.query.to': {
-        handler(to) {
-          const value = to || Math.floor(Date.now() / msInMin) * msInMin;
-          this.to = this.parseQueryValue({
-            value,
-          });
-        },
-        immediate: true,
-      },
-      // eslint-disable-next-line func-names
-      '$route.query.type': {
-        handler(value) {
-          this.type = this.parseQueryArray({
-            value,
-            queriedProp: 'value',
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // [ARRAY] // eslint-disable-next-line func-names
-      '$route.query.direction': {
-        handler(value) {
-          this.direction = this.parseQueryArray({
-            value,
-            queriedProp: 'value',
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
-      '$route.query.user': {
-        handler(value) {
-          this.user = this.parseQueryArray({
-            value,
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
-      '$route.query.gateway': {
-        handler(value) {
-          this.gateway = this.parseQueryArray({
-            value,
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
-      '$route.query.agent': {
-        handler(value) {
-          this.agent = this.parseQueryArray({
-            value,
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
-      '$route.query.team': {
-        handler(value) {
-          this.team = this.parseQueryArray({
-            value,
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // [ARRAY] // [FETCHED OPTIONS] // eslint-disable-next-line func-names
-      '$route.query.queue': {
-        handler(value) {
-          this.queue = this.parseQueryArray({
-            value,
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // eslint-disable-next-line func-names
-      '$route.query.duration_from': {
-        handler(value) {
-          const duration = {
-            ...this.duration,
-            from: value || '0',
-          };
-          this.duration = this.parseQueryValue({
-            value: duration,
-          });
-        },
-        immediate: true,
-      },
-      // eslint-disable-next-line func-names
-      '$route.query.duration_to': {
-        handler(value) {
-          const duration = {
-            ...this.duration,
-            to: value || '0',
-          };
-          this.duration = this.parseQueryValue({
-            value: duration,
-          });
-        },
-        immediate: true,
-      },
-      // [ARRAY] // eslint-disable-next-line func-names
-      '$route.query.tags': {
-        handler(value) {
-          this.tags = this.parseQueryArray({
-            value,
-            queriedProp: 'value',
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
-      // [ARRAY] // eslint-disable-next-line func-names
-      '$route.query.cause': {
-        handler(value) {
-          this.cause = this.parseQueryArray({
-            value,
-            queriedProp: 'value',
-            separator: '|',
-          });
-        },
-        immediate: true,
-      },
+    created() {
+      this.restoreFilters();
     },
 
     methods: {
+      restoreFilters() {
+        this.restoreFrom();
+        this.restoreTo();
+        this.restoreType();
+        this.restoreDirection();
+        this.restoreUser();
+        this.restoreGateway();
+        this.restoreAgent();
+        this.restoreTeam();
+        this.restoreQueue();
+        this.restoreDurationFrom();
+        this.restoreDurationTo();
+        this.restoreTags();
+        this.restoreHangupCause();
+      },
+
+      restoreFrom() {
+        const queryValue = this.$route.query.from;
+        const defaultValue = Math.floor(Date.now() / msInMin) * msInMin;
+        this.from = queryValue || defaultValue;
+      },
+
+      restoreTo() {
+        const queryValue = this.$route.query.to;
+        const defaultValue = Math.floor(Date.now() / msInMin) * msInMin;
+        this.to = queryValue || defaultValue;
+      },
+
+      restoreType() {
+        const valueArray = this.parseQueryArray({ filterQuery: 'type' });
+        if (valueArray) {
+          this.type = this.TypeOptions
+            .filter((item) => valueArray.some((value) => value === item.value));
+        }
+      },
+
+      restoreDirection() {
+        const valueArray = this.parseQueryArray({ filterQuery: 'direction' });
+        if (valueArray) {
+          this.direction = this.DirectionOptions
+            .filter((item) => valueArray.some((value) => value === item.value));
+        }
+      },
+
+      async restoreUser() {
+        const idList = this.parseQueryArray({ filterQuery: 'user' });
+        if (idList) {
+          this.user = await getSelectedUsers(idList);
+        }
+      },
+
+      async restoreGateway() {
+        const idList = this.parseQueryArray({ filterQuery: 'gateway' });
+        if (idList) {
+          this.gateway = await getSelectedGateways(idList);
+        }
+      },
+
+      async restoreAgent() {
+        const idList = this.parseQueryArray({ filterQuery: 'agent' });
+        if (idList) {
+          this.agent = await getSelectedAgents(idList);
+        }
+      },
+
+      async restoreTeam() {
+        const idList = this.parseQueryArray({ filterQuery: 'team' });
+        if (idList) {
+          this.agent = await getSelectedTeams(idList);
+        }
+      },
+
+      async restoreQueue() {
+        const idList = this.parseQueryArray({ filterQuery: 'queue' });
+        if (idList) {
+          this.agent = await getSelectedQueues(idList);
+        }
+      },
+
+      restoreDurationFrom() {
+        const queryValue = this.$route.query.duration_from;
+        this.duration.from = queryValue || 0;
+      },
+
+      restoreDurationTo() {
+        const queryValue = this.$route.query.duration_to;
+        this.duration.to = queryValue || null;
+      },
+
+      restoreTags() {
+      },
+
+      restoreHangupCause() {
+        const valueArray = this.parseQueryArray({ filterQuery: 'cause' });
+        if (valueArray) {
+          this.cause = this.HangupCauseOptions
+            .filter((item) => valueArray.some((value) => +value === item.id));
+        }
+      },
+
       setDateTime({ from, to }) {
         this.setQueryValue({
           filterQuery: 'from',
