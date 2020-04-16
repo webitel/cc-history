@@ -1,5 +1,6 @@
 export const PAGE = 1;
 export const SIZE = 20;
+export const FIELDS = ['id', 'name'];
 export const formatOptions = (response) => {
   if (response.items) {
     return response.items.map((item) => ({
