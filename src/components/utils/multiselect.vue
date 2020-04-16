@@ -5,10 +5,12 @@
       <vue-multiselect
         :class="{'opened': isOpened}"
         :value="value"
-        :options="options || fetchedOptions"
+        :options="opts"
         :placeholder="placeholder || label"
         :close-on-select="false"
         :limit="1"
+        :label="'name'"
+        :track-by="trackBy"
         :limitText="limitText"
         :loading="false"
         :internal-search="!apiMode"
@@ -65,6 +67,11 @@
         type: String,
       },
 
+      trackBy: {
+        type: String,
+        default: 'id',
+      },
+
       apiMode: {
         type: Boolean,
         default: true,
@@ -84,6 +91,15 @@
     created() {
       this.fetch();
       this.fetch = debounce(this.fetch);
+    },
+
+    computed: {
+      opts() {
+        const options = this.apiMode ? this.fetchedOptions : this.options;
+        const optionsDiff = options.filter((item) => !this.value
+          .some((valueItem) => valueItem[this.trackBy] === item[this.trackBy]));
+        return [...this.value, ...optionsDiff];
+      },
     },
 
     methods: {
@@ -119,6 +135,7 @@
     top: 50%;
     right: calcRem(3px);
     transform: translateY(-50%);
+    pointer-events: none;
 
     .icon {
       fill: #000;
