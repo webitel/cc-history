@@ -253,13 +253,13 @@
       restoreFrom() {
         const queryValue = this.$route.query.from;
         const defaultValue = Math.floor(Date.now() / msInMin) * msInMin;
-        this.from = queryValue || defaultValue;
+        this.from = +queryValue || defaultValue;
       },
 
       restoreTo() {
         const queryValue = this.$route.query.to;
         const defaultValue = Math.floor(Date.now() / msInMin) * msInMin;
-        this.to = queryValue || defaultValue;
+        this.to = +queryValue || defaultValue;
       },
 
       restoreType() {
@@ -302,25 +302,25 @@
       async restoreTeam() {
         const idList = this.parseQueryArray({ filterQuery: 'team' });
         if (idList) {
-          this.agent = await getSelectedTeams(idList);
+          this.team = await getSelectedTeams(idList);
         }
       },
 
       async restoreQueue() {
         const idList = this.parseQueryArray({ filterQuery: 'queue' });
         if (idList) {
-          this.agent = await getSelectedQueues(idList);
+          this.queue = await getSelectedQueues(idList);
         }
       },
 
       restoreDurationFrom() {
         const queryValue = this.$route.query.duration_from;
-        this.duration.from = queryValue || 0;
+        this.duration.from = +queryValue || 0;
       },
 
       restoreDurationTo() {
         const queryValue = this.$route.query.duration_to;
-        this.duration.to = queryValue || null;
+        this.duration.to = +queryValue || null;
       },
 
       restoreTags() {

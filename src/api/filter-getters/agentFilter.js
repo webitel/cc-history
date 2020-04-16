@@ -19,7 +19,7 @@ export const fetchAgents = async (search = '') => {
       undefined,
       FIELDS,
     );
-    formatOptions(response);
+    return formatOptions(response);
   } catch (err) {
     throw err;
   }
@@ -37,7 +37,7 @@ export const getSelectedAgents = async (idList) => {
       null,
       idList,
     );
-    formatOptions(response);
+    return formatOptions(response);
   } catch (err) {
     throw err;
   }
