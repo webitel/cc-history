@@ -183,15 +183,20 @@
       },
 
       sortOrder(sort) {
+        const SortSymbols = Object.freeze({
+          ASC: '-',
+          DESC: '+',
+          NONE: null,
+        });
         switch (sort) {
-          case null:
-            return 'asc';
-          case 'asc':
-            return 'desc';
-          case 'desc':
-            return null;
+          case SortSymbols.NONE:
+            return SortSymbols.ASC;
+          case SortSymbols.ASC:
+            return SortSymbols.DESC;
+          case SortSymbols.DESC:
+            return SortSymbols.NONE;
           default:
-            return 'asc';
+            return SortSymbols.ASC;
         }
       },
 

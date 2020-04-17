@@ -43,6 +43,13 @@ export const getHistory = async (
     team,
     gateway,
     member,
+    durationFrom,
+    durationTo,
+    skipParent,
+    parentId,
+    cause,
+    fields,
+    sort,
     search = '',
   },
 ) => {
@@ -64,6 +71,13 @@ export const getHistory = async (
         member,
         gateway,
         formattedSearch,
+        durationFrom,
+        durationTo,
+        skipParent,
+        parentId,
+        cause,
+        fields,
+        sort,
         domainId,
       );
     return formatResponse(response);

@@ -84,6 +84,7 @@
   import AudioPlayer from '../utils/audio-player.vue';
   import { getHistory } from '../../api/history/history';
   import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
+  import { kebabToCamel } from '../../api/utils/caseConverters';
 
   export default {
     name: 'history-main',
@@ -212,9 +213,9 @@
         immediate: true,
       },
       // eslint-disable-next-line func-names
-      '$route.query.cols': {
-        handler(cols) {
-          this.getShownColumns(cols);
+      '$route.query.fields': {
+        handler(fields) {
+          this.getShownColumns(fields);
         },
         immediate: true,
       },
@@ -242,13 +243,13 @@
         filledQueries.forEach((key) => {
           let value = `${query[key]}`;
           if (value.includes('|')) value = value.split('|');
-          res[key] = value;
+          res[kebabToCamel(key)] = value;
         });
         this.data = await getHistory(res);
       },
 
       setShownColumns(headers) {
-        const filterQuery = 'cols';
+        const filterQuery = 'fields';
         const value = headers.filter((item) => item.show)
           .map((item) => item.value)
           .join(',');
@@ -261,37 +262,42 @@
       setSort({ column, order }) {
         const filterQuery = 'sort';
         this.headers.find((col) => col === column).sort = order;
-        const value = this.headers
-          .filter((item) => item.show && item.sort)
-          .map((item) => `${item.value}=${item.sort}`)
-          .join(',');
+        // FIXME UNCOMMENT WHEN IMPLEMENTING MULTIPLE COLUMNS SORT
+        // const value = this.headers
+        //   .filter((item) => item.show && item.sort)
+        //   .map((item) => `${item.value}=${item.sort}`)
+        //   .join(',');
+        const value = order ? `${order}${column.value}` : '';
         this.setQueryValue({
           value,
           filterQuery,
         });
       },
 
-      getShownColumns(cols) {
-        if (cols) {
-          const isDefaultCols = !cols;
+      getShownColumns(fields) {
+        if (fields) {
+          const isDefaultCols = !fields;
           this.headers = this.headers.map((header) => ({
             ...header,
-            show: isDefaultCols || cols.includes(header.value),
+            show: isDefaultCols || fields.includes(header.value),
           }));
         }
       },
 
       getSortColumns(sort) {
         if (sort) {
-          const sortedColumns = {};
-          sort.split(',')
-            .forEach((colStr) => {
-              const col = {
-                value: colStr.split('=')[0],
-                order: colStr.split('=')[1],
-              };
-              sortedColumns[col.value] = col.order;
-            });
+          const sortedColumns = {
+            [sort.slice(1)]: sort.slice(0, 1),
+          };
+          // FIXME UNCOMMENT WHEN IMPLEMENTING MULTIPLE COLUMNS SORT
+          // sort.split(',')
+          //   .forEach((colStr) => {
+          //     const col = {
+          //       value: colStr.split('=')[0],
+          //       order: colStr.split('=')[1],
+          //     };
+          //     sortedColumns[col.value] = col.order;
+          //   });
           this.headers = this.headers.map((header) => ({
             ...header,
             sort: sortedColumns[header.value] || null,
