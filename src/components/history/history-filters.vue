@@ -162,14 +162,14 @@
           </svg>
         </icon>
       </button>
-      <button class="icon-btn history-filters__icon-btn">
+      <button v-if="false" class="icon-btn history-filters__icon-btn">
         <icon>
           <svg class="icon icon-download_md md">
             <use xlink:href="#icon-download_md"></use>
           </svg>
         </icon>
       </button>
-      <button class="icon-btn history-filters__icon-btn">
+      <button v-if="false" class="icon-btn history-filters__icon-btn">
         <icon>
           <svg class="icon icon-upload_md md">
             <use xlink:href="#icon-upload_md"></use>

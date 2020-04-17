@@ -13,6 +13,22 @@
       @sort="setSort"
       @shownColumns="setShownColumns"
     >
+      <template slot="direction" slot-scope="{ item }">
+        <div v-if="item.direction === CallDirection.Inbound">
+          <icon class="icon-wrap__inbound">
+            <svg class="icon icon-inbound_md md">
+              <use xlink:href="#icon-inbound_md"></use>
+            </svg>
+          </icon>
+        </div>
+        <div v-else-if="item.direction === CallDirection.Outbound">
+          <icon class="icon-wrap__outbound">
+            <svg class="icon icon-outbound_md md">
+              <use xlink:href="#icon-outbound_md"></use>
+            </svg>
+          </icon>
+        </div>
+      </template>
       <template slot="agent" slot-scope="{ item }">
         <div v-if="item.agent">
           {{item.agent.name}}
@@ -80,6 +96,7 @@
 </template>
 
 <script>
+  import { CallDirection } from 'webitel-sdk';
   import GridTable from '../utils/grid-table.vue';
   import AudioPlayer from '../utils/audio-player.vue';
   import { getHistory } from '../../api/history/history';
@@ -188,6 +205,7 @@
       audioLink: '',
       isShowPlayer: true,
       currentlyPlaying: false,
+      CallDirection,
     }),
 
     watch: {
@@ -314,6 +332,24 @@
     display: flex;
     flex-direction: column;
     padding: calcRem(20px) calcRem(30px);
+  }
+
+  .icon-wrap {
+    /*margin: auto;*/
+
+    &__inbound {
+      .icon {
+        fill: $inbound-icon-color;
+        stroke: $inbound-icon-color;
+      }
+    }
+
+    &__outbound {
+      .icon {
+        fill: $outbound-icon-color;
+        stroke: $outbound-icon-color;
+      }
+    }
   }
 
   .table-action {
