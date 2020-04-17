@@ -25,6 +25,8 @@ const formatResponse = (response) => {
       ...item,
       date: computeDate(item.createdAt),
       time: computeTime(item.createdAt),
+      duration: new Date(item.duration || 0).toISOString()
+        .substr(11, 8),
     }));
   }
   return [];
@@ -45,7 +47,7 @@ export const getHistory = async (
     member,
     durationFrom,
     durationTo,
-    skipParent,
+    skipParent = true,
     parentId,
     cause,
     fields,

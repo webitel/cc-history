@@ -29,6 +29,16 @@
           </icon>
         </div>
       </template>
+      <template slot="user" slot-scope="{ item }">
+        <div v-if="item.user">
+          {{item.user.name}}
+        </div>
+      </template>
+      <template slot="gateway" slot-scope="{ item }">
+        <div v-if="item.gateway">
+          {{item.gateway.name}}
+        </div>
+      </template>
       <template slot="agent" slot-scope="{ item }">
         <div v-if="item.agent">
           {{item.agent.name}}
@@ -260,6 +270,13 @@
         const res = {};
         filledQueries.forEach((key) => {
           let value = `${query[key]}`;
+          if (key === 'sort') {
+            if (value.includes('date')) {
+              value = value.replace('date', 'created_at');
+            } else if (value.includes('time')) {
+              value = value.replace('time', 'created_at');
+            }
+          }
           if (value.includes('|')) value = value.split('|');
           res[kebabToCamel(key)] = value;
         });
