@@ -1,36 +1,10 @@
 import { CallServiceApiFactory } from 'webitel-sdk';
 import instance from '../instance';
 import configuration from '../openAPIConfig';
-import store from '../../store/index';
+import getDomainId from '../utils/getDomainId';
+import formatResponse from './formatHistoryResponse';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
-
-const computeDate = (createdAt) => {
-  const date = new Date(+createdAt);
-  return date.toLocaleDateString();
-};
-
-const computeTime = (createdAt) => {
-  const date = new Date(+createdAt);
-  return date.toLocaleTimeString();
-};
-
-const formatResponse = (response) => {
-  const defaultObject = {
-    _isSelected: false,
-  };
-  if (response.items) {
-    return response.items.map((item) => ({
-      ...defaultObject,
-      ...item,
-      date: computeDate(item.createdAt),
-      time: computeTime(item.createdAt),
-      duration: new Date(item.duration || 0).toISOString()
-        .substr(11, 8),
-    }));
-  }
-  return [];
-};
 
 // eslint-disable-next-line import/prefer-default-export
 export const getHistory = async (
@@ -55,10 +29,7 @@ export const getHistory = async (
     search = '',
   },
 ) => {
-  const { domainId } = store.state.userinfo;
-  // eslint-disable-next-line no-unused-vars
-  let formattedSearch = search;
-  if (search.length && search.slice(-1) !== '*') formattedSearch += '*';
+  const domainId = getDomainId();
   try {
     const response = await callService
       .searchHistoryCall(
@@ -72,7 +43,7 @@ export const getHistory = async (
         team,
         member,
         gateway,
-        formattedSearch,
+        `${search}*`,
         durationFrom,
         durationTo,
         skipParent,

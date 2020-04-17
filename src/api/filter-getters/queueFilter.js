@@ -7,16 +7,18 @@ import {
   SIZE,
   FIELDS,
 } from './defaults/defaults';
+import getDomainId from '../utils/getDomainId';
 
 const queueService = new QueueServiceApiFactory(configuration, '', instance);
 
 export const fetchQueues = async (search = '') => {
+  const domainId = getDomainId();
   try {
     const response = await queueService.searchQueue(
       PAGE,
       SIZE,
       search,
-      undefined,
+      domainId,
       FIELDS,
     );
     return formatOptions(response);
@@ -26,13 +28,14 @@ export const fetchQueues = async (search = '') => {
 };
 
 export const getSelectedQueues = async (idList) => {
+  const domainId = getDomainId();
   const size = idList.length;
   try {
     const response = await queueService.searchQueue(
       PAGE,
       size,
       null,
-      undefined,
+      domainId,
       FIELDS,
       null,
       idList,

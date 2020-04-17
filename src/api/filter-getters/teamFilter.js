@@ -7,16 +7,18 @@ import {
   SIZE,
   FIELDS,
 } from './defaults/defaults';
+import getDomainId from '../utils/getDomainId';
 
 const teamService = new AgentTeamServiceApiFactory(configuration, '', instance);
 
 export const fetchTeams = async (search = '') => {
+  const domainId = getDomainId();
   try {
     const response = await teamService.searchAgentTeam(
       PAGE,
       SIZE,
       search,
-      undefined,
+      domainId,
       FIELDS,
     );
     return formatOptions(response);
@@ -25,13 +27,14 @@ export const fetchTeams = async (search = '') => {
   }
 };
 export const getSelectedTeams = async (idList) => {
+  const domainId = getDomainId();
   const size = idList.length;
   try {
     const response = await teamService.searchAgentTeam(
       PAGE,
       size,
       null,
-      undefined,
+      domainId,
       FIELDS,
       null,
       idList,
