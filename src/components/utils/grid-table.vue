@@ -10,12 +10,17 @@
         </div>
         <div
           class="grid__th"
+          :class="`grid__th__sort--${col.sort}`"
           v-for="(col, key) of shownHeaders"
           :key="key"
+          @click="sort(col)"
         >{{col.text}}
         </div>
         <div class="grid__th__actions">
-          <column-select :headers="headers"/>
+          <column-select
+            :headers="headers"
+            @change="$emit('shownColumns', $event)"
+          />
         </div>
       </header>
 
@@ -75,9 +80,13 @@
       </section>
     </div>
     <pagination
-      v-model="size"
-      :is-next="true"
-      :is-prev="true"
+      :value="size"
+      :is-next="isNext"
+      :is-prev="isPrev"
+      @next="next"
+      @prev="prev"
+      @input="$emit('sizeInput', $event)"
+      @changeSize="sizeChange"
     />
   </div>
 </template>
@@ -109,10 +118,17 @@
         type: Boolean,
         default: false,
       },
+      page: {
+        type: Number,
+        required: true,
+      },
+      size: {
+        type: String,
+        required: true,
+      },
     },
 
     data: () => ({
-      size: '10',
       expandedIndex: null,
     }),
 
@@ -132,11 +148,52 @@
       },
 
       shownHeaders() {
-        return this.headers.filter((header) => header.show);
+         return this.headers.filter((header) => header.show);
+      },
+
+      isNext() {
+        return true;
+      },
+
+      isPrev() {
+        return this.page > 1;
       },
     },
 
     methods: {
+      sort(column) {
+        const order = this.sortOrder(column.sort);
+        this.$emit('sort', {
+          column,
+          order,
+        });
+      },
+
+      next() {
+        this.$emit('pageChange', this.page + 1);
+      },
+
+      prev() {
+        this.$emit('pageChange', this.page - 1);
+      },
+
+      sortOrder(sort) {
+        switch (sort) {
+          case null:
+            return 'asc';
+          case 'asc':
+            return 'desc';
+          case 'desc':
+            return null;
+          default:
+            return 'asc';
+        }
+      },
+
+      sizeChange() {
+        this.$emit('sizeChange', this.size);
+      },
+
       expand(index) {
         this.expandedIndex = this.expandedIndex === index ? null : index;
       },
@@ -216,6 +273,17 @@
       text-decoration: underline;
       transition: $transition;
       cursor: pointer;
+
+      &__sort {
+        /*color:;*/
+        &--asc {
+          color: red;
+        }
+
+        &--desc {
+          color: blue;
+        }
+      }
 
       &:hover {
         color: #000;

@@ -3,7 +3,14 @@
     <grid-table
       :headers="headers"
       :data="data"
+      :page="page"
+      :size="size"
       expanded
+      @pageChange="setQueryValue({ filterQuery: 'page', value: $event })"
+      @sizeInput="size = $event"
+      @sizeChange="setQueryValue({ filterQuery: 'size', value: $event })"
+      @sort="setSort"
+      @shownColumns="setShownColumns"
     >
       <template slot="actions">
         <button class="icon-btn table-action" @click.prevent.stop="download">
@@ -57,9 +64,14 @@
 <script>
   import GridTable from '../utils/grid-table.vue';
   import AudioPlayer from '../utils/audio-player.vue';
+  import { getHistory } from '../../api/history/history';
+  import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
 
   export default {
     name: 'history-main',
+    mixins: [
+      urlQueryControllerMixin,
+    ],
     components: {
       GridTable,
       AudioPlayer,
@@ -72,36 +84,42 @@
           sortable: false,
           value: 'name',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Calories',
           value: 'calories',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Fat (g)',
           value: 'fat',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Carbs (g)',
           value: 'carbs',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Protein (g)',
           value: 'protein',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
           text: 'Iron (%)',
           value: 'iron',
           show: true,
+          sort: null,
           width: 'minmax(120px, 1fr)',
         },
       ],
@@ -197,6 +215,8 @@
           iron: '6%',
         },
       ],
+      page: 1,
+      size: '10',
       audioLink: '',
       isShowPlayer: true,
       currentlyPlaying: false,
@@ -204,13 +224,43 @@
 
     watch: {
       // eslint-disable-next-line func-names
-      '$route.query.cols': function () {
-        this.hadleColumnsFilter();
+      '$route.query.page': {
+        handler(page) {
+          this.getQueryValue({
+            prop: 'page',
+            value: +page,
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.size': {
+        handler(size) {
+          this.getQueryValue({
+            prop: 'size',
+            value: size,
+          });
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.cols': {
+        handler(cols) {
+          this.getShownColumns(cols);
+        },
+        immediate: true,
+      },
+      // eslint-disable-next-line func-names
+      '$route.query.sort': {
+        handler(sort) {
+          this.getSortColumns(sort);
+        },
+        immediate: true,
       },
     },
 
     created() {
-      this.hadleColumnsFilter();
+      // this.loadDataList();
     },
 
     methods: {
@@ -220,13 +270,60 @@
       download() {
       },
 
-      hadleColumnsFilter() {
-        const { cols } = this.$route.query;
-        const isDefaultCols = !cols;
-        this.headers = this.headers.map((header) => ({
-          ...header,
-          show: isDefaultCols || cols.includes(header.value),
-        }));
+      async loadDataList() {
+        await getHistory({});
+      },
+
+      setShownColumns(headers) {
+        const filterQuery = 'cols';
+        const value = headers.filter((item) => item.show)
+          .map((item) => item.value)
+          .join(',');
+        this.filter({
+          value,
+          filterQuery,
+        });
+      },
+
+      setSort({ column, order }) {
+        const filterQuery = 'sort';
+        this.headers.find((col) => col === column).sort = order;
+        const value = this.headers
+          .filter((item) => item.show && item.sort)
+          .map((item) => `${item.value}=${item.sort}`)
+          .join(',');
+        this.setQueryValue({
+          value,
+          filterQuery,
+        });
+      },
+
+      getShownColumns(cols) {
+        if (cols) {
+          const isDefaultCols = !cols;
+          this.headers = this.headers.map((header) => ({
+            ...header,
+            show: isDefaultCols || cols.includes(header.value),
+          }));
+        }
+      },
+
+      getSortColumns(sort) {
+        if (sort) {
+          const sortedColumns = {};
+          sort.split(',')
+            .forEach((colStr) => {
+              const col = {
+                value: colStr.split('=')[0],
+                order: colStr.split('=')[1],
+              };
+              sortedColumns[col.value] = col.order;
+            });
+          this.headers = this.headers.map((header) => ({
+            ...header,
+            sort: sortedColumns[header.value] || null,
+          }));
+        }
       },
     },
   };

@@ -82,7 +82,7 @@
       },
 
       debouncer() {
-        this.$emit('loadDataList', this.value);
+        this.$emit('changeSize', this.value);
       },
     },
   };

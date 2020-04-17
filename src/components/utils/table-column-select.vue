@@ -18,11 +18,11 @@
         <ul class="column-select__list">
           <li
             class="column-select__list__item"
-            v-for="(col, key) of value"
+            v-for="(col, key) of headersDraft"
             :key="key"
             @click.capture.prevent="col.show = !col.show"
           >
-            <checkbox :value="col.show" />
+            <checkbox :value="col.show"/>
             <span>{{col.text}}</span>
           </li>
         </ul>
@@ -31,7 +31,7 @@
         <div class="popup-actions">
           <btn
             class="primary"
-            @click.native="filter"
+            @click.native="setShownColumns"
           >Add
           </btn>
           <btn
@@ -49,11 +49,9 @@
   import PopupContainer from './popup-container.vue';
   import Btn from './btn.vue';
   import Checkbox from './checkbox.vue';
-  import filterMixin from '../../mixins/filterMixin';
 
   export default {
     name: 'table-column-select',
-    mixins: [filterMixin],
     components: {
       PopupContainer,
       Btn,
@@ -68,22 +66,21 @@
 
     data: () => ({
       isOpened: false,
-      filterQuery: 'cols',
-      joinSymbol: ',',
-      value: [], // headers draft
+      headersDraft: [], // headers draft
     }),
 
     created() {
-      this.setHeadersDraft();
+      this.fillHeadersDraft();
     },
 
     methods: {
-      setHeadersDraft() {
-        this.value = this.headers.map((header) => ({
-          text: header.text,
-          value: header.value,
-          show: !!header.show,
-        }));
+      setShownColumns() {
+        this.$emit('change', this.headersDraft);
+        this.isOpened = false;
+      },
+
+      fillHeadersDraft() {
+        this.headersDraft = [...this.headers];
       },
     },
   };
