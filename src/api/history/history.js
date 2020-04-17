@@ -5,6 +5,16 @@ import store from '../../store/index';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
+const formatResponse = (response) => {
+  const defaultObject = {
+    _isSelected: false,
+  };
+  if (response.items) {
+    return response.items.map((item) => ({ ...defaultObject, ...item }));
+  }
+  return [];
+};
+
 // eslint-disable-next-line import/prefer-default-export
 export const getHistory = async (
   {
@@ -12,12 +22,12 @@ export const getHistory = async (
     size = 10,
     from = Date.now() - 60 * 60 * 10 ** 3, // last hour
     to = Date.now(),
-    userId = null,
-    agentId = null,
-    queueId = null,
-    teamId = null,
-    memberId = null,
-    number = null,
+    user,
+    agent,
+    queue,
+    team,
+    gateway,
+    member,
     search = '',
   },
 ) => {
@@ -32,15 +42,16 @@ export const getHistory = async (
         size,
         from,
         to,
-        userId,
-        agentId,
-        queueId,
-        teamId,
-        memberId,
-        number,
+        user,
+        agent,
+        queue,
+        team,
+        member,
+        gateway,
+        formattedSearch,
         domainId,
       );
-    return response.items || [];
+    return formatResponse(response);
   } catch (err) {
     throw err;
   }

@@ -1,6 +1,7 @@
 <template>
   <section class="history-section history-main">
     <grid-table
+      v-if="data"
       :headers="headers"
       :data="data"
       :page="page"
@@ -12,6 +13,22 @@
       @sort="setSort"
       @shownColumns="setShownColumns"
     >
+      <template slot="agent" slot-scope="{ item }">
+        <div v-if="item.agent">
+          {{item.agent.name}}
+        </div>
+      </template>
+      <template slot="team" slot-scope="{ item }">
+        <div v-if="item.team">
+          {{item.team.name}}
+        </div>
+      </template>
+      <template slot="queue" slot-scope="{ item }">
+        <div v-if="item.queue">
+          {{item.queue.name}}
+        </div>
+      </template>
+
       <template slot="actions">
         <button class="icon-btn table-action" @click.prevent.stop="download">
           <icon>
@@ -52,6 +69,7 @@
       </template>
     </grid-table>
     <audio-player
+      v-if="false"
       v-show="isShowPlayer"
       :file="audioLink"
       @play="currentlyPlaying = true"
@@ -79,142 +97,91 @@
     data: () => ({
       headers: [
         {
-          text: 'Dessert (100g serving)',
-          align: 'start',
-          sortable: false,
-          value: 'name',
+          text: 'Date',
+          value: 'date',
           show: true,
           sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
-          text: 'Calories',
-          value: 'calories',
+          text: 'Time',
+          value: 'time',
           show: true,
           sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
-          text: 'Fat (g)',
-          value: 'fat',
+          text: 'Direction',
+          value: 'direction',
           show: true,
           sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
-          text: 'Carbs (g)',
-          value: 'carbs',
+          text: 'User',
+          value: 'user',
           show: true,
           sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
-          text: 'Protein (g)',
-          value: 'protein',
+          text: 'Destination',
+          value: 'destination',
           show: true,
           sort: null,
           width: 'minmax(120px, 1fr)',
         },
         {
-          text: 'Iron (%)',
-          value: 'iron',
+          text: 'Gateway',
+          value: 'gateway',
+          show: true,
+          sort: null,
+          width: 'minmax(120px, 1fr)',
+        },
+        {
+          text: 'Agent',
+          value: 'agent',
+          show: true,
+          sort: null,
+          width: 'minmax(120px, 1fr)',
+        },
+        {
+          text: 'Team',
+          value: 'team',
+          show: true,
+          sort: null,
+          width: 'minmax(120px, 1fr)',
+        },
+        {
+          text: 'Queue',
+          value: 'queue',
+          show: true,
+          sort: null,
+          width: 'minmax(120px, 1fr)',
+        },
+        {
+          text: 'Duration',
+          value: 'duration',
+          show: true,
+          sort: null,
+          width: 'minmax(120px, 1fr)',
+        },
+        {
+          text: 'Tags',
+          value: 'tags',
+          show: false,
+          sort: null,
+          width: 'minmax(120px, 1fr)',
+        },
+        {
+          text: 'Hangup cause',
+          value: 'cause',
           show: true,
           sort: null,
           width: 'minmax(120px, 1fr)',
         },
       ],
-      data: [
-        {
-          _isSelected: false,
-          name: 'Frozen Yogurt',
-          calories: [159, 122, 1222, 123],
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: '1%',
-        },
-        {
-          _isSelected: true,
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: '1%',
-        },
-        {
-          _isSelected: false,
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: '7%',
-        },
-        {
-          _isSelected: true,
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: '8%',
-        },
-        {
-          _isSelected: true,
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: '16%',
-        },
-        {
-          _isSelected: false,
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: '0%',
-        },
-        {
-          _isSelected: true,
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: '2%',
-        },
-        {
-          _isSelected: false,
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: '45%',
-        },
-        {
-          _isSelected: true,
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: '22%',
-        },
-        {
-          _isSelected: false,
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: '6%',
-        },
-      ],
+      data: null,
       page: 1,
       size: '10',
       audioLink: '',
@@ -223,6 +190,13 @@
     }),
 
     watch: {
+      // eslint-disable-next-line func-names
+      '$route.query': {
+        handler() {
+          this.loadDataList();
+        },
+        immediate: true,
+      },
       // eslint-disable-next-line func-names
       '$route.query.page': {
         handler() {
@@ -253,10 +227,6 @@
       },
     },
 
-    created() {
-      // this.loadDataList();
-    },
-
     methods: {
       play() {
       },
@@ -265,7 +235,16 @@
       },
 
       async loadDataList() {
-        await getHistory({});
+        const { query } = this.$route;
+        const filledQueries = Object.keys(query)
+          .filter((key) => query[key]);
+        const res = {};
+        filledQueries.forEach((key) => {
+          let value = `${query[key]}`;
+          if (value.includes('|')) value = value.split('|');
+          res[key] = value;
+        });
+        this.data = await getHistory(res);
       },
 
       setShownColumns(headers) {

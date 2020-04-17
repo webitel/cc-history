@@ -1,7 +1,10 @@
 <template>
   <div class="grid-table">
     <div class="grid">
-      <header class="grid__tr grid__tr__header">
+      <header
+        class="grid__tr grid__tr__header"
+        :style="computeColumnsNumStyle"
+      >
         <div class="grid__th__checkbox">
           <checkbox
             :value="isAllSelected"
@@ -34,6 +37,7 @@
           <div
             class="grid__tr grid__tr__body"
             :class="{'expanded': expanded && expandedIndex === dataKey}"
+            :style="computeColumnsNumStyle"
             @click="expand(dataKey)"
           >
             <div class="grid__td__checkbox">
@@ -47,7 +51,7 @@
               v-for="(col, headerKey) of shownHeaders"
               :key="headerKey"
             >
-              <slot :name="col.value">
+              <slot :name="col.value" :item="row">
                 <div
                   class="grid__td__word-wrap"
                   v-if="!Array.isArray(row[col.value])"
@@ -132,23 +136,13 @@
       expandedIndex: null,
     }),
 
-    watch: {
-      headers() {
-        this.changeColumnsNumStyle();
-      },
-    },
-
-    mounted() {
-      this.changeColumnsNumStyle();
-    },
-
     computed: {
       isAllSelected() {
         return this.data.every((item) => item._isSelected);
       },
 
       shownHeaders() {
-         return this.headers.filter((header) => header.show);
+        return this.headers.filter((header) => header.show);
       },
 
       isNext() {
@@ -157,6 +151,17 @@
 
       isPrev() {
         return this.page > 1;
+      },
+
+      computeColumnsNumStyle() {
+        const calcRem = (size) => `${parseInt(size, 10) / 16}rem`; // calc function
+
+        let gridTemplateColumns = calcRem('24px'); // checkbox
+        this.shownHeaders.forEach((header) => {
+          gridTemplateColumns += ` ${header.width}`;
+        });
+        gridTemplateColumns += ` ${calcRem('68px')}`; // actions
+        return `grid-template-columns: ${gridTemplateColumns}`;
       },
     },
 
@@ -202,20 +207,6 @@
         const { isAllSelected } = this;
         // eslint-disable-next-line no-param-reassign,no-return-assign
         this.data.forEach((item) => item._isSelected = !isAllSelected);
-      },
-
-      changeColumnsNumStyle() {
-        const calcRem = (size) => `${parseInt(size, 10) / 16}rem`; // calc function
-
-        let gridTemplateColumns = calcRem('24px'); // checkbox
-        this.shownHeaders.forEach((header) => {
-          gridTemplateColumns += ` ${header.width}`;
-        });
-        gridTemplateColumns += ` ${calcRem('68px')}`; // actions
-
-        const rows = document.getElementsByClassName('grid__tr');
-        // eslint-disable-next-line no-param-reassign,no-return-assign
-        rows.forEach((row) => row.style.gridTemplateColumns = gridTemplateColumns);
       },
     },
   };
