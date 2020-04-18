@@ -13,12 +13,12 @@
 </template>
 
 <script>
-  import Search from '../utils/search-input.vue';
-  import Btn from '../utils/btn.vue';
-  import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
+  import Search from '../../utils/search-input.vue';
+  import Btn from '../../utils/btn.vue';
+  import urlQueryControllerMixin from '../../../mixins/urlQueryControllerMixin';
 
   export default {
-    name: 'history-heading',
+    name: 'the-history-heading',
     mixins: [urlQueryControllerMixin],
     components: {
       Search,

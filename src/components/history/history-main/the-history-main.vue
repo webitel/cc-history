@@ -1,18 +1,19 @@
 <template>
   <section class="history-section history-main">
+    <loader v-if="isLoading"/>
     <grid-table
-      v-if="data"
+      v-else
       :headers="headers"
       :data="data"
-      :page="page"
-      :size="size"
       expanded
-      @pageChange="setQueryValue({ filterQuery: 'page', value: $event })"
-      @sizeInput="size = $event"
-      @sizeChange="setQueryValue({ filterQuery: 'size', value: $event })"
       @sort="setSort"
-      @shownColumns="setShownColumns"
     >
+      <template slot="actions-header">
+        <filter-fields
+          v-model="headers"
+        />
+      </template>
+
       <template slot="direction" slot-scope="{ item }">
         <div v-if="item.direction === CallDirection.Inbound">
           <icon class="icon-wrap__inbound">
@@ -81,7 +82,7 @@
           <h1 class="expansion__heading">Operator comment</h1>
           <article class="agent-comment">
             <div class="agent-comment__pic">
-              <img src="../../assets/default-avatar.svg" alt="agent pic">
+              <img src="../../../assets/default-avatar.svg" alt="agent pic">
             </div>
             <div class="agent-comment__comment">
               <h2 class="agent-comment__comment__heading">Agent name</h2>
@@ -93,6 +94,11 @@
           </article>
         </div>
       </template>
+
+      <template slot="pagination">
+        <filter-pagination/>
+      </template>
+
     </grid-table>
     <audio-player
       v-if="false"
@@ -107,20 +113,26 @@
 
 <script>
   import { CallDirection } from 'webitel-sdk';
-  import GridTable from '../utils/grid-table.vue';
-  import AudioPlayer from '../utils/audio-player.vue';
-  import { getHistory } from '../../api/history/history';
-  import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
-  import { kebabToCamel } from '../../api/utils/caseConverters';
+  import GridTable from './grid-table.vue';
+  import FilterFields from './filters/filter-table-fields.vue';
+  import FilterPagination from './filters/filter-pagination.vue';
+  import AudioPlayer from '../../utils/audio-player.vue';
+  import Loader from '../../utils/loader.vue';
+  import { getHistory } from '../../../api/history/history';
+  import urlQueryControllerMixin from '../../../mixins/urlQueryControllerMixin';
+  import { kebabToCamel } from '../../../api/utils/caseConverters';
 
   export default {
-    name: 'history-main',
+    name: 'the-history-main',
     mixins: [
       urlQueryControllerMixin,
     ],
     components: {
       GridTable,
+      FilterFields,
+      FilterPagination,
       AudioPlayer,
+      Loader,
     },
     data: () => ({
       headers: [
@@ -210,11 +222,10 @@
         },
       ],
       data: null,
-      page: 1,
-      size: '10',
       audioLink: '',
       isShowPlayer: true,
       currentlyPlaying: false,
+      isLoading: false,
       CallDirection,
     }),
 
@@ -223,27 +234,6 @@
       '$route.query': {
         handler() {
           this.loadDataList();
-        },
-        immediate: true,
-      },
-      // eslint-disable-next-line func-names
-      '$route.query.page': {
-        handler() {
-          this.page = +this.parseQueryValue({ filterQuery: 'page' }) || 0;
-        },
-        immediate: true,
-      },
-      // eslint-disable-next-line func-names
-      '$route.query.size': {
-        handler() {
-          this.size = this.parseQueryValue({ filterQuery: 'size' });
-        },
-        immediate: true,
-      },
-      // eslint-disable-next-line func-names
-      '$route.query.fields': {
-        handler(fields) {
-          this.getShownColumns(fields);
         },
         immediate: true,
       },
@@ -264,13 +254,14 @@
       },
 
       async loadDataList() {
+        this.isLoading = true;
         const { query } = this.$route;
         const filledQueries = Object.keys(query)
           .filter((key) => query[key]);
         const res = {};
         filledQueries.forEach((key) => {
           let value = `${query[key]}`;
-          if (key === 'sort') {
+          if (key === 'sort' || key === 'fields') {
             if (value.includes('date')) {
               value = value.replace('date', 'created_at');
             } else if (value.includes('time')) {
@@ -281,17 +272,7 @@
           res[kebabToCamel(key)] = value;
         });
         this.data = await getHistory(res);
-      },
-
-      setShownColumns(headers) {
-        const filterQuery = 'fields';
-        const value = headers.filter((item) => item.show)
-          .map((item) => item.value)
-          .join(',');
-        this.filter({
-          value,
-          filterQuery,
-        });
+        this.isLoading = false;
       },
 
       setSort({ column, order }) {
@@ -307,16 +288,6 @@
           value,
           filterQuery,
         });
-      },
-
-      getShownColumns(fields) {
-        if (fields) {
-          const isDefaultCols = !fields;
-          this.headers = this.headers.map((header) => ({
-            ...header,
-            show: isDefaultCols || fields.includes(header.value),
-          }));
-        }
       },
 
       getSortColumns(sort) {

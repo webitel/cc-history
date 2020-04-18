@@ -10,8 +10,8 @@
 </template>
 
 <script>
-  import apiFilterMixin from '../../../mixins/filters/apiFilterMixin';
-  import { fetchUsers, getSelectedUsers } from '../../../api/filter-getters/userFilter';
+  import apiFilterMixin from '../../../../mixins/filters/apiFilterMixin';
+  import { fetchUsers, getSelectedUsers } from '../../../../api/filter-getters/userFilter';
 
   export default {
     name: 'filter-user',

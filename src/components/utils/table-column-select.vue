@@ -18,7 +18,7 @@
         <ul class="column-select__list">
           <li
             class="column-select__list__item"
-            v-for="(col, key) of headersDraft"
+            v-for="(col, key) of draft"
             :key="key"
             @click.capture.prevent="col.show = !col.show"
           >
@@ -58,29 +58,39 @@
       Checkbox,
     },
     props: {
-      headers: {
+      value: {
         type: Array,
         required: true,
       },
     },
 
+    model: {
+      prop: 'value',
+      event: 'change',
+    },
+
     data: () => ({
       isOpened: false,
-      headersDraft: [], // headers draft
+      draft: [], // headers draft
     }),
 
-    created() {
-      this.fillHeadersDraft();
+    watch: {
+      value: {
+        handler() {
+          this.fillHeadersDraft();
+        },
+        immediate: true,
+      },
     },
 
     methods: {
       setShownColumns() {
-        this.$emit('change', this.headersDraft);
+        this.$emit('change', this.draft);
         this.isOpened = false;
       },
 
       fillHeadersDraft() {
-        this.headersDraft = [...this.headers];
+        this.draft = [...this.value];
       },
     },
   };

@@ -7,9 +7,7 @@ export default {
     Multiselect,
   },
 
-  data: () => ({
-    value: null,
-  }),
+  data: () => ({}),
 
   created() {
     this.restore({ filterQuery: this.filterQuery });
@@ -17,12 +15,10 @@ export default {
 
   methods: {
     restore({ filterQuery }) {
-      this.restoreArray({ filterQuery });
+      const value = this.$route.query[filterQuery];
+      if (value) this.restoreValue({ value });
     },
 
-    restoreArray({ filterQuery }) {
-      const valueArray = this.parseQueryArray({ filterQuery });
-      if (valueArray) this.fillValue(valueArray);
-    },
+    restoreValue() {},
   },
 };

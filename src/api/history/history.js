@@ -43,7 +43,7 @@ export const getHistory = async (
         team,
         member,
         gateway,
-        `${search}*`,
+        `${search}`,
         durationFrom,
         durationTo,
         skipParent,

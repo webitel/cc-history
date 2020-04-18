@@ -10,8 +10,8 @@
 </template>
 
 <script>
-  import apiFilterMixin from '../../../mixins/filters/apiFilterMixin';
-  import { fetchTeams, getSelectedTeams } from '../../../api/filter-getters/teamFilter';
+  import apiFilterMixin from '../../../../mixins/filters/apiFilterMixin';
+  import { fetchTeams, getSelectedTeams } from '../../../../api/filter-getters/teamFilter';
 
   export default {
     name: 'filter-team',

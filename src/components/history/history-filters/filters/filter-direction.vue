@@ -10,8 +10,8 @@
 </template>
 
 <script>
-  import enumFilterMixin from '../../../mixins/filters/enumFilterMixin';
-  import DirectionOptions from '../../../api/filter-getters/DirectionOptions.enum';
+  import enumFilterMixin from '../../../../mixins/filters/enumFilterMixin';
+  import DirectionOptions from '../../../../api/filter-getters/DirectionOptions.enum';
 
   export default {
     name: 'filter-direction',

@@ -129,7 +129,7 @@
   import FilterDuration from './filters/filter-duration.vue';
 
   export default {
-    name: 'history-filters',
+    name: 'the-history-filters',
     components: {
       FilterDatetime,
       FilterType,
@@ -151,7 +151,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../css/utils/bootstrap-grid.css";
+  @import "../../../css/utils/bootstrap-grid.css";
 
   .history-filters {
     display: flex;

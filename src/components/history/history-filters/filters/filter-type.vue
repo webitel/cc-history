@@ -2,24 +2,24 @@
   <multiselect
     v-model="value"
     :options="options"
-    :label="'Hangup cause'"
+    :label="'Type'"
+    :track-by="trackBy"
     :api-mode="apiMode"
     @closed="setQueryArray({ value, filterQuery, queriedProp })"
   ></multiselect>
 </template>
 
 <script>
-  import enumFilterMixin from '../../../mixins/filters/enumFilterMixin';
-  import HangupCauseOptions from '../../../api/filter-getters/HangupCauseOption.enum';
+  import enumFilterMixin from '../../../../mixins/filters/enumFilterMixin';
+  import TypeOptions from '../../../../api/filter-getters/TypeOptions.enum';
 
   export default {
-    name: 'filter-cause',
+    name: 'filter-type',
     mixins: [enumFilterMixin],
 
     data: () => ({
-      options: HangupCauseOptions,
-      filterQuery: 'cause',
-      queriedProp: 'id',
+      options: TypeOptions,
+      filterQuery: 'type',
     }),
   };
 </script>

@@ -20,10 +20,7 @@
         >{{col.text}}
         </div>
         <div class="grid__th__actions">
-          <column-select
-            :headers="headers"
-            @change="$emit('shownColumns', $event)"
-          />
+          <slot name="actions-header"></slot>
         </div>
       </header>
 
@@ -83,31 +80,20 @@
         </div>
       </section>
     </div>
-    <pagination
-      :value="size"
-      :is-next="isNext"
-      :is-prev="isPrev"
-      @next="next"
-      @prev="prev"
-      @input="$emit('sizeInput', $event)"
-      @changeSize="sizeChange"
-    />
+   <slot name="pagination"></slot>
   </div>
 </template>
 
 <script>
-  import Checkbox from './checkbox.vue';
-  import Pagination from './table-pagination.vue';
-  import CountBadge from './count-badge.vue';
-  import ColumnSelect from './table-column-select.vue';
+  import Checkbox from '../../utils/checkbox.vue';
+  import CountBadge from '../../utils/count-badge.vue';
+  import calcRem from '../../../utils/calcRem';
 
   export default {
     name: 'grid-table',
     components: {
-      ColumnSelect,
       CountBadge,
       Checkbox,
-      Pagination,
     },
     props: {
       headers: {
@@ -121,14 +107,6 @@
       expanded: {
         type: Boolean,
         default: false,
-      },
-      page: {
-        type: Number,
-        required: true,
-      },
-      size: {
-        type: String,
-        required: true,
       },
     },
 
@@ -145,17 +123,7 @@
         return this.headers.filter((header) => header.show);
       },
 
-      isNext() {
-        return true;
-      },
-
-      isPrev() {
-        return this.page > 1;
-      },
-
       computeColumnsNumStyle() {
-        const calcRem = (size) => `${parseInt(size, 10) / 16}rem`; // calc function
-
         let gridTemplateColumns = calcRem('24px'); // checkbox
         this.shownHeaders.forEach((header) => {
           gridTemplateColumns += ` ${header.width}`;
@@ -174,14 +142,6 @@
         });
       },
 
-      next() {
-        this.$emit('pageChange', this.page + 1);
-      },
-
-      prev() {
-        this.$emit('pageChange', this.page - 1);
-      },
-
       sortOrder(sort) {
         const SortSymbols = Object.freeze({
           ASC: '-',
@@ -198,10 +158,6 @@
           default:
             return SortSymbols.ASC;
         }
-      },
-
-      sizeChange() {
-        this.$emit('sizeChange', this.size);
       },
 
       expand(index) {

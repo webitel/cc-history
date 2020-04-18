@@ -9,8 +9,8 @@
 </template>
 
 <script>
-  import DtPicker from '../../utils/datetimepicker.vue';
-  import urlQueryControllerMixin from '../../../mixins/urlQueryControllerMixin';
+  import DtPicker from '../../../utils/datetimepicker.vue';
+  import urlQueryControllerMixin from '../../../../mixins/urlQueryControllerMixin';
 
   const msInMin = 60 * 10 ** 3;
 
