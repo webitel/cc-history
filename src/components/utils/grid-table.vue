@@ -16,7 +16,7 @@
           :class="`grid__th__sort--${col.sort}`"
           v-for="(col, key) of shownHeaders"
           :key="key"
-          @click="sort(col)"
+          @click="$emit('sort', col)"
         >{{col.text}}
         </div>
         <div class="grid__th__actions">
@@ -85,9 +85,9 @@
 </template>
 
 <script>
-  import Checkbox from '../../utils/checkbox.vue';
-  import CountBadge from '../../utils/count-badge.vue';
-  import calcRem from '../../../utils/calcRem';
+  import Checkbox from './checkbox.vue';
+  import CountBadge from './count-badge.vue';
+  import calcRem from '../../utils/calcRem';
 
   export default {
     name: 'grid-table',
@@ -134,32 +134,6 @@
     },
 
     methods: {
-      sort(column) {
-        const order = this.sortOrder(column.sort);
-        this.$emit('sort', {
-          column,
-          order,
-        });
-      },
-
-      sortOrder(sort) {
-        const SortSymbols = Object.freeze({
-          ASC: '-',
-          DESC: '+',
-          NONE: null,
-        });
-        switch (sort) {
-          case SortSymbols.NONE:
-            return SortSymbols.ASC;
-          case SortSymbols.ASC:
-            return SortSymbols.DESC;
-          case SortSymbols.DESC:
-            return SortSymbols.NONE;
-          default:
-            return SortSymbols.ASC;
-        }
-      },
-
       expand(index) {
         this.expandedIndex = this.expandedIndex === index ? null : index;
       },

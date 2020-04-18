@@ -6,7 +6,7 @@
       :headers="headers"
       :data="data"
       expanded
-      @sort="setSort"
+      @sort="sort"
     >
       <template slot="actions-header">
         <filter-fields
@@ -113,20 +113,18 @@
 
 <script>
   import { CallDirection } from 'webitel-sdk';
-  import GridTable from './grid-table.vue';
+  import GridTable from '../../utils/grid-table.vue';
   import FilterFields from './filters/filter-table-fields.vue';
   import FilterPagination from './filters/filter-pagination.vue';
   import AudioPlayer from '../../utils/audio-player.vue';
   import Loader from '../../utils/loader.vue';
   import { getHistory } from '../../../api/history/history';
-  import urlQueryControllerMixin from '../../../mixins/urlQueryControllerMixin';
+  import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import { kebabToCamel } from '../../../api/utils/caseConverters';
 
   export default {
     name: 'the-history-main',
-    mixins: [
-      urlQueryControllerMixin,
-    ],
+    mixins: [sortFilterMixin],
     components: {
       GridTable,
       FilterFields,
@@ -237,13 +235,6 @@
         },
         immediate: true,
       },
-      // eslint-disable-next-line func-names
-      '$route.query.sort': {
-        handler(sort) {
-          this.getSortColumns(sort);
-        },
-        immediate: true,
-      },
     },
 
     methods: {
@@ -273,42 +264,6 @@
         });
         this.data = await getHistory(res);
         this.isLoading = false;
-      },
-
-      setSort({ column, order }) {
-        const filterQuery = 'sort';
-        this.headers.find((col) => col === column).sort = order;
-        // FIXME UNCOMMENT WHEN IMPLEMENTING MULTIPLE COLUMNS SORT
-        // const value = this.headers
-        //   .filter((item) => item.show && item.sort)
-        //   .map((item) => `${item.value}=${item.sort}`)
-        //   .join(',');
-        const value = order ? `${order}${column.value}` : '';
-        this.setQueryValue({
-          value,
-          filterQuery,
-        });
-      },
-
-      getSortColumns(sort) {
-        if (sort) {
-          const sortedColumns = {
-            [sort.slice(1)]: sort.slice(0, 1),
-          };
-          // FIXME UNCOMMENT WHEN IMPLEMENTING MULTIPLE COLUMNS SORT
-          // sort.split(',')
-          //   .forEach((colStr) => {
-          //     const col = {
-          //       value: colStr.split('=')[0],
-          //       order: colStr.split('=')[1],
-          //     };
-          //     sortedColumns[col.value] = col.order;
-          //   });
-          this.headers = this.headers.map((header) => ({
-            ...header,
-            sort: sortedColumns[header.value] || null,
-          }));
-        }
       },
     },
   };
