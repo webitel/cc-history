@@ -120,11 +120,11 @@
   import Loader from '../../utils/loader.vue';
   import { getHistory } from '../../../api/history/history';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
-  import { kebabToCamel } from '../../../api/utils/caseConverters';
+  import loadHistoryMixin from '../../../mixins/filters/loadHistoryMixin/loadHistoryMixin';
 
   export default {
     name: 'the-history-main',
-    mixins: [sortFilterMixin],
+    mixins: [loadHistoryMixin, sortFilterMixin],
     components: {
       GridTable,
       FilterFields,
@@ -219,23 +219,11 @@
           width: 'minmax(120px, 1fr)',
         },
       ],
-      data: null,
       audioLink: '',
       isShowPlayer: true,
       currentlyPlaying: false,
-      isLoading: false,
       CallDirection,
     }),
-
-    watch: {
-      // eslint-disable-next-line func-names
-      '$route.query': {
-        handler() {
-          this.loadDataList();
-        },
-        immediate: true,
-      },
-    },
 
     methods: {
       play() {
@@ -244,27 +232,7 @@
       download() {
       },
 
-      async loadDataList() {
-        this.isLoading = true;
-        const { query } = this.$route;
-        const filledQueries = Object.keys(query)
-          .filter((key) => query[key]);
-        const res = {};
-        filledQueries.forEach((key) => {
-          let value = `${query[key]}`;
-          if (key === 'sort' || key === 'fields') {
-            if (value.includes('date')) {
-              value = value.replace('date', 'created_at');
-            } else if (value.includes('time')) {
-              value = value.replace('time', 'created_at');
-            }
-          }
-          if (value.includes('|')) value = value.split('|');
-          res[kebabToCamel(key)] = value;
-        });
-        this.data = await getHistory(res);
-        this.isLoading = false;
-      },
+      fetch: getHistory,
     },
   };
 </script>
