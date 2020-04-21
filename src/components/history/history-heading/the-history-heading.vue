@@ -7,7 +7,7 @@
         @search="setQueryValue({ filterQuery: 'search', value: search })"
       />
       <btn class="secondary">Download</btn>
-      <btn class="primary">Export CSV</btn>
+      <btn class="primary" @click.native="exportCSV">Export CSV</btn>
     </div>
   </header>
 </template>
@@ -16,10 +16,11 @@
   import Search from '../../utils/search-input.vue';
   import Btn from '../../utils/btn.vue';
   import urlQueryControllerMixin from '../../../mixins/urlQueryControllerMixin';
+  import csvExportMixin from '../../../mixins/csvExportMixin';
 
   export default {
     name: 'the-history-heading',
-    mixins: [urlQueryControllerMixin],
+    mixins: [urlQueryControllerMixin, csvExportMixin],
     components: {
       Search,
       Btn,
