@@ -21,7 +21,9 @@ export default {
       this.isLoading = true;
       const params = this.getQueryParams();
       try {
-        this.data = await getHistory(params);
+        const { items, next } = await getHistory(params);
+        this.data = items;
+        this.isNext = next;
       } catch {
       } finally {
         this.isLoading = false;
