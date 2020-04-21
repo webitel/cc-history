@@ -141,12 +141,16 @@
         this.playing = true;
       },
       playing(value) {
-        if (this.value) {
+        if (value) {
           this.$emit('play');
         } else {
           this.$emit('pause');
         }
-        return value ? this.audio.play() : this.audio.pause();
+        if (value) {
+          this.audio.play();
+        } else {
+          this.audio.pause();
+        }
       },
       volume() {
         // this.showVolume = false;

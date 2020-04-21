@@ -59,7 +59,7 @@
         required: true,
       },
       currentlyPlaying: {
-        type: Number,
+        type: String,
       },
     },
     data: () => ({

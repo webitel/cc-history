@@ -4,7 +4,7 @@ const BASE_URL = process.env.VUE_APP_API_URL;
 export default {
   data: () => ({
     audioURL: '',
-    currentlyPlaying: 0,
+    currentlyPlaying: '0',
     isPlayingNow: false,
   }),
 
