@@ -1,11 +1,10 @@
-import { kebabToCamel } from '../../../api/utils/caseConverters';
-import { SortSymbols } from '../sortFilterMixin/sortFilterMixin';
+import { kebabToCamel } from '../../api/utils/caseConverters';
+import { SortSymbols } from '../filters/sortFilterMixin/sortFilterMixin';
 
 
-// - convert string to array
 // - create set to remove created_at duplicates
-// - convert to array by ... and join back to string
-const removeDuplicates = (str) => [...new Set(str.split(','))].join(',');
+// - convert to array by ...
+const removeDuplicates = (arr) => [...new Set(arr)];
 
 const datetimeToCreatedAt = (value) => {
   let result = value.slice();
@@ -43,7 +42,7 @@ const handleSortQuery = (value) => {
     }
     return field;
   }).join(',');
-  return removeDuplicates(result);
+  return result;
 };
 
 /**

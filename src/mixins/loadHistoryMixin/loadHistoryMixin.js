@@ -1,4 +1,4 @@
-import { getHistory } from '../../../api/history/history';
+import { getHistory } from '../../api/history/history';
 import convertQuery from './loadHistoryScripts';
 
 export default {

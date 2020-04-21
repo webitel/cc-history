@@ -120,7 +120,7 @@
   import Loader from '../../utils/loader.vue';
   import { getHistory } from '../../../api/history/history';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
-  import loadHistoryMixin from '../../../mixins/filters/loadHistoryMixin/loadHistoryMixin';
+  import loadHistoryMixin from '../../../mixins/loadHistoryMixin/loadHistoryMixin';
 
   export default {
     name: 'the-history-main',

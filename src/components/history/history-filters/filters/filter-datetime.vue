@@ -47,11 +47,11 @@
       setDateTime({ from, to }) {
         this.setQueryValue({
           filterQuery: 'from',
-          value: from,
+          value: `${from}`,
         });
         this.setQueryValue({
           filterQuery: 'to',
-          value: to,
+          value: `${to}`,
         });
       },
     },
