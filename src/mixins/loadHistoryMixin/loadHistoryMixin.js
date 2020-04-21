@@ -1,9 +1,11 @@
 import { getHistory } from '../../api/history/history';
 import convertQuery from './loadHistoryScripts';
+import historyHeaders from './historyHeaders';
 
 export default {
   data: () => ({
     data: null,
+    headers: historyHeaders,
     isLoading: false,
   }),
 
