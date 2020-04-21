@@ -11,6 +11,19 @@ const camelToSnake = (str) => str.replace(
     .replace('', '_'),
 );
 
+export const kebabToCamel = (str) => str.replace(
+  /([-_][a-z])/g,
+  (group) => group.toUpperCase()
+    .replace('-', '')
+    .replace('_', ''),
+);
+
+export const camelToKebab = (str) => str.replace(
+  /([A-Z])/g,
+  (group) => group.toLowerCase()
+    .replace('', '-'),
+);
+
 export const objSnakeToCamel = (obj) => {
   const newObj = {};
   if (Array.isArray(obj)) {

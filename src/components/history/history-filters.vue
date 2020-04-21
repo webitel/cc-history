@@ -162,14 +162,14 @@
           </svg>
         </icon>
       </button>
-      <button class="icon-btn history-filters__icon-btn">
+      <button v-if="false" class="icon-btn history-filters__icon-btn">
         <icon>
           <svg class="icon icon-download_md md">
             <use xlink:href="#icon-download_md"></use>
           </svg>
         </icon>
       </button>
-      <button class="icon-btn history-filters__icon-btn">
+      <button v-if="false" class="icon-btn history-filters__icon-btn">
         <icon>
           <svg class="icon icon-upload_md md">
             <use xlink:href="#icon-upload_md"></use>
@@ -194,6 +194,7 @@
   import { fetchAgents, getSelectedAgents } from '../../api/filter-getters/agentFilter';
   import { fetchTeams, getSelectedTeams } from '../../api/filter-getters/teamFilter';
   import { fetchQueues, getSelectedQueues } from '../../api/filter-getters/queueFilter';
+  import { camelToKebab } from '../../api/utils/caseConverters';
 
   const msInMin = 60 * 10 ** 3;
 
@@ -314,12 +315,12 @@
       },
 
       restoreDurationFrom() {
-        const queryValue = this.$route.query.duration_from;
+        const queryValue = this.$route.query[camelToKebab('durationFrom')];
         this.duration.from = +queryValue || 0;
       },
 
       restoreDurationTo() {
-        const queryValue = this.$route.query.duration_to;
+        const queryValue = this.$route.query[camelToKebab('durationTo')];
         this.duration.to = +queryValue || null;
       },
 
@@ -347,12 +348,12 @@
 
       setDuration(duration) {
         this.setQueryValue({
-          filterQuery: 'duration_from',
+          filterQuery: camelToKebab('durationFrom'),
           value: duration.from,
         });
 
         this.setQueryValue({
-          filterQuery: 'duration_to',
+          filterQuery: camelToKebab('durationTo'),
           value: duration.to,
         });
       },
