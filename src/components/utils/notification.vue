@@ -47,14 +47,14 @@
     },
     methods: {
       showInfo(message) {
-        this.messages.unshift({ message });
+        this.messages.unshift({ message, info: true });
         setTimeout(() => {
           this.close(message);
         }, 4000);
       },
 
       showError(message) {
-        this.messages.unshift({ message });
+        this.messages.unshift({ message, error: true });
         setTimeout(() => {
           this.close(message);
         }, 4000);
@@ -74,12 +74,12 @@
 <style lang="scss" scoped>
   @import '../../css/styleguide/notification';
 
-  .icon-tick-md {
+  .icon-tick_md {
     stroke: $true-color;
     fill: $true-color;
   }
 
-  .icon-attention-md {
+  .icon-attention_md {
     stroke: $false-color;
     fill: $false-color;
   }

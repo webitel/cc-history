@@ -84,6 +84,7 @@
 
 <script>
   import range from './range.vue';
+  import eventBus from '../../utils/eventBus';
 
   export default {
     name: 'audio-player',
@@ -147,7 +148,10 @@
           this.$emit('pause');
         }
         if (value) {
-          this.audio.play();
+          const playPromise = this.audio.play();
+          if (playPromise) {
+            playPromise.catch(() => eventBus.$emit('notificationError', 'Failed to start. Please, start audio file manually'));
+          }
         } else {
           this.audio.pause();
         }
