@@ -4,7 +4,7 @@ import { SortSymbols } from '../filters/sortFilterMixin/sortFilterMixin';
 
 // - create set to remove created_at duplicates
 // - convert to array by ...
-const removeDuplicates = (arr) => [...new Set(arr)];
+const removeDuplicates = (arr) => [...new Set(arr.split(','))];
 
 const datetimeToCreatedAt = (value) => {
   let result = value.slice();
@@ -51,7 +51,8 @@ const handleSortQuery = (value) => {
  * @returns fields value
  */
 const handleFieldsQuery = (value) => {
-  const result = datetimeToCreatedAt(value);
+  let result = datetimeToCreatedAt(value);
+  result += ',files';
   return removeDuplicates(result);
 };
 
