@@ -32,11 +32,8 @@
     watch: {
       // eslint-disable-next-line func-names
       '$route.query.search': {
-        handler(search) {
-          this.getQueryValue({
-            prop: 'search',
-            value: search,
-          });
+        handler() {
+          this.search = this.parseQueryValue({ filterQuery: 'search' });
         },
         immediate: true,
       },

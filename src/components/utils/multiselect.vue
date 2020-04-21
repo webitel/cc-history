@@ -5,13 +5,15 @@
       <vue-multiselect
         :class="{'opened': isOpened}"
         :value="value"
-        :options="options"
+        :options="opts"
         :placeholder="placeholder || label"
         :close-on-select="false"
         :limit="1"
+        :label="'name'"
+        :track-by="trackBy"
         :limitText="limitText"
         :loading="false"
-        :internal-search="false"
+        :internal-search="!apiMode"
         @input="$emit('input', $event)"
         @search-change="fetch"
         @open="isOpened = true"
@@ -55,7 +57,6 @@
 
       options: {
         type: Array,
-        required: true,
       },
 
       label: {
@@ -65,26 +66,49 @@
       placeholder: {
         type: String,
       },
+
+      trackBy: {
+        type: String,
+        default: 'id',
+      },
+
+      apiMode: {
+        type: Boolean,
+        default: true,
+      },
+
+      fetchMethod: {
+        type: Function,
+      },
     },
 
     data: () => ({
       isLoading: false,
       isOpened: false,
+      fetchedOptions: [],
     }),
 
     created() {
+      this.fetch();
       this.fetch = debounce(this.fetch);
+    },
+
+    computed: {
+      opts() {
+        const options = this.apiMode ? this.fetchedOptions : this.options;
+        const optionsDiff = options.filter((item) => !this.value
+          .some((valueItem) => valueItem[this.trackBy] === item[this.trackBy]));
+        return [...this.value, ...optionsDiff];
+      },
     },
 
     methods: {
       limitText: (count) => `${count}`,
 
       async fetch(search) {
-        this.isLoading = true;
-        await setTimeout(() => {
-          console.log(search);
-          this.isLoading = false;
-        }, 1000);
+        if (this.apiMode) {
+          this.fetchedOptions = await this.fetchMethod(search);
+        }
       },
 
       close() {
@@ -111,6 +135,7 @@
     top: 50%;
     right: calcRem(3px);
     transform: translateY(-50%);
+    pointer-events: none;
 
     .icon {
       fill: #000;
@@ -175,6 +200,12 @@
       width: 100%;
     }
 
+    // empty/not found texts
+    li:not(.multiselect__element) {
+      @extend .typo-body-sm;
+      padding: $select-paddings;
+    }
+
     &__element {
       @extend .typo-body-sm;
       width: 100%;
@@ -183,6 +214,7 @@
 
       .multiselect__option {
         display: block;
+        border-radius: $border-radius;
 
         &:hover {
           background: $list-option__hover;
