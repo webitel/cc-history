@@ -56,18 +56,19 @@
         </div>
       </template>
 
-      <template slot="actions">
+      <template slot="actions" slot-scope="{ item }">
+        <media-select
+          v-if="item.files"
+          class="table-action"
+          :files="item.files"
+          :currently-playing="currentlyPlaying"
+          @play="play"
+        ></media-select>
+
         <button class="icon-btn table-action" @click.prevent.stop="download">
           <icon>
             <svg class="icon icon-download_md md">
               <use xlink:href="#icon-download_md"></use>
-            </svg>
-          </icon>
-        </button>
-        <button class="icon-btn table-action" @click.prevent.stop="play">
-          <icon>
-            <svg class="icon icon-play_md md">
-              <use xlink:href="#icon-play_md"></use>
             </svg>
           </icon>
         </button>
@@ -101,12 +102,11 @@
 
     </grid-table>
     <audio-player
-      v-if="false"
-      v-show="isShowPlayer"
-      :file="audioLink"
-      @play="currentlyPlaying = true"
-      @pause="currentlyPlaying = false"
-      @close="isShowPlayer = false"
+      v-show="audioURL"
+      :file="audioURL"
+      @play="isPlayingNow = true"
+      @pause="isPlayingNow = false"
+      @close="audioURL = ''"
     ></audio-player>
   </section>
 </template>
@@ -117,19 +117,22 @@
   import FilterFields from './filters/filter-table-fields.vue';
   import FilterPagination from './filters/filter-pagination.vue';
   import AudioPlayer from '../../utils/audio-player.vue';
+  import MediaSelect from '../../utils/media-select.vue';
   import Loader from '../../utils/loader.vue';
   import { getHistory } from '../../../api/history/history';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import loadHistoryMixin from '../../../mixins/loadHistoryMixin/loadHistoryMixin';
+  import mediaMixin from '../../../mixins/mediaMixin';
 
   export default {
     name: 'the-history-main',
-    mixins: [loadHistoryMixin, sortFilterMixin],
+    mixins: [loadHistoryMixin, sortFilterMixin, mediaMixin],
     components: {
       GridTable,
       FilterFields,
       FilterPagination,
       AudioPlayer,
+      MediaSelect,
       Loader,
     },
     data: () => ({
@@ -219,16 +222,10 @@
           width: 'minmax(120px, 1fr)',
         },
       ],
-      audioLink: '',
-      isShowPlayer: true,
-      currentlyPlaying: false,
       CallDirection,
     }),
 
     methods: {
-      play() {
-      },
-
       download() {
       },
 
