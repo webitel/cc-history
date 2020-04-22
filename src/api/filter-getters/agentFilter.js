@@ -1,6 +1,7 @@
 import { AgentServiceApiFactory } from 'webitel-sdk';
 import instance from '../instance';
 import configuration from '../openAPIConfig';
+import getDomainId from '../utils/getDomainId';
 import {
   formatOptions,
   PAGE,
@@ -11,12 +12,13 @@ import {
 const agentService = new AgentServiceApiFactory(configuration, '', instance);
 
 export const fetchAgents = async (search = '') => {
+  const domainId = getDomainId();
   try {
     const response = await agentService.searchAgent(
       PAGE,
       SIZE,
       search,
-      undefined,
+      domainId,
       FIELDS,
     );
     return formatOptions(response);
@@ -26,13 +28,14 @@ export const fetchAgents = async (search = '') => {
 };
 
 export const getSelectedAgents = async (idList) => {
+  const domainId = getDomainId();
   const size = idList.length;
   try {
     const response = await agentService.searchAgent(
       PAGE,
       size,
       null,
-      undefined,
+      domainId,
       FIELDS,
       null,
       idList,

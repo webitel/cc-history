@@ -11,9 +11,9 @@
 
 <script>
   import Notification from '../utils/notification.vue';
-  import HistoryHeading from './history-heading.vue';
-  import HistoryFilters from './history-filters.vue';
-  import HistoryMain from './history-main.vue';
+  import HistoryHeading from './history-heading/the-history-heading.vue';
+  import HistoryFilters from './history-filters/the-history-filters.vue';
+  import HistoryMain from './history-main/the-history-main.vue';
 
   export default {
     name: 'the-history',
