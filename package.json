@@ -14,6 +14,9 @@
     "css-loader": "^3.4.2",
     "deep-copy": "^1.4.2",
     "file-loader": "^5.0.2",
+    "file-saver": "^2.0.2",
+    "jszip": "^3.4.0",
+    "jszip-utils": "^0.1.0",
     "vue": "^2.6.11",
     "vue-i18n": "^8.15.3",
     "vue-multiselect": "^2.1.6",
@@ -21,7 +24,7 @@
     "vuejs-datepicker": "^1.6.2",
     "vuelidate": "^0.7.5",
     "vuex": "^3.1.2",
-    "webitel-sdk": "0.0.63"
+    "webitel-sdk": "0.0.64"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",

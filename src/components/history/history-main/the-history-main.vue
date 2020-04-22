@@ -65,7 +65,11 @@
           @play="play"
         ></media-select>
 
-        <button class="icon-btn table-action" @click.prevent.stop="download">
+        <button
+          v-if="item.files"
+          class="icon-btn table-action"
+          @click.prevent.stop="downloadItemFiles(item.files)"
+        >
           <icon>
             <svg class="icon icon-download_md md">
               <use xlink:href="#icon-download_md"></use>
@@ -122,11 +126,12 @@
   import { getHistory } from '../../../api/history/history';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
-  import mediaMixin from '../../../mixins/mediaMixin';
+  import mediaMixin from '../../../mixins/files/mediaMixin';
+  import downloadFileMixin from '../../../mixins/files/downloadFiles/downloadFileMixin';
 
   export default {
     name: 'the-history-main',
-    mixins: [loadHistoryMixin, sortFilterMixin, mediaMixin],
+    mixins: [loadHistoryMixin, sortFilterMixin, mediaMixin, downloadFileMixin],
     components: {
       GridTable,
       FilterFields,
