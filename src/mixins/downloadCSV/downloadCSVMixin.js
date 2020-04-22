@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop  */
 
+import { mapGetters } from 'vuex';
 import { getHistory } from '../../api/history/history';
 import historyHeaders from '../loadHistory/historyHeaders';
 import convertQuery from '../loadHistory/loadHistoryScripts';
@@ -29,6 +30,12 @@ export default {
     isCSVLoading: false,
   }),
 
+  computed: {
+    ...mapGetters('history', {
+      selectedData: 'SELECTED_DATA',
+    }),
+  },
+
   methods: {
     async downloadCSV() {
       this.isCSVLoading = true;
@@ -42,7 +49,7 @@ export default {
       }
 
       download(csv, 'history.csv');
-      this.isCSVLoading = true;
+      this.isCSVLoading = false;
     },
 
     downloadSelectedCSV(fields) {

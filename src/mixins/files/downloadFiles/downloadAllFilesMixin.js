@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop  */
 
 import JSZip from 'jszip';
+import { mapGetters } from 'vuex';
 import { getHistory } from '../../../api/history/history';
 import convertQuery from '../../loadHistory/loadHistoryScripts';
 import { addItemsFilesToZip, generateAndSaveZip } from './downloadFilesScripts';
@@ -9,6 +10,12 @@ export default {
   data: () => ({
     isFilesLoading: false,
   }),
+
+  computed: {
+    ...mapGetters('history', {
+      selectedData: 'SELECTED_DATA',
+    }),
+  },
 
   methods: {
     async downloadFiles() {
@@ -28,7 +35,7 @@ export default {
         console.log('generate finish', new Date().toLocaleTimeString());
       } catch {
       } finally {
-        this.isFilesLoading = true;
+        this.isFilesLoading = false;
       }
     },
 

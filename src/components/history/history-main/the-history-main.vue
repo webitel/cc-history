@@ -123,14 +123,10 @@
   import AudioPlayer from '../../utils/audio-player.vue';
   import MediaSelect from '../../utils/media-select.vue';
   import Loader from '../../utils/loader.vue';
-  import { getHistory } from '../../../api/history/history';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
   import mediaMixin from '../../../mixins/files/mediaMixin';
   import downloadRowFilesMixin from '../../../mixins/files/downloadFiles/downloadRowFilesMixin';
-  import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
-  import downloadAllFilesMixin from '../../../mixins/files/downloadFiles/downloadAllFilesMixin';
-  import eventBus from '../../../utils/eventBus';
 
   export default {
     name: 'the-history-main',
@@ -139,8 +135,6 @@
       sortFilterMixin,
       mediaMixin,
       downloadRowFilesMixin,
-      downloadCSVMixin,
-      downloadAllFilesMixin,
     ],
     components: {
       GridTable,
@@ -153,23 +147,6 @@
     data: () => ({
       CallDirection,
     }),
-
-    mounted() {
-      eventBus.$on('downloadFiles', () => this.downloadFiles());
-      eventBus.$on('downloadCSV', () => this.downloadCSV());
-    },
-
-    destroyed() {
-      eventBus.$off('downloadFiles');
-      eventBus.$off('downloadCSV');
-    },
-
-    methods: {
-      download() {
-      },
-
-      fetch: getHistory,
-    },
   };
 </script>
 
