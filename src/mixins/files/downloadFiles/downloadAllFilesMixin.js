@@ -6,9 +6,15 @@ import { getHistory } from '../../../api/history/history';
 import convertQuery from '../../loadHistory/loadHistoryScripts';
 import { addItemsFilesToZip, generateAndSaveZip } from './downloadFilesScripts';
 
+// function to bind component "this" for filterCounter
+function counter() {
+  this.filesCounter += 1;
+}
+
 export default {
   data: () => ({
     isFilesLoading: false,
+    filesCounter: 0,
   }),
 
   computed: {
@@ -36,12 +42,13 @@ export default {
       } catch {
       } finally {
         this.isFilesLoading = false;
+        this.filesCounter = 0;
       }
     },
 
     async downloadSelectedFiles(zip) {
       const items = this.selectedData.filter((item) => item.files);
-      await addItemsFilesToZip(items, zip);
+      await addItemsFilesToZip(items, zip, counter.bind(this));
     },
 
     async downloadAllFiles(zip) {
@@ -58,7 +65,7 @@ export default {
       do {
         const { items, next } = await this.loadListForDownload({ ...params, page });
         console.log('chunk length: ', items.length);
-        await addItemsFilesToZip(items, zip);
+        await addItemsFilesToZip(items, zip, counter.bind(this));
 
         isNext = next;
         page += 1;
