@@ -1,12 +1,22 @@
 <template>
   <button class="cc-btn" type="button">
-    <slot></slot>
+    <spinner v-if="loading"/>
+    <slot v-else></slot>
   </button>
 </template>
 
 <script>
+  import Spinner from './spinner.vue';
+
   export default {
     name: 'btn',
+    components: { Spinner },
+    props: {
+      loading: {
+        type: Boolean,
+        default: false,
+      },
+    },
   };
 </script>
 
@@ -21,6 +31,10 @@
     white-space: nowrap;
     transition: $transition;
     cursor: pointer;
+
+    .spinner {
+      color: #000;
+    }
 
     &:hover {
       background: $default-btn-color__hover;
