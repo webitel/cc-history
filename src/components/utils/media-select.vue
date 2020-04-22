@@ -17,7 +17,7 @@
     <ul class="media-select__list" v-show="isOpened">
       <li
         class="media-select__item"
-        v-for="(file, key) of files"
+        v-for="(file, key) of mediaFiles"
         :key="key"
         @click.prevent.stop="togglePlay(file.id)"
       >
@@ -69,6 +69,11 @@
     computed: {
       isAnyFilesPlaying() {
         return this.files.some((file) => file.id === this.currentlyPlaying);
+      },
+
+      mediaFiles() {
+        return this.files.filter((file) => file.mimeType.includes('audio')
+        || file.mimeType.includes('video'));
       },
     },
 
