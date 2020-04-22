@@ -121,7 +121,7 @@
   import Loader from '../../utils/loader.vue';
   import { getHistory } from '../../../api/history/history';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
-  import loadHistoryMixin from '../../../mixins/loadHistoryMixin/loadHistoryMixin';
+  import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
   import mediaMixin from '../../../mixins/mediaMixin';
 
   export default {
