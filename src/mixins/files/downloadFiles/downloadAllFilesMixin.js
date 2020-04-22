@@ -1,22 +1,9 @@
-/* eslint-disable no-restricted-syntax, no-await-in-loop  */
+/* eslint-disable no-await-in-loop  */
 
 import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
 import { getHistory } from '../../../api/history/history';
 import convertQuery from '../../loadHistory/loadHistoryScripts';
-import { fetchFileBinary } from '../filesScripts';
-import eventBus from '../../../utils/eventBus';
-
-const addFilesFromListToZip = async (items, zip) => {
-  for (const item of items) {
-    for (const file of item.files) {
-      const binary = await fetchFileBinary(file.id);
-      const ext = file.mimeType.split('/').pop();
-      console.log(ext, new Date().toLocaleTimeString());
-      zip.file(`${file.name}.${ext}`, binary);
-    }
-  }
-};
+import { addItemsFilesToZip, generateAndSaveZip } from './downloadFilesScripts';
 
 export default {
   data: () => ({
@@ -28,6 +15,29 @@ export default {
       this.isFilesLoading = true;
 
       const zip = new JSZip();
+      console.log('start', new Date().toLocaleTimeString());
+      if (this.selectedData.length) {
+        await this.downloadSelectedFiles(zip);
+      } else {
+        await this.downloadAllFiles(zip);
+      }
+      console.log('fetch finish', new Date().toLocaleTimeString());
+
+      try {
+        await generateAndSaveZip(zip, 'allFiles.zip');
+        console.log('generate finish', new Date().toLocaleTimeString());
+      } catch {
+      } finally {
+        this.isFilesLoading = true;
+      }
+    },
+
+    async downloadSelectedFiles(zip) {
+      const items = this.selectedData.filter((item) => item.files);
+      await addItemsFilesToZip(items, zip);
+    },
+
+    async downloadAllFiles(zip) {
       const size = 100;
       const params = {
         ...this.getQueryParams(),
@@ -38,29 +48,17 @@ export default {
       let page = 1;
       let isNext = false;
 
-      console.log('start', new Date().toLocaleTimeString());
       do {
-        const { items, next } = await this.loadList({ ...params, page });
-        // console.log(items.length);
-        await addFilesFromListToZip(items, zip);
+        const { items, next } = await this.loadListForDownload({ ...params, page });
+        console.log('chunk length: ', items.length);
+        await addItemsFilesToZip(items, zip);
 
         isNext = next;
         page += 1;
       } while (isNext);
-      console.log('fetch finish', new Date().toLocaleTimeString());
-
-      try {
-        const file = await zip.generateAsync({ type: 'blob' });
-        saveAs(file, 'allFiles.zip');
-        console.log('generate finish', new Date().toLocaleTimeString());
-      } catch (err) {
-        eventBus.$emit('notificationError', 'Failed to load the file');
-      } finally {
-        this.isFilesLoading = true;
-      }
     },
 
-    loadList(params) {
+    loadListForDownload(params) {
       return getHistory(params);
     },
 

@@ -6,8 +6,8 @@
         v-model="search"
         @search="setQueryValue({ filterQuery: 'search', value: search })"
       />
-      <btn class="secondary" @click.native="downloadFiles">Download</btn>
-      <btn class="primary" @click.native="downloadCSV">Export CSV</btn>
+      <btn class="secondary" @click.native="emitFilesDownload">Download</btn>
+      <btn class="primary" @click.native="emitCSVDownload">Export CSV</btn>
     </div>
   </header>
 </template>
@@ -16,12 +16,11 @@
   import Search from '../../utils/search-input.vue';
   import Btn from '../../utils/btn.vue';
   import urlQueryControllerMixin from '../../../mixins/urlQueryControllerMixin';
-  import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
-  import downloadAllFilesMixin from '../../../mixins/files/downloadFiles/downloadAllFilesMixin';
+  import eventBus from '../../../utils/eventBus';
 
   export default {
     name: 'the-history-heading',
-    mixins: [urlQueryControllerMixin, downloadCSVMixin, downloadAllFilesMixin],
+    mixins: [urlQueryControllerMixin],
     components: {
       Search,
       Btn,
@@ -38,6 +37,16 @@
           this.search = this.parseQueryValue({ filterQuery: 'search' });
         },
         immediate: true,
+      },
+    },
+
+    methods: {
+      emitFilesDownload() {
+        eventBus.$emit('downloadFiles');
+      },
+
+      emitCSVDownload() {
+        eventBus.$emit('downloadCSV');
       },
     },
   };

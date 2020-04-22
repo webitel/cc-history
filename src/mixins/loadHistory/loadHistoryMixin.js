@@ -4,7 +4,7 @@ import historyHeaders from './historyHeaders';
 
 export default {
   data: () => ({
-    data: null,
+    data: [],
     headers: historyHeaders,
     isLoading: false,
   }),
@@ -15,6 +15,15 @@ export default {
         await this.loadList();
       },
       immediate: true,
+    },
+  },
+
+  computed: {
+    selectedData() {
+      if (this.data) {
+        return this.data.filter((item) => item._isSelected);
+      }
+      return [];
     },
   },
 
