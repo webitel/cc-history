@@ -3,11 +3,12 @@ import { saveAs } from 'file-saver';
 import { fetchFileBinary } from '../filesScripts';
 import eventBus from '../../../utils/eventBus';
 
-const zip = new JSZip();
 
 export default {
   methods: {
-    async downloadItemFiles(files) {
+    async downloadFiles(files) {
+      const zip = new JSZip();
+
       // eslint-disable-next-line no-restricted-syntax
       for (const file of files) {
         // eslint-disable-next-line no-await-in-loop

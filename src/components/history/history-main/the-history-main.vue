@@ -127,11 +127,11 @@
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
   import mediaMixin from '../../../mixins/files/mediaMixin';
-  import downloadFileMixin from '../../../mixins/files/downloadFiles/downloadFileMixin';
+  import downloadRowFilesMixin from '../../../mixins/files/downloadFiles/downloadRowFilesMixin';
 
   export default {
     name: 'the-history-main',
-    mixins: [loadHistoryMixin, sortFilterMixin, mediaMixin, downloadFileMixin],
+    mixins: [loadHistoryMixin, sortFilterMixin, mediaMixin, downloadRowFilesMixin],
     components: {
       GridTable,
       FilterFields,

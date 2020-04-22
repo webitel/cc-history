@@ -6,7 +6,7 @@
         v-model="search"
         @search="setQueryValue({ filterQuery: 'search', value: search })"
       />
-      <btn class="secondary">Download</btn>
+      <btn class="secondary" @click.native="downloadFiles">Download</btn>
       <btn class="primary" @click.native="downloadCSV">Export CSV</btn>
     </div>
   </header>
@@ -17,10 +17,11 @@
   import Btn from '../../utils/btn.vue';
   import urlQueryControllerMixin from '../../../mixins/urlQueryControllerMixin';
   import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
+  import downloadAllFilesMixin from '../../../mixins/files/downloadFiles/downloadAllFilesMixin';
 
   export default {
     name: 'the-history-heading',
-    mixins: [urlQueryControllerMixin, downloadCSVMixin],
+    mixins: [urlQueryControllerMixin, downloadCSVMixin, downloadAllFilesMixin],
     components: {
       Search,
       Btn,
