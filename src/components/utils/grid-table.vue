@@ -66,7 +66,7 @@
             </div>
 
             <div class="grid__td__actions">
-              <slot name="actions"></slot>
+              <slot name="actions" :item="row"></slot>
             </div>
           </div>
 
@@ -80,7 +80,7 @@
         </div>
       </section>
     </div>
-   <slot name="pagination"></slot>
+    <slot name="pagination"></slot>
   </div>
 </template>
 
@@ -160,11 +160,13 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1 1 100%;
+
+    @extend .cc-scrollbar;
+    overflow-x: auto;
   }
 
   .grid {
-    @extend .cc-scrollbar;
-    overflow: auto;
+    overflow-y: visible;
 
     &__row-wrap {
       min-width: fit-content;
@@ -203,11 +205,11 @@
       &__sort {
         /*color:;*/
         &--asc {
-          color: red;
+          color: #000;
         }
 
         &--desc {
-          color: blue;
+          color: #000;
         }
       }
 
@@ -230,6 +232,7 @@
 
       &__actions {
         display: flex;
+        justify-content: flex-end;
       }
     }
 
