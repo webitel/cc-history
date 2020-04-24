@@ -1,29 +1,28 @@
 <template>
   <dt-picker
-    :value="{
-            from,
-            to,
-          }"
+    :value="value"
     @input="setDateTime"
   ></dt-picker>
 </template>
 
 <script>
   import DtPicker from '../../../utils/datetimepicker.vue';
-  import urlQueryControllerMixin from '../../../../mixins/urlQueryControllerMixin';
+  import valueFilterMixin from '../../../../mixins/filters/valueFilterMixin';
 
   const msInMin = 60 * 10 ** 3;
 
   export default {
     name: 'datetime-filter',
-    mixins: [urlQueryControllerMixin],
+    mixins: [valueFilterMixin],
     components: {
       DtPicker,
     },
 
     data: () => ({
-      from: Math.floor(Date.now() / msInMin) * msInMin,
-      to: Math.floor(Date.now() / msInMin) * msInMin,
+      value: {
+        from: Math.floor(Date.now() / msInMin) * msInMin,
+        to: Math.floor(Date.now() / msInMin) * msInMin,
+      },
     }),
 
     created() {
@@ -35,23 +34,25 @@
       restoreFrom() {
         const queryValue = this.$route.query.from;
         const defaultValue = Math.floor(Date.now() / msInMin) * msInMin;
-        this.from = +queryValue || defaultValue;
+        this.value.from = +queryValue || defaultValue;
       },
 
       restoreTo() {
         const queryValue = this.$route.query.to;
         const defaultValue = Math.floor(Date.now() / msInMin) * msInMin;
-        this.to = +queryValue || defaultValue;
+        this.value.to = +queryValue || defaultValue;
       },
 
-      setDateTime({ from, to }) {
+      setDateTime(value) {
+        this.value = value;
+
         this.setQueryValue({
           filterQuery: 'from',
-          value: `${from}`,
+          value: `${value.from}`,
         });
         this.setQueryValue({
           filterQuery: 'to',
-          value: `${to}`,
+          value: `${value.to}`,
         });
       },
     },
