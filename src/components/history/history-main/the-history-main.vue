@@ -68,7 +68,7 @@
         <button
           v-if="item.files"
           class="icon-btn table-action"
-          @click.prevent.stop="downloadItemFiles(item.files)"
+          @click.prevent.stop="downloadRowFiles(item.files)"
         >
           <icon>
             <svg class="icon icon-download_md md">
@@ -123,7 +123,6 @@
   import AudioPlayer from '../../utils/audio-player.vue';
   import MediaSelect from '../../utils/media-select.vue';
   import Loader from '../../utils/loader.vue';
-  import { getHistory } from '../../../api/history/history';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
   import mediaMixin from '../../../mixins/files/mediaMixin';
@@ -131,7 +130,12 @@
 
   export default {
     name: 'the-history-main',
-    mixins: [loadHistoryMixin, sortFilterMixin, mediaMixin, downloadRowFilesMixin],
+    mixins: [
+      loadHistoryMixin,
+      sortFilterMixin,
+      mediaMixin,
+      downloadRowFilesMixin,
+    ],
     components: {
       GridTable,
       FilterFields,
@@ -143,13 +147,6 @@
     data: () => ({
       CallDirection,
     }),
-
-    methods: {
-      download() {
-      },
-
-      fetch: getHistory,
-    },
   };
 </script>
 

@@ -1,3 +1,6 @@
+/* eslint-disable no-await-in-loop  */
+
+import { mapGetters } from 'vuex';
 import { getHistory } from '../../api/history/history';
 import historyHeaders from '../loadHistory/historyHeaders';
 import convertQuery from '../loadHistory/loadHistoryScripts';
@@ -27,34 +30,54 @@ export default {
     isCSVLoading: false,
   }),
 
+  computed: {
+    ...mapGetters('history', {
+      selectedData: 'SELECTED_DATA',
+    }),
+  },
+
   methods: {
     async downloadCSV() {
       this.isCSVLoading = true;
 
+      let csv = 'data:text/csv;charset=utf-8,';
+      const fields = this.getFields();
+      if (this.selectedData.length) {
+        csv += this.downloadSelectedCSV(fields);
+      } else {
+        csv += await this.downloadAllCSV(fields);
+      }
+
+      download(csv, 'history.csv');
+      this.isCSVLoading = false;
+    },
+
+    downloadSelectedCSV(fields) {
+      const items = this.selectedData;
+      return responseToCSV({ fields, items });
+    },
+
+    async downloadAllCSV(fields) {
+      let csv = '';
       const size = 100;
       const params = {
         ...this.getQueryParams(),
         size,
       };
-      const fields = this.getFields();
 
-      let csv = 'data:text/csv;charset=utf-8,';
       let page = 1;
       let isNext = false;
 
       csv += `${fields.join(',')}\n`;
 
       do {
-        // eslint-disable-next-line no-await-in-loop
-        const { items, next } = await this.loadList({ ...params, page });
+        const { items, next } = await this.loadListForDownload({ ...params, page });
         csv += responseToCSV({ fields, items });
 
         isNext = next;
         page += 1;
       } while (isNext);
-
-      download(csv, 'history.csv');
-      this.isCSVLoading = true;
+      return csv;
     },
 
     getFields() {
@@ -62,7 +85,7 @@ export default {
       return fields ? fields.split(',') : getDefaultFields();
     },
 
-    loadList(params) {
+    loadListForDownload(params) {
       return getHistory(params);
     },
 
