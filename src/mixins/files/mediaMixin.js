@@ -1,5 +1,4 @@
-const token = localStorage.getItem('access-token');
-const BASE_URL = process.env.VUE_APP_API_URL;
+import { generateURL } from './filesScripts';
 
 export default {
   data: () => ({
@@ -11,7 +10,7 @@ export default {
   methods: {
     play(fileId) {
       this.currentlyPlaying = fileId;
-      this.audioURL = `${BASE_URL}/storage/recordings/${fileId}/stream?access_token=${token}`;
+      this.audioURL = generateURL(fileId);
     },
   },
 };

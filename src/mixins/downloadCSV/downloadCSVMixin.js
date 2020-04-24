@@ -1,7 +1,7 @@
-import { getHistory } from '../api/history/history';
-import historyHeaders from './loadHistoryMixin/historyHeaders';
-import convertQuery from './loadHistoryMixin/loadHistoryScripts';
-import download from '../utils/downloadFile';
+import { getHistory } from '../../api/history/history';
+import historyHeaders from '../loadHistory/historyHeaders';
+import convertQuery from '../loadHistory/loadHistoryScripts';
+import download from '../../utils/downloadFile';
 
 const getDefaultFields = () => historyHeaders
   .filter((header) => header.show)
@@ -28,7 +28,7 @@ export default {
   }),
 
   methods: {
-    async exportCSV() {
+    async downloadCSV() {
       this.isCSVLoading = true;
 
       const size = 100;
