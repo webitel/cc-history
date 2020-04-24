@@ -1,4 +1,3 @@
-
 const computeDate = (createdAt) => {
   const date = new Date(+createdAt);
   return date.toLocaleDateString();
@@ -9,21 +8,28 @@ const computeTime = (createdAt) => {
   return date.toLocaleTimeString();
 };
 
-const formatResponse = (response) => {
+const mapItems = (items) => {
   const defaultObject = {
     _isSelected: false,
   };
+  return items.map((item) => ({
+    ...defaultObject,
+    ...item,
+    date: computeDate(item.createdAt),
+    time: computeTime(item.createdAt),
+    duration: new Date(item.duration || 0).toISOString()
+      .substr(11, 8),
+  }));
+};
+
+const formatResponse = (response) => {
   if (response.items) {
-    return response.items.map((item) => ({
-      ...defaultObject,
-      ...item,
-      date: computeDate(item.createdAt),
-      time: computeTime(item.createdAt),
-      duration: new Date(item.duration || 0).toISOString()
-        .substr(11, 8),
-    }));
+    return {
+      next: response.next || false,
+      items: mapItems(response.items),
+    };
   }
-  return [];
+  return { items: [], next: false };
 };
 
 export default formatResponse;
