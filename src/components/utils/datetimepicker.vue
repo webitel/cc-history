@@ -36,10 +36,10 @@
       v-show="isOpened"
     >
       <div class="dt-picker__form__quick-filters">
-        <span class="dt-picker__form__quick-filter">
+        <span class="dt-picker__form__quick-filter" @click="setLastHour">
           Last hour
         </span>
-        <span class="dt-picker__form__quick-filter">
+        <span class="dt-picker__form__quick-filter" @click="setLastDay">
           Last day
         </span>
       </div>
@@ -162,6 +162,25 @@
       },
       setTo(time) {
         this.draftTo = time;
+      },
+
+      setLastHour() {
+        const from = Date.now() - 60 * 60 * 10 ** 3; // 60 min x 60 sec x 1000 ms
+        const to = Date.now();
+        this.$emit('input', {
+          from,
+          to,
+        });
+        this.close();
+      },
+      setLastDay() {
+        const from = Date.now() - 24 * 60 * 60 * 10 ** 3; // 24hour x 60 min x 60 sec x 1000 ms
+        const to = Date.now();
+        this.$emit('input', {
+          from,
+          to,
+        });
+        this.close();
       },
     },
   };
