@@ -17,7 +17,7 @@ export const fetchAgents = async (search = '') => {
     const response = await agentService.searchAgent(
       PAGE,
       SIZE,
-      search,
+      `${search}*`,
       domainId,
       FIELDS,
     );

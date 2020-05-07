@@ -17,7 +17,7 @@ export const fetchQueues = async (search = '') => {
     const response = await queueService.searchQueue(
       PAGE,
       SIZE,
-      search,
+      `${search}*`,
       domainId,
       FIELDS,
     );

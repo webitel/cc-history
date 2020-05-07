@@ -16,7 +16,7 @@ const getFromAPI = async (url) => {
 };
 
 export const getOptionsFromAPI = async ({ BASE_URL, search }) => {
-  const url = `${BASE_URL}?page=${PAGE}&size=${SIZE}&name=${search}&fields=${FIELDS.join(',')}`;
+  const url = `${BASE_URL}?page=${PAGE}&size=${SIZE}&name=${search}*&fields=${FIELDS.join(',')}`;
   return getFromAPI(url);
 };
 

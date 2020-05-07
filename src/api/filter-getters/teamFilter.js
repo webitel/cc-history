@@ -17,7 +17,7 @@ export const fetchTeams = async (search = '') => {
     const response = await teamService.searchAgentTeam(
       PAGE,
       SIZE,
-      search,
+      `${search}*`,
       domainId,
       FIELDS,
     );
