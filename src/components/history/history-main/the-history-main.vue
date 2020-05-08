@@ -1,11 +1,11 @@
 <template>
   <section class="history-section history-main">
     <loader v-if="isLoading"/>
+<!--    to add expanded functionality, add "expanded" prop :)-->
     <grid-table
       v-else
       :headers="headers"
       :data="data"
-      expanded
       @sort="sort"
     >
       <template slot="actions-header">

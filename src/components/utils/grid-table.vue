@@ -24,7 +24,7 @@
         </div>
       </header>
 
-      <section class="grid__body">
+      <section class="grid__body" :class="{'expanded': expanded}">
         <div
           class="grid__row-wrap"
           v-for="(row, dataKey) of data"
@@ -188,10 +188,12 @@
       }
 
       &__body {
-        cursor: pointer;
+        &.expanded {
+          cursor: pointer;
 
-        &:hover {
-          background: $hover-bg-color;
+          &:hover {
+            background: $hover-bg-color;
+          }
         }
       }
     }
