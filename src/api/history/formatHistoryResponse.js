@@ -17,7 +17,7 @@ const mapItems = (items) => {
     ...item,
     date: computeDate(item.createdAt),
     time: computeTime(item.createdAt),
-    duration: new Date(item.duration || 0).toISOString()
+    duration: new Date(item.duration * 10 ** 3 || 0).toISOString()
       .substr(11, 8),
   }));
 };
