@@ -24,7 +24,7 @@
         </div>
       </header>
 
-      <section class="grid__body" :class="{'expanded': expanded}">
+      <section class="grid__body" :class="{'grid-body__expanding': expanded}">
         <div
           class="grid__row-wrap"
           v-for="(row, dataKey) of data"
@@ -187,13 +187,14 @@
         @extend .typo-heading-sm;
       }
 
-      &__body {
-        &.expanded {
-          cursor: pointer;
+    }
 
-          &:hover {
-            background: $hover-bg-color;
-          }
+    .grid__body.grid-body__expanding {
+      .grid__tr {
+        cursor: pointer;
+
+        &:hover {
+          background: $hover-bg-color;
         }
       }
     }
