@@ -101,7 +101,7 @@
       </template>
 
       <template slot="pagination">
-        <filter-pagination/>
+        <filter-pagination :is-next="isNext"/>
       </template>
 
     </grid-table>
