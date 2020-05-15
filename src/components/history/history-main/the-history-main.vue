@@ -1,11 +1,11 @@
 <template>
   <section class="history-section history-main">
     <loader v-if="isLoading"/>
-<!--    to add expanded functionality, add "expanded" prop :)-->
     <grid-table
       v-else
       :headers="headers"
       :data="data"
+      expanded
       @sort="sort"
     >
       <template slot="actions-header">
@@ -80,24 +80,23 @@
 
       <template slot="row-expansion" slot-scope="{ item }">
         <div class="expansion__content-wrap">
-          <h1 class="expansion__heading">Call info</h1>
-          {{item}}
+          <expansion-call-info :item="item"></expansion-call-info>
         </div>
-        <div class="expansion__comments">
-          <h1 class="expansion__heading">Operator comment</h1>
-          <article class="agent-comment">
-            <div class="agent-comment__pic">
-              <img src="../../../assets/default-avatar.svg" alt="agent pic">
-            </div>
-            <div class="agent-comment__comment">
-              <h2 class="agent-comment__comment__heading">Agent name</h2>
-              <p class="agent-comment__comment__text">Рынок финансовых услуг интересен всем
-                федеральным игрокам. Но возможности мобильных
-                платежей с использованием операторского счета ограничивает конкуренция с
-                традиционным и мобильным банкингом, говорит Анкилов.</p>
-            </div>
-          </article>
-        </div>
+        <!--        <div class="expansion__comments">-->
+        <!--          <h1 class="expansion__heading">Operator comment</h1>-->
+        <!--          <article class="agent-comment">-->
+        <!--            <div class="agent-comment__pic">-->
+        <!--              <img src="../../../assets/default-avatar.svg" alt="agent pic">-->
+        <!--            </div>-->
+        <!--            <div class="agent-comment__comment">-->
+        <!--              <h2 class="agent-comment__comment__heading">Agent name</h2>-->
+        <!--     <p class="agent-comment__comment__text">Рынок финансовых услуг интересен всем-->
+        <!--                федеральным игрокам. Но возможности мобильных-->
+        <!--          платежей с использованием операторского счета ограничивает конкуренция с-->
+        <!--                традиционным и мобильным банкингом, говорит Анкилов.</p>-->
+        <!--            </div>-->
+        <!--          </article>-->
+        <!--        </div>-->
       </template>
 
       <template slot="pagination">
@@ -118,6 +117,7 @@
 <script>
   import { CallDirection } from 'webitel-sdk';
   import GridTable from '../../utils/grid-table.vue';
+  import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
   import FilterFields from './filters/filter-table-fields.vue';
   import FilterPagination from './filters/filter-pagination.vue';
   import AudioPlayer from '../../utils/audio-player.vue';
@@ -138,6 +138,7 @@
     ],
     components: {
       GridTable,
+      ExpansionCallInfo,
       FilterFields,
       FilterPagination,
       AudioPlayer,
@@ -184,18 +185,13 @@
     }
   }
 
-  .expansion__call-info,
+  .expansion-call-info,
   .expansion__comments {
     flex: 0 0 50%;
   }
 
   .expansion__comments {
     margin-left: calcRem(60px);
-  }
-
-  .expansion__heading {
-    @extend .typo-heading-sm;
-    margin-bottom: calcRem(30px);
   }
 
   .agent-comment {
