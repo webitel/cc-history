@@ -223,7 +223,7 @@
 
     &__th, &__td {
       @extend .typo-body-md;
-      min-width: $min-td-width;
+      //min-width: $min-td-width;
       width: 100%;
       max-width: 100%;
 
