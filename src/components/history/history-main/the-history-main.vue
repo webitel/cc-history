@@ -15,45 +15,31 @@
       </template>
 
       <template slot="direction" slot-scope="{ item }">
-        <div v-if="item.direction === CallDirection.Inbound">
-          <icon class="icon-wrap__inbound">
-            <svg class="icon icon-inbound_md md">
-              <use xlink:href="#icon-inbound_md"></use>
-            </svg>
-          </icon>
-        </div>
-        <div v-else-if="item.direction === CallDirection.Outbound">
-          <icon class="icon-wrap__outbound">
-            <svg class="icon icon-outbound_md md">
-              <use xlink:href="#icon-outbound_md"></use>
-            </svg>
-          </icon>
-        </div>
+        <grid-direction :item="item"/>
+      </template>
+      <template slot="from" slot-scope="{ item }">
+        <grid-from :item="item"/>
+      </template>
+      <template slot="to" slot-scope="{ item }">
+        <grid-to :item="item"/>
       </template>
       <template slot="user" slot-scope="{ item }">
-        <div v-if="item.user">
-          {{item.user.name}}
-        </div>
+        <grid-user :item="item"/>
       </template>
       <template slot="gateway" slot-scope="{ item }">
-        <div v-if="item.gateway">
-          {{item.gateway.name}}
-        </div>
+        <grid-gateway :item="item"/>
       </template>
       <template slot="agent" slot-scope="{ item }">
-        <div v-if="item.agent">
-          {{item.agent.name}}
-        </div>
+        <grid-agent :item="item"/>
       </template>
       <template slot="team" slot-scope="{ item }">
-        <div v-if="item.team">
-          {{item.team.name}}
-        </div>
+        <grid-team :item="item"/>
       </template>
       <template slot="queue" slot-scope="{ item }">
-        <div v-if="item.queue">
-          {{item.queue.name}}
-        </div>
+        <grid-queue :item="item"/>
+      </template>
+      <template slot="member" slot-scope="{ item }">
+        <grid-member :item="item"/>
       </template>
 
       <template slot="actions" slot-scope="{ item }">
@@ -115,7 +101,6 @@
 </template>
 
 <script>
-  import { CallDirection } from 'webitel-sdk';
   import GridTable from '../../utils/grid-table.vue';
   import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
   import FilterFields from './filters/filter-table-fields.vue';
@@ -123,6 +108,15 @@
   import AudioPlayer from '../../utils/audio-player.vue';
   import MediaSelect from '../../utils/media-select.vue';
   import Loader from '../../utils/loader.vue';
+  import GridAgent from './grid-templates/grid-agent.vue';
+  import GridDirection from './grid-templates/grid-direction.vue';
+  import GridFrom from './grid-templates/grid-from.vue';
+  import GridGateway from './grid-templates/grid-gateway.vue';
+  import GridMember from './grid-templates/grid-member.vue';
+  import GridQueue from './grid-templates/grid-queue.vue';
+  import GridTeam from './grid-templates/grid-team.vue';
+  import GridTo from './grid-templates/grid-to.vue';
+  import GridUser from './grid-templates/grid-user.vue';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
   import mediaMixin from '../../../mixins/files/mediaMixin';
@@ -144,10 +138,16 @@
       AudioPlayer,
       MediaSelect,
       Loader,
+      GridAgent,
+      GridDirection,
+      GridFrom,
+      GridGateway,
+      GridMember,
+      GridQueue,
+      GridTeam,
+      GridTo,
+      GridUser,
     },
-    data: () => ({
-      CallDirection,
-    }),
   };
 </script>
 
@@ -157,24 +157,6 @@
     display: flex;
     flex-direction: column;
     padding: calcRem(20px) calcRem(30px);
-  }
-
-  .icon-wrap {
-    /*margin: auto;*/
-
-    &__inbound {
-      .icon {
-        fill: $inbound-icon-color;
-        stroke: $inbound-icon-color;
-      }
-    }
-
-    &__outbound {
-      .icon {
-        fill: $outbound-icon-color;
-        stroke: $outbound-icon-color;
-      }
-    }
   }
 
   .table-action {
