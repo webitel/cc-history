@@ -8,6 +8,7 @@
 <script>
   import DtPicker from '../../../utils/datetimepicker.vue';
   import valueFilterMixin from '../../../../mixins/filters/valueFilterMixin';
+  import getTodayStart from '../../../../utils/getTodayStart';
 
   const msInMin = 60 * 10 ** 3;
 
@@ -20,7 +21,7 @@
 
     data: () => ({
       value: {
-        from: Math.floor(Date.now() / msInMin) * msInMin,
+        from: getTodayStart(),
         to: Math.floor(Date.now() / msInMin) * msInMin,
       },
     }),
@@ -33,7 +34,7 @@
     methods: {
       restoreFrom() {
         const queryValue = this.$route.query.from;
-        const defaultValue = Math.floor(Date.now() / msInMin) * msInMin;
+        const defaultValue = getTodayStart();
         this.value.from = +queryValue || defaultValue;
       },
 
