@@ -6,7 +6,7 @@ export const SortSymbols = Object.freeze({
   NONE: null,
 });
 
-const sortOrder = (sort) => {
+const getNextSortOrder = (sort) => {
   switch (sort) {
     case SortSymbols.NONE:
       return SortSymbols.ASC;
@@ -26,7 +26,7 @@ const encodeSortQuery = ({ column, order }) =>
   //   .map((item) => `${item.value}=${item.sort}`)
   //   .join(',');
   // eslint-disable-next-line implicit-arrow-linebreak
-  (order ? `${column.value}=${order}` : '');
+  (order ? `${column.sortQuery}=${order}` : '');
 
 const decodeSortQuery = ({ value }) => {
   const valArr = value.split('=');
@@ -49,7 +49,7 @@ export default {
   mixins: [valueFilterMixin],
   methods: {
     sort(column) {
-      const order = sortOrder(column.sort);
+      const order = getNextSortOrder(column.sort);
       this.setValue({
         column,
         order,
@@ -58,7 +58,10 @@ export default {
 
     setValue({ column, order }) {
       const filterQuery = 'sort';
-      this.headers.find((col) => col === column).sort = order;
+      this.headers = this.headers.map((col) => ({
+        ...col,
+        sort: col === column ? order : null,
+      }));
       const value = encodeSortQuery({
         column,
         order,
@@ -73,7 +76,7 @@ export default {
       const sortedColumns = decodeSortQuery({ value });
       this.headers = this.headers.map((header) => ({
         ...header,
-        sort: sortedColumns[header.value] || null,
+        sort: sortedColumns[header.sortQuery] || null,
       }));
     },
   },

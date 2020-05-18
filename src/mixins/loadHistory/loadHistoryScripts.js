@@ -30,20 +30,18 @@ const filterEmptyQueries = (query) => Object.keys(query)
  * @private
  * @returns sort value
  */
-const handleSortQuery = (value) => {
-  let result = datetimeToCreatedAt(value);
-  result = result.split(',').map((item) => {
+const handleSortQuery = (value) => (
+  value.split(',').map((item) => {
     const field = item.split('=')[0];
     if (item.includes(SortSymbols.ASC)) {
-      return `-${field}`;
-    }
-    if (item.includes(SortSymbols.DESC)) {
       return `+${field}`;
     }
+    if (item.includes(SortSymbols.DESC)) {
+      return `-${field}`;
+    }
     return field;
-  }).join(',');
-  return result;
-};
+  }).join(',')
+);
 
 /**
  * @Function
