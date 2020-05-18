@@ -24,7 +24,7 @@ export const getHistory = async (
     skipParent = true,
     parentId,
     cause,
-    existsFile = false,
+    existsFile,
     fields,
     sort,
     search = '',

@@ -26,7 +26,7 @@ const encodeSortQuery = ({ column, order }) =>
   //   .map((item) => `${item.value}=${item.sort}`)
   //   .join(',');
   // eslint-disable-next-line implicit-arrow-linebreak
-  (order ? `${column.sortQuery}=${order}` : '');
+  (order ? `${column.field}=${order}` : '');
 
 const decodeSortQuery = ({ value }) => {
   const valArr = value.split('=');
@@ -76,7 +76,7 @@ export default {
       const sortedColumns = decodeSortQuery({ value });
       this.headers = this.headers.map((header) => ({
         ...header,
-        sort: sortedColumns[header.sortQuery] || null,
+        sort: sortedColumns[header.field] || null,
       }));
     },
   },

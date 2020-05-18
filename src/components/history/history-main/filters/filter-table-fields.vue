@@ -25,7 +25,7 @@
     data: () => ({
       filterQuery: 'fields',
       separator: ',',
-      queriedProp: 'value',
+      queriedProp: 'field',
     }),
 
     model: {
@@ -37,7 +37,7 @@
       restoreValue({ value }) {
         const headers = this.headers.map((header) => ({
           ...header,
-          show: !!value.includes(header.value),
+          show: !!value.includes(header.field),
         }));
         this.$emit('change', headers);
       },
