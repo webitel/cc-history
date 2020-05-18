@@ -5,7 +5,7 @@ export default [
     value: 'date',
     show: true,
     sort: null,
-    field: 'created_at',
+    field: 'date',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -13,7 +13,7 @@ export default [
     value: 'time',
     show: true,
     sort: null,
-    field: 'created_at',
+    field: 'time',
     width: 'minmax(120px, 1fr)',
   },
   {
