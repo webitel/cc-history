@@ -5,6 +5,7 @@ export default [
     value: 'date',
     show: true,
     sort: null,
+    sortQuery: 'created_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -12,6 +13,7 @@ export default [
     value: 'time',
     show: true,
     sort: null,
+    sortQuery: 'created_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -19,6 +21,7 @@ export default [
     value: 'bridgedAt',
     show: false,
     sort: null,
+    sortQuery: 'bridged_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -26,13 +29,7 @@ export default [
     value: 'queueBridgedAt',
     show: false,
     sort: null,
-    width: 'minmax(120px, 1fr)',
-  },
-  {
-    text: 'Billing At',
-    value: 'billAt',
-    show: false,
-    sort: null,
+    sortQuery: 'queue_bridged_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -40,6 +37,7 @@ export default [
     value: 'answeredAt',
     show: false,
     sort: null,
+    sortQuery: 'answered_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -47,6 +45,7 @@ export default [
     value: 'joinedAt',
     show: false,
     sort: null,
+    sortQuery: 'joined_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -54,6 +53,7 @@ export default [
     value: 'leavingAt',
     show: false,
     sort: null,
+    sortQuery: 'leaving_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -61,6 +61,7 @@ export default [
     value: 'hangupAt',
     show: false,
     sort: null,
+    sortQuery: 'hangup_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -68,13 +69,7 @@ export default [
     value: 'reportingAt',
     show: false,
     sort: null,
-    width: 'minmax(120px, 1fr)',
-  },
-  {
-    text: 'Time',
-    value: 'time',
-    show: true,
-    sort: null,
+    sortQuery: 'reporting_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -82,6 +77,7 @@ export default [
     value: 'direction',
     show: true,
     sort: null,
+    sortQuery: 'direction',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -89,6 +85,7 @@ export default [
     value: 'user',
     show: true,
     sort: null,
+    sortQuery: 'user',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -96,6 +93,7 @@ export default [
     value: 'extension',
     show: false,
     sort: null,
+    sortQuery: 'extension',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -103,6 +101,7 @@ export default [
     value: 'destination',
     show: true,
     sort: null,
+    sortQuery: 'destination',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -110,6 +109,7 @@ export default [
     value: 'from',
     show: true,
     sort: null,
+    sortQuery: 'from',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -117,6 +117,7 @@ export default [
     value: 'to',
     show: false,
     sort: null,
+    sortQuery: 'to',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -124,6 +125,7 @@ export default [
     value: 'gateway',
     show: true,
     sort: null,
+    sortQuery: 'gateway',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -131,6 +133,7 @@ export default [
     value: 'agent',
     show: true,
     sort: null,
+    sortQuery: 'agent',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -138,6 +141,7 @@ export default [
     value: 'team',
     show: true,
     sort: null,
+    sortQuery: 'team',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -145,6 +149,7 @@ export default [
     value: 'queue',
     show: true,
     sort: null,
+    sortQuery: 'queue',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -152,6 +157,7 @@ export default [
     value: 'member',
     show: true,
     sort: null,
+    sortQuery: 'member',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -159,6 +165,7 @@ export default [
     value: 'hangupBy',
     show: false,
     sort: null,
+    sortQuery: 'hangup_by',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -166,6 +173,7 @@ export default [
     value: 'duration',
     show: true,
     sort: null,
+    sortQuery: 'duration',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -173,6 +181,7 @@ export default [
     value: 'queueDuration',
     show: true,
     sort: null,
+    sortQuery: 'queue_duration_sec',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -180,6 +189,7 @@ export default [
     value: 'tags',
     show: false,
     sort: null,
+    sortQuery: 'tags',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -187,6 +197,7 @@ export default [
     value: 'display',
     show: false,
     sort: null,
+    sortQuery: 'display',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -194,6 +205,7 @@ export default [
     value: 'hold',
     show: false,
     sort: null,
+    sortQuery: 'hold_sec',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -201,6 +213,15 @@ export default [
     value: 'wait',
     show: false,
     sort: null,
+    sortQuery: 'wait_sec',
+    width: 'minmax(120px, 1fr)',
+  },
+  {
+    text: 'Billing',
+    value: 'bill',
+    show: false,
+    sort: null,
+    sortQuery: 'bill_sec',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -208,6 +229,7 @@ export default [
     value: 'reporting',
     show: false,
     sort: null,
+    sortQuery: 'reporting_sec',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -215,6 +237,7 @@ export default [
     value: 'queueWait',
     show: false,
     sort: null,
+    sortQuery: 'queue_wait_sec',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -222,6 +245,7 @@ export default [
     value: 'result',
     show: false,
     sort: null,
+    sortQuery: 'result',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -229,6 +253,7 @@ export default [
     value: 'sipCode',
     show: false,
     sort: null,
+    sortQuery: 'sip_code',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -236,6 +261,7 @@ export default [
     value: 'cause',
     show: false,
     sort: null,
+    sortQuery: 'cause',
     width: 'minmax(120px, 1fr)',
   },
 ];
