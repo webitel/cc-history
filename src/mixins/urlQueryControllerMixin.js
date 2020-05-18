@@ -11,6 +11,10 @@ export default {
     filter({ filterQuery, value }) {
       const query = { ...this.$route.query };
       query[filterQuery] = value;
+      // if filters changed, reset page
+      if (filterQuery !== 'page') {
+        query.page = '1';
+      }
       this.$router.replace({
         name: 'history',
         query,

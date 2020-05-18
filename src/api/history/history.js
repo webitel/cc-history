@@ -3,6 +3,7 @@ import instance from '../instance';
 import configuration from '../openAPIConfig';
 import getDomainId from '../utils/getDomainId';
 import formatResponse from './formatHistoryResponse';
+import getTodayStart from '../../utils/getTodayStart';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
@@ -11,7 +12,7 @@ export const getHistory = async (
   {
     page = 1,
     size = 10,
-    from = Date.now() - 60 * 60 * 10 ** 3, // last hour
+    from = getTodayStart(),
     to = Date.now(),
     user,
     agent,
@@ -26,7 +27,7 @@ export const getHistory = async (
     cause,
     existsFile,
     fields,
-    sort,
+    sort = '+created_at',
     search = '',
   },
 ) => {
