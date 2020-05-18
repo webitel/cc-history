@@ -25,6 +25,14 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
+    text: 'Answered At',
+    value: 'answeredAt',
+    show: false,
+    sort: null,
+    field: 'answered_at',
+    width: 'minmax(120px, 1fr)',
+  },
+  {
     text: 'Bridged At',
     value: 'bridgedAt',
     show: false,
@@ -38,14 +46,6 @@ export default [
     show: false,
     sort: null,
     field: 'queue_bridged_at',
-    width: 'minmax(120px, 1fr)',
-  },
-  {
-    text: 'Answered At',
-    value: 'answeredAt',
-    show: false,
-    sort: null,
-    field: 'answered_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -83,7 +83,7 @@ export default [
   {
     text: 'User',
     value: 'user',
-    show: false,
+    show: true,
     sort: null,
     field: 'user',
     width: 'minmax(120px, 1fr)',
