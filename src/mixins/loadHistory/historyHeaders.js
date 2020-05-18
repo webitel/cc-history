@@ -17,6 +17,14 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
+    text: 'Direction',
+    value: 'direction',
+    show: true,
+    sort: null,
+    field: 'direction',
+    width: 'minmax(120px, 1fr)',
+  },
+  {
     text: 'Bridged At',
     value: 'bridgedAt',
     show: false,
@@ -73,17 +81,9 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: 'Direction',
-    value: 'direction',
-    show: true,
-    sort: null,
-    field: 'direction',
-    width: 'minmax(120px, 1fr)',
-  },
-  {
     text: 'User',
     value: 'user',
-    show: true,
+    show: false,
     sort: null,
     field: 'user',
     width: 'minmax(120px, 1fr)',
@@ -97,14 +97,6 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: 'Destination',
-    value: 'destination',
-    show: true,
-    sort: null,
-    field: 'destination',
-    width: 'minmax(120px, 1fr)',
-  },
-  {
     text: 'From',
     value: 'from',
     show: true,
@@ -115,15 +107,23 @@ export default [
   {
     text: 'To',
     value: 'to',
-    show: false,
+    show: true,
     sort: null,
     field: 'to',
     width: 'minmax(120px, 1fr)',
   },
   {
+    text: 'Destination',
+    value: 'destination',
+    show: true,
+    sort: null,
+    field: 'destination',
+    width: 'minmax(120px, 1fr)',
+  },
+  {
     text: 'Gateway',
     value: 'gateway',
-    show: true,
+    show: false,
     sort: null,
     field: 'gateway',
     width: 'minmax(120px, 1fr)',
@@ -131,7 +131,7 @@ export default [
   {
     text: 'Agent',
     value: 'agent',
-    show: true,
+    show: false,
     sort: null,
     field: 'agent',
     width: 'minmax(120px, 1fr)',
@@ -139,7 +139,7 @@ export default [
   {
     text: 'Team',
     value: 'team',
-    show: true,
+    show: false,
     sort: null,
     field: 'team',
     width: 'minmax(120px, 1fr)',
@@ -147,7 +147,7 @@ export default [
   {
     text: 'Queue',
     value: 'queue',
-    show: true,
+    show: false,
     sort: null,
     field: 'queue',
     width: 'minmax(120px, 1fr)',
@@ -155,7 +155,7 @@ export default [
   {
     text: 'Member',
     value: 'member',
-    show: true,
+    show: false,
     sort: null,
     field: 'member',
     width: 'minmax(120px, 1fr)',
@@ -211,7 +211,7 @@ export default [
   {
     text: 'Billing',
     value: 'billSec',
-    show: false,
+    show: true,
     sort: null,
     field: 'bill_sec',
     width: 'minmax(120px, 1fr)',
@@ -235,7 +235,7 @@ export default [
   {
     text: 'Queue Duration',
     value: 'queueDurationSec',
-    show: true,
+    show: false,
     sort: null,
     field: 'queue_duration_sec',
     width: 'minmax(120px, 1fr)',
@@ -259,7 +259,7 @@ export default [
   {
     text: 'Hangup cause',
     value: 'cause',
-    show: false,
+    show: true,
     sort: null,
     field: 'cause',
     width: 'minmax(120px, 1fr)',
