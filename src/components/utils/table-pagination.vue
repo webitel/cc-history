@@ -71,14 +71,10 @@
 
     methods: {
       next() {
-        if (this.isNext) {
-          this.$emit('next');
-        }
+        this.$emit('next');
       },
       prev() {
-        if (this.isPrev) {
-          this.$emit('prev');
-        }
+        this.$emit('prev');
       },
 
       debouncer() {
@@ -120,11 +116,14 @@
       .controls {
         margin-left: 14px;
 
-        i:before {
-          color: #000;
-
+        .icon-btn {
           &.disabled {
-            color: red;
+            pointer-events: none;
+
+            .icon {
+              fill: $btn-disabled;
+              stroke: $btn-disabled;
+            }
           }
         }
       }

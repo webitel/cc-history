@@ -49,7 +49,7 @@
       },
 
       restoreSize() {
-        this.size = this.parseQueryValue({ filterQuery: 'size' });
+        this.size = this.parseQueryValue({ filterQuery: 'size' }) || this.size;
       },
 
       next() {
