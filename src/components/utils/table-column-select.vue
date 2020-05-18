@@ -1,5 +1,5 @@
 <template>
-  <div class="column-select">
+  <div class="column-select" @keydown.esc="isOpened = false">
     <button
       class="icon-btn"
       @click.prevent="isOpened = true"
