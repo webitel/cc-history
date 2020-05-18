@@ -17,6 +17,12 @@
       <template slot="direction" slot-scope="{ item }">
         <grid-direction :item="item"/>
       </template>
+      <template slot="from" slot-scope="{ item }">
+        <grid-from :item="item"/>
+      </template>
+      <template slot="to" slot-scope="{ item }">
+        <grid-to :item="item"/>
+      </template>
       <template slot="user" slot-scope="{ item }">
         <grid-user :item="item"/>
       </template>
@@ -31,6 +37,9 @@
       </template>
       <template slot="queue" slot-scope="{ item }">
         <grid-queue :item="item"/>
+      </template>
+      <template slot="member" slot-scope="{ item }">
+        <grid-member :item="item"/>
       </template>
 
       <template slot="actions" slot-scope="{ item }">
@@ -101,9 +110,12 @@
   import Loader from '../../utils/loader.vue';
   import GridAgent from './grid-templates/grid-agent.vue';
   import GridDirection from './grid-templates/grid-direction.vue';
+  import GridFrom from './grid-templates/grid-from.vue';
   import GridGateway from './grid-templates/grid-gateway.vue';
+  import GridMember from './grid-templates/grid-member.vue';
   import GridQueue from './grid-templates/grid-queue.vue';
   import GridTeam from './grid-templates/grid-team.vue';
+  import GridTo from './grid-templates/grid-to.vue';
   import GridUser from './grid-templates/grid-user.vue';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
@@ -127,9 +139,12 @@
       Loader,
       GridAgent,
       GridDirection,
+      GridFrom,
       GridGateway,
+      GridMember,
       GridQueue,
       GridTeam,
+      GridTo,
       GridUser,
     },
   };
