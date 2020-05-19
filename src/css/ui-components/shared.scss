@@ -2,15 +2,15 @@
 .label {
   @extend .typo-body-sm;
   display: block;
-  margin-bottom: calcRem(13px);
+  margin-bottom: (13px);
   color: $label-color;
 }
 
 .input__short {
   @extend .typo-input;
   text-align: center;
-  width: calcRem(40px);
-  padding: calcRem(10px) calcRem(5px);
+  width: (40px);
+  padding: (10px) (5px);
   border: 1px solid $input-border-color;
   border-radius: $border-radius;
   box-sizing: content-box;
@@ -26,6 +26,6 @@ $badge-bg: #FFE69C;
   @extend .typo-body-sm;
   display: block;
   background: $badge-bg;
-  padding: calcRem(4px) calcRem(15px);
-  border-radius: calcRem(20px);
+  padding: (4px) (15px);
+  border-radius: (20px);
 }

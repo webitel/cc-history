@@ -239,10 +239,10 @@
   //$player-text-color: $player-link-color;
   .player {
     position: sticky;
-    bottom: calcRem(66px);
+    bottom: (66px);
     /*width: 100%;*/
-    padding: calcRem(7px) calcRem(16px);
-    margin: 0 calcRem(20px);
+    padding: (7px) (16px);
+    margin: 0 (20px);
     background-color: $player-bg;
     box-shadow: $box-shadow;
     border-radius: $border-radius;
@@ -270,25 +270,25 @@
       align-items: center;
 
       &:first-child {
-        margin-right: calcRem(18px);
+        margin-right: (18px);
       }
     }
   }
 
   .player-progress {
     position: relative;
-    height: calcRem(5px);
+    height: (5px);
     /*height: 3px;*/
     flex-grow: 1;
-    margin: auto calcRem(21px) auto calcRem(78px);
+    margin: auto (21px) auto (78px);
     background-color: $player-progress-color;
     cursor: pointer;
 
     &:after { // make clickable area bigger
       content: '';
       position: absolute;
-      top: calcRem(-5px);
-      bottom: calcRem(-5px);
+      top: (-5px);
+      bottom: (-5px);
       left: 0;
       right: 0;
     }
@@ -319,8 +319,8 @@
       @extend .typo-body-md;
       position: absolute;
       right: 0;
-      bottom: calcRem(33px);
-      padding: calcRem(13px) calcRem(17px) calcRem(9px);
+      bottom: (33px);
+      padding: (13px) (17px) (9px);
       color: #fff;
       transform: translateX(50%);
       background: $player-bg;
@@ -331,8 +331,8 @@
   .player-time {
     display: flex;
     justify-content: space-between;
-    width: calcRem(40px);
-    margin-left: calcRem(33px);
+    width: (40px);
+    margin-left: (33px);
     color: #fff;
 
     .player-time-current {
@@ -342,15 +342,15 @@
 
   .range-wrap {
     position: absolute;
-    bottom: calcRem(56px);
+    bottom: (56px);
     right: 0;
-    padding: calcRem(8px) calcRem(16px) calcRem(11px);
+    padding: (8px) (16px) (11px);
     background: $player-bg;
     border-radius: $border-radius;
   }
 
   .volume-icon {
-    margin-right: calcRem(33px);
+    margin-right: (33px);
     cursor: pointer;
   }
 

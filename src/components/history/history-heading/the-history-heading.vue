@@ -58,16 +58,16 @@
     position: relative;
 
     .cc-btn {
-      margin-left: calcRem(20px);
+      margin-left: (20px);
     }
 
     .files-counter {
-      $offset: calcRem(10px);
+      $offset: (10px);
       @extend .typo-body-sm;
       position: absolute;
       right: 0;
       top: calc(100% + #{$offset});
-      padding: calcRem(10px) calcRem(15px);
+      padding: (10px) (15px);
       background: #fff;
       box-shadow: $box-shadow;
       border-radius: $border-radius;

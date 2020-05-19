@@ -50,9 +50,9 @@
     display: flex;
     align-items: center;
     position: relative;
-    height: calcRem(24px);
-    padding-left: calcRem(29px);
-    line-height: calcRem(24px);
+    height: (24px);
+    padding-left: (29px);
+    line-height: (24px);
     cursor: pointer;
     user-select: none;
 
@@ -73,10 +73,10 @@
     .checkbox {
       position: absolute;
       left: 0;
-      width: calcRem(18px);
-      height: calcRem(18px);
+      width: (18px);
+      height: (18px);
       background: #fff;
-      border: calcRem(2px) solid $checkbox-color;
+      border: (2px) solid $checkbox-color;
       border-radius: 2px;
     }
 
@@ -90,10 +90,10 @@
       /* Style the checkmark/indicator */
       top: 50%;
       left: 50%;
-      width: calcRem(6px);
-      height: calcRem(12px);
+      width: (6px);
+      height: (12px);
       border: solid $checkbox-color__checked;
-      border-width: 0 calcRem(2.5px) calcRem(2.5px) 0;
+      border-width: 0 (2.5px) (2.5px) 0;
       transform: translate(-50%, -60%) rotate(45deg);
 
     }

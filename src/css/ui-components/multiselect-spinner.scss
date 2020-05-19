@@ -1,9 +1,9 @@
 .multiselect__spinner {
   position: absolute;
   right: 0;
-  top: calcRem(20px); // 40px / 2
-  width: calcRem(48px);
-  height: calcRem(35px);
+  top: (20px); // 40px / 2
+  width: (48px);
+  height: (35px);
   background: #fff;
   display: block;
   transform: translateY(-55%);
@@ -14,13 +14,13 @@
   content: "";
   top: 50%;
   left: 50%;
-  margin: calcRem(-8px) 0 0 calcRem(-8px);
-  width: calcRem(16px);
-  height: calcRem(16px);
+  margin: (-8px) 0 0 (-8px);
+  width: (16px);
+  height: (16px);
   border-radius: 100%;
-  border: calcRem(2px) solid transparent;
+  border: (2px) solid transparent;
   border-top-color: $accent-color;
-  box-shadow: 0 0 0 calcRem(1px) transparent;
+  box-shadow: 0 0 0 (1px) transparent;
 }
 
 .multiselect__spinner:before {

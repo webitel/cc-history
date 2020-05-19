@@ -36,7 +36,7 @@
 <style lang="scss" scoped>
   .expansion-heading {
     @extend .typo-heading-sm;
-    margin-bottom: calcRem(30px);
+    margin-bottom: (30px);
   }
 
   .expansion-variable {
@@ -49,7 +49,7 @@
 
     &__value {
       @extend .typo-body-sm;
-      margin-left: calcRem(5px);
+      margin-left: (5px);
     }
   }
 </style>

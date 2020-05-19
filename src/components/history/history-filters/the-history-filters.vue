@@ -156,8 +156,8 @@
   .history-filters {
     display: flex;
     align-items: flex-start;
-    padding: calcRem(18px) calcRem(28px);
-    margin: calcRem(20px) 0;
+    padding: (18px) (28px);
+    margin: (20px) 0;
 
     &__filters {
       flex: 1 1 auto;
@@ -173,21 +173,21 @@
       }
 
       .dt-picker, .hs-multiselect {
-        /*margin-right: calcRem(50px);*/
-        margin-bottom: calcRem(18px);
+        /*margin-right: (50px);*/
+        margin-bottom: (18px);
       }
     }
 
     &__controls {
-      // $icon-w: calcRem(24px*3);
-      // $margin-w: calcRem(30px*2); // 3 icons + 2 margins
-      $icon-w: calcRem(24px);
-      $margin-w: calcRem(0px);
-      margin: calcRem(30px) 0 0 calcRem(30px);
+      // $icon-w: (24px*3);
+      // $margin-w: (30px*2); // 3 icons + 2 margins
+      $icon-w: (24px);
+      $margin-w: (0px);
+      margin: (30px) 0 0 (30px);
       flex: 0 0 calc(#{$icon-w} + #{$margin-w});
 
       .icon-btn {
-        margin-left: calcRem(30px);
+        margin-left: (30px);
 
         &:first-child {
           margin-left: 0;
