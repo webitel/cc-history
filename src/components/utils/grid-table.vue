@@ -160,13 +160,10 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1 1 100%;
-
-    @extend .cc-scrollbar;
-    overflow-x: auto;
   }
 
   .grid {
-    overflow-y: visible;
+    overflow: auto;
 
     &__row-wrap {
       min-width: fit-content;
