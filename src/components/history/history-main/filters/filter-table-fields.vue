@@ -36,15 +36,15 @@
     methods: {
       // overrides valueFilterMixin method
       restore({ filterQuery }) {
-        const value = this.$route.query[filterQuery];
+        let value = this.$route.query[filterQuery];
         if (!value) {
           // if no value in url, check in localStorage
-          const value = this.getFromLocalStorage({ filterQuery });
-          if (value) {
-            // if there's a value, set it to url and to component data
-            this.setQueryValue({ filterQuery, value });
-            this.restoreValue({ value });
-          }
+          value = this.getFromLocalStorage({ filterQuery });
+        }
+        if (value) {
+          // if there's a value, set it to url and to component data
+          this.setQueryValue({ filterQuery, value });
+          this.restoreValue({ value });
         }
       },
 
