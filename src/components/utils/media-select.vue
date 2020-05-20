@@ -1,23 +1,9 @@
 <template>
   <div class="media-select" v-clickaway="close">
-    <button class="media-select__btn icon-btn table-action"
-            :class="{'active': isOpened}"
-            @click.prevent.stop="isOpened = !isOpened">
-      <icon v-if="!isAnyFilesPlaying">
-        <svg class="icon icon-play_md md">
-          <use xlink:href="#icon-play_md"></use>
-        </svg>
-      </icon>
-      <icon v-else>
-        <svg class="icon icon-pause_md md">
-          <use xlink:href="#icon-pause_md"></use>
-        </svg>
-      </icon>
-    </button>
-    <ul class="media-select__list" v-show="isOpened">
+    <ul class="media-select__list">
       <li
         class="media-select__item"
-        v-for="(file, key) of mediaFiles"
+        v-for="(file, key) of files"
         :key="key"
         @click.prevent.stop="togglePlay(file.id)"
       >
@@ -62,20 +48,6 @@
         type: String,
       },
     },
-    data: () => ({
-      isOpened: false,
-    }),
-
-    computed: {
-      isAnyFilesPlaying() {
-        return this.files.some((file) => file.id === this.currentlyPlaying);
-      },
-
-      mediaFiles() {
-        return this.files.filter((file) => file.mimeType.includes('audio')
-        || file.mimeType.includes('video'));
-      },
-    },
 
     methods: {
       togglePlay(fileId) {
@@ -87,7 +59,7 @@
       },
 
       close() {
-        this.isOpened = false;
+        this.$emit('close');
       },
     },
   };
@@ -101,35 +73,36 @@
 
   .media-select__list {
     position: absolute;
-    top: calcRem(15px);
+    top: (24px + 14px); // icon + margin
     right: 0;
     background: #fff;
     box-shadow: $box-shadow;
     z-index: 1;
-  }
+    cursor: pointer;
 
-  .media-select__item {
-    display: flex;
-    align-items: center;
-    min-width: calcRem(200px);
-    padding: calcRem(5px) calcRem(10px);
-    transition: $transition;
+    .media-select__item {
+      display: flex;
+      align-items: center;
+      min-width: calcRem(200px);
+      padding: calcRem(5px) calcRem(10px);
+      transition: $transition;
 
-    &:hover {
-      background: $list-option__hover;
+      &:hover {
+        background: $list-option__hover;
 
-      .icon {
-        fill: $icon-color__hover;
-        stroke: $icon-color__hover;
+        .icon {
+          fill: $icon-color__hover;
+          stroke: $icon-color__hover;
+        }
       }
-    }
 
-    .icon-wrap {
-      margin-right: calcRem(10px);
-    }
+      .icon-wrap {
+        margin-right: calcRem(10px);
+      }
 
-    &__name {
-      white-space: nowrap;
+      &__name {
+        white-space: nowrap;
+      }
     }
   }
 </style>

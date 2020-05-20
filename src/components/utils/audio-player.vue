@@ -138,8 +138,8 @@
       },
     },
     watch: {
-      file() {
-        this.playing = true;
+      file(value) {
+        if (value) this.playing = true;
       },
       playing(value) {
         if (value) {
