@@ -1,7 +1,7 @@
 <template>
   <article class="expansion-call-info">
     <h1 class="expansion-heading">Call info</h1>
-    <ul class="expansion-variables">
+    <ul class="expansion-variables" v-if="item.variables">
       <li
         class="expansion-variable"
         v-for="(variable, key) of variables"

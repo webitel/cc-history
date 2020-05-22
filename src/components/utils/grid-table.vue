@@ -66,7 +66,7 @@
             </div>
 
             <div class="grid__td__actions">
-              <slot name="actions" :item="row"></slot>
+              <slot name="actions" :item="row" :index="dataKey"></slot>
             </div>
           </div>
 
@@ -159,13 +159,10 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1 1 100%;
-
-    @extend .cc-scrollbar;
-    overflow-x: auto;
   }
 
   .grid {
-    overflow-y: visible;
+    overflow: auto;
 
     &__row-wrap {
       min-width: fit-content;

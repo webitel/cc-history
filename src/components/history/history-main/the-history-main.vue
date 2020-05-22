@@ -3,15 +3,14 @@
     <loader v-if="isLoading"/>
     <grid-table
       v-else
+      ref="grid-table"
       :headers="headers"
       :data="data"
       expanded
       @sort="sort"
     >
       <template slot="actions-header">
-        <filter-fields
-          v-model="headers"
-        />
+        <filter-fields v-model="headers"/>
       </template>
 
       <template slot="direction" slot-scope="{ item }">
@@ -42,47 +41,26 @@
         <grid-member :item="item"/>
       </template>
 
-      <template slot="actions" slot-scope="{ item }">
-        <media-select
+      <template slot="actions" slot-scope="{ item, index }">
+        <media-action
           v-if="item.files"
           class="table-action"
-          :files="item.files"
-          :currently-playing="currentlyPlaying"
-          @play="play"
-        ></media-select>
+          :class="{'active': openedMediaIndex === index}"
+          :is-any-files-playing="isAnyFilesPlaying(item.files)"
+          @click.native.stop="openMedia(index, $event)"
+        ></media-action>
 
-        <button
+        <download-action
           v-if="item.files"
-          class="icon-btn table-action"
-          @click.prevent.stop="downloadRowFiles(item.files)"
-        >
-          <icon>
-            <svg class="icon icon-download_md md">
-              <use xlink:href="#icon-download_md"></use>
-            </svg>
-          </icon>
-        </button>
+          class="table-action"
+          @click.native.stop="downloadRowFiles(item.files)"
+        ></download-action>
       </template>
 
       <template slot="row-expansion" slot-scope="{ item }">
         <div class="expansion__content-wrap">
           <expansion-call-info :item="item"></expansion-call-info>
         </div>
-        <!--        <div class="expansion__comments">-->
-        <!--          <h1 class="expansion__heading">Operator comment</h1>-->
-        <!--          <article class="agent-comment">-->
-        <!--            <div class="agent-comment__pic">-->
-        <!--              <img src="../../../assets/default-avatar.svg" alt="agent pic">-->
-        <!--            </div>-->
-        <!--            <div class="agent-comment__comment">-->
-        <!--              <h2 class="agent-comment__comment__heading">Agent name</h2>-->
-        <!--     <p class="agent-comment__comment__text">Рынок финансовых услуг интересен всем-->
-        <!--                федеральным игрокам. Но возможности мобильных-->
-        <!--          платежей с использованием операторского счета ограничивает конкуренция с-->
-        <!--                традиционным и мобильным банкингом, говорит Анкилов.</p>-->
-        <!--            </div>-->
-        <!--          </article>-->
-        <!--        </div>-->
       </template>
 
       <template slot="pagination">
@@ -94,9 +72,18 @@
       v-show="audioURL"
       :file="audioURL"
       @play="isPlayingNow = true"
-      @pause="isPlayingNow = false"
-      @close="audioURL = ''"
+      @close="closePlayer"
     ></audio-player>
+
+    <media-select
+      ref="media-select"
+      v-show="isMediaSelectOpened"
+      :files="mediaFiles"
+      :currently-playing="currentlyPlaying"
+      @play="play"
+      @close="closeMedia"
+    >
+    </media-select>
   </section>
 </template>
 
@@ -105,8 +92,6 @@
   import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
   import FilterFields from './filters/filter-table-fields.vue';
   import FilterPagination from './filters/filter-pagination.vue';
-  import AudioPlayer from '../../utils/audio-player.vue';
-  import MediaSelect from '../../utils/media-select.vue';
   import Loader from '../../utils/loader.vue';
   import GridAgent from './grid-templates/grid-agent.vue';
   import GridDirection from './grid-templates/grid-direction.vue';
@@ -117,17 +102,21 @@
   import GridTeam from './grid-templates/grid-team.vue';
   import GridTo from './grid-templates/grid-to.vue';
   import GridUser from './grid-templates/grid-user.vue';
+  import MediaAction from './grid-templates/grid-media-action.vue';
+  import DownloadAction from './grid-templates/grid-download-action.vue';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
   import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
-  import mediaMixin from '../../../mixins/files/mediaMixin';
   import downloadRowFilesMixin from '../../../mixins/files/downloadFiles/downloadRowFilesMixin';
+  import playMediaMixin from '../../../mixins/files/mediaMixins/playMediaMixin';
+  import showMediaMixin from '../../../mixins/files/mediaMixins/showMediaMixin';
 
   export default {
     name: 'the-history-main',
     mixins: [
       loadHistoryMixin,
       sortFilterMixin,
-      mediaMixin,
+      playMediaMixin,
+      showMediaMixin,
       downloadRowFilesMixin,
     ],
     components: {
@@ -135,8 +124,6 @@
       ExpansionCallInfo,
       FilterFields,
       FilterPagination,
-      AudioPlayer,
-      MediaSelect,
       Loader,
       GridAgent,
       GridDirection,
@@ -147,12 +134,15 @@
       GridTeam,
       GridTo,
       GridUser,
+      MediaAction,
+      DownloadAction,
     },
   };
 </script>
 
 <style lang="scss" scoped>
   .history-main {
+    position: relative;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
@@ -196,5 +186,10 @@
         @extend .typo-body-md;
       }
     }
+  }
+
+  .media-select {
+    position: absolute;
+    right: 28px;
   }
 </style>
