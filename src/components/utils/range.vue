@@ -84,7 +84,7 @@
 
   .range-input {
     width: 100%;
-    height: calcRem(3px);
+    height: (3px);
     border-radius: $border-radius;
     background: $range-bg;
     outline: none;
@@ -93,8 +93,8 @@
   }
 
   .range-input::-webkit-slider-thumb {
-    width: calcRem(14px);
-    height: calcRem(14px);
+    width: (14px);
+    height: (14px);
     border-radius: 50%;
     background: $accent-color;
     cursor: pointer;

@@ -101,11 +101,11 @@
       margin-right: 28px;
 
       .rows-per-page__text {
-        margin-right: calcRem(5px);
+        margin-right: (5px);
       }
 
       .rows-per-page__input {
-        width: calcRem(50px);
+        width: (50px);
       }
     }
 

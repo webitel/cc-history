@@ -192,14 +192,14 @@
 
   .dt-picker {
     position: relative;
-    width: calcRem(596px);
+    width: (596px);
     display: inline-block;
   }
 
   .dt-picker__label {
     @extend .typo-body-sm;
     display: block;
-    margin-bottom: calcRem(13px);
+    margin-bottom: (13px);
     color: $label-color;
   }
 
@@ -207,8 +207,8 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    padding: calcRem(7px); // 8px - border
-    border: calcRem(1px) solid $input-border-color;
+    padding: (7px); // 8px - border
+    border: (1px) solid $input-border-color;
     border-radius: $border-radius;
     cursor: pointer;
 
@@ -216,18 +216,18 @@
       display: flex;
       align-items: center;
       width: 50%;
-      padding-right: calcRem(20px);
+      padding-right: (20px);
     }
 
     &__icon {
-      width: calcRem(24px);
-      height: calcRem(24px);
+      width: (24px);
+      height: (24px);
       border-radius: 50%;
     }
 
     &__title {
       @extend .typo-heading-sm;
-      margin: 0 calcRem(10px);
+      margin: 0 (10px);
     }
 
     &__value {
@@ -242,14 +242,14 @@
     top: 100%;
     left: 0;
     right: 0;
-    padding: calcRem(20px) calcRem(10px) calcRem(30px);
+    padding: (20px) (10px) (30px);
     background: #fff;
     border-radius: $border-radius;
     z-index: 2;
 
     &__quick-filters {
       text-align: center;
-      margin-bottom: calcRem(37px);
+      margin-bottom: (37px);
     }
 
     &__quick-filter {
@@ -258,7 +258,7 @@
       cursor: pointer;
 
       &:first-child {
-        margin-right: calcRem(30px);
+        margin-right: (30px);
       }
     }
 
@@ -281,9 +281,9 @@
         .vdp-datepicker__calendar {
           display: block !important;
           position: static;
-          width: calcRem(252px);
+          width: (252px);
           margin: auto;
-          line-height: calcRem(36px) !important;
+          line-height: (36px) !important;
           border: none;
           border-radius: $border-radius;
 
@@ -292,12 +292,12 @@
             display: flex;
             justify-content: space-between;
             align-content: center;
-            margin-bottom: calcRem(24px);
+            margin-bottom: (24px);
             line-height: 0;
 
             .day__month_btn {
               @extend .typo-heading-sm;
-              padding-top: calcRem(5px);
+              padding-top: (5px);
             }
 
             .prev, .next {
@@ -312,9 +312,9 @@
               &:after {
                 content: '';
                 position: absolute;
-                top: calcRem(5px);
-                width: calcRem(24px);
-                height: calcRem(24px);
+                top: (5px);
+                width: (24px);
+                height: (24px);
                 background: url("../../assets/arrows/arrow-left.svg") center center;
                 background-size: contain;
                 border: none; // hide default arrows
@@ -332,11 +332,11 @@
           }
 
           .cell {
-            width: calcRem(36px);
-            height: calcRem(36px);
+            width: (36px);
+            height: (36px);
             padding: 0;
-            line-height: calcRem(36px);
-            font-size: calcRem(12px);
+            line-height: (36px);
+            font-size: (12px);
             transition: $transition;
 
             &.day-header {
@@ -383,19 +383,19 @@
       }
 
       .timepicker {
-        margin: calcRem(30px) auto 0;
+        margin: (30px) auto 0;
       }
     }
 
     &__actions {
       text-align: center;
-      margin-top: calcRem(30px);
+      margin-top: (30px);
 
       .cc-btn {
-        min-width: calcRem(110px);
+        min-width: (110px);
 
         &.secondary {
-          margin-right: calcRem(30px);
+          margin-right: (30px);
         }
       }
     }

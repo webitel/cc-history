@@ -68,17 +68,17 @@
     flex-direction: column;
 
     &:first-child {
-      margin-right: calcRem(10px);
+      margin-right: (10px);
     }
   }
 
   .timepicker__label {
     @extend .typo-body-sm;
-    margin-bottom: calcRem(7px);
+    margin-bottom: (7px);
     color: $label-color;
   }
 
   .timepicker__input {
-    width: calcRem(50px);
+    width: (50px);
   }
 </style>

@@ -96,12 +96,12 @@
 <style lang="scss" scoped>
   .media-select {
     position: relative;
-    height: calcRem(24px);
+    height: (24px);
   }
 
   .media-select__list {
     position: absolute;
-    top: calcRem(15px);
+    top: (15px);
     right: 0;
     background: #fff;
     box-shadow: $box-shadow;
@@ -111,8 +111,8 @@
   .media-select__item {
     display: flex;
     align-items: center;
-    min-width: calcRem(200px);
-    padding: calcRem(5px) calcRem(10px);
+    min-width: (200px);
+    padding: (5px) (10px);
     transition: $transition;
 
     &:hover {
@@ -125,7 +125,7 @@
     }
 
     .icon-wrap {
-      margin-right: calcRem(10px);
+      margin-right: (10px);
     }
 
     &__name {
