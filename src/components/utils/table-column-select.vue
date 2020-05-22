@@ -46,6 +46,7 @@
 </template>
 
 <script>
+  import deepCopy from 'deep-copy';
   import PopupContainer from './popup-container.vue';
   import Btn from './btn.vue';
   import Checkbox from './checkbox.vue';
@@ -90,7 +91,7 @@
       },
 
       fillHeadersDraft() {
-        this.draft = [...this.value];
+        this.draft = deepCopy(this.value);
       },
     },
   };
