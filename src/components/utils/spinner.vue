@@ -33,8 +33,8 @@
   }
 
   .spinner {
-    width: calcRem(18px);
-    height: calcRem(18px);
+    width: (18px);
+    height: (18px);
     display: inline-block;
     position: relative;
     text-align: initial;

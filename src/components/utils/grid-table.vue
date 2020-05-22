@@ -87,7 +87,6 @@
 <script>
   import Checkbox from './checkbox.vue';
   import CountBadge from './count-badge.vue';
-  import calcRem from '../../utils/calcRem';
 
   export default {
     name: 'grid-table',
@@ -124,11 +123,11 @@
       },
 
       computeColumnsNumStyle() {
-        let gridTemplateColumns = calcRem('24px'); // checkbox
+        let gridTemplateColumns = '24px'; // checkbox
         this.shownHeaders.forEach((header) => {
           gridTemplateColumns += ` ${header.width}`;
         });
-        gridTemplateColumns += ` ${calcRem('68px')}`; // actions
+        gridTemplateColumns += ` ${'68px'}`; // actions
         return `grid-template-columns: ${gridTemplateColumns}`;
       },
     },
@@ -153,7 +152,7 @@
   $header-color: $label-color;
   $second-row-bg-color: #F9F9F9;
 
-  $min-td-width: calcRem(120px);
+  $min-td-width: (120px);
 
   .grid-table {
     display: flex;
@@ -175,9 +174,9 @@
 
     &__tr {
       display: grid;
-      grid-template-columns: calcRem(24px) repeat(6, 1fr) calcRem(68px);
-      grid-column-gap: calcRem(20px);
-      padding: calcRem(14px) calcRem(10px);
+      grid-template-columns: (24px) repeat(6, 1fr) (68px);
+      grid-column-gap: (20px);
+      padding: (14px) (10px);
       transition: $transition;
 
       &.expanded .grid__td {
@@ -238,7 +237,7 @@
 
     .grid__expansion {
       display: flex;
-      padding: calcRem(30px) calcRem(74px);
+      padding: (30px) (74px);
     }
   }
 
@@ -253,6 +252,6 @@
   }
 
   .pagination {
-    margin-top: calcRem(20px);
+    margin-top: (20px);
   }
 </style>

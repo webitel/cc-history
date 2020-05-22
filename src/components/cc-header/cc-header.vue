@@ -25,7 +25,7 @@
 
 <style lang="scss" scoped>
   .cc-header {
-    padding: calcRem(10px) calcRem(77px);
+    padding: (10px) (77px);
     background: $header-bg-color;
   }
 
@@ -35,7 +35,7 @@
     justify-content: flex-end;
 
     .status-select {
-      margin-left: calcRem(30px);
+      margin-left: (30px);
     }
   }
 </style>

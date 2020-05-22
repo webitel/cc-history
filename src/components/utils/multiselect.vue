@@ -122,18 +122,18 @@
 <style lang="scss">
   @import "../../css/ui-components/multiselect-spinner";
 
-  $select-paddings: calcRem(7px) calcRem(30px) calcRem(7px) calcRem(8px);
+  $select-paddings: (7px) (30px) (7px) (8px);
 
   .hs-multiselect-wrap {
     position: relative;
     width: 100%;
-    height: calcRem(40px);
+    height: (40px);
   }
 
   .hs-multiselect__arrow-down {
     position: absolute;
     top: 50%;
-    right: calcRem(3px);
+    right: (3px);
     transform: translateY(-50%);
     pointer-events: none;
 
@@ -165,7 +165,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: calcRem(40px);
+      height: (40px);
       padding: $select-paddings;
       box-sizing: border-box;
 
@@ -225,7 +225,7 @@
           justify-content: space-between;
           align-items: center;
           padding: $select-paddings;
-          padding-right: calcRem(8px);
+          padding-right: (8px);
           box-sizing: border-box;
         }
 

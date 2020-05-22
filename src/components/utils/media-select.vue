@@ -68,7 +68,7 @@
 <style lang="scss" scoped>
   .media-select {
     position: relative;
-    height: calcRem(24px);
+    height: (24px);
   }
 
   .media-select__list {
@@ -80,12 +80,12 @@
     z-index: 1;
     cursor: pointer;
 
-    .media-select__item {
-      display: flex;
-      align-items: center;
-      min-width: calcRem(200px);
-      padding: calcRem(5px) calcRem(10px);
-      transition: $transition;
+  .media-select__item {
+    display: flex;
+    align-items: center;
+    min-width: (200px);
+    padding: (5px) (10px);
+    transition: $transition;
 
       &:hover {
         background: $list-option__hover;
@@ -96,9 +96,9 @@
         }
       }
 
-      .icon-wrap {
-        margin-right: calcRem(10px);
-      }
+    .icon-wrap {
+      margin-right: (10px);
+    }
 
       &__name {
         white-space: nowrap;

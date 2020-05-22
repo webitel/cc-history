@@ -100,27 +100,27 @@
   .column-select__list {
     @extend .cc-scrollbar;
     max-height: 35vh;
-    min-width: calcRem(550px);
+    min-width: (550px);
     overflow: auto;
 
     &__item {
       display: flex;
       align-items: center;
-      margin-bottom: calcRem(16px);
+      margin-bottom: (16px);
       cursor: pointer;
 
       .checkbox {
-        margin-right: calcRem(10px);
+        margin-right: (10px);
       }
     }
   }
 
   .popup-actions {
     .cc-btn {
-      min-width: calcRem(120px);
+      min-width: (120px);
 
       &.primary {
-        margin-right: calcRem(20px);
+        margin-right: (20px);
       }
     }
   }

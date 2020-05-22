@@ -49,7 +49,7 @@
     top: 50%;
     left: 50%;
     max-height: 80vh;
-    padding: calcRem(30px) calcRem(20px);
+    padding: (30px) (20px);
     background: #fff;
     transform: translate(-50%, -50%);
     border-radius: $border-radius;
@@ -65,7 +65,7 @@
   }
 
   .popup__main {
-    margin: calcRem(30px) 0;
+    margin: (30px) 0;
   }
 
   .popup-actions {

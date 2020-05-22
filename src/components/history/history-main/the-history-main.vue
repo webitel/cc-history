@@ -146,11 +146,11 @@
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    padding: calcRem(20px) calcRem(30px);
+    padding: (20px) (30px);
   }
 
   .table-action {
-    margin-left: calcRem(20px);
+    margin-left: (20px);
 
     &:first-child {
       margin-left: 0;
@@ -163,23 +163,23 @@
   }
 
   .expansion__comments {
-    margin-left: calcRem(60px);
+    margin-left: (60px);
   }
 
   .agent-comment {
     display: flex;
 
     &__pic {
-      width: calcRem(60px);
-      height: calcRem(60px);
-      flex: 0 0 calcRem(60px);
-      margin-right: calcRem(20px);
+      width: (60px);
+      height: (60px);
+      flex: 0 0 (60px);
+      margin-right: (20px);
     }
 
     &__comment {
       &__heading {
         @extend .typo-heading-sm;
-        margin-bottom: calcRem(10px);
+        margin-bottom: (10px);
       }
 
       &__text {

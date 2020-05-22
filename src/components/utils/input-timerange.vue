@@ -109,27 +109,27 @@
     position: relative;
     display: flex;
     align-items: center;
-    padding-right: calcRem(24px + 5px);
+    padding-right: (24px + 5px);
 
     &:first-child {
-      margin-right: calcRem(10px);
+      margin-right: (10px);
     }
   }
 
   .input-timerange__label {
     @extend .typo-heading-sm;
-    margin-right: calcRem(10px);
+    margin-right: (10px);
   }
 
   .timepicker__input {
-    width: calcRem(40px);
-    padding: calcRem(10px) calcRem(5px + 24px) calcRem(10px) calcRem(5px);
+    width: (40px);
+    padding: (10px) (5px + 24px) (10px) (5px);
   }
 
   .input-timerange__reset {
     position: absolute;
     top: 50%;
-    right: calcRem(5px*2 + 24px);
+    right: (5px*2 + 24px);
     transform: translateY(-50%);
   }
 </style>
