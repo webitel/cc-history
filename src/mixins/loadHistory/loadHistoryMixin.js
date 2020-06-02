@@ -40,8 +40,22 @@ export default {
       }
     },
 
+    getDefaultFields() {
+      return this.headers
+        .filter((header) => header.show)
+        .reduce((fields, nextItem, index) => {
+          if (!index) return nextItem.field;
+          return `${fields},${nextItem.field}`;
+        }, '');
+    },
+
     getQueryParams() {
-      const { query } = this.$route;
+      let { query } = this.$route;
+      if (!query.fields) {
+        const fields = this.getDefaultFields();
+        // do not mutate $route: reassign variable instead of query.fields=
+        query = { ...query, fields };
+      }
       return convertQuery(query);
     },
   },
