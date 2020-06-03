@@ -21,6 +21,7 @@ export default {
     docs: 'Docs',
   },
   icon: {
+    refresh: 'Refresh',
     docs: 'Docs',
     logout: 'Logout',
     account: 'Account',

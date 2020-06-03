@@ -197,9 +197,9 @@
   }
 
   .dt-picker__label {
+    @extend .label;
     @extend .typo-body-sm;
     display: block;
-    margin-bottom: (13px);
     color: $label-color;
   }
 
