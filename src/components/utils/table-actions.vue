@@ -21,7 +21,7 @@
     <button
       v-if="filterReset"
       class="icon-btn"
-      @click.prevent=""
+      @click.prevent="$emit('filter-reset')"
     >
       <icon>
         <svg class="icon md">

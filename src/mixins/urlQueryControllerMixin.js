@@ -22,6 +22,16 @@ export default {
     },
 
     /**
+     * Gets value from url query by its property aka filterQuery
+     * @Function
+     * @private
+     * @returns value from query, converted to array or empty array
+     */
+    getValueByQuery({ filterQuery }) {
+      return this.$route.query[filterQuery];
+    },
+
+    /**
      * Sets simple string query to url, calls filter function
      * @Function
      * @public
@@ -65,7 +75,7 @@ export default {
     },
 
     /**
-     * Sets query value to data property
+     * Returns query value to data property
      * Called by query param watcher in components
      * @Function
      * @public
@@ -81,7 +91,7 @@ export default {
 
 
     /**
-     * Sets query array value to data property
+     * Returns query array value to data property
      * Called by query param watcher in components
      * @Function
      * @public
@@ -100,16 +110,6 @@ export default {
         return value.split(separator);
       }
       return null;
-    },
-
-    /**
-     * Gets value from url query by its property aka filterQuery
-     * @Function
-     * @private
-     * @returns value from query, converted to array or empty array
-     */
-    getValueByQuery({ filterQuery }) {
-      return this.$route.query[filterQuery];
     },
   },
 };

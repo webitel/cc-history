@@ -6,8 +6,8 @@
 </template>
 
 <script>
-  import ColumnSelect from '../../../utils/table-column-select.vue';
-  import valueFilterMixin from '../../../../mixins/filters/valueFilterMixin';
+  import ColumnSelect from '../utils/table-column-select.vue';
+  import valueFilterMixin from '../../mixins/filters/valueFilterMixin';
 
   export default {
     name: 'filter-table-fields',

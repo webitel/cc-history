@@ -103,17 +103,17 @@
 </template>
 
 <script>
-  import FilterDatetime from './filters/filter-datetime.vue';
-  import FilterType from './filters/filter-type.vue';
-  import FilterDirection from './filters/filter-direction.vue';
-  import FilterUser from './filters/filter-user.vue';
-  import FilterGateway from './filters/filter-gateway.vue';
-  import FilterAgent from './filters/filter-agent.vue';
-  import FilterTeam from './filters/filter-queue.vue';
-  import FilterQueue from './filters/filter-team.vue';
-  import FilterCause from './filters/filter-cause.vue';
+  import FilterDatetime from '../../filters/filter-datetime.vue';
+  import FilterType from '../../filters/filter-type.vue';
+  import FilterDirection from '../../filters/filter-direction.vue';
+  import FilterUser from '../../filters/filter-user.vue';
+  import FilterGateway from '../../filters/filter-gateway.vue';
+  import FilterAgent from '../../filters/filter-agent.vue';
+  import FilterTeam from '../../filters/filter-queue.vue';
+  import FilterQueue from '../../filters/filter-team.vue';
+  import FilterCause from '../../filters/filter-cause.vue';
   // import FilterTags from './filters/filter-tags.vue';
-  import FilterDuration from './filters/filter-duration.vue';
+  import FilterDuration from '../../filters/filter-duration.vue';
   import TableActions from '../../utils/table-actions.vue';
 
   export default {
@@ -146,6 +146,7 @@
       openColumnSelect() {
       },
       resetFilters() {
+        this.$router.replace({ query: null });
       },
       handleExport() {
       },

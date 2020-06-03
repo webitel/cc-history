@@ -2,7 +2,7 @@
   <multiselect
     v-model="value"
     :fetch-method="fetch"
-    :label="'Team'"
+    :label="'Queue'"
     :api-mode="apiMode"
     :track-by="trackBy"
     @closed="setQueryArray({ value, filterQuery, queriedProp })"
@@ -10,20 +10,20 @@
 </template>
 
 <script>
-  import apiFilterMixin from '../../../../mixins/filters/apiFilterMixin';
-  import { fetchTeams, getSelectedTeams } from '../../../../api/filter-getters/teamFilter';
+  import apiFilterMixin from '../../mixins/filters/apiFilterMixin';
+  import { fetchQueues, getSelectedQueues } from '../../api/filter-getters/queueFilter';
 
   export default {
-    name: 'filter-team',
+    name: 'filter-queue',
     mixins: [apiFilterMixin],
 
     data: () => ({
-      filterQuery: 'team',
+      filterQuery: 'queue',
     }),
 
     methods: {
-      fetch: fetchTeams,
-      fetchSelected: getSelectedTeams,
+      fetch: fetchQueues,
+      fetchSelected: getSelectedQueues,
     },
   };
 </script>

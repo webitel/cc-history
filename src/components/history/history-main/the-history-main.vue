@@ -90,8 +90,8 @@
 <script>
   import GridTable from '../../utils/grid-table.vue';
   import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
-  import FilterFields from './filters/filter-table-fields.vue';
-  import FilterPagination from './filters/filter-pagination.vue';
+  import FilterFields from '../../filters/filter-table-fields.vue';
+  import FilterPagination from '../../filters/filter-pagination.vue';
   import Loader from '../../utils/loader.vue';
   import GridAgent from './grid-templates/grid-agent.vue';
   import GridDirection from './grid-templates/grid-direction.vue';
