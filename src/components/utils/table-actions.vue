@@ -42,7 +42,9 @@
     </button>
     <button
       v-if="refresh"
-      class="icon-btn">
+      class="icon-btn"
+      @click.prevent="$emit('refresh')"
+    >
       <icon>
         <svg class="icon md">
           <use xlink:href="#icon-refresh_md"></use>

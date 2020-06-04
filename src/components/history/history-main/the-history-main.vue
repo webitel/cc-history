@@ -84,6 +84,7 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex';
   import GridTable from '../../utils/grid-table.vue';
   import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
   import FilterPagination from '../../filters/filter-pagination.vue';
@@ -100,7 +101,6 @@
   import MediaAction from './grid-templates/grid-media-action.vue';
   import DownloadAction from './grid-templates/grid-download-action.vue';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
-  import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
   import downloadRowFilesMixin from '../../../mixins/files/downloadFiles/downloadRowFilesMixin';
   import playMediaMixin from '../../../mixins/files/mediaMixins/playMediaMixin';
   import showMediaMixin from '../../../mixins/files/mediaMixins/showMediaMixin';
@@ -108,7 +108,6 @@
   export default {
     name: 'the-history-main',
     mixins: [
-      loadHistoryMixin,
       sortFilterMixin,
       playMediaMixin,
       showMediaMixin,
@@ -130,6 +129,30 @@
       GridUser,
       MediaAction,
       DownloadAction,
+    },
+
+    watch: {
+      '$route.query': {
+        async handler() {
+          await this.loadDataList();
+        },
+        immediate: true,
+      },
+    },
+
+    computed: {
+      ...mapState('history', {
+        data: (state) => state.data,
+        headers: (state) => state.headers,
+        isNext: (state) => state.isNext,
+        isLoading: (state) => state.isLoading,
+      }),
+    },
+
+    methods: {
+      ...mapActions('history', {
+        loadDataList: 'LOAD_DATA_LIST',
+      }),
     },
   };
 </script>

@@ -107,6 +107,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
   import FilterFields from '../../filters/filter-table-fields.vue';
   import FilterDatetime from '../../filters/filter-datetime.vue';
   import FilterType from '../../filters/filter-type.vue';
@@ -145,10 +146,15 @@
     }),
 
     methods: {
+      ...mapActions('history', {
+        loadDataList: 'LOAD_DATA_LIST',
+      }),
+
       expandFilters() {
         this.isOpened = !this.isOpened;
       },
       refreshData() {
+        this.loadDataList();
       },
       openColumnSelect() {
         this.isFilterFieldsOpened = true;

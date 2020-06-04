@@ -2,8 +2,8 @@
 
 import JSZip from 'jszip';
 import { mapGetters } from 'vuex';
-import { getHistory } from '../../../api/history/history';
-import convertQuery from '../../loadHistory/loadHistoryScripts';
+import getHistory from '../../../api/history/history';
+import { convertQuery } from '../../../store/modules/history/utils/loadHistoryScripts';
 import { addItemsFilesToZip, generateAndSaveZip } from './downloadFilesScripts';
 
 // function to bind component "this" for filterCounter

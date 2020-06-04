@@ -1,5 +1,5 @@
-import { kebabToCamel } from '../../api/utils/caseConverters';
-import { SortSymbols } from '../filters/sortFilterMixin/sortFilterMixin';
+import { kebabToCamel } from '../../../../api/utils/caseConverters';
+import { SortSymbols } from '../../../../mixins/filters/sortFilterMixin/sortFilterMixin';
 
 
 // - create set to remove created_at duplicates
@@ -80,7 +80,7 @@ const parseQuery = ({ query, keys }) => {
  * @public
  * @returns {Object} of params to send a request
  */
-const convertQuery = (query) => {
+export const convertQuery = (query) => {
   const filledQueryKeysList = filterEmptyQueries(query);
   return parseQuery({
     query,
@@ -88,4 +88,10 @@ const convertQuery = (query) => {
   });
 };
 
-export default convertQuery;
+export const getDefaultFields = (headers) => (
+  headers
+    .filter((header) => header.show)
+    .reduce((fields, nextItem, index) => {
+      if (!index) return nextItem.field;
+      return `${fields},${nextItem.field}`;
+    }, ''));

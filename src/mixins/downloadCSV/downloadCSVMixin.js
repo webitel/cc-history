@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop  */
 
 import { mapGetters } from 'vuex';
-import { getHistory } from '../../api/history/history';
+import getHistory from '../../api/history/history';
 import historyHeaders from '../../store/modules/history/utils/historyHeaders';
-import convertQuery from '../loadHistory/loadHistoryScripts';
+import { convertQuery } from '../../store/modules/history/utils/loadHistoryScripts';
 import download from '../../utils/downloadFile';
 
 const getDefaultFields = () => historyHeaders
