@@ -1,11 +1,13 @@
 <template>
   <column-select
     :value="headers"
-    @change="setValue"
+    @change="change"
+    @close="close"
   ></column-select>
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex';
   import ColumnSelect from '../utils/table-column-select.vue';
   import valueFilterMixin from '../../mixins/filters/valueFilterMixin';
 
@@ -15,12 +17,6 @@
     components: {
       ColumnSelect,
     },
-    props: {
-      headers: {
-        type: Array,
-        required: true,
-      },
-    },
 
     data: () => ({
       filterQuery: 'fields',
@@ -28,12 +24,26 @@
       queriedProp: 'field',
     }),
 
-    model: {
-      prop: 'headers',
-      event: 'change',
+    computed: {
+      ...mapState('history', {
+        headers: (state) => state.headers,
+      }),
     },
 
     methods: {
+      ...mapActions('history', {
+        setHeaders: 'SET_HEADERS',
+      }),
+
+      change(headers) {
+        this.setValue(headers);
+        this.close();
+      },
+
+      close() {
+        this.$emit('close');
+      },
+
       // overrides valueFilterMixin method
       restore({ filterQuery }) {
         let value = this.$route.query[filterQuery];
@@ -53,7 +63,7 @@
           ...header,
           show: !!value.includes(header.field),
         }));
-        this.$emit('change', headers);
+        this.setHeaders(headers);
       },
 
       setValue(headers) {
@@ -66,7 +76,7 @@
         };
         this.setQueryArray(params);
         this.setToLocalStorage(params);
-        this.$emit('change', headers);
+        this.setHeaders(headers);
       },
 
       getFromLocalStorage({ filterQuery }) {

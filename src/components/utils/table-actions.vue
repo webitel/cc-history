@@ -31,7 +31,9 @@
     </button>
     <button
       v-if="columnSelect"
-      class="icon-btn history-filters__icon-btn">
+      class="icon-btn history-filters__icon-btn"
+      @click.prevent="$emit('column-select')"
+    >
       <icon>
         <svg class="icon md">
           <use xlink:href="#icon-col-select_md"></use>

@@ -7,20 +7,17 @@
 
 <script>
   import Search from '../utils/search-input.vue';
-  import filterValueBindingMixin from '../../mixins/filters/filterValueBindingMixin';
   import valueFilterMixin from '../../mixins/filters/valueFilterMixin';
 
   export default {
     name: 'filter-search',
-    mixins: [
-      valueFilterMixin,
-      filterValueBindingMixin,
-    ],
+    mixins: [valueFilterMixin],
     components: {
       Search,
     },
 
     data: () => ({
+      value: '',
       filterQuery: 'search',
     }),
 

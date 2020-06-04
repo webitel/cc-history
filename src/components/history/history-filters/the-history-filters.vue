@@ -1,5 +1,9 @@
 <template>
   <section class="history-section history-filters">
+    <filter-fields
+      v-show="isFilterFieldsOpened"
+      @close="isFilterFieldsOpened = false"
+    ></filter-fields>
     <form class="history-filters__filters">
       <!--      dt picker-->
       <div class="col-md-12 col-lg-8 col-xl-6">
@@ -94,7 +98,7 @@
       :is-settings-active="isOpened"
       @settings="expandFilters"
       @refresh="refreshData"
-      @columns-change="openColumnSelect"
+      @column-select="openColumnSelect"
       @filter-reset="resetFilters"
       @export="handleExport"
       @import="handleImport"
@@ -103,6 +107,7 @@
 </template>
 
 <script>
+  import FilterFields from '../../filters/filter-table-fields.vue';
   import FilterDatetime from '../../filters/filter-datetime.vue';
   import FilterType from '../../filters/filter-type.vue';
   import FilterDirection from '../../filters/filter-direction.vue';
@@ -119,6 +124,7 @@
   export default {
     name: 'the-history-filters',
     components: {
+      FilterFields,
       FilterDatetime,
       FilterType,
       FilterDirection,
@@ -135,6 +141,7 @@
 
     data: () => ({
       isOpened: false,
+      isFilterFieldsOpened: false,
     }),
 
     methods: {
@@ -144,6 +151,7 @@
       refreshData() {
       },
       openColumnSelect() {
+        this.isFilterFieldsOpened = true;
       },
       resetFilters() {
         this.$router.replace({ query: null });

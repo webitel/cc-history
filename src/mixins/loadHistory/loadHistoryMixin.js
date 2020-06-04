@@ -1,10 +1,8 @@
 import { mapState, mapActions } from 'vuex';
 import convertQuery from './loadHistoryScripts';
-import historyHeaders from './historyHeaders';
 
 export default {
   data: () => ({
-    headers: historyHeaders,
     isLoading: false,
     isNext: false,
   }),
@@ -21,6 +19,7 @@ export default {
   computed: {
     ...mapState('history', {
       data: (state) => state.data,
+      headers: (state) => state.headers,
     }),
   },
 

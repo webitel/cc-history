@@ -9,10 +9,6 @@
       expanded
       @sort="sort"
     >
-      <template slot="actions-header">
-        <filter-fields v-model="headers"/>
-      </template>
-
       <template slot="direction" slot-scope="{ item }">
         <grid-direction :item="item"/>
       </template>
@@ -90,7 +86,6 @@
 <script>
   import GridTable from '../../utils/grid-table.vue';
   import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
-  import FilterFields from '../../filters/filter-table-fields.vue';
   import FilterPagination from '../../filters/filter-pagination.vue';
   import Loader from '../../utils/loader.vue';
   import GridAgent from './grid-templates/grid-agent.vue';
@@ -122,7 +117,6 @@
     components: {
       GridTable,
       ExpansionCallInfo,
-      FilterFields,
       FilterPagination,
       Loader,
       GridAgent,

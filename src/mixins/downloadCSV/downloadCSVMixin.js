@@ -2,7 +2,7 @@
 
 import { mapGetters } from 'vuex';
 import { getHistory } from '../../api/history/history';
-import historyHeaders from '../loadHistory/historyHeaders';
+import historyHeaders from '../../store/modules/history/utils/historyHeaders';
 import convertQuery from '../loadHistory/loadHistoryScripts';
 import download from '../../utils/downloadFile';
 
