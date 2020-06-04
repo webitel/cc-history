@@ -25,13 +25,13 @@
     >
       <icon>
         <svg class="icon md">
-          <use xlink:href="#icon-close_md"></use>
+          <use xlink:href="#icon-reset-filters_md"></use>
         </svg>
       </icon>
     </button>
     <button
       v-if="columnSelect"
-      class="icon-btn history-filters__icon-btn"
+      class="icon-btn"
       @click.prevent="$emit('column-select')"
     >
       <icon>
