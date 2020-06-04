@@ -21,6 +21,7 @@ export default {
     docs: 'Docs',
   },
   icon: {
+    resetFilters: 'Reset filters',
     refresh: 'Refresh',
     docs: 'Docs',
     logout: 'Logout',
