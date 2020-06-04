@@ -52,8 +52,9 @@ $input-border-color__active: #000000;
 .cc-input__input {
   @extend .typo-input;
   width: 100%;
-  margin: 0 (8px);
+  margin: 0 8px;
   border: none;
+  outline: none;
 }
 
 .cc-input__icon {

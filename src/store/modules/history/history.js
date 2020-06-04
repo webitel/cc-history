@@ -17,7 +17,7 @@ const getters = {
 const actions = {
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = context.dispatch('GET_QUERY_PARAMS');
+    const params = await context.dispatch('GET_QUERY_PARAMS');
     try {
       const { items, next } = await getHistory(params);
       context.commit('SET_DATA_LIST', items);

@@ -69,7 +69,7 @@ const parseQuery = ({ query, keys }) => {
       value = handleSortQuery(value);
     } else if (key === 'fields') value = handleFieldsQuery(value);
 
-    if (value.includes('|')) value = value.split('|');
+    if (value.includes('|') && key !== 'search') value = value.split('|');
     result[kebabToCamel(key)] = value;
   });
   return result;
