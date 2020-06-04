@@ -1,6 +1,7 @@
 <template>
   <div class="dt-picker" v-clickaway="close">
-    <label class="dt-picker__label">Date & Time:</label>
+    <label class="dt-picker__label">{{label}}</label>
+
     <div
       class="dt-picker__preview"
       tabindex="0"
@@ -8,72 +9,47 @@
       @keyup.enter="isOpened = true"
     >
       <div class="dt-picker__preview__wrap">
-        <icon class="dt-picker__preview__icon">
+        <icon class="dt-picker__preview-icon">
           <svg class="icon icon-calendar_md md">
             <use xlink:href="#icon-calendar_md"></use>
           </svg>
         </icon>
-        <div class="dt-picker__preview__title">From:</div>
-        <div class="dt-picker__preview__value">{{computeFrom}}</div>
+        <div class="dt-picker__preview__title">{{previewLabel}}</div>
+        <div class="dt-picker__preview__value">{{displayValue}}</div>
       </div>
-      <div class="dt-picker__preview__wrap">
-        <icon class="dt-picker__preview__icon">
-          <svg class="icon icon-calendar_md md">
-            <use xlink:href="#icon-calendar_md"></use>
-          </svg>
-        </icon>
-        <div class="dt-picker__preview__title">To:</div>
-        <div class="dt-picker__preview__value">{{computeTo}}</div>
-      </div>
-      <icon class="dt-picker__preview__icon">
-        <svg class="icon icon-arrow-down_md md">
+      <icon class="dt-picker__preview-icon dt-picker__preview-arrow">
+        <svg class="icon md">
           <use xlink:href="#icon-arrow-down_md"></use>
         </svg>
       </icon>
     </div>
+
     <div
       class="dt-picker__form"
       v-show="isOpened"
     >
-      <div class="dt-picker__form__quick-filters">
-        <span class="dt-picker__form__quick-filter" @click="setLastHour">
+      <div class="dt-picker__quick-filters">
+        <span class="dt-picker__quick-filter" @click="setLastHour">
           Last hour
         </span>
-        <span class="dt-picker__form__quick-filter" @click="setLastDay">
+        <span class="dt-picker__quick-filter" @click="setLastDay">
           Last day
         </span>
       </div>
-      <div class="dt-picker__form__wrap">
-        <div class="dt-picker__form__col">
-          <datepicker
-            class="datepicker"
-            id="datepicker-from"
-            :value="draftFrom"
-            :maximum-view="'day'"
-            monday-first
-            @input="setFrom($event.getTime())"
-          ></datepicker>
-          <timepicker
-            :value="draftFrom"
-            @input="setFrom"
-          ></timepicker>
-        </div>
-        <div class="dt-picker__form__col">
-          <datepicker
-            class="datepicker"
-            id="datepicker-to"
-            :value="draftTo"
-            :maximum-view="'day'"
-            monday-first
-            @input="setTo($event.getTime())"
-          ></datepicker>
-          <timepicker
-            :value="draftTo"
-            @input="setTo"
-          ></timepicker>
-        </div>
+      <div class="dt-picker__form-wrap">
+        <datepicker
+          class="datepicker"
+          :value="draft"
+          :maximum-view="'day'"
+          monday-first
+          @input="setDraft($event.getTime())"
+        ></datepicker>
+        <timepicker
+          :value="draft"
+          @input="setDraft"
+        ></timepicker>
       </div>
-      <div class="dt-picker__form__actions">
+      <div class="dt-picker__actions">
         <btn class="secondary" @click.native="close">Cancel</btn>
         <btn class="primary" @click.native="input">Add</btn>
       </div>
@@ -100,40 +76,36 @@
 
     props: {
       value: {
-        type: Object,
+        type: Number,
         required: true,
+      },
+      label: {
+        type: String,
+      },
+      previewLabel: {
+        type: String,
       },
     },
 
     watch: {
-      value() {
-        this.setDraft();
+      isOpened: {
+        handler() {
+          this.draft = this.value;
+        },
+        immediate: true,
       },
     },
 
     data: () => ({
       isOpened: false,
-      draftFrom: 0,
-      draftTo: 0,
+      draft: 0,
     }),
-
-    created() {
-      this.setDraft();
-    },
 
     computed: {
       // prop value representation on picker preview
-      computeFrom() {
-        const date = new Date(this.value.from).toLocaleDateString();
-        const time = new Date(this.value.from).toTimeString()
-          .slice(0, 5);
-        return `${date} ${time}`;
-      },
-
-      // prop value representation on picker preview
-      computeTo() {
-        const date = new Date(this.value.to).toLocaleDateString();
-        const time = new Date(this.value.to).toTimeString()
+      displayValue() {
+        const date = new Date(this.value).toLocaleDateString();
+        const time = new Date(this.value).toTimeString()
           .slice(0, 5);
         return `${date} ${time}`;
       },
@@ -141,10 +113,7 @@
 
     methods: {
       input() {
-        this.$emit('input', {
-          from: this.draftFrom,
-          to: this.draftTo,
-        });
+        this.$emit('input', this.draft);
         this.close();
       },
 
@@ -152,16 +121,8 @@
         this.isOpened = false;
       },
 
-      setDraft() {
-        this.draftFrom = this.value.from;
-        this.draftTo = this.value.to;
-      },
-
-      setFrom(time) {
-        this.draftFrom = time;
-      },
-      setTo(time) {
-        this.draftTo = time;
+      setDraft(value) {
+        this.draft = value;
       },
 
       setLastHour() {
@@ -192,7 +153,6 @@
 
   .dt-picker {
     position: relative;
-    width: (596px);
     display: inline-block;
   }
 
@@ -207,32 +167,39 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    padding: (7px); // 8px - border
-    border: (1px) solid $input-border-color;
+    padding: 7px; // 8px - border
+    border: 1px solid $input-border-color;
     border-radius: $border-radius;
     cursor: pointer;
 
     &__wrap {
       display: flex;
       align-items: center;
-      width: 50%;
-      padding-right: (20px);
-    }
-
-    &__icon {
-      width: (24px);
-      height: (24px);
-      border-radius: 50%;
     }
 
     &__title {
       @extend .typo-heading-sm;
-      margin: 0 (10px);
+      margin: 0 10px;
     }
 
     &__value {
       @extend .typo-body-sm;
       color: $date-value-color;
+    }
+
+    .dt-picker__preview-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .dt-picker__preview-arrow {
+      margin-left: auto;
+
+      .icon {
+        fill: #000;
+        stroke: #000;
+      }
     }
   }
 
@@ -246,157 +213,150 @@
     background: #fff;
     border-radius: $border-radius;
     z-index: 2;
+  }
 
-    &__quick-filters {
-      text-align: center;
-      margin-bottom: (37px);
+  .dt-picker__quick-filters {
+    text-align: center;
+    margin-bottom: (37px);
+  }
+
+  .dt-picker__quick-filter {
+    @extend .typo-body-sm;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:first-child {
+      margin-right: (30px);
     }
+  }
 
-    &__quick-filter {
-      @extend .typo-body-sm;
-      text-decoration: underline;
-      cursor: pointer;
+  .dt-picker__form-wrap {
+    display: flex;
+    flex-direction: column;
 
-      &:first-child {
-        margin-right: (30px);
+    .datepicker {
+      input {
+        display: none;
       }
-    }
 
-    &__wrap {
-      display: flex;
-    }
-
-    &__col {
-      width: 50%;
-
-      &:first-child {
-        border-right: 1px solid $input-border-color;
-      }
-
-      .datepicker {
-        input {
-          display: none;
-        }
-
-        .vdp-datepicker__calendar {
-          display: block !important;
-          position: static;
-          width: (252px);
-          margin: auto;
-          line-height: (36px) !important;
-          border: none;
-          border-radius: $border-radius;
+      .vdp-datepicker__calendar {
+        display: block !important;
+        position: static;
+        width: (252px);
+        margin: auto;
+        line-height: (36px) !important;
+        border: none;
+        border-radius: $border-radius;
 
 
-          header {
-            display: flex;
-            justify-content: space-between;
-            align-content: center;
-            margin-bottom: (24px);
-            line-height: 0;
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-content: center;
+          margin-bottom: (24px);
+          line-height: 0;
 
-            .day__month_btn {
-              @extend .typo-heading-sm;
-              padding-top: (5px);
+          .day__month_btn {
+            @extend .typo-heading-sm;
+            padding-top: (5px);
+          }
+
+          .prev, .next {
+            float: none;
+            text-indent: 0;
+            color: transparent;
+
+            &:hover {
+              background-color: transparent !important;
             }
 
-            .prev, .next {
-              float: none;
-              text-indent: 0;
-              color: transparent;
+            &:after {
+              content: '';
+              position: absolute;
+              top: (5px);
+              width: (24px);
+              height: (24px);
+              background: url("../../assets/arrows/arrow-left.svg") center center;
+              background-size: contain;
+              border: none; // hide default arrows
+              transform: translateX(-50%);
+            }
+
+            &:hover:after {
+              color: #000;
+            }
+          }
+
+          .next:after {
+            transform: translateX(-50%) rotate(180deg);
+          }
+        }
+
+        .cell {
+          width: (36px);
+          height: (36px);
+          padding: 0;
+          line-height: (36px);
+          font-size: (12px);
+          transition: $transition;
+
+          &.day-header {
+            letter-spacing: 0.4px;
+            color: $icon-color !important;
+          }
+
+          &.day {
+            border-radius: 50%;
+
+            &.selected {
+              background: $accent-color;
 
               &:hover {
-                background-color: transparent !important;
-              }
-
-              &:after {
-                content: '';
-                position: absolute;
-                top: (5px);
-                width: (24px);
-                height: (24px);
-                background: url("../../assets/arrows/arrow-left.svg") center center;
-                background-size: contain;
-                border: none; // hide default arrows
-                transform: translateX(-50%);
-              }
-
-              &:hover:after {
-                color: #000;
+                background: $accent-color !important;
               }
             }
 
-            .next:after {
-              transform: translateX(-50%) rotate(180deg);
+            &:not(.blank):not(.disabled).day:hover,
+            &:not(.blank):not(.disabled).month:hover,
+            &:not(.blank):not(.disabled).year:hover {
+              background: #F2F2F2;
+              border-color: transparent;
             }
           }
 
-          .cell {
-            width: (36px);
-            height: (36px);
-            padding: 0;
-            line-height: (36px);
-            font-size: (12px);
-            transition: $transition;
+          &.month {
+            &.selected {
+              border-bottom-color: $label-color;
 
-            &.day-header {
-              letter-spacing: 0.4px;
-              color: $icon-color !important;
-            }
-
-            &.day {
-              border-radius: 50%;
-
-              &.selected {
-                background: $accent-color;
-
-                &:hover {
-                  background: $accent-color !important;
-                }
-              }
-
-              &:not(.blank):not(.disabled).day:hover,
-              &:not(.blank):not(.disabled).month:hover,
-              &:not(.blank):not(.disabled).year:hover {
-                background: #F2F2F2;
-                border-color: transparent;
+              &:hover {
+                border-bottom-color: $accent-color !important;
               }
             }
 
-            &.month {
-              &.selected {
-                border-bottom-color: $label-color;
-
-                &:hover {
-                  border-bottom-color: $accent-color !important;
-                }
-              }
-
-              &:not(.blank):not(.disabled).day:hover,
-              &:not(.blank):not(.disabled).month:hover,
-              &:not(.blank):not(.disabled).year:hover {
-                border-bottom-color: $icon-color !important;
-              }
+            &:not(.blank):not(.disabled).day:hover,
+            &:not(.blank):not(.disabled).month:hover,
+            &:not(.blank):not(.disabled).year:hover {
+              border-bottom-color: $icon-color !important;
             }
           }
         }
-      }
-
-      .timepicker {
-        margin: (30px) auto 0;
       }
     }
 
-    &__actions {
-      text-align: center;
-      margin-top: (30px);
+    .timepicker {
+      margin: 30px auto 0;
+    }
+  }
 
-      .cc-btn {
-        min-width: (110px);
+  .dt-picker__actions {
+    text-align: center;
+    margin-top: (30px);
 
-        &.secondary {
-          margin-right: (30px);
-        }
+    .cc-btn {
+      min-width: (110px);
+
+      &.secondary {
+        margin-right: (30px);
       }
     }
   }

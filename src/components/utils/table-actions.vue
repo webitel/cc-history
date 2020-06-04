@@ -1,8 +1,10 @@
 <template>
   <section class="table-actions">
     <button
-      v-if="importBtn"
-      class="icon-btn">
+      v-if="this.import"
+      class="icon-btn"
+      @click.prevent="$emit('import')"
+    >
       <icon>
         <svg class="icon md">
           <use xlink:href="#icon-download_md"></use>
@@ -10,8 +12,10 @@
       </icon>
     </button>
     <button
-      v-if="exportBtn"
-      class="icon-btn">
+      v-if="this.export"
+      class="icon-btn"
+      @click.prevent="$emit('export')"
+    >
       <icon>
         <svg class="icon md">
           <use xlink:href="#icon-upload_md"></use>
@@ -86,12 +90,11 @@
         type: Boolean,
         default: false,
       },
-      // export and import keywords are reserved
-      exportBtn: {
+      export: {
         type: Boolean,
         default: false,
       },
-      importBtn: {
+      import: {
         type: Boolean,
         default: false,
       },
