@@ -1,8 +1,8 @@
 <template>
   <dt-picker
     v-model="value"
-    :label="'From'"
-    :preview-label="'Date & Time:'"
+    :label="$t('fields.from')"
+    :preview-label="$t('fields.dateTime')"
     @input="setQueryValue({ filterQuery, value: `${$event}` })"
   ></dt-picker>
 </template>

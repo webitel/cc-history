@@ -2,7 +2,7 @@
   <multiselect
     v-model="value"
     :fetch-method="fetch"
-    :label="'Team'"
+    :label="$t('fields.team')"
     :api-mode="apiMode"
     :track-by="trackBy"
     @closed="setQueryArray({ value, filterQuery, queriedProp })"

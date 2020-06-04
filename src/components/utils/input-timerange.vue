@@ -7,7 +7,7 @@
         @submit.prevent="setFrom($event.target[0].value)"
         @reset="setFrom('')"
       >
-        <span class="input-timerange__label">From: </span>
+        <span class="input-timerange__label">{{$t('reusable.from')}}: </span>
         <input
           class="input__short timepicker__input"
           :value="computeFrom"
@@ -27,7 +27,7 @@
         @submit.prevent="setTo($event.target[0].value)"
         @reset="setFrom('')"
       >
-        <span class="input-timerange__label">To: </span>
+        <span class="input-timerange__label">{{$t('reusable.to')}}: </span>
         <input
           class="input__short timepicker__input"
           :value="computeTo"

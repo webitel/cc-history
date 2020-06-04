@@ -1,6 +1,6 @@
 <template>
   <div class="dt-picker" v-clickaway="close">
-    <label class="dt-picker__label">Date & Time:</label>
+    <label class="dt-picker__label">{{$t('components.dtPicker.dateTime')}}</label>
     <div
       class="dt-picker__preview"
       tabindex="0"
@@ -13,7 +13,7 @@
             <use xlink:href="#icon-calendar_md"></use>
           </svg>
         </icon>
-        <div class="dt-picker__preview__title">From:</div>
+        <div class="dt-picker__preview__title">{{$t('reusable.from')}}</div>
         <div class="dt-picker__preview__value">{{computeFrom}}</div>
       </div>
       <div class="dt-picker__preview__wrap">
@@ -22,7 +22,7 @@
             <use xlink:href="#icon-calendar_md"></use>
           </svg>
         </icon>
-        <div class="dt-picker__preview__title">To:</div>
+        <div class="dt-picker__preview__title">{{$t('reusable.to')}}</div>
         <div class="dt-picker__preview__value">{{computeTo}}</div>
       </div>
       <icon class="dt-picker__preview__icon">
@@ -37,10 +37,10 @@
     >
       <div class="dt-picker__form__quick-filters">
         <span class="dt-picker__form__quick-filter" @click="setLastHour">
-          Last hour
+          {{$t('components.dtPicker.lastHour')}}
         </span>
         <span class="dt-picker__form__quick-filter" @click="setLastDay">
-          Last day
+          {{$t('components.dtPicker.lastDay')}}
         </span>
       </div>
       <div class="dt-picker__form__wrap">
@@ -74,8 +74,8 @@
         </div>
       </div>
       <div class="dt-picker__form__actions">
-        <btn class="secondary" @click.native="close">Cancel</btn>
-        <btn class="primary" @click.native="input">Add</btn>
+        <btn class="secondary" @click.native="close">{{$t('reusable.cancel')}}</btn>
+        <btn class="primary" @click.native="input">{{$t('reusable.add')}}</btn>
       </div>
     </div>
   </div>
