@@ -52,7 +52,7 @@ const handleSortQuery = (value) => {
  */
 const handleFieldsQuery = (value) => {
   let result = datetimeToCreatedAt(value);
-  result += ',files';
+  result += ',variables,files';
   return removeDuplicates(result);
 };
 
