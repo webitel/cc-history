@@ -1,5 +1,9 @@
 <template>
   <section class="history-section history-filters">
+    <filter-fields
+      v-show="isFilterFieldsOpened"
+      @close="isFilterFieldsOpened = false"
+    ></filter-fields>
     <form class="history-filters__filters">
       <!--      dt picker-->
       <div class="col-md-12 col-lg-8 col-xl-6">
@@ -71,12 +75,12 @@
         <filter-duration/>
       </div>
       <!--     [ARRAY]  tags multi select-->
-<!--      <div-->
-<!--        class="col-md-6 col-lg-4 col-xl-3"-->
-<!--        :class="{'d-md-none': !isOpened}"-->
-<!--      >-->
-<!--        <filter-tags/>-->
-<!--      </div>-->
+      <!--      <div-->
+      <!--        class="col-md-6 col-lg-4 col-xl-3"-->
+      <!--        :class="{'d-md-none': !isOpened}"-->
+      <!--      >-->
+      <!--        <filter-tags/>-->
+      <!--      </div>-->
       <!--     [ARRAY]  hangup cause multi select-->
       <div
         class="col-md-6 col-lg-4 col-xl-3"
@@ -85,52 +89,43 @@
         <filter-cause/>
       </div>
     </form>
-    <div class="history-filters__controls">
-      <button
-        class="icon-btn history-filters__icon-btn"
-        :class="{'active': isOpened}"
-        @click.prevent="isOpened = !isOpened"
-      >
-        <icon>
-          <svg class="icon icon-filter_md md">
-            <use xlink:href="#icon-filter_md"></use>
-          </svg>
-        </icon>
-      </button>
-      <button v-if="false" class="icon-btn history-filters__icon-btn">
-        <icon>
-          <svg class="icon icon-download_md md">
-            <use xlink:href="#icon-download_md"></use>
-          </svg>
-        </icon>
-      </button>
-      <button v-if="false" class="icon-btn history-filters__icon-btn">
-        <icon>
-          <svg class="icon icon-upload_md md">
-            <use xlink:href="#icon-upload_md"></use>
-          </svg>
-        </icon>
-      </button>
-    </div>
+    <table-actions
+      settings
+      column-select
+      filter-reset
+      export-btn
+      import-btn
+      :is-settings-active="isOpened"
+      @settings="expandFilters"
+      @refresh="refreshData"
+      @column-select="openColumnSelect"
+      @filter-reset="resetFilters"
+      @export="handleExport"
+      @import="handleImport"
+    ></table-actions>
   </section>
 </template>
 
 <script>
-  import FilterDatetime from './filters/filter-datetime.vue';
-  import FilterType from './filters/filter-type.vue';
-  import FilterDirection from './filters/filter-direction.vue';
-  import FilterUser from './filters/filter-user.vue';
-  import FilterGateway from './filters/filter-gateway.vue';
-  import FilterAgent from './filters/filter-agent.vue';
-  import FilterTeam from './filters/filter-queue.vue';
-  import FilterQueue from './filters/filter-team.vue';
-  import FilterCause from './filters/filter-cause.vue';
+  import { mapActions } from 'vuex';
+  import FilterFields from '../../filters/filter-table-fields.vue';
+  import FilterDatetime from '../../filters/filter-datetime.vue';
+  import FilterType from '../../filters/filter-type.vue';
+  import FilterDirection from '../../filters/filter-direction.vue';
+  import FilterUser from '../../filters/filter-user.vue';
+  import FilterGateway from '../../filters/filter-gateway.vue';
+  import FilterAgent from '../../filters/filter-agent.vue';
+  import FilterTeam from '../../filters/filter-queue.vue';
+  import FilterQueue from '../../filters/filter-team.vue';
+  import FilterCause from '../../filters/filter-cause.vue';
   // import FilterTags from './filters/filter-tags.vue';
-  import FilterDuration from './filters/filter-duration.vue';
+  import FilterDuration from '../../filters/filter-duration.vue';
+  import TableActions from '../../utils/table-actions.vue';
 
   export default {
     name: 'the-history-filters',
     components: {
+      FilterFields,
       FilterDatetime,
       FilterType,
       FilterDirection,
@@ -142,11 +137,36 @@
       FilterCause,
       // FilterTags,
       FilterDuration,
+      TableActions,
     },
 
     data: () => ({
       isOpened: false,
+      isFilterFieldsOpened: false,
     }),
+
+    methods: {
+      ...mapActions('history', {
+        loadDataList: 'LOAD_DATA_LIST',
+      }),
+
+      expandFilters() {
+        this.isOpened = !this.isOpened;
+      },
+      refreshData() {
+        this.loadDataList();
+      },
+      openColumnSelect() {
+        this.isFilterFieldsOpened = true;
+      },
+      resetFilters() {
+        this.$router.replace({ query: null });
+      },
+      handleExport() {
+      },
+      handleImport() {
+      },
+    },
   };
 </script>
 
@@ -178,21 +198,8 @@
       }
     }
 
-    &__controls {
-      // $icon-w: (24px*3);
-      // $margin-w: (30px*2); // 3 icons + 2 margins
-      $icon-w: (24px);
-      $margin-w: (0px);
-      margin: (30px) 0 0 (30px);
-      flex: 0 0 calc(#{$icon-w} + #{$margin-w});
-
-      .icon-btn {
-        margin-left: (30px);
-
-        &:first-child {
-          margin-left: 0;
-        }
-      }
+    .table-actions {
+      margin-top: 48px;
     }
   }
 </style>

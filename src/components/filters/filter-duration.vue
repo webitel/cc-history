@@ -7,9 +7,9 @@
 </template>
 
 <script>
-  import InputTimerange from '../../../utils/input-timerange.vue';
-  import urlQueryControllerMixin from '../../../../mixins/urlQueryControllerMixin';
-  import { camelToKebab } from '../../../../api/utils/caseConverters';
+  import InputTimerange from '../utils/input-timerange.vue';
+  import urlQueryControllerMixin from '../../mixins/urlQueryControllerMixin';
+  import { camelToKebab } from '../../api/utils/caseConverters';
 
   export default {
     name: 'filter-duration',

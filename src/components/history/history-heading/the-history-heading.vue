@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import FilterSearch from './filters/filter-search.vue';
+  import FilterSearch from '../../filters/filter-search.vue';
   import Btn from '../../utils/btn.vue';
   import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
   import downloadAllFilesMixin from '../../../mixins/files/downloadFiles/downloadAllFilesMixin';

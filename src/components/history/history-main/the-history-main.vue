@@ -9,10 +9,6 @@
       expanded
       @sort="sort"
     >
-      <template slot="actions-header">
-        <filter-fields v-model="headers"/>
-      </template>
-
       <template slot="direction" slot-scope="{ item }">
         <grid-direction :item="item"/>
       </template>
@@ -88,10 +84,10 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex';
   import GridTable from '../../utils/grid-table.vue';
   import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
-  import FilterFields from './filters/filter-table-fields.vue';
-  import FilterPagination from './filters/filter-pagination.vue';
+  import FilterPagination from '../../filters/filter-pagination.vue';
   import Loader from '../../utils/loader.vue';
   import GridAgent from './grid-templates/grid-agent.vue';
   import GridDirection from './grid-templates/grid-direction.vue';
@@ -105,7 +101,6 @@
   import MediaAction from './grid-templates/grid-media-action.vue';
   import DownloadAction from './grid-templates/grid-download-action.vue';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
-  import loadHistoryMixin from '../../../mixins/loadHistory/loadHistoryMixin';
   import downloadRowFilesMixin from '../../../mixins/files/downloadFiles/downloadRowFilesMixin';
   import playMediaMixin from '../../../mixins/files/mediaMixins/playMediaMixin';
   import showMediaMixin from '../../../mixins/files/mediaMixins/showMediaMixin';
@@ -113,7 +108,6 @@
   export default {
     name: 'the-history-main',
     mixins: [
-      loadHistoryMixin,
       sortFilterMixin,
       playMediaMixin,
       showMediaMixin,
@@ -122,7 +116,6 @@
     components: {
       GridTable,
       ExpansionCallInfo,
-      FilterFields,
       FilterPagination,
       Loader,
       GridAgent,
@@ -136,6 +129,30 @@
       GridUser,
       MediaAction,
       DownloadAction,
+    },
+
+    watch: {
+      '$route.query': {
+        async handler() {
+          await this.loadDataList();
+        },
+        immediate: true,
+      },
+    },
+
+    computed: {
+      ...mapState('history', {
+        data: (state) => state.data,
+        headers: (state) => state.headers,
+        isNext: (state) => state.isNext,
+        isLoading: (state) => state.isLoading,
+      }),
+    },
+
+    methods: {
+      ...mapActions('history', {
+        loadDataList: 'LOAD_DATA_LIST',
+      }),
     },
   };
 </script>

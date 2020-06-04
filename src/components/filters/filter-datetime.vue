@@ -6,9 +6,9 @@
 </template>
 
 <script>
-  import DtPicker from '../../../utils/datetimepicker.vue';
-  import valueFilterMixin from '../../../../mixins/filters/valueFilterMixin';
-  import getTodayStart from '../../../../utils/getTodayStart';
+  import DtPicker from '../utils/datetimepicker.vue';
+  import valueFilterMixin from '../../mixins/filters/valueFilterMixin';
+  import getTodayStart from '../../utils/getTodayStart';
 
   const msInMin = 60 * 10 ** 3;
 

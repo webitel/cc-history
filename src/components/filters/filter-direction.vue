@@ -2,7 +2,7 @@
   <multiselect
     v-model="value"
     :options="options"
-    :label="'Type'"
+    :label="'Direction'"
     :track-by="trackBy"
     :api-mode="apiMode"
     @closed="setQueryArray({ value, filterQuery, queriedProp })"
@@ -10,16 +10,16 @@
 </template>
 
 <script>
-  import enumFilterMixin from '../../../../mixins/filters/enumFilterMixin';
-  import TypeOptions from '../../../../api/filter-getters/TypeOptions.enum';
+  import enumFilterMixin from '../../mixins/filters/enumFilterMixin';
+  import DirectionOptions from '../../api/filter-getters/DirectionOptions.enum';
 
   export default {
-    name: 'filter-type',
+    name: 'filter-direction',
     mixins: [enumFilterMixin],
 
     data: () => ({
-      options: TypeOptions,
-      filterQuery: 'type',
+      options: DirectionOptions,
+      filterQuery: 'direction',
     }),
   };
 </script>

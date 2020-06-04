@@ -9,8 +9,8 @@
 </template>
 
 <script>
-  import enumFilterMixin from '../../../../mixins/filters/enumFilterMixin';
-  import HangupCauseOptions from '../../../../api/filter-getters/HangupCauseOption.enum';
+  import enumFilterMixin from '../../mixins/filters/enumFilterMixin';
+  import HangupCauseOptions from '../../api/filter-getters/HangupCauseOption.enum';
 
   export default {
     name: 'filter-cause',

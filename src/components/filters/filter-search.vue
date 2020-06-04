@@ -6,8 +6,8 @@
 </template>
 
 <script>
-  import Search from '../../../utils/search-input.vue';
-  import valueFilterMixin from '../../../../mixins/filters/valueFilterMixin';
+  import Search from '../utils/search-input.vue';
+  import valueFilterMixin from '../../mixins/filters/valueFilterMixin';
 
   export default {
     name: 'filter-search',

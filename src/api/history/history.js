@@ -7,8 +7,7 @@ import getTodayStart from '../../utils/getTodayStart';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
-// eslint-disable-next-line import/prefer-default-export
-export const getHistory = async (
+const getHistory = async (
   {
     page = 1,
     size = 10,
@@ -61,3 +60,5 @@ export const getHistory = async (
     throw err;
   }
 };
+
+export default getHistory;
