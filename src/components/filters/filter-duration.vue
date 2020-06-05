@@ -1,7 +1,7 @@
 <template>
   <input-timerange
     v-model="value"
-    :label="'Duration'"
+    :label="$t('fields.duration')"
     @change="setDuration"
   ></input-timerange>
 </template>

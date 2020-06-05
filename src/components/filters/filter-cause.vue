@@ -2,7 +2,7 @@
   <multiselect
     v-model="value"
     :options="options"
-    :label="'Hangup cause'"
+    :label="$t('fields.cause')"
     :api-mode="apiMode"
     @closed="setQueryArray({ value, filterQuery, queriedProp })"
   ></multiselect>

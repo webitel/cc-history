@@ -1,7 +1,7 @@
 <template>
   <form class="timepicker">
     <div class="timepicker__input-wrap">
-      <label class="timepicker__label">Hour</label>
+      <label class="timepicker__label">{{$t('components.timepicker.hour')}}</label>
       <input
         class="input__short timepicker__input"
         :value="computeHour"
@@ -10,7 +10,7 @@
       >
     </div>
     <div class="timepicker__input-wrap">
-      <label class="timepicker__label">Min</label>
+      <label class="timepicker__label">{{$t('components.timepicker.min')}}</label>
       <input
         class="input__short timepicker__input"
         :value="computeMin"

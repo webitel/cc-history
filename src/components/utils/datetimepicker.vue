@@ -30,10 +30,10 @@
     >
       <div class="dt-picker__quick-filters">
         <span class="dt-picker__quick-filter" @click="setLastHour">
-          Last hour
+          {{$t('components.dtPicker.lastHour')}}
         </span>
         <span class="dt-picker__quick-filter" @click="setLastDay">
-          Last day
+          {{$t('components.dtPicker.lastDay')}}
         </span>
       </div>
       <div class="dt-picker__form-wrap">
@@ -50,8 +50,8 @@
         ></timepicker>
       </div>
       <div class="dt-picker__actions">
-        <btn class="secondary" @click.native="close">Cancel</btn>
-        <btn class="primary" @click.native="input">Add</btn>
+        <btn class="secondary" @click.native="close">{{$t('reusable.cancel')}}</btn>
+        <btn class="primary" @click.native="input">{{$t('reusable.add')}}</btn>
       </div>
     </div>
   </div>

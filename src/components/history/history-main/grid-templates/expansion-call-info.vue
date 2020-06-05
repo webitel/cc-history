@@ -1,6 +1,6 @@
 <template>
   <article class="expansion-call-info">
-    <h1 class="expansion-heading">Call info</h1>
+    <h1 class="expansion-heading">{{$t('mainSection.callInfo')}}</h1>
     <ul class="expansion-variables" v-if="item.variables">
       <li
         class="expansion-variable"

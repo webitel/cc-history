@@ -1,6 +1,7 @@
 <template>
   <search
     v-model="value"
+    :placeholder="$t('reusable.search')"
     @search="setQueryValue({ filterQuery, value })"
   />
 </template>
