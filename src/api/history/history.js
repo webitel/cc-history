@@ -23,7 +23,6 @@ const getHistory = async (
     skipParent = true,
     parentId,
     cause,
-    // eslint-disable-next-line no-unused-vars
     existsFile,
     fields,
     sort = '-created_at',
@@ -49,7 +48,7 @@ const getHistory = async (
         skipParent,
         parentId,
         cause,
-        true,
+        existsFile,
         fields,
         sort,
       );

@@ -1,7 +1,6 @@
 <template>
   <icon-btn
     :icon="'download'"
-    :tooltip="$t('icon.download')"
   ></icon-btn>
 </template>
 

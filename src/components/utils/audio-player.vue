@@ -227,7 +227,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   $player-bg: rgba(0, 0, 0, 0.6);
   $player-border-color: darken($player-bg, 12%);
   $player-link-color: darken($player-bg, 75%);

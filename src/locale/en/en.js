@@ -101,6 +101,7 @@ export default {
   icon: {
     play: 'Play',
     pause: 'Pause',
+    stop: 'Stop',
     export: 'Export',
     import: 'Import',
     resetFilters: 'Reset filters',

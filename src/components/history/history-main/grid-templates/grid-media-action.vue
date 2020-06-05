@@ -3,13 +3,11 @@
     v-if="!isAnyFilesPlaying"
     class=""
     :icon="'play'"
-    :tooltip="$t('icon.play')"
   ></icon-btn>
   <icon-btn
     v-else
     class=""
     :icon="'pause'"
-    :tooltip="$t('icon.pause')"
   ></icon-btn>
   <!--  <button class="media-select__btn icon-btn table-action">-->
   <!--    <icon v-if="!isAnyFilesPlaying">-->
