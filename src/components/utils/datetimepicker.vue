@@ -1,12 +1,13 @@
 <template>
   <div class="dt-picker" v-clickaway="close">
-    <label class="dt-picker__label">{{label}}</label>
+    <label class="dt-picker__label" @click="isOpened = false">{{label}}</label>
 
     <div
       class="dt-picker__preview"
+      :class="{'dt-picker__preview--opened': isOpened}"
       tabindex="0"
-      @click="isOpened = true"
-      @keyup.enter="isOpened = true"
+      @click="isOpened = !isOpened"
+      @keyup.enter="isOpened = !isOpened"
     >
       <div class="dt-picker__preview__wrap">
         <icon class="dt-picker__preview-icon">
@@ -171,6 +172,11 @@
     border: 1px solid $input-border-color;
     border-radius: $border-radius;
     cursor: pointer;
+    outline: none;
+
+    &--opened {
+      border-color: $input-border-color__active;
+    }
 
     &__wrap {
       display: flex;
