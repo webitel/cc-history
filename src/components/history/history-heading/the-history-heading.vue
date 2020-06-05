@@ -1,22 +1,23 @@
 <template>
   <header class="history-section history-heading">
-    <h1 class="history-heading__h1">History</h1>
+    <h1 class="history-heading__h1">{{$t('reusable.history')}}</h1>
     <div class="history-heading__actions-wrap">
       <filter-search/>
       <btn
         class="secondary"
         :loading="isFilesLoading"
         @click.native="downloadFiles"
-      >Download
+      >{{$t('reusable.download')}}
       </btn>
       <div v-show="isFilesLoading" class="files-counter">
-        Files loaded: <span class="files-counter__count">{{this.filesCounter}}</span>
+        {{$t('headerSection.filesLoaded')}}<span
+        class="files-counter__count">{{this.filesCounter}}</span>
       </div>
       <btn
         class="primary"
         :loading="isCSVLoading"
         @click.native="downloadCSV"
-      >Export CSV
+      >{{$t('headerSection.exportCSV')}}
       </btn>
     </div>
   </header>

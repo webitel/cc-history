@@ -1,7 +1,7 @@
 <template>
   <popup-container class="column-select" @keydown.esc="$emit('close')">
     <template slot="popup-header">
-      <h1 class="popup-header__h1">Select columns to show: </h1>
+      <h1 class="popup-header__h1">{{$t('components.columnSelect.header')}}}</h1>
     </template>
     <template slot="popup-main">
       <ul class="column-select__list">
@@ -21,12 +21,12 @@
         <btn
           class="primary"
           @click.native="setShownColumns"
-        >Add
+        >{{$t('reusable.add')}}
         </btn>
         <btn
           class="secondary"
           @click.native="$emit('close')"
-        >Close
+        >{{$t('reusable.cancel')}}
         </btn>
       </div>
     </template>
