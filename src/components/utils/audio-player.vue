@@ -1,25 +1,23 @@
 <template>
   <aside class="player">
     <div class="player-controls">
-      <button class="icon-btn" @click.prevent="stop">
-        <icon>
-          <svg class="icon icon-stop_md md">
-            <use xlink:href="#icon-stop_md"></use>
-          </svg>
-        </icon>
-      </button>
-      <button class="icon-btn" @click.prevent="playing = !playing">
-        <icon v-if="!playing">
-          <svg class="icon icon-play_md md">
-            <use xlink:href="#icon-play_md"></use>
-          </svg>
-        </icon>
-        <icon v-else>
-          <svg class="icon icon-pause_md md">
-            <use xlink:href="#icon-pause_md"></use>
-          </svg>
-        </icon>
-      </button>
+      <icon-btn
+        :icon="'stop'"
+        :tooltip="$t('icon.stop')"
+        @click.native="stop"
+      ></icon-btn>
+      <icon-btn
+        v-if="!playing"
+        :icon="'play'"
+        :tooltip="$t('icon.play')"
+        @click.native="playing = !playing"
+      ></icon-btn>
+      <icon-btn
+        v-else
+        :icon="'pause'"
+        :tooltip="$t('icon.pause')"
+        @click.native="playing = !playing"
+      ></icon-btn>
       <div class="player-time">
         <div class="player-time-current">{{convertTimeHHMMSS}}</div>
       </div>
@@ -242,7 +240,7 @@
     bottom: (66px);
     /*width: 100%;*/
     padding: (7px) (16px);
-    margin: 0 (20px);
+    margin: 0 20px;
     background-color: $player-bg;
     box-shadow: $box-shadow;
     border-radius: $border-radius;
@@ -280,7 +278,7 @@
     height: (5px);
     /*height: 3px;*/
     flex-grow: 1;
-    margin: auto (21px) auto (78px);
+    margin: auto 21px auto 78px;
     background-color: $player-progress-color;
     cursor: pointer;
 

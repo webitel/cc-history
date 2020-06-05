@@ -1,11 +1,8 @@
 <template>
-  <button class="icon-btn">
-    <icon>
-      <svg class="icon icon-download_md md">
-        <use xlink:href="#icon-download_md"></use>
-      </svg>
-    </icon>
-  </button>
+  <icon-btn
+    :icon="'download'"
+    :tooltip="$t('icon.download')"
+  ></icon-btn>
 </template>
 
 <script>

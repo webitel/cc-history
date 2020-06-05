@@ -31,6 +31,7 @@
     transition: $transition;
     opacity: 0;
     pointer-events: none;
+    z-index: 100;
 
     &--visible, &:hover {
       opacity: 1;

@@ -5,7 +5,6 @@
       <form
         class="input-timerange__input-wrap"
         @submit.prevent="setFrom($event.target[0].value)"
-        @reset="setFrom('')"
       >
         <span class="input-timerange__label">{{$t('reusable.from')}}: </span>
         <input
@@ -14,18 +13,17 @@
           @input="setFrom($event.target.value)"
           type="number"
         >
-        <button class="icon-btn input-timerange__reset" type="reset">
-          <icon>
-            <svg class="icon icon-close_md md">
-              <use xlink:href="#icon-close_md"></use>
-            </svg>
-          </icon>
-        </button>
+        <icon-btn
+          class="input-timerange__reset"
+          :class="{'hidden': !value.from}"
+          :icon="'close'"
+          :tooltip="$t('tooltip.reset')"
+          @click.native="setFrom('')"
+        ></icon-btn>
       </form>
       <form
         class="input-timerange__input-wrap"
         @submit.prevent="setTo($event.target[0].value)"
-        @reset="setFrom('')"
       >
         <span class="input-timerange__label">{{$t('reusable.to')}}: </span>
         <input
@@ -34,13 +32,13 @@
           @input="setTo($event.target.value)"
           type="number"
         >
-        <button class="icon-btn input-timerange__reset" type="reset">
-          <icon>
-            <svg class="icon icon-close_md md">
-              <use xlink:href="#icon-close_md"></use>
-            </svg>
-          </icon>
-        </button>
+        <icon-btn
+          class="input-timerange__reset"
+          :class="{'hidden': !value.to}"
+          :icon="'close'"
+          :tooltip="$t('tooltip.reset')"
+          @click.native="setTo('')"
+        ></icon-btn>
       </form>
     </div>
   </div>
@@ -128,8 +126,6 @@
 
   .input-timerange__reset {
     position: absolute;
-    top: 50%;
     right: (5px*2 + 24px);
-    transform: translateY(-50%);
   }
 </style>

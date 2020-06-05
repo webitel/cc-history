@@ -1,17 +1,13 @@
 <template>
   <div class="app-navigator">
-    <button
-      class="icon-btn app-navigator__btn"
+    <icon-btn
+      class="app-navigator__btn"
       :class="{'opened': isOpened}"
-      @click.prevent="isOpened = !isOpened"
+      :icon="'app-navigator'"
+      :tooltip="$t('appNavigator.title')"
+      @click.native="isOpened = !isOpened"
       v-clickaway="close"
-    >
-      <icon>
-        <svg class="icon md">
-          <use xlink:href="#icon-app-navigator-md"></use>
-        </svg>
-      </icon>
-    </button>
+    ></icon-btn>
     <nav
       class="app-navigator__nav-wrapper"
       :class="{'hidden': !isOpened}"

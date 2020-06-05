@@ -42,6 +42,15 @@
     fill: $icon-color__active;
     stroke: $icon-color__active;
   }
+
+  &--disabled {
+    pointer-events: none;
+
+    .icon {
+      fill: $btn-disabled;
+      stroke: $btn-disabled;
+    }
+  }
 }
 
 .uppercase {
