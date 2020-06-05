@@ -1,7 +1,6 @@
 import { CallServiceApiFactory } from 'webitel-sdk';
 import instance from '../instance';
 import configuration from '../openAPIConfig';
-import getDomainId from '../utils/getDomainId';
 import formatResponse from './formatHistoryResponse';
 import getTodayStart from '../../utils/getTodayStart';
 
@@ -30,7 +29,6 @@ const getHistory = async (
     search = '',
   },
 ) => {
-  const domainId = getDomainId();
   try {
     const response = await callService
       .searchHistoryCall(
@@ -53,7 +51,6 @@ const getHistory = async (
         existsFile,
         fields,
         sort,
-        domainId,
       );
     return formatResponse(response);
   } catch (err) {
