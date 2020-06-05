@@ -68,7 +68,7 @@
           <path
             d="M4.705 15.072c0.347-0.347 0.91-0.347 1.257 0l3.445 3.445c0.347 0.347 0.347 0.91 0 1.257s-0.91 0.347-1.257 0l-3.445-3.445c-0.347-0.347-0.347-0.91 0-1.257z"></path>
         </symbol>
-        <symbol id="icon-account-md" viewBox="0 0 32 32">
+        <symbol id="icon-account_md" viewBox="0 0 32 32">
           <title>{{$t('icon.account')}}</title>
           <path
             d="M3 16c0-7.18 5.82-13 13-13s13 5.82 13 13c0 7.18-5.82 13-13 13s-13-5.82-13-13zM16 5c-6.075 0-11 4.925-11 11s4.925 11 11 11c6.075 0 11-4.925 11-11s-4.925-11-11-11z"></path>
@@ -77,7 +77,7 @@
           <path
             d="M11 12c0-2.761 2.239-5 5-5s5 2.239 5 5c0 2.761-2.239 5-5 5s-5-2.239-5-5zM16 9c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3c0-1.657-1.343-3-3-3z"></path>
         </symbol>
-        <symbol id="icon-app-navigator-md" viewBox="0 0 32 32">
+        <symbol id="icon-app-navigator_md" viewBox="0 0 32 32">
           <title>{{$t('icon.appNavigator')}}</title>
           <path d="M7.333 7.333h4v4h-4v-4z"></path>
           <path d="M14 7.333h4v4h-4v-4z"></path>

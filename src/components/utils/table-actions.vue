@@ -1,72 +1,42 @@
 <template>
   <section class="table-actions">
-    <button
+    <icon-btn
       v-if="this.import"
-      class="icon-btn"
-      @click.prevent="$emit('import')"
-    >
-      <icon>
-        <svg class="icon md">
-          <use xlink:href="#icon-download_md"></use>
-        </svg>
-      </icon>
-    </button>
-    <button
+      :icon="'download'"
+      :tooltip="$t('icon.import')"
+      @click.native="$emit('import')"
+    ></icon-btn>
+    <icon-btn
       v-if="this.export"
-      class="icon-btn"
-      @click.prevent="$emit('export')"
-    >
-      <icon>
-        <svg class="icon md">
-          <use xlink:href="#icon-upload_md"></use>
-        </svg>
-      </icon>
-    </button>
-    <button
+      :icon="'upload'"
+      :tooltip="$t('icon.export')"
+      @click.native="$emit('export')"
+    ></icon-btn>
+    <icon-btn
       v-if="filterReset"
-      class="icon-btn"
-      @click.prevent="$emit('filter-reset')"
-    >
-      <icon>
-        <svg class="icon md">
-          <use xlink:href="#icon-reset-filters_md"></use>
-        </svg>
-      </icon>
-    </button>
-    <button
+      :icon="'reset-filters'"
+      :tooltip="$t('tooltip.filterReset')"
+      @click.native="$emit('filter-reset')"
+    ></icon-btn>
+    <icon-btn
       v-if="columnSelect"
-      class="icon-btn"
-      @click.prevent="$emit('column-select')"
-    >
-      <icon>
-        <svg class="icon md">
-          <use xlink:href="#icon-col-select_md"></use>
-        </svg>
-      </icon>
-    </button>
-    <button
+      :icon="'col-select'"
+      :tooltip="$t('tooltip.columnSelect')"
+      @click.native="$emit('column-select')"
+    ></icon-btn>
+    <icon-btn
       v-if="refresh"
-      class="icon-btn"
-      @click.prevent="$emit('refresh')"
-    >
-      <icon>
-        <svg class="icon md">
-          <use xlink:href="#icon-refresh_md"></use>
-        </svg>
-      </icon>
-    </button>
-    <button
+      :icon="'refresh'"
+      :tooltip="$t('tooltip.refreshTable')"
+      @click.native="$emit('refresh')"
+    ></icon-btn>
+    <icon-btn
       v-if="settings"
-      class="icon-btn history-filters__icon-btn"
       :class="{'active': isSettingsActive}"
-      @click.prevent="$emit('settings')"
-    >
-      <icon>
-        <svg class="icon icon-filter_md md">
-          <use xlink:href="#icon-filter_md"></use>
-        </svg>
-      </icon>
-    </button>
+      :icon="'filter'"
+      :tooltip="$t('tooltip.expandFilters')"
+      @click.native="$emit('settings')"
+    ></icon-btn>
   </section>
 </template>
 
@@ -96,7 +66,7 @@
       },
       import: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       isSettingsActive: {
         type: Boolean,

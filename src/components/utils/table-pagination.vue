@@ -12,28 +12,18 @@
     </div>
     <div class="page-controls">
       <div class="controls">
-        <button
-          class="icon-btn"
-          :class="{'disabled': !isPrev}"
-          @click="prev"
-        >
-          <icon>
-            <svg class="icon icon-arrow-left_md md">
-              <use xlink:href="#icon-arrow-left_md"></use>
-            </svg>
-          </icon>
-        </button>
-        <button
-          class="icon-btn"
-          :class="{'disabled': !isNext}"
-          @click="next"
-        >
-          <icon>
-            <svg class="icon icon-arrow-right_md md">
-              <use xlink:href="#icon-arrow-right_md"></use>
-            </svg>
-          </icon>
-        </button>
+        <icon-btn
+          :class="{'icon-btn--disabled': !isPrev}"
+          :icon="'arrow-left'"
+          :tooltip="$t('tooltip.prev')"
+          @click.native="prev"
+        ></icon-btn>
+        <icon-btn
+          :class="{'icon-btn--disabled': !isNext}"
+          :icon="'arrow-right'"
+          :tooltip="$t('tooltip.next')"
+          @click.native="next"
+        ></icon-btn>
       </div>
     </div>
   </footer>
@@ -115,17 +105,6 @@
 
       .controls {
         margin-left: 14px;
-
-        .icon-btn {
-          &.disabled {
-            pointer-events: none;
-
-            .icon {
-              fill: $btn-disabled;
-              stroke: $btn-disabled;
-            }
-          }
-        }
       }
     }
   }

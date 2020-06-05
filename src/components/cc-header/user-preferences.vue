@@ -1,17 +1,13 @@
 <template>
   <div class="user-preferences" v-clickaway="close">
-    <button
-      class="icon-btn user-preferences__account"
+    <icon-btn
+      class="user-preferences__account"
       :class="{'opened': isOpened}"
-      @click.prevent="isOpened = !isOpened"
+      :icon="'account'"
+      :tooltip="$t('tooltip.account')"
+      @click.native="isOpened = !isOpened"
       v-clickaway="close"
-    >
-      <icon>
-        <svg class="icon md">
-          <use xlink:href="#icon-account-md"></use>
-        </svg>
-      </icon>
-    </button>
+    ></icon-btn>
     <section class="user-preferences__actions-wrapper" v-show="isOpened">
       <header class="user-preferences__actions-header">
         <h3 class="user-preferences__username">{{name || username}}</h3>

@@ -15,17 +15,13 @@
         @focusin="isFocused = true"
         @focusout="isFocused = false"
       />
-      <button
-        class="icon-btn cc-input__icon"
+      <icon-btn
+        class="cc-input__icon"
         :class="{'hidden': !value}"
-        @click="value = ''"
-      >
-        <icon>
-          <svg class="icon icon-close-md md">
-            <use xlink:href="#icon-close-md"></use>
-          </svg>
-        </icon>
-      </button>
+        :icon="'close'"
+        :tooltip="$t('tooltip.reset')"
+        @click.native="$emit('input', '')"
+      ></icon-btn>
     </div>
   </label>
 </template>
