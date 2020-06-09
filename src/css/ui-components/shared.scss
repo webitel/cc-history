@@ -1,0 +1,31 @@
+
+.label {
+  @extend .typo-body-sm;
+  display: block;
+  margin-bottom: (10px);
+  color: $label-color;
+}
+
+.input__short {
+  @extend .typo-input;
+  text-align: center;
+  width: (40px);
+  padding: (10px) (5px);
+  border: 1px solid $input-border-color;
+  border-radius: $border-radius;
+  box-sizing: content-box;
+  transition: $transition;
+
+  &:hover, &:focus {
+    border-color: #000;
+  }
+}
+
+$badge-bg: #FFE69C;
+.count-badge {
+  @extend .typo-body-sm;
+  display: block;
+  background: $badge-bg;
+  padding: (4px) (15px);
+  border-radius: (20px);
+}

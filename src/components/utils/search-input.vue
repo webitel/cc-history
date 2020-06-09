@@ -2,8 +2,8 @@
   <label class="cc-input cc-search-input">
     <div class="cc-input__body" :class="{'focused': isFocused}">
       <icon>
-        <svg class="icon icon-search-md md">
-          <use xlink:href="#icon-search-md"></use>
+        <svg class="icon icon-search_md md">
+          <use xlink:href="#icon-search_md"></use>
         </svg>
       </icon>
       <input
@@ -15,17 +15,13 @@
         @focusin="isFocused = true"
         @focusout="isFocused = false"
       />
-      <button
-        class="icon-btn cc-input__icon"
+      <icon-btn
+        class="cc-input__icon"
         :class="{'hidden': !value}"
-        @click="value = ''"
-      >
-        <icon>
-          <svg class="icon icon-close-md md">
-            <use xlink:href="#icon-close-md"></use>
-          </svg>
-        </icon>
-      </button>
+        :icon="'close'"
+        :tooltip="$t('tooltip.reset')"
+        @click.native="$emit('input', '')"
+      ></icon-btn>
     </div>
   </label>
 </template>

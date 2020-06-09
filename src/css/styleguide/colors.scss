@@ -2,26 +2,29 @@
 $sidebar-bg-color: #171A2A; // sidebar panel bg color
 $header-bg-color: #EAEAEA; // header bg color
 $content-bg-color: #FFF; // content bg color
-$page-bg-color: #F9F9F9; // page background color
+$page-bg-color: #F1F4F6; // page background color
+
+$label-color: #ACACAC;
+$input-border-color: #EAEAEA;
 
 // ACCENT COLORS:
 $accent-color: #FFC107;
-$hold-color: #FFC107;
-$icons-color: #FFC107;
-$buttons-color: #FFC107;
-$checkbox-color: #FFC107;
-$break-color: #FFC107;
+$inbound-icon-color: #FFC107;
 
 $true-color: #4CAF50;
 $available-color: #4CAF50;
-$call-color: #4CAF50;
-
-$transfer-color: #708FFF;
+$outbound-icon-color: #4CAF50;
+$active-tick-color: #4CAF50;
 
 $false-color: #FF4444;
 $error-color: #FF4444;
-$reject-color: #FF4444;
-$disconnect-color: #FF4444;
+$missed-color: #FF4444;
+
+$list-option__hover: #FFF9E6;
+
+$badge-bg-color: #FFE69C;
 
 $icon-color: #808080;
-$icon-color__hover: #171A2A;
+$icon-color__active: #000;
+$icon-color__hover: #000;
+//$icon-color__hover: #FFC107;

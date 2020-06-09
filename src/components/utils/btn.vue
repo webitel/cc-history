@@ -1,19 +1,29 @@
 <template>
   <button class="cc-btn" type="button">
-    <slot></slot>
+    <spinner v-if="loading"/>
+    <slot v-else></slot>
   </button>
 </template>
 
 <script>
+  import Spinner from './spinner.vue';
+
   export default {
     name: 'btn',
+    components: { Spinner },
+    props: {
+      loading: {
+        type: Boolean,
+        default: false,
+      },
+    },
   };
 </script>
 
 <style lang="scss" scoped>
   .cc-btn {
     @extend .typo-btn;
-    padding: calcRem(10px) calcRem(17px) calcRem(6px); // 11px and 7px vertical -2 px border
+    padding: (10px) (17px) (6px); // 11px and 7px vertical -2 px border
     color: #000;
     background: $default-btn-color;
     border: 1px solid transparent;
@@ -22,35 +32,12 @@
     transition: $transition;
     cursor: pointer;
 
+    .spinner {
+      color: #000;
+    }
+
     &:hover {
       background: $default-btn-color__hover;
-    }
-
-    &.call, &.true {
-      color: #fff;
-      background: $call-btn-color;
-
-      &:hover {
-        background: $call-btn-color__hover;
-      }
-    }
-
-    &.end, &.false {
-      color: #fff;
-      background: $end-btn-color;
-
-      &:hover {
-        background: $end-btn-color__hover;
-      }
-    }
-
-    &.transfer {
-      color: #fff;
-      background: $transfer-btn-color;
-
-      &:hover {
-        background: $transfer-btn-color__hover;
-      }
     }
 
     &.secondary {

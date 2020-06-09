@@ -16,7 +16,9 @@ module.exports = {
     'no-useless-catch': 'off',
     'no-shadow': 'off',
     'no-empty': 'off',
-    'indent': 'off',
+    indent: 'off',
+    'no-underscore-dangle': 'off',
+    'import/no-cycle': 'off',
   },
   overrides: [
     {

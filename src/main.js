@@ -5,6 +5,7 @@ import router from './router';
 import store from './store';
 import i18n from './locale/i18n';
 import Icon from './components/utils/icon-wrap.vue';
+import IconBtn from './components/utils/icon-btn.vue';
 
 import './css/fonts.scss';
 import './css/main.scss';
@@ -12,6 +13,7 @@ import './css/main.scss';
 Vue.config.productionTip = false;
 
 Vue.component('icon', Icon);
+Vue.component('icon-btn', IconBtn);
 Vue.use(Vuelidate);
 new Vue({
   router,
