@@ -50,7 +50,6 @@
             >
               <slot :name="col.value" :item="row">
                 <div
-                  class="grid__td__word-wrap"
                   v-if="!Array.isArray(row[col.value])"
                 >{{row[col.value]}}
                 </div>
@@ -174,7 +173,7 @@
 
     &__tr {
       display: grid;
-      grid-template-columns: (24px) repeat(6, 1fr) (68px);
+      grid-template-columns: 24px repeat(6, 1fr) 68px;
       grid-column-gap: (20px);
       padding: (14px) (10px);
       transition: $transition;
@@ -217,17 +216,13 @@
       }
     }
 
-    &__th, &__td {
+    &__th, &__td, &__td > div {
       @extend .typo-body-md;
       //min-width: $min-td-width;
+      position: relative;
       width: 100%;
       max-width: 100%;
-
-      &__word-wrap {
-        max-width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-      }
+      overflow-wrap: break-word;
 
       &__actions {
         display: flex;
