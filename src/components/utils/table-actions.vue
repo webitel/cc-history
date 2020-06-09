@@ -66,7 +66,7 @@
       },
       import: {
         type: Boolean,
-        default: true,
+        default: false,
       },
       isSettingsActive: {
         type: Boolean,
@@ -78,6 +78,7 @@
 
 <style lang="scss" scoped>
   .table-actions {
+    display: flex;
     .icon-btn {
       margin-left: 30px;
     }
