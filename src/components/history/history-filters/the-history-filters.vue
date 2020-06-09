@@ -119,7 +119,7 @@
   $filter-gap: 20px;
   @function filtersWidth($num) {
     // 1px corrects max width
-    @return ($filter-width) * $num + $filter-gap * ($num - 1) + $width-except-filters - 1px ;
+    @return ($filter-width) * $num + $filter-gap * ($num - 1) + $width-except-filters - 1px;
   }
 
   .history-section.history-filters-section {
