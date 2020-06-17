@@ -4,6 +4,7 @@ export default {
     reject: 'Reject',
     send: 'Send',
     add: 'Add',
+    ok: 'OK',
     cancel: 'Cancel',
     logout: 'Logout',
     search: 'Search',

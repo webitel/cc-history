@@ -20,7 +20,7 @@ const getHistory = async (
     member,
     durationFrom,
     durationTo,
-    skipParent = true,
+    skipParent = false,
     parentId,
     cause,
     existsFile,

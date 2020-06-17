@@ -23,7 +23,8 @@
 <style lang="scss" scoped>
   .cc-btn {
     @extend .typo-btn;
-    padding: (10px) (17px) (6px); // 11px and 7px vertical -2 px border
+    display: block;
+    padding: 10px 17px 6px; // 11px and 7px vertical -2 px border
     color: #000;
     background: $default-btn-color;
     border: 1px solid transparent;
