@@ -150,6 +150,7 @@
   $active-bg-color: $list-option__hover;
   $header-color: $label-color;
   $second-row-bg-color: #F9F9F9;
+  $header-border-color: #EAEAEA;
 
   $min-td-width: (120px);
 
@@ -181,7 +182,11 @@
       &.expanded .grid__td {
         @extend .typo-heading-sm;
       }
+    }
 
+    .grid__tr__header {
+      min-width: fit-content;
+      border-bottom: 2px solid $header-border-color;
     }
 
     .grid__body.grid-body__expanding {
