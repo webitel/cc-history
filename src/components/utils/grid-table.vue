@@ -11,14 +11,19 @@
             @input="selectAll"
           ></checkbox>
         </div>
+
         <div
           class="grid__th"
-          :class="`grid__th__sort--${col.sort}`"
+          :class="[
+             {'grid__th--sortable': sortable},
+             `grid__th__sort--${col.sort}`,
+          ]"
           v-for="(col, key) of shownHeaders"
           :key="key"
-          @click="$emit('sort', col)"
+          @click="sort(col)"
         >{{col.text}}
         </div>
+
         <div class="grid__th__actions">
           <slot name="actions-header"></slot>
         </div>
@@ -106,6 +111,10 @@
         type: Boolean,
         default: false,
       },
+      sortable: {
+        type: Boolean,
+        default: false,
+      },
     },
 
     data: () => ({
@@ -132,6 +141,10 @@
     },
 
     methods: {
+      sort(col) {
+        if (this.sortable) this.$emit('sort', col);
+      },
+
       expand(index) {
         this.expandedIndex = this.expandedIndex === index ? null : index;
       },
@@ -201,23 +214,26 @@
 
     &__th {
       color: $header-color;
-      text-decoration: underline;
       transition: $transition;
-      cursor: pointer;
 
-      &__sort {
-        /*color:;*/
-        &--asc {
-          color: #000;
+      &--sortable {
+        text-decoration: underline;
+        cursor: pointer;
+
+        &.grid__th__sort {
+          /*color:;*/
+          &--asc {
+            color: #000;
+          }
+
+          &--desc {
+            color: #000;
+          }
         }
 
-        &--desc {
+        &:hover {
           color: #000;
         }
-      }
-
-      &:hover {
-        color: #000;
       }
     }
 

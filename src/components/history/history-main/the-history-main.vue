@@ -6,6 +6,7 @@
       ref="grid-table"
       :headers="headers"
       :data="data"
+      sortable
       expanded
       @sort="sort"
     >
