@@ -2,6 +2,7 @@ import getHistory from '../../../api/history/history';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
 import { convertQuery, getDefaultFields } from './utils/loadHistoryScripts';
+import childrenCalls from './children-calls/children-calls';
 
 const state = {
   data: [],
@@ -63,4 +64,7 @@ export default {
   getters,
   actions,
   mutations,
+  modules: {
+    'children-calls': childrenCalls,
+  },
 };
