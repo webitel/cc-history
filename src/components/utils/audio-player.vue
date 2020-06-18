@@ -227,7 +227,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   $player-bg: rgba(0, 0, 0, 0.6);
   $player-border-color: darken($player-bg, 12%);
   $player-link-color: darken($player-bg, 75%);
@@ -246,13 +246,15 @@
     border-radius: $border-radius;
     z-index: 90;
 
-    .icon-btn .icon {
-      fill: #fff;
-      stroke: #fff;
-      transition: $transition;
-      cursor: pointer;
+    .icon-btn {
+      ::v-deep .icon {
+        fill: #fff;
+        stroke: #fff;
+        transition: $transition;
+        cursor: pointer;
+      }
 
-      &:hover {
+      &:hover ::v-deep .icon {
         fill: $accent-color;
         stroke: $accent-color;
       }
