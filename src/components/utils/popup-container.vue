@@ -44,6 +44,7 @@
 
   .popup {
     @extend .box-shadow;
+    @extend .cc-scrollbar;
 
     position: absolute;
     top: 50%;

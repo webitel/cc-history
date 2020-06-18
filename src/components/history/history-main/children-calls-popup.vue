@@ -1,7 +1,7 @@
 <template>
   <popup-container @close="$emit('close')">
     <template slot="popup-main">
-      <div class="grid-wrap">
+      <div class="popup-grid-wrap">
         <loader v-if="isLoading"/>
         <grid-table
           v-else
@@ -9,6 +9,7 @@
           :headers="headers"
           :data="data"
           expanded
+          :selectable="false"
         >
           <template slot="direction" slot-scope="{ item }">
             <grid-direction :item="item"/>
@@ -65,9 +66,9 @@
 
     <template slot="popup-footer">
       <btn
-        class="primary"
+        class="secondary"
         @click.native="$emit('close')"
-      >{{$t('reusable.ok')}}
+      >{{$t('reusable.close')}}
       </btn>
     </template>
   </popup-container>
@@ -142,11 +143,12 @@
 </script>
 
 <style lang="scss" scoped>
-  .grid-wrap {
+  .popup-grid-wrap {
     width: 80vw;
   }
 
   .cc-btn {
-    margin-left: auto;
+    min-width: 100px;
+    margin: auto;
   }
 </style>

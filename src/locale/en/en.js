@@ -6,6 +6,7 @@ export default {
     add: 'Add',
     ok: 'OK',
     cancel: 'Cancel',
+    close: 'Close',
     logout: 'Logout',
     search: 'Search',
     description: 'Description',

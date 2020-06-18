@@ -5,7 +5,7 @@
         class="grid__tr grid__tr__header"
         :style="computeColumnsNumStyle"
       >
-        <div class="grid__th__checkbox">
+        <div class="grid__th__checkbox" v-if="selectable">
           <checkbox
             :value="isAllSelected"
             @input="selectAll"
@@ -42,7 +42,7 @@
             :style="computeColumnsNumStyle"
             @click="expand(dataKey)"
           >
-            <div class="grid__td__checkbox">
+            <div class="grid__td__checkbox" v-if="selectable">
               <checkbox
                 v-model="row._isSelected"
               ></checkbox>
@@ -115,6 +115,10 @@
         type: Boolean,
         default: false,
       },
+      selectable: {
+        type: Boolean,
+        default: true,
+      },
     },
 
     data: () => ({
@@ -131,7 +135,8 @@
       },
 
       computeColumnsNumStyle() {
-        let gridTemplateColumns = '24px'; // checkbox
+        let gridTemplateColumns = '';
+        if (this.selectable) gridTemplateColumns += '24px'; // checkbox
         this.shownHeaders.forEach((header) => {
           gridTemplateColumns += ` ${header.width}`;
         });
