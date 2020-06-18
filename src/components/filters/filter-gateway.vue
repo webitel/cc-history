@@ -11,7 +11,9 @@
 
 <script>
   import apiFilterMixin from '../../mixins/filters/apiFilterMixin';
-  import { fetchGateways, getSelectedGateways } from '../../api/filter-getters/gatewayFilter';
+  import APIRepository from '../../api/APIRepository';
+
+  const gatewayAPI = APIRepository.gateways;
 
   export default {
     name: 'filter-gateway',
@@ -22,8 +24,8 @@
     }),
 
     methods: {
-      fetch: fetchGateways,
-      fetchSelected: getSelectedGateways,
+      fetch: gatewayAPI.getGateways,
+      fetchSelected: gatewayAPI.getGatewaysByIds,
     },
   };
 </script>

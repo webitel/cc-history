@@ -11,7 +11,9 @@
 
 <script>
   import apiFilterMixin from '../../mixins/filters/apiFilterMixin';
-  import { fetchAgents, getSelectedAgents } from '../../api/filter-getters/agentFilter';
+  import APIRepository from '../../api/APIRepository';
+
+  const agentAPI = APIRepository.agents;
 
   export default {
     name: 'filter-agent',
@@ -22,8 +24,8 @@
     }),
 
     methods: {
-      fetch: fetchAgents,
-      fetchSelected: getSelectedAgents,
+      fetch: agentAPI.getAgents,
+      fetchSelected: agentAPI.getAgentsByIds,
     },
   };
 </script>
