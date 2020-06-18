@@ -39,7 +39,10 @@
       </template>
 
       <template slot="actions" slot-scope="{ item, index }">
-        <button @click.prevent.stop="openChildrenPopup(item)">+</button>
+        <icon-btn
+          :icon="'forks'"
+          @click.native.stop="openChildrenPopup(item)"
+        ></icon-btn>
 
         <media-action
           v-if="item.files"

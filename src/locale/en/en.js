@@ -100,6 +100,7 @@ export default {
     expandFilters: 'Expand filters',
   },
   icon: {
+    forks: 'Forks',
     play: 'Play',
     pause: 'Pause',
     stop: 'Stop',
