@@ -1,7 +1,9 @@
+import deepCopy from 'deep-copy';
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
 import { convertQuery, getDefaultFields } from './utils/loadHistoryScripts';
+import childrenCalls from './children-calls/children-calls';
 
 const historyAPI = APIRepository.history;
 
@@ -35,12 +37,9 @@ const actions = {
   },
 
   GET_QUERY_PARAMS: (context) => {
-    let { query } = router.currentRoute;
-    if (!query.fields) {
-      const fields = getDefaultFields(context.state.headers);
-      // do not mutate $route: reassign variable instead of query.fields=
-      query = { ...query, fields };
-    }
+    const query = deepCopy(router.currentRoute.query);
+    if (!query.fields) query.fields = getDefaultFields(context.state.headers);
+    query.skipParent = 'true';
     return convertQuery(query);
   },
 };
@@ -65,4 +64,7 @@ export default {
   getters,
   actions,
   mutations,
+  modules: {
+    'children-calls': childrenCalls,
+  },
 };

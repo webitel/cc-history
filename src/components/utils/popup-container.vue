@@ -1,6 +1,6 @@
 <template>
   <div class="popup-container">
-    <div class="popup-container__shadow"></div>
+    <div class="popup-container__shadow" @click="$emit('close')"></div>
     <aside class="popup">
       <header class="popup__header">
         <slot name="popup-header"></slot>
@@ -44,12 +44,13 @@
 
   .popup {
     @extend .box-shadow;
+    @extend .cc-scrollbar;
 
     position: absolute;
     top: 50%;
     left: 50%;
     max-height: 80vh;
-    padding: (30px) (20px);
+    padding: 30px 20px;
     background: #fff;
     transform: translate(-50%, -50%);
     border-radius: $border-radius;
@@ -65,7 +66,7 @@
   }
 
   .popup__main {
-    margin: (30px) 0;
+    margin: 30px 0;
   }
 
   .popup-actions {

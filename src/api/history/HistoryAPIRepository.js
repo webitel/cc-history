@@ -10,7 +10,6 @@ const defaultParams = {
   search: '',
   from: getTodayStart(),
   to: Date.now(),
-  skipParent: true,
   sort: '-created_at',
 };
 

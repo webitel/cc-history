@@ -6,6 +6,7 @@
       ref="grid-table"
       :headers="headers"
       :data="data"
+      sortable
       expanded
       @sort="sort"
     >
@@ -38,6 +39,12 @@
       </template>
 
       <template slot="actions" slot-scope="{ item, index }">
+        <icon-btn
+          v-if="item.hasChildren"
+          :icon="'forks'"
+          @click.native.stop="openChildrenPopup(item)"
+        ></icon-btn>
+
         <media-action
           v-if="item.files"
           class="table-action"
@@ -64,6 +71,13 @@
       </template>
 
     </grid-table>
+
+    <children-calls-popup
+      v-if="isChildrenPopup"
+      :parent-id="openedChildrenParentId"
+      @close="closeChildrenPopup"
+    ></children-calls-popup>
+
     <audio-player
       v-show="audioURL"
       :file="audioURL"
@@ -84,7 +98,8 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex';
+  import { mapState, mapGetters, mapActions } from 'vuex';
+  import ChildrenCallsPopup from './children-calls-popup.vue';
   import GridTable from '../../utils/grid-table.vue';
   import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
   import FilterPagination from '../../filters/filter-pagination.vue';
@@ -114,6 +129,7 @@
       downloadRowFilesMixin,
     ],
     components: {
+      ChildrenCallsPopup,
       GridTable,
       ExpansionCallInfo,
       FilterPagination,
@@ -143,16 +159,45 @@
     computed: {
       ...mapState('history', {
         data: (state) => state.data,
-        headers: (state) => state.headers,
+        headersValue: (state) => state.headers,
         isNext: (state) => state.isNext,
         isLoading: (state) => state.isLoading,
       }),
+      ...mapState('history/children-calls', {
+        openedChildrenParentId: (state) => state.parentId,
+      }),
+      ...mapGetters('history/children-calls', {
+        isChildrenPopup: 'IS_PARENT_ID',
+      }),
+
+      headers: {
+        get() {
+          return this.headersValue;
+        },
+        set(value) {
+          this.setHeaders(value);
+        },
+      },
     },
 
     methods: {
       ...mapActions('history', {
+        setHeaders: 'SET_HEADERS',
         loadDataList: 'LOAD_DATA_LIST',
       }),
+      ...mapActions('history/children-calls', {
+        setParentId: 'SET_PARENT_ID',
+        resetParentId: 'RESET_PARENT_ID',
+      }),
+
+      openChildrenPopup(item) {
+        const parentId = item.id;
+        this.setParentId(parentId);
+      },
+
+      closeChildrenPopup() {
+        this.resetParentId();
+      },
     },
   };
 </script>
@@ -189,7 +234,7 @@
     &__pic {
       width: (60px);
       height: (60px);
-      flex: 0 0 (60px);
+      flex: 0 0 60px;
       margin-right: (20px);
     }
 
