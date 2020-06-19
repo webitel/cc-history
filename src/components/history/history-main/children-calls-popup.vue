@@ -10,6 +10,7 @@
           :data="data"
           expanded
           :selectable="false"
+          :grid-actions="false"
         >
           <template slot="direction" slot-scope="{ item }">
             <grid-direction :item="item"/>

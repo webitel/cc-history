@@ -69,7 +69,7 @@
               </slot>
             </div>
 
-            <div class="grid__td__actions">
+            <div class="grid__td__actions" v-if="gridActions">
               <slot name="actions" :item="row" :index="dataKey"></slot>
             </div>
           </div>
@@ -119,6 +119,10 @@
         type: Boolean,
         default: true,
       },
+      gridActions: {
+        type: Boolean,
+        default: true,
+      },
     },
 
     data: () => ({
@@ -140,7 +144,7 @@
         this.shownHeaders.forEach((header) => {
           gridTemplateColumns += ` ${header.width}`;
         });
-        gridTemplateColumns += ` ${'68px'}`; // actions
+        if (this.gridActions) gridTemplateColumns += ` ${'112px'}`; // actions
         return `grid-template-columns: ${gridTemplateColumns}`;
       },
     },
