@@ -36,6 +36,30 @@
 <style lang="scss" scoped>
   .icon-btn {
     position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    &:hover .icon {
+      fill: $icon-color__hover;
+      stroke: $icon-color__hover;
+    }
+
+    &.active .icon,
+    &.opened .icon {
+      fill: $icon-color__active;
+      stroke: $icon-color__active;
+    }
+
+    &--disabled {
+      pointer-events: none;
+
+      .icon {
+        fill: $btn-disabled;
+        stroke: $btn-disabled;
+      }
+    }
+
     .tooltip {
       top: calc(100% + 11px); // icon height + 11px margin
       left: 50%;
