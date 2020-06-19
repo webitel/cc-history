@@ -1,3 +1,4 @@
+import deepCopy from 'deep-copy';
 import getHistory from '../../../api/history/history';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
@@ -34,12 +35,9 @@ const actions = {
   },
 
   GET_QUERY_PARAMS: (context) => {
-    let { query } = router.currentRoute;
-    if (!query.fields) {
-      const fields = getDefaultFields(context.state.headers);
-      // do not mutate $route: reassign variable instead of query.fields=
-      query = { ...query, fields };
-    }
+    const query = deepCopy(router.currentRoute.query);
+    if (!query.fields) query.fields = getDefaultFields(context.state.headers);
+    query.skipParent = 'true';
     return convertQuery(query);
   },
 };

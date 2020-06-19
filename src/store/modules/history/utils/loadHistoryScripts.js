@@ -1,6 +1,7 @@
 import { kebabToCamel } from '../../../../api/utils/caseConverters';
 import { SortSymbols } from '../../../../mixins/filters/sortFilterMixin/sortFilterMixin';
 
+const defaultFields = ['has_children', 'variables', 'files', 'id'];
 
 // - create set to remove created_at duplicates
 // - convert to array by ...
@@ -52,7 +53,7 @@ const handleSortQuery = (value) => {
  */
 const handleFieldsQuery = (value) => {
   let result = datetimeToCreatedAt(value);
-  result += ',variables,files,id';
+  result += `,${defaultFields.join(',')}`;
   return removeDuplicates(result);
 };
 
@@ -75,8 +76,9 @@ const parseQuery = ({ query, keys }) => {
       case 'search':
         break;
       default:
-        value = value.split('|');
+      break;
     }
+    if (typeof value === 'string') value = value.split('|');
     result[kebabToCamel(key)] = value;
   });
   return result;

@@ -33,6 +33,7 @@ const actions = {
     query.from = '0'; // get All
     query.to = `${Date.now()}`;
     query.size = '100';
+    query.skipParent = false;
     return convertQuery(query);
   },
 

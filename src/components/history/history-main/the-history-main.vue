@@ -40,6 +40,7 @@
 
       <template slot="actions" slot-scope="{ item, index }">
         <icon-btn
+          v-if="item.hasChildren"
           :icon="'forks'"
           @click.native.stop="openChildrenPopup(item)"
         ></icon-btn>
