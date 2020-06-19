@@ -11,7 +11,9 @@
 
 <script>
   import apiFilterMixin from '../../mixins/filters/apiFilterMixin';
-  import { fetchUsers, getSelectedUsers } from '../../api/filter-getters/userFilter';
+  import APIRepository from '../../api/APIRepository';
+
+  const userAPI = APIRepository.users;
 
   export default {
     name: 'filter-user',
@@ -22,8 +24,8 @@
     }),
 
     methods: {
-      fetch: fetchUsers,
-      fetchSelected: getSelectedUsers,
+      fetch: userAPI.getUsers,
+      fetchSelected: userAPI.getUsersByIds,
     },
   };
 </script>

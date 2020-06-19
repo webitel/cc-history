@@ -1,7 +1,9 @@
-import getHistory from '../../../api/history/history';
+import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
 import { convertQuery, getDefaultFields } from './utils/loadHistoryScripts';
+
+const historyAPI = APIRepository.history;
 
 const state = {
   data: [],
@@ -19,7 +21,7 @@ const actions = {
     context.commit('SET_LOADING', true);
     const params = await context.dispatch('GET_QUERY_PARAMS');
     try {
-      const { items, next } = await getHistory(params);
+      const { items, next } = await historyAPI.getHistory(params);
       context.commit('SET_DATA_LIST', items);
       context.commit('SET_NEXT_PAGE', next);
     } catch {
