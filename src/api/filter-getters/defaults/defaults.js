@@ -1,6 +1,13 @@
-export const PAGE = 1;
-export const SIZE = 20;
-export const FIELDS = ['id', 'name'];
+const PAGE = 1;
+const SIZE = 20;
+const FIELDS = ['id', 'name'];
+
+export const defaultParams = {
+  page: PAGE,
+  size: SIZE,
+  fields: FIELDS,
+};
+
 export const formatOptions = (response) => {
   if (response.items) {
     return response.items.map((item) => ({

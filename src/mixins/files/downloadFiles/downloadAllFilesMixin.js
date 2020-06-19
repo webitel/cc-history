@@ -2,7 +2,7 @@
 
 import JSZip from 'jszip';
 import { mapGetters } from 'vuex';
-import getHistory from '../../../api/history/history';
+import getHistory from '../../../api/history/HistoryAPIRepository';
 import { convertQuery } from '../../../store/modules/history/utils/loadHistoryScripts';
 import { addItemsFilesToZip, generateAndSaveZip } from './downloadFilesScripts';
 

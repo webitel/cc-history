@@ -11,7 +11,7 @@
 
 <script>
   import apiFilterMixin from '../../mixins/filters/apiFilterMixin';
-  import { fetchTeams, getSelectedTeams } from '../../api/filter-getters/teamFilter';
+  import { fetchTeams, getSelectedTeams } from '../../api/filter-getters/TeamsAPIRepository';
 
   export default {
     name: 'filter-team',

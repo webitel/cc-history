@@ -11,7 +11,9 @@
 
 <script>
   import apiFilterMixin from '../../mixins/filters/apiFilterMixin';
-  import { fetchQueues, getSelectedQueues } from '../../api/filter-getters/queueFilter';
+  import APIRepository from '../../api/APIRepository';
+
+  const queueAPI = APIRepository.queues;
 
   export default {
     name: 'filter-queue',
@@ -22,8 +24,8 @@
     }),
 
     methods: {
-      fetch: fetchQueues,
-      fetchSelected: getSelectedQueues,
+      fetch: queueAPI.getQueues,
+      fetchSelected: queueAPI.getQueuesByIds,
     },
   };
 </script>

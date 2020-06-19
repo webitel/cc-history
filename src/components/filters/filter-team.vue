@@ -11,7 +11,9 @@
 
 <script>
   import apiFilterMixin from '../../mixins/filters/apiFilterMixin';
-  import { fetchTeams, getSelectedTeams } from '../../api/filter-getters/teamFilter';
+  import APIRepository from '../../api/APIRepository';
+
+  const teamAPI = APIRepository.teams;
 
   export default {
     name: 'filter-team',
@@ -22,8 +24,8 @@
     }),
 
     methods: {
-      fetch: fetchTeams,
-      fetchSelected: getSelectedTeams,
+      fetch: teamAPI.getTeams,
+      fetchSelected: teamAPI.getTeamsByIds,
     },
   };
 </script>
