@@ -1,14 +1,9 @@
-/* eslint-disable no-await-in-loop  */
-
-import { mapGetters } from 'vuex';
-import getHistory from '../../api/history/HistoryAPIRepository';
-import historyHeaders from '../../store/modules/history/utils/historyHeaders';
-import { convertQuery } from '../../store/modules/history/utils/loadHistoryScripts';
+import {
+  getDefaultFields,
+} from '../../store/modules/history/utils/loadHistoryScripts';
 import download from '../../utils/downloadFile';
-
-const getDefaultFields = () => historyHeaders
-  .filter((header) => header.show)
-  .map((header) => header.value);
+import downloadAllCSVMixin from './baseLoaders/downloadAllCSVMixin';
+import downloadSelectedCSVMixin from './baseLoaders/downloadSelectedCSVMixin';
 
 const responseToCSV = ({ fields, items }) => {
   let csv = '';
@@ -26,15 +21,10 @@ const responseToCSV = ({ fields, items }) => {
 };
 
 export default {
+  mixins: [downloadAllCSVMixin, downloadSelectedCSVMixin],
   data: () => ({
     isCSVLoading: false,
   }),
-
-  computed: {
-    ...mapGetters('history', {
-      selectedData: 'SELECTED_DATA',
-    }),
-  },
 
   methods: {
     async downloadCSV() {
@@ -52,46 +42,11 @@ export default {
       this.isCSVLoading = false;
     },
 
-    downloadSelectedCSV(fields) {
-      const items = this.selectedData;
-      return responseToCSV({ fields, items });
-    },
-
-    async downloadAllCSV(fields) {
-      let csv = '';
-      const size = 100;
-      const params = {
-        ...this.getQueryParams(),
-        size,
-      };
-
-      let page = 1;
-      let isNext = false;
-
-      csv += `${fields.join(',')}\n`;
-
-      do {
-        const { items, next } = await this.loadListForDownload({ ...params, page });
-        csv += responseToCSV({ fields, items });
-
-        isNext = next;
-        page += 1;
-      } while (isNext);
-      return csv;
-    },
+    responseToCSV,
 
     getFields() {
       const { fields } = this.$route.query;
       return fields ? fields.split(',') : getDefaultFields();
-    },
-
-    loadListForDownload(params) {
-      return getHistory(params);
-    },
-
-    getQueryParams() {
-      const { query } = this.$route;
-      return convertQuery(query);
     },
   },
 };

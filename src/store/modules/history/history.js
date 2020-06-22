@@ -21,7 +21,7 @@ const getters = {
 const actions = {
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = await context.dispatch('GET_QUERY_PARAMS');
+    const params = await context.dispatch('GET_REQUEST_PARAMS');
     try {
       const { items, next } = await historyAPI.getHistory(params);
       context.commit('SET_DATA_LIST', items);
@@ -32,15 +32,25 @@ const actions = {
     }
   },
 
+  GET_HISTORY_LIST: async (context, additionalParams) => {
+    const queryParams = await context.dispatch('GET_REQUEST_PARAMS');
+    const params = {
+      ...queryParams,
+      ...additionalParams,
+    };
+      return historyAPI.getHistory(params);
+  },
+
   SET_HEADERS: (context, headers) => {
     context.commit('SET_HEADERS', headers);
   },
 
-  GET_QUERY_PARAMS: (context) => {
-    const query = deepCopy(router.currentRoute.query);
+  GET_REQUEST_PARAMS: (context) => {
+    const routeQuery = deepCopy(router.currentRoute.query);
+    const query = convertQuery(routeQuery);
     if (!query.fields) query.fields = getDefaultFields(context.state.headers);
-    query.skipParent = 'true';
-    return convertQuery(query);
+    query.skipParent = true;
+    return query;
   },
 };
 const mutations = {

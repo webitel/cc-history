@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import { addFilesToZip, generateAndSaveZip } from './downloadFilesScripts';
+import { addFilesToZip, generateAndSaveZip } from './scripts/downloadFilesScripts';
 
 
 export default {

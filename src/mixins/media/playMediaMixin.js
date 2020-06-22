@@ -1,5 +1,5 @@
-import { generateURL } from '../filesScripts';
-import AudioPlayer from '../../../components/utils/audio-player.vue';
+import generateMediaURL from './scripts/generateMediaURL';
+import AudioPlayer from '../../components/utils/audio-player.vue';
 
 export default {
   components: {
@@ -15,7 +15,7 @@ export default {
     play(fileId) {
       if (fileId) {
         this.currentlyPlaying = fileId;
-        this.audioURL = generateURL(fileId);
+        this.audioURL = generateMediaURL(fileId);
       } else {
         this.closePlayer();
       }

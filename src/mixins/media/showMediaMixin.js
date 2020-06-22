@@ -1,4 +1,4 @@
-import MediaSelect from '../../../components/utils/media-select.vue';
+import MediaSelect from '../../components/utils/media-select.vue';
 
 export default {
   components: {

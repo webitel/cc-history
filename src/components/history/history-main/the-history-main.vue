@@ -116,9 +116,9 @@
   import MediaAction from './grid-templates/grid-media-action.vue';
   import DownloadAction from './grid-templates/grid-download-action.vue';
   import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
-  import downloadRowFilesMixin from '../../../mixins/files/downloadFiles/downloadRowFilesMixin';
-  import playMediaMixin from '../../../mixins/files/mediaMixins/playMediaMixin';
-  import showMediaMixin from '../../../mixins/files/mediaMixins/showMediaMixin';
+  import downloadRowFilesMixin from '../../../mixins/downloadFiles/downloadRowFilesMixin';
+  import playMediaMixin from '../../../mixins/media/playMediaMixin';
+  import showMediaMixin from '../../../mixins/media/showMediaMixin';
 
   export default {
     name: 'the-history-main',
