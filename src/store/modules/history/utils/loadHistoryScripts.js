@@ -76,7 +76,7 @@ const parseQuery = ({ query, keys }) => {
       case 'search':
         break;
       default:
-      break;
+        break;
     }
     if (typeof value === 'string') value = value.split('|');
     result[kebabToCamel(key)] = value;
@@ -100,7 +100,5 @@ export const convertQuery = (query) => {
 export const getDefaultFields = (headers) => (
   headers
     .filter((header) => header.show)
-    .reduce((fields, nextItem, index) => {
-      if (!index) return nextItem.field;
-      return `${fields},${nextItem.field}`;
-    }, ''));
+    .map((header) => header.field)
+);

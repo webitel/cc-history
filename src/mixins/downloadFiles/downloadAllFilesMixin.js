@@ -2,9 +2,7 @@
 
 import JSZip from 'jszip';
 import { mapGetters } from 'vuex';
-import getHistory from '../../../api/history/HistoryAPIRepository';
-import { convertQuery } from '../../../store/modules/history/utils/loadHistoryScripts';
-import { addItemsFilesToZip, generateAndSaveZip } from './downloadFilesScripts';
+import { addItemsFilesToZip, generateAndSaveZip } from './scripts/downloadFilesScripts';
 
 // function to bind component "this" for filterCounter
 function counter() {
@@ -54,7 +52,6 @@ export default {
     async downloadAllFiles(zip) {
       const size = 100;
       const params = {
-        ...this.getQueryParams(),
         size,
         existsFile: true,
       };
@@ -70,15 +67,6 @@ export default {
         isNext = next;
         page += 1;
       } while (isNext);
-    },
-
-    loadListForDownload(params) {
-      return getHistory(params);
-    },
-
-    getQueryParams() {
-      const { query } = this.$route;
-      return convertQuery(query);
     },
   },
 };

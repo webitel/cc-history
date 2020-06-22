@@ -24,10 +24,11 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
   import FilterSearch from '../../filters/filter-search.vue';
   import Btn from '../../utils/btn.vue';
   import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
-  import downloadAllFilesMixin from '../../../mixins/files/downloadFiles/downloadAllFilesMixin';
+  import downloadAllFilesMixin from '../../../mixins/downloadFiles/downloadAllFilesMixin';
 
   export default {
     name: 'the-history-heading',
@@ -38,6 +39,11 @@
     components: {
       FilterSearch,
       Btn,
+    },
+    methods: {
+      ...mapActions('history', {
+        loadListForDownload: 'GET_HISTORY_LIST', // files and data download
+      }),
     },
   };
 </script>

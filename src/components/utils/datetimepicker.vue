@@ -355,14 +355,15 @@
   }
 
   .dt-picker__actions {
-    text-align: center;
-    margin-top: (30px);
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
 
     .cc-btn {
-      min-width: (110px);
+      min-width: 110px;
 
       &.secondary {
-        margin-right: (30px);
+        margin-right: 30px;
       }
     }
   }

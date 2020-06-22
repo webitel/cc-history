@@ -1,8 +1,20 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop  */
-
+import jszipUtils from 'jszip-utils';
 import { saveAs } from 'file-saver';
-import { fetchFileBinary } from '../filesScripts';
+import generateMediaURL from '../../media/scripts/generateMediaURL';
 import eventBus from '../../../utils/eventBus';
+
+const fetchFileBinary = (id) => {
+  const url = generateMediaURL(id);
+  return new Promise((resolve, reject) => (
+    jszipUtils.getBinaryContent(url, (err, data) => {
+      if (err) {
+        reject();
+      } else {
+        resolve(data);
+      }
+    })));
+};
 
 export const addFilesToZip = async (files, zip, counter) => {
   for (const file of files) {

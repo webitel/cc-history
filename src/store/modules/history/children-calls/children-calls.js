@@ -1,6 +1,6 @@
 import APIRepository from '../../../../api/APIRepository';
 import historyHeaders from '../utils/historyHeaders';
-import { convertQuery, getDefaultFields } from '../utils/loadHistoryScripts';
+import { getDefaultFields } from '../utils/loadHistoryScripts';
 
 const historyAPI = APIRepository.history;
 
@@ -18,7 +18,7 @@ const getters = {
 const actions = {
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = await context.dispatch('GET_QUERY_PARAMS');
+    const params = await context.dispatch('GET_REQUEST_PARAMS');
     try {
       const { items } = await historyAPI.getHistory(params);
       context.commit('SET_DATA_LIST', items);
@@ -28,15 +28,16 @@ const actions = {
     }
   },
 
-  GET_QUERY_PARAMS: (context) => {
-    const query = {};
-    query.fields = getDefaultFields(context.state.headers);
-    query.parentId = state.parentId;
-    query.from = '0'; // get All
-    query.to = `${Date.now()}`;
-    query.size = '100';
-    query.skipParent = false;
-    return convertQuery(query);
+  GET_REQUEST_PARAMS: (context) => {
+    const query = {
+      fields: getDefaultFields(context.state.headers),
+      parentId: state.parentId,
+      from: 0, // get All
+      to: Date.now(),
+      size: 100,
+      skipParent: false,
+    };
+    return query;
   },
 
   SET_PARENT_ID: (context, parentId) => {
