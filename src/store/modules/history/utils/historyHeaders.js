@@ -1,8 +1,9 @@
 import i18n from '../../../../locale/i18n';
 
+console.log(i18n.t('fields.date'));
 export default [
   {
-    text: i18n.t('fields.date'),
+    text: () => i18n.t('fields.date'),
     value: 'date',
     show: true,
     sort: null,
@@ -10,7 +11,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.time'),
+    text: () => i18n.t('fields.time'),
     value: 'time',
     show: true,
     sort: null,
@@ -18,7 +19,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.direction'),
+    text: () => i18n.t('fields.direction'),
     value: 'direction',
     show: true,
     sort: null,
@@ -26,7 +27,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.answeredAt'),
+    text: () => i18n.t('fields.answeredAt'),
     value: 'answeredAt',
     show: false,
     sort: null,
@@ -34,7 +35,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.bridgedAt'),
+    text: () => i18n.t('fields.bridgedAt'),
     value: 'bridgedAt',
     show: false,
     sort: null,
@@ -42,7 +43,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.queueBridgedAt'),
+    text: () => i18n.t('fields.queueBridgedAt'),
     value: 'queueBridgedAt',
     show: false,
     sort: null,
@@ -50,7 +51,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.joinedAt'),
+    text: () => i18n.t('fields.joinedAt'),
     value: 'joinedAt',
     show: false,
     sort: null,
@@ -58,7 +59,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.leavingAt'),
+    text: () => i18n.t('fields.leavingAt'),
     value: 'leavingAt',
     show: false,
     sort: null,
@@ -66,7 +67,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.hangupAt'),
+    text: () => i18n.t('fields.hangupAt'),
     value: 'hangupAt',
     show: false,
     sort: null,
@@ -74,7 +75,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.reportingAt'),
+    text: () => i18n.t('fields.reportingAt'),
     value: 'reportingAt',
     show: false,
     sort: null,
@@ -82,7 +83,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.user'),
+    text: () => i18n.t('fields.user'),
     value: 'user',
     show: true,
     sort: null,
@@ -90,7 +91,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.extension'),
+    text: () => i18n.t('fields.extension'),
     value: 'extension',
     show: false,
     sort: null,
@@ -98,7 +99,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.from'),
+    text: () => i18n.t('fields.from'),
     value: 'from',
     show: true,
     sort: null,
@@ -106,7 +107,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.to'),
+    text: () => i18n.t('fields.to'),
     value: 'to',
     show: true,
     sort: null,
@@ -114,7 +115,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.destination'),
+    text: () => i18n.t('fields.destination'),
     value: 'destination',
     show: true,
     sort: null,
@@ -122,7 +123,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.gateway'),
+    text: () => i18n.t('fields.gateway'),
     value: 'gateway',
     show: false,
     sort: null,
@@ -130,7 +131,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.agent'),
+    text: () => i18n.t('fields.agent'),
     value: 'agent',
     show: false,
     sort: null,
@@ -138,7 +139,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.team'),
+    text: () => i18n.t('fields.team'),
     value: 'team',
     show: false,
     sort: null,
@@ -146,7 +147,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.queue'),
+    text: () => i18n.t('fields.queue'),
     value: 'queue',
     show: false,
     sort: null,
@@ -154,7 +155,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.member'),
+    text: () => i18n.t('fields.member'),
     value: 'member',
     show: false,
     sort: null,
@@ -170,7 +171,7 @@ export default [
   //   width: 'minmax(120px, 1fr)',
   // },
   {
-    text: i18n.t('fields.duration'),
+    text: () => i18n.t('fields.duration'),
     value: 'duration',
     show: true,
     sort: null,
@@ -178,7 +179,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.tags'),
+    text: () => i18n.t('fields.tags'),
     value: 'tags',
     show: false,
     sort: null,
@@ -186,7 +187,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.display'),
+    text: () => i18n.t('fields.display'),
     value: 'display',
     show: false,
     sort: null,
@@ -194,7 +195,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.holdSec'),
+    text: () => i18n.t('fields.holdSec'),
     value: 'holdSec',
     show: false,
     sort: null,
@@ -202,7 +203,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.waitSec'),
+    text: () => i18n.t('fields.waitSec'),
     value: 'waitSec',
     show: false,
     sort: null,
@@ -210,7 +211,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.billSec'),
+    text: () => i18n.t('fields.billSec'),
     value: 'billSec',
     show: true,
     sort: null,
@@ -218,7 +219,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.reportingSec'),
+    text: () => i18n.t('fields.reportingSec'),
     value: 'reportingSec',
     show: false,
     sort: null,
@@ -226,7 +227,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.queueWaitSec'),
+    text: () => i18n.t('fields.queueWaitSec'),
     value: 'queueWaitSec',
     show: false,
     sort: null,
@@ -234,7 +235,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.queueDurationSec'),
+    text: () => i18n.t('fields.queueDurationSec'),
     value: 'queueDurationSec',
     show: false,
     sort: null,
@@ -242,7 +243,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.result'),
+    text: () => i18n.t('fields.result'),
     value: 'result',
     show: false,
     sort: null,
@@ -250,7 +251,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.sipCode'),
+    text: () => i18n.t('fields.sipCode'),
     value: 'sipCode',
     show: false,
     sort: null,
@@ -258,7 +259,7 @@ export default [
     width: 'minmax(120px, 1fr)',
   },
   {
-    text: i18n.t('fields.cause'),
+    text: () => i18n.t('fields.cause'),
     value: 'cause',
     show: true,
     sort: null,

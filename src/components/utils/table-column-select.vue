@@ -1,7 +1,7 @@
 <template>
   <popup-container class="column-select" @keydown.esc="$emit('close')">
     <template slot="popup-header">
-      <h1 class="popup-header__h1">{{$t('components.columnSelect.header')}}}</h1>
+      <h1 class="popup-header__h1">{{$t('components.columnSelect.header')}}</h1>
     </template>
     <template slot="popup-main">
       <ul class="column-select__list">
@@ -103,6 +103,8 @@
   }
 
   .popup-actions {
+    display: flex;
+
     .cc-btn {
       min-width: (120px);
 
