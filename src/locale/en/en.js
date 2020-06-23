@@ -54,7 +54,7 @@ export default {
     queueBridgedAt: 'Queue bridged at',
     joinedAt: 'Joined at',
     leavingAt: 'Leaving at',
-    hangupAt: 'Hangup st',
+    hangupAt: 'Hangup at',
     reportingAt: 'Reporting at',
     extension: 'Extension',
     destination: 'Destination',

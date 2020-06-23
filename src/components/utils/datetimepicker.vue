@@ -51,8 +51,8 @@
         ></timepicker>
       </div>
       <div class="dt-picker__actions">
-        <btn class="secondary" @click.native="close">{{$t('reusable.cancel')}}</btn>
         <btn class="primary" @click.native="input">{{$t('reusable.add')}}</btn>
+        <btn class="secondary" @click.native="close">{{$t('reusable.cancel')}}</btn>
       </div>
     </div>
   </div>
@@ -363,7 +363,7 @@
       min-width: 110px;
 
       &.secondary {
-        margin-right: 30px;
+        margin-left: 30px;
       }
     }
   }
