@@ -1,13 +1,12 @@
 import i18n from '../../../../locale/i18n';
 
-console.log(i18n.t('fields.date'));
 export default [
   {
     text: () => i18n.t('fields.date'),
     value: 'date',
     show: true,
     sort: null,
-    field: 'date',
+    field: 'created_at',
     width: 'minmax(120px, 1fr)',
   },
   {
@@ -15,7 +14,7 @@ export default [
     value: 'time',
     show: true,
     sort: null,
-    field: 'time',
+    field: 'created_at',
     width: 'minmax(120px, 1fr)',
   },
   {

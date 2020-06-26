@@ -5,7 +5,10 @@ const defaultFields = ['has_children', 'variables', 'files', 'id'];
 
 // - create set to remove created_at duplicates
 // - convert to array by ...
-const removeDuplicates = (arr) => [...new Set(arr.split(','))];
+const removeDuplicates = (value) => {
+  if (Array.isArray(value)) return [...new Set(value)];
+  return [...new Set(value.split(','))];
+};
 
 const datetimeToCreatedAt = (value) => {
   let result = value.slice();
@@ -98,7 +101,7 @@ export const convertQuery = (query) => {
 };
 
 export const getDefaultFields = (headers) => (
-  headers
+  removeDuplicates(headers
     .filter((header) => header.show)
-    .map((header) => header.field)
+    .map((header) => header.field))
 );
