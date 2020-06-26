@@ -32,6 +32,8 @@ export default {
 
       let csv = 'data:text/csv;charset=utf-8,';
       const fields = this.getFields();
+      // add headers
+      csv += `${fields.join(',')}\n`;
       if (this.selectedData.length) {
         csv += this.downloadSelectedCSV(fields);
       } else {

@@ -1,4 +1,4 @@
-<template>
+z<template>
   <column-select
     :value="headers"
     @change="change"
@@ -21,7 +21,7 @@
     data: () => ({
       filterQuery: 'fields',
       separator: ',',
-      queriedProp: 'field',
+      queriedProp: 'value',
     }),
 
     computed: {
@@ -61,7 +61,7 @@
       restoreValue({ value }) {
         const headers = this.headers.map((header) => ({
           ...header,
-          show: !!value.includes(header.field),
+          show: !!value.includes(header.value),
         }));
         this.setHeaders(headers);
       },
