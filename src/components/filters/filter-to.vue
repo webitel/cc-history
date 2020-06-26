@@ -4,6 +4,8 @@
     :label="$t('components.dtPicker.to')"
     :preview-label="$t('components.dtPicker.dateTime')"
     @input="setQueryValue({ filterQuery, value: `${$event}` })"
+    @lastHour="setComplexValue"
+    @lastDay="setComplexValue"
   ></dt-picker>
 </template>
 
@@ -20,6 +22,14 @@
       DtPicker,
     },
 
+    watch: {
+      '$route.query.to': {
+        handler() {
+          this.restore({ filterQuery: this.filterQuery });
+        },
+      },
+    },
+
     data: () => ({
       value: Math.floor(Date.now() / msInMin) * msInMin,
       filterQuery: 'to',
@@ -28,6 +38,10 @@
     methods: {
       restoreValue({ value }) {
         this.value = +value;
+      },
+      setComplexValue({ from, to }) {
+        this.setQueryValue({ filterQuery: 'from', value: `${from}` });
+        this.setQueryValue({ filterQuery: this.filterQuery, value: `${to}` });
       },
     },
   };

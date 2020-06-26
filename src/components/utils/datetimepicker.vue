@@ -129,7 +129,7 @@
       setLastHour() {
         const from = Date.now() - 60 * 60 * 10 ** 3; // 60 min x 60 sec x 1000 ms
         const to = Date.now();
-        this.$emit('input', {
+        this.$emit('lastHour', {
           from,
           to,
         });
@@ -138,7 +138,7 @@
       setLastDay() {
         const from = Date.now() - 24 * 60 * 60 * 10 ** 3; // 24hour x 60 min x 60 sec x 1000 ms
         const to = Date.now();
-        this.$emit('input', {
+        this.$emit('lastDay', {
           from,
           to,
         });
