@@ -12,8 +12,6 @@ export default {
       let page = 1;
       let isNext = false;
 
-      csv += `${fields.join(',')}\n`;
-
       do {
         const { items, next } = await this.loadListForDownload({ ...params, page });
         csv += this.responseToCSV({ fields, items });
