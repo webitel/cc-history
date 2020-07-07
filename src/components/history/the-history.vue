@@ -40,7 +40,7 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding: (20px) (30px) (60px);
+    padding: 20px 30px;
     background: $page-bg-color;
   }
 </style>
