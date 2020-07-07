@@ -125,7 +125,7 @@
   .history-section.history-filters-section {
     display: flex;
     align-items: flex-start;
-    padding: 18px 28px 0;
+    padding: 18px 30px 0;
     margin: 20px 0;
 
     .table-actions {

@@ -53,10 +53,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .history-heading__h1 {
     @extend .typo-heading-md;
+    margin-right: 20px;
   }
 
   .history-heading__actions-wrap {
@@ -65,11 +67,11 @@
     position: relative;
 
     .cc-btn {
-      margin-left: (20px);
+      margin-left: 20px;
     }
 
     .files-counter {
-      $offset: (10px);
+      $offset: 10px;
       @extend .typo-body-sm;
       position: absolute;
       right: 0;

@@ -79,8 +79,11 @@
 <style lang="scss" scoped>
   .table-actions {
     display: flex;
+    flex-wrap: wrap;
+
     .icon-btn {
       margin-left: 30px;
+      margin-bottom: 24px;
     }
   }
 </style>

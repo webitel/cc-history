@@ -208,7 +208,7 @@
 
     .grid__tr__header {
       min-width: fit-content;
-      border-bottom: 2px solid $header-border-color;
+      border-bottom: 1px solid $header-border-color;
     }
 
     .grid__body.grid-body__expanding {

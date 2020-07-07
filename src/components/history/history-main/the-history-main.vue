@@ -208,7 +208,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    padding: (20px) (30px);
+    padding: 20px 30px;
   }
 
   .table-action {

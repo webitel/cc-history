@@ -103,7 +103,7 @@
     },
 
     methods: {
-      limitText: (count) => `${count}`,
+      limitText: (count) => `${count + 1}`,
 
       async fetch(search) {
         if (this.apiMode) {
@@ -122,7 +122,7 @@
 <style lang="scss">
   @import "../../css/ui-components/multiselect-spinner";
 
-  $select-paddings: (7px) (30px) (7px) (8px);
+  $select-paddings: 8px 32px 8px 10px;
 
   .hs-multiselect-wrap {
     position: relative;
@@ -165,9 +165,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: (40px);
+      height: 38px; // 40px - 2px borders
       padding: $select-paddings;
-      box-sizing: border-box;
+      /*box-sizing: border-box;*/
 
       .multiselect__strong {
         @extend .count-badge;

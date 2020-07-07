@@ -168,7 +168,7 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    padding: 7px; // 8px - border
+    padding: 7px 7px 7px 9px; // 8px - border and 10px - border
     border: 1px solid $input-border-color;
     border-radius: $border-radius;
     cursor: pointer;
