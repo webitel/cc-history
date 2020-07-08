@@ -181,12 +181,8 @@
   }
 
   ::v-deep .popup {
-    top: 50px;
-    right: 50px;
-    bottom: 50px;
-    left: 50px;
-    transform: none;
-    max-height: 100vh;
+    width: calc(100vw - 100px);
+    max-height: calc(100vh - 100px);
   }
 
   ::v-deep .grid__tr {
