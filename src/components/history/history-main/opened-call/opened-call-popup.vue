@@ -5,17 +5,19 @@
         v-model="currentTab"
         :tabs="tabs"
       ></tabs>
-      <!--      <btn-->
-      <!--        class="primary"-->
-      <!--        :loading="isCSVLoading"-->
-      <!--        @click.native="downloadCSV"-->
-      <!--      >{{$t('headerSection.exportCSV')}}-->
-      <!--      </btn>-->
-      <btn
-        class="secondary"
-        @click.native="$emit('close')"
-      >{{$t('reusable.close')}}
-      </btn>
+      <div class="opened-call__actions-wrap">
+        <btn
+          class="secondary"
+          @click.native="$emit('close')"
+        >{{$t('reusable.close')}}
+        </btn>
+        <btn
+          class="primary"
+          :loading="isCSVLoading"
+          @click.native="downloadCSV"
+        >{{$t('headerSection.exportCSV')}}
+        </btn>
+      </div>
     </template>
 
     <template slot="popup-main">
@@ -30,9 +32,11 @@
   import PopupContainer from '../../../utils/popup-container.vue';
   import Btn from '../../../utils/btn.vue';
   import Tabs from '../../../utils/tabs.vue';
+  import downloadCSVMixin from '../../../../mixins/downloadCSV/downloadCSVMixin';
 
   export default {
     name: 'opened-item-popup',
+    mixins: [downloadCSVMixin],
     components: {
       CallLegs,
       PopupContainer,
@@ -65,8 +69,7 @@
       },
     },
 
-    methods: {
-    },
+    methods: {},
   };
 </script>
 
@@ -78,8 +81,20 @@
     max-height: calc(100vh - 100px);
   }
 
-  .cc-btn {
-    min-width: 100px;
-    margin-left: auto;
+  .opened-call__actions-wrap {
+    // костыль поднимает кнопки свеху на табы
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    background: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .cc-btn {
+      min-width: 100px;
+      margin-left: 20px;
+    }
   }
 </style>

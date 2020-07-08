@@ -30,6 +30,7 @@ const state = {
 
 const getters = {
   IS_CALL_ID: (state) => !!state.callId, // string id or null
+  SELECTED_DATA: (state) => state.data.filter((item) => item._isSelected),
   HEADERS: (state) => {
     const headers = [...state.headers, transfersHeader, transfersLegMarkerHeader];
     return headers;
