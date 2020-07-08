@@ -124,12 +124,12 @@
     },
 
     computed: {
-      ...mapState('history/children-calls', {
+      ...mapState('history/opened-call', {
         data: (state) => state.data,
         itemInstance: (state) => state.itemInstance,
         isLoading: (state) => state.isLoading,
       }),
-      ...mapGetters('history/children-calls', {
+      ...mapGetters('history/opened-call', {
         headers: 'HEADERS',
       }),
 
@@ -142,7 +142,7 @@
     },
 
     methods: {
-      ...mapActions('history/children-calls', {
+      ...mapActions('history/opened-call', {
         loadDataList: 'LOAD_DATA_LIST',
       }),
 

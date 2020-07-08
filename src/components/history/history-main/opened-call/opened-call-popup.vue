@@ -47,7 +47,7 @@
     }),
 
     computed: {
-      ...mapState('history/children-calls', {
+      ...mapState('history/opened-call', {
         itemInstance: (state) => state.itemInstance,
       }),
 

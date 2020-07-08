@@ -21,7 +21,7 @@ const transfersLegMarkerHeader = {
 };
 
 const state = {
-  itemId: null,
+  callId: null,
   itemInstance: {},
   data: [],
   headers: historyHeaders,
@@ -29,7 +29,7 @@ const state = {
 };
 
 const getters = {
-  IS_ITEM_ID: (state) => !!state.itemId, // string id or null
+  IS_CALL_ID: (state) => !!state.callId, // string id or null
   HEADERS: (state) => {
     const headers = [...state.headers, transfersHeader, transfersLegMarkerHeader];
     return headers;
@@ -58,7 +58,7 @@ const actions = {
         'transfer_from',
         'transfer_to',
       ],
-      parentId: state.itemId,
+      parentId: state.callId,
       from: 0, // get All
       to: Date.now(),
       size: 100,
@@ -67,14 +67,14 @@ const actions = {
     return query;
   },
 
-  SET_OPENED_ITEM: (context, item) => {
-    const itemId = item.id;
-    context.commit('SET_ITEM', item);
-    context.commit('SET_ITEM_ID', itemId);
+  SET_OPENED_CALL: (context, item) => {
+    const callId = item.id;
+    context.commit('SET_CALL', item);
+    context.commit('SET_CALL_ID', callId);
   },
 
-  RESET_OPENED_ITEM: (context) => {
-    context.commit('RESET_ITEM_ID');
+  RESET_OPENED_CALL: (context) => {
+    context.commit('RESET_CALL_ID');
     context.commit('RESET_DATA_LIST');
   },
 };
@@ -89,16 +89,16 @@ const mutations = {
     state.isLoading = isLoading;
   },
 
-  SET_ITEM: (state, itemInstance) => {
+  SET_CALL: (state, itemInstance) => {
     state.itemInstance = itemInstance;
   },
 
-  SET_ITEM_ID: (state, itemId) => {
-    state.itemId = itemId;
+  SET_CALL_ID: (state, callId) => {
+    state.callId = callId;
   },
 
-  RESET_ITEM_ID: (state) => {
-    state.itemId = null;
+  RESET_CALL_ID: (state) => {
+    state.callId = null;
   },
 };
 

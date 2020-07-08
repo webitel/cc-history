@@ -65,11 +65,10 @@
 
     </grid-table>
 
-    <opened-item-popup
-      v-if="isOpenedItemPopup"
-      :parent-id="openedItemId"
-      @close="closeItem"
-    ></opened-item-popup>
+    <opened-call-popup
+      v-if="isOpenedCallPopup"
+      @close="closeCallPopup"
+    ></opened-call-popup>
 
     <audio-player
       v-show="audioURL"
@@ -92,7 +91,7 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex';
-  import OpenedItemPopup from './opened-call/opened-call-popup.vue';
+  import OpenedCallPopup from './opened-call/opened-call-popup.vue';
   import GridTable from '../../utils/grid-table.vue';
   import FilterPagination from '../../filters/filter-pagination.vue';
   import Loader from '../../utils/loader.vue';
@@ -121,7 +120,7 @@
       downloadRowFilesMixin,
     ],
     components: {
-      OpenedItemPopup,
+      OpenedCallPopup,
       GridTable,
       FilterPagination,
       Loader,
@@ -154,11 +153,8 @@
         isNext: (state) => state.isNext,
         isLoading: (state) => state.isLoading,
       }),
-      ...mapState('history/children-calls', {
-        openedItemId: (state) => state.parentId,
-      }),
-      ...mapGetters('history/children-calls', {
-        isOpenedItemPopup: 'IS_ITEM_ID',
+      ...mapGetters('history/opened-call', {
+        isOpenedCallPopup: 'IS_CALL_ID',
       }),
 
       headers: {
@@ -176,16 +172,16 @@
         setHeaders: 'SET_HEADERS',
         loadDataList: 'LOAD_DATA_LIST',
       }),
-      ...mapActions('history/children-calls', {
-        setOpenedItem: 'SET_OPENED_ITEM',
-        resetOpenedItem: 'RESET_OPENED_ITEM',
+      ...mapActions('history/opened-call', {
+        setOpenedItem: 'SET_OPENED_CALL',
+        resetOpenedItem: 'RESET_OPENED_CALL',
       }),
 
       openItem(item) {
         this.setOpenedItem(item);
       },
 
-      closeItem() {
+      closeCallPopup() {
         this.resetOpenedItem();
       },
     },
