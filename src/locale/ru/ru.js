@@ -33,7 +33,12 @@ export default {
     exportCSV: 'Экспортировать CSV',
   },
   mainSection: {
+  },
+  openedCall: {
     callInfo: 'Информация',
+    callLegs: 'Legs A-B',
+    transferFrom: 'Перевод От',
+    transferTo: 'Перевод На',
   },
   fields: {
     agent: 'Агент',
@@ -102,8 +107,6 @@ export default {
     expandFilters: 'Раскрыть фильтры',
   },
   icon: {
-    transferFrom: 'Перевод от',
-    transferTo: 'Перевод на',
     forks: 'Ответвления',
     play: 'Проиграть',
     pause: 'Пауза',

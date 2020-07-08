@@ -92,7 +92,7 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex';
-  import OpenedItemPopup from './opened-item/opened-item-popup.vue';
+  import OpenedItemPopup from './opened-call/opened-call-popup.vue';
   import GridTable from '../../utils/grid-table.vue';
   import FilterPagination from '../../filters/filter-pagination.vue';
   import Loader from '../../utils/loader.vue';
