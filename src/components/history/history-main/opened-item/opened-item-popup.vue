@@ -56,22 +56,32 @@
             </icon>
           </template>
           <template slot="transfers" slot-scope="{ item }">
-            <icon-btn
-              class="table-action"
-              :class="{'hidden': !item.transferFrom}"
-              :icon="'transfer-from'"
-              :title="$t('icon.transferFrom')"
-              @mouseenter.native="highlightRow(item.transferFrom)"
-              @mouseleave.native="highlightRow(item.transferFrom)"
-            ></icon-btn>
-            <icon-btn
-              class="table-action"
-              :class="{'hidden': !item.transferTo}"
-              :icon="'transfer-to'"
-              :title="$t('icon.transferTo')"
-              @mouseenter.native="highlightRow(item.transferTo)"
-              @mouseleave.native="highlightRow(item.transferTo)"
-            ></icon-btn>
+            <div class="transfers-wrap">
+              <div
+                class="transfer-icon"
+                :class="{'hidden': !item.transferFrom}"
+              >
+                <icon-btn
+                  class="table-action"
+                  :icon="'transfer-from'"
+                  @mouseenter.native="highlightRow(item.transferFrom)"
+                  @mouseleave.native="highlightRow(item.transferFrom)"
+                ></icon-btn>
+                <tooltip>{{$t('icon.transferFrom')}}</tooltip>
+              </div>
+              <div
+                class="transfer-icon"
+                :class="{'hidden': !item.transferTo}"
+              >
+                <icon-btn
+                  class="table-action"
+                  :icon="'transfer-to'"
+                  @mouseenter.native="highlightRow(item.transferTo)"
+                  @mouseleave.native="highlightRow(item.transferTo)"
+                ></icon-btn>
+                <tooltip>{{$t('icon.transferTo')}}</tooltip>
+              </div>
+            </div>
           </template>
         </grid-table>
       </div>
@@ -84,6 +94,7 @@
   import GridTable from '../../../utils/grid-table.vue';
   import PopupContainer from '../../../utils/popup-container.vue';
   import Btn from '../../../utils/btn.vue';
+  import Tooltip from '../../../utils/tooltip.vue';
   import Loader from '../../../utils/loader.vue';
   import GridAgent from '../grid-templates/grid-agent.vue';
   import GridDirection from '../grid-templates/grid-direction.vue';
@@ -104,6 +115,7 @@
       GridTable,
       PopupContainer,
       Btn,
+      Tooltip,
       Loader,
       GridAgent,
       GridDirection,
@@ -205,6 +217,27 @@
     position: absolute;
     left: 0;
     top: 0;
+  }
+
+  .transfers-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  .transfer-icon {
+    position: relative;
+
+    .tooltip {
+      top: 50%;
+      right: calc(100% + 10px);
+      white-space: nowrap; // prevent break between words
+      transform: translate(0, -50%);
+    }
+
+    &:hover .tooltip {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
   .cc-btn {
