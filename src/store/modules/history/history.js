@@ -3,7 +3,7 @@ import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
 import { convertQuery, getDefaultFields } from './utils/loadHistoryScripts';
-import childrenCalls from './children-calls/children-calls';
+import openedCall from './opened-call/opened-call';
 
 const historyAPI = APIRepository.history;
 
@@ -75,6 +75,6 @@ export default {
   actions,
   mutations,
   modules: {
-    'children-calls': childrenCalls,
+    'opened-call': openedCall,
   },
 };

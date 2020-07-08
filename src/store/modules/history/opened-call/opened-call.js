@@ -3,16 +3,38 @@ import historyHeaders from '../utils/historyHeaders';
 import { getDefaultFields } from '../utils/loadHistoryScripts';
 
 const historyAPI = APIRepository.history;
+const transfersHeader = {
+  text: () => '',
+  value: 'transfers',
+  show: true,
+  sort: null,
+  field: 'transfer_from, transfer_to',
+  width: 'minmax(120px, 1fr)',
+};
+const transfersLegMarkerHeader = {
+  text: () => '',
+  value: 'legMarker',
+  show: true,
+  sort: null,
+  field: '',
+  width: '0',
+};
 
 const state = {
-  parentId: null,
+  callId: null,
+  itemInstance: {},
   data: [],
   headers: historyHeaders,
   isLoading: false,
 };
 
 const getters = {
-  IS_PARENT_ID: (state) => !!state.parentId, // string id or null
+  IS_CALL_ID: (state) => !!state.callId, // string id or null
+  SELECTED_DATA: (state) => state.data.filter((item) => item._isSelected),
+  HEADERS: (state) => {
+    const headers = [...state.headers, transfersHeader, transfersLegMarkerHeader];
+    return headers;
+  },
 };
 
 const actions = {
@@ -30,8 +52,14 @@ const actions = {
 
   GET_REQUEST_PARAMS: (context) => {
     const query = {
-      fields: getDefaultFields(context.state.headers),
-      parentId: state.parentId,
+      fields: [
+        'id',
+        'parent_id',
+        ...getDefaultFields(context.state.headers),
+        'transfer_from',
+        'transfer_to',
+      ],
+      parentId: state.callId,
       from: 0, // get All
       to: Date.now(),
       size: 100,
@@ -40,12 +68,14 @@ const actions = {
     return query;
   },
 
-  SET_PARENT_ID: (context, parentId) => {
-    context.commit('SET_PARENT_ID', parentId);
+  SET_OPENED_CALL: (context, item) => {
+    const callId = item.id;
+    context.commit('SET_CALL', item);
+    context.commit('SET_CALL_ID', callId);
   },
 
-  RESET_PARENT_ID: (context) => {
-    context.commit('RESET_PARENT_ID');
+  RESET_OPENED_CALL: (context) => {
+    context.commit('RESET_CALL_ID');
     context.commit('RESET_DATA_LIST');
   },
 };
@@ -60,12 +90,16 @@ const mutations = {
     state.isLoading = isLoading;
   },
 
-  SET_PARENT_ID: (state, parentId) => {
-    state.parentId = parentId;
+  SET_CALL: (state, itemInstance) => {
+    state.itemInstance = itemInstance;
   },
 
-  RESET_PARENT_ID: (state) => {
-    state.parentId = null;
+  SET_CALL_ID: (state, callId) => {
+    state.callId = callId;
+  },
+
+  RESET_CALL_ID: (state) => {
+    state.callId = null;
   },
 };
 

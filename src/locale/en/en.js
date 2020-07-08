@@ -32,8 +32,12 @@ export default {
     filesLoaded: 'Files loaded: ',
     exportCSV: 'Export CSV',
   },
-  mainSection: {
+  mainSection: {},
+  openedCall: {
     callInfo: 'Call info',
+    callLegs: 'Legs A-B',
+    transferFrom: 'Transfer From',
+    transferTo: 'Transfer To',
   },
   fields: {
     agent: 'Agent',

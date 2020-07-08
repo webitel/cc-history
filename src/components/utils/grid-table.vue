@@ -38,7 +38,10 @@
 
           <div
             class="grid__tr grid__tr__body"
-            :class="{'expanded': expanded && expandedIndex === dataKey}"
+            :class="[
+              `grid__tr__${row.id || dataKey}`,
+              {'expanded': expanded && expandedIndex === dataKey}
+             ]"
             :style="computeColumnsNumStyle"
             @click="expand(dataKey)"
           >
@@ -249,13 +252,14 @@
     &__th, &__td, &__td > div {
       @extend .typo-body-md;
       //min-width: $min-td-width;
-      position: relative;
+      /*position: relative;*/
       width: 100%;
       max-width: 100%;
       overflow-wrap: break-word;
 
       &__actions {
         display: flex;
+        align-items: flex-start;
         justify-content: flex-end;
       }
     }
