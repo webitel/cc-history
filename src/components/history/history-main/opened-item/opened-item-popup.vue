@@ -1,0 +1,214 @@
+<template>
+  <popup-container @close="$emit('close')">
+    <template slot="popup-header">
+      <btn
+        class="secondary"
+        @click.native="$emit('close')"
+      >{{$t('reusable.close')}}
+      </btn>
+    </template>
+
+    <template slot="popup-main">
+      <div class="popup-grid-wrap">
+        <loader v-if="isLoading"/>
+        <grid-table
+          v-else
+          ref="item-relations-table"
+          :headers="headers"
+          :data="tableData"
+          :grid-actions="false"
+        >
+          <template slot="direction" slot-scope="{ item }">
+            <grid-direction :item="item"/>
+          </template>
+          <template slot="from" slot-scope="{ item }">
+            <grid-from :item="item"/>
+          </template>
+          <template slot="to" slot-scope="{ item }">
+            <grid-to :item="item"/>
+          </template>
+          <template slot="user" slot-scope="{ item }">
+            <grid-user :item="item"/>
+          </template>
+          <template slot="gateway" slot-scope="{ item }">
+            <grid-gateway :item="item"/>
+          </template>
+          <template slot="agent" slot-scope="{ item }">
+            <grid-agent :item="item"/>
+          </template>
+          <template slot="team" slot-scope="{ item }">
+            <grid-team :item="item"/>
+          </template>
+          <template slot="queue" slot-scope="{ item }">
+            <grid-queue :item="item"/>
+          </template>
+          <template slot="member" slot-scope="{ item }">
+            <grid-member :item="item"/>
+          </template>
+          <template slot="legMarker" slot-scope="{ item }">
+            <icon
+              v-if="!item.parentId"
+              class="icon icon__leg-marker sm"
+            >
+              <svg class="icon sm">
+                <use xlink:href="#icon-leg-a_sm"></use>
+              </svg>
+            </icon>
+          </template>
+          <template slot="transfers" slot-scope="{ item }">
+            <icon-btn
+              class="table-action"
+              :class="{'hidden': !item.transferFrom}"
+              :icon="'transfer-from'"
+              :title="$t('icon.transferFrom')"
+              @mouseenter.native="highlightRow(item.transferFrom)"
+              @mouseleave.native="highlightRow(item.transferFrom)"
+            ></icon-btn>
+            <icon-btn
+              class="table-action"
+              :class="{'hidden': !item.transferTo}"
+              :icon="'transfer-to'"
+              :title="$t('icon.transferTo')"
+              @mouseenter.native="highlightRow(item.transferTo)"
+              @mouseleave.native="highlightRow(item.transferTo)"
+            ></icon-btn>
+          </template>
+        </grid-table>
+      </div>
+    </template>
+  </popup-container>
+</template>
+
+<script>
+  import { mapState, mapGetters, mapActions } from 'vuex';
+  import GridTable from '../../../utils/grid-table.vue';
+  import PopupContainer from '../../../utils/popup-container.vue';
+  import Btn from '../../../utils/btn.vue';
+  import Loader from '../../../utils/loader.vue';
+  import GridAgent from '../grid-templates/grid-agent.vue';
+  import GridDirection from '../grid-templates/grid-direction.vue';
+  import GridFrom from '../grid-templates/grid-from.vue';
+  import GridGateway from '../grid-templates/grid-gateway.vue';
+  import GridMember from '../grid-templates/grid-member.vue';
+  import GridQueue from '../grid-templates/grid-queue.vue';
+  import GridTeam from '../grid-templates/grid-team.vue';
+  import GridTo from '../grid-templates/grid-to.vue';
+  import GridUser from '../grid-templates/grid-user.vue';
+  import playMediaMixin from '../../../../mixins/media/playMediaMixin';
+  import showMediaMixin from '../../../../mixins/media/showMediaMixin';
+  import downloadRowFilesMixin from '../../../../mixins/downloadFiles/downloadRowFilesMixin';
+
+  export default {
+    name: 'opened-item-popup',
+    components: {
+      GridTable,
+      PopupContainer,
+      Btn,
+      Loader,
+      GridAgent,
+      GridDirection,
+      GridFrom,
+      GridGateway,
+      GridMember,
+      GridQueue,
+      GridTeam,
+      GridTo,
+      GridUser,
+    },
+    mixins: [
+      playMediaMixin,
+      showMediaMixin,
+      downloadRowFilesMixin,
+    ],
+
+    created() {
+      this.loadDataList();
+    },
+
+    computed: {
+      ...mapState('history/children-calls', {
+        data: (state) => state.data,
+        itemInstance: (state) => state.itemInstance,
+        isLoading: (state) => state.isLoading,
+      }),
+      ...mapGetters('history/children-calls', {
+        headers: 'HEADERS',
+      }),
+
+      tableData() {
+        return [
+          this.itemInstance,
+          ...this.data,
+        ];
+      },
+    },
+
+    methods: {
+      ...mapActions('history/children-calls', {
+        loadDataList: 'LOAD_DATA_LIST',
+      }),
+
+      highlightRow(id) {
+        const table = this.$refs['item-relations-table'];
+        const className = `grid__tr__${id}`;
+        const row = table.$el.querySelector(`.${className}`);
+        if (row.classList.contains('grid__tr--highlighted')) {
+          row.classList.remove('grid__tr--highlighted');
+        } else {
+          row.classList.add('grid__tr--highlighted');
+        }
+      },
+    },
+  };
+</script>
+
+<style lang="scss" scoped>
+  $row-highlight-bg-color: #FFF9E6;
+
+  .popup-grid-wrap {
+  }
+
+  ::v-deep .popup {
+    top: 50px;
+    right: 50px;
+    bottom: 50px;
+    left: 50px;
+    transform: none;
+    max-height: 100vh;
+  }
+
+  ::v-deep .grid__tr {
+    position: relative;
+  }
+
+  ::v-deep .grid__row-wrap:first-child .grid__td > div {
+    font-family: 'Montserrat Semi', sans-serif;
+  }
+
+  ::v-deep .grid__tr--highlighted {
+    animation: row-bg-blinking 1s linear infinite;
+  }
+
+  @keyframes row-bg-blinking {
+    0% {
+      background: #fff;
+    }
+    50% {
+      background: $row-highlight-bg-color;
+    }
+    100% {
+      background: #fff;
+    }
+  }
+
+  .icon__leg-marker {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .cc-btn {
+    min-width: 100px;
+    margin-left: auto;
+  }
+</style>

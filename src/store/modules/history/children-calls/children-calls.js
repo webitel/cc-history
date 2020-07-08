@@ -3,16 +3,37 @@ import historyHeaders from '../utils/historyHeaders';
 import { getDefaultFields } from '../utils/loadHistoryScripts';
 
 const historyAPI = APIRepository.history;
+const transfersHeader = {
+  text: () => '',
+  value: 'transfers',
+  show: true,
+  sort: null,
+  field: 'transfer_from, transfer_to',
+  width: 'minmax(120px, 1fr)',
+};
+const transfersLegMarkerHeader = {
+  text: () => '',
+  value: 'legMarker',
+  show: true,
+  sort: null,
+  field: '',
+  width: '0',
+};
 
 const state = {
-  parentId: null,
+  itemId: null,
+  itemInstance: {},
   data: [],
   headers: historyHeaders,
   isLoading: false,
 };
 
 const getters = {
-  IS_PARENT_ID: (state) => !!state.parentId, // string id or null
+  IS_ITEM_ID: (state) => !!state.itemId, // string id or null
+  HEADERS: (state) => {
+    const headers = [...state.headers, transfersHeader, transfersLegMarkerHeader];
+    return headers;
+  },
 };
 
 const actions = {
@@ -30,8 +51,14 @@ const actions = {
 
   GET_REQUEST_PARAMS: (context) => {
     const query = {
-      fields: getDefaultFields(context.state.headers),
-      parentId: state.parentId,
+      fields: [
+        'id',
+        'parent_id',
+        ...getDefaultFields(context.state.headers),
+        'transfer_from',
+        'transfer_to',
+      ],
+      parentId: state.itemId,
       from: 0, // get All
       to: Date.now(),
       size: 100,
@@ -40,12 +67,14 @@ const actions = {
     return query;
   },
 
-  SET_PARENT_ID: (context, parentId) => {
-    context.commit('SET_PARENT_ID', parentId);
+  SET_OPENED_ITEM: (context, item) => {
+    const itemId = item.id;
+    context.commit('SET_ITEM', item);
+    context.commit('SET_ITEM_ID', itemId);
   },
 
-  RESET_PARENT_ID: (context) => {
-    context.commit('RESET_PARENT_ID');
+  RESET_OPENED_ITEM: (context) => {
+    context.commit('RESET_ITEM_ID');
     context.commit('RESET_DATA_LIST');
   },
 };
@@ -60,12 +89,16 @@ const mutations = {
     state.isLoading = isLoading;
   },
 
-  SET_PARENT_ID: (state, parentId) => {
-    state.parentId = parentId;
+  SET_ITEM: (state, itemInstance) => {
+    state.itemInstance = itemInstance;
   },
 
-  RESET_PARENT_ID: (state) => {
-    state.parentId = null;
+  SET_ITEM_ID: (state, itemId) => {
+    state.itemId = itemId;
+  },
+
+  RESET_ITEM_ID: (state) => {
+    state.itemId = null;
   },
 };
 

@@ -102,6 +102,8 @@ export default {
     expandFilters: 'Expand filters',
   },
   icon: {
+    transferFrom: 'Transfer from',
+    transferTo: 'Transfer to',
     forks: 'Forks',
     play: 'Play',
     pause: 'Pause',

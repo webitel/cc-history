@@ -75,7 +75,7 @@
       left: 0;
       width: (18px);
       height: (18px);
-      background: #fff;
+      /*background: #fff;*/
       border: (2px) solid $checkbox-color;
       border-radius: 2px;
     }

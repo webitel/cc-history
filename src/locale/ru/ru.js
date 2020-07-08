@@ -102,6 +102,8 @@ export default {
     expandFilters: 'Раскрыть фильтры',
   },
   icon: {
+    transferFrom: 'Перевод от',
+    transferTo: 'Перевод на',
     forks: 'Ответвления',
     play: 'Проиграть',
     pause: 'Пауза',
