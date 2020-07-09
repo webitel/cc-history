@@ -5,6 +5,7 @@ import { SortSymbols } from '../../../../mixins/filters/sortFilterMixin/sortFilt
 // - convert to array by ...
 const removeDuplicates = (value) => {
   if (Array.isArray(value)) return [...new Set(value)];
+  // else string
   return [...new Set(value.split(','))];
 };
 
@@ -52,11 +53,11 @@ const handleSortQuery = (value) => {
  * @private
  * @returns fields value
  */
-const handleFieldsQuery = (value) => {
-  const result = datetimeToCreatedAt(value);
-  // result += `,${defaultFields.join(',')}`;
-  return removeDuplicates(result);
-};
+// const handleFieldsQuery = (value) => {
+//   const result = datetimeToCreatedAt(value);
+//   // result += `,${defaultFields.join(',')}`;
+//   return removeDuplicates(result);
+// };
 
 /**
  * @Function
@@ -72,7 +73,7 @@ const parseQuery = ({ query, keys }) => {
         value = handleSortQuery(value);
         break;
       case 'fields':
-        value = handleFieldsQuery(value);
+        // value = handleFieldsQuery(value);
         break;
       case 'search':
         break;
@@ -98,7 +99,7 @@ export const convertQuery = (query) => {
   });
 };
 
-export const getDefaultFields = (headers) => (
+export const getHeadersFields = (headers) => (
   removeDuplicates(headers
     .filter((header) => header.show)
     .map((header) => header.field))

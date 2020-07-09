@@ -56,13 +56,17 @@
         data: (state) => state.data,
       }),
       ...mapGetters('history/opened-call', {
-        fields: 'GET_REQUEST_FIELDS',
+        dataFields: 'DATA_FIELDS',
         selectedDataItems: 'SELECTED_DATA_ITEMS',
       }),
 
       selectedItems() {
-        if (this.selectedDataItems.length) return [this.itemInstance, ...this.selectedDataItems];
-        return [];
+        const selectedItems = [...this.selectedDataItems];
+        if (selectedItems.length
+          && selectedItems.indexOf(this.itemInstance) === -1) {
+          selectedItems.unshift(this.itemInstance);
+        }
+        return selectedItems;
       },
 
       tabs() {
@@ -76,13 +80,6 @@
         };
         const tabs = [callInfo, callLegs];
         return tabs;
-      },
-    },
-
-    methods: {
-      loadListForDownload() {
-        const items = [this.itemInstance, ...this.data];
-        return { items };
       },
     },
   };

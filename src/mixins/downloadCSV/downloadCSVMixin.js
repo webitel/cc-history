@@ -7,8 +7,9 @@ const responseToCSV = ({ fields, items }) => {
   let csv = '';
   items.forEach((item) => {
     let result = '';
-    fields.forEach((key) => {
-      let value = item[snakeToCamel(key)] || '';
+    fields.forEach((snakeKey) => {
+      const key = snakeToCamel(snakeKey);
+      let value = item[key] || '';
       if (typeof value === 'object') value = value.name || '';
       result += `${value},`;
     });
@@ -24,6 +25,12 @@ export default {
     isCSVLoading: false,
   }),
 
+  computed: {
+    isAnySelected() {
+      return this.selectedItems.length;
+    },
+  },
+
   methods: {
     async downloadCSV() {
       this.isCSVLoading = true;
@@ -32,7 +39,7 @@ export default {
       const fields = this.getFields();
       // add headers
       csv += `${fields.join(',')}\n`;
-      if (this.selectedItems.length) {
+      if (this.isAnySelected) {
         csv += this.downloadSelectedCSV(fields);
       } else {
         csv += await this.downloadAllCSV(fields);
@@ -45,9 +52,7 @@ export default {
     responseToCSV,
 
     getFields() {
-      return this.fields.filter((field) => (
-        field !== 'files'
-      ));
+      return this.dataFields.filter((field) => (field !== 'files'));
     },
   },
 };

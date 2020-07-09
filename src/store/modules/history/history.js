@@ -2,7 +2,7 @@ import deepCopy from 'deep-copy';
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
-import { convertQuery, getDefaultFields } from './utils/loadHistoryScripts';
+import { convertQuery, getHeadersFields } from './utils/loadHistoryScripts';
 import openedCall from './opened-call/opened-call';
 
 const historyAPI = APIRepository.history;
@@ -21,19 +21,15 @@ const getters = {
   GET_REQUEST_PARAMS: (state, getters) => {
     const routeQuery = deepCopy(router.currentRoute.query);
     const query = convertQuery(routeQuery);
-    // if (!query.fields) query.fields = getDefaultFields(state.headers);
-    // query.fields = [REQUIRED_DATA_FIELDS, ...query.fields];
-    query.fields = getters.GET_REQUEST_FIELDS;
+    query.fields = getters.DATA_FIELDS;
     query.skipParent = true;
     return query;
   },
 
-  GET_REQUEST_FIELDS: () => {
-    const routeQuery = deepCopy(router.currentRoute.query);
-    const query = convertQuery(routeQuery);
-    if (!query.fields) query.fields = getDefaultFields(state.headers);
-    query.fields = [...REQUIRED_DATA_FIELDS, ...query.fields];
-    return query.fields;
+  DATA_FIELDS: () => {
+    let fields = getHeadersFields(state.headers);
+    fields = [...REQUIRED_DATA_FIELDS, ...fields];
+    return fields;
   },
 };
 
@@ -51,7 +47,7 @@ const actions = {
     }
   },
 
-  GET_HISTORY_LIST: async (context, additionalParams) => {
+  FETCH_DOWNLOAD_LIST: async (context, additionalParams) => {
     const queryParams = await context.getters.GET_REQUEST_PARAMS;
     const params = {
       ...queryParams,

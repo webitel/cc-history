@@ -1,7 +1,13 @@
 /* eslint-disable no-await-in-loop  */
 
+import { mapActions } from 'vuex';
+
 export default {
   methods: {
+    ...mapActions('history', {
+      fetchDownloadList: 'FETCH_DOWNLOAD_LIST', // files and data download
+    }),
+
     async downloadAllCSV(fields) {
       let csv = '';
       const size = 100;
@@ -13,7 +19,7 @@ export default {
       let isNext = false;
 
       do {
-        const { items, next } = await this.loadListForDownload({ ...params, page });
+        const { items, next } = await this.fetchDownloadList({ ...params, page });
         csv += this.responseToCSV({ fields, items });
 
         isNext = next;

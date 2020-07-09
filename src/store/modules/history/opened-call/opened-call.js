@@ -1,7 +1,5 @@
-import deepCopy from 'deep-copy';
 import APIRepository from '../../../../api/APIRepository';
-import { convertQuery, getDefaultFields } from '../utils/loadHistoryScripts';
-import router from '../../../../router';
+import { getHeadersFields } from '../utils/loadHistoryScripts';
 
 const historyAPI = APIRepository.history;
 const REQUIRED_DATA_FIELDS = [
@@ -44,7 +42,7 @@ const getters = {
 
   GET_REQUEST_PARAMS: (state, getters) => {
     const query = {
-      fields: getters.GET_REQUEST_FIELDS,
+      fields: getters.DATA_FIELDS,
       parentId: state.callId,
       from: 0, // get All
       to: Date.now(),
@@ -54,12 +52,10 @@ const getters = {
     return query;
   },
 
-  GET_REQUEST_FIELDS: (state, getters, rootState) => {
-    const routeQuery = deepCopy(router.currentRoute.query);
-    const query = convertQuery(routeQuery);
-    if (!query.fields) query.fields = getDefaultFields(rootState.history.headers);
-    query.fields = [...REQUIRED_DATA_FIELDS, ...query.fields];
-    return query.fields;
+  DATA_FIELDS: (state, getters, rootState) => {
+    let fields = getHeadersFields(rootState.history.headers);
+    fields = [...REQUIRED_DATA_FIELDS, ...fields];
+    return fields;
   },
 };
 
@@ -74,6 +70,11 @@ const actions = {
     } finally {
       context.commit('SET_LOADING', false);
     }
+  },
+
+  FETCH_DOWNLOAD_LIST: async (context) => {
+    const items = [context.state.itemInstance, ...context.state.data];
+    return { items };
   },
 
   SET_OPENED_CALL: (context, item) => {
