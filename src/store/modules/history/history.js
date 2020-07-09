@@ -6,6 +6,7 @@ import { convertQuery, getDefaultFields } from './utils/loadHistoryScripts';
 import openedCall from './opened-call/opened-call';
 
 const historyAPI = APIRepository.history;
+const REQUIRED_DATA_FIELDS = ['files', 'id'];
 
 const state = {
   data: [],
@@ -15,13 +16,31 @@ const state = {
 };
 
 const getters = {
-  SELECTED_DATA: (state) => state.data.filter((item) => item._isSelected),
+  SELECTED_DATA_ITEMS: (state) => state.data.filter((item) => item._isSelected),
+
+  GET_REQUEST_PARAMS: (state, getters) => {
+    const routeQuery = deepCopy(router.currentRoute.query);
+    const query = convertQuery(routeQuery);
+    // if (!query.fields) query.fields = getDefaultFields(state.headers);
+    // query.fields = [REQUIRED_DATA_FIELDS, ...query.fields];
+    query.fields = getters.GET_REQUEST_FIELDS;
+    query.skipParent = true;
+    return query;
+  },
+
+  GET_REQUEST_FIELDS: () => {
+    const routeQuery = deepCopy(router.currentRoute.query);
+    const query = convertQuery(routeQuery);
+    if (!query.fields) query.fields = getDefaultFields(state.headers);
+    query.fields = [...REQUIRED_DATA_FIELDS, ...query.fields];
+    return query.fields;
+  },
 };
 
 const actions = {
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = await context.dispatch('GET_REQUEST_PARAMS');
+    const params = await context.getters.GET_REQUEST_PARAMS;
     try {
       const { items, next } = await historyAPI.getHistory(params);
       context.commit('SET_DATA_LIST', items);
@@ -33,24 +52,16 @@ const actions = {
   },
 
   GET_HISTORY_LIST: async (context, additionalParams) => {
-    const queryParams = await context.dispatch('GET_REQUEST_PARAMS');
+    const queryParams = await context.getters.GET_REQUEST_PARAMS;
     const params = {
       ...queryParams,
       ...additionalParams,
     };
-      return historyAPI.getHistory(params);
+    return historyAPI.getHistory(params);
   },
 
   SET_HEADERS: (context, headers) => {
     context.commit('SET_HEADERS', headers);
-  },
-
-  GET_REQUEST_PARAMS: (context) => {
-    const routeQuery = deepCopy(router.currentRoute.query);
-    const query = convertQuery(routeQuery);
-    if (!query.fields) query.fields = getDefaultFields(context.state.headers);
-    query.skipParent = true;
-    return query;
   },
 };
 const mutations = {

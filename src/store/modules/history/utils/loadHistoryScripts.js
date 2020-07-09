@@ -1,8 +1,6 @@
 import { kebabToCamel } from '../../../../api/utils/caseConverters';
 import { SortSymbols } from '../../../../mixins/filters/sortFilterMixin/sortFilterMixin';
 
-const defaultFields = ['has_children', 'variables', 'files', 'id'];
-
 // - create set to remove created_at duplicates
 // - convert to array by ...
 const removeDuplicates = (value) => {
@@ -55,8 +53,8 @@ const handleSortQuery = (value) => {
  * @returns fields value
  */
 const handleFieldsQuery = (value) => {
-  let result = datetimeToCreatedAt(value);
-  result += `,${defaultFields.join(',')}`;
+  const result = datetimeToCreatedAt(value);
+  // result += `,${defaultFields.join(',')}`;
   return removeDuplicates(result);
 };
 

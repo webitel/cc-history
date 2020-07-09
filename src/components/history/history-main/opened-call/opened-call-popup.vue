@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapGetters, mapState } from 'vuex';
   import CallLegs from './opened-call-tabs/opened-call-legs.vue';
   import PopupContainer from '../../../utils/popup-container.vue';
   import Btn from '../../../utils/btn.vue';
@@ -53,7 +53,17 @@
     computed: {
       ...mapState('history/opened-call', {
         itemInstance: (state) => state.itemInstance,
+        data: (state) => state.data,
       }),
+      ...mapGetters('history/opened-call', {
+        fields: 'GET_REQUEST_FIELDS',
+        selectedDataItems: 'SELECTED_DATA_ITEMS',
+      }),
+
+      selectedItems() {
+        if (this.selectedDataItems.length) return [this.itemInstance, ...this.selectedDataItems];
+        return [];
+      },
 
       tabs() {
         const callInfo = {
@@ -69,7 +79,12 @@
       },
     },
 
-    methods: {},
+    methods: {
+      loadListForDownload() {
+        const items = [this.itemInstance, ...this.data];
+        return { items };
+      },
+    },
   };
 </script>
 

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import FilterSearch from '../../filters/filter-search.vue';
   import Btn from '../../utils/btn.vue';
   import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
@@ -39,6 +39,13 @@
     components: {
       FilterSearch,
       Btn,
+    },
+
+    computed: {
+      ...mapGetters('history', {
+        fields: 'GET_REQUEST_FIELDS',
+        selectedItems: 'SELECTED_DATA_ITEMS',
+      }),
     },
     methods: {
       ...mapActions('history', {

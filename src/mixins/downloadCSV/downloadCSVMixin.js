@@ -1,16 +1,14 @@
-import {
-  getDefaultFields,
-} from '../../store/modules/history/utils/loadHistoryScripts';
 import download from '../../utils/downloadFile';
 import downloadAllCSVMixin from './baseLoaders/downloadAllCSVMixin';
 import downloadSelectedCSVMixin from './baseLoaders/downloadSelectedCSVMixin';
+import { snakeToCamel } from '../../api/utils/caseConverters';
 
 const responseToCSV = ({ fields, items }) => {
   let csv = '';
   items.forEach((item) => {
     let result = '';
     fields.forEach((key) => {
-      let value = item[key] || '';
+      let value = item[snakeToCamel(key)] || '';
       if (typeof value === 'object') value = value.name || '';
       result += `${value},`;
     });
@@ -34,7 +32,7 @@ export default {
       const fields = this.getFields();
       // add headers
       csv += `${fields.join(',')}\n`;
-      if (this.selectedData.length) {
+      if (this.selectedItems.length) {
         csv += this.downloadSelectedCSV(fields);
       } else {
         csv += await this.downloadAllCSV(fields);
@@ -47,8 +45,9 @@ export default {
     responseToCSV,
 
     getFields() {
-      const { fields } = this.$route.query;
-      return fields ? fields.split(',') : getDefaultFields();
+      return this.fields.filter((field) => (
+        field !== 'files'
+      ));
     },
   },
 };
