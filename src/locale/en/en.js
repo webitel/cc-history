@@ -37,6 +37,7 @@ export default {
     callInfo: 'Call info',
     callLegs: 'Legs A-B',
     transferFrom: 'Transfer From',
+    transferMerge: 'Call Merge',
     transferTo: 'Transfer To',
   },
   fields: {

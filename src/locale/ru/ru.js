@@ -38,6 +38,7 @@ export default {
     callInfo: 'Информация',
     callLegs: 'Legs A-B',
     transferFrom: 'Перевод От',
+    transferMerge: 'Объединение Звонков',
     transferTo: 'Перевод На',
   },
   fields: {

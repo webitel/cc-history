@@ -43,7 +43,7 @@ const getters = {
   GET_REQUEST_PARAMS: (state, getters) => {
     const query = {
       fields: getters.DATA_FIELDS,
-      parentId: state.callId,
+      dependencyId: state.callId,
       from: 0, // get All
       to: Date.now(),
       size: 100,

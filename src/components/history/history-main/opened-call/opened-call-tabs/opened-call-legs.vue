@@ -54,10 +54,22 @@
             <icon-btn
               class="table-action"
               :icon="'transfer-from'"
-              @mouseenter.native="highlightRow(item.transferFrom)"
-              @mouseleave.native="highlightRow(item.transferFrom)"
+              @mouseenter.native="highlightRow([item.transferFrom])"
+              @mouseleave.native="highlightRow([item.transferFrom])"
             ></icon-btn>
             <tooltip>{{$t('openedCall.transferFrom')}}</tooltip>
+          </div>
+          <div
+            class="transfer-icon"
+            :class="{'hidden': !item.transferFrom || !item.transferTo}"
+          >
+            <icon-btn
+              class="table-action"
+              :icon="'transfer-merge'"
+              @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
+              @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
+            ></icon-btn>
+            <tooltip>{{$t('openedCall.transferMerge')}}</tooltip>
           </div>
           <div
             class="transfer-icon"
@@ -66,8 +78,8 @@
             <icon-btn
               class="table-action"
               :icon="'transfer-to'"
-              @mouseenter.native="highlightRow(item.transferTo)"
-              @mouseleave.native="highlightRow(item.transferTo)"
+              @mouseenter.native="highlightRow([item.transferTo])"
+              @mouseleave.native="highlightRow([item.transferTo])"
             ></icon-btn>
             <tooltip>{{$t('openedCall.transferTo')}}</tooltip>
           </div>
@@ -146,15 +158,19 @@
         loadDataList: 'LOAD_DATA_LIST',
       }),
 
-      highlightRow(id) {
-        const table = this.$refs['call-legs-table'];
-        const className = `grid__tr__${id}`;
-        const row = table.$el.querySelector(`.${className}`);
-        if (row.classList.contains('grid__tr--highlighted')) {
-          row.classList.remove('grid__tr--highlighted');
-        } else {
-          row.classList.add('grid__tr--highlighted');
-        }
+      highlightRow(ids) {
+        ids.forEach((id) => {
+          const table = this.$refs['call-legs-table'];
+          const className = `grid__tr__${id}`;
+          const row = table.$el.querySelector(`.${className}`);
+          if (row) {
+            if (row.classList.contains('grid__tr--highlighted')) {
+              row.classList.remove('grid__tr--highlighted');
+            } else {
+              row.classList.add('grid__tr--highlighted');
+            }
+          }
+        });
       },
     },
   };

@@ -35,6 +35,8 @@ const fetchHistory = async ({
                               fields,
                               sort,
                               search,
+                              ids,
+                              dependencyId,
                             }) => {
   try {
     const response = await callService.searchHistoryCall(
@@ -57,6 +59,18 @@ const fetchHistory = async ({
       existsFile,
       fields,
       sort,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ids,
+      undefined,
+      undefined,
+      dependencyId,
     );
     return formatResponse(response);
   } catch (err) {
