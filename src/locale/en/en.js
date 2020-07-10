@@ -39,6 +39,7 @@ export default {
     transferFrom: 'Transfer From',
     transferMerge: 'Call Merge',
     transferTo: 'Transfer To',
+    noVariables: 'There are no variables',
   },
   fields: {
     agent: 'Agent',

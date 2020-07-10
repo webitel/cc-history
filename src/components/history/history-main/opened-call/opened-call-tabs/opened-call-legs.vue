@@ -1,5 +1,5 @@
 <template>
-  <div class="opened-call-legs">
+  <section class="opened-call-legs">
     <loader v-if="isLoading"/>
     <grid-table
       v-else
@@ -86,7 +86,7 @@
         </div>
       </template>
     </grid-table>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -129,17 +129,15 @@
       downloadRowFilesMixin,
     ],
 
-    data: () => ({}),
-
     created() {
       this.loadDataList();
     },
 
     computed: {
       ...mapState('history/opened-call', {
-        data: (state) => state.data,
-        itemInstance: (state) => state.itemInstance,
-        isLoading: (state) => state.isLoading,
+        legsData: (state) => state.legsData,
+        mainCall: (state) => state.mainCall,
+        isLoading: (state) => state.isLegsDataLoading,
       }),
       ...mapGetters('history/opened-call', {
         headers: 'HEADERS',
@@ -147,15 +145,15 @@
 
       tableData() {
         return [
-          this.itemInstance,
-          ...this.data,
+          this.mainCall,
+          ...this.legsData,
         ];
       },
     },
 
     methods: {
       ...mapActions('history/opened-call', {
-        loadDataList: 'LOAD_DATA_LIST',
+        loadDataList: 'LOAD_LEGS_DATA_LIST',
       }),
 
       highlightRow(ids) {
@@ -224,6 +222,11 @@
   // transfer icon btn container
   .transfer-icon {
     position: relative;
+
+    // separate icons for proper animation
+    &:nth-child(2) {
+      margin: 0 3px;
+    }
 
     .tooltip {
       top: 50%;

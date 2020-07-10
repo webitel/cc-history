@@ -40,6 +40,7 @@ export default {
     transferFrom: 'Перевод От',
     transferMerge: 'Объединение Звонков',
     transferTo: 'Перевод На',
+    noVariables: 'Этот звонок не имеет переменных',
   },
   fields: {
     agent: 'Агент',

@@ -21,39 +21,44 @@
     </template>
 
     <template slot="popup-main">
-      <component :is="currentTab.value"/>
+      <loader v-if="isLoading"/>
+      <component v-else :is="currentTab.value"/>
     </template>
   </popup-container>
 </template>
 
 <script>
   import { mapGetters, mapState } from 'vuex';
+  import CallInfo from './opened-call-tabs/opened-call-info.vue';
   import CallLegs from './opened-call-tabs/opened-call-legs.vue';
   import PopupContainer from '../../../utils/popup-container.vue';
   import Btn from '../../../utils/btn.vue';
   import Tabs from '../../../utils/tabs.vue';
+  import Loader from '../../../utils/loader.vue';
   import downloadCSVMixin from '../../../../mixins/downloadCSV/downloadCSVMixin';
 
   export default {
     name: 'opened-item-popup',
     mixins: [downloadCSVMixin],
     components: {
+      CallInfo,
       CallLegs,
       PopupContainer,
       Btn,
       Tabs,
+      Loader,
     },
 
     data: () => ({
       currentTab: {
-        value: 'call-legs',
+        value: 'call-info',
       },
     }),
 
     computed: {
       ...mapState('history/opened-call', {
-        itemInstance: (state) => state.itemInstance,
-        data: (state) => state.data,
+        mainCall: (state) => state.mainCall,
+        isLoading: (state) => state.isLoading,
       }),
       ...mapGetters('history/opened-call', {
         dataFields: 'DATA_FIELDS',
@@ -63,8 +68,8 @@
       selectedItems() {
         const selectedItems = [...this.selectedDataItems];
         if (selectedItems.length
-          && selectedItems.indexOf(this.itemInstance) === -1) {
-          selectedItems.unshift(this.itemInstance);
+          && selectedItems.indexOf(this.mainCall) === -1) {
+          selectedItems.unshift(this.mainCall);
         }
         return selectedItems;
       },
@@ -72,13 +77,14 @@
       tabs() {
         const callInfo = {
           text: this.$t('openedCall.callInfo'),
-          value: 'callInfo',
+          value: 'call-info',
         };
         const callLegs = {
           text: this.$t('openedCall.callLegs'),
           value: 'call-legs',
         };
-        const tabs = [callInfo, callLegs];
+        const tabs = [callInfo];
+        if (this.mainCall.hasChildren) tabs.push(callLegs);
         return tabs;
       },
     },
