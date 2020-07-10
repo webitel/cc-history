@@ -18,14 +18,6 @@ const state = {
 const getters = {
   SELECTED_DATA_ITEMS: (state) => state.data.filter((item) => item._isSelected),
 
-  GET_REQUEST_PARAMS: (state, getters) => {
-    const routeQuery = deepCopy(router.currentRoute.query);
-    const query = convertQuery(routeQuery);
-    query.fields = getters.DATA_FIELDS;
-    query.skipParent = true;
-    return query;
-  },
-
   DATA_FIELDS: () => {
     let fields = getHeadersFields(state.headers);
     fields = [...REQUIRED_DATA_FIELDS, ...fields];
@@ -36,7 +28,7 @@ const getters = {
 const actions = {
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = await context.getters.GET_REQUEST_PARAMS;
+    const params = await context.dispatch('GET_REQUEST_PARAMS');
     try {
       const { items, next } = await historyAPI.getHistory(params);
       context.commit('SET_DATA_LIST', items);
@@ -54,6 +46,14 @@ const actions = {
       ...additionalParams,
     };
     return historyAPI.getHistory(params);
+  },
+
+  GET_REQUEST_PARAMS: (context) => {
+    const routeQuery = deepCopy(router.currentRoute.query);
+    const query = convertQuery(routeQuery);
+    query.fields = context.getters.DATA_FIELDS;
+    query.skipParent = true;
+    return query;
   },
 
   SET_HEADERS: (context, headers) => {
