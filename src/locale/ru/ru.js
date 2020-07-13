@@ -33,7 +33,14 @@ export default {
     exportCSV: 'Экспортировать CSV',
   },
   mainSection: {
+  },
+  openedCall: {
     callInfo: 'Информация',
+    callLegs: 'Legs A-B',
+    transferFrom: 'Перевод От',
+    transferMerge: 'Объединение Звонков',
+    transferTo: 'Перевод На',
+    noVariables: 'Этот звонок не имеет переменных',
   },
   fields: {
     agent: 'Агент',

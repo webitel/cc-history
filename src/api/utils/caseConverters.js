@@ -1,11 +1,11 @@
-const snakeToCamel = (str) => str.replace(
+export const snakeToCamel = (str) => str.replace(
   /([-_][a-z])/g,
   (group) => group.toUpperCase()
     .replace('-', '')
     .replace('_', ''),
 );
 
-const camelToSnake = (str) => str.replace(
+export const camelToSnake = (str) => str.replace(
   /([A-Z])/g,
   (group) => group.toLowerCase()
     .replace('', '_'),

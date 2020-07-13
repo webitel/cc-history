@@ -17,7 +17,7 @@ export default {
 
   computed: {
     ...mapGetters('history', {
-      selectedData: 'SELECTED_DATA',
+      selectedItems: 'SELECTED_DATA_ITEMS',
     }),
   },
 
@@ -27,7 +27,7 @@ export default {
 
       const zip = new JSZip();
       console.log('start', new Date().toLocaleTimeString());
-      if (this.selectedData.length) {
+      if (this.selectedItems.length) {
         await this.downloadSelectedFiles(zip);
       } else {
         await this.downloadAllFiles(zip);
@@ -45,7 +45,7 @@ export default {
     },
 
     async downloadSelectedFiles(zip) {
-      const items = this.selectedData.filter((item) => item.files);
+      const items = this.selectedItems.filter((item) => item.files);
       await addItemsFilesToZip(items, zip, counter.bind(this));
     },
 

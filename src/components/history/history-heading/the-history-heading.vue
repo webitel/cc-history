@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+  import { mapGetters } from 'vuex';
   import FilterSearch from '../../filters/filter-search.vue';
   import Btn from '../../utils/btn.vue';
   import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
@@ -40,9 +40,11 @@
       FilterSearch,
       Btn,
     },
-    methods: {
-      ...mapActions('history', {
-        loadListForDownload: 'GET_HISTORY_LIST', // files and data download
+
+    computed: {
+      ...mapGetters('history', {
+        dataFields: 'DATA_FIELDS',
+        selectedItems: 'SELECTED_DATA_ITEMS',
       }),
     },
   };

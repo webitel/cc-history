@@ -7,7 +7,6 @@
       :headers="headers"
       :data="data"
       sortable
-      expanded
       @sort="sort"
     >
       <template slot="direction" slot-scope="{ item }">
@@ -39,12 +38,6 @@
       </template>
 
       <template slot="actions" slot-scope="{ item, index }">
-        <icon-btn
-          v-if="item.hasChildren"
-          :icon="'forks'"
-          @click.native.stop="openChildrenPopup(item)"
-        ></icon-btn>
-
         <media-action
           v-if="item.files"
           class="table-action"
@@ -58,12 +51,12 @@
           class="table-action"
           @click.native.stop="downloadRowFiles(item.files)"
         ></download-action>
-      </template>
 
-      <template slot="row-expansion" slot-scope="{ item }">
-        <div class="expansion__content-wrap">
-          <expansion-call-info :item="item"></expansion-call-info>
-        </div>
+        <icon-btn
+          class="table-action"
+          :icon="'forks'"
+          @click.native.stop="openItem(item)"
+        ></icon-btn>
       </template>
 
       <template slot="pagination">
@@ -72,11 +65,10 @@
 
     </grid-table>
 
-    <children-calls-popup
-      v-if="isChildrenPopup"
-      :parent-id="openedChildrenParentId"
-      @close="closeChildrenPopup"
-    ></children-calls-popup>
+    <opened-call-popup
+      v-if="isOpenedCallPopup"
+      @close="closeCallPopup"
+    ></opened-call-popup>
 
     <audio-player
       v-show="audioURL"
@@ -99,9 +91,8 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex';
-  import ChildrenCallsPopup from './children-calls-popup.vue';
+  import OpenedCallPopup from './opened-call/opened-call-popup.vue';
   import GridTable from '../../utils/grid-table.vue';
-  import ExpansionCallInfo from './grid-templates/expansion-call-info.vue';
   import FilterPagination from '../../filters/filter-pagination.vue';
   import Loader from '../../utils/loader.vue';
   import GridAgent from './grid-templates/grid-agent.vue';
@@ -129,9 +120,8 @@
       downloadRowFilesMixin,
     ],
     components: {
-      ChildrenCallsPopup,
+      OpenedCallPopup,
       GridTable,
-      ExpansionCallInfo,
       FilterPagination,
       Loader,
       GridAgent,
@@ -163,11 +153,8 @@
         isNext: (state) => state.isNext,
         isLoading: (state) => state.isLoading,
       }),
-      ...mapState('history/children-calls', {
-        openedChildrenParentId: (state) => state.parentId,
-      }),
-      ...mapGetters('history/children-calls', {
-        isChildrenPopup: 'IS_PARENT_ID',
+      ...mapGetters('history/opened-call', {
+        isOpenedCallPopup: 'IS_CALL_ID',
       }),
 
       headers: {
@@ -185,18 +172,17 @@
         setHeaders: 'SET_HEADERS',
         loadDataList: 'LOAD_DATA_LIST',
       }),
-      ...mapActions('history/children-calls', {
-        setParentId: 'SET_PARENT_ID',
-        resetParentId: 'RESET_PARENT_ID',
+      ...mapActions('history/opened-call', {
+        setOpenedItem: 'SET_OPENED_CALL',
+        resetOpenedItem: 'RESET_OPENED_CALL',
       }),
 
-      openChildrenPopup(item) {
-        const parentId = item.id;
-        this.setParentId(parentId);
+      openItem(item) {
+        this.setOpenedItem(item);
       },
 
-      closeChildrenPopup() {
-        this.resetParentId();
+      closeCallPopup() {
+        this.resetOpenedItem();
       },
     },
   };
