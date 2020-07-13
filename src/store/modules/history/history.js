@@ -2,10 +2,11 @@ import deepCopy from 'deep-copy';
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
-import { convertQuery, getDefaultFields } from './utils/loadHistoryScripts';
+import { convertQuery, getHeadersFields } from './utils/loadHistoryScripts';
 import openedCall from './opened-call/opened-call';
 
 const historyAPI = APIRepository.history;
+const REQUIRED_DATA_FIELDS = ['files', 'id'];
 
 const state = {
   data: [],
@@ -15,7 +16,13 @@ const state = {
 };
 
 const getters = {
-  SELECTED_DATA: (state) => state.data.filter((item) => item._isSelected),
+  SELECTED_DATA_ITEMS: (state) => state.data.filter((item) => item._isSelected),
+
+  DATA_FIELDS: () => {
+    let fields = getHeadersFields(state.headers);
+    fields = [...REQUIRED_DATA_FIELDS, ...fields];
+    return fields;
+  },
 };
 
 const actions = {
@@ -32,25 +39,25 @@ const actions = {
     }
   },
 
-  GET_HISTORY_LIST: async (context, additionalParams) => {
-    const queryParams = await context.dispatch('GET_REQUEST_PARAMS');
+  FETCH_DOWNLOAD_LIST: async (context, additionalParams) => {
+    const queryParams = await context.getters.GET_REQUEST_PARAMS;
     const params = {
       ...queryParams,
       ...additionalParams,
     };
-      return historyAPI.getHistory(params);
-  },
-
-  SET_HEADERS: (context, headers) => {
-    context.commit('SET_HEADERS', headers);
+    return historyAPI.getHistory(params);
   },
 
   GET_REQUEST_PARAMS: (context) => {
     const routeQuery = deepCopy(router.currentRoute.query);
     const query = convertQuery(routeQuery);
-    if (!query.fields) query.fields = getDefaultFields(context.state.headers);
+    query.fields = context.getters.DATA_FIELDS;
     query.skipParent = true;
     return query;
+  },
+
+  SET_HEADERS: (context, headers) => {
+    context.commit('SET_HEADERS', headers);
   },
 };
 const mutations = {

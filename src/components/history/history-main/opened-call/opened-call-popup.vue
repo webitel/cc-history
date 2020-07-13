@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapGetters, mapState } from 'vuex';
   import CallLegs from './opened-call-tabs/opened-call-legs.vue';
   import PopupContainer from '../../../utils/popup-container.vue';
   import Btn from '../../../utils/btn.vue';
@@ -53,7 +53,21 @@
     computed: {
       ...mapState('history/opened-call', {
         itemInstance: (state) => state.itemInstance,
+        data: (state) => state.data,
       }),
+      ...mapGetters('history/opened-call', {
+        dataFields: 'DATA_FIELDS',
+        selectedDataItems: 'SELECTED_DATA_ITEMS',
+      }),
+
+      selectedItems() {
+        const selectedItems = [...this.selectedDataItems];
+        if (selectedItems.length
+          && selectedItems.indexOf(this.itemInstance) === -1) {
+          selectedItems.unshift(this.itemInstance);
+        }
+        return selectedItems;
+      },
 
       tabs() {
         const callInfo = {
@@ -68,8 +82,6 @@
         return tabs;
       },
     },
-
-    methods: {},
   };
 </script>
 

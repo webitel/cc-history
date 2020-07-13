@@ -1,8 +1,14 @@
 import APIRepository from '../../../../api/APIRepository';
-import historyHeaders from '../utils/historyHeaders';
-import { getDefaultFields } from '../utils/loadHistoryScripts';
+import { getHeadersFields } from '../utils/loadHistoryScripts';
 
 const historyAPI = APIRepository.history;
+const REQUIRED_DATA_FIELDS = [
+  'id',
+  'parent_id',
+  'transfer_from',
+  'transfer_to',
+];
+
 const transfersHeader = {
   text: () => '',
   value: 'transfers',
@@ -24,23 +30,39 @@ const state = {
   callId: null,
   itemInstance: {},
   data: [],
-  headers: historyHeaders,
   isLoading: false,
 };
 
 const getters = {
   IS_CALL_ID: (state) => !!state.callId, // string id or null
-  SELECTED_DATA: (state) => state.data.filter((item) => item._isSelected),
-  HEADERS: (state) => {
-    const headers = [...state.headers, transfersHeader, transfersLegMarkerHeader];
-    return headers;
+  SELECTED_DATA_ITEMS: (state) => state.data.filter((item) => item._isSelected),
+  HEADERS: (state, getters, rootState) => (
+    [...rootState.history.headers, transfersHeader, transfersLegMarkerHeader]
+  ),
+
+  GET_REQUEST_PARAMS: (state, getters) => {
+    const query = {
+      fields: getters.DATA_FIELDS,
+      parentId: state.callId,
+      from: 0, // get All
+      to: Date.now(),
+      size: 100,
+      skipParent: false,
+    };
+    return query;
+  },
+
+  DATA_FIELDS: (state, getters, rootState) => {
+    let fields = getHeadersFields(rootState.history.headers);
+    fields = [...REQUIRED_DATA_FIELDS, ...fields];
+    return fields;
   },
 };
 
 const actions = {
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = await context.dispatch('GET_REQUEST_PARAMS');
+    const params = await context.getters.GET_REQUEST_PARAMS;
     try {
       const { items } = await historyAPI.getHistory(params);
       context.commit('SET_DATA_LIST', items);
@@ -50,22 +72,9 @@ const actions = {
     }
   },
 
-  GET_REQUEST_PARAMS: (context) => {
-    const query = {
-      fields: [
-        'id',
-        'parent_id',
-        ...getDefaultFields(context.state.headers),
-        'transfer_from',
-        'transfer_to',
-      ],
-      parentId: state.callId,
-      from: 0, // get All
-      to: Date.now(),
-      size: 100,
-      skipParent: false,
-    };
-    return query;
+  FETCH_DOWNLOAD_LIST: async (context) => {
+    const items = [context.state.itemInstance, ...context.state.data];
+    return { items };
   },
 
   SET_OPENED_CALL: (context, item) => {

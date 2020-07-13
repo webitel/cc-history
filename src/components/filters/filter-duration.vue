@@ -48,12 +48,12 @@
       setDuration(value) {
         this.setQueryValue({
           filterQuery: camelToKebab('durationFrom'),
-          value: value.from,
+          value: `${value.from}`,
         });
 
         this.setQueryValue({
           filterQuery: camelToKebab('durationTo'),
-          value: value.to,
+          value: `${value.to}`,
         });
       },
     },
