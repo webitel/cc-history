@@ -1,5 +1,5 @@
 <template>
-  <div class="opened-call-legs">
+  <section class="opened-call-legs">
     <loader v-if="isLoading"/>
     <grid-table
       v-else
@@ -54,10 +54,22 @@
             <icon-btn
               class="table-action"
               :icon="'transfer-from'"
-              @mouseenter.native="highlightRow(item.transferFrom)"
-              @mouseleave.native="highlightRow(item.transferFrom)"
+              @mouseenter.native="highlightRow([item.transferFrom])"
+              @mouseleave.native="highlightRow([item.transferFrom])"
             ></icon-btn>
             <tooltip>{{$t('openedCall.transferFrom')}}</tooltip>
+          </div>
+          <div
+            class="transfer-icon"
+            :class="{'hidden': !item.transferFrom || !item.transferTo}"
+          >
+            <icon-btn
+              class="table-action"
+              :icon="'transfer-merge'"
+              @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
+              @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
+            ></icon-btn>
+            <tooltip>{{$t('openedCall.transferMerge')}}</tooltip>
           </div>
           <div
             class="transfer-icon"
@@ -66,15 +78,15 @@
             <icon-btn
               class="table-action"
               :icon="'transfer-to'"
-              @mouseenter.native="highlightRow(item.transferTo)"
-              @mouseleave.native="highlightRow(item.transferTo)"
+              @mouseenter.native="highlightRow([item.transferTo])"
+              @mouseleave.native="highlightRow([item.transferTo])"
             ></icon-btn>
             <tooltip>{{$t('openedCall.transferTo')}}</tooltip>
           </div>
         </div>
       </template>
     </grid-table>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -117,17 +129,15 @@
       downloadRowFilesMixin,
     ],
 
-    data: () => ({}),
-
     created() {
       this.loadDataList();
     },
 
     computed: {
       ...mapState('history/opened-call', {
-        data: (state) => state.data,
-        itemInstance: (state) => state.itemInstance,
-        isLoading: (state) => state.isLoading,
+        legsData: (state) => state.legsData,
+        mainCall: (state) => state.mainCall,
+        isLoading: (state) => state.isLegsDataLoading,
       }),
       ...mapGetters('history/opened-call', {
         headers: 'HEADERS',
@@ -135,26 +145,30 @@
 
       tableData() {
         return [
-          this.itemInstance,
-          ...this.data,
+          this.mainCall,
+          ...this.legsData,
         ];
       },
     },
 
     methods: {
       ...mapActions('history/opened-call', {
-        loadDataList: 'LOAD_DATA_LIST',
+        loadDataList: 'LOAD_LEGS_DATA_LIST',
       }),
 
-      highlightRow(id) {
-        const table = this.$refs['call-legs-table'];
-        const className = `grid__tr__${id}`;
-        const row = table.$el.querySelector(`.${className}`);
-        if (row.classList.contains('grid__tr--highlighted')) {
-          row.classList.remove('grid__tr--highlighted');
-        } else {
-          row.classList.add('grid__tr--highlighted');
-        }
+      highlightRow(ids) {
+        ids.forEach((id) => {
+          const table = this.$refs['call-legs-table'];
+          const className = `grid__tr__${id}`;
+          const row = table.$el.querySelector(`.${className}`);
+          if (row) {
+            if (row.classList.contains('grid__tr--highlighted')) {
+              row.classList.remove('grid__tr--highlighted');
+            } else {
+              row.classList.add('grid__tr--highlighted');
+            }
+          }
+        });
       },
     },
   };
@@ -208,6 +222,11 @@
   // transfer icon btn container
   .transfer-icon {
     position: relative;
+
+    // separate icons for proper animation
+    &:nth-child(2) {
+      margin: 0 3px;
+    }
 
     .tooltip {
       top: 50%;
