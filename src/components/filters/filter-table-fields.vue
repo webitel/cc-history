@@ -1,4 +1,4 @@
-z<template>
+<template>
   <column-select
     :value="headers"
     @change="change"

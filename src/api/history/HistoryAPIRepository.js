@@ -9,7 +9,7 @@ const defaultParams = {
   size: 10,
   search: '',
   from: getTodayStart(),
-  to: Date.now(),
+  to: new Date().setHours(23, 59, 59),
   sort: '-created_at',
 };
 
