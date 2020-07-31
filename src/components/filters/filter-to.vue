@@ -31,7 +31,7 @@
     },
 
     data: () => ({
-      value: Math.floor(Date.now() / msInMin) * msInMin,
+      value: Math.floor(new Date().setHours(23, 59, 59) / msInMin) * msInMin,
       filterQuery: 'to',
     }),
 
