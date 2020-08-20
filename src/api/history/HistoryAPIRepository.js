@@ -2,13 +2,12 @@ import { CallServiceApiFactory } from 'webitel-sdk';
 import instance from '../instance';
 import configuration from '../utils/openAPIConfig';
 import formatResponse from './formatHistoryResponse';
-import getTodayStart from '../../utils/getTodayStart';
 
 const defaultParams = {
   page: 1,
   size: 10,
   search: '',
-  from: getTodayStart(),
+  from: new Date().setHours(0, 0, 0),
   to: new Date().setHours(23, 59, 59),
   sort: '-created_at',
 };

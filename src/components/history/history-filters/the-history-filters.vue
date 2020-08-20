@@ -29,41 +29,33 @@
       <!--     [ARRAY]  hangup cause multi select-->
       <filter-cause class="history-filters__filter"/>
     </form>
-    <table-actions
-      settings
-      refresh
-      column-select
-      filter-reset
-      :is-settings-active="isOpened"
-      @settings="expandFilters"
-      @refresh="refreshData"
-      @column-select="openColumnSelect"
-      @filter-reset="resetFilters"
-      @export="handleExport"
-      @import="handleImport"
-    ></table-actions>
+    <wt-table-actions
+      :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
+      @input="tableActionsHandler"
+    ></wt-table-actions>
   </section>
 </template>
 
 <script>
   import { mapActions } from 'vuex';
   import FilterFields from '../../filters/filter-table-fields.vue';
-  import FilterFrom from '../../filters/filter-from.vue';
-  import FilterTo from '../../filters/filter-to.vue';
-  import FilterType from '../../filters/filter-type.vue';
-  import FilterDirection from '../../filters/filter-direction.vue';
-  import FilterUser from '../../filters/filter-user.vue';
-  import FilterGateway from '../../filters/filter-gateway.vue';
-  import FilterAgent from '../../filters/filter-agent.vue';
-  import FilterTeam from '../../filters/filter-queue.vue';
-  import FilterQueue from '../../filters/filter-team.vue';
-  import FilterCause from '../../filters/filter-cause.vue';
+  import FilterFrom from '../../../shared/filters/components/filter-from.vue';
+  import FilterTo from '../../../shared/filters/components/filter-to.vue';
+  import FilterType from '../../../shared/filters/components/filter-type.vue';
+  import FilterDirection from '../../../shared/filters/components/filter-direction.vue';
+  import FilterUser from '../../../shared/filters/components/filter-user.vue';
+  import FilterGateway from '../../../shared/filters/components/filter-gateway.vue';
+  import FilterAgent from '../../../shared/filters/components/filter-agent.vue';
+  import FilterTeam from '../../../shared/filters/components/filter-queue.vue';
+  import FilterQueue from '../../../shared/filters/components/filter-team.vue';
+  import FilterCause from '../../../shared/filters/components/filter-cause.vue';
   // import FilterTags from './filters/filter-tags.vue';
-  import FilterDuration from '../../filters/filter-duration.vue';
-  import TableActions from '../../utils/table-actions.vue';
+  import FilterDuration from '../../../shared/filters/components/filter-duration.vue';
+  import tableActionsHandlerMixin from '../../../mixins/tableActions/tableActionsHandlerMixin';
 
   export default {
     name: 'the-history-filters',
+    mixins: [tableActionsHandlerMixin],
     components: {
       FilterFields,
       FilterFrom,
@@ -78,7 +70,6 @@
       FilterCause,
       // FilterTags,
       FilterDuration,
-      TableActions,
     },
 
     data: () => ({
@@ -90,23 +81,6 @@
       ...mapActions('history', {
         loadDataList: 'LOAD_DATA_LIST',
       }),
-
-      expandFilters() {
-        this.isOpened = !this.isOpened;
-      },
-      refreshData() {
-        this.loadDataList();
-      },
-      openColumnSelect() {
-        this.isFilterFieldsOpened = true;
-      },
-      resetFilters() {
-        this.$router.replace({ query: null });
-      },
-      handleExport() {
-      },
-      handleImport() {
-      },
     },
   };
 </script>
@@ -128,7 +102,7 @@
     padding: 18px 30px 0;
     margin: 20px 0;
 
-    .table-actions {
+    .wt-table-actions {
       margin-top: 24px;
     }
   }
@@ -183,10 +157,6 @@
 
     &:nth-child(n+6) {
       display: none;
-    }
-
-    .dt-picker, .hs-multiselect {
-      width: 100%;
     }
   }
 </style>

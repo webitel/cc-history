@@ -6,17 +6,17 @@
         :tabs="tabs"
       ></tabs>
       <div class="opened-call__actions-wrap">
-        <btn
-          class="secondary"
-          @click.native="$emit('close')"
+        <wt-button
+          color="secondary"
+          @click="$emit('close')"
         >{{$t('reusable.close')}}
-        </btn>
-        <btn
-          class="primary"
+        </wt-button>
+        <wt-button
+          color="primary"
           :loading="isCSVLoading"
-          @click.native="downloadCSV"
+          @click="downloadCSV"
         >{{$t('headerSection.exportCSV')}}
-        </btn>
+        </wt-button>
       </div>
     </template>
 
@@ -32,7 +32,6 @@
   import CallInfo from './opened-call-tabs/opened-call-info.vue';
   import CallLegs from './opened-call-tabs/opened-call-legs.vue';
   import PopupContainer from '../../../utils/popup-container.vue';
-  import Btn from '../../../utils/btn.vue';
   import Tabs from '../../../utils/tabs.vue';
   import Loader from '../../../utils/loader.vue';
   import downloadCSVMixin from '../../../../mixins/downloadCSV/downloadCSVMixin';
@@ -44,7 +43,6 @@
       CallInfo,
       CallLegs,
       PopupContainer,
-      Btn,
       Tabs,
       Loader,
     },

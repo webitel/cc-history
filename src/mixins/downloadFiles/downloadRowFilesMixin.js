@@ -1,7 +1,6 @@
 import JSZip from 'jszip';
 import { addFilesToZip, generateAndSaveZip } from './scripts/downloadFilesScripts';
 
-
 export default {
   methods: {
     async downloadRowFiles(files) {

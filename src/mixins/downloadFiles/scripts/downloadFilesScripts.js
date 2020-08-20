@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop  */
 import jszipUtils from 'jszip-utils';
 import { saveAs } from 'file-saver';
+import eventBus from '@webitel/ui-sdk/src/scripts/eventBus';
 import generateMediaURL from '../../media/scripts/generateMediaURL';
-import eventBus from '../../../utils/eventBus';
 
 const fetchFileBinary = (id) => {
   const url = generateMediaURL(id);

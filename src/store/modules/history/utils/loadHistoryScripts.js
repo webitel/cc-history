@@ -1,5 +1,5 @@
 import { kebabToCamel } from '../../../../api/utils/caseConverters';
-import { SortSymbols } from '../../../../mixins/filters/sortFilterMixin/sortFilterMixin';
+import { SortSymbols } from '../../../../shared/filters/mixins/sortFilterMixin';
 
 // - create set to remove created_at duplicates
 // - convert to array by ...

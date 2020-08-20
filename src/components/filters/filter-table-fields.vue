@@ -8,12 +8,12 @@
 
 <script>
   import { mapState, mapActions } from 'vuex';
+  import baseFilterMixin from '../../shared/filters/mixins/baseFilterMixin/baseFilterMixin';
   import ColumnSelect from '../utils/table-column-select.vue';
-  import valueFilterMixin from '../../mixins/filters/valueFilterMixin';
 
   export default {
     name: 'filter-table-fields',
-    mixins: [valueFilterMixin],
+    mixins: [baseFilterMixin],
     components: {
       ColumnSelect,
     },
@@ -21,7 +21,7 @@
     data: () => ({
       filterQuery: 'fields',
       separator: ',',
-      queriedProp: 'value',
+      storedProp: 'value',
     }),
 
     computed: {
@@ -44,21 +44,21 @@
         this.$emit('close');
       },
 
-      // overrides valueFilterMixin method
+      // overrides baseFilterMixin method
       restore({ filterQuery }) {
-        let value = this.$route.query[filterQuery];
+        let value = this.getValueFromQuery({ filterQuery });
         if (!value) {
           // if no value in url, check in localStorage
           value = this.getFromLocalStorage({ filterQuery });
         }
         if (value) {
           // if there's a value, set it to url and to component data
-          this.setQueryValue({ filterQuery, value });
-          this.restoreValue({ value });
+          this.setValueToQuery({ filterQuery, value });
+          this.restoreValue(value);
         }
       },
 
-      restoreValue({ value }) {
+      restoreValue(value) {
         const headers = this.headers.map((header) => ({
           ...header,
           show: !!value.includes(header.value),
@@ -71,10 +71,10 @@
         const params = {
           filterQuery: this.filterQuery,
           value,
-          queriedProp: this.queriedProp,
+          storedProp: this.storedProp,
           separator: this.separator,
         };
-        this.setQueryArray(params);
+        this.setValueArrayToQuery(params);
         this.setToLocalStorage(params);
         this.setHeaders(headers);
       },
@@ -88,10 +88,10 @@
       setToLocalStorage({
                           filterQuery,
                           value,
-                          queriedProp = 'id',
+                          storedProp = 'id',
                           separator = '|',
                         }) {
-        const filter = value.map((item) => item[queriedProp])
+        const filter = value.map((item) => item[storedProp])
           .join(separator);
         localStorage.setItem(filterQuery, filter);
       },

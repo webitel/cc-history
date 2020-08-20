@@ -93,7 +93,7 @@
   import { mapState, mapGetters, mapActions } from 'vuex';
   import OpenedCallPopup from './opened-call/opened-call-popup.vue';
   import GridTable from '../../utils/grid-table.vue';
-  import FilterPagination from '../../filters/filter-pagination.vue';
+  import FilterPagination from '../../../shared/filters/components/filter-pagination.vue';
   import Loader from '../../utils/loader.vue';
   import GridAgent from './grid-templates/grid-agent.vue';
   import GridDirection from './grid-templates/grid-direction.vue';
@@ -106,7 +106,7 @@
   import GridUser from './grid-templates/grid-user.vue';
   import MediaAction from './grid-templates/grid-media-action.vue';
   import DownloadAction from './grid-templates/grid-download-action.vue';
-  import sortFilterMixin from '../../../mixins/filters/sortFilterMixin/sortFilterMixin';
+  import sortFilterMixin from '../../../shared/filters/mixins/sortFilterMixin';
   import downloadRowFilesMixin from '../../../mixins/downloadFiles/downloadRowFilesMixin';
   import playMediaMixin from '../../../mixins/media/playMediaMixin';
   import showMediaMixin from '../../../mixins/media/showMediaMixin';

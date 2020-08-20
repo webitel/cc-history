@@ -81,8 +81,9 @@
 </template>
 
 <script>
+  import eventBus from '@webitel/ui-sdk/src/scripts/eventBus';
+  import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
   import range from './range.vue';
-  import eventBus from '../../utils/eventBus';
 
   export default {
     name: 'audio-player',
@@ -125,13 +126,11 @@
         return this.volume === 0;
       },
       convertTimeHHMMSS() {
-        const time = new Date(this.currentSeconds * 1000).toISOString()
-          .substr(11, 8);
+        const time = convertDuration(this.currentSeconds);
         return time.includes('00:0') ? time.substr(3) : time;
       },
       convertHoverTimeHHMMSS() {
-        const time = new Date(this.hoverSeconds * 1000).toISOString()
-          .substr(11, 8);
+        const time = convertDuration(this.hoverSeconds);
         return time.includes('00:0') ? time.substr(3) : time;
       },
     },

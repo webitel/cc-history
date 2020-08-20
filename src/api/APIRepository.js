@@ -1,10 +1,10 @@
 import HistoryAPIRepository from './history/HistoryAPIRepository';
 import AuthAPIRepository from './auth/AuthAPIRepository';
-import AgentsAPIRepository from './filter-getters/AgentsAPIRepository';
-import GatewaysAPIRepository from './filter-getters/GatewaysAPIRepository';
-import QueuesAPIRepository from './filter-getters/QueuesAPIRepository';
-import TeamsAPIRepository from './filter-getters/TeamsAPIRepository';
-import UsersAPIRepository from './filter-getters/UsersAPIFactory';
+import AgentsAPIRepository from '../shared/filters/api/AgentsAPIRepository';
+import GatewaysAPIRepository from '../shared/filters/api/GatewaysAPIRepository';
+import QueuesAPIRepository from '../shared/filters/api/QueuesAPIRepository';
+import TeamsAPIRepository from '../shared/filters/api/TeamsAPIRepository';
+import UsersAPIRepository from '../shared/filters/api/UsersAPIRepository';
 
 const APIRepository = {
   history: HistoryAPIRepository,

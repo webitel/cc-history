@@ -1,91 +1,75 @@
 <template>
-  <header class="history-section history-heading">
-    <h1 class="history-heading__h1">{{$t('reusable.history')}}</h1>
-    <div class="history-heading__actions-wrap">
+  <wt-headline class="the-history-heading">
+    <template slot="title">
+      {{ $t('reusable.history') }}
+    </template>
+    <template slot="actions">
       <filter-search/>
-      <btn
-        class="secondary"
+      <wt-button
+        color="secondary"
         :loading="isFilesLoading"
-        @click.native="downloadFiles"
-      >{{$t('reusable.download')}}
-      </btn>
+        @click="downloadFiles"
+      >{{ $t('reusable.download') }}
+      </wt-button>
       <div v-show="isFilesLoading" class="files-counter">
-        {{$t('headerSection.filesLoaded')}}<span
-        class="files-counter__count">{{this.filesCounter}}</span>
+        {{ $t('headerSection.filesLoaded') }}<span
+        class="files-counter__count">{{ this.filesCounter }}</span>
       </div>
-      <btn
-        class="primary"
+      <wt-button
+        color="primary"
         :loading="isCSVLoading"
-        @click.native="downloadCSV"
-      >{{$t('headerSection.exportCSV')}}
-      </btn>
-    </div>
-  </header>
+        @click="downloadCSV"
+      >{{ $t('headerSection.exportCSV') }}
+      </wt-button>
+    </template>
+  </wt-headline>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-  import FilterSearch from '../../filters/filter-search.vue';
-  import Btn from '../../utils/btn.vue';
-  import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
-  import downloadAllFilesMixin from '../../../mixins/downloadFiles/downloadAllFilesMixin';
+import { mapGetters } from 'vuex';
+import FilterSearch from '../../../shared/filters/components/filter-search.vue';
+import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
+import downloadAllFilesMixin from '../../../mixins/downloadFiles/downloadAllFilesMixin';
 
-  export default {
-    name: 'the-history-heading',
-    mixins: [
-      downloadCSVMixin,
-      downloadAllFilesMixin,
-    ],
-    components: {
-      FilterSearch,
-      Btn,
-    },
+export default {
+  name: 'the-history-heading',
+  mixins: [
+    downloadCSVMixin,
+    downloadAllFilesMixin,
+  ],
+  components: {
+    FilterSearch,
+  },
 
-    computed: {
-      ...mapGetters('history', {
-        dataFields: 'DATA_FIELDS',
-        selectedItems: 'SELECTED_DATA_ITEMS',
-      }),
-    },
-  };
+  computed: {
+    ...mapGetters('history', {
+      dataFields: 'DATA_FIELDS',
+      selectedItems: 'SELECTED_DATA_ITEMS',
+    }),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .history-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.the-history-heading {
+  .wt-button {
+    margin-left: 20px;
   }
 
-  .history-heading__h1 {
-    @extend .typo-heading-md;
-    margin-right: 20px;
-  }
+  .files-counter {
+    $offset: 10px;
+    @extend .typo-body-sm;
+    position: absolute;
+    right: 0;
+    top: calc(100% + #{$offset});
+    padding: (10px) (15px);
+    background: #fff;
+    box-shadow: $box-shadow;
+    border-radius: $border-radius;
 
-  .history-heading__actions-wrap {
-    display: flex;
-    align-items: center;
-    position: relative;
-
-    .cc-btn {
-      margin-left: 20px;
-    }
-
-    .files-counter {
-      $offset: 10px;
-      @extend .typo-body-sm;
-      position: absolute;
-      right: 0;
-      top: calc(100% + #{$offset});
-      padding: (10px) (15px);
-      background: #fff;
-      box-shadow: $box-shadow;
-      border-radius: $border-radius;
-
-      &__count {
-        @extend .typo-heading-sm;
-      }
+    &__count {
+      @extend .typo-heading-sm;
     }
   }
+}
 </style>

@@ -1,16 +1,13 @@
 <template>
   <button class="cc-btn" type="button">
-    <spinner v-if="loading"/>
-    <slot v-else></slot>
+    <slot></slot>
   </button>
 </template>
 
 <script>
-  import Spinner from './spinner.vue';
 
   export default {
     name: 'btn',
-    components: { Spinner },
     props: {
       loading: {
         type: Boolean,
