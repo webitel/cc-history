@@ -184,6 +184,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.history-main {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .table-wrapper {
   position: relative;
   display: flex;

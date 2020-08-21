@@ -74,22 +74,21 @@
 </script>
 
 <style lang="scss" scoped>
-  // 30px*2 outer paddings, 28px*2 inner paddings, 216px table actions with 4 buttons
-  $width-except-filters: 60px + 56px + 216px;
+  // 30px*2 outer paddings, 30px*2 inner paddings, 216px table actions with 4 buttons
+  $width-except-filters: 60px + 60px + 176px;
   $filter-width: 300px;
   $filter-gap: 20px;
   @function filtersWidth($num) {
     // 1px corrects max width
-    @return ($filter-width) * $num + $filter-gap * ($num - 1) + $width-except-filters - 1px;
+    @return ($filter-width * $num) + ($filter-gap * ($num - 1)) + $width-except-filters - 1px;
   }
 
   .history-section.history-filters-section {
     display: flex;
     align-items: flex-start;
-    padding: 18px 30px 0;
-    margin: 20px 0;
 
     .wt-table-actions {
+      flex: 0 0 auto;
       margin-top: 24px;
     }
   }
@@ -140,7 +139,7 @@
   }
 
   .history-filters__filter {
-    margin-bottom: (18px);
+    margin-bottom: 18px;
 
     &:nth-child(n+6) {
       display: none;
