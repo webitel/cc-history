@@ -58,17 +58,17 @@ export default {
 
   .files-counter {
     $offset: 10px;
-    @extend .typo-body-sm;
+    @extend %typo-body-sm;
     position: absolute;
     right: 0;
     top: calc(100% + #{$offset});
     padding: (10px) (15px);
     background: #fff;
-    box-shadow: $box-shadow;
-    border-radius: $border-radius;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
 
     &__count {
-      @extend .typo-heading-sm;
+      @extend %typo-strong-sm;
     }
   }
 }

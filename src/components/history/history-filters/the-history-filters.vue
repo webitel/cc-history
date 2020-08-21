@@ -5,28 +5,16 @@
       @close="isFilterFieldsOpened = false"
     ></filter-fields>
     <form class="history-filters" :class="{'history-filters--opened': isOpened}">
-      <!--      dt pickers-->
       <filter-from class="history-filters__filter"/>
       <filter-to class="history-filters__filter"/>
-      <!--      [ARRAY] type multi select-->
       <filter-type class="history-filters__filter"/>
-      <!--      [ARRAY] direction multi select-->
       <filter-direction class="history-filters__filter"/>
-      <!--     [ARRAY] [API FETCH] user multi select-->
       <filter-user class="history-filters__filter"/>
-      <!--      [ARRAY] [API FETCH] gateway multi select-->
       <filter-gateway class="history-filters__filter"/>
-      <!--      [ARRAY] [API FETCH] agent multi select-->
       <filter-agent class="history-filters__filter"/>
-      <!--     [ARRAY]  [API FETCH] team multi select-->
       <filter-team class="history-filters__filter"/>
-      <!--    [ARRAY]   [API FETCH] queue multi select-->
       <filter-queue class="history-filters__filter"/>
-      <!--      duration inputs -->
       <filter-duration class="history-filters__filter"/>
-      <!--     [ARRAY]  tags multi select-->
-      <!--        <filter-tags/>-->
-      <!--     [ARRAY]  hangup cause multi select-->
       <filter-cause class="history-filters__filter"/>
     </form>
     <wt-table-actions
@@ -86,7 +74,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../css/utils/bootstrap-grid.css";
   // 30px*2 outer paddings, 28px*2 inner paddings, 216px table actions with 4 buttons
   $width-except-filters: 60px + 56px + 216px;
   $filter-width: 300px;

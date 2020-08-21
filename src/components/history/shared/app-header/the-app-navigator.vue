@@ -113,7 +113,7 @@
   $app-navigator-gap: (30px);
   $app-navigator-shadow: 0px (8px) (18px) rgba(0, 0, 0, 0.08);
   $app-navigator-border-color: #eaeaea;
-  $app-navigator-border-color--hover: $accent-color;
+  $app-navigator-border-color--hover: var(--main-accent-color);
 
   // helper class
   .typo-app-navigator {

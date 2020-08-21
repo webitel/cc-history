@@ -303,9 +303,9 @@
     width: (24px);
     height: (24px);
     stroke-width: 0;
-    stroke: $icon-color;
-    fill: $icon-color;
-    transition: $transition;
+    stroke: var(--icon-primary-color);
+    fill: var(--icon-primary-color);
+    transition: var(--transition);
     /*stroke: currentColor;*/
     /*fill: currentColor;*/
   }

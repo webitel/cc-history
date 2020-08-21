@@ -85,10 +85,10 @@
   .range-input {
     width: 100%;
     height: (3px);
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     background: $range-bg;
     outline: none;
-    transition: $transition;
+    transition: var(--transition);
     -webkit-appearance: none;
   }
 
@@ -96,7 +96,7 @@
     width: (14px);
     height: (14px);
     border-radius: 50%;
-    background: $accent-color;
+    background: var(--main-accent-color);
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
