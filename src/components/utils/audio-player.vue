@@ -147,7 +147,10 @@
         if (value) {
           const playPromise = this.audio.play();
           if (playPromise) {
-            playPromise.catch(() => eventBus.$emit('notificationError', 'Failed to start. Please, start audio file manually'));
+            playPromise.catch(() => eventBus.$emit('notification', {
+              type: 'error',
+              text: 'Failed to start. Please, start audio file manually\'',
+            }));
           }
         } else {
           this.audio.pause();

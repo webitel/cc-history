@@ -1,13 +1,13 @@
 <template>
   <div class="app-navigator">
-    <icon-btn
+    <wt-icon-btn
       class="app-navigator__btn"
       :class="{'opened': isOpened}"
-      :icon="'app-navigator'"
+      icon="app-navigator"
       :tooltip="$t('appNavigator.title')"
-      @click.native="isOpened = !isOpened"
+      @click="isOpened = !isOpened"
       v-clickaway="close"
-    ></icon-btn>
+    ></wt-icon-btn>
     <nav
       class="app-navigator__nav-wrapper"
       :class="{'hidden': !isOpened}"
@@ -37,73 +37,68 @@
 </template>
 
 <script>
-  import clickaway from '../../directives/clickaway';
-
-  const imgAdmin = require('../../assets/app-navigator/app-admin.svg');
-  const imgAgent = require('../../assets/app-navigator/app-agent.svg');
-  const imgAudit = require('../../assets/app-navigator/app-audit.svg');
-  const imgHistory = require('../../assets/app-navigator/app-history.svg');
-  const imgSupervisor = require('../../assets/app-navigator/app-supervisor.svg');
-  const imgGrafana = require('../../assets/app-navigator/app-grafana.svg');
+  const imgAdmin = require('../../../../assets/app-navigator/app-admin.svg');
+  const imgAgent = require('../../../../assets/app-navigator/app-agent.svg');
+  const imgAudit = require('../../../../assets/app-navigator/app-audit.svg');
+  const imgHistory = require('../../../../assets/app-navigator/app-history.svg');
+  const imgSupervisor = require('../../../../assets/app-navigator/app-supervisor.svg');
+  const imgGrafana = require('../../../../assets/app-navigator/app-grafana.svg');
 
   const CURRENT_APP = 'history';
 
   export default {
     name: 'the-app-navigator',
-    directives: {
-      clickaway,
-    },
     data: () => ({
       isOpened: false,
       activeApp: CURRENT_APP,
     }),
 
     computed: {
-      apps() {
-        const agentApp = {
-          name: 'agent',
-          title: this.$t('appNavigator.agent'),
-          href: process.env.VUE_APP_AGENT_URL,
-          img: imgAgent,
-        };
-        const supervisorApp = {
-          name: 'supervisor',
-          title: this.$t('appNavigator.supervisor'),
-          href: process.env.VUE_APP_SUPERVISOR_URL,
-          img: imgSupervisor,
-        };
-        const historyApp = {
-          name: 'history',
-          title: this.$t('appNavigator.history'),
-          href: process.env.VUE_APP_HISTORY_URL,
-          img: imgHistory,
-        };
+        apps() {
+          const agentApp = {
+            name: 'agent',
+            title: this.$t('appNavigator.agent'),
+            href: process.env.VUE_APP_AGENT_URL,
+            img: imgAgent,
+          };
+          const supervisorApp = {
+            name: 'supervisor',
+            title: this.$t('appNavigator.supervisor'),
+            href: process.env.VUE_APP_SUPERVISOR_URL,
+            img: imgSupervisor,
+          };
+          const historyApp = {
+            name: 'history',
+            title: this.$t('appNavigator.history'),
+            href: process.env.VUE_APP_HISTORY_URL,
+            img: imgHistory,
+          };
 
-        const auditApp = {
-          name: 'audit',
-          title: this.$t('appNavigator.audit'),
-          href: process.env.VUE_APP_AUDIT_URL,
-          img: imgAudit,
-        };
+          const auditApp = {
+            name: 'audit',
+            title: this.$t('appNavigator.audit'),
+            href: process.env.VUE_APP_AUDIT_URL,
+            img: imgAudit,
+          };
 
-        const adminApp = {
-          name: 'admin',
-          title: this.$t('appNavigator.admin'),
-          href: process.env.VUE_APP_ADMIN_URL,
-          img: imgAdmin,
-        };
+          const adminApp = {
+            name: 'admin',
+            title: this.$t('appNavigator.admin'),
+            href: process.env.VUE_APP_ADMIN_URL,
+            img: imgAdmin,
+          };
 
-        const grafanaApp = {
-          name: 'grafana',
-          title: this.$t('appNavigator.grafana'),
-          href: process.env.VUE_APP_GRAFANA_URL,
-          img: imgGrafana,
-        };
+          const grafanaApp = {
+            name: 'grafana',
+            title: this.$t('appNavigator.grafana'),
+            href: process.env.VUE_APP_GRAFANA_URL,
+            img: imgGrafana,
+          };
 
-        const apps = [agentApp, supervisorApp, historyApp, auditApp, adminApp];
-        if (this.$config.ON_SITE) apps.push(grafanaApp);
-        return apps;
-      },
+          const apps = [agentApp, supervisorApp, historyApp, auditApp, adminApp];
+          if (this.$config.ON_SITE) apps.push(grafanaApp);
+          return apps;
+        },
     },
 
     methods: {
@@ -120,7 +115,6 @@
   $app-navigator-border-color: #eaeaea;
   $app-navigator-border-color--hover: $accent-color;
 
-
   // helper class
   .typo-app-navigator {
     font-family: 'Montserrat Regular', monospace;
@@ -133,21 +127,21 @@
     display: flex;
     align-items: center;
     margin-left: (30px);
-    z-index: 90;
+    z-index: 11;
   }
 
   // dropdown part
   .app-navigator__nav-wrapper {
-    @extend .cc-scrollbar;
+    @extend %wt-scrollbar;
     position: absolute;
     top: calc(100% + 5px); // icon + 5px
     right: 0;
     max-height: 80vh;
     padding: $app-navigator-gap;
     background: #fff;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     box-shadow: $app-navigator-shadow;
-    transition: $transition;
+    transition: var(--transition);
     overflow: auto;
   }
 
@@ -170,8 +164,8 @@
     height: (120px);
     box-sizing: border-box;
     border: 1px solid $app-navigator-border-color;
-    border-radius: $border-radius;
-    transition: $transition;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
 
     &.active, &:hover {
       border-color: $app-navigator-border-color--hover;

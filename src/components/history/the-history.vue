@@ -1,8 +1,8 @@
 <template>
   <div class="body">
-    <cc-header/>
+    <app-header/>
     <main class="history-container">
-      <notification/>
+      <wt-notifications-bar/>
       <history-heading/>
       <history-filters/>
       <history-main/>
@@ -11,8 +11,7 @@
 </template>
 
 <script>
-  import Notification from '../utils/notification.vue';
-  import CcHeader from '../cc-header/cc-header.vue';
+  import AppHeader from './shared/app-header/app-header.vue';
   import HistoryHeading from './history-heading/the-history-heading.vue';
   import HistoryFilters from './history-filters/the-history-filters.vue';
   import HistoryMain from './history-main/the-history-main.vue';
@@ -20,8 +19,7 @@
   export default {
     name: 'the-history',
     components: {
-      Notification,
-      CcHeader,
+      AppHeader,
       HistoryHeading,
       HistoryFilters,
       HistoryMain,
@@ -41,6 +39,6 @@
     display: flex;
     flex-direction: column;
     padding: 20px 30px;
-    background: $page-bg-color;
+    background: var(--main-page-bg-color);
   }
 </style>

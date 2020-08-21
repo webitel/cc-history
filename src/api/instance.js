@@ -34,11 +34,13 @@ instance.interceptors.response.use(
   (response) => objSnakeToCamel(response.data),
   (error) => { // catches 401 error across all api's
     if (error.response && error.response.status === 401) {
-      console.warn('intercepted 401');
       localStorage.removeItem('access-token');
     }
     // if error isn't 401, returns it
-    eventBus.$emit('notificationError', error.response.data.detail);
+    eventBus.$emit('notification', {
+      type: 'error',
+      text: error.response.data.detail,
+    });
     return Promise.reject(error.response.data);
   },
 );
