@@ -1,16 +1,11 @@
 <template>
-  <popup-container @close="$emit('close')">
-    <template slot="popup-header">
-      <tabs
+  <wt-popup @close="$emit('close')">
+    <template slot="header">
+      <wt-tabs
         v-model="currentTab"
         :tabs="tabs"
-      ></tabs>
+      ></wt-tabs>
       <div class="opened-call__actions-wrap">
-        <wt-button
-          color="secondary"
-          @click="$emit('close')"
-        >{{$t('reusable.close')}}
-        </wt-button>
         <wt-button
           color="primary"
           :loading="isCSVLoading"
@@ -20,20 +15,17 @@
       </div>
     </template>
 
-    <template slot="popup-main">
-      <loader v-if="isLoading"/>
-      <component v-else :is="currentTab.value"/>
+    <template slot="main">
+      <wt-loader v-show="isLoading"/>
+      <component v-show="!isLoading" :is="currentTab.value"/>
     </template>
-  </popup-container>
+  </wt-popup>
 </template>
 
 <script>
   import { mapGetters, mapState } from 'vuex';
   import CallInfo from './opened-call-tabs/opened-call-info.vue';
   import CallLegs from './opened-call-tabs/opened-call-legs.vue';
-  import PopupContainer from '../../../utils/popup-container.vue';
-  import Tabs from '../../../utils/tabs.vue';
-  import Loader from '../../../utils/loader.vue';
   import downloadCSVMixin from '../../../../mixins/downloadCSV/downloadCSVMixin';
 
   export default {
@@ -42,9 +34,6 @@
     components: {
       CallInfo,
       CallLegs,
-      PopupContainer,
-      Tabs,
-      Loader,
     },
 
     data: () => ({
@@ -90,9 +79,7 @@
 </script>
 
 <style lang="scss" scoped>
-  $row-highlight-bg-color: #FFF9E6;
-
-  ::v-deep .popup {
+  ::v-deep .wt-popup__popup {
     width: calc(100vw - 100px);
     max-height: calc(100vh - 100px);
   }
@@ -100,16 +87,15 @@
   .opened-call__actions-wrap {
     // костыль поднимает кнопки свеху на табы
     position: absolute;
-    top: 30px;
-    right: 20px;
-    background: #fff;
+    top: 10px;
+    right: 30px;
+    background: var(--main-primary-color);
 
     display: flex;
     align-items: center;
     justify-content: flex-end;
 
-    .cc-btn {
-      min-width: 100px;
+    .wt-button {
       margin-left: 20px;
     }
   }

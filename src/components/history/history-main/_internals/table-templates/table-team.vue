@@ -1,12 +1,12 @@
 <template>
-  <div v-if="item.from">
-    {{item.from.number}}
+  <div v-if="item.team">
+    {{item.team.name}}
   </div>
 </template>
 
 <script>
   export default {
-    name: 'grid-from',
+    name: 'table-team',
     props: {
       item: {
         type: Object,

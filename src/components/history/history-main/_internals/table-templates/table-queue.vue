@@ -1,12 +1,12 @@
 <template>
-  <div v-if="item.member">
-    {{item.member.name}}
+  <div v-if="item.queue">
+    {{item.queue.name}}
   </div>
 </template>
 
 <script>
   export default {
-    name: 'grid-member',
+    name: 'table-queue',
     props: {
       item: {
         type: Object,

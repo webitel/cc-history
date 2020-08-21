@@ -14,15 +14,12 @@ const REQUIRED_DATA_FIELDS = [
 ];
 
 const transfersHeader = {
-  text: () => '',
   value: 'transfers',
   show: true,
   sort: null,
   field: 'transfer_from, transfer_to',
-  width: 'minmax(120px, 1fr)',
 };
 const transfersLegMarkerHeader = {
-  text: () => '',
   value: 'legMarker',
   show: true,
   sort: null,

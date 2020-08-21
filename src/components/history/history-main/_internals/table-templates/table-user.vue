@@ -1,12 +1,12 @@
 <template>
-  <div v-if="item.agent">
-    {{item.agent.name}}
+  <div v-if="item.user">
+    {{item.user.name}}
   </div>
 </template>
 
 <script>
   export default {
-    name: 'grid-agent',
+    name: 'table-user',
     props: {
       item: {
         type: Object,

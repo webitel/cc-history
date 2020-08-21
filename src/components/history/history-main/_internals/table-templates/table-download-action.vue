@@ -1,12 +1,12 @@
 <template>
   <icon-btn
-    :icon="'download'"
+    icon="download"
   ></icon-btn>
 </template>
 
 <script>
   export default {
-    name: 'grid-download-action',
+    name: 'table-download-action',
   };
 </script>
 

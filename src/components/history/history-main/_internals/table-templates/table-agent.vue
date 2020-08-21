@@ -1,12 +1,12 @@
 <template>
-  <div v-if="item.gateway">
-    {{item.gateway.name}}
+  <div v-if="item.agent">
+    {{item.agent.name}}
   </div>
 </template>
 
 <script>
   export default {
-    name: 'grid-gateway',
+    name: 'table-agent',
     props: {
       item: {
         type: Object,

@@ -1,12 +1,12 @@
 <template>
-  <div v-if="item.queue">
-    {{item.queue.name}}
+  <div v-if="item.gateway">
+    {{item.gateway.name}}
   </div>
 </template>
 
 <script>
   export default {
-    name: 'grid-queue',
+    name: 'table-gateway',
     props: {
       item: {
         type: Object,
