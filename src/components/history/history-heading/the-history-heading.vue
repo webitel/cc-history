@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import FilterSearch from '../../../shared/filters/components/filter-search.vue';
 import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
 import downloadAllFilesMixin from '../../../mixins/downloadFiles/downloadAllFilesMixin';
@@ -45,6 +45,11 @@ export default {
     ...mapGetters('history', {
       dataFields: 'DATA_FIELDS',
       selectedItems: 'SELECTED_DATA_ITEMS',
+    }),
+  },
+  methods: {
+    ...mapActions('history', {
+      fetchDownloadList: 'FETCH_DOWNLOAD_LIST', // files and csv download
     }),
   },
 };

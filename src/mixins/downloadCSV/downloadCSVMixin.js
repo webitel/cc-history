@@ -27,6 +27,7 @@ export default {
 
   computed: {
     isAnySelected() {
+      console.info(this.selectedItems);
       return this.selectedItems.length;
     },
   },

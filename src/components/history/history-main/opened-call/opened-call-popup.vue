@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
   import CallInfo from './opened-call-tabs/opened-call-info.vue';
   import CallLegs from './opened-call-tabs/opened-call-legs.vue';
   import downloadCSVMixin from '../../../../mixins/downloadCSV/downloadCSVMixin';
@@ -49,17 +49,8 @@
       }),
       ...mapGetters('history/opened-call', {
         dataFields: 'DATA_FIELDS',
-        selectedDataItems: 'SELECTED_DATA_ITEMS',
+        selectedItems: 'SELECTED_DATA_ITEMS',
       }),
-
-      selectedItems() {
-        const selectedItems = [...this.selectedDataItems];
-        if (selectedItems.length
-          && selectedItems.indexOf(this.mainCall) === -1) {
-          selectedItems.unshift(this.mainCall);
-        }
-        return selectedItems;
-      },
 
       tabs() {
         const callInfo = {
@@ -74,6 +65,11 @@
         if (this.mainCall.hasChildren) tabs.push(callLegs);
         return tabs;
       },
+    },
+    methods: {
+      ...mapActions('history/opened-call', {
+        fetchDownloadList: 'FETCH_DOWNLOAD_LIST', // files and csv download
+      }),
     },
   };
 </script>

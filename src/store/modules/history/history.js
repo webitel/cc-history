@@ -40,7 +40,7 @@ const actions = {
   },
 
   FETCH_DOWNLOAD_LIST: async (context, additionalParams) => {
-    const queryParams = await context.getters.GET_REQUEST_PARAMS;
+    const queryParams = await context.dispatch('GET_REQUEST_PARAMS');
     const params = {
       ...queryParams,
       ...additionalParams,

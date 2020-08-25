@@ -266,7 +266,7 @@
     display: flex;
     align-items: center;
 
-    > button {
+    > .wt-icon-btn {
       display: flex;
       align-items: center;
 

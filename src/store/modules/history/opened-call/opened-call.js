@@ -37,7 +37,9 @@ const state = {
 
 const getters = {
   IS_CALL_ID: (state) => !!state.mainCallId, // string id or null
-  SELECTED_DATA_ITEMS: (state) => state.legsData.filter((item) => item._isSelected),
+  SELECTED_DATA_ITEMS: (state) => (
+    [state.mainCall, ...state.legsData.filter((item) => item._isSelected)]
+  ),
   HEADERS: (state, getters, rootState) => (
     [...rootState.history.headers, transfersHeader, transfersLegMarkerHeader]
   ),

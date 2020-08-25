@@ -60,7 +60,7 @@ export default {
       let isNext = false;
 
       do {
-        const { items, next } = await this.loadListForDownload({ ...params, page });
+        const { items, next } = await this.fetchDownloadList({ ...params, page });
         console.log('chunk length: ', items.length);
         await addItemsFilesToZip(items, zip, counter.bind(this));
 
