@@ -1,4 +1,4 @@
-import { kebabToCamel } from '../../../../api/utils/caseConverters';
+import { kebabToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
 import { SortSymbols } from '../../../../shared/filters/mixins/sortFilterMixin';
 
 // - create set to remove created_at duplicates
