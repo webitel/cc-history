@@ -9,14 +9,14 @@ const historyAPI = APIRepository.history;
 const REQUIRED_DATA_FIELDS = ['files', 'id'];
 
 const state = {
-  data: [],
+  dataList: [],
   headers: historyHeaders,
   isLoading: false,
   isNext: false,
 };
 
 const getters = {
-  SELECTED_DATA_ITEMS: (state) => state.data.filter((item) => item._isSelected),
+  SELECTED_DATA_ITEMS: (state) => state.dataList.filter((item) => item._isSelected),
 
   DATA_FIELDS: () => {
     let fields = getHeadersFields(state.headers);
@@ -39,15 +39,6 @@ const actions = {
     }
   },
 
-  FETCH_DOWNLOAD_LIST: async (context, additionalParams) => {
-    const queryParams = await context.dispatch('GET_REQUEST_PARAMS');
-    const params = {
-      ...queryParams,
-      ...additionalParams,
-    };
-    return historyAPI.getHistory(params);
-  },
-
   GET_REQUEST_PARAMS: (context) => {
     const routeQuery = deepCopy(router.currentRoute.query);
     const query = convertQuery(routeQuery);
@@ -61,8 +52,8 @@ const actions = {
   },
 };
 const mutations = {
-  SET_DATA_LIST: (state, data) => {
-    state.data = data;
+  SET_DATA_LIST: (state, dataList) => {
+    state.dataList = dataList;
   },
   SET_HEADERS: (state, headers) => {
     state.headers = headers;

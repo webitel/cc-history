@@ -53,11 +53,11 @@ const handleSortQuery = (value) => {
  * @private
  * @returns fields value
  */
-// const handleFieldsQuery = (value) => {
-//   const result = datetimeToCreatedAt(value);
-//   // result += `,${defaultFields.join(',')}`;
-//   return removeDuplicates(result);
-// };
+const handleFieldsQuery = (value) => {
+  const result = datetimeToCreatedAt(value);
+  // result += `,${defaultFields.join(',')}`;
+  return removeDuplicates(result);
+};
 
 /**
  * @Function
@@ -73,7 +73,7 @@ const parseQuery = ({ query, keys }) => {
         value = handleSortQuery(value);
         break;
       case 'fields':
-        // value = handleFieldsQuery(value);
+        value = handleFieldsQuery(value);
         break;
       case 'search':
         break;

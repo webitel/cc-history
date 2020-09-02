@@ -16,9 +16,9 @@
         class="files-counter__count">{{ this.filesCounter }}</span>
       </div>
       <wt-button
-        color="primary"
         :loading="isCSVLoading"
-        @click="downloadCSV"
+        :disabled="!dataList.length"
+        @click="callExportCSV"
       >{{ $t('headerSection.exportCSV') }}
       </wt-button>
     </template>
@@ -26,31 +26,42 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
+
 import FilterSearch from '../../../shared/filters/components/filter-search.vue';
-import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
 import downloadAllFilesMixin from '../../../mixins/downloadFiles/downloadAllFilesMixin';
+import APIRepository from '../../../api/APIRepository';
 
 export default {
   name: 'the-history-heading',
   mixins: [
-    downloadCSVMixin,
+    exportCSVMixin,
     downloadAllFilesMixin,
   ],
   components: {
     FilterSearch,
   },
 
+  created() {
+    this.initCSVExport(APIRepository.history.getHistory, { filename: 'history' });
+  },
+
   computed: {
-    ...mapGetters('history', {
-      dataFields: 'DATA_FIELDS',
-      selectedItems: 'SELECTED_DATA_ITEMS',
+    ...mapState('history', {
+      dataList: (state) => state.dataList,
     }),
   },
+
   methods: {
     ...mapActions('history', {
-      fetchDownloadList: 'FETCH_DOWNLOAD_LIST', // files and csv download
+      getRequestParams: 'GET_REQUEST_PARAMS',
     }),
+
+    async callExportCSV() {
+      const params = await this.getRequestParams();
+      return this.exportCSV(params);
+    },
   },
 };
 </script>
@@ -62,13 +73,13 @@ export default {
   }
 
   .files-counter {
-    $offset: 10px;
     @extend %typo-body-sm;
     position: absolute;
     right: 0;
-    top: calc(100% + #{$offset});
-    padding: (10px) (15px);
-    background: #fff;
+    top: 100%;
+    padding: 10px 15px;
+    margin-top: 10px;
+    background: var(--main-primary-color);
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
 

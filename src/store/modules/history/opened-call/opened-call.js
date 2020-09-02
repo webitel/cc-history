@@ -37,9 +37,6 @@ const state = {
 
 const getters = {
   IS_CALL_ID: (state) => !!state.mainCallId, // string id or null
-  SELECTED_DATA_ITEMS: (state) => (
-    [state.mainCall, ...state.legsData.filter((item) => item._isSelected)]
-  ),
   HEADERS: (state, getters, rootState) => (
     [...rootState.history.headers, transfersHeader, transfersLegMarkerHeader]
   ),
@@ -102,11 +99,6 @@ const actions = {
     } finally {
       context.commit('SET_LOADING', false);
     }
-  },
-
-  FETCH_DOWNLOAD_LIST: async (context) => {
-    const items = [context.state.mainCall, ...context.state.legsData];
-    return { items };
   },
 
   SET_OPENED_CALL: async (context, item) => {

@@ -5,7 +5,7 @@
       <wt-table
         ref="wt-table"
         :headers="headers"
-        :data="data"
+        :data="dataList"
         sortable
         @sort="sort"
       >
@@ -140,7 +140,7 @@ export default {
 
   computed: {
     ...mapState('history', {
-      data: (state) => state.data,
+      dataList: (state) => state.dataList,
       headersValue: (state) => state.headers,
       isNext: (state) => state.isNext,
       isLoading: (state) => state.isLoading,
