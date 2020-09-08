@@ -5,17 +5,14 @@ export default {
 
   data: () => ({
     value: [],
+    defaultValue: [],
     trackBy: 'id',
     storedProp: 'id',
   }),
 
   methods: {
-    getValue({ filterQuery }) {
-      return this.getValueArrayFromQuery({ filterQuery });
-    },
-
     async restoreValue(idList) {
-      this.value = (idList && idList.length) ? await this.fetchSelected(idList) : [];
+      if (idList && idList.length) this.value = await this.fetchSelected(idList);
     },
 
     async fetchSelected(idList) {

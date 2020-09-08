@@ -7,8 +7,8 @@
     :close-on-select="false"
     :internal-search="false"
     multiple
-    @reset="setValueArrayToQuery({ value, filterQuery, storedProp })"
-    @closed="setValueArrayToQuery({ value, filterQuery, storedProp })"
+    @reset="setValueToQuery({ value, filterQuery, storedProp })"
+    @closed="setValueToQuery({ value, filterQuery, storedProp })"
   ></wt-select>
 </template>
 

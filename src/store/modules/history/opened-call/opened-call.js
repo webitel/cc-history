@@ -1,5 +1,4 @@
 import APIRepository from '../../../../api/APIRepository';
-import { getHeadersFields } from '../utils/loadHistoryScripts';
 
 const historyAPI = APIRepository.history;
 const REQUIRED_MAIN_CALL_FIELDS = [
@@ -64,8 +63,10 @@ const getters = {
   },
 
   DATA_FIELDS: (state, getters, rootState) => {
-    let fields = getHeadersFields(rootState.history.headers);
-    fields = [...REQUIRED_DATA_FIELDS, ...fields];
+    let fields = rootState.history.headers
+      .filter((header) => header.show)
+      .map((header) => header.field);
+    fields = [...new Set([...REQUIRED_DATA_FIELDS, ...fields])];
     return fields;
   },
 

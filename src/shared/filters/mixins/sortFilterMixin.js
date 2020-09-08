@@ -8,41 +8,37 @@ export const SortSymbols = Object.freeze({
 
 const getNextSortOrder = (sort) => {
   switch (sort) {
-    case SortSymbols.NONE:
-      return SortSymbols.ASC;
-    case SortSymbols.ASC:
-      return SortSymbols.DESC;
-    case SortSymbols.DESC:
-      return SortSymbols.NONE;
-    default:
-      return SortSymbols.ASC;
+    case SortSymbols.NONE: return SortSymbols.ASC;
+    case SortSymbols.ASC: return SortSymbols.DESC;
+    case SortSymbols.DESC: return SortSymbols.NONE;
+    default: return SortSymbols.ASC;
   }
 };
 
-const encodeSortQuery = ({ column, order }) =>
-  // FIXME UNCOMMENT WHEN IMPLEMENTING MULTIPLE COLUMNS SORT
-  // const value = this.headers
-  //   .filter((item) => item.show && item.sort)
-  //   .map((item) => `${item.value}=${item.sort}`)
-  //   .join(',');
-  // eslint-disable-next-line implicit-arrow-linebreak
-  (order ? `${column.field}=${order}` : '');
+const sortToQueryAdapter = (order) => {
+  switch (order) {
+    case SortSymbols.ASC: return '+';
+    case SortSymbols.DESC: return '-';
+    default: return '';
+  }
+};
+
+const queryToSortAdapter = (order) => {
+  switch (order) {
+    case '+': return SortSymbols.ASC;
+    case '-': return SortSymbols.DESC;
+    default: return SortSymbols.NONE;
+  }
+};
+
+const encodeSortQuery = ({ column, order }) => (`${sortToQueryAdapter(order)}${column.field}`);
 
 const decodeSortQuery = ({ value }) => {
-  const valArr = value.split('=');
-  const sortedColumns = {
-    [valArr[0]]: valArr[1],
+  const sort = queryToSortAdapter(value.slice(0, 1));
+  const sortedColumn = sort ? value.slice(1) : value;
+  return {
+    [sortedColumn]: sort,
   };
-  // FIXME UNCOMMENT WHEN IMPLEMENTING MULTIPLE COLUMNS SORT
-  // sort.split(',')
-  //   .forEach((colStr) => {
-  //     const col = {
-  //       value: colStr.split('=')[0],
-  //       order: colStr.split('=')[1],
-  //     };
-  //     sortedColumns[col.value] = col.order;
-  //   });
-  return sortedColumns;
 };
 
 export default {
@@ -53,10 +49,7 @@ export default {
   methods: {
     sort(column) {
       const order = getNextSortOrder(column.sort);
-      this.setValue({
-        column,
-        order,
-      });
+      this.setValue({ column, order });
     },
 
     setValue({ column, order }) {
@@ -64,10 +57,7 @@ export default {
         ...col,
         sort: col === column ? order : null,
       }));
-      const value = encodeSortQuery({
-        column,
-        order,
-      });
+      const value = encodeSortQuery({ column, order });
       this.setValueToQuery({
         value,
         filterQuery: this.filterQuery,

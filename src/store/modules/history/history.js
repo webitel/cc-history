@@ -2,7 +2,6 @@ import deepCopy from 'deep-copy';
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
-import { convertQuery, getHeadersFields } from './utils/loadHistoryScripts';
 import openedCall from './opened-call/opened-call';
 
 const historyAPI = APIRepository.history;
@@ -19,8 +18,10 @@ const getters = {
   SELECTED_DATA_ITEMS: (state) => state.dataList.filter((item) => item._isSelected),
 
   DATA_FIELDS: () => {
-    let fields = getHeadersFields(state.headers);
-    fields = [...REQUIRED_DATA_FIELDS, ...fields];
+    let fields = state.headers
+      .filter((header) => header.show)
+      .map((header) => header.field);
+    fields = [...new Set([...REQUIRED_DATA_FIELDS, ...fields])];
     return fields;
   },
 };
@@ -40,8 +41,7 @@ const actions = {
   },
 
   GET_REQUEST_PARAMS: (context) => {
-    const routeQuery = deepCopy(router.currentRoute.query);
-    const query = convertQuery(routeQuery);
+    const query = deepCopy(router.currentRoute.query);
     query.fields = context.getters.DATA_FIELDS;
     query.skipParent = true;
     return query;

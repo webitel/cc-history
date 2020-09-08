@@ -2,6 +2,9 @@ import _urlControllerMixin from '../_urlControllerMixin/_urlControllerMixin';
 
 export default {
   mixins: [_urlControllerMixin],
+  data: () => ({
+    defaultValue: '',
+  }),
 
   watch: {
     '$route.query': {
@@ -19,12 +22,8 @@ export default {
 
   methods: {
     restore({ filterQuery }) {
-      const value = this.getValue({ filterQuery });
+      const value = this.getValueFromQuery({ filterQuery }) || this.defaultValue;
       this.restoreValue(value);
-    },
-
-    getValue({ filterQuery }) {
-      return this.getValueFromQuery({ filterQuery });
     },
   },
 };
