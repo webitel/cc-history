@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import enumFilterMixin from '../mixins/enumFilterMixin';
+  import enumFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/enumFilterMixin';
   import DirectionOptions from '../api/DirectionOptions.enum';
 
   export default {

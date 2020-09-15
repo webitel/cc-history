@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import apiFilterMixin from '../mixins/apiFilterMixin';
+  import apiFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/apiFilterMixin';
   import APIRepository from '../../../api/APIRepository';
 
   const teamAPI = APIRepository.teams;
