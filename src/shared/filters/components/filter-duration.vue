@@ -37,7 +37,7 @@
 <script>
 import debounce from '@webitel/ui-sdk/src/scripts/debounce';
 import { camelToKebab } from '@webitel/ui-sdk/src/scripts/caseConverters';
-import baseFilterMixin from '../mixins/baseFilterMixin/baseFilterMixin';
+import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
 
 export default {
   name: 'filter-duration',

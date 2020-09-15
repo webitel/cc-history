@@ -7,13 +7,13 @@
     :close-on-select="false"
     :internal-search="false"
     multiple
-    @reset="setValueArrayToQuery({ value, filterQuery, storedProp })"
-    @closed="setValueArrayToQuery({ value, filterQuery, storedProp })"
+    @reset="setValueToQuery({ value, filterQuery, storedProp })"
+    @closed="setValueToQuery({ value, filterQuery, storedProp })"
   ></wt-select>
 </template>
 
 <script>
-  import apiFilterMixin from '../mixins/apiFilterMixin';
+  import apiFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/apiFilterMixin';
   import APIRepository from '../../../api/APIRepository';
 
   const gatewayAPI = APIRepository.gateways;

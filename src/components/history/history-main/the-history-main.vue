@@ -101,7 +101,7 @@ import TableTeam from './_internals/table-templates/table-team.vue';
 import TableTo from './_internals/table-templates/table-to.vue';
 import TableUser from './_internals/table-templates/table-user.vue';
 import MediaAction from './_internals/table-templates/table-media-action.vue';
-import sortFilterMixin from '../../../shared/filters/mixins/sortFilterMixin';
+import sortFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/sortFilterMixin';
 import downloadRowFilesMixin from '../../../mixins/downloadFiles/downloadRowFilesMixin';
 import playMediaMixin from '../../../mixins/media/playMediaMixin';
 import showMediaMixin from '../../../mixins/media/showMediaMixin';

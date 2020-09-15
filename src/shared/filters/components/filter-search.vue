@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import baseFilterMixin from '../mixins/baseFilterMixin/baseFilterMixin';
+  import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
 
   export default {
     name: 'filter-search',
