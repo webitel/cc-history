@@ -15,7 +15,7 @@ export default {
   name: 'app-header',
 
   data: () => ({
-    currentApp: 'supervisor',
+    currentApp: 'history',
     apps: {
       agent: { href: process.env.VUE_APP_AGENT_URL },
       supervisor: { href: process.env.VUE_APP_SUPERVISOR_URL },

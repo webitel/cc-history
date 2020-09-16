@@ -13,10 +13,12 @@ export const fetchTeams = async ({
                                     id,
                                   }) => {
   try {
+    // eslint-disable-next-line no-param-reassign
+    if (search && search.slice(-1) !== '*') search += '*';
     const response = await teamService.searchAgentTeam(
       page,
       size,
-      `${search}*`,
+      search,
       undefined,
       fields,
       null,

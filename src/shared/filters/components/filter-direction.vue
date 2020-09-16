@@ -5,13 +5,13 @@
     :label="$t('fields.direction')"
     :track-by="trackBy"
     multiple
-    @reset="setValueArrayToQuery({ value, filterQuery, storedProp })"
-    @closed="setValueArrayToQuery({ value, filterQuery, storedProp })"
+    @reset="setValueToQuery({ value, filterQuery, storedProp })"
+    @closed="setValueToQuery({ value, filterQuery, storedProp })"
   ></wt-select>
 </template>
 
 <script>
-  import enumFilterMixin from '../mixins/enumFilterMixin';
+  import enumFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/enumFilterMixin';
   import DirectionOptions from '../api/DirectionOptions.enum';
 
   export default {

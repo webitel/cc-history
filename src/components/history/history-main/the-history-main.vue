@@ -5,7 +5,7 @@
       <wt-table
         ref="wt-table"
         :headers="headers"
-        :data="data"
+        :data="dataList"
         sortable
         @sort="sort"
       >
@@ -89,6 +89,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import sortFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/sortFilterMixin';
 import OpenedCallPopup from './opened-call/opened-call-popup.vue';
 import FilterPagination from '../../../shared/filters/components/filter-pagination.vue';
 import TableAgent from './_internals/table-templates/table-agent.vue';
@@ -101,7 +102,6 @@ import TableTeam from './_internals/table-templates/table-team.vue';
 import TableTo from './_internals/table-templates/table-to.vue';
 import TableUser from './_internals/table-templates/table-user.vue';
 import MediaAction from './_internals/table-templates/table-media-action.vue';
-import sortFilterMixin from '../../../shared/filters/mixins/sortFilterMixin';
 import downloadRowFilesMixin from '../../../mixins/downloadFiles/downloadRowFilesMixin';
 import playMediaMixin from '../../../mixins/media/playMediaMixin';
 import showMediaMixin from '../../../mixins/media/showMediaMixin';
@@ -140,7 +140,7 @@ export default {
 
   computed: {
     ...mapState('history', {
-      data: (state) => state.data,
+      dataList: (state) => state.dataList,
       headersValue: (state) => state.headers,
       isNext: (state) => state.isNext,
       isLoading: (state) => state.isLoading,

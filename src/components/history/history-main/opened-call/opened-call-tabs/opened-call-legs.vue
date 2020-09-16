@@ -6,6 +6,7 @@
         ref="call-legs-table"
         :headers="headers"
         :data="tableData"
+        :selectable="false"
         :grid-actions="false"
       >
         <template slot="direction" slot-scope="{ item }">
