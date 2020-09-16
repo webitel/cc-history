@@ -1,10 +1,6 @@
 import generateMediaURL from './scripts/generateMediaURL';
-import AudioPlayer from '../../components/utils/audio-player.vue';
 
 export default {
-  components: {
-    AudioPlayer,
-  },
   data: () => ({
     audioURL: '',
     currentlyPlaying: '0',

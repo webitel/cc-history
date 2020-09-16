@@ -1,3 +1,5 @@
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+
 const computeDate = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
@@ -8,12 +10,6 @@ const computeTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
   return date.toLocaleTimeString();
-};
-
-const prettifySec = (sec) => {
-  if (!sec) return null;
-  return new Date(sec * 10 ** 3).toISOString()
-    .substr(11, 8);
 };
 
 const mapItems = (items) => {
@@ -32,13 +28,13 @@ const mapItems = (items) => {
     leavingAt: computeTime(item.leavingAt),
     hangupAt: computeTime(item.hangupAt),
     reportingAt: computeTime(item.reportingAt),
-    duration: prettifySec(item.duration),
-    holdSec: prettifySec(item.holdSec),
-    waitSec: prettifySec(item.waitSec),
-    billSec: prettifySec(item.billSec),
-    reportingSec: prettifySec(item.reportingSec),
-    queueWaitSec: prettifySec(item.queueWaitSec),
-    queueDurationSec: prettifySec(item.queueDurationSec),
+    duration: convertDuration(item.duration),
+    holdSec: convertDuration(item.holdSec),
+    waitSec: convertDuration(item.waitSec),
+    billSec: convertDuration(item.billSec),
+    reportingSec: convertDuration(item.reportingSec),
+    queueWaitSec: convertDuration(item.queueWaitSec),
+    queueDurationSec: convertDuration(item.queueDurationSec),
   }));
 };
 
