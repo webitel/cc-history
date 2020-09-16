@@ -70,7 +70,7 @@
 
       <wt-player
         v-show="audioURL"
-        :file="audioURL"
+        :src="audioURL"
         @play="isPlayingNow = true"
         @close="closePlayer"
       ></wt-player>
