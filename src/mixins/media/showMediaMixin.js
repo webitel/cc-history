@@ -43,7 +43,7 @@ export default {
 
     moveMediaSelect(event) {
       const mediaSelect = this.$refs['media-select'];
-      const table = this.$refs['grid-table'];
+      const table = this.$refs['wt-table'];
       const tableOffset = table.$el.getBoundingClientRect().top;
       const btnOffset = event.target.getBoundingClientRect().top;
       mediaSelect.$el.style.top = `${btnOffset - tableOffset}px`;

@@ -1,9 +1,12 @@
 <template>
-  <popup-container class="column-select" @keydown.esc="$emit('close')">
-    <template slot="popup-header">
-      <h1 class="popup-header__h1">{{$t('components.columnSelect.header')}}</h1>
+  <wt-popup
+    class="column-select"
+    @close="$emit('close')"
+  >
+    <template slot="header">
+      <h1 class="column-select__heading">{{$t('components.columnSelect.header')}}</h1>
     </template>
-    <template slot="popup-main">
+    <template slot="main">
       <ul class="column-select__list">
         <li
           class="column-select__item"
@@ -11,41 +14,29 @@
           :key="key"
           @click.capture.prevent="col.show = !col.show"
         >
-          <checkbox :value="col.show"/>
-          <span>{{col.text()}}</span>
+          <wt-checkbox v-model="col.show" :label="col.text"/>
         </li>
       </ul>
     </template>
-    <template slot="popup-footer">
-      <div class="popup-actions">
-        <btn
-          class="primary"
-          @click.native="setShownColumns"
-        >{{$t('reusable.add')}}
-        </btn>
-        <btn
-          class="secondary"
-          @click.native="$emit('close')"
-        >{{$t('reusable.cancel')}}
-        </btn>
-      </div>
+    <template slot="actions">
+      <wt-button
+        @click="setShownColumns"
+      >{{ $t('reusable.add') }}
+      </wt-button>
+      <wt-button
+        color="secondary"
+        @click="$emit('close')"
+      >{{ $t('reusable.cancel') }}
+      </wt-button>
     </template>
-  </popup-container>
+  </wt-popup>
 </template>
 
 <script>
   import deepCopy from 'deep-copy';
-  import PopupContainer from './popup-container.vue';
-  import Btn from './btn.vue';
-  import Checkbox from './checkbox.vue';
 
   export default {
     name: 'table-column-select',
-    components: {
-      PopupContainer,
-      Btn,
-      Checkbox,
-    },
     props: {
       value: {
         type: Array,
@@ -84,33 +75,24 @@
 </script>
 
 <style lang="scss" scoped>
-  .column-select__list {
-    @extend .cc-scrollbar;
-    max-height: 35vh;
-    min-width: (550px);
-    overflow: auto;
-  }
+.column-select__heading {
+  text-align: center;
+}
 
-  .column-select__item {
-    display: flex;
-    align-items: center;
-    margin-bottom: (16px);
-    cursor: pointer;
+.column-select__list {
+  @extend %wt-scrollbar;
+  max-height: 35vh;
+  min-width: 550px;
+  overflow: auto;
+}
 
-    .checkbox {
-      margin-right: (10px);
-    }
-  }
+.column-select__item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
 
-  .popup-actions {
-    display: flex;
-
-    .cc-btn {
-      min-width: (120px);
-
-      &.primary {
-        margin-right: (20px);
-      }
-    }
-  }
+.wt-button:first-child {
+  margin-right: 20px;
+}
 </style>

@@ -1,7 +1,7 @@
 import download from '../../utils/downloadFile';
 import downloadAllCSVMixin from './baseLoaders/downloadAllCSVMixin';
 import downloadSelectedCSVMixin from './baseLoaders/downloadSelectedCSVMixin';
-import { snakeToCamel } from '../../api/utils/caseConverters';
+import { snakeToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
 
 const responseToCSV = ({ fields, items }) => {
   let csv = '';
@@ -27,6 +27,7 @@ export default {
 
   computed: {
     isAnySelected() {
+      console.info(this.selectedItems);
       return this.selectedItems.length;
     },
   },

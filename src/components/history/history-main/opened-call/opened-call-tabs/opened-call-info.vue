@@ -40,7 +40,7 @@
 
 <style lang="scss" scoped>
   .call-info-heading {
-    @extend .typo-heading-sm;
+    @extend %typo-strong-sm;
     margin-bottom: 30px;
   }
 
@@ -49,16 +49,16 @@
     align-items: center;
 
     &__key {
-      @extend .typo-heading-xs;
+      @extend %typo-strong-sm;
     }
 
     &__value {
-      @extend .typo-body-sm;
+      @extend %typo-body-sm;
       margin-left: (5px);
     }
   }
 
   .call-info-variables__empty-variables {
-    @extend .typo-body-sm;
+    @extend %typo-body-sm;
   }
 </style>

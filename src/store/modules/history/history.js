@@ -2,25 +2,26 @@ import deepCopy from 'deep-copy';
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './utils/historyHeaders';
 import router from '../../../router';
-import { convertQuery, getHeadersFields } from './utils/loadHistoryScripts';
 import openedCall from './opened-call/opened-call';
 
 const historyAPI = APIRepository.history;
 const REQUIRED_DATA_FIELDS = ['files', 'id'];
 
 const state = {
-  data: [],
+  dataList: [],
   headers: historyHeaders,
   isLoading: false,
   isNext: false,
 };
 
 const getters = {
-  SELECTED_DATA_ITEMS: (state) => state.data.filter((item) => item._isSelected),
+  SELECTED_DATA_ITEMS: (state) => state.dataList.filter((item) => item._isSelected),
 
   DATA_FIELDS: () => {
-    let fields = getHeadersFields(state.headers);
-    fields = [...REQUIRED_DATA_FIELDS, ...fields];
+    let fields = state.headers
+      .filter((header) => header.show)
+      .map((header) => header.field);
+    fields = [...new Set([...REQUIRED_DATA_FIELDS, ...fields])];
     return fields;
   },
 };
@@ -39,18 +40,8 @@ const actions = {
     }
   },
 
-  FETCH_DOWNLOAD_LIST: async (context, additionalParams) => {
-    const queryParams = await context.getters.GET_REQUEST_PARAMS;
-    const params = {
-      ...queryParams,
-      ...additionalParams,
-    };
-    return historyAPI.getHistory(params);
-  },
-
   GET_REQUEST_PARAMS: (context) => {
-    const routeQuery = deepCopy(router.currentRoute.query);
-    const query = convertQuery(routeQuery);
+    const query = deepCopy(router.currentRoute.query);
     query.fields = context.getters.DATA_FIELDS;
     query.skipParent = true;
     return query;
@@ -61,8 +52,8 @@ const actions = {
   },
 };
 const mutations = {
-  SET_DATA_LIST: (state, data) => {
-    state.data = data;
+  SET_DATA_LIST: (state, dataList) => {
+    state.dataList = dataList;
   },
   SET_HEADERS: (state, headers) => {
     state.headers = headers;

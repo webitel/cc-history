@@ -1,5 +1,4 @@
 import APIRepository from '../../../../api/APIRepository';
-import { getHeadersFields } from '../utils/loadHistoryScripts';
 
 const historyAPI = APIRepository.history;
 const REQUIRED_MAIN_CALL_FIELDS = [
@@ -14,15 +13,12 @@ const REQUIRED_DATA_FIELDS = [
 ];
 
 const transfersHeader = {
-  text: () => '',
   value: 'transfers',
   show: true,
   sort: null,
   field: 'transfer_from, transfer_to',
-  width: 'minmax(120px, 1fr)',
 };
 const transfersLegMarkerHeader = {
-  text: () => '',
   value: 'legMarker',
   show: true,
   sort: null,
@@ -40,7 +36,6 @@ const state = {
 
 const getters = {
   IS_CALL_ID: (state) => !!state.mainCallId, // string id or null
-  SELECTED_DATA_ITEMS: (state) => state.legsData.filter((item) => item._isSelected),
   HEADERS: (state, getters, rootState) => (
     [...rootState.history.headers, transfersHeader, transfersLegMarkerHeader]
   ),
@@ -68,8 +63,10 @@ const getters = {
   },
 
   DATA_FIELDS: (state, getters, rootState) => {
-    let fields = getHeadersFields(rootState.history.headers);
-    fields = [...REQUIRED_DATA_FIELDS, ...fields];
+    let fields = rootState.history.headers
+      .filter((header) => header.show)
+      .map((header) => header.field);
+    fields = [...new Set([...REQUIRED_DATA_FIELDS, ...fields])];
     return fields;
   },
 
@@ -103,11 +100,6 @@ const actions = {
     } finally {
       context.commit('SET_LOADING', false);
     }
-  },
-
-  FETCH_DOWNLOAD_LIST: async (context) => {
-    const items = [context.state.mainCall, ...context.state.legsData];
-    return { items };
   },
 
   SET_OPENED_CALL: async (context, item) => {

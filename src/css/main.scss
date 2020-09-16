@@ -1,9 +1,5 @@
-@import "./utils/variables";
-@import "./styleguide/styleguide";
-@import "./ui-components/shared";
+@import "~@webitel/ui-sdk/src/css/main.scss";
 @import "./utils/helper-classes";
-
-@import "./history/history";
 
 html {
   height: 100%;
@@ -15,7 +11,7 @@ body {
   margin: 0;
   font-family: 'Montserrat Regular', monospace;
   font-size: 100%;
-  background: $page-bg-color;
+  background: var(--main-page-bg-color);
 }
 
 main {
