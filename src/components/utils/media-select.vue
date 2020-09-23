@@ -40,10 +40,6 @@ export default {
       return file.id !== this.currentlyPlaying
         ? 'play' : 'pause';
     },
-
-    close() {
-      this.$emit('close');
-    },
   },
 };
 </script>

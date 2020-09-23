@@ -64,7 +64,7 @@
       <filter-pagination :is-next="isNext"/>
 
       <opened-call-popup
-        v-if="isOpenedCallPopup"
+        v-show="isOpenedCallPopup"
         @close="closeCallPopup"
       ></opened-call-popup>
 
