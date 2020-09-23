@@ -1,9 +1,9 @@
 import MediaSelect from '../../components/utils/media-select.vue';
+import playMediaMixin from './playMediaMixin';
 
 export default {
-  components: {
-    MediaSelect,
-  },
+  mixins: [playMediaMixin],
+  components: { MediaSelect },
   data: () => ({
     openedMediaIndex: null,
   }),
@@ -15,9 +15,9 @@ export default {
 
     mediaFiles() {
       if (this.isMediaSelectOpened) {
-        return this.data[this.openedMediaIndex]
-          .files.filter((file) => file.mimeType.includes('audio')
-            || file.mimeType.includes('video'));
+        return this.dataList[this.openedMediaIndex]
+          .files.filter((file) => file.mimeType?.includes('audio')
+            || file.mimeType?.includes('video'));
       }
       return [];
     },
@@ -34,7 +34,7 @@ export default {
 
     openMedia(index, event) {
       if (this.openedMediaIndex === index) {
-        this.openedMediaIndex = null;
+        this.closeMedia();
       } else {
         this.openedMediaIndex = index;
         this.moveMediaSelect(event);
