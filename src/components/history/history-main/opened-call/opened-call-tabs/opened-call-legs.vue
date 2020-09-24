@@ -100,9 +100,6 @@ import TableQueue from '../../_internals/table-templates/table-queue.vue';
 import TableTeam from '../../_internals/table-templates/table-team.vue';
 import TableTo from '../../_internals/table-templates/table-to.vue';
 import TableUser from '../../_internals/table-templates/table-user.vue';
-import playMediaMixin from '../../../../../mixins/media/playMediaMixin';
-import showMediaMixin from '../../../../../mixins/media/showMediaMixin';
-import downloadRowFilesMixin from '../../../../../mixins/downloadFiles/downloadRowFilesMixin';
 
 export default {
   name: 'opened-call-legs',
@@ -117,11 +114,6 @@ export default {
     TableTo,
     TableUser,
   },
-  mixins: [
-    playMediaMixin,
-    showMediaMixin,
-    downloadRowFilesMixin,
-  ],
 
   created() {
     this.loadList();
