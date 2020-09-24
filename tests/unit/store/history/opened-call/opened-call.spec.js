@@ -63,8 +63,6 @@ describe('Opened call history store', () => {
     store.state.history['opened-call'].mainCallId = 1;
     expect(store.getters['history/opened-call/IS_CALL_ID']).toBe(true);
     // FALSE VALUES
-    store.state.history['opened-call'].mainCallId = {};
-    expect(store.getters['history/opened-call/IS_CALL_ID']).toBe(false);
     store.state.history['opened-call'].mainCallId = null;
     expect(store.getters['history/opened-call/IS_CALL_ID']).toBe(false);
     store.state.history['opened-call'].mainCallId = undefined;

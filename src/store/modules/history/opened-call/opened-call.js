@@ -35,7 +35,7 @@ const state = {
 };
 
 const getters = {
-  IS_CALL_ID: (state) => !!+state.mainCallId,
+  IS_CALL_ID: (state) => !!state.mainCallId,
   HEADERS: (state, getters, rootState) => (
     [...rootState.history.headers, transfersHeader, transfersLegMarkerHeader]
   ),
