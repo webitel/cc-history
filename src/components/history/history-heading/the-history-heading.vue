@@ -11,14 +11,16 @@
         @click="callExportFiles"
       >{{ $t('reusable.download') }}
       </wt-button>
-      <div v-show="isFilesLoading" class="files-counter">
+      <div v-show="isCSVLoading || isFilesLoading" class="files-counter">
         <div>
           {{ $t('headerSection.filesLoaded') }}
-          <span class="files-counter__count">{{ downloadProgress }}</span>
+          <span class="files-counter__count">
+            {{ filesDownloadProgress || CSVDownloadProgress }}
+          </span>
         </div>
-        <div v-show="zippingProgress">
+        <div v-show="filesZippingProgress">
           {{ $t('headerSection.zippingProgress') }}
-          <span class="files-counter__count">{{ zippingProgress }}%</span>
+          <span class="files-counter__count">{{ filesZippingProgress }}%</span>
         </div>
       </div>
       <wt-button
