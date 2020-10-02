@@ -1,9 +1,9 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import OpenedCallLegs from '../../../../../../../src/components/history/history-main/opened-call/opened-call-tabs/opened-call-legs.vue';
-import history from '../../../../../../../src/store/modules/history/history';
-import openedCallHistory from '../../../../../../../src/store/modules/history/opened-call/opened-call';
-import HistoryAPIRepository from '../../../../../../../src/api/history/HistoryAPIRepository';
+import OpenedCallLegs from '@/components/history/history-main/history/opened-call/opened-call-tabs/opened-call-legs.vue';
+import history from '@/store/modules/history/history';
+import openedCallHistory from '@/store/modules/history/opened-call/opened-call';
+import HistoryAPIRepository from '@/api/history/HistoryAPIRepository';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

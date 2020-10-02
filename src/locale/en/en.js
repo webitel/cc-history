@@ -33,7 +33,14 @@ export default {
     zippingProgress: 'Zipping progress: ',
     exportCSV: 'Export CSV',
   },
-  mainSection: {},
+  mainSection: {
+    history: {
+      history: 'History',
+    },
+    dashboards: {
+      dashboards: 'Dashboards',
+    },
+  },
   openedCall: {
     callInfo: 'Call info',
     callLegs: 'Legs A-B',
