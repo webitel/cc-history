@@ -18,7 +18,7 @@
         </div>
         <div v-show="zippingProgress">
           {{ $t('headerSection.zippingProgress') }}
-          <span class="files-counter__count">{{ zippingProgress }}</span>
+          <span class="files-counter__count">{{ zippingProgress }}%</span>
         </div>
       </div>
       <wt-button

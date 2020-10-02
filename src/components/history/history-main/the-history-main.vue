@@ -13,28 +13,28 @@
           <table-direction :item="item"/>
         </template>
         <template slot="from" slot-scope="{ item }">
-          <table-from :item="item"/>
+          <div v-if="item.from">{{item.from.number}}</div>
         </template>
         <template slot="to" slot-scope="{ item }">
-          <table-to :item="item"/>
+          <div v-if="item.to">{{item.to.number}}</div>
         </template>
         <template slot="user" slot-scope="{ item }">
-          <table-user :item="item"/>
+          <div v-if="item.user">{{item.user.name}}</div>
         </template>
         <template slot="gateway" slot-scope="{ item }">
-          <table-gateway :item="item"/>
+          <div v-if="item.gateway">{{item.gateway.name}}</div>
         </template>
         <template slot="agent" slot-scope="{ item }">
-          <table-agent :item="item"/>
+          <div v-if="item.agent">{{item.agent.name}}</div>
         </template>
         <template slot="team" slot-scope="{ item }">
-          <table-team :item="item"/>
+          <div v-if="item.team">{{item.team.name}}</div>
         </template>
         <template slot="queue" slot-scope="{ item }">
-          <table-queue :item="item"/>
+          <div v-if="item.queue">{{item.queue.name}}</div>
         </template>
         <template slot="member" slot-scope="{ item }">
-          <table-member :item="item"/>
+          <div v-if="item.member">{{item.member.name}}</div>
         </template>
 
         <template slot="actions" slot-scope="{ item, index }">
@@ -60,7 +60,6 @@
           ></wt-icon-btn>
         </template>
       </wt-table>
-
       <filter-pagination :is-next="isNext"/>
 
       <opened-call-popup
@@ -93,15 +92,7 @@ import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exp
 import sortFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/sortFilterMixin';
 import OpenedCallPopup from './opened-call/opened-call-popup.vue';
 import FilterPagination from '../../../shared/filters/components/filter-pagination.vue';
-import TableAgent from './_internals/table-templates/table-agent.vue';
 import TableDirection from './_internals/table-templates/table-direction.vue';
-import TableFrom from './_internals/table-templates/table-from.vue';
-import TableGateway from './_internals/table-templates/table-gateway.vue';
-import TableMember from './_internals/table-templates/table-member.vue';
-import TableQueue from './_internals/table-templates/table-queue.vue';
-import TableTeam from './_internals/table-templates/table-team.vue';
-import TableTo from './_internals/table-templates/table-to.vue';
-import TableUser from './_internals/table-templates/table-user.vue';
 import MediaAction from './_internals/table-templates/table-media-action.vue';
 import showMediaMixin from '../../../mixins/media/showMediaMixin';
 
@@ -115,15 +106,7 @@ export default {
   components: {
     OpenedCallPopup,
     FilterPagination,
-    TableAgent,
     TableDirection,
-    TableFrom,
-    TableGateway,
-    TableMember,
-    TableQueue,
-    TableTeam,
-    TableTo,
-    TableUser,
     MediaAction,
   },
 
