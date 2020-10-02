@@ -30,6 +30,7 @@ export default {
   },
   headerSection: {
     filesLoaded: 'Files loaded: ',
+    zippingProgress: 'Zipping progress: ',
     exportCSV: 'Export CSV',
   },
   mainSection: {},

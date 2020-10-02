@@ -8,12 +8,18 @@
       <wt-button
         color="secondary"
         :loading="isFilesLoading"
-        @click="downloadFiles"
+        @click="callExportFiles"
       >{{ $t('reusable.download') }}
       </wt-button>
       <div v-show="isFilesLoading" class="files-counter">
-        {{ $t('headerSection.filesLoaded') }}<span
-        class="files-counter__count">{{ this.filesCounter }}</span>
+        <div>
+          {{ $t('headerSection.filesLoaded') }}
+          <span class="files-counter__count">{{ downloadProgress }}</span>
+        </div>
+        <div v-show="zippingProgress">
+          {{ $t('headerSection.zippingProgress') }}
+          <span class="files-counter__count">{{ zippingProgress }}</span>
+        </div>
       </div>
       <wt-button
         :loading="isCSVLoading"
@@ -26,30 +32,38 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
+import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 
+import generateMediaURL from '../../../mixins/media/scripts/generateMediaURL';
 import FilterSearch from '../../../shared/filters/components/filter-search.vue';
-import downloadAllFilesMixin from '../../../mixins/downloadFiles/downloadAllFilesMixin';
 import APIRepository from '../../../api/APIRepository';
 
 export default {
   name: 'the-history-heading',
   mixins: [
     exportCSVMixin,
-    downloadAllFilesMixin,
+    exportFilesMixin,
   ],
-  components: {
-    FilterSearch,
-  },
+  components: { FilterSearch },
 
   created() {
     this.initCSVExport(APIRepository.history.getHistory, { filename: 'history' });
+    this.initFilesExport({
+      fetchMethod: APIRepository.history.getHistory,
+      filename: 'history-records',
+      filesURL: generateMediaURL,
+    });
   },
 
   computed: {
     ...mapState('history', {
       dataList: (state) => state.dataList,
+    }),
+
+    ...mapGetters('history', {
+      selectedItems: 'SELECTED_DATA_ITEMS',
     }),
   },
 
@@ -57,6 +71,11 @@ export default {
     ...mapActions('history', {
       getRequestParams: 'GET_REQUEST_PARAMS',
     }),
+
+    callExportFiles() {
+      const params = { fileExists: true };
+      return this.exportFiles(null, params);
+    },
 
     async callExportCSV() {
       const params = await this.getRequestParams();

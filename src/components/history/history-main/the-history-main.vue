@@ -50,7 +50,7 @@
             v-if="item.files"
             class="table-action"
             icon="download"
-            @click="downloadRowFiles(item.files)"
+            @click="exportFiles(item.files)"
           ></wt-icon-btn>
 
           <wt-icon-btn
@@ -89,6 +89,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import sortFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/sortFilterMixin';
 import OpenedCallPopup from './opened-call/opened-call-popup.vue';
 import FilterPagination from '../../../shared/filters/components/filter-pagination.vue';
@@ -102,17 +103,14 @@ import TableTeam from './_internals/table-templates/table-team.vue';
 import TableTo from './_internals/table-templates/table-to.vue';
 import TableUser from './_internals/table-templates/table-user.vue';
 import MediaAction from './_internals/table-templates/table-media-action.vue';
-import downloadRowFilesMixin from '../../../mixins/downloadFiles/downloadRowFilesMixin';
-import playMediaMixin from '../../../mixins/media/playMediaMixin';
 import showMediaMixin from '../../../mixins/media/showMediaMixin';
 
 export default {
   name: 'the-history-main',
   mixins: [
     sortFilterMixin,
-    playMediaMixin,
     showMediaMixin,
-    downloadRowFilesMixin,
+    exportFilesMixin,
   ],
   components: {
     OpenedCallPopup,
@@ -127,6 +125,10 @@ export default {
     TableTo,
     TableUser,
     MediaAction,
+  },
+
+  created() {
+    this.initFilesExport({ filename: 'history-records' });
   },
 
   watch: {

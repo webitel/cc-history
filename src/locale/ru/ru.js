@@ -30,6 +30,7 @@ export default {
   },
   headerSection: {
     filesLoaded: 'Файлов скачано: ',
+    zippingProgress: 'Прогресс архивации: ',
     exportCSV: 'Экспортировать CSV',
   },
   mainSection: {
