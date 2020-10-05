@@ -2,8 +2,6 @@
   <section class="history-section history-main">
     <wt-tabs v-model="currentTab" :tabs="tabs"></wt-tabs>
     <wt-loader v-show="isLoading"/>
-    <div>
-    </div>
     <component
       class="content-wrapper"
       v-show="!isLoading"
@@ -15,14 +13,16 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import HistoryTable from './history/history-table.vue';
+import HistoryDashboards from './dashboards/history-dashboards.vue';
 
 export default {
   name: 'the-history-main',
   components: {
     HistoryTable,
+    HistoryDashboards,
   },
   data: () => ({
-    currentTab: { value: 'history-table' },
+    currentTab: { value: 'history-dashboards' },
   }),
 
   watch: {
