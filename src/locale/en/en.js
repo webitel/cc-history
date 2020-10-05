@@ -39,6 +39,46 @@ export default {
     },
     dashboards: {
       dashboards: 'Dashboards',
+      newBtn: 'New Dashboard',
+      dashboardSelect: 'Select dashboard:',
+      dashboardConfig: 'Dashboard configuration:',
+      dashboardConfigForm: {
+        name: 'Name',
+        visualization: 'Visualization',
+        param: 'Visualization param',
+        group: 'Group values',
+        relative: 'Show relative values',
+      },
+      visualizations: {
+        doughnut: 'Doughnut',
+        bar: 'Bar',
+        line: 'Line',
+        metric: 'Metric',
+      },
+      callsByPeriod: {
+        title: 'Calls by period',
+        description: 'Represents the number of calls based on the selected filters and period',
+      },
+      callsCount: {
+        title: 'Calls count',
+        description: 'Groups calls count on doughnut diagram based on the selected filters',
+      },
+      callsCountMetrics: {
+        title: 'Calls count (metrics)',
+        description: 'Represents number of calls based on the selected filters and period',
+      },
+      callsCountVariables: {
+        title: 'Calls count (variables)',
+        description: 'Represents number of calls based where variable option was selected, on the selected filters and period',
+      },
+      callsDuration: {
+        title: 'Calls duration',
+        description: 'Groups overall calls duration based on the selected filters',
+      },
+      callsDurationMetrics: {
+        title: 'Calls duration (metrics)',
+        description: 'Represents numeric duration of calls based on the selected filters and period',
+      },
     },
   },
   openedCall: {
