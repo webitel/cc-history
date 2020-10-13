@@ -5,9 +5,11 @@ import GatewaysAPIRepository from '../shared/filters/api/GatewaysAPIRepository';
 import QueuesAPIRepository from '../shared/filters/api/QueuesAPIRepository';
 import TeamsAPIRepository from '../shared/filters/api/TeamsAPIRepository';
 import UsersAPIRepository from '../shared/filters/api/UsersAPIRepository';
+import DashboardAPIRepository from './history/dashboards/DashboardAPIRepository';
 
 const APIRepository = {
   history: HistoryAPIRepository,
+  dashboards: DashboardAPIRepository,
   agents: AgentsAPIRepository,
   gateways: GatewaysAPIRepository,
   queues: QueuesAPIRepository,

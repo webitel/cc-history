@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import OpenedCallInfo from '../../../../../../../src/components/history/history-main/opened-call/opened-call-tabs/opened-call-info.vue';
-import openedCallHistory from '../../../../../../../src/store/modules/history/opened-call/opened-call';
+import OpenedCallInfo from '@/components/history/history-main/history/opened-call/opened-call-tabs/opened-call-info.vue';
+import openedCallHistory from '@/store/modules/history/opened-call/opened-call';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
