@@ -42,11 +42,11 @@ export default {
       newBtn: 'New Dashboard',
       dashboardSelect: 'Select dashboard:',
       dashboardConfig: 'Dashboard configuration:',
+      interval: 'Interval',
       dashboardConfigForm: {
         name: 'Name',
         visualization: 'Visualization',
         param: 'Visualization param',
-        group: 'Group values',
         relative: 'Show relative values',
       },
       visualizations: {
@@ -54,6 +54,10 @@ export default {
         bar: 'Bar',
         line: 'Line',
         metric: 'Metric',
+      },
+      bridged: {
+        true: 'Connected',
+        false: 'Abandoned',
       },
       callsByPeriod: {
         title: 'Calls by period',
@@ -63,7 +67,7 @@ export default {
         title: 'Calls count',
         description: 'Groups calls count on doughnut diagram based on the selected filters',
       },
-      callsCountMetrics: {
+      callsCountMetric: {
         title: 'Calls count (metrics)',
         description: 'Represents number of calls based on the selected filters and period',
       },

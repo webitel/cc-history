@@ -1,8 +1,10 @@
 <script>
-import { Doughnut } from 'vue-chartjs';
+import { Bar, mixins } from 'vue-chartjs';
 
+const { reactiveProp } = mixins;
 export default {
-  extends: Doughnut,
+  extends: Bar,
+  mixins: [reactiveProp],
   props: {
     data: {
       type: Object,
@@ -22,7 +24,7 @@ export default {
     },
   },
   mounted() {
-    this.renderChart(this.data, this.options);
+    this.renderChart(this.chartData, this.options);
   },
 };
 </script>
