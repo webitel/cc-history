@@ -1,4 +1,4 @@
-import AbstractDashboard from '../AbstractDashboard';
+import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
 import { VisualizationParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
 
@@ -11,6 +11,7 @@ export default class CallsByPeriodDashboard extends AbstractDashboard {
     visualization: Visualizations.LINE_CHART,
     param: VisualizationParams.DIRECTION,
     relative: null,
+    limit: 10,
   };
 
   paramOptions = Object.values(VisualizationParams);

@@ -1,20 +1,23 @@
 import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
-import { VisualizationParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
+import { VisualizationParams, AggregationParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
 
-export default class CallsCountDashboard extends AbstractDashboard {
-  static type = 'callsCount';
+export default class CallsDurationDashboard extends AbstractDashboard {
+  static type = 'callsDuration';
   id = 0;
+  aggregatedParam = 'duration';
   options = {
-    name: 'Calls Count',
-    count: ['*'],
+    name: 'Calls Duration',
+    // count: ['*'],
     visualization: Visualizations.DOUGHNUT_CHART,
+    aggregation: AggregationParams.AVG,
     param: VisualizationParams.DIRECTION,
     relative: false,
     limit: 10,
   };
 
   visualizationOptions = [Visualizations.DOUGHNUT_CHART, Visualizations.BAR_CHART];
+  aggregationOptions = Object.values(AggregationParams);
   paramOptions = Object.values(VisualizationParams);
 
   constructor(snapshot) {
@@ -25,9 +28,15 @@ export default class CallsCountDashboard extends AbstractDashboard {
     }
   }
 
+  getResponseValueProperty() {
+    return this.options.aggregation
+      + this.aggregatedParam.charAt(0).toUpperCase()
+      + this.aggregatedParam.slice(1);
+  }
+
   getSnapshot() {
     const snapshot = {
-      type: CallsCountDashboard.type,
+      type: CallsDurationDashboard.type,
       id: this.id,
       options: this.options,
     };

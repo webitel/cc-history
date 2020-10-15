@@ -1,4 +1,4 @@
-import AbstractDashboard from '../AbstractDashboard';
+import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
 import { MetricParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
 

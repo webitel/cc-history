@@ -1,7 +1,7 @@
 <template>
   <wt-popup class="dashboard-select" @close="$emit('close')">
-    <template slot="header">
-      <h3 class="dashboard-select__title">{{ $t('mainSection.dashboards.dashboardSelect') }}</h3>
+    <template slot="title">
+      {{ $t('mainSection.dashboards.dashboardSelect') }}
     </template>
     <template slot="main">
       <ul class="dashboard-select__options-list">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import Dashboards from './dasboardClasses/Dashboards.enum';
+import Dashboards from '../../dashboards/enums/Dashboards.enum';
 
 export default {
   name: 'dashboard-select-popup',
@@ -62,12 +62,6 @@ export default {
     min-width: 600px;
   }
 
-  .dashboard-select__title {
-    @extend %typo-strong-lg;
-    text-align: center;
-    padding-top: 16px;
-  }
-
   .dashboard-select__option {
     padding: 12px 20px;
     margin-top: 20px;
@@ -88,9 +82,5 @@ export default {
     &__description {
       @extend %typo-body-md;
     }
-  }
-
-  .wt-button:first-child {
-    margin-right: 20px;
   }
 </style>

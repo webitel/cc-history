@@ -5,6 +5,7 @@ export default {
     send: 'Send',
     add: 'Add',
     ok: 'OK',
+    save: 'Save',
     cancel: 'Cancel',
     close: 'Close',
     logout: 'Logout',
@@ -46,14 +47,28 @@ export default {
       dashboardConfigForm: {
         name: 'Name',
         visualization: 'Visualization',
+        aggregation: 'Aggregation',
         param: 'Visualization param',
         relative: 'Show relative values',
+        limit: {
+          limit: 'Top records',
+          5: 'Top-5 records',
+          10: 'Top-10 records',
+          15: 'Top-15 records',
+          20: 'Top-20 records',
+        },
       },
       visualizations: {
         doughnut: 'Doughnut',
         bar: 'Bar',
         line: 'Line',
         metric: 'Metric',
+      },
+      aggregations: {
+        min: 'MIN: Minimum value',
+        max: 'MAX: maximum value',
+        sum: 'SUM: summarized value',
+        avg: 'AVG: average value',
       },
       bridged: {
         true: 'Connected',
@@ -79,7 +94,7 @@ export default {
         title: 'Calls duration',
         description: 'Groups overall calls duration based on the selected filters',
       },
-      callsDurationMetrics: {
+      callsDurationMetric: {
         title: 'Calls duration (metrics)',
         description: 'Represents numeric duration of calls based on the selected filters and period',
       },

@@ -18,8 +18,8 @@ const actions = {
       context.commit('UPDATE_DASHBOARD', { dashboard, options });
       await context.dispatch('LOAD_DASHBOARDS_DATA');
     } else {
-      // eslint-disable-next-line no-param-reassign
-      dashboard.id = (context.state.dashboards[context.state.dashboards.length - 1]?.id + 1) || 1;
+      const newId = (context.state.dashboards[context.state.dashboards.length - 1]?.id + 1) || 1;
+      dashboard.setId(newId);
       context.commit('ADD_DASHBOARD', { dashboard, options });
     }
     await context.dispatch('SAVE_DASHBOARDS');

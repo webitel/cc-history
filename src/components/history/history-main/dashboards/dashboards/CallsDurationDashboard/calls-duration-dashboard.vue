@@ -7,12 +7,11 @@
 </template>
 
 <script>
-import { saveAs } from 'file-saver';
 import Visualizations from '../enums/Visualizations.enum';
 import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
 
 export default {
-  name: 'calls-count-dashboard',
+  name: 'calls-duration-dashboard',
   mixins: [dashboardMixin],
   data: () => ({
     doughnutOptions: {
@@ -49,14 +48,17 @@ export default {
     },
     options() {
       return this.dashboard.options.visualization === Visualizations.DOUGHNUT_CHART
-        ? this.doughnutOptions : this.barOptions;
+      ? this.doughnutOptions : this.barOptions;
+    },
+    responseValueProp() {
+      return this.dashboard.getResponseValueProperty();
     },
   },
   methods: {
     doughnutChartData() {
       const datasets = [{
         backgroundColor: this.colors,
-        data: this.data.map((item) => item.count),
+        data: this.data.map((item) => item[this.responseValueProp]),
       }];
       return {
         labels: this.data.map((item) => item[this.dashboard.options.param]),
@@ -68,13 +70,13 @@ export default {
         const dataset = datasets
           .find((dataset) => dataset.label === value[this.dashboard.options.param]);
         if (dataset) {
-          dataset.data.push(value.count);
+          dataset.data.push(value[this.responseValueProp]);
         } else {
           datasets.push({
             label: value[this.dashboard.options.param],
             borderColor: this.colors[datasets.length + 1],
             backgroundColor: this.colors[datasets.length + 1],
-            data: [value.count],
+            data: [value[this.responseValueProp]],
           });
         }
         return datasets;
