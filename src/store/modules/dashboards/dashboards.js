@@ -26,6 +26,7 @@ const actions = {
   },
 
   LOAD_DASHBOARDS_DATA: async (context) => {
+    if (!state.dashboards.length) return;
     context.commit('SET_LOADING', true);
     const { query } = router.currentRoute;
     const aggs = context.state.dashboards
@@ -47,7 +48,7 @@ const actions = {
   },
 
   RESTORE_DASHBOARDS: async (context) => {
-    const snapshots = await DashboardAPI.getDashboards();
+    const snapshots = await DashboardAPI.getDashboards() || [];
     const dashboards = snapshots.map((snapshot) => {
       const Dashboard = Dashboards.find((Dashboard) => Dashboard.type === snapshot.type);
       return new Dashboard(snapshot);

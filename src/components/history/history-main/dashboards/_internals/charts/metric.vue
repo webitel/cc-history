@@ -1,14 +1,14 @@
 <template>
   <article class="metric">
-    <div class="metric__sum-wrapper">{{ sum }}</div>
+    <div class="metric__sum-wrapper">{{ sumValue }}</div>
     <div class="metric__count-wrapper metric__count-wrapper--positive">
       <h3 class="metric__count__title">{{ chartData.true.label }}</h3>
-      <div class="metric__count__value">{{ chartData.true.count }}</div>
+      <div class="metric__count__value">{{ truthyValue }}</div>
       <div class="metric__count__percent">{{ truePercent }}%</div>
     </div>
     <div class="metric__count-wrapper metric__count-wrapper--negative">
       <h3 class="metric__count__title">{{ chartData.false.label }}</h3>
-      <div class="metric__count__value">{{ chartData.false.count }}</div>
+      <div class="metric__count__value">{{ falsyValue }}</div>
       <div class="metric__count__percent">{{ falsePercent }}%</div>
     </div>
   </article>
@@ -22,26 +22,46 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    options: {
+      type: Object,
+    },
   },
   computed: {
+    sumValue() {
+      return this.options.convertData ? this.options.convertData(this.sum) : this.sum;
+    },
+    truthyValue() {
+      const { value } = this.chartData.true;
+      if (this.options.convertData) {
+        return this.options.convertData(value);
+      }
+      return value;
+    },
+    falsyValue() {
+      const { value } = this.chartData.false;
+      if (this.options.convertData) {
+        return this.options.convertData(value);
+      }
+      return value;
+    },
     sum() {
-      return Object.values(this.chartData).reduce((sum, item) => sum + item.count, 0);
+      return Object.values(this.chartData).reduce((sum, item) => sum + item.value, 0);
     },
     truePercent() {
-      return Math.round((this.chartData.true.count / this.sum) * 100);
+      return Math.round((this.chartData.true.value / this.sum) * 100);
     },
     falsePercent() {
-      return Math.round((this.chartData.false.count / this.sum) * 100);
+      return Math.round((this.chartData.false.value / this.sum) * 100);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-%typo-metric-sum { font: 48px 'Montserrat Semi'; line-height: 1.2; };
-%typo-metric-count-title { font: 30px 'Montserrat Semi'; line-height: 1.2; };
-%typo-metric-count-value { font: 30px 'Montserrat Semi'; line-height: 1.2; };
-%typo-metric-count-percent { font: 20px 'Montserrat Semi'; line-height: 1.2; };
+%typo-metric-sum { font: 42px 'Montserrat Semi'; line-height: 1.2; };
+%typo-metric-count-title { font: 20px 'Montserrat Semi'; line-height: 1.2; };
+%typo-metric-count-value { font: 26px 'Montserrat Semi'; line-height: 1.2; };
+%typo-metric-count-percent { font: 16px 'Montserrat Semi'; line-height: 1.2; };
 
 .metric {
   display: grid;

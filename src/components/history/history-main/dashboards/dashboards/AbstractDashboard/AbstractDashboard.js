@@ -23,13 +23,21 @@ export default class AbstractDashboard {
     this.options = { ...this.options, ...options };
   }
 
+  getValueProperty() {
+    return this.options.aggregation
+      + this.aggParam.charAt(0).toUpperCase()
+      + this.aggParam.slice(1);
+  }
+
   getRequestAggregations({ interval }) {
     const aggs = {
       name: `${this.id}`,
-      count: this.options.count,
       group: [],
-      sort: '-count',
     };
+    const { aggregation } = this.options;
+    aggs.sort = `-${aggregation}_${camelToSnake(this.aggParam)}`;
+    aggs[aggregation] = [camelToSnake(this.aggParam)];
+
     if (this._isTimeMetric()) {
         aggs.group.push({ id: 'created_at', interval });
         aggs.sort = 'created_at';
@@ -41,10 +49,6 @@ export default class AbstractDashboard {
         param.top = this.options.limit;
       }
       aggs.group.push(param);
-    }
-    if (this.aggregatedParam) {
-      const { aggregation } = this.options;
-      aggs[aggregation] = [camelToSnake(this.aggregatedParam)];
     }
     return aggs;
   }

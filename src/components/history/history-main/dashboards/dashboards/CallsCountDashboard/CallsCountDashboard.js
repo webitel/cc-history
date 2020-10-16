@@ -1,14 +1,18 @@
 import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
-import { VisualizationParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
+import {
+  AggregationParams,
+  VisualizationParams,
+} from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
 
 export default class CallsCountDashboard extends AbstractDashboard {
   static type = 'callsCount';
   id = 0;
+  aggParam = 'id';
   options = {
     name: 'Calls Count',
-    count: ['*'],
     visualization: Visualizations.DOUGHNUT_CHART,
+    aggregation: AggregationParams.COUNT,
     param: VisualizationParams.DIRECTION,
     relative: false,
     limit: 10,

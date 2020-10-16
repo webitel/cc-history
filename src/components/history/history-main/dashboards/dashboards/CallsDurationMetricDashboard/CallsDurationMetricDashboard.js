@@ -5,7 +5,7 @@ import { MetricParams, AggregationParams } from '../../../../../../api/history/d
 export default class CallsDurationMetricDashboard extends AbstractDashboard {
   static type = 'callsDurationMetric';
   id = 0;
-  aggregatedParam = 'duration';
+  aggParam = 'duration';
   options = {
     name: 'Calls Duration (Metric)',
     visualization: Visualizations.METRIC,
@@ -21,12 +21,6 @@ export default class CallsDurationMetricDashboard extends AbstractDashboard {
       this.id = snapshot.id;
       this.options = { ...this.options, ...snapshot.options };
     }
-  }
-
-  getResponseValueProperty() {
-    return this.options.aggregation
-      + this.aggregatedParam.charAt(0).toUpperCase()
-      + this.aggregatedParam.slice(1);
   }
 
   getSnapshot() {

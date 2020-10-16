@@ -1,14 +1,16 @@
 import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
-import { MetricParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
+import { AggregationParams, MetricParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
 
 export default class CallsCountMetricDashboard extends AbstractDashboard {
   static type = 'callsCountMetric';
   id = 0;
+  aggParam = 'id';
   options = {
     name: 'Calls Count (Metric)',
     count: ['*'],
     visualization: Visualizations.METRIC,
+    aggregation: AggregationParams.COUNT,
     param: MetricParams.BRIDGED,
   };
 

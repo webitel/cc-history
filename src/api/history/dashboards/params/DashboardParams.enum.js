@@ -13,6 +13,7 @@ export const MetricParams = Object.freeze({
 });
 
 export const AggregationParams = Object.freeze({
+  COUNT: 'count',
   MIN: 'min',
   MAX: 'max',
   SUM: 'sum',

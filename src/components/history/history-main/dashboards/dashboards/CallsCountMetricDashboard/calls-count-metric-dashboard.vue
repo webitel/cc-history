@@ -12,13 +12,17 @@ export default {
   mixins: [dashboardMixin],
   computed: {
     chartData() {
+      const trueCount = this.data
+        .find((item) => item[this.dashboard.options.param] === true) || {};
+      const falseCount = this.data
+        .find((item) => item[this.dashboard.options.param] === false) || {};
       return {
         true: {
-          count: this.data.find((item) => item[this.dashboard.options.param] === true)?.count,
+          value: trueCount[this.valueProp],
           label: this.$t('mainSection.dashboards.bridged.true'),
         },
         false: {
-          count: this.data.find((item) => item[this.dashboard.options.param] === false)?.count,
+          value: falseCount[this.valueProp],
           label: this.$t('mainSection.dashboards.bridged.false'),
         },
       };

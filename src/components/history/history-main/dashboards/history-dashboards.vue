@@ -84,11 +84,8 @@ export default {
         this.loadDashboardsData();
       },
     },
-    dashboards: {
-      handler(value) {
-        if (value.length) this.loadDashboardsData();
-      },
-      immediate: true,
+    dashboards() {
+      this.loadDashboardsData();
     },
   },
   created() {

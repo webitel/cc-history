@@ -50,15 +50,12 @@ export default {
       return this.dashboard.options.visualization === Visualizations.DOUGHNUT_CHART
       ? this.doughnutOptions : this.barOptions;
     },
-    responseValueProp() {
-      return this.dashboard.getResponseValueProperty();
-    },
   },
   methods: {
     doughnutChartData() {
       const datasets = [{
         backgroundColor: this.colors,
-        data: this.data.map((item) => item[this.responseValueProp]),
+        data: this.data.map((item) => item[this.valueProp]),
       }];
       return {
         labels: this.data.map((item) => item[this.dashboard.options.param]),
@@ -70,13 +67,13 @@ export default {
         const dataset = datasets
           .find((dataset) => dataset.label === value[this.dashboard.options.param]);
         if (dataset) {
-          dataset.data.push(value[this.responseValueProp]);
+          dataset.data.push(value[this.valueProp]);
         } else {
           datasets.push({
             label: value[this.dashboard.options.param],
             borderColor: this.colors[datasets.length + 1],
             backgroundColor: this.colors[datasets.length + 1],
-            data: [value[this.responseValueProp]],
+            data: [value[this.valueProp]],
           });
         }
         return datasets;

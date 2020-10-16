@@ -5,10 +5,9 @@ import { VisualizationParams, AggregationParams } from '../../../../../../api/hi
 export default class CallsDurationDashboard extends AbstractDashboard {
   static type = 'callsDuration';
   id = 0;
-  aggregatedParam = 'duration';
+  aggParam = 'duration';
   options = {
     name: 'Calls Duration',
-    // count: ['*'],
     visualization: Visualizations.DOUGHNUT_CHART,
     aggregation: AggregationParams.AVG,
     param: VisualizationParams.DIRECTION,
@@ -17,7 +16,7 @@ export default class CallsDurationDashboard extends AbstractDashboard {
   };
 
   visualizationOptions = [Visualizations.DOUGHNUT_CHART, Visualizations.BAR_CHART];
-  aggregationOptions = Object.values(AggregationParams);
+  aggregationOptions = Object.values(AggregationParams).filter(AggregationParams.COUNT);
   paramOptions = Object.values(VisualizationParams);
 
   constructor(snapshot) {
@@ -26,12 +25,6 @@ export default class CallsDurationDashboard extends AbstractDashboard {
       this.id = snapshot.id;
       this.options = { ...this.options, ...snapshot.options };
     }
-  }
-
-  getResponseValueProperty() {
-    return this.options.aggregation
-      + this.aggregatedParam.charAt(0).toUpperCase()
-      + this.aggregatedParam.slice(1);
   }
 
   getSnapshot() {

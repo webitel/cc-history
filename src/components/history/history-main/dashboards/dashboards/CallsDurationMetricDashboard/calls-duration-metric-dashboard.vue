@@ -1,31 +1,35 @@
 <template>
   <metric
     :chart-data="chartData"
+    :options="options"
   ></metric>
 </template>
 
 <script>
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
 
 export default {
   name: 'calls-count-metric-dashboard',
   mixins: [dashboardMixin],
-  computed: {
-    responseValueProp() {
-      return this.dashboard.getResponseValueProperty();
+  data: () => ({
+    options: {
+      convertData: convertDuration,
     },
+  }),
+  computed: {
     chartData() {
       const trueCount = this.data
-        .find((item) => item[this.dashboard.options.param] === true);
+        .find((item) => item[this.dashboard.options.param] === true) || {};
       const falseCount = this.data
-        .find((item) => item[this.dashboard.options.param] === false);
+        .find((item) => item[this.dashboard.options.param] === false) || {};
       return {
         true: {
-          count: trueCount ? trueCount[this.responseValueProp] : 0,
+          value: trueCount[this.valueProp],
           label: this.$t('mainSection.dashboards.bridged.true'),
         },
         false: {
-          count: falseCount ? falseCount[this.responseValueProp] : 0,
+          value: falseCount[this.valueProp],
           label: this.$t('mainSection.dashboards.bridged.false'),
         },
       };

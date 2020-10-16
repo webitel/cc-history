@@ -26,10 +26,16 @@ export default {
   },
   data: () => ({
     colors: [
-      '#E9F0D5', '#D3E7C2', '#A8D49D', '#7CC378', '#52B054',
-      '#7BB544', '#A6B837', '#D1BD2E', '#FCC12A', '#FBA12D',
-      '#FB8233', '#FB7238', '#FA623D', '#FA4049', '#C13741',
-      '#AD4F6F', '#9A649E', '#877ACD', '#758FFC', '#8AA1FF',
+      '#F36A83', '#FACD5E', '#8BC158', '#79B0F2', '#9678D8',
+      '#F17B94', '#F9D479', '#9BC971', '#8EBAF2', '#A488DB',
+      '#F38FA3', '#FADA8B', '#A9D185', '#9EC4F4', '#B19AE0',
+      '#F5A2B3', '#FBE09E', '#B8D999', '#AFCEF7', '#BEABE6',
+      '#F7B4C1', '#FBE6B1', '#C6E0AE', '#BED8F8', '#CBBCEB',
     ],
   }),
+  computed: {
+    valueProp() {
+      return this.dashboard.getValueProperty();
+    },
+  },
 };
