@@ -22,7 +22,7 @@ const state = {
 const getters = {
   IS_CALL_ID: (state) => !!state.mainCallId,
   HEADERS: (state, getters, rootState) => (
-    [...rootState.history.headers, transfersHeader, transfersLegMarkerHeader]
+    [...rootState.registry.headers, transfersHeader, transfersLegMarkerHeader]
   ),
 
   GET_REQUEST_PARAMS: (state, getters) => ({
@@ -42,7 +42,7 @@ const getters = {
   }),
 
   DATA_FIELDS: (state, getters, rootState) => {
-    let fields = rootState.history.headers
+    let fields = rootState.registry.headers
       .filter((header) => header.show)
       .map((header) => header.field);
     fields = [...new Set([...REQUIRED_DATA_FIELDS, ...fields])];

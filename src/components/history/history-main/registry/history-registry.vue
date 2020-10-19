@@ -1,5 +1,5 @@
 <template>
-  <div class="content-wrapper">
+  <div class="content-wrapper history-registry">
     <wt-loader v-show="isLoading"/>
     <div class="table-wrapper">
       <wt-table
