@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import { CallDirection } from 'webitel-sdk';
 import TableDirection
-  from '@/components/history/history-main/history/_internals/table-templates/table-direction.vue';
+  from '../../../../../../../../src/components/history/history-main/registry/_internals/table-templates/table-direction.vue';
 
 describe('Queues table Direction', () => {
   const item = { direction: CallDirection.Outbound };

@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import OpenedCallInfo from '@/components/history/history-main/history/opened-call/opened-call-tabs/opened-call-info.vue';
-import openedCallHistory from '@/store/modules/history/opened-call/opened-call';
+import OpenedCallInfo from '../../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-tabs/opened-call-info.vue';
+import openedCallHistory from '../../../../../../../../src/store/modules/registry/opened-call/opened-call';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -10,7 +10,7 @@ const variables = { hello: 'there', hello1: 'there' };
 describe('Opened call info tab', () => {
   const store = new Vuex.Store({
     modules: {
-      history: {
+      registry: {
         namespaced: true,
         modules: { 'opened-call': openedCallHistory },
       },

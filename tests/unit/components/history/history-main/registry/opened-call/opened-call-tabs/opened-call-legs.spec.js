@@ -1,24 +1,24 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import OpenedCallLegs from '@/components/history/history-main/history/opened-call/opened-call-tabs/opened-call-legs.vue';
-import history from '@/store/modules/history/history';
-import openedCallHistory from '@/store/modules/history/opened-call/opened-call';
-import HistoryAPIRepository from '@/api/history/HistoryAPIRepository';
+import OpenedCallLegs from '../../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-tabs/opened-call-legs.vue';
+import registry from '../../../../../../../../src/store/modules/registry/registry';
+import openedCallHistory from '../../../../../../../../src/store/modules/registry/opened-call/opened-call';
+import RegistryAPIRepository from '../../../../../../../../src/api/history/registry/RegistryAPIRepository';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const mainCall = { id: '1', transferTo: '2' };
 const legsData = [{ id: '2', transferFrom: '1', transferTo: '3' }, { id: '3', transferFrom: '2' }];
 
-jest.mock('../../../../../../../src/api/history/HistoryAPIRepository');
-HistoryAPIRepository.getHistory.mockImplementation(() => Promise.resolve({ items: legsData }));
+jest.mock('../../../../../../../../src/api/history/registry/RegistryAPIRepository');
+RegistryAPIRepository.getHistory.mockImplementation(() => Promise.resolve({ items: legsData }));
 
 describe('Opened call legs tab', () => {
   openedCallHistory.state.mainCall = mainCall;
   const store = new Vuex.Store({
     modules: {
-      history: {
-        ...history,
+      registry: {
+        ...registry,
         modules: { 'opened-call': openedCallHistory },
       },
     },
@@ -31,7 +31,7 @@ describe('Opened call legs tab', () => {
 
   it('fills table with data from API', () => {
     const wrapper = shallowMount(OpenedCallLegs, { localVue, store });
-    expect(HistoryAPIRepository.getHistory).toHaveBeenCalled();
+    expect(RegistryAPIRepository.getHistory).toHaveBeenCalled();
     expect(wrapper.vm.legsData).toEqual(legsData);
   });
 });
