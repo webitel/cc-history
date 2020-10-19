@@ -7,13 +7,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
 import ColumnSelect from '../utils/table-column-select.vue';
+import historyHeadersMixin from '../../mixins/history/registry/historyHeadersMixin';
 
 export default {
   name: 'filter-table-fields',
-  mixins: [baseFilterMixin],
+  mixins: [
+    baseFilterMixin,
+    historyHeadersMixin,
+  ],
   components: {
     ColumnSelect,
   },
@@ -23,17 +26,7 @@ export default {
     storedProp: 'value',
   }),
 
-  computed: {
-    ...mapState('history', {
-      headers: (state) => state.headers,
-    }),
-  },
-
   methods: {
-    ...mapActions('history', {
-      setHeaders: 'SET_HEADERS',
-    }),
-
     change(headers) {
       this.setValue(headers);
       this.close();
