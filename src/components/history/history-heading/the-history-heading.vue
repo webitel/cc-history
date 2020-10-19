@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 
@@ -60,27 +60,24 @@ export default {
   },
 
   computed: {
-    ...mapState('history', {
+    ...mapState('registry', {
       dataList: (state) => state.dataList,
     }),
 
-    ...mapGetters('history', {
+    ...mapGetters('registry', {
+      fields: 'DATA_FIELDS',
       selectedItems: 'SELECTED_DATA_ITEMS',
     }),
   },
 
   methods: {
-    ...mapActions('history', {
-      getRequestParams: 'GET_REQUEST_PARAMS',
-    }),
-
     callExportFiles() {
       const params = { fileExists: true };
       return this.exportFiles(null, params);
     },
 
     async callExportCSV() {
-      const params = await this.getRequestParams();
+      const params = { ...this.$route.query, fields: this.fields, skipParent: true };
       return this.exportCSV(params);
     },
   },

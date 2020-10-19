@@ -1,6 +1,6 @@
 <template>
   <section class="opened-call-info">
-    <h2 class="call-info-heading">{{$t('openedCall.callInfo')}}</h2>
+    <h2 class="call-info-heading">{{$t('registry.openedCall.callInfo')}}</h2>
     <ul class="call-info-variables" v-if="mainCall.variables">
       <li
         class="call-info-variable"
@@ -12,7 +12,7 @@
       </li>
     </ul>
     <div v-else class="call-info-variables__empty-variables">
-      {{$t('openedCall.noVariables')}}
+      {{$t('registry.openedCall.noVariables')}}
     </div>
   </section>
 </template>
@@ -26,7 +26,7 @@
     mixins: [],
 
     computed: {
-      ...mapState('history/opened-call', {
+      ...mapState('registry/opened-call', {
         mainCall: (state) => state.mainCall,
       }),
 

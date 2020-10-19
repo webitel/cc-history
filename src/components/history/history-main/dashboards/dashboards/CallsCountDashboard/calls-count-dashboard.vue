@@ -8,7 +8,7 @@
 
 <script>
 import Visualizations from '../enums/Visualizations.enum';
-import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
+import dashboardMixin from '../../../../../../mixins/history/dashboards/dashboardMixin';
 
 export default {
   name: 'calls-count-dashboard',

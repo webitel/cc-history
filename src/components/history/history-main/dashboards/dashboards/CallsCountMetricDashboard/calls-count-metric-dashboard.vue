@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
+import dashboardMixin from '../../../../../../mixins/history/dashboards/dashboardMixin';
 
 export default {
   name: 'calls-count-metric-dashboard',
@@ -19,11 +19,11 @@ export default {
       return {
         true: {
           value: trueCount[this.valueProp],
-          label: this.$t('mainSection.dashboards.bridged.true'),
+          label: this.$t('dashboards.bridged.true'),
         },
         false: {
           value: falseCount[this.valueProp],
-          label: this.$t('mainSection.dashboards.bridged.false'),
+          label: this.$t('dashboards.bridged.false'),
         },
       };
     },

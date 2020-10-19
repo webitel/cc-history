@@ -26,7 +26,7 @@
         </div>
         <div class="dashboard-wrapper dashboard-wrapper--empty">
           <wt-button color="secondary" @click="openDashboardSelect">
-            {{ $t('mainSection.dashboards.newBtn') }}
+            {{ $t('dashboards.newBtn') }}
           </wt-button>
         </div>
       </div>

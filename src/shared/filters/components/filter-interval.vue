@@ -2,7 +2,7 @@
   <wt-select
     v-model="value"
     :options="options"
-    :label="$t('mainSection.dashboards.interval')"
+    :label="$t('dashboards.interval')"
     :track-by="trackBy"
     @reset="setValueToQuery({ value: value.value, filterQuery, storedProp })"
     @closed="setValueToQuery({ value: value.value, filterQuery, storedProp })"
