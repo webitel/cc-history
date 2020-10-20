@@ -33,15 +33,15 @@ export default class AbstractDashboard {
     const aggs = {
       name: `${this.id}`,
       group: [],
+      sort: [],
     };
-    const { aggregation } = this.options;
-    aggs.sort = `-${aggregation}_${camelToSnake(this.aggParam)}`;
-    aggs[aggregation] = [camelToSnake(this.aggParam)];
-
     if (this._isTimeMetric()) {
         aggs.group.push({ id: 'created_at', interval });
-        aggs.sort = 'created_at';
+        aggs.sort.push('+created_at');
     }
+    const { aggregation } = this.options;
+    aggs.sort.push(`-${aggregation}_${camelToSnake(this.aggParam)}`);
+    aggs[aggregation] = [camelToSnake(this.aggParam)];
     if (this.options.param) {
       const param = { id: this.options.param, desc: true };
       if (this.isLimit()) {

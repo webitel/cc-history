@@ -79,7 +79,7 @@ export default {
         return datasets;
       }, []);
       return {
-        labels: [...new Set(this.data.map((item) => item.createdAt))],
+        labels: [...new Set(this.data.map((item) => this.prettifyDate(item.createdAt)))],
         datasets,
       };
     },
