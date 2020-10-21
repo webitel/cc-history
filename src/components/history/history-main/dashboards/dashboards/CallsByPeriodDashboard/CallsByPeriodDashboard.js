@@ -1,16 +1,21 @@
-import AbstractDashboard from '../AbstractDashboard';
+import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
-import { VisualizationParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
+import {
+  AggregationParams,
+  VisualizationParams,
+} from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
 
 export default class CallsByPeriodDashboard extends AbstractDashboard {
   static type = 'callsByPeriod';
   id = 0;
+  aggParam = 'id';
   options = {
     name: 'Calls By Period',
-    count: ['*'],
     visualization: Visualizations.LINE_CHART,
+    aggregation: AggregationParams.COUNT,
     param: VisualizationParams.DIRECTION,
     relative: null,
+    limit: 10,
   };
 
   paramOptions = Object.values(VisualizationParams);

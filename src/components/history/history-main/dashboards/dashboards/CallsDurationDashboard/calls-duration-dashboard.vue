@@ -11,7 +11,7 @@ import Visualizations from '../enums/Visualizations.enum';
 import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
 
 export default {
-  name: 'calls-count-dashboard',
+  name: 'calls-duration-dashboard',
   mixins: [dashboardMixin],
   data: () => ({
     doughnutOptions: {
@@ -48,7 +48,7 @@ export default {
     },
     options() {
       return this.dashboard.options.visualization === Visualizations.DOUGHNUT_CHART
-        ? this.doughnutOptions : this.barOptions;
+      ? this.doughnutOptions : this.barOptions;
     },
   },
   methods: {

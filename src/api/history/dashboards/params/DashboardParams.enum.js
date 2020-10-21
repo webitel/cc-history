@@ -11,3 +11,11 @@ export const VisualizationParams = Object.freeze({
 export const MetricParams = Object.freeze({
   BRIDGED: 'bridged',
 });
+
+export const AggregationParams = Object.freeze({
+  COUNT: 'count',
+  MIN: 'min',
+  MAX: 'max',
+  SUM: 'sum',
+  AVG: 'avg',
+});

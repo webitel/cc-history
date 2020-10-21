@@ -7,7 +7,6 @@
     <form class="history-filters" :class="{'history-filters--opened': isOpened}">
       <filter-from class="history-filters__filter"/>
       <filter-to class="history-filters__filter"/>
-      <filter-type class="history-filters__filter"/>
       <filter-direction class="history-filters__filter"/>
       <filter-user class="history-filters__filter"/>
       <filter-gateway class="history-filters__filter"/>
@@ -29,7 +28,7 @@
   import FilterFields from '../../filters/filter-table-fields.vue';
   import FilterFrom from '../../../shared/filters/components/filter-from.vue';
   import FilterTo from '../../../shared/filters/components/filter-to.vue';
-  import FilterType from '../../../shared/filters/components/filter-type.vue';
+  // import FilterType from '../../../shared/filters/components/filter-type.vue';
   import FilterDirection from '../../../shared/filters/components/filter-direction.vue';
   import FilterUser from '../../../shared/filters/components/filter-user.vue';
   import FilterGateway from '../../../shared/filters/components/filter-gateway.vue';
@@ -48,7 +47,7 @@
       FilterFields,
       FilterFrom,
       FilterTo,
-      FilterType,
+      // FilterType,
       FilterDirection,
       FilterUser,
       FilterGateway,

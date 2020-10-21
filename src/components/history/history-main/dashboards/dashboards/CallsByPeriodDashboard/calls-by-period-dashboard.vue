@@ -8,43 +8,38 @@
 <script>
 import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
 
-const colors = ['#FF6384', '#FF9F40', '#FFCD56', '#4BC0C0', '#36A2EB'];
 export default {
   name: 'calls-by-period-dashboard',
   mixins: [dashboardMixin],
-  data: () => ({
-    options: {
-      scales: {
-        xAxes: [{
-          display: true,
-        }],
-        yAxes: [{
-          display: true,
-          // ticks: {
-          //   min: 0,
-          //   max: 30,
-          //   stepSize: 6,
-          // },
-        }],
-      },
-      legend: {
-        labels: { fontFamily: "'Montserrat Medium', 'monospace'" },
-      },
-    },
-  }),
   computed: {
+    options() {
+      return {
+        scales: {
+          xAxes: [{
+            display: true,
+          }],
+          yAxes: [{
+            display: true,
+            ticks: { callback: (value) => (this.dashboard.isRelative() ? `${value}%` : value) },
+          }],
+        },
+        legend: {
+          labels: { fontFamily: "'Montserrat Medium', 'monospace'" },
+        },
+      };
+    },
     chartData() {
       const datasets = this.data.reduce((datasets, value) => {
         const dataset = datasets
           .find((dataset) => dataset.label === value[this.dashboard.options.param]);
         if (dataset) {
-          dataset.data.push(value.count);
+          dataset.data.push(value[this.valueProp]);
         } else {
           datasets.push({
             label: value[this.dashboard.options.param],
-            borderColor: colors[datasets.length + 1],
-            backgroundColor: colors[datasets.length + 1],
-            data: [value.count],
+            borderColor: this.colors[datasets.length + 1],
+            backgroundColor: this.colors[datasets.length + 1],
+            data: [value[this.valueProp]],
           });
         }
         return datasets;
