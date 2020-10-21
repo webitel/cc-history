@@ -25,6 +25,8 @@ const actions = {
     await context.dispatch('SAVE_DASHBOARDS');
   },
 
+  LOAD_DATA: async (context, payload) => context.dispatch('LOAD_DASHBOARDS_DATA', payload),
+
   LOAD_DASHBOARDS_DATA: async (context) => {
     if (!state.dashboards.length) return;
     context.commit('SET_LOADING', true);

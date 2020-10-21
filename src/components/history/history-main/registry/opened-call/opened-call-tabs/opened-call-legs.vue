@@ -56,7 +56,7 @@
                 @mouseenter.native="highlightRow([item.transferFrom])"
                 @mouseleave.native="highlightRow([item.transferFrom])"
               ></wt-icon>
-              <wt-tooltip>{{ $t('openedCall.transferFrom') }}</wt-tooltip>
+              <wt-tooltip>{{ $t('registry.openedCall.transferFrom') }}</wt-tooltip>
             </div>
             <div
               class="transfer-icon"
@@ -68,7 +68,7 @@
                 @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
                 @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
               ></wt-icon>
-              <wt-tooltip>{{ $t('openedCall.transferMerge') }}</wt-tooltip>
+              <wt-tooltip>{{ $t('registry.openedCall.transferMerge') }}</wt-tooltip>
             </div>
             <div
               class="transfer-icon"
@@ -80,7 +80,7 @@
                 @mouseenter.native="highlightRow([item.transferTo])"
                 @mouseleave.native="highlightRow([item.transferTo])"
               ></wt-icon>
-              <wt-tooltip>{{ $t('openedCall.transferTo') }}</wt-tooltip>
+              <wt-tooltip>{{ $t('registry.openedCall.transferTo') }}</wt-tooltip>
             </div>
           </div>
         </template>
@@ -104,12 +104,12 @@ export default {
   },
 
   computed: {
-    ...mapState('history/opened-call', {
+    ...mapState('registry/opened-call', {
       legsData: (state) => state.legsData,
       mainCall: (state) => state.mainCall,
       isLoading: (state) => state.isLegsDataLoading,
     }),
-    ...mapGetters('history/opened-call', {
+    ...mapGetters('registry/opened-call', {
       headers: 'HEADERS',
     }),
 
@@ -122,7 +122,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('history/opened-call', {
+    ...mapActions('registry/opened-call', {
       loadList: 'LOAD_LEGS_DATA_LIST',
     }),
 

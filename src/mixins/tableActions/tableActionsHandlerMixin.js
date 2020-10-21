@@ -22,7 +22,7 @@ export default {
       this.isOpened = !this.isOpened;
     },
     refreshList() {
-      this.loadDataList();
+      this.loadData();
     },
     openColumnSelect() {
       this.isFilterFieldsOpened = true;

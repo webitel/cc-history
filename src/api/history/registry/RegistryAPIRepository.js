@@ -1,7 +1,7 @@
 import { CallServiceApiFactory } from 'webitel-sdk';
-import instance from '../instance';
-import configuration from '../utils/openAPIConfig';
-import formatResponse from './formatHistoryResponse';
+import instance from '../../instance';
+import configuration from '../../utils/openAPIConfig';
+import formatResponse from './formatRegistryResponse';
 
 const defaultParams = {
   page: 1,
@@ -78,7 +78,7 @@ const fetchHistory = async ({
   }
 };
 
-const HistoryAPIRepository = {
+const RegistryAPIRepository = {
   async getHistory(argParams) {
     const params = {
       ...defaultParams,
@@ -89,4 +89,4 @@ const HistoryAPIRepository = {
   },
 };
 
-export default HistoryAPIRepository;
+export default RegistryAPIRepository;

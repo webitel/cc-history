@@ -65,8 +65,8 @@
     }),
 
     methods: {
-      ...mapActions('history', {
-        loadDataList: 'LOAD_DATA_LIST',
+      ...mapActions({
+        loadData: 'LOAD_DATA',
       }),
     },
   };

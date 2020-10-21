@@ -1,29 +1,14 @@
 import APIRepository from '../../../../api/APIRepository';
 
 const historyAPI = APIRepository.history;
-const REQUIRED_MAIN_CALL_FIELDS = [
-  'variables',
-  'has_children',
-];
-const REQUIRED_DATA_FIELDS = [
-  'id',
-  'parent_id',
-  'transfer_from',
-  'transfer_to',
-];
+const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children'];
+const REQUIRED_DATA_FIELDS = ['id', 'parent_id', 'transfer_from', 'transfer_to'];
 
 const transfersHeader = {
-  value: 'transfers',
-  show: true,
-  sort: null,
-  field: 'transfer_from, transfer_to',
+  value: 'transfers', show: true, sort: null, field: 'transfer_from, transfer_to',
 };
 const transfersLegMarkerHeader = {
-  value: 'legMarker',
-  show: true,
-  sort: null,
-  field: '',
-  width: '0',
+  value: 'legMarker', show: true, sort: null, field: '', width: '0',
 };
 
 const state = {
@@ -37,43 +22,34 @@ const state = {
 const getters = {
   IS_CALL_ID: (state) => !!state.mainCallId,
   HEADERS: (state, getters, rootState) => (
-    [...rootState.history.headers, transfersHeader, transfersLegMarkerHeader]
+    [...rootState.registry.headers, transfersHeader, transfersLegMarkerHeader]
   ),
 
-  GET_REQUEST_PARAMS: (state, getters) => {
-    const query = {
-      fields: getters.DATA_FIELDS,
-      dependencyId: state.mainCallId,
-      from: 0, // get All
-      to: Date.now(),
-      size: 100,
-      skipParent: false,
-    };
-    return query;
-  },
+  GET_REQUEST_PARAMS: (state, getters) => ({
+    fields: getters.DATA_FIELDS,
+    dependencyId: state.mainCallId,
+    from: 0, // get All
+    to: Date.now(),
+    size: 100,
+    skipParent: false,
+  }),
 
-  GET_MAIN_CALL_REQUEST_PARAMS: (state, getters) => {
-    const query = {
-      fields: getters.MAIN_CALL_FIELDS,
-      from: 0, // get All
-      to: Date.now(),
-      ids: [state.mainCallId],
-    };
-    return query;
-  },
+  GET_MAIN_CALL_REQUEST_PARAMS: (state, getters) => ({
+    fields: getters.MAIN_CALL_FIELDS,
+    from: 0, // get All
+    to: Date.now(),
+    ids: [state.mainCallId],
+  }),
 
   DATA_FIELDS: (state, getters, rootState) => {
-    let fields = rootState.history.headers
+    let fields = rootState.registry.headers
       .filter((header) => header.show)
       .map((header) => header.field);
     fields = [...new Set([...REQUIRED_DATA_FIELDS, ...fields])];
     return fields;
   },
 
-  MAIN_CALL_FIELDS: (state, getters) => {
-    const fields = [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS];
-    return fields;
-  },
+  MAIN_CALL_FIELDS: (state, getters) => [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
 };
 
 const actions = {

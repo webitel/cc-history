@@ -1,7 +1,7 @@
 <template>
   <wt-popup class="dashboard-select" @close="$emit('close')">
     <template slot="title">
-      {{ $t('mainSection.dashboards.dashboardSelect') }}
+      {{ $t('dashboards.dashboardSelect') }}
     </template>
     <template slot="main">
       <ul class="dashboard-select__options-list">
@@ -41,8 +41,8 @@ export default {
   computed: {
     dashboards() {
       return Dashboards.map((Dashboard) => ({
-        title: this.$t(`mainSection.dashboards.${Dashboard.type}.title`),
-        description: this.$t(`mainSection.dashboards.${Dashboard.type}.description`),
+        title: this.$t(`dashboards.${Dashboard.type}.title`),
+        description: this.$t(`dashboards.${Dashboard.type}.description`),
         type: Dashboard.type,
     }));
     },

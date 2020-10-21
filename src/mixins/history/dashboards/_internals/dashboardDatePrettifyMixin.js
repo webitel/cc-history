@@ -1,4 +1,4 @@
-import IntervalOptions from '../../../shared/filters/api/IntervalOptions.enum';
+import IntervalOptions from '../../../../shared/filters/api/IntervalOptions.enum';
 
 export default {
   methods: {

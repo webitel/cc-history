@@ -1,6 +1,5 @@
-import deepCopy from 'deep-copy';
 import APIRepository from '../../../api/APIRepository';
-import historyHeaders from './utils/historyHeaders';
+import historyHeaders from './headers/historyHeaders';
 import router from '../../../router';
 import openedCall from './opened-call/opened-call';
 
@@ -27,9 +26,15 @@ const getters = {
 };
 
 const actions = {
+  LOAD_DATA: (context, payload) => context.dispatch('LOAD_DATA_LIST', payload),
+
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = await context.dispatch('GET_REQUEST_PARAMS');
+    const params = {
+      ...router.currentRoute.query,
+      fields: context.getters.DATA_FIELDS,
+      skipParent: true,
+    };
     try {
       const { items, next } = await historyAPI.getHistory(params);
       context.commit('SET_DATA_LIST', items);
@@ -38,13 +43,6 @@ const actions = {
     } finally {
       context.commit('SET_LOADING', false);
     }
-  },
-
-  GET_REQUEST_PARAMS: (context) => {
-    const query = deepCopy(router.currentRoute.query);
-    query.fields = context.getters.DATA_FIELDS;
-    query.skipParent = true;
-    return query;
   },
 
   SET_HEADERS: (context, headers) => {
@@ -72,7 +70,5 @@ export default {
   getters,
   actions,
   mutations,
-  modules: {
-    'opened-call': openedCall,
-  },
+  modules: { 'opened-call': openedCall },
 };

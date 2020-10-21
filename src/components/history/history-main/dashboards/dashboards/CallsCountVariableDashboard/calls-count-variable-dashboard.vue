@@ -9,7 +9,7 @@
 <script>
 import { snakeToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
 import Visualizations from '../enums/Visualizations.enum';
-import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
+import dashboardMixin from '../../../../../../mixins/history/dashboards/dashboardMixin';
 
 export default {
   name: 'calls-count-variable-dashboard',

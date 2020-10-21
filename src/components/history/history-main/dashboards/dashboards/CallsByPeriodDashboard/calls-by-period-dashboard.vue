@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
+import dashboardMixin from '../../../../../../mixins/history/dashboards/dashboardMixin';
 
 export default {
   name: 'calls-by-period-dashboard',
