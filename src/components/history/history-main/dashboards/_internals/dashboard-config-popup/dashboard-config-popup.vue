@@ -33,6 +33,11 @@
           track-by="value"
           :clearable="false"
         ></wt-select>
+        <wt-input
+          v-if="dashboard.options.param === VisualizationParams.VARIABLES"
+          v-model="options.variable"
+          :label="$t('mainSection.dashboards.dashboardConfigForm.variable')"
+        ></wt-input>
         <wt-select
           v-if="isLimit"
           v-model="limit"
@@ -61,6 +66,8 @@
 </template>
 
 <script>
+import { VisualizationParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
+
 export default {
   name: 'dashboard-config-popup',
   props: {
@@ -70,6 +77,7 @@ export default {
     },
   },
   data: () => ({
+    VisualizationParams,
     options: {},
   }),
 

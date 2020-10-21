@@ -37,8 +37,8 @@ export default {
         } else {
           datasets.push({
             label: value[this.dashboard.options.param],
-            borderColor: this.colors[datasets.length + 1],
-            backgroundColor: this.colors[datasets.length + 1],
+            borderColor: this.colors[datasets.length],
+            backgroundColor: this.colors[datasets.length],
             data: [value[this.valueProp]],
           });
         }

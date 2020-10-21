@@ -13,7 +13,8 @@ export default class CallsDurationMetricDashboard extends AbstractDashboard {
     param: MetricParams.BRIDGED,
   };
 
-  aggregationOptions = Object.values(AggregationParams);
+  aggregationOptions = Object.values(AggregationParams)
+    .filter((agg) => agg !== AggregationParams.COUNT);
 
   constructor(snapshot) {
     super();

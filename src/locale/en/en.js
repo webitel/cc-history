@@ -49,6 +49,7 @@ export default {
         visualization: 'Visualization',
         aggregation: 'Aggregation',
         param: 'Visualization param',
+        variable: 'Variable',
         relative: 'Show relative values',
         limit: {
           limit: 'Top records',
@@ -86,7 +87,7 @@ export default {
         title: 'Calls count (metrics)',
         description: 'Represents number of calls based on the selected filters and period',
       },
-      callsCountVariables: {
+      callsCountVariable: {
         title: 'Calls count (variables)',
         description: 'Represents number of calls based where variable option was selected, on the selected filters and period',
       },

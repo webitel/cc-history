@@ -28,12 +28,16 @@ const actions = {
   LOAD_DASHBOARDS_DATA: async (context) => {
     if (!state.dashboards.length) return;
     context.commit('SET_LOADING', true);
-    const { query } = router.currentRoute;
-    const aggs = context.state.dashboards
-      .map((dashboard) => dashboard.getRequestAggregations({ interval: query.interval }));
-    const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
-    await context.commit('SET_DASHBOARDS_DATA', data);
-    context.commit('SET_LOADING', false);
+    try {
+      const { query } = router.currentRoute;
+      const aggs = context.state.dashboards
+        .map((dashboard) => dashboard.getRequestAggregations({ interval: query.interval }));
+      const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
+      await context.commit('SET_DASHBOARDS_DATA', data);
+    } catch {
+    } finally {
+      context.commit('SET_LOADING', false);
+    }
   },
 
   DELETE_DASHBOARD: async (context, dashboard) => {

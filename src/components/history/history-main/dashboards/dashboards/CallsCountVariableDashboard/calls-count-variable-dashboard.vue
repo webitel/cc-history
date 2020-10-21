@@ -7,21 +7,34 @@
 </template>
 
 <script>
+import { snakeToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
 import Visualizations from '../enums/Visualizations.enum';
 import dashboardMixin from '../../../../../../mixins/dashboards/dashboardMixin';
 
 export default {
-  name: 'calls-count-dashboard',
+  name: 'calls-count-variable-dashboard',
   mixins: [dashboardMixin],
-  data: () => ({
-    doughnutOptions: {
-      legend: {
-        labels: { fontFamily: "'Montserrat Medium', 'monospace'" },
-        position: 'right',
-      },
+  computed: {
+    doughnutOptions() {
+      return {
+        legend: {
+          labels: {
+            fontFamily: "'Montserrat Medium', 'monospace'",
+            generateLabels: (chart) => (
+              chart.data.labels.map((label, index) => ({
+                text: label.length <= 21 ? label : `${label.slice(0, 18)}...`,
+                fillStyle: this.colors[index],
+                index,
+              }))
+            ),
+          },
+          position: 'right',
+        },
+      };
     },
-    barOptions: {
-      scales: {
+    barOptions() {
+      return {
+        scales: {},
         xAxes: [{
           stacked: true,
           gridLines: {
@@ -34,14 +47,23 @@ export default {
             beginAtZero: true,
           },
         }],
-      },
-      legend: {
-        labels: { fontFamily: "'Montserrat Medium', 'monospace'" },
-        position: 'right',
-      },
+        legend: {
+          labels: {
+            fontFamily: "'Montserrat Medium', 'monospace'",
+            generateLabels: (chart) => (
+              chart.data.datasets
+                .filter((dataset) => dataset.label)
+                .map((dataset, index) => ({
+                text: dataset.label.length <= 21 ? dataset.label : `${dataset.label.slice(0, 18)}...`,
+                fillStyle: dataset.borderColor || dataset.backgroundColor,
+                datasetIndex: index,
+              }))
+            ),
+          },
+          position: 'right',
+        },
+      };
     },
-  }),
-  computed: {
     chartData() {
       return this.dashboard.options.visualization === Visualizations.DOUGHNUT_CHART
         ? this.doughnutChartData() : this.barChartData();
@@ -49,6 +71,9 @@ export default {
     options() {
       return this.dashboard.options.visualization === Visualizations.DOUGHNUT_CHART
         ? this.doughnutOptions : this.barOptions;
+    },
+    dataLabel() {
+      return `${this.dashboard.options.param}.${snakeToCamel(this.dashboard.options.variable)}`;
     },
   },
   methods: {
@@ -58,19 +83,19 @@ export default {
         data: this.data.map((item) => item[this.valueProp]),
       }];
       return {
-        labels: this.data.map((item) => item[this.dashboard.options.param]),
+        labels: this.data.map((item) => item[this.dataLabel]),
         datasets,
       };
     },
     barChartData() {
       const datasets = this.data.reduce((datasets, value) => {
         const dataset = datasets
-          .find((dataset) => dataset.label === value[this.dashboard.options.param]);
+          .find((dataset) => dataset.label === value[this.dataLabel]);
         if (dataset) {
           dataset.data.push(value[this.valueProp]);
         } else {
           datasets.push({
-            label: value[this.dashboard.options.param],
+            label: value[this.dataLabel],
             borderColor: this.colors[datasets.length],
             backgroundColor: this.colors[datasets.length],
             data: [value[this.valueProp]],
