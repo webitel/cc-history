@@ -24,6 +24,7 @@ export default {
     },
     options: {
       type: Object,
+      default: () => ({}),
     },
   },
   computed: {

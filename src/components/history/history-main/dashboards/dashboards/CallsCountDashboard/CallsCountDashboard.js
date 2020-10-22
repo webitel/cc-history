@@ -19,7 +19,8 @@ export default class CallsCountDashboard extends AbstractDashboard {
   };
 
   visualizationOptions = [Visualizations.DOUGHNUT_CHART, Visualizations.BAR_CHART];
-  paramOptions = Object.values(VisualizationParams);
+  paramOptions = Object.values(VisualizationParams)
+    .filter((param) => param !== VisualizationParams.VARIABLES);
 
   constructor(snapshot) {
     super();

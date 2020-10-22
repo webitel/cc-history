@@ -1,3 +1,4 @@
+import { snakeToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
 import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
 import {
@@ -5,21 +6,21 @@ import {
   VisualizationParams,
 } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
 
-export default class CallsByPeriodDashboard extends AbstractDashboard {
-  static type = 'callsByPeriod';
+export default class CallsCountVariableDashboard extends AbstractDashboard {
+  static type = 'callsCountVariable';
   id = 0;
   aggParam = 'id';
   options = {
-    name: 'Calls By Period',
-    visualization: Visualizations.LINE_CHART,
+    name: 'Calls Count (Variable)',
+    visualization: Visualizations.DOUGHNUT_CHART,
     aggregation: AggregationParams.COUNT,
-    param: VisualizationParams.DIRECTION,
-    relative: null,
+    param: VisualizationParams.VARIABLES,
+    relative: false,
     limit: 10,
+    variable: '',
   };
 
-  paramOptions = Object.values(VisualizationParams)
-    .filter((param) => param !== VisualizationParams.VARIABLES);
+  visualizationOptions = [Visualizations.DOUGHNUT_CHART, Visualizations.BAR_CHART];
 
   constructor(snapshot) {
     super();
@@ -29,9 +30,13 @@ export default class CallsByPeriodDashboard extends AbstractDashboard {
     }
   }
 
+  getResponseParam() {
+    return `${this.options.param}.${snakeToCamel(this.options.variable)}`;
+  }
+
   getSnapshot() {
     const snapshot = {
-      type: CallsByPeriodDashboard.type,
+      type: CallsCountVariableDashboard.type,
       id: this.id,
       options: this.options,
     };
