@@ -6,10 +6,14 @@ import DoughnutChart
   from '../../../components/history/history-main/dashboards/_internals/charts/doughnut-chart.vue';
 import Metric
   from '../../../components/history/history-main/dashboards/_internals/charts/metric.vue';
-import dashboardDatePrettifyMixin from './_internals/dashboardDatePrettifyMixin';
+import dashboardDataMixin from './_internals/dashboardDataMixin/dashboardDataMixin';
+import dashboardOptionsMixin from './_internals/dashboardOptionsMixin/dashboardOptionsMixin';
 
 export default {
-  mixins: [dashboardDatePrettifyMixin],
+  mixins: [
+    dashboardDataMixin,
+    dashboardOptionsMixin,
+  ],
   components: {
     LineChart,
     BarChart,

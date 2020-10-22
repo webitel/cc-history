@@ -30,6 +30,10 @@ export default class AbstractDashboard {
       + this.aggParam.slice(1);
   }
 
+  getResponseParam() {
+    return this.options.param;
+  }
+
   getRequestAggregations({ interval }) {
     const aggs = {
       name: `${this.id}`,

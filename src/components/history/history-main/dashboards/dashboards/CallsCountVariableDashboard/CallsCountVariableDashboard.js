@@ -1,3 +1,4 @@
+import { snakeToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
 import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
 import {
@@ -27,6 +28,10 @@ export default class CallsCountVariableDashboard extends AbstractDashboard {
       this.id = snapshot.id;
       this.options = { ...this.options, ...snapshot.options };
     }
+  }
+
+  getResponseParam() {
+    return `${this.options.param}.${snakeToCamel(this.options.variable)}`;
   }
 
   getSnapshot() {
