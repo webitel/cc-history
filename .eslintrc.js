@@ -19,6 +19,11 @@ module.exports = {
     indent: 'off',
     'no-underscore-dangle': 'off',
     'import/no-cycle': 'off',
+    'lines-between-class-members': [
+      'error',
+      'always',
+      { 'exceptAfterSingleLine': true },
+    ]
   },
   overrides: [
     {

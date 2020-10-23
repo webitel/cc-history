@@ -13,6 +13,8 @@ const instance = axios.create({
   },
 });
 
+const ignoredErrorIds = ['app.user.setting.not_found'];
+
 instance.interceptors.request.use(
   (request) => {
     if (request.method === 'post'
@@ -36,11 +38,11 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('access-token');
     }
+    if (ignoredErrorIds.indexOf(error.response.data.id) !== -1) {
+      return Promise.resolve();
+    }
     // if error isn't 401, returns it
-    eventBus.$emit('notification', {
-      type: 'error',
-      text: error.response.data.detail,
-    });
+    eventBus.$emit('notification', { type: 'error', text: error.response.data.detail });
     return Promise.reject(error.response.data);
   },
 );
