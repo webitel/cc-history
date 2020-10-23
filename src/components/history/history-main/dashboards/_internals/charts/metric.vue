@@ -2,12 +2,12 @@
   <article class="metric">
     <div class="metric__sum-wrapper">{{ sumValue }}</div>
     <div class="metric__count-wrapper metric__count-wrapper--positive">
-      <h3 class="metric__count__title">{{ chartData.true.label }}</h3>
+      <h3 class="metric__count__title">{{ truthyLabel }}</h3>
       <div class="metric__count__value">{{ truthyValue }}</div>
       <div class="metric__count__percent">{{ truePercent }}%</div>
     </div>
     <div class="metric__count-wrapper metric__count-wrapper--negative">
-      <h3 class="metric__count__title">{{ chartData.false.label }}</h3>
+      <h3 class="metric__count__title">{{ falsyLabel }}</h3>
       <div class="metric__count__value">{{ falsyValue }}</div>
       <div class="metric__count__percent">{{ falsePercent }}%</div>
     </div>
@@ -20,7 +20,7 @@ export default {
   props: {
     chartData: {
       type: Object,
-      default: () => ({}),
+      required: true,
     },
     options: {
       type: Object,
@@ -31,15 +31,23 @@ export default {
     sumValue() {
       return this.options.convertData ? this.options.convertData(this.sum) : this.sum;
     },
+    truthyLabel() {
+    return this.chartData.true?.label || '';
+    },
+    falsyLabel() {
+      return this.chartData.false?.label || '';
+    },
     truthyValue() {
-      const { value } = this.chartData.true;
+      if (!this.chartData.true) return null;
+      const value = this.chartData.true.value;
       if (this.options.convertData) {
         return this.options.convertData(value);
       }
       return value;
     },
     falsyValue() {
-      const { value } = this.chartData.false;
+      if (!this.chartData.false) return null;
+      const value = this.chartData.false.value;
       if (this.options.convertData) {
         return this.options.convertData(value);
       }
@@ -49,9 +57,11 @@ export default {
       return Object.values(this.chartData).reduce((sum, item) => sum + item.value, 0);
     },
     truePercent() {
+      if (!this.chartData.true) return null;
       return Math.round((this.chartData.true.value / this.sum) * 100);
     },
     falsePercent() {
+      if (!this.chartData.false) return null;
       return Math.round((this.chartData.false.value / this.sum) * 100);
     },
   },
