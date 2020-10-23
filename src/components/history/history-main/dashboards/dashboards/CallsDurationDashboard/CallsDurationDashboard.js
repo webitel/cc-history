@@ -16,8 +16,11 @@ export default class CallsDurationDashboard extends AbstractDashboard {
   };
 
   visualizationOptions = [Visualizations.DOUGHNUT_CHART, Visualizations.BAR_CHART];
-  aggregationOptions = Object.values(AggregationParams).filter(AggregationParams.COUNT);
-  paramOptions = Object.values(VisualizationParams);
+  aggregationOptions = Object.values(AggregationParams)
+    .filter((agg) => agg !== AggregationParams.COUNT);
+
+  paramOptions = Object.values(VisualizationParams)
+    .filter((param) => param !== VisualizationParams.VARIABLES);
 
   constructor(snapshot) {
     super();

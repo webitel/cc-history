@@ -52,6 +52,7 @@ export default {
         15: 'Top-15 records',
         20: 'Top-20 records',
       },
+      variable: 'Variable',
     },
     visualizations: {
       doughnut: 'Doughnut',
@@ -81,7 +82,7 @@ export default {
       title: 'Calls count (metrics)',
       description: 'Represents number of calls based on the selected filters and period',
     },
-    callsCountVariables: {
+    callsCountVariable: {
       title: 'Calls count (variables)',
       description: 'Represents number of calls based where variable option was selected, on the selected filters and period',
     },

@@ -6,6 +6,7 @@ export const VisualizationParams = Object.freeze({
   QUEUE: 'queue',
   GATEWAY: 'gateway',
   HANGUP_CAUSE: 'cause',
+  VARIABLES: 'variables',
 });
 
 export const MetricParams = Object.freeze({

@@ -56,6 +56,7 @@ import DashboardConfigPopup from './_internals/dashboard-config-popup/dashboard-
 import CallsByPeriodDashboard from './dashboards/CallsByPeriodDashboard/calls-by-period-dashboard.vue';
 import CallsCountDashboard from './dashboards/CallsCountDashboard/calls-count-dashboard.vue';
 import CallsCountMetricDashboard from './dashboards/CallsCountMetricDashboard/calls-count-metric-dashboard.vue';
+import CallsCountVariableDashboard from './dashboards/CallsCountVariableDashboard/calls-count-variable-dashboard.vue';
 import CallsDurationDashboard from './dashboards/CallsDurationDashboard/calls-duration-dashboard.vue';
 import CallsDurationMetricDashboard from './dashboards/CallsDurationMetricDashboard/calls-duration-metric-dashboard.vue';
 
@@ -69,6 +70,7 @@ export default {
     DashboardSelectPopup,
     DashboardConfigPopup,
     CallsCountMetricDashboard,
+    CallsCountVariableDashboard,
     CallsDurationDashboard,
     CallsDurationMetricDashboard,
   },

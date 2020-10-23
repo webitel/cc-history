@@ -14,7 +14,9 @@ const mapItems = (items) => (
 );
 
 const formatResponse = (response) => {
-  if (response.items) { return mapItems(response.items); }
+  if (response.items) {
+    return mapItems(response.items);
+  }
   return [];
 };
 

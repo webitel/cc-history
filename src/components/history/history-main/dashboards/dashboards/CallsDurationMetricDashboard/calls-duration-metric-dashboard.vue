@@ -12,26 +12,10 @@ import dashboardMixin from '../../../../../../mixins/history/dashboards/dashboar
 export default {
   name: 'calls-count-metric-dashboard',
   mixins: [dashboardMixin],
-  data: () => ({
-    options: {
-      convertData: convertDuration,
-    },
-  }),
   computed: {
-    chartData() {
-      const trueCount = this.data
-        .find((item) => item[this.dashboard.options.param] === true) || {};
-      const falseCount = this.data
-        .find((item) => item[this.dashboard.options.param] === false) || {};
+    options() {
       return {
-        true: {
-          value: trueCount[this.valueProp],
-          label: this.$t('dashboards.bridged.true'),
-        },
-        false: {
-          value: falseCount[this.valueProp],
-          label: this.$t('dashboards.bridged.false'),
-        },
+        convertData: convertDuration,
       };
     },
   },
