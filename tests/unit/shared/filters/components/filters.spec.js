@@ -5,6 +5,7 @@ import FilterDirection from '../../../../../src/shared/filters/components/filter
 import FilterDuration from '../../../../../src/shared/filters/components/filter-duration.vue';
 import FilterFrom from '../../../../../src/shared/filters/components/filter-from.vue';
 import FilterGateway from '../../../../../src/shared/filters/components/filter-gateway.vue';
+import FilterInterval from '../../../../../src/shared/filters/components/filter-interval.vue';
 import FilterPagination from '../../../../../src/shared/filters/components/filter-pagination.vue';
 import FilterQueue from '../../../../../src/shared/filters/components/filter-queue.vue';
 import FilterSearch from '../../../../../src/shared/filters/components/filter-search.vue';
@@ -40,6 +41,11 @@ describe('Filter components', () => {
 
   it('renders gateway filter component', () => {
     const wrapper = shallowMount(FilterGateway, { mocks: { $route: { query: {} } } });
+    expect(wrapper.findComponent({ name: 'wt-select' }).element).toBeVisible();
+  });
+
+  it('renders interval filter component', () => {
+    const wrapper = shallowMount(FilterInterval, { mocks: { $route: { query: {} } } });
     expect(wrapper.findComponent({ name: 'wt-select' }).element).toBeVisible();
   });
 
