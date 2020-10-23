@@ -1,4 +1,5 @@
 export default Object.freeze([
+  { name: 'Auto', value: 'auto', prettify: (date) => new Date(date).toLocaleString() },
   { name: '15 min', value: '15 min', prettify: (date) => new Date(date).toLocaleTimeString() },
   { name: '30 min', value: '30 min', prettify: (date) => new Date(date).toLocaleTimeString() },
   { name: '1 hour', value: '1 hour', prettify: (date) => new Date(date).toLocaleTimeString() },
