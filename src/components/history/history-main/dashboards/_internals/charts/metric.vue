@@ -32,14 +32,14 @@ export default {
       return this.options.convertData ? this.options.convertData(this.sum) : this.sum;
     },
     truthyLabel() {
-    return this.chartData.true?.label || '';
+      return this.chartData.true?.label || '';
     },
     falsyLabel() {
       return this.chartData.false?.label || '';
     },
     truthyValue() {
       if (!this.chartData.true) return null;
-      const value = this.chartData.true.value;
+      const { value } = this.chartData.true;
       if (this.options.convertData) {
         return this.options.convertData(value);
       }
@@ -47,7 +47,7 @@ export default {
     },
     falsyValue() {
       if (!this.chartData.false) return null;
-      const value = this.chartData.false.value;
+      const { value } = this.chartData.false;
       if (this.options.convertData) {
         return this.options.convertData(value);
       }
@@ -69,10 +69,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-%typo-metric-sum { font: 42px 'Montserrat Semi'; line-height: 1.2; };
-%typo-metric-count-title { font: 20px 'Montserrat Semi'; line-height: 1.2; };
-%typo-metric-count-value { font: 26px 'Montserrat Semi'; line-height: 1.2; };
-%typo-metric-count-percent { font: 16px 'Montserrat Semi'; line-height: 1.2; };
+%typo-metric-sum {
+  font: 42px 'Montserrat Semi';
+  line-height: 1.2;
+}
+
+;
+%typo-metric-count-title {
+  font: 20px 'Montserrat Semi';
+  line-height: 1.2;
+}
+
+;
+%typo-metric-count-value {
+  font: 26px 'Montserrat Semi';
+  line-height: 1.2;
+}
+
+;
+%typo-metric-count-percent {
+  font: 16px 'Montserrat Semi';
+  line-height: 1.2;
+}
+
+;
 
 .metric {
   display: grid;
@@ -93,10 +113,12 @@ export default {
 
 .metric__count-wrapper {
   text-align: center;
+
   &--positive {
     grid-area: count-wrapper--pos;
     color: var(--true-color);
   }
+
   &--negative {
     grid-area: count-wrapper--neg;
     color: var(--false-color);
@@ -106,10 +128,12 @@ export default {
     @extend %typo-metric-count-title;
     margin-top: 10px;
   }
+
   .metric__count__value {
     @extend %typo-metric-count-value;
     margin-top: 10px;
   }
+
   .metric__count__percent {
     @extend %typo-metric-count-percent;
     margin-top: 10px;

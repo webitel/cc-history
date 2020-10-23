@@ -1,7 +1,6 @@
 const calcPercent = (sum, value) => (value ? Math.round((value * 100) / sum) : 0);
 
 const calcRelativeData = (datasets, dates) => {
-  if (dates) {
     // if dates, we have to params metric
   // array from map looks like [[key, value], [key, value],...]
   const datesArr = Array.from(dates);
@@ -11,11 +10,6 @@ const calcRelativeData = (datasets, dates) => {
     return [dataset[0], { data }];
   });
   return { datasets: new Map(relativeDatasetsArr), dates };
-  } else {
-    const sum = datasets.reduce((sum, dataset) => {
-      return sum + dataset.value;
-    }, 0);
-  }
 };
 
 export default calcRelativeData;
