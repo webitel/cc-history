@@ -1,8 +1,8 @@
 <template>
   <div class="content-wrapper">
-    <dashboards-header v-model="layout"/>
-    <wt-loader v-show="isLoading"/>
-    <div class="history-dashboards" v-show="!isLoading">
+    <dashboards-header v-model="layout" @reflow="reflow"/>
+    <wt-loader v-show="isLoading || isReflow"/>
+    <div class="history-dashboards" v-if="!isReflow" v-show="!isLoading">
       <div
         class="dashboards-wrapper"
         :class="`dashboards-wrapper--${layout}-col`"
@@ -76,6 +76,7 @@ export default {
   },
   data: () => ({
     layout: '2',
+    isReflow: false, // variable forces dashboards rerender
     configuredDashboard: null,
     isDashboardSelect: false,
     isDashboardConfig: false,
@@ -108,6 +109,11 @@ export default {
       loadDashboardsData: 'LOAD_DASHBOARDS_DATA',
     }),
 
+    async reflow() {
+      this.isReflow = true;
+      await this.$nextTick();
+      this.isReflow = false;
+    },
     handleDashboardConfig(options) {
       this.closeDashboardConfig();
       this.addDashboard({ dashboard: this.configuredDashboard, options });
