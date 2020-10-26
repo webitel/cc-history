@@ -39,7 +39,10 @@ const actions = {
       const { items, next } = await historyAPI.getHistory(params);
       context.commit('SET_DATA_LIST', items);
       context.commit('SET_NEXT_PAGE', next);
-    } catch {
+    } catch (err) {
+      context.commit('SET_DATA_LIST', []);
+      context.commit('SET_NEXT_PAGE', false);
+      throw err;
     } finally {
       context.commit('SET_LOADING', false);
     }
