@@ -7,6 +7,7 @@
       <filter-search/>
       <wt-button
         color="secondary"
+        :disabled="!dataList.length"
         :loading="isFilesLoading"
         @click="callExportFiles"
       >{{ $t('reusable.download') }}
