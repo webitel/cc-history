@@ -1,7 +1,7 @@
 const mapItems = (items) => (
   // retrieve data from item and round all numerical values to 2 digits after comma
   items.map((item) => (
-    item.data.map((dataItem) => {
+    item.data ? item.data.map((dataItem) => {
       const mappedItem = {};
       Object.keys(dataItem).forEach((key) => {
         let value = dataItem[key];
@@ -9,7 +9,7 @@ const mapItems = (items) => (
         mappedItem[key] = value;
       });
       return mappedItem;
-    })
+    }) : []
   ))
 );
 

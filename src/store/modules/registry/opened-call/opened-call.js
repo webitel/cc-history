@@ -59,7 +59,9 @@ const actions = {
     try {
       const { items } = await historyAPI.getHistory(params);
       context.commit('SET_LEGS_DATA_LIST', items);
-    } catch {
+    } catch (err) {
+      context.commit('SET_LEGS_DATA_LIST', []);
+      throw err;
     } finally {
       context.commit('SET_LEGS_DATA_LOADING', false);
     }
@@ -72,7 +74,8 @@ const actions = {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
-    } catch {
+    } catch (err) {
+      throw err;
     } finally {
       context.commit('SET_LOADING', false);
     }

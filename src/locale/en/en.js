@@ -70,6 +70,10 @@ export default {
       true: 'Connected',
       false: 'Abandoned',
     },
+    empty: {
+      title: 'No data',
+      description: 'Please check filters query',
+    },
     callsByPeriod: {
       title: 'Calls by period',
       description: 'Represents the number of calls based on the selected filters and period',

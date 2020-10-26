@@ -21,7 +21,7 @@
     data: () => ({
       options: HangupCauseOptions,
       filterQuery: 'cause',
-      storedProp: 'id',
+      storedProp: 'code',
     }),
   };
 </script>

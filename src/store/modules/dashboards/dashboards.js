@@ -36,7 +36,9 @@ const actions = {
         .map((dashboard) => dashboard.getRequestAggregations({ interval: query.interval }));
       const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
       await context.commit('SET_DASHBOARDS_DATA', data);
-    } catch {
+    } catch (err) {
+      await context.commit('SET_DASHBOARDS_DATA', []);
+      throw err;
     } finally {
       context.commit('SET_LOADING', false);
     }

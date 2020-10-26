@@ -6,259 +6,259 @@
 const HangupCauseOptions = Object.freeze([
   {
     name: 'UNSPECIFIED',
-    id: 0,
+    code: '0',
   },
   {
     name: 'UNALLOCATED_NUMBER',
-    id: 1,
+    code: '1',
   },
   {
     name: 'NO_ROUTE_TRANSIT_NET',
-    id: 2,
+    code: '2',
   },
   {
     name: 'NO_ROUTE_DESTINATION',
-    id: 3,
+    code: '3',
   },
   {
     name: 'CHANNEL_UNACCEPTABLE',
-    id: 6,
+    code: '6',
   },
   {
     name: 'CALL_AWARDED_DELIVERED',
-    id: 7,
+    code: '7',
   },
   {
     name: 'NORMAL_CLEARING',
-    id: 16,
+    code: '16',
   },
   {
     name: 'USER_BUSY',
-    id: 17,
+    code: '17',
   },
   {
     name: 'NO_USER_RESPONSE',
-    id: 18,
+    code: '18',
   },
   {
     name: 'NO_ANSWER',
-    id: 19,
+    code: '19',
   },
   {
     name: 'SUBSCRIBER_ABSENT',
-    id: 20,
+    code: '20',
   },
   {
     name: 'CALL_REJECTED',
-    id: 21,
+    code: '21',
   },
   {
     name: 'NUMBER_CHANGED',
-    id: 22,
+    code: '22',
   },
   {
     name: 'REDIRECTION_TO_NEW_DESTINATION',
-    id: 23,
+    code: '23',
   },
   {
     name: 'EXCHANGE_ROUTING_ERROR',
-    id: 25,
+    code: '25',
   },
   {
     name: 'DESTINATION_OUT_OF_ORDER',
-    id: 27,
+    code: '27',
   },
   {
     name: 'INVALID_NUMBER_FORMAT',
-    id: 28,
+    code: '28',
   },
   {
     name: 'FACILITY_REJECTED',
-    id: 29,
+    code: '29',
   },
   {
     name: 'RESPONSE_TO_STATUS_ENQUIRY',
-    id: 30,
+    code: '30',
   },
   {
     name: 'NORMAL_UNSPECIFIED',
-    id: 31,
+    code: '31',
   },
   {
     name: 'NORMAL_CIRCUIT_CONGESTION',
-    id: 34,
+    code: '34',
   },
   {
     name: 'NETWORK_OUT_OF_ORDER',
-    id: 38,
+    code: '38',
   },
   {
     name: 'NORMAL_TEMPORARY_FAILURE',
-    id: 41,
+    code: '41',
   },
   {
     name: 'SWITCH_CONGESTION',
-    id: 42,
+    code: '42',
   },
   {
     name: 'ACCESS_INFO_DISCARDED',
-    id: 43,
+    code: '43',
   },
   {
     name: 'REQUESTED_CHAN_UNAVAIL',
-    id: 44,
+    code: '44',
   },
   {
     name: 'PRE_EMPTED',
-    id: 45,
+    code: '45',
   },
   {
     name: 'FACILITY_NOT_SUBSCRIBED',
-    id: 50,
+    code: '50',
   },
   {
     name: 'OUTGOING_CALL_BARRED',
-    id: 52,
+    code: '52',
   },
   {
     name: 'INCOMING_CALL_BARRED',
-    id: 54,
+    code: '54',
   },
   {
     name: 'BEARERCAPABILITY_NOTAUTH',
-    id: 57,
+    code: '57',
   },
   {
     name: 'BEARERCAPABILITY_NOTAVAIL',
-    id: 58,
+    code: '58',
   },
   {
     name: 'SERVICE_UNAVAILABLE',
-    id: 63,
+    code: '63',
   },
   {
     name: 'BEARERCAPABILITY_NOTIMPL',
-    id: 65,
+    code: '65',
   },
   {
     name: 'CHAN_NOT_IMPLEMENTED',
-    id: 66,
+    code: '66',
   },
   {
     name: 'FACILITY_NOT_IMPLEMENTED',
-    id: 69,
+    code: '69',
   },
   {
     name: 'SERVICE_NOT_IMPLEMENTED',
-    id: 79,
+    code: '79',
   },
   {
     name: 'INVALID_CALL_REFERENCE',
-    id: 81,
+    code: '81',
   },
   {
     name: 'INCOMPATIBLE_DESTINATION',
-    id: 88,
+    code: '88',
   },
   {
     name: 'INVALID_MSG_UNSPECIFIED',
-    id: 95,
+    code: '95',
   },
   {
     name: 'MANDATORY_IE_MISSING',
-    id: 96,
+    code: '96',
   },
   {
     name: 'MESSAGE_TYPE_NONEXIST',
-    id: 97,
+    code: '97',
   },
   {
     name: 'WRONG_MESSAGE',
-    id: 98,
+    code: '98',
   },
   {
     name: 'IE_NONEXIST',
-    id: 99,
+    code: '99',
   },
   {
     name: 'INVALID_IE_CONTENTS',
-    id: 100,
+    code: '100',
   },
   {
     name: 'WRONG_CALL_STATE',
-    id: 101,
+    code: '101',
   },
   {
     name: 'RECOVERY_ON_TIMER_EXPIRE',
-    id: 102,
+    code: '102',
   },
   {
     name: 'MANDATORY_IE_LENGTH_ERROR',
-    id: 103,
+    code: '103',
   },
   {
     name: 'PROTOCOL_ERROR',
-    id: 111,
+    code: '111',
   },
   {
     name: 'INTERWORKING',
-    id: 127,
+    code: '127',
   },
   {
     name: 'ORIGINATOR_CANCEL',
-    id: 487,
+    code: '487',
   },
   {
     name: 'CRASH',
-    id: 500,
+    code: '500',
   },
   {
     name: 'SYSTEM_SHUTDOWN',
-    id: 501,
+    code: '501',
   },
   {
     name: 'LOSE_RACE',
-    id: 502,
+    code: '502',
   },
   {
     name: 'MANAGER_REQUEST',
-    id: 503,
+    code: '503',
   },
   {
     name: 'BLIND_TRANSFER',
-    id: 600,
+    code: '600',
   },
   {
     name: 'ATTENDED_TRANSFER',
-    id: 601,
+    code: '601',
   },
   {
     name: 'ALLOTTED_TIMEOUT',
-    id: 602,
+    code: '602',
   },
   {
     name: 'USER_CHALLENGE',
-    id: 603,
+    code: '603',
   },
   {
     name: 'MEDIA_TIMEOUT',
-    id: 604,
+    code: '604',
   },
   {
     name: 'PICKED_OFF',
-    id: 605,
+    code: '605',
   },
   {
     name: 'USER_NOT_REGISTERED',
-    id: 606,
+    code: '606',
   },
   {
     name: 'PROGRESS_TIMEOUT',
-    id: 607,
+    code: '607',
   },
   {
     name: 'GATEWAY_DOWN',
-    id: 609,
+    code: '609',
   },
 ]);
 

@@ -1,8 +1,10 @@
 <template>
   <line-chart
+    v-if="!emptyData"
     :chart-data="chartData"
     :options="options"
   ></line-chart>
+  <empty-dashboard v-else />
 </template>
 
 <script>

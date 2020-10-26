@@ -40,7 +40,8 @@ export default {
       try {
         await authAPI.logout();
         await this.$router.replace('/auth');
-      } catch {
+      } catch (err) {
+        throw err;
       } finally {
         this.close();
       }
