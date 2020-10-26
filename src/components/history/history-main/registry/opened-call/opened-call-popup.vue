@@ -34,20 +34,20 @@ export default {
   }),
 
   computed: {
-    ...mapState('history/opened-call', {
+    ...mapState('registry/opened-call', {
       mainCall: (state) => state.mainCall,
       isLoading: (state) => state.isLoading,
     }),
-    ...mapGetters('history/opened-call', {
+    ...mapGetters('registry/opened-call', {
     }),
 
     tabs() {
       const callInfo = {
-        text: this.$t('openedCall.callInfo'),
+        text: this.$t('registry.openedCall.callInfo'),
         value: 'call-info',
       };
       const callLegs = {
-        text: this.$t('openedCall.callLegs'),
+        text: this.$t('registry.openedCall.callLegs'),
         value: 'call-legs',
       };
       const tabs = [callInfo];

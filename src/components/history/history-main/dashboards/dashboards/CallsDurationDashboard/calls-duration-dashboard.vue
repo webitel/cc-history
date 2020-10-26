@@ -1,20 +1,19 @@
 <template>
-  <metric
+  <component
+    :is="dashboard.options.visualization"
     :chart-data="chartData"
-  ></metric>
+    :options="options"
+  ></component>
 </template>
 
 <script>
 import dashboardMixin from '../../../../../../mixins/history/dashboards/dashboardMixin';
 
 export default {
-  name: 'calls-count-metric-dashboard',
+  name: 'calls-duration-dashboard',
   mixins: [dashboardMixin],
 };
 </script>
 
 <style lang="scss" scoped>
-.metric {
-  flex-grow: 1;
-}
 </style>

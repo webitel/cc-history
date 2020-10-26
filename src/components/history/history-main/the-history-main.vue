@@ -1,55 +1,44 @@
 <template>
   <section class="history-section history-main">
-    <wt-tabs v-model="currentTab" :tabs="tabs"></wt-tabs>
-    <wt-loader v-show="isLoading"/>
-    <component
-      class="content-wrapper"
-      v-show="!isLoading"
-      :is="currentTab.value"
-    ></component>
+    <wt-tabs
+      :current="currentTab"
+      :tabs="tabs"
+      @change="changeTab($event.value)"
+    ></wt-tabs>
+    <component :is="currentTab.value"></component>
   </section>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import HistoryTable from './history/history-table.vue';
-import HistoryDashboards from './dashboards/history-dashboards.vue';
+import StateModules from '../../../store/modules/StoreModules.enum';
+import Registry from './registry/history-registry.vue';
+import Dashboards from './dashboards/history-dashboards.vue';
 
 export default {
   name: 'the-history-main',
   components: {
-    HistoryTable,
-    HistoryDashboards,
-  },
-  data: () => ({
-    currentTab: { value: 'history-dashboards' },
-  }),
-
-  watch: {
-    '$route.query': {
-      async handler() {
-        await this.loadList();
-      },
-      immediate: true,
-    },
+    Registry,
+    Dashboards,
   },
 
   computed: {
-    ...mapState('history', {
-      isLoading: (state) => state.isLoading,
+    ...mapState({
+      state: (state) => state.state,
     }),
-
+    currentTab() {
+      return { value: this.state };
+    },
     tabs() {
-      return [
-        { text: this.$t('mainSection.history.history'), value: 'history-table' },
-        { text: this.$t('mainSection.dashboards.dashboards'), value: 'history-dashboards' },
-      ];
+      return Object.values(StateModules).map((state) => ({
+        text: this.$t(`${state}.${state}`),
+        value: state,
+      }));
     },
   },
-
   methods: {
-    ...mapActions('history', {
-      loadList: 'LOAD_DATA_LIST',
+    ...mapActions({
+      changeTab: 'SET_APP_STATE',
     }),
   },
 };
@@ -61,15 +50,5 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.content-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1 1 100%;
-  width: 100%;
-  box-sizing: border-box;
 }
 </style>

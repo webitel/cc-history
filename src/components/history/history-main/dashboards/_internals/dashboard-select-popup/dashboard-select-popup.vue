@@ -1,7 +1,7 @@
 <template>
   <wt-popup class="dashboard-select" @close="$emit('close')">
-    <template slot="header">
-      <h3 class="dashboard-select__title">{{ $t('mainSection.dashboards.dashboardSelect') }}</h3>
+    <template slot="title">
+      {{ $t('dashboards.dashboardSelect') }}
     </template>
     <template slot="main">
       <ul class="dashboard-select__options-list">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import Dashboards from './dasboardClasses/Dashboards.enum';
+import Dashboards from '../../dashboards/enums/Dashboards.enum';
 
 export default {
   name: 'dashboard-select-popup',
@@ -41,8 +41,8 @@ export default {
   computed: {
     dashboards() {
       return Dashboards.map((Dashboard) => ({
-        title: this.$t(`mainSection.dashboards.${Dashboard.type}.title`),
-        description: this.$t(`mainSection.dashboards.${Dashboard.type}.description`),
+        title: this.$t(`dashboards.${Dashboard.type}.title`),
+        description: this.$t(`dashboards.${Dashboard.type}.description`),
         type: Dashboard.type,
     }));
     },
@@ -60,12 +60,6 @@ export default {
 <style lang="scss" scoped>
   .dashboard-select ::v-deep .wt-popup__popup {
     min-width: 600px;
-  }
-
-  .dashboard-select__title {
-    @extend %typo-strong-lg;
-    text-align: center;
-    padding-top: 16px;
   }
 
   .dashboard-select__option {
@@ -88,9 +82,5 @@ export default {
     &__description {
       @extend %typo-body-md;
     }
-  }
-
-  .wt-button:first-child {
-    margin-right: 20px;
   }
 </style>

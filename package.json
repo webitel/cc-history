@@ -5,11 +5,12 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-and-run-locally": " npm run build && sudo docker run -p 80:80 -v ${PWD}/dist:/usr/share/nginx/html:rw -v ${HOME}/default.conf:/etc/nginx/conf.d/default.conf:ro -v ${PWD}/dist:/www/history:rw -v ${HOME}/Projects/web-client-auth/dist:/www/auth:ro --rm nginx",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@webitel/ui-sdk": "^0.5.15",
+    "@webitel/ui-sdk": "^0.5.16",
     "axios": "^0.19.2",
     "bamboo-jest-reporter": "^1.0.3",
     "chart.js": "^2.9.3",

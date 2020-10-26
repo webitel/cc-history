@@ -18,21 +18,28 @@ const actions = {
       context.commit('UPDATE_DASHBOARD', { dashboard, options });
       await context.dispatch('LOAD_DASHBOARDS_DATA');
     } else {
-      // eslint-disable-next-line no-param-reassign
-      dashboard.id = (context.state.dashboards[context.state.dashboards.length - 1]?.id + 1) || 1;
+      const newId = (context.state.dashboards[context.state.dashboards.length - 1]?.id + 1) || 1;
+      dashboard.setId(newId);
       context.commit('ADD_DASHBOARD', { dashboard, options });
     }
     await context.dispatch('SAVE_DASHBOARDS');
   },
 
+  LOAD_DATA: async (context, payload) => context.dispatch('LOAD_DASHBOARDS_DATA', payload),
+
   LOAD_DASHBOARDS_DATA: async (context) => {
+    if (!state.dashboards.length) return;
     context.commit('SET_LOADING', true);
-    const { query } = router.currentRoute;
-    const aggs = context.state.dashboards
-      .map((dashboard) => dashboard.getRequestAggregations({ interval: query.interval }));
-    const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
-    await context.commit('SET_DASHBOARDS_DATA', data);
-    context.commit('SET_LOADING', false);
+    try {
+      const { query } = router.currentRoute;
+      const aggs = context.state.dashboards
+        .map((dashboard) => dashboard.getRequestAggregations({ interval: query.interval }));
+      const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
+      await context.commit('SET_DASHBOARDS_DATA', data);
+    } catch {
+    } finally {
+      context.commit('SET_LOADING', false);
+    }
   },
 
   DELETE_DASHBOARD: async (context, dashboard) => {
@@ -47,7 +54,7 @@ const actions = {
   },
 
   RESTORE_DASHBOARDS: async (context) => {
-    const snapshots = await DashboardAPI.getDashboards();
+    const snapshots = await DashboardAPI.getDashboards() || [];
     const dashboards = snapshots.map((snapshot) => {
       const Dashboard = Dashboards.find((Dashboard) => Dashboard.type === snapshot.type);
       return new Dashboard(snapshot);

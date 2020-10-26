@@ -1,19 +1,25 @@
-import AbstractDashboard from '../AbstractDashboard';
+import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
-import { VisualizationParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
+import {
+  AggregationParams,
+  VisualizationParams,
+} from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
 
 export default class CallsByPeriodDashboard extends AbstractDashboard {
   static type = 'callsByPeriod';
   id = 0;
+  aggParam = 'id';
   options = {
     name: 'Calls By Period',
-    count: ['*'],
     visualization: Visualizations.LINE_CHART,
+    aggregation: AggregationParams.COUNT,
     param: VisualizationParams.DIRECTION,
     relative: null,
+    limit: 10,
   };
 
-  paramOptions = Object.values(VisualizationParams);
+  paramOptions = Object.values(VisualizationParams)
+    .filter((param) => param !== VisualizationParams.VARIABLES);
 
   constructor(snapshot) {
     super();
@@ -22,6 +28,8 @@ export default class CallsByPeriodDashboard extends AbstractDashboard {
       this.options = { ...this.options, ...snapshot.options };
     }
   }
+
+  getDisplayName = () => `${CallsByPeriodDashboard.type}Dashboard`;
 
   getSnapshot() {
     const snapshot = {

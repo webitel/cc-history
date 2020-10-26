@@ -6,8 +6,17 @@ export const VisualizationParams = Object.freeze({
   QUEUE: 'queue',
   GATEWAY: 'gateway',
   HANGUP_CAUSE: 'cause',
+  VARIABLES: 'variables',
 });
 
 export const MetricParams = Object.freeze({
   BRIDGED: 'bridged',
+});
+
+export const AggregationParams = Object.freeze({
+  COUNT: 'count',
+  MIN: 'min',
+  MAX: 'max',
+  SUM: 'sum',
+  AVG: 'avg',
 });
