@@ -41,7 +41,7 @@ export default {
     interval: 'Интервал',
     dashboardConfigForm: {
       name: 'Название',
-      visualization: 'Вищуализация',
+      visualization: 'Визуализация',
       aggregation: 'Аггрегация',
       param: 'Параметр визуализации',
       relative: 'Показать относительные значния (%)',
