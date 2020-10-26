@@ -1,7 +1,9 @@
 <template>
   <metric
+    v-if="!emptyData"
     :chart-data="chartData"
   ></metric>
+  <empty-dashboard v-else />
 </template>
 
 <script>

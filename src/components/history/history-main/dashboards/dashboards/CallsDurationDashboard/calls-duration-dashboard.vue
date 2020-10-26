@@ -1,9 +1,11 @@
 <template>
   <component
+    v-if="!emptyData"
     :is="dashboard.options.visualization"
     :chart-data="chartData"
     :options="options"
   ></component>
+  <empty-dashboard v-else />
 </template>
 
 <script>

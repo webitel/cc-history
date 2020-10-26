@@ -6,6 +6,8 @@ import DoughnutChart
   from '../../../components/history/history-main/dashboards/_internals/charts/doughnut-chart.vue';
 import Metric
   from '../../../components/history/history-main/dashboards/_internals/charts/metric.vue';
+import EmptyDashboard
+  from '../../../components/history/history-main/dashboards/dashboards/_internals/empty-dashboard/empty-dashboard.vue';
 import dashboardDataMixin from './_internals/dashboardDataMixin/dashboardDataMixin';
 import dashboardOptionsMixin from './_internals/dashboardOptionsMixin/dashboardOptionsMixin';
 
@@ -19,6 +21,7 @@ export default {
     BarChart,
     DoughnutChart,
     Metric,
+    EmptyDashboard,
   },
   props: {
     dashboard: {
@@ -40,6 +43,9 @@ export default {
     ],
   }),
   computed: {
+    emptyData() {
+      return !this.data.length;
+    },
     valueProp() {
       return this.dashboard.getValueProperty();
     },

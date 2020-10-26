@@ -65,7 +65,7 @@ export default {
   .dashboard-select__option {
     padding: 12px 20px;
     margin-top: 20px;
-    border: 2px solid var(--form-border-color);
+    border: 1.5px solid var(--form-border-color);
     border-radius: var(--border-radius);
     transition: var(--transition);
     cursor: pointer;
