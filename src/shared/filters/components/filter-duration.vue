@@ -36,7 +36,6 @@
 
 <script>
 import debounce from '@webitel/ui-sdk/src/scripts/debounce';
-import { camelToKebab } from '@webitel/ui-sdk/src/scripts/caseConverters';
 import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
 
 export default {
@@ -51,8 +50,8 @@ export default {
   }),
   '$route.query': {
     handler(newValue, oldValue) {
-      if (newValue['duration-from'] !== oldValue['duration-from']
-        || newValue['duration-to'] !== oldValue['duration-to']) {
+      if (newValue.durationFrom !== oldValue.durationFrom
+        || newValue.durationTo !== oldValue.durationTo) {
         this.restore({ filterQuery: this.filterQuery });
       }
     },
@@ -71,26 +70,26 @@ export default {
 
     restoreDurationFrom() {
       const from = 0;
-      const queryValue = this.$route.query[camelToKebab('durationFrom')];
+      const queryValue = this.$route.query.durationFrom;
       this.value.from = +queryValue || from;
     },
 
     restoreDurationTo() {
       const to = null;
-      const queryValue = this.$route.query[camelToKebab('durationTo')];
+      const queryValue = this.$route.query.durationTo;
       this.value.to = +queryValue || to;
     },
 
     setFrom(value) {
       this.setValueToQuery({
-        filterQuery: camelToKebab('durationFrom'),
+        filterQuery: 'durationFrom',
         value,
       });
     },
 
     setTo(value) {
       this.setValueToQuery({
-        filterQuery: camelToKebab('durationTo'),
+        filterQuery: 'durationTo',
         value,
       });
     },
