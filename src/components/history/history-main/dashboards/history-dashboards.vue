@@ -19,7 +19,7 @@
           ></dashboard-header>
           <component
             class="chart"
-            :is="dashboard.constructor.name"
+            :is="dashboard.getDisplayName()"
             :dashboard="dashboard"
             :data="dashboardsData[key]"
           ></component>

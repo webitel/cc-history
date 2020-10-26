@@ -30,6 +30,8 @@ export default class CallsCountVariableDashboard extends AbstractDashboard {
     }
   }
 
+  getDisplayName = () => `${CallsCountVariableDashboard.type}Dashboard`;
+
   getResponseParam() {
     return `${this.options.param}.${snakeToCamel(this.options.variable)}`;
   }

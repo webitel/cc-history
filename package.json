@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-and-run-locally": " npm run build && sudo docker run -p 80:80 -v ${PWD}/dist:/usr/share/nginx/html:rw -v ${HOME}/default.conf:/etc/nginx/conf.d/default.conf:ro -v ${PWD}/dist:/www/history:rw -v ${HOME}/Projects/web-client-auth/dist:/www/auth:ro --rm nginx",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },

@@ -29,6 +29,8 @@ export default class CallsByPeriodDashboard extends AbstractDashboard {
     }
   }
 
+  getDisplayName = () => `${CallsByPeriodDashboard.type}Dashboard`;
+
   getSnapshot() {
     const snapshot = {
       type: CallsByPeriodDashboard.type,

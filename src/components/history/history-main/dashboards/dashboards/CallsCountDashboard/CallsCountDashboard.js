@@ -30,6 +30,8 @@ export default class CallsCountDashboard extends AbstractDashboard {
     }
   }
 
+  getDisplayName = () => `${CallsCountDashboard.type}Dashboard`;
+
   getSnapshot() {
     const snapshot = {
       type: CallsCountDashboard.type,

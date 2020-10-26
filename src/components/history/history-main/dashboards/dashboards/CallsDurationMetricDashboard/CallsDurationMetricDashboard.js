@@ -24,6 +24,8 @@ export default class CallsDurationMetricDashboard extends AbstractDashboard {
     }
   }
 
+  getDisplayName = () => `${CallsDurationMetricDashboard.type}Dashboard`;
+
   getSnapshot() {
     const snapshot = {
       type: CallsDurationMetricDashboard.type,
