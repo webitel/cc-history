@@ -22,6 +22,7 @@
       options: HangupCauseOptions,
       filterQuery: 'cause',
       storedProp: 'code',
+      trackBy: 'code',
     }),
   };
 </script>
