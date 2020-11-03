@@ -86,11 +86,11 @@ export default {
       const dataSource = this.normalizeData();
       return {
         true: {
-          value: dataSource.datasets.get(true)?.data[0],
+          value: dataSource.datasets.get(true)?.data[0] || 0,
           label: this.$t('dashboards.bridged.true'),
         },
         false: {
-          value: dataSource.datasets.get(false)?.data[0],
+          value: dataSource.datasets.get(false)?.data[0] || 0,
           label: this.$t('dashboards.bridged.false'),
         },
       };

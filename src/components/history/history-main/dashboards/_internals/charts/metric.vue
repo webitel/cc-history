@@ -57,11 +57,11 @@ export default {
       return Object.values(this.chartData).reduce((sum, item) => sum + item.value, 0);
     },
     truePercent() {
-      if (!this.chartData.true) return null;
+      if (!this.sum) return 0;
       return Math.round((this.chartData.true.value / this.sum) * 100);
     },
     falsePercent() {
-      if (!this.chartData.false) return null;
+      if (!this.sum) return 0;
       return Math.round((this.chartData.false.value / this.sum) * 100);
     },
   },
