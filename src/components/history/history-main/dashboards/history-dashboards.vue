@@ -169,6 +169,7 @@ export default {
 
 .dashboard-wrapper {
   min-height: 333px;
+  min-width: fit-content; // prevent scrolls caused by 0.5px width diff between chart and wrapper
   display: flex;
   flex-direction: column;
   align-items: center;
