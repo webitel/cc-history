@@ -2,7 +2,7 @@ import normalizeDashboardData from './scripts/normalizeDashboardData';
 import calcRelativeData from './scripts/calcRelativeData';
 import Visualizations
   from '../../../../../components/history/history-main/dashboards/dashboards/enums/Visualizations.enum';
-import IntervalOptions from '../../../../../shared/filters/api/IntervalOptions.enum';
+import IntervalOptions from '../../../../../components/history/history-main/dashboards/filters/filter-interval/IntervalOptions.enum';
 
 const prettifyDate = (date, interval) => {
   if (interval) {

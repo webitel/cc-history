@@ -14,7 +14,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import enumFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/enumFilterMixin';
-import DirectionOptions from '../api/DirectionOptions.enum';
+import DirectionOptions from './DirectionOptions.enum';
 
 export default {
   name: 'filter-direction',

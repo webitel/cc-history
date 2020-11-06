@@ -1,3 +1,15 @@
+import agent from '../../../shared/filters/filter-agent/filterAgent.schema';
+import cause from '../../../shared/filters/filter-cause/filterCause.schema';
+import direction from '../../../shared/filters/filter-direction/filterDirection.schema';
+import duration from '../../../shared/filters/filter-duration/filterDuration.schema';
+import from from '../../../shared/filters/filter-from/filterFrom.schema';
+import to from '../../../shared/filters/filter-to/filterTo.schema';
+import gateway from '../../../shared/filters/filter-gateway/filterGateway.schema';
+import queue from '../../../shared/filters/filter-queues/filterQueues.schema';
+import search from '../../../shared/filters/filter-search/filterSearch.schema';
+import team from '../../../shared/filters/filter-teams/filterTeams.schema';
+import user from '../../../shared/filters/filter-user/filterUser.schema';
+
 const isEmpty = (value) => {
   if (Array.isArray(value)) return !value.length;
   if (typeof value === 'object') return !value || !Object.keys(value).length;
@@ -5,68 +17,17 @@ const isEmpty = (value) => {
 };
 
 const state = {
-  agent: {
-    value: [],
-    defaultValue: [],
-    storedProp: 'id',
-    multiple: true,
-  },
-  cause: {
-    value: [],
-    defaultValue: [],
-    storedProp: 'code',
-    multiple: true,
-  },
-  direction: {
-    value: [],
-    defaultValue: [],
-    storedProp: 'value',
-    multiple: true,
-  },
-  duration: {
-    defaultValue: [],
-    value: { from: 0, to: null },
-    multiple: false,
-  },
-  from: {
-    value: new Date().setHours(0, 0, 0, 0),
-    defaultValue: new Date().setHours(0, 0, 0, 0),
-    multiple: false,
-  },
-  to: {
-    value: new Date().setHours(23, 59, 59, 0),
-    defaultValue: new Date().setHours(23, 59, 59, 0),
-    multiple: false,
-  },
-  gateway: {
-    value: [],
-    defaultValue: [],
-    storedProp: 'id',
-    multiple: true,
-  },
-  queue: {
-    value: [],
-    defaultValue: [],
-    storedProp: 'id',
-    multiple: true,
-  },
-  search: {
-    value: '',
-    defaultValue: '',
-    multiple: false,
-  },
-  team: {
-    value: [],
-    defaultValue: [],
-    storedProp: 'id',
-    multiple: true,
-  },
-  user: {
-    value: [],
-    defaultValue: [],
-    storedProp: 'id',
-    multiple: true,
-  },
+  agent,
+  cause,
+  direction,
+  duration,
+  from,
+  to,
+  gateway,
+  queue,
+  search,
+  team,
+  user,
 };
 
 const getters = {

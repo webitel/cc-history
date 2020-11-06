@@ -15,7 +15,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import enumFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/enumFilterMixin';
-import IntervalOptions from '../api/IntervalOptions.enum';
+import IntervalOptions from './IntervalOptions.enum';
 
 export default {
   name: 'filter-interval',

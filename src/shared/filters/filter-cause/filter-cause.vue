@@ -14,7 +14,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import enumFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/enumFilterMixin';
-import HangupCauseOptions from '../api/HangupCauseOption.enum';
+import HangupCauseOptions from './HangupCauseOption.enum';
 
 export default {
   name: 'filter-cause',

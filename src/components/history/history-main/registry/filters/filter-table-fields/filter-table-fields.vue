@@ -8,8 +8,8 @@
 
 <script>
 import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
-import ColumnSelect from '../utils/table-column-select.vue';
-import historyHeadersMixin from '../../mixins/history/registry/historyHeadersMixin';
+import ColumnSelect from '../../../../../utils/table-column-select.vue';
+import historyHeadersMixin from '../../../../../../mixins/history/registry/historyHeadersMixin';
 
 export default {
   name: 'filter-table-fields',

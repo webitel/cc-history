@@ -1,17 +1,17 @@
 import { shallowMount } from '@vue/test-utils';
-import FilterAgent from '../../../../../src/shared/filters/components/filter-agent.vue';
-import FilterCause from '../../../../../src/shared/filters/components/filter-cause.vue';
-import FilterDirection from '../../../../../src/shared/filters/components/filter-direction.vue';
-import FilterDuration from '../../../../../src/shared/filters/components/filter-duration.vue';
-import FilterFrom from '../../../../../src/shared/filters/components/filter-from.vue';
-import FilterGateway from '../../../../../src/shared/filters/components/filter-gateway.vue';
-import FilterPagination from '../../../../../src/shared/filters/components/filter-pagination.vue';
-import FilterQueue from '../../../../../src/shared/filters/components/filter-queue.vue';
-import FilterSearch from '../../../../../src/shared/filters/components/filter-search.vue';
-import FilterTeam from '../../../../../src/shared/filters/components/filter-team.vue';
-import FilterTo from '../../../../../src/shared/filters/components/filter-to.vue';
+import FilterAgent from '@/shared/filters/filter-agent/filter-agent.vue';
+import FilterCause from '@/shared/filters/filter-cause/filter-cause.vue';
+import FilterDirection from '@/shared/filters/filter-direction/filter-direction.vue';
+import FilterDuration from '@/shared/filters/filter-duration/filter-duration.vue';
+import FilterFrom from '@/shared/filters/filter-from/filter-from.vue';
+import FilterGateway from '@/shared/filters/filter-gateway/filter-gateway.vue';
+import FilterPagination from '@/components/history/history-main/registry/filters/filter-pagination/filter-pagination.vue';
+import FilterQueue from '@/shared/filters/filter-queues/filter-queue.vue';
+import FilterSearch from '@/shared/filters/filter-search/filter-search.vue';
+import FilterTeam from '@/shared/filters/filter-teams/filter-team.vue';
+import FilterTo from '@/shared/filters/filter-to/filter-to.vue';
 import FilterType from '../../../../../src/shared/filters/components/filter-type.vue';
-import FilterUser from '../../../../../src/shared/filters/components/filter-user.vue';
+import FilterUser from '@/shared/filters/filter-user/filter-user.vue';
 
 describe('Filter components', () => {
   it('renders agent filter component', () => {

@@ -92,7 +92,7 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import sortFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/sortFilterMixin';
 import OpenedCallPopup from './opened-call/opened-call-popup.vue';
-import FilterPagination from '../../../../shared/filters/components/filter-pagination.vue';
+import FilterPagination from './filters/filter-pagination/filter-pagination.vue';
 import TableDirection from './_internals/table-templates/table-direction.vue';
 import MediaAction from './_internals/table-templates/table-media-action.vue';
 import historyHeadersMixin from '../../../../mixins/history/registry/historyHeadersMixin';

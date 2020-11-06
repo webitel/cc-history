@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import FilterInterval from '../../../../../../shared/filters/components/filter-interval.vue';
+import FilterInterval from '../../filters/filter-interval/filter-interval.vue';
 
 export default {
   name: 'dashboards-header',

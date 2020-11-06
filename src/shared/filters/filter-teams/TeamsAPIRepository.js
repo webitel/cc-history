@@ -1,7 +1,7 @@
 import { AgentTeamServiceApiFactory } from 'webitel-sdk';
 import instance from '../../../api/instance';
 import configuration from '../../../api/utils/openAPIConfig';
-import { formatOptions, defaultParams } from './defaults/defaults';
+import { formatOptions, defaultParams } from '../api/defaults/defaults';
 
 const teamService = new AgentTeamServiceApiFactory(configuration, '', instance);
 

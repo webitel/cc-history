@@ -1,6 +1,6 @@
 import APIRepository from '../../../api/APIRepository';
 import Dashboards from '../../../components/history/history-main/dashboards/dashboards/enums/Dashboards.enum';
-import IntervalOptions from '../../../shared/filters/api/IntervalOptions.enum';
+import IntervalOptions from '../../../components/history/history-main/dashboards/filters/filter-interval/IntervalOptions.enum';
 
 const DashboardAPI = APIRepository.dashboards;
 

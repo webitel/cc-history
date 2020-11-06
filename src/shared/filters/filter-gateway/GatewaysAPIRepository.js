@@ -1,5 +1,5 @@
-import getOptionsFromAPI from './defaults/APIdefaults';
-import { defaultParams } from './defaults/defaults';
+import getOptionsFromAPI from '../api/defaults/APIdefaults';
+import { defaultParams } from '../api/defaults/defaults';
 
 const BASE_URL = '/sip/gateways';
 
