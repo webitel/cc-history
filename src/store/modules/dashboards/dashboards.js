@@ -1,6 +1,6 @@
 import APIRepository from '../../../api/APIRepository';
-import router from '../../../router';
 import Dashboards from '../../../components/history/history-main/dashboards/dashboards/enums/Dashboards.enum';
+import IntervalOptions from '../../../shared/filters/api/IntervalOptions.enum';
 
 const DashboardAPI = APIRepository.dashboards;
 
@@ -8,6 +8,12 @@ const state = {
   dashboards: [],
   dashboardsData: [],
   isLoading: false,
+  intervalFilter: {
+    value: IntervalOptions.find((interval) => interval.value === 'auto'),
+    defaultValue: IntervalOptions.find((interval) => interval.value === 'auto'),
+    storedProp: 'value',
+    multiple: false,
+  },
 };
 
 const getters = {};
@@ -31,9 +37,10 @@ const actions = {
     if (!state.dashboards.length) return;
     context.commit('SET_LOADING', true);
     try {
-      const { query } = router.currentRoute;
+      const query = context.rootGetters['filters/GET_FILTERS'];
+      const interval = context.state.intervalFilter.value[context.state.intervalFilter.storedProp];
       const aggs = context.state.dashboards
-        .map((dashboard) => dashboard.getRequestAggregations({ interval: query.interval }));
+        .map((dashboard) => dashboard.getRequestAggregations({ interval }));
       const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
       await context.commit('SET_DASHBOARDS_DATA', data);
     } catch (err) {
@@ -63,6 +70,13 @@ const actions = {
     });
     context.commit('SET_DASHBOARDS', dashboards);
   },
+  SET_INTERVAL: (context, interval) => {
+    const { defaultValue } = context.state.intervalFilter;
+    context.commit('SET_INTERVAL', interval || defaultValue);
+  },
+  RESET_FILTERS: (context) => {
+    context.dispatch('SET_INTERVAL', context.state.intervalFilter.defaultValue);
+  },
 };
 
 const mutations = {
@@ -84,6 +98,9 @@ const mutations = {
   },
   SET_LOADING: (state, isLoading) => {
     state.isLoading = isLoading;
+  },
+  SET_INTERVAL: (state, interval) => {
+    state.intervalFilter.value = interval;
   },
 };
 

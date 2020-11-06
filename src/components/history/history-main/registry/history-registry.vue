@@ -138,10 +138,12 @@ export default {
   },
 
   methods: {
+    ...mapActions('filters', {
+      setFilterValue: 'SET_FILTER',
+    }),
     ...mapActions('registry', {
       loadList: 'LOAD_DATA_LIST',
     }),
-
     ...mapActions('registry/opened-call', {
       setOpenedItem: 'SET_OPENED_CALL',
       resetOpenedItem: 'RESET_OPENED_CALL',

@@ -1,3 +1,5 @@
+import deepEqual from 'deep-equal';
+
 export default {
   methods: {
     tableActionsHandler(eventName) {
@@ -28,7 +30,9 @@ export default {
       this.isFilterFieldsOpened = true;
     },
     resetFilters() {
-      this.$router.replace({ query: null });
+      const { fields } = this.$route.query;
+      if (!deepEqual(this.$route.query, { fields })) this.$router.push({ query: { fields } });
+      this.$store.dispatch('RESET_FILTERS');
     },
   },
 };

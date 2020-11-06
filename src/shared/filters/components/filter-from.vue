@@ -1,12 +1,13 @@
 <template>
   <wt-datetimepicker
-    v-model="value"
+    :value="value"
     :label="$t('components.dtPicker.from')"
-    @change="setValueToQuery({ filterQuery, value: $event })"
+    @change="handleChange"
   ></wt-datetimepicker>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
 
 export default {
@@ -14,14 +15,25 @@ export default {
   mixins: [baseFilterMixin],
 
   data: () => ({
-    value: new Date().setHours(0, 0, 0, 0),
     filterQuery: 'from',
   }),
 
+  computed: {
+    ...mapState('filters', {
+      value: (state) => state.from.value,
+    }),
+  },
+
   methods: {
+    ...mapActions('filters', {
+      setValue: 'SET_FILTER',
+    }),
+    handleChange(value) {
+      this.setValue({ filter: this.filterQuery, value });
+      this.setValueToQuery({ filterQuery: this.filterQuery, value });
+    },
     restoreValue(value) {
-      const dayStart = new Date().setHours(0, 0, 0, 0);
-      this.value = +value || dayStart;
+      this.setValue({ filter: this.filterQuery, value: +value });
     },
   },
 };

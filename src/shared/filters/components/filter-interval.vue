@@ -1,46 +1,44 @@
 <template>
   <wt-select
-    v-model="value"
+    :value="value"
     :options="options"
     :label="$t('dashboards.interval')"
-    :track-by="trackBy"
+    :track-by="storedProp"
+    :multiple="multiple"
     :clearable="false"
+    @input="setValue"
     @reset="setValueToQuery({ value: value.value, filterQuery, storedProp })"
     @closed="setValueToQuery({ value: value.value, filterQuery, storedProp })"
   ></wt-select>
 </template>
 
 <script>
-  import enumFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/enumFilterMixin';
-  import IntervalOptions from '../api/IntervalOptions.enum';
+import { mapState, mapActions } from 'vuex';
+import enumFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/enumFilterMixin';
+import IntervalOptions from '../api/IntervalOptions.enum';
 
-  export default {
-    name: 'filter-interval',
-    mixins: [enumFilterMixin],
+export default {
+  name: 'filter-interval',
+  mixins: [enumFilterMixin],
 
-    data: () => ({
-      options: IntervalOptions,
-      filterQuery: 'interval',
-      storedProp: 'value',
+  data: () => ({
+    options: IntervalOptions,
+    filterQuery: 'interval',
+  }),
+
+  computed: {
+    ...mapState('dashboards', {
+      value: (state) => state.intervalFilter.value,
+      storedProp: (state) => state.intervalFilter.storedProp,
+      multiple: (state) => state.intervalFilter.multiple,
     }),
-
-    created() {
-      this.setDefaultValue();
-    },
-    methods: {
-      setDefaultValue() {
-        const defaultValue = IntervalOptions.find((interval) => interval.value === 'auto');
-        const queryValue = this.getValueFromQuery({ filterQuery: this.filterQuery });
-        if (!queryValue) {
-          this.setValueToQuery({
-            filterQuery: this.filterQuery,
-            storedProp: this.storedProp,
-            value: defaultValue.value,
-          });
-        }
-      },
-    },
-  };
+  },
+  methods: {
+    ...mapActions('dashboards', {
+      setValue: 'SET_INTERVAL',
+    }),
+  },
+};
 </script>
 
 <style scoped>

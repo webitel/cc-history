@@ -1,29 +1,39 @@
 <template>
   <wt-search-bar
-    v-model="value"
+    :value="value"
     debounce
+    @input="setValue({ filter: filterQuery, value: $event })"
     @search="setValueToQuery({ filterQuery, value })"
   />
 </template>
 
 <script>
-  import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
+import { mapState, mapActions } from 'vuex';
+import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
 
-  export default {
-    name: 'filter-search',
-    mixins: [baseFilterMixin],
+export default {
+  name: 'filter-search',
+  mixins: [baseFilterMixin],
 
-    data: () => ({
-      value: '',
-      filterQuery: 'search',
+  data: () => ({
+    filterQuery: 'search',
+  }),
+
+  computed: {
+    ...mapState('filters', {
+      value: (state) => state.search.value,
     }),
+  },
 
-    methods: {
-      restoreValue(value) {
-        this.value = value;
-      },
+  methods: {
+    ...mapActions('filters', {
+      setValue: 'SET_FILTER',
+    }),
+    restoreValue(value) {
+      this.setValue({ filter: this.filterQuery, value });
     },
-  };
+  },
+};
 </script>
 
 <style scoped>

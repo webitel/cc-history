@@ -1,29 +1,39 @@
 <template>
   <wt-datetimepicker
-    v-model="value"
+    :value="value"
     :label="$t('components.dtPicker.to')"
-    @change="setValueToQuery({ filterQuery, value: $event })"
+    @change="handleChange"
   ></wt-datetimepicker>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
-
-const msInMin = 60 * 10 ** 3;
 
 export default {
   name: 'filter-to',
   mixins: [baseFilterMixin],
 
   data: () => ({
-    value: Math.floor(new Date().setHours(23, 59, 59) / msInMin) * msInMin,
     filterQuery: 'to',
   }),
 
+  computed: {
+    ...mapState('filters', {
+      value: (state) => state.to.value,
+    }),
+  },
+
   methods: {
+    ...mapActions('filters', {
+      setValue: 'SET_FILTER',
+    }),
+    handleChange(value) {
+      this.setValue({ filter: this.filterQuery, value });
+      this.setValueToQuery({ filterQuery: this.filterQuery, value });
+    },
     restoreValue(value) {
-      const dayEnd = new Date().setHours(23, 59, 59, 999);
-      this.value = +value || dayEnd;
+      this.setValue({ filter: this.filterQuery, value: +value });
     },
   },
 };

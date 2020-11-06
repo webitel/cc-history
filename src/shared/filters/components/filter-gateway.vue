@@ -1,36 +1,49 @@
 <template>
   <wt-select
-    v-model="value"
+    :value="value"
     :label="$t('fields.gateway')"
-    :track-by="trackBy"
-    :search="fetch"
+    :track-by="storedProp"
+    :multiple="multiple"
+    :search="search"
     :close-on-select="false"
     :internal-search="false"
-    multiple
+    @input="setValue({ filter: filterQuery, value: $event })"
     @reset="setValueToQuery({ value, filterQuery, storedProp })"
     @closed="setValueToQuery({ value, filterQuery, storedProp })"
   ></wt-select>
 </template>
 
 <script>
-  import apiFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/apiFilterMixin';
-  import APIRepository from '../../../api/APIRepository';
+import { mapState, mapActions } from 'vuex';
+import apiFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/apiFilterMixin';
+import APIRepository from '../../../api/APIRepository';
 
-  const gatewayAPI = APIRepository.gateways;
+const gatewayAPI = APIRepository.gateways;
 
-  export default {
-    name: 'filter-gateway',
-    mixins: [apiFilterMixin],
+export default {
+  name: 'filter-gateway',
+  mixins: [apiFilterMixin],
 
-    data: () => ({
-      filterQuery: 'gateway',
+  data: () => ({
+    filterQuery: 'gateway',
+  }),
+
+  computed: {
+    ...mapState('filters', {
+      value: (state) => state.gateway.value,
+      storedProp: (state) => state.gateway.storedProp,
+      multiple: (state) => state.gateway.multiple,
     }),
+  },
 
-    methods: {
-      fetch: gatewayAPI.getGateways,
-      fetchSelected: gatewayAPI.getGatewaysByIds,
-    },
-  };
+  methods: {
+    search: gatewayAPI.getGateways,
+    fetchSelected: gatewayAPI.getGatewaysByIds,
+    ...mapActions('filters', {
+      setValue: 'SET_FILTER',
+    }),
+  },
+};
 </script>
 
 <style scoped>

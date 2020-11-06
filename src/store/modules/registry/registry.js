@@ -1,6 +1,5 @@
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './headers/historyHeaders';
-import router from '../../../router';
 import openedCall from './opened-call/opened-call';
 
 const historyAPI = APIRepository.history;
@@ -10,13 +9,21 @@ const state = {
   dataList: [],
   headers: historyHeaders,
   isLoading: false,
+  page: 1,
+  size: 10,
   isNext: false,
 };
 
 const getters = {
   SELECTED_DATA_ITEMS: (state) => state.dataList.filter((item) => item._isSelected),
 
-  DATA_FIELDS: () => {
+  DATA_SORT: (state) => {
+    const header = state.headers.find((header) => header.sort);
+    // return header ? header.value + header.sort : null;
+    return null;
+  },
+
+  DATA_FIELDS: (state) => {
     let fields = state.headers
       .filter((header) => header.show)
       .map((header) => header.field);
@@ -30,8 +37,10 @@ const actions = {
 
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
+    const query = context.rootGetters['filters/GET_FILTERS'];
     const params = {
-      ...router.currentRoute.query,
+      ...query,
+      sort: context.getters.DATA_SORT,
       fields: context.getters.DATA_FIELDS,
       skipParent: true,
     };
@@ -47,9 +56,18 @@ const actions = {
       context.commit('SET_LOADING', false);
     }
   },
-
   SET_HEADERS: (context, headers) => {
     context.commit('SET_HEADERS', headers);
+  },
+  SET_PAGE: (context, page) => {
+    context.commit('SET_PAGE', +page);
+  },
+  SET_SIZE: (context, size) => {
+    if (size) context.commit('SET_SIZE', +size);
+  },
+  RESET_FILTERS: (context) => {
+    context.dispatch('SET_PAGE', 1);
+    context.dispatch('SET_SIZE', 10);
   },
 };
 const mutations = {
@@ -64,6 +82,12 @@ const mutations = {
   },
   SET_NEXT_PAGE: (state, isNext) => {
     state.isNext = isNext;
+  },
+  SET_PAGE: (state, page) => {
+    state.page = page;
+  },
+  SET_SIZE: (state, size) => {
+    state.size = size;
   },
 };
 

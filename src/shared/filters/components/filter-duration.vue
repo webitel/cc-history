@@ -10,7 +10,7 @@
         </wt-label>
         <wt-input
           name="filter-duration-from"
-          v-model="value.from"
+          :value="value.from"
           type="number"
           :number-min="0"
           @input="setFrom"
@@ -24,7 +24,7 @@
         </wt-label>
         <wt-input
           name="filter-duration-to"
-          v-model="value.to"
+          :value="value.to"
           type="number"
           :number-min="0"
           @input="setTo"
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import debounce from '@webitel/ui-sdk/src/scripts/debounce';
 import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
 
@@ -42,27 +43,20 @@ export default {
   name: 'filter-duration',
   mixins: [baseFilterMixin],
 
-  data: () => ({
-    value: {
-      from: 0,
-      to: 60,
-    },
-  }),
-  '$route.query': {
-    handler(newValue, oldValue) {
-      if (newValue.durationFrom !== oldValue.durationFrom
-        || newValue.durationTo !== oldValue.durationTo) {
-        this.restore({ filterQuery: this.filterQuery });
-      }
-    },
-  },
-
   created() {
+    // FIXME
     this.setFrom = debounce(this.setFrom);
     this.setTo = debounce(this.setTo);
   },
 
+  computed: {
+    ...mapState('filters', { value: (state) => state.duration.value }),
+  },
+
   methods: {
+    ...mapActions('filters', {
+      setValue: 'SET_FILTER',
+    }),
     restore() {
       this.restoreDurationFrom();
       this.restoreDurationTo();
@@ -71,13 +65,17 @@ export default {
     restoreDurationFrom() {
       const from = 0;
       const queryValue = this.$route.query.durationFrom;
-      this.value.from = +queryValue || from;
+      // this.value.from = +queryValue || from;
+      const value = { from: +queryValue || from, to: this.value.to };
+      this.setValue({ filter: 'duration', value });
     },
 
     restoreDurationTo() {
       const to = null;
       const queryValue = this.$route.query.durationTo;
-      this.value.to = +queryValue || to;
+      // this.value.to = +queryValue || to;
+      const value = { from: this.value.from, to: +queryValue || to };
+      this.setValue({ filter: 'duration', value });
     },
 
     setFrom(value) {
@@ -85,6 +83,7 @@ export default {
         filterQuery: 'durationFrom',
         value,
       });
+      this.restoreDurationFrom();
     },
 
     setTo(value) {
@@ -92,6 +91,7 @@ export default {
         filterQuery: 'durationTo',
         value,
       });
+      this.restoreDurationTo();
     },
   },
 };
