@@ -115,7 +115,8 @@ export default {
 
   watch: {
     '$route.query': {
-      async handler() {
+      async handler(val) {
+        // console.info('query', val);
         await this.loadList();
       },
       immediate: true,
