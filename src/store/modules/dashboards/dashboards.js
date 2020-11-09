@@ -7,6 +7,7 @@ const DashboardAPI = APIRepository.dashboards;
 const state = {
   dashboards: [],
   dashboardsData: [],
+  layout: '2',
   isLoading: false,
   intervalFilter: {
     value: IntervalOptions.find((interval) => interval.value === 'auto'),
@@ -59,16 +60,25 @@ const actions = {
 
   SAVE_DASHBOARDS: async (context) => {
     const snapshots = context.state.dashboards.map((dashboard) => dashboard.getSnapshot());
-    await DashboardAPI.saveDashboards(snapshots);
+    const dashboards = { layout: context.state.layout, snapshots };
+    await DashboardAPI.saveDashboards(dashboards);
   },
 
   RESTORE_DASHBOARDS: async (context) => {
-    const snapshots = await DashboardAPI.getDashboards() || [];
+    const { snapshots, layout } = await DashboardAPI.getDashboards();
     const dashboards = snapshots.map((snapshot) => {
       const Dashboard = Dashboards.find((Dashboard) => Dashboard.type === snapshot.type);
       return new Dashboard(snapshot);
     });
     context.commit('SET_DASHBOARDS', dashboards);
+    if (layout) context.commit('SET_LAYOUT', layout);
+  },
+  CHANGE_LAYOUT: (context, layout) => {
+    context.commit('SET_LAYOUT', layout);
+    context.dispatch('SAVE_DASHBOARDS');
+  },
+  SET_LAYOUT: (context, layout) => {
+    context.commit('SET_LAYOUT', layout);
   },
   SET_INTERVAL: (context, interval) => {
     const { defaultValue } = context.state.intervalFilter;
@@ -98,6 +108,9 @@ const mutations = {
   },
   SET_LOADING: (state, isLoading) => {
     state.isLoading = isLoading;
+  },
+  SET_LAYOUT: (state, layout) => {
+    state.layout = layout;
   },
   SET_INTERVAL: (state, interval) => {
     state.intervalFilter.value = interval;
