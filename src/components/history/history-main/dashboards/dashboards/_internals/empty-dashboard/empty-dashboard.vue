@@ -23,13 +23,13 @@ export default {
 
 .empty-dashboard__wrapper {
   text-align: center;
-  max-width: 40%;
+  width: 40%;
   margin: auto;
 }
 
 .empty-dashboard__pic {
-  width: 15%;
-  min-width: 220px;
+  width: 100%;
+  max-width: 300px;
   height: auto;
 }
 
