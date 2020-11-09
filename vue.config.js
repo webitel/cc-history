@@ -11,7 +11,7 @@ process.env.VUE_APP_GRAFANA_URL = process.env.NODE_ENV === 'production' ? '/graf
 module.exports = {
   // lintOnSave: false,
   transpileDependencies: ['@webitel/ui-sdk/src'],
-// publicPath: '',
+  publicPath: '',
   css: {
     loaderOptions: {
       sass: {
