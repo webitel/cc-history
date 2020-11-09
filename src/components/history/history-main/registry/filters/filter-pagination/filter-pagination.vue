@@ -13,7 +13,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import paginationFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/paginationFilterMixin';
+import paginationFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/paginationFilterMixin';
 
 export default {
   name: 'filter-pagination',

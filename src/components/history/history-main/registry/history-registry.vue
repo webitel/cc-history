@@ -90,7 +90,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
-import sortFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/sortFilterMixin';
+import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
 import OpenedCallPopup from './opened-call/opened-call-popup.vue';
 import FilterPagination from './filters/filter-pagination/filter-pagination.vue';
 import TableDirection from './_internals/table-templates/table-direction.vue';

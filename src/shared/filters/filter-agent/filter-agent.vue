@@ -15,7 +15,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import apiFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/apiFilterMixin';
+import apiFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/apiFilterMixin';
 import APIRepository from '../../../api/APIRepository';
 
 const agentAPI = APIRepository.agents;

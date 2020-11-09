@@ -1,4 +1,4 @@
-import filtersModule from './filtersModule';
+import filtersModule from '@webitel/ui-sdk/src/modules/QueryFilters/store/queryFilters';
 import agent from '../../../shared/filters/filter-agent/filterAgent.schema';
 import cause from '../../../shared/filters/filter-cause/filterCause.schema';
 import direction from '../../../shared/filters/filter-direction/filterDirection.schema';

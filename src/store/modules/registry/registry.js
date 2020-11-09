@@ -1,3 +1,4 @@
+import { sortToQueryAdapter } from '@webitel/ui-sdk/src/scripts/sortQueryAdapters';
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './headers/historyHeaders';
 import openedCall from './opened-call/opened-call';
@@ -19,8 +20,7 @@ const getters = {
 
   DATA_SORT: (state) => {
     const header = state.headers.find((header) => header.sort);
-    // return header ? header.value + header.sort : null;
-    return null;
+    return header ? `${sortToQueryAdapter(header.sort) + header.field}` : null;
   },
 
   DATA_FIELDS: (state) => {

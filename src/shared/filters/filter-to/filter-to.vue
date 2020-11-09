@@ -8,7 +8,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import baseFilterMixin from '@webitel/ui-sdk/src/mixins/dataFilterMixins/baseFilterMixin/baseFilterMixin';
+import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
 
 export default {
   name: 'filter-to',
