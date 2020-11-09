@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
-import FilterTableFields from '../../../../src/components/filters/filter-table-fields.vue';
+import FilterTableFields from '@/components/history/history-main/registry/filters/filter-table-fields/filter-table-fields.vue';
 import history from '../../../../src/store/modules/history/history';
 
 const localVue = createLocalVue();
