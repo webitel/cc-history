@@ -65,6 +65,10 @@ export default {
       dataList: (state) => state.dataList,
     }),
 
+    ...mapGetters('filters', {
+      getFilters: 'GET_FILTERS',
+    }),
+
     ...mapGetters('registry', {
       fields: 'DATA_FIELDS',
       selectedItems: 'SELECTED_DATA_ITEMS',
@@ -73,13 +77,21 @@ export default {
 
   methods: {
     callExportFiles() {
-      const params = { fileExists: true };
-      return this.exportFiles(null, params);
+      try {
+        const params = { existsFile: true };
+        return this.exportFiles(null, params);
+      } catch (err) {
+        throw err;
+      }
     },
 
     async callExportCSV() {
-      const params = { ...this.$route.query, fields: this.fields, skipParent: true };
-      return this.exportCSV(params);
+      try {
+        const params = { ...this.getFilters, fields: this.fields, skipParent: true };
+        return this.exportCSV(params);
+      } catch (err) {
+        throw err;
+      }
     },
   },
 };
