@@ -17,6 +17,7 @@ export default {
   computed: {
     options() {
       return {
+        aggregation: this.dashboard.options.aggregation,
         convertData: convertDuration,
       };
     },

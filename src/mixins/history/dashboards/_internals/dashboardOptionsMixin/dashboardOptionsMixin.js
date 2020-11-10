@@ -109,6 +109,9 @@ export default {
       };
     },
     metricOptions() {
+      return {
+        aggregation: this.dashboard.options.aggregation,
+      };
     },
   },
 };

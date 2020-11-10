@@ -1,20 +1,30 @@
 <template>
   <article class="metric">
-    <div class="metric__sum-wrapper">{{ sumValue }}</div>
-    <div class="metric__count-wrapper metric__count-wrapper--positive">
-      <h3 class="metric__count__title">{{ truthyLabel }}</h3>
-      <div class="metric__count__value">{{ truthyValue }}</div>
-      <div class="metric__count__percent">{{ truePercent }}%</div>
+    <div class="metric__aggregation-wrapper">
+      <h3 class="metric__aggregation__title">{{ aggregationTitle }}</h3>
+      <div class="metric__aggregation__value">{{ aggregationValue }}</div>
     </div>
-    <div class="metric__count-wrapper metric__count-wrapper--negative">
-      <h3 class="metric__count__title">{{ falsyLabel }}</h3>
-      <div class="metric__count__value">{{ falsyValue }}</div>
-      <div class="metric__count__percent">{{ falsePercent }}%</div>
+    <div class="metric__value-wrapper metric__value-wrapper--positive">
+      <h3 class="metric__value__title">{{ truthyLabel }}</h3>
+      <div class="metric__value__value">{{ truthyValue }}</div>
+      <div class="metric__value__percent">{{ truePercent }}%</div>
+    </div>
+    <div class="metric__value-wrapper metric__value-wrapper--negative">
+      <h3 class="metric__value__title">{{ falsyLabel }}</h3>
+      <div class="metric__value__value">{{ falsyValue }}</div>
+      <div class="metric__value__percent">{{ falsePercent }}%</div>
     </div>
   </article>
 </template>
 
 <script>
+import { AggregationParams } from '../../../../../../api/history/dashboards/params/DashboardParams.enum';
+
+const aggSum = (list) => list.reduce((sum, item) => sum + item, 0);
+const aggAvg = (list) => aggSum(list) / list.length;
+const aggMax = (list) => Math.max(...list);
+const aggMin = (list) => Math.min(...list);
+
 export default {
   name: 'metric',
   props: {
@@ -28,8 +38,12 @@ export default {
     },
   },
   computed: {
-    sumValue() {
-      return this.options.convertData ? this.options.convertData(this.sum) : this.sum;
+    aggregationTitle() {
+      return this.$t(`dashboards.aggregations.${this.options.aggregation}`);
+    },
+    aggregationValue() {
+      return this.options.convertData
+        ? this.options.convertData(this.aggregation) : this.aggregation;
     },
     truthyLabel() {
       return this.chartData.true?.label || '';
@@ -40,102 +54,135 @@ export default {
     truthyValue() {
       if (!this.chartData.true) return null;
       const { value } = this.chartData.true;
-      if (this.options.convertData) {
-        return this.options.convertData(value);
-      }
+      if (this.options.convertData) return this.options.convertData(value);
       return value;
     },
     falsyValue() {
       if (!this.chartData.false) return null;
       const { value } = this.chartData.false;
-      if (this.options.convertData) {
-        return this.options.convertData(value);
-      }
+      if (this.options.convertData) return this.options.convertData(value);
       return value;
     },
-    sum() {
-      return Object.values(this.chartData).reduce((sum, item) => sum + item.value, 0);
+    aggregation() {
+      const dataList = Object.values(this.chartData).map((item) => item.value);
+      switch (this.options.aggregation) {
+        case (AggregationParams.COUNT):
+          return aggSum(dataList);
+        case (AggregationParams.AVG):
+          return aggAvg(dataList);
+        case (AggregationParams.MAX):
+          return aggMax(dataList);
+        case (AggregationParams.MIN):
+          return aggMin(dataList);
+        case (AggregationParams.SUM):
+          return aggSum(dataList);
+        default: return null;
+      }
     },
     truePercent() {
-      if (!this.sum) return 0;
-      return Math.round((this.chartData.true.value / this.sum) * 100);
+      if (!this.aggregation) return 0;
+      return this.calcPercent(this.chartData.true.value);
     },
     falsePercent() {
-      if (!this.sum) return 0;
-      return Math.round((this.chartData.false.value / this.sum) * 100);
+      if (!this.aggregation) return 0;
+      return this.calcPercent(this.chartData.false.value);
+    },
+  },
+  methods: {
+    calcPercent(value) {
+      const aggValue = this.aggregation;
+      // * 10 / 10 -- round to 1 decimal after comma
+      const percent = Math.round((value / aggValue) * 100 * 10) / 10;
+      const isSmaller = (value - aggValue) < 0;
+      switch (this.options.aggregation) {
+        case (AggregationParams.COUNT):
+          return percent;
+        case (AggregationParams.AVG):
+          return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
+        case (AggregationParams.MAX):
+          return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
+        case (AggregationParams.MIN):
+          return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
+        case (AggregationParams.SUM):
+          return percent;
+        default: return null;
+      }
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-%typo-metric-sum {
-  font: 42px 'Montserrat Semi';
-  line-height: 1.2;
-}
-
-;
-%typo-metric-count-title {
+%typo-metric-aggregation-title {
   font: 20px 'Montserrat Semi';
   line-height: 1.2;
-}
-
-;
-%typo-metric-count-value {
+};
+%typo-metric-aggregation-value {
+  font: 42px 'Montserrat Semi';
+  line-height: 1.2;
+};
+%typo-metric-value-title {
+  font: 20px 'Montserrat Semi';
+  line-height: 1.2;
+};
+%typo-metric-value-value {
   font: 26px 'Montserrat Semi';
   line-height: 1.2;
-}
-
-;
-%typo-metric-count-percent {
+};
+%typo-metric-value-percent {
   font: 16px 'Montserrat Semi';
   line-height: 1.2;
-}
-
-;
+};
 
 .metric {
   display: grid;
   grid-template-areas:
-  'sum-wrapper sum-wrapper'
-  'count-wrapper--pos count-wrapper--neg';
+  'aggregation-wrapper aggregation-wrapper'
+  'value-wrapper--pos value-wrapper--neg';
   grid-gap: 20px;
   width: 100%;
   height: 100%;
 }
 
-.metric__sum-wrapper {
-  @extend %typo-metric-sum;
-  grid-area: sum-wrapper;
+.metric__aggregation-wrapper {
+  grid-area: aggregation-wrapper;
   text-align: center;
   margin-top: 30px;
+
+  .metric__aggregation__title {
+    @extend %typo-metric-aggregation-title;
+  }
+
+  .metric__aggregation__value {
+    @extend %typo-metric-aggregation-value;
+  }
 }
 
-.metric__count-wrapper {
+.metric__value-wrapper {
   text-align: center;
 
   &--positive {
-    grid-area: count-wrapper--pos;
+    grid-area: value-wrapper--pos;
     color: var(--true-color);
   }
 
   &--negative {
-    grid-area: count-wrapper--neg;
+    grid-area: value-wrapper--neg;
     color: var(--false-color);
   }
 
-  .metric__count__title {
-    @extend %typo-metric-count-title;
+  .metric__value__title {
+    @extend %typo-metric-value-title;
     margin-top: 10px;
   }
 
-  .metric__count__value {
-    @extend %typo-metric-count-value;
+  .metric__value__value {
+    @extend %typo-metric-value-value;
     margin-top: 10px;
   }
 
-  .metric__count__percent {
-    @extend %typo-metric-count-percent;
+  .metric__value__percent {
+    @extend %typo-metric-value-percent;
     margin-top: 10px;
   }
 }
