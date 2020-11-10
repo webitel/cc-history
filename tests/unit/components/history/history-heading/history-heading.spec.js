@@ -2,14 +2,15 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import CSVExport from '@webitel/ui-sdk/src/modules/CSVExport/CSVExport';
 import Vuex from 'vuex';
 import HistoryHeading from '../../../../../src/components/history/history-heading/the-history-heading.vue';
-import history from '../../../../../src/store/modules/history/history';
+import filters from '../../../../../src/store/modules/filters/filters';
+import registry from '../../../../../src/store/modules/registry/registry';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('History heading section', () => {
   const store = new Vuex.Store({
-    modules: { history },
+    modules: { registry, filters },
   });
 
   it('renders a component', () => {
