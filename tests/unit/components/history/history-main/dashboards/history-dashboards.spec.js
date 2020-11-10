@@ -1,8 +1,8 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
-import HistoryMain from '../../../../../src/components/history/history-main/the-history-main.vue';
-import registry from '../../../../../src/store/modules/registry/registry';
+import HistoryDashboards from '../../../../../../src/components/history/history-main/dashboards/history-dashboards.vue';
+import dashboards from '../../../../../../src/store/modules/dashboards/dashboards';
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
@@ -14,11 +14,11 @@ describe('History main', () => {
 
   beforeEach(() => {
     store = new Vuex.Store({
-      modules: { registry },
+      modules: { dashboards },
     });
   });
   it('renders a component', () => {
-    const wrapper = shallowMount(HistoryMain, { localVue, router, store });
-    expect(wrapper.classes('history-main')).toBe(true);
+    const wrapper = shallowMount(HistoryDashboards, { localVue, router, store });
+    expect(wrapper.exists()).toBe(true);
   });
 });

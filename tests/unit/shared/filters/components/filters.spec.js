@@ -60,6 +60,13 @@ describe('Filter components', () => {
     expect(wrapper.findComponent({ name: 'wt-select' }).element).toBeVisible();
   });
 
+  it('renders interval filter component', () => {
+    const wrapper = shallowMount(FilterInterval, {
+      localVue, store, mocks: { $route: { query: {} } },
+    });
+    expect(wrapper.findComponent({ name: 'wt-select' }).element).toBeVisible();
+  });
+
   it('renders pagination filter component', () => {
     const wrapper = shallowMount(FilterPagination, {
       localVue, store, mocks: { $route: { query: {} } },

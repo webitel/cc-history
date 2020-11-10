@@ -34,6 +34,7 @@ module.exports = {
     '!src/**/main.js', // No need to cover bootstrap file
   ],
   setupFiles: [
+    'jest-canvas-mock',
     './tests/config/config.js',
     './src/plugins/webitel-ui.js',
   ],
