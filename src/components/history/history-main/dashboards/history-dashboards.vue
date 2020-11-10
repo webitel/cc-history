@@ -1,6 +1,6 @@
 <template>
   <div class="content-wrapper">
-    <dashboards-header v-model="layout" @reflow="reflow"/>
+    <dashboards-header :layout="layout" @reflow="reflow"/>
     <wt-loader v-show="isLoading || isReflow"/>
     <div class="history-dashboards" v-if="!isReflow" v-show="!isLoading">
       <div
@@ -75,7 +75,6 @@ export default {
     CallsDurationMetricDashboard,
   },
   data: () => ({
-    layout: '2',
     isReflow: false, // variable forces dashboards rerender
     configuredDashboard: null,
     isDashboardSelect: false,
@@ -98,6 +97,7 @@ export default {
     ...mapState('dashboards', {
       dashboards: (state) => state.dashboards,
       dashboardsData: (state) => state.dashboardsData,
+      layout: (state) => state.layout,
       isLoading: (state) => state.isLoading,
     }),
   },
@@ -107,10 +107,12 @@ export default {
       deleteDashboard: 'DELETE_DASHBOARD',
       restoreDashboards: 'RESTORE_DASHBOARDS',
       loadDashboardsData: 'LOAD_DASHBOARDS_DATA',
+      changeLayout: 'CHANGE_LAYOUT',
     }),
 
-    async reflow() {
+    async reflow(value) {
       this.isReflow = true;
+      this.changeLayout(value);
       await this.$nextTick();
       this.isReflow = false;
     },
@@ -169,6 +171,7 @@ export default {
 
 .dashboard-wrapper {
   min-height: 333px;
+  min-width: fit-content; // prevent scrolls caused by 0.5px width diff between chart and wrapper
   display: flex;
   flex-direction: column;
   align-items: center;

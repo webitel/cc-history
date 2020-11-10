@@ -1,13 +1,20 @@
 import APIRepository from '../../../api/APIRepository';
-import router from '../../../router';
 import Dashboards from '../../../components/history/history-main/dashboards/dashboards/enums/Dashboards.enum';
+import IntervalOptions from '../../../components/history/history-main/dashboards/filters/filter-interval/IntervalOptions.enum';
 
 const DashboardAPI = APIRepository.dashboards;
 
 const state = {
   dashboards: [],
   dashboardsData: [],
+  layout: '2',
   isLoading: false,
+  intervalFilter: {
+    value: IntervalOptions.find((interval) => interval.value === 'auto'),
+    defaultValue: IntervalOptions.find((interval) => interval.value === 'auto'),
+    storedProp: 'value',
+    multiple: false,
+  },
 };
 
 const getters = {};
@@ -31,9 +38,10 @@ const actions = {
     if (!state.dashboards.length) return;
     context.commit('SET_LOADING', true);
     try {
-      const { query } = router.currentRoute;
+      const query = context.rootGetters['filters/GET_FILTERS'];
+      const interval = context.state.intervalFilter.value[context.state.intervalFilter.storedProp];
       const aggs = context.state.dashboards
-        .map((dashboard) => dashboard.getRequestAggregations({ interval: query.interval }));
+        .map((dashboard) => dashboard.getRequestAggregations({ interval }));
       const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
       await context.commit('SET_DASHBOARDS_DATA', data);
     } catch (err) {
@@ -52,16 +60,32 @@ const actions = {
 
   SAVE_DASHBOARDS: async (context) => {
     const snapshots = context.state.dashboards.map((dashboard) => dashboard.getSnapshot());
-    await DashboardAPI.saveDashboards(snapshots);
+    const dashboards = { layout: context.state.layout, snapshots };
+    await DashboardAPI.saveDashboards(dashboards);
   },
 
   RESTORE_DASHBOARDS: async (context) => {
-    const snapshots = await DashboardAPI.getDashboards() || [];
+    const { snapshots, layout } = await DashboardAPI.getDashboards();
     const dashboards = snapshots.map((snapshot) => {
       const Dashboard = Dashboards.find((Dashboard) => Dashboard.type === snapshot.type);
       return new Dashboard(snapshot);
     });
     context.commit('SET_DASHBOARDS', dashboards);
+    if (layout) context.commit('SET_LAYOUT', layout);
+  },
+  CHANGE_LAYOUT: (context, layout) => {
+    context.commit('SET_LAYOUT', layout);
+    context.dispatch('SAVE_DASHBOARDS');
+  },
+  SET_LAYOUT: (context, layout) => {
+    context.commit('SET_LAYOUT', layout);
+  },
+  SET_INTERVAL: (context, interval) => {
+    const { defaultValue } = context.state.intervalFilter;
+    context.commit('SET_INTERVAL', interval || defaultValue);
+  },
+  RESET_FILTERS: (context) => {
+    context.dispatch('SET_INTERVAL', context.state.intervalFilter.defaultValue);
   },
 };
 
@@ -84,6 +108,12 @@ const mutations = {
   },
   SET_LOADING: (state, isLoading) => {
     state.isLoading = isLoading;
+  },
+  SET_LAYOUT: (state, layout) => {
+    state.layout = layout;
+  },
+  SET_INTERVAL: (state, interval) => {
+    state.intervalFilter.value = interval;
   },
 };
 

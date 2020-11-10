@@ -40,7 +40,7 @@ import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportC
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 
 import generateMediaURL from '../../../mixins/media/scripts/generateMediaURL';
-import FilterSearch from '../../../shared/filters/components/filter-search.vue';
+import FilterSearch from '../../../shared/filters/filter-search/filter-search.vue';
 import APIRepository from '../../../api/APIRepository';
 
 export default {

@@ -40,8 +40,6 @@ const fetchHistory = async ({
                               tags,
                             }) => {
   try {
-    // eslint-disable-next-line no-param-reassign
-    if (tags && !Array.isArray(tags)) tags = [tags];
     const response = await callService.searchHistoryCall(
       page,
       size,

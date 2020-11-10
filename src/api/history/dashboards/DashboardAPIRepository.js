@@ -49,7 +49,10 @@ const fetchDashboardsData = async ({
 
 const saveDashboards = (dashboards) => instance.put(SNAPSHOTS_URL, dashboards);
 
-const getDashboards = () => instance.get(SNAPSHOTS_URL);
+const getDashboards = async () => {
+  const dashboards = await instance.get(SNAPSHOTS_URL);
+  return dashboards || {};
+};
 
 const DashboardAPIRepository = {
   async getDashboardsData(argParams) {

@@ -61,6 +61,7 @@ export default {
       metric: 'Metric',
     },
     aggregations: {
+      count: 'COUNT: Count',
       min: 'MIN: Minimum value',
       max: 'MAX: maximum value',
       sum: 'SUM: summarized value',

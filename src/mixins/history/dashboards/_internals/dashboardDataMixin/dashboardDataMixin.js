@@ -2,7 +2,7 @@ import normalizeDashboardData from './scripts/normalizeDashboardData';
 import calcRelativeData from './scripts/calcRelativeData';
 import Visualizations
   from '../../../../../components/history/history-main/dashboards/dashboards/enums/Visualizations.enum';
-import IntervalOptions from '../../../../../shared/filters/api/IntervalOptions.enum';
+import IntervalOptions from '../../../../../components/history/history-main/dashboards/filters/filter-interval/IntervalOptions.enum';
 
 const prettifyDate = (date, interval) => {
   if (interval) {
@@ -86,11 +86,11 @@ export default {
       const dataSource = this.normalizeData();
       return {
         true: {
-          value: dataSource.datasets.get(true)?.data[0],
+          value: dataSource.datasets.get(true)?.data[0] || 0,
           label: this.$t('dashboards.bridged.true'),
         },
         false: {
-          value: dataSource.datasets.get(false)?.data[0],
+          value: dataSource.datasets.get(false)?.data[0] || 0,
           label: this.$t('dashboards.bridged.false'),
         },
       };

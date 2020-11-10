@@ -2,6 +2,7 @@
   <metric
     v-if="!emptyData"
     :chart-data="chartData"
+    :options="options"
   ></metric>
   <empty-dashboard v-else />
 </template>

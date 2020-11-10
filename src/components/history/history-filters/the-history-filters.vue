@@ -26,19 +26,19 @@
 
 <script>
   import { mapActions } from 'vuex';
-  import FilterFields from '../../filters/filter-table-fields.vue';
-  import FilterFrom from '../../../shared/filters/components/filter-from.vue';
-  import FilterTo from '../../../shared/filters/components/filter-to.vue';
+  import FilterFields from '../history-main/registry/filters/filter-table-fields/filter-table-fields.vue';
+  import FilterFrom from '../../../shared/filters/filter-from/filter-from.vue';
+  import FilterTo from '../../../shared/filters/filter-to/filter-to.vue';
   // import FilterType from '../../../shared/filters/components/filter-type.vue';
-  import FilterDirection from '../../../shared/filters/components/filter-direction.vue';
-  import FilterUser from '../../../shared/filters/components/filter-user.vue';
-  import FilterGateway from '../../../shared/filters/components/filter-gateway.vue';
-  import FilterAgent from '../../../shared/filters/components/filter-agent.vue';
-  import FilterTeam from '../../../shared/filters/components/filter-queue.vue';
-  import FilterQueue from '../../../shared/filters/components/filter-team.vue';
-  import FilterCause from '../../../shared/filters/components/filter-cause.vue';
-  import FilterTags from '../../../shared/filters/components/filter-tags.vue';
-  import FilterDuration from '../../../shared/filters/components/filter-duration.vue';
+  import FilterDirection from '../../../shared/filters/filter-direction/filter-direction.vue';
+  import FilterUser from '../../../shared/filters/filter-user/filter-user.vue';
+  import FilterGateway from '../../../shared/filters/filter-gateway/filter-gateway.vue';
+  import FilterAgent from '../../../shared/filters/filter-agent/filter-agent.vue';
+  import FilterTeam from '../../../shared/filters/filter-queues/filter-queue.vue';
+  import FilterQueue from '../../../shared/filters/filter-teams/filter-team.vue';
+  import FilterCause from '../../../shared/filters/filter-cause/filter-cause.vue';
+  import FilterTags from '../../../shared/filters/filter-tags/filter-tags.vue';
+  import FilterDuration from '../../../shared/filters/filter-duration/filter-duration.vue';
   import tableActionsHandlerMixin from '../../../mixins/tableActions/tableActionsHandlerMixin';
 
   export default {
