@@ -8,6 +8,7 @@ import to from '../../../shared/filters/filter-to/filterTo.schema';
 import gateway from '../../../shared/filters/filter-gateway/filterGateway.schema';
 import queue from '../../../shared/filters/filter-queues/filterQueues.schema';
 import search from '../../../shared/filters/filter-search/filterSearch.schema';
+import tags from '../../../shared/filters/filter-tags/filterTags.schema';
 import team from '../../../shared/filters/filter-teams/filterTeams.schema';
 import user from '../../../shared/filters/filter-user/filterUser.schema';
 
@@ -21,6 +22,7 @@ const state = {
   gateway,
   queue,
   search,
+  tags,
   team,
   user,
 };

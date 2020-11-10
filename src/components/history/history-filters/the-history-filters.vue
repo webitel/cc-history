@@ -14,6 +14,7 @@
       <filter-team class="history-filters__filter"/>
       <filter-queue class="history-filters__filter"/>
       <filter-duration class="history-filters__filter"/>
+      <filter-tags class="history-filters__filter"/>
       <filter-cause class="history-filters__filter"/>
     </form>
     <wt-table-actions
@@ -36,7 +37,7 @@
   import FilterTeam from '../../../shared/filters/filter-queues/filter-queue.vue';
   import FilterQueue from '../../../shared/filters/filter-teams/filter-team.vue';
   import FilterCause from '../../../shared/filters/filter-cause/filter-cause.vue';
-  // import FilterTags from './filters/filter-tags.vue';
+  import FilterTags from '../../../shared/filters/filter-tags/filter-tags.vue';
   import FilterDuration from '../../../shared/filters/filter-duration/filter-duration.vue';
   import tableActionsHandlerMixin from '../../../mixins/tableActions/tableActionsHandlerMixin';
 
@@ -55,7 +56,7 @@
       FilterTeam,
       FilterQueue,
       FilterCause,
-      // FilterTags,
+      FilterTags,
       FilterDuration,
     },
 
