@@ -1,6 +1,8 @@
 import APIRepository from '../../../api/APIRepository';
-import Dashboards from '../../../components/history/history-main/dashboards/dashboards/enums/Dashboards.enum';
-import IntervalOptions from '../../../components/history/history-main/dashboards/filters/filter-interval/IntervalOptions.enum';
+import Dashboards
+  from '../../../components/history/history-main/dashboards/dashboards/enums/Dashboards.enum';
+import IntervalOptions
+  from '../../../components/history/history-main/dashboards/filters/filter-interval/IntervalOptions.enum';
 
 const DashboardAPI = APIRepository.dashboards;
 
@@ -35,7 +37,7 @@ const actions = {
   LOAD_DATA: async (context, payload) => context.dispatch('LOAD_DASHBOARDS_DATA', payload),
 
   LOAD_DASHBOARDS_DATA: async (context) => {
-    if (!state.dashboards.length) return;
+    if (!context.state.dashboards.length) return;
     context.commit('SET_LOADING', true);
     try {
       const query = context.rootGetters['filters/GET_FILTERS'];
@@ -54,8 +56,10 @@ const actions = {
 
   DELETE_DASHBOARD: async (context, dashboard) => {
     const dashboardIndex = context.state.dashboards.indexOf(dashboard);
-    context.commit('REMOVE_DASHBOARD', dashboardIndex);
-    await context.dispatch('SAVE_DASHBOARDS');
+    if (dashboardIndex !== -1) {
+      context.commit('REMOVE_DASHBOARD', dashboardIndex);
+      await context.dispatch('SAVE_DASHBOARDS');
+    }
   },
 
   SAVE_DASHBOARDS: async (context) => {
