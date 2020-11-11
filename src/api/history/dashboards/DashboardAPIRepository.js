@@ -40,6 +40,7 @@ const fetchDashboardsData = async ({
       duration: { from: durationFrom, to: durationTo },
       cause,
       direction,
+      skip_parent: true,
   });
     return formatResponse(response);
   } catch (err) {
