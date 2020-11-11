@@ -32,7 +32,7 @@ export default {
     resetFilters() {
       const { fields } = this.$route.query;
       if (!deepEqual(this.$route.query, { fields })) this.$router.push({ query: { fields } });
-      this.$store.dispatch('RESET_FILTERS');
+      this.resetFilters();
     },
   },
 };

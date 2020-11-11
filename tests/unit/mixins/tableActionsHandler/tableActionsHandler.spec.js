@@ -8,16 +8,17 @@ localVue.use(Vuex);
 localVue.use(VueRouter);
 const router = new VueRouter();
 
-jest.mock('../../../../src/api/history/HistoryAPIRepository');
+jest.mock('../../../../src/api/history/registry/RegistryAPIRepository');
 
 describe('Table actions handler', () => {
-  const loadDataList = jest.fn();
+  const loadData = jest.fn();
+  const resetFilters = jest.fn();
   let wrapper;
   beforeEach(() => {
     const Component = {
       render() {},
       mixins: [tableActionsHandlerMixin],
-      methods: { loadDataList },
+      methods: { loadData, resetFilters },
     };
     wrapper = shallowMount(Component, {
       localVue,
@@ -27,7 +28,7 @@ describe('Table actions handler', () => {
 
   it('Refresh action', async () => {
     await wrapper.vm.tableActionsHandler('refresh');
-    expect(loadDataList).toHaveBeenCalled();
+    expect(loadData).toHaveBeenCalled();
   });
 
   it('Column select action', () => {
@@ -38,7 +39,7 @@ describe('Table actions handler', () => {
   it('Filter reset action', async () => {
     await wrapper.vm.$router.replace({ path: '/', query: { jest: 'jest' } });
     wrapper.vm.tableActionsHandler('filterReset');
-    expect(wrapper.vm.$route.query).toEqual({});
+    expect(resetFilters).toHaveBeenCalled();
   });
 
   it('settings (expand filters) action', () => {

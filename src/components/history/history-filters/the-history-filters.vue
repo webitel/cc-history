@@ -68,6 +68,7 @@
     methods: {
       ...mapActions({
         loadData: 'LOAD_DATA',
+        resetFilters: 'RESET_FILTERS',
       }),
     },
   };

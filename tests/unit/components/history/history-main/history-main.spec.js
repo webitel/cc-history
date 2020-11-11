@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import HistoryMain from '../../../../../src/components/history/history-main/the-history-main.vue';
-import history from '../../../../../src/store/modules/history/history';
+import registry from '../../../../../src/store/modules/registry/registry';
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
@@ -14,9 +14,7 @@ describe('History main', () => {
 
   beforeEach(() => {
     store = new Vuex.Store({
-      modules: {
-        history,
-      },
+      modules: { registry },
     });
   });
   it('renders a component', () => {

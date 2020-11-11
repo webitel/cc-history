@@ -80,11 +80,11 @@ export default {
       }
     },
     truePercent() {
-      if (!this.aggregation) return 0;
+      if (typeof this.aggregation !== 'number' || Number.isNaN(this.aggregation)) return 0;
       return this.calcPercent(this.chartData.true.value);
     },
     falsePercent() {
-      if (!this.aggregation) return 0;
+      if (typeof this.aggregation !== 'number' || Number.isNaN(this.aggregation)) return 0;
       return this.calcPercent(this.chartData.false.value);
     },
   },
@@ -98,10 +98,16 @@ export default {
         case (AggregationParams.COUNT):
           return percent;
         case (AggregationParams.AVG):
+          if (!aggValue && value) return '+100';
+          if (!aggValue && !value) return '+0';
           return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
         case (AggregationParams.MAX):
+          if (!aggValue && value) return '+100';
+          if (!aggValue && !value) return '+0';
           return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
         case (AggregationParams.MIN):
+          if (!aggValue && value) return '+100';
+          if (!aggValue && !value) return '+0';
           return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
         case (AggregationParams.SUM):
           return percent;

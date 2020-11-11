@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import OpenedCallPopup from '@/components/history/history-main/history/opened-call/opened-call-popup.vue';
-import openedCallHistory from '@/store/modules/history/opened-call/opened-call';
+import OpenedCallPopup from '../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-popup.vue';
+import openedCall from '../../../../../../../src/store/modules/registry/opened-call/opened-call';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -9,9 +9,9 @@ localVue.use(Vuex);
 describe('Opened call popup (wrapper)', () => {
   const store = new Vuex.Store({
     modules: {
-      history: {
+      registry: {
         namespaced: true,
-        modules: { 'opened-call': openedCallHistory },
+        modules: { 'opened-call': openedCall },
       },
     },
   });
@@ -22,7 +22,7 @@ describe('Opened call popup (wrapper)', () => {
 
   it('renders a component if main call has any children', () => {
     const wrapper = shallowMount(OpenedCallPopup, {
-      localVue, store, computed: { mainCall() { return { hasChildren: true } } },
+      localVue, store, computed: { mainCall() { return { hasChildren: true }; } },
     });
     expect(wrapper.exists()).toBe(true);
   });

@@ -1,9 +1,9 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
-import HistoryTable from '../../../../../../src/components/history/history-main/history/history-table.vue';
-import history from '../../../../../../src/store/modules/history/history';
-import openedHistoryCall from '../../../../../../src/store/modules/history/opened-call/opened-call';
+import HistoryRegistry from '../../../../../../src/components/history/history-main/registry/history-registry.vue';
+import registry from '../../../../../../src/store/modules/registry/registry';
+import openedHistoryCall from '../../../../../../src/store/modules/registry/opened-call/opened-call';
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
@@ -21,8 +21,8 @@ describe('History table', () => {
   beforeEach(() => {
     store = new Vuex.Store({
       modules: {
-        history: {
-          ...history,
+        registry: {
+          ...registry,
           modules: {
             'opened-call': { ...openedHistoryCall },
           },
@@ -31,12 +31,12 @@ describe('History table', () => {
     });
   });
   it('renders a component', () => {
-    const wrapper = shallowMount(HistoryTable, { localVue, router, store });
-    expect(wrapper.classes('history-table')).toBe(true);
+    const wrapper = shallowMount(HistoryRegistry, { localVue, router, store });
+    expect(wrapper.classes('history-registry')).toBe(true);
   });
 
   it('sets opened call to open', () => {
-    const wrapper = shallowMount(HistoryTable, { localVue, router, store });
+    const wrapper = shallowMount(HistoryRegistry, { localVue, router, store });
     const item = { id: '1' };
     wrapper.vm.openItem(item);
     expect(SET_OPENED_CALL).toHaveBeenCalled();
@@ -44,7 +44,7 @@ describe('History table', () => {
   });
 
   it('resets opened call', () => {
-    const wrapper = shallowMount(HistoryTable, {
+    const wrapper = shallowMount(HistoryRegistry, {
       localVue, router, store, computed: { isOpenedCallPopup() { return true; } },
     });
     wrapper.findComponent({ name: 'opened-item-popup' }).vm.$emit('close');
