@@ -70,7 +70,7 @@ export default {
 
     getFromLocalStorage({ filterQuery }) {
       const value = localStorage.getItem(filterQuery);
-      return value ? value.split(',').map((item) => ({ value: item })) : '';
+      return value ? value.split(',').map((item) => item) : '';
     },
 
     // copy-pasted params from "setQueryArray method
