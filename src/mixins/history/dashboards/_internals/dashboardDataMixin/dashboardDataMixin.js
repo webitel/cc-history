@@ -15,6 +15,7 @@ const prettifyDate = (date, interval) => {
 export default {
   computed: {
     chartData() {
+      console.info('cc');
       switch (this.dashboard.options.visualization) {
         case Visualizations.LINE_CHART: return this.lineData();
         case Visualizations.DOUGHNUT_CHART: return this.doughnutData();

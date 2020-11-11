@@ -18,8 +18,4 @@ describe('Charts', () => {
     const wrapper = shallowMount(BarChart, { propsData: { chartData } });
     expect(wrapper.exists()).toBe(true);
   });
-  it('renders a metric', () => {
-    const wrapper = shallowMount(Metric, { propsData: { chartData } });
-    expect(wrapper.exists()).toBe(true);
-  });
 });

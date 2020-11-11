@@ -7,12 +7,11 @@ import FilterDirection from '../../../../../src/shared/filters/filter-direction/
 import FilterDuration from '../../../../../src/shared/filters/filter-duration/filter-duration.vue';
 import FilterFrom from '../../../../../src/shared/filters/filter-from/filter-from.vue';
 import FilterGateway from '../../../../../src/shared/filters/filter-gateway/filter-gateway.vue';
-import FilterPagination from '../../../../../src/components/history/history-main/registry/filters/filter-pagination/filter-pagination.vue';
 import FilterQueue from '../../../../../src/shared/filters/filter-queues/filter-queue.vue';
 import FilterSearch from '../../../../../src/shared/filters/filter-search/filter-search.vue';
+import FilterTags from '../../../../../src/shared/filters/filter-tags/filter-tags.vue';
 import FilterTeam from '../../../../../src/shared/filters/filter-teams/filter-team.vue';
 import FilterTo from '../../../../../src/shared/filters/filter-to/filter-to.vue';
-// import FilterType from '../../../../../src/shared/filters//filter-type.vue';
 import FilterUser from '../../../../../src/shared/filters/filter-user/filter-user.vue';
 
 const localVue = createLocalVue();
@@ -60,20 +59,6 @@ describe('Filter components', () => {
     expect(wrapper.findComponent({ name: 'wt-select' }).element).toBeVisible();
   });
 
-  it('renders interval filter component', () => {
-    const wrapper = shallowMount(FilterInterval, {
-      localVue, store, mocks: { $route: { query: {} } },
-    });
-    expect(wrapper.findComponent({ name: 'wt-select' }).element).toBeVisible();
-  });
-
-  it('renders pagination filter component', () => {
-    const wrapper = shallowMount(FilterPagination, {
-      localVue, store, mocks: { $route: { query: {} } },
-    });
-    expect(wrapper.findComponent({ name: 'wt-pagination' }).element).toBeVisible();
-  });
-
   it('renders queue filter component', () => {
     const wrapper = shallowMount(FilterQueue, {
       localVue, store, mocks: { $route: { query: {} } },
@@ -86,6 +71,13 @@ describe('Filter components', () => {
       localVue, store, mocks: { $route: { query: {} } },
     });
     expect(wrapper.findComponent({ name: 'wt-search-bar' }).element).toBeVisible();
+  });
+
+  it('renders tags filter component', () => {
+    const wrapper = shallowMount(FilterTags, {
+      localVue, store, mocks: { $route: { query: {} } },
+    });
+    expect(wrapper.findComponent({ name: 'wt-select' }).element).toBeVisible();
   });
 
   it('renders team filter component', () => {
@@ -101,11 +93,6 @@ describe('Filter components', () => {
     });
     expect(wrapper.findComponent({ name: 'wt-datetimepicker' }).element).toBeVisible();
   });
-
-  // it('renders type filter component', () => {
-  //   const wrapper = shallowMount(FilterType, { mocks: { $route: { query: {} } } });
-  //   expect(wrapper.findComponent({ name: 'wt-select' }).element).toBeVisible();
-  // });
 
   it('renders user filter component', () => {
     const wrapper = shallowMount(FilterUser, {
