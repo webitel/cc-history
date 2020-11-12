@@ -82,8 +82,8 @@ export default {
         tooltips: {
           callbacks: {
             label: (tooltipItem, data) => {
-              const name = data.datasets[0].label;
-              const value = data.datasets[0].data[tooltipItem.index];
+              const name = data.datasets[tooltipItem.datasetIndex].label;
+              const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
               const label = `${name}: ${value}`;
               return this.dashboard.options.relative
                 ? `${label}%` : label;
