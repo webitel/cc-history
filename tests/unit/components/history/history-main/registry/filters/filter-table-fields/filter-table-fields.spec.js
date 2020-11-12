@@ -11,7 +11,7 @@ localVue.use(Vuex);
 localVue.use(VueRouter);
 const router = new VueRouter();
 const headers = [
-  { name: 'header1',  value: 'h1' },
+  { name: 'header1', value: 'h1' },
   { name: 'header2', value: 'h2' },
 ];
 

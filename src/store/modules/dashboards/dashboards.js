@@ -85,8 +85,9 @@ const actions = {
     context.commit('SET_LAYOUT', layout);
   },
   SET_INTERVAL: (context, interval) => {
+    const { value } = interval;
     const { defaultValue } = context.state.intervalFilter;
-    context.commit('SET_INTERVAL', interval || defaultValue);
+    context.commit('SET_INTERVAL', value || defaultValue);
   },
   RESET_FILTERS: (context) => {
     context.dispatch('SET_INTERVAL', context.state.intervalFilter.defaultValue);
