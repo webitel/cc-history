@@ -11,7 +11,7 @@ export default {
           this.openColumnSelect();
           break;
         case 'filterReset':
-          this.resetFilters();
+          this.resetFiltersAction();
           break;
         case 'settings':
           this.expandFilters();
@@ -29,7 +29,7 @@ export default {
     openColumnSelect() {
       this.isFilterFieldsOpened = true;
     },
-    resetFilters() {
+    resetFiltersAction() {
       const { fields } = this.$route.query;
       if (!deepEqual(this.$route.query, { fields })) this.$router.push({ query: { fields } });
       this.resetFilters();
