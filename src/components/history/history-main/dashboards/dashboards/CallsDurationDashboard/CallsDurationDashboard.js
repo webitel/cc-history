@@ -17,7 +17,7 @@ export default class CallsDurationDashboard extends AbstractDashboard {
 
   visualizationOptions = [Visualizations.DOUGHNUT_CHART, Visualizations.BAR_CHART];
   aggregationOptions = Object.values(AggregationParams)
-    .filter((agg) => agg !== AggregationParams.COUNT);
+    .filter((agg) => agg !== AggregationParams.COUNT && agg !== AggregationParams.MIN);
 
   paramOptions = Object.values(VisualizationParams)
     .filter((param) => param !== VisualizationParams.VARIABLES);
