@@ -44,7 +44,7 @@ export default {
       if (event.data.accessToken) {
         authAPI.setToken(event.data.accessToken);
         await this.restoreSession();
-        await this.$router.replace('/history');
+        await this.$router.replace('/');
       }
     },
 
