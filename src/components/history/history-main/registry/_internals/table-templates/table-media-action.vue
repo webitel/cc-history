@@ -1,6 +1,6 @@
 <template>
   <wt-icon-btn
-    :icon="isAnyFilesPlaying ? 'pause': 'play'"
+    :icon="isAnyFilesPlaying ? 'stop': 'play'"
     @click="$emit('click', $event)"
   >
   </wt-icon-btn>
