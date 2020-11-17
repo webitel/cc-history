@@ -142,6 +142,10 @@ export default {
       from: 'From:',
       to: 'To:',
     },
+    duration: {
+      from: 'From (sec):',
+      to: 'To (sec):',
+    },
     columnSelect: {
       header: 'Select columns to show:',
     },
