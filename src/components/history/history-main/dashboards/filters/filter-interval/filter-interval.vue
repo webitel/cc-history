@@ -6,7 +6,7 @@
     :track-by="storedProp"
     :multiple="multiple"
     :clearable="false"
-    @input="setValue({ filter: filterQuery, value: $event })"
+    @input="setInterval"
     @reset="setValueToQuery({ value: value.value, filterQuery, storedProp })"
     @closed="setValueToQuery({ value: value.value, filterQuery, storedProp })"
   ></wt-select>
@@ -35,8 +35,11 @@ export default {
   },
   methods: {
     ...mapActions('dashboards', {
-      setValue: 'SET_INTERVAL',
+      setInterval: 'SET_INTERVAL',
     }),
+    setValue({ value }) {
+      this.setInterval(value);
+    },
   },
 };
 </script>
