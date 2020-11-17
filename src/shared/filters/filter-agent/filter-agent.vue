@@ -40,7 +40,7 @@ export default {
     ...mapActions('filters', {
       setValue: 'SET_FILTER',
     }),
-    search: agentAPI.getAgents,
+    search: (search) => agentAPI.getAgents({ search }),
     fetchSelected: agentAPI.getAgentsByIds,
   },
 };

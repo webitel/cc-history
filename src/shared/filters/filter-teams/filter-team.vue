@@ -39,7 +39,7 @@ export default {
     ...mapActions('filters', {
       setValue: 'SET_FILTER',
     }),
-    search: teamAPI.getTeams,
+    search: (search) => teamAPI.getTeams({ search }),
     fetchSelected: teamAPI.getTeamsByIds,
   },
 };
