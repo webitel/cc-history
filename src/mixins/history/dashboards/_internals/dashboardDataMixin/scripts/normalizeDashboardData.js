@@ -1,10 +1,22 @@
+const calcCumulativeSum = (dataSources) => {
+  dataSources.datasets.forEach((dataset) => {
+    // eslint-disable-next-line no-param-reassign
+    dataset.sum = dataset.data.reduce((sum, value) => sum + value);
+  });
+};
+
+const sortDatasets = (datasets) => (
+  new Map([...datasets.entries()]
+    .sort((dataset1, dataset2) => dataset2[1].sum - dataset1[1].sum))
+);
+
 const normalizeDashboardData = ({
-                                         aggValue,
-                                         param,
-                                         data,
-                                         dateKey = 'createdAt',
-                                         defaultValue = 0,
-                                       }) => {
+                                  aggValue,
+                                  param,
+                                  data,
+                                  dateKey = 'createdAt',
+                                  defaultValue = 0,
+                                }) => {
   const dataSources = data.reduce((wrapper, item) => {
     const itemParam = item[param];
     const itemValue = item[aggValue] || defaultValue;
@@ -41,8 +53,9 @@ const normalizeDashboardData = ({
         .concat(new Array(dataSources.dates.size - dataset.data.length).fill(defaultValue));
     }
   });
-
+  calcCumulativeSum(dataSources);
   dataSources.datasets.delete(null);
+  dataSources.datasets = sortDatasets(dataSources.datasets);
   return dataSources;
 };
 
