@@ -38,7 +38,7 @@ export default {
 
     mediaIcon(file) {
       return file.id !== this.currentlyPlaying
-        ? 'play' : 'pause';
+        ? 'play' : 'stop';
     },
 
     close() {
