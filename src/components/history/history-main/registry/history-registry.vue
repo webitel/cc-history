@@ -115,16 +115,18 @@ export default {
 
   watch: {
     '$route.query': {
-      async handler(val) {
-        // console.info('query', val);
-        await this.loadList();
+      handler() {
+        this.loadList();
       },
-      immediate: true,
     },
   },
 
   created() {
     this.initFilesExport({ filename: 'history-records' });
+  },
+
+  mounted() {
+    this.loadList();
   },
 
   computed: {

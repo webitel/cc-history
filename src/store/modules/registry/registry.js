@@ -42,6 +42,8 @@ const actions = {
       ...query,
       sort: context.getters.DATA_SORT,
       fields: context.getters.DATA_FIELDS,
+      page: context.state.page,
+      size: context.state.size,
       skipParent: true,
     };
     try {

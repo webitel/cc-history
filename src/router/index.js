@@ -12,7 +12,7 @@ const routes = [
     component: Auth,
   },
   {
-    path: '/history',
+    path: '/',
     name: 'history',
     component: History,
   },

@@ -37,7 +37,7 @@ export default {
   },
 
   methods: {
-    search: gatewayAPI.getGateways,
+    search: (search) => gatewayAPI.getGateways({ search }),
     fetchSelected: gatewayAPI.getGatewaysByIds,
     ...mapActions('filters', {
       setValue: 'SET_FILTER',

@@ -6,9 +6,10 @@
         <wt-label
           class="filter-duration__input-label"
           for="filter-duration-from"
-        >{{ $t('reusable.from') }}:
+        >{{ $t('components.duration.from') }}
         </wt-label>
         <wt-input
+          class="filter-duration-input"
           name="filter-duration-from"
           :value="value.from"
           type="number"
@@ -20,9 +21,10 @@
         <wt-label
           class="filter-duration__input-label"
           for="filter-duration-to"
-        >{{ $t('reusable.to') }}:
+        >{{ $t('components.duration.to') }}
         </wt-label>
         <wt-input
+          class="filter-duration-input"
           name="filter-duration-to"
           :value="value.to"
           type="number"
@@ -127,6 +129,10 @@ export default {
 .filter-duration__input-wrapper {
   &:focus-within .wt-label {
     color: var(--form-label--active-color)
+  }
+
+  .filter-duration-input {
+    width: 70px;
   }
 
   &:first-child {

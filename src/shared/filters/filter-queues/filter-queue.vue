@@ -39,7 +39,7 @@ export default {
     ...mapActions('filters', {
       setValue: 'SET_FILTER',
     }),
-    search: queueAPI.getQueues,
+    search: (search) => queueAPI.getQueues({ search }),
     fetchSelected: queueAPI.getQueuesByIds,
   },
 };

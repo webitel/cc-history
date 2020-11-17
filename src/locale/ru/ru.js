@@ -142,6 +142,10 @@ export default {
       from: 'От:',
       to: 'До:',
     },
+    duration: {
+      from: 'От (сек):',
+      to: 'До (сек):',
+    },
     columnSelect: {
       header: 'Добавить колонки:',
     },

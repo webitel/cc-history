@@ -39,7 +39,7 @@ export default {
     ...mapActions('filters', {
       setValue: 'SET_FILTER',
     }),
-    search: userAPI.getUsers,
+    search: (search) => userAPI.getUsers({ search }),
     fetchSelected: userAPI.getUsersByIds,
   },
 };
