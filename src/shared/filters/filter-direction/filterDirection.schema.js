@@ -1,8 +1,8 @@
 const filterDirection = {
-  value: [],
-  defaultValue: [],
+  value: '',
+  defaultValue: '',
   storedProp: 'value',
-  multiple: true,
+  multiple: false,
 };
 
 export default filterDirection;

@@ -1,5 +1,8 @@
-import Visualizations
-  from '../../../../../components/history/history-main/dashboards/dashboards/enums/Visualizations.enum';
+import Visualizations from '../../../../../components/history/history-main/dashboards/dashboards/enums/Visualizations.enum';
+
+const trimLabel = (label, length = 30) => (
+  label.length <= length ? label : `${label.slice(0, length - 3)}...`
+);
 
 const ticks = (relative) => (relative ? {
   min: 0,
@@ -42,7 +45,7 @@ export default {
         tooltips: {
           callbacks: {
             label: (tooltipItem, data) => {
-              const name = data.labels[tooltipItem.index];
+              const name = trimLabel(data.labels[tooltipItem.index]);
               const value = data.datasets[0].data[tooltipItem.index];
               const label = `${name}: ${value}`;
               return this.dashboard.options.relative
@@ -52,16 +55,16 @@ export default {
         },
         legend: {
           ...legend,
-          labels: {
-            ...legend.labels,
+        //   labels: {
+            // ...legend.labels,
             // generateLabels: (chart) => (
             //   chart.data.labels.map((label, index) => ({
-            //     text: !label || label.length <= 30 ? label : `${label.slice(0, 27)}...`,
+            //     text: !label || trimLabel(label),
             //     fillStyle: this.colors[index],
             //     index,
             //   }))
             // ),
-          },
+          // },
         },
       };
     },
@@ -82,8 +85,8 @@ export default {
         tooltips: {
           callbacks: {
             label: (tooltipItem, data) => {
-              const name = data.datasets[0].label;
-              const value = data.datasets[0].data[tooltipItem.index];
+              const name = trimLabel(data.datasets[tooltipItem.datasetIndex].label);
+              const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
               const label = `${name}: ${value}`;
               return this.dashboard.options.relative
                 ? `${label}%` : label;

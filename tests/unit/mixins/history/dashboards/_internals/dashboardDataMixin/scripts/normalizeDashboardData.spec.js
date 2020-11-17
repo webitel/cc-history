@@ -13,14 +13,14 @@ const input = [
 
 test('normalizeDashboardData', () => {
   const output = {
-    inbound: [0, 2, 0, 0, 5],
-    outbound: [0, 3, 4, 0, 6],
+    inbound: { data: [0, 2, 0, 0, 5], sum: 7 },
+    outbound: { data: [0, 3, 4, 0, 6], sum: 13 },
     sum: [0, 5, 4, 0, 11],
   };
   const res = normalizeDashboardData({ aggValue: 'count', param: 'direction', data: input });
-  expect(res.datasets.get('inbound').data).toEqual(output.inbound);
-  expect(res.datasets.get('outbound').data).toEqual(output.outbound);
-  console.info(res);
+  expect(res.datasets.get('inbound')).toEqual(output.inbound);
+  expect(res.datasets.get('outbound')).toEqual(output.outbound);
+  // console.info(res);
   expect([...res.dates.values()]).toEqual(output.sum);
 });
 

@@ -33,6 +33,12 @@ export default {
     },
   }),
 
+  watch: {
+    mainCall(mainCall) {
+      if (mainCall) this.resetCurrentTab();
+    },
+  },
+
   computed: {
     ...mapState('registry/opened-call', {
       mainCall: (state) => state.mainCall,
@@ -53,6 +59,11 @@ export default {
       const tabs = [callInfo];
       if (this.mainCall.hasChildren) tabs.push(callLegs);
       return tabs;
+    },
+  },
+  methods: {
+    resetCurrentTab() {
+      this.currentTab = { value: 'call-info' };
     },
   },
 };

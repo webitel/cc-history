@@ -1,5 +1,5 @@
 <template>
-  <div class="media-select">
+  <div class="media-select" v-clickaway="close">
     <ul class="media-select__list">
       <li
         class="media-select__item"
@@ -38,7 +38,11 @@ export default {
 
     mediaIcon(file) {
       return file.id !== this.currentlyPlaying
-        ? 'play' : 'pause';
+        ? 'play' : 'stop';
+    },
+
+    close() {
+      this.$emit('close');
     },
   },
 };
