@@ -8,6 +8,9 @@ import '@webitel/ui-sdk/dist/ui-sdk.css';
 import '@webitel/ui-sdk/src/css/main.scss';
 import '@webitel/ui-sdk/dist/img/svg-sprites/wt-icon.svg';
 
-Vue.use(WebitelUI, { eventBus });
+const globals = {
+  $baseURL: process.env.BASE_URL,
+};
+Vue.use(WebitelUI, { eventBus, globals });
 i18n.mergeLocaleMessage('en', WebitelUIEn);
 i18n.mergeLocaleMessage('ru', WebitelUIRu);
