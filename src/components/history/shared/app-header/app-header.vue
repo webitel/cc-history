@@ -33,7 +33,8 @@ export default {
 
   methods: {
     settings() {
-      window.open('https://dev.webitel.com/settings');
+      const settingsUrl = process.env.VUE_APP_SETTINGS_URL;
+      window.open(settingsUrl);
     },
 
     async logoutUser() {
