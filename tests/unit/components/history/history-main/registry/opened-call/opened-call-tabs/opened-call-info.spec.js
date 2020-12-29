@@ -25,14 +25,14 @@ describe('Opened call info tab', () => {
   it('renders a component with call variables', () => {
     openedCall.state.mainCall = { variables };
     const wrapper = shallowMount(OpenedCallInfo, { localVue, store });
-    expect(wrapper.findAll('.call-info-variable').length).toBe(Object.keys(variables).length);
+    expect(wrapper.findAll('.call-variable').length).toBe(Object.keys(variables).length);
   });
 
   it('renders variables texts', () => {
     openedCall.state.mainCall = { variables };
     const wrapper = shallowMount(OpenedCallInfo, { localVue, store });
     const varKey = Object.keys(variables)[0];
-    expect(wrapper.find('.call-info-variable__key').text()).toBe(`${varKey}:`);
-    expect(wrapper.find('.call-info-variable__value').text()).toBe(variables[varKey]);
+    expect(wrapper.find('.call-variable__key').text()).toBe(`${varKey}:`);
+    expect(wrapper.find('.call-variable__value').text()).toBe(variables[varKey]);
   });
 });
