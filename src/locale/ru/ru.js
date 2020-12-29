@@ -26,6 +26,7 @@ export default {
     registry: 'История',
     openedCall: {
       callInfo: 'Информация',
+      agentDescription: 'Комментарий агента',
       callLegs: 'Legs A-B',
       transferFrom: 'Перевод От',
       transferMerge: 'Объединение Звонков',
