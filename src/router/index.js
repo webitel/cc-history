@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Auth from '../components/auth/the-auth.vue';
+import Auth from '../components/history/shared/auth/the-auth.vue';
 import History from '../components/history/the-history.vue';
 
 Vue.use(VueRouter);
@@ -12,7 +12,7 @@ const routes = [
     component: Auth,
   },
   {
-    path: '/history',
+    path: '/',
     name: 'history',
     component: History,
   },

@@ -5,70 +5,50 @@
       @close="isFilterFieldsOpened = false"
     ></filter-fields>
     <form class="history-filters" :class="{'history-filters--opened': isOpened}">
-      <!--      dt pickers-->
       <filter-from class="history-filters__filter"/>
       <filter-to class="history-filters__filter"/>
-      <!--      [ARRAY] type multi select-->
-      <filter-type class="history-filters__filter"/>
-      <!--      [ARRAY] direction multi select-->
       <filter-direction class="history-filters__filter"/>
-      <!--     [ARRAY] [API FETCH] user multi select-->
       <filter-user class="history-filters__filter"/>
-      <!--      [ARRAY] [API FETCH] gateway multi select-->
       <filter-gateway class="history-filters__filter"/>
-      <!--      [ARRAY] [API FETCH] agent multi select-->
       <filter-agent class="history-filters__filter"/>
-      <!--     [ARRAY]  [API FETCH] team multi select-->
       <filter-team class="history-filters__filter"/>
-      <!--    [ARRAY]   [API FETCH] queue multi select-->
       <filter-queue class="history-filters__filter"/>
-      <!--      duration inputs -->
       <filter-duration class="history-filters__filter"/>
-      <!--     [ARRAY]  tags multi select-->
-      <!--        <filter-tags/>-->
-      <!--     [ARRAY]  hangup cause multi select-->
+      <filter-tags class="history-filters__filter"/>
       <filter-cause class="history-filters__filter"/>
     </form>
-    <table-actions
-      settings
-      refresh
-      column-select
-      filter-reset
-      :is-settings-active="isOpened"
-      @settings="expandFilters"
-      @refresh="refreshData"
-      @column-select="openColumnSelect"
-      @filter-reset="resetFilters"
-      @export="handleExport"
-      @import="handleImport"
-    ></table-actions>
+    <wt-table-actions
+      :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
+      @input="tableActionsHandler"
+    ></wt-table-actions>
   </section>
 </template>
 
 <script>
   import { mapActions } from 'vuex';
-  import FilterFields from '../../filters/filter-table-fields.vue';
-  import FilterFrom from '../../filters/filter-from.vue';
-  import FilterTo from '../../filters/filter-to.vue';
-  import FilterType from '../../filters/filter-type.vue';
-  import FilterDirection from '../../filters/filter-direction.vue';
-  import FilterUser from '../../filters/filter-user.vue';
-  import FilterGateway from '../../filters/filter-gateway.vue';
-  import FilterAgent from '../../filters/filter-agent.vue';
-  import FilterTeam from '../../filters/filter-queue.vue';
-  import FilterQueue from '../../filters/filter-team.vue';
-  import FilterCause from '../../filters/filter-cause.vue';
-  // import FilterTags from './filters/filter-tags.vue';
-  import FilterDuration from '../../filters/filter-duration.vue';
-  import TableActions from '../../utils/table-actions.vue';
+  import FilterFields from '../history-main/registry/filters/filter-table-fields/filter-table-fields.vue';
+  import FilterFrom from '../../../shared/filters/filter-from/filter-from.vue';
+  import FilterTo from '../../../shared/filters/filter-to/filter-to.vue';
+  // import FilterType from '../../../shared/filters/components/filter-type.vue';
+  import FilterDirection from '../../../shared/filters/filter-direction/filter-direction.vue';
+  import FilterUser from '../../../shared/filters/filter-user/filter-user.vue';
+  import FilterGateway from '../../../shared/filters/filter-gateway/filter-gateway.vue';
+  import FilterAgent from '../../../shared/filters/filter-agent/filter-agent.vue';
+  import FilterTeam from '../../../shared/filters/filter-queues/filter-queue.vue';
+  import FilterQueue from '../../../shared/filters/filter-teams/filter-team.vue';
+  import FilterCause from '../../../shared/filters/filter-cause/filter-cause.vue';
+  import FilterTags from '../../../shared/filters/filter-tags/filter-tags.vue';
+  import FilterDuration from '../../../shared/filters/filter-duration/filter-duration.vue';
+  import tableActionsHandlerMixin from '../../../mixins/tableActions/tableActionsHandlerMixin';
 
   export default {
     name: 'the-history-filters',
+    mixins: [tableActionsHandlerMixin],
     components: {
       FilterFields,
       FilterFrom,
       FilterTo,
-      FilterType,
+      // FilterType,
       FilterDirection,
       FilterUser,
       FilterGateway,
@@ -76,9 +56,8 @@
       FilterTeam,
       FilterQueue,
       FilterCause,
-      // FilterTags,
+      FilterTags,
       FilterDuration,
-      TableActions,
     },
 
     data: () => ({
@@ -87,48 +66,30 @@
     }),
 
     methods: {
-      ...mapActions('history', {
-        loadDataList: 'LOAD_DATA_LIST',
+      ...mapActions({
+        loadData: 'LOAD_DATA',
+        resetFilters: 'RESET_FILTERS',
       }),
-
-      expandFilters() {
-        this.isOpened = !this.isOpened;
-      },
-      refreshData() {
-        this.loadDataList();
-      },
-      openColumnSelect() {
-        this.isFilterFieldsOpened = true;
-      },
-      resetFilters() {
-        this.$router.replace({ query: null });
-      },
-      handleExport() {
-      },
-      handleImport() {
-      },
     },
   };
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../css/utils/bootstrap-grid.css";
-  // 30px*2 outer paddings, 28px*2 inner paddings, 216px table actions with 4 buttons
-  $width-except-filters: 60px + 56px + 216px;
+  // 30px*2 outer paddings, 30px*2 inner paddings, 216px table actions with 4 buttons
+  $width-except-filters: 60px + 60px + 176px;
   $filter-width: 300px;
   $filter-gap: 20px;
   @function filtersWidth($num) {
     // 1px corrects max width
-    @return ($filter-width) * $num + $filter-gap * ($num - 1) + $width-except-filters - 1px;
+    @return ($filter-width * $num) + ($filter-gap * ($num - 1)) + $width-except-filters - 1px;
   }
 
   .history-section.history-filters-section {
     display: flex;
     align-items: flex-start;
-    padding: 18px 28px 0;
-    margin: 20px 0;
 
-    .table-actions {
+    .wt-table-actions {
+      flex: 0 0 auto;
       margin-top: 24px;
     }
   }
@@ -179,14 +140,10 @@
   }
 
   .history-filters__filter {
-    margin-bottom: (18px);
+    margin-bottom: 18px;
 
     &:nth-child(n+6) {
       display: none;
-    }
-
-    .dt-picker, .hs-multiselect {
-      width: 100%;
     }
   }
 </style>

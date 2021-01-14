@@ -1,6 +1,6 @@
 import axios from 'axios';
-import eventBus from '../utils/eventBus';
-import { objCamelToSnake, objSnakeToCamel } from './utils/caseConverters';
+import eventBus from '@webitel/ui-sdk/src/scripts/eventBus';
+import { objCamelToSnake, objSnakeToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
 
 // global API configuration
 // 'X-Webitel-Access' ~ 'X-Access-Token'
@@ -13,6 +13,7 @@ const instance = axios.create({
   },
 });
 
+const ignoredErrorIds = ['app.user.setting.not_found'];
 
 instance.interceptors.request.use(
   (request) => {
@@ -35,11 +36,13 @@ instance.interceptors.response.use(
   (response) => objSnakeToCamel(response.data),
   (error) => { // catches 401 error across all api's
     if (error.response && error.response.status === 401) {
-      console.warn('intercepted 401');
       localStorage.removeItem('access-token');
     }
+    if (ignoredErrorIds.indexOf(error.response.data.id) !== -1) {
+      return Promise.resolve();
+    }
     // if error isn't 401, returns it
-    eventBus.$emit('notificationError', error.response.data.detail);
+    eventBus.$emit('notification', { type: 'error', text: error.response.data.detail });
     return Promise.reject(error.response.data);
   },
 );

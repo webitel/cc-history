@@ -1,81 +1,122 @@
 <template>
-  <header class="history-section history-heading">
-    <h1 class="history-heading__h1">{{$t('reusable.history')}}</h1>
-    <div class="history-heading__actions-wrap">
+  <wt-headline class="the-history-heading">
+    <template slot="title">
+      {{ $t('reusable.history') }}
+    </template>
+    <template slot="actions">
       <filter-search/>
-      <btn
-        class="secondary"
+      <wt-button
+        color="secondary"
+        :disabled="!dataList.length"
         :loading="isFilesLoading"
-        @click.native="downloadFiles"
-      >{{$t('reusable.download')}}
-      </btn>
-      <div v-show="isFilesLoading" class="files-counter">
-        {{$t('headerSection.filesLoaded')}}<span
-        class="files-counter__count">{{this.filesCounter}}</span>
+        @click="callExportFiles"
+      >{{ $t('reusable.download') }}
+      </wt-button>
+      <div v-show="isCSVLoading || isFilesLoading" class="files-counter">
+        <div>
+          {{ $t('headerSection.filesLoaded') }}
+          <span class="files-counter__count">
+            {{ filesDownloadProgress || CSVDownloadProgress }}
+          </span>
+        </div>
+        <div v-show="filesZippingProgress">
+          {{ $t('headerSection.zippingProgress') }}
+          <span class="files-counter__count">{{ filesZippingProgress }}%</span>
+        </div>
       </div>
-      <btn
-        class="primary"
+      <wt-button
         :loading="isCSVLoading"
-        @click.native="downloadCSV"
-      >{{$t('headerSection.exportCSV')}}
-      </btn>
-    </div>
-  </header>
+        :disabled="!dataList.length"
+        @click="callExportCSV"
+      >{{ $t('headerSection.exportCSV') }}
+      </wt-button>
+    </template>
+  </wt-headline>
 </template>
 
 <script>
-  import FilterSearch from '../../filters/filter-search.vue';
-  import Btn from '../../utils/btn.vue';
-  import downloadCSVMixin from '../../../mixins/downloadCSV/downloadCSVMixin';
-  import downloadAllFilesMixin from '../../../mixins/files/downloadFiles/downloadAllFilesMixin';
+import { mapState, mapGetters } from 'vuex';
+import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
+import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 
-  export default {
-    name: 'the-history-heading',
-    mixins: [
-      downloadCSVMixin,
-      downloadAllFilesMixin,
-    ],
-    components: {
-      FilterSearch,
-      Btn,
+import generateMediaURL from '../../../mixins/media/scripts/generateMediaURL';
+import FilterSearch from '../../../shared/filters/filter-search/filter-search.vue';
+import APIRepository from '../../../api/APIRepository';
+
+export default {
+  name: 'the-history-heading',
+  mixins: [
+    exportCSVMixin,
+    exportFilesMixin,
+  ],
+  components: { FilterSearch },
+
+  created() {
+    this.initCSVExport(APIRepository.history.getHistory, { filename: 'history' });
+    this.initFilesExport({
+      fetchMethod: APIRepository.history.getHistory,
+      filename: 'history-records',
+      filesURL: generateMediaURL,
+    });
+  },
+
+  computed: {
+    ...mapState('registry', {
+      dataList: (state) => state.dataList,
+    }),
+
+    ...mapGetters('filters', {
+      getFilters: 'GET_FILTERS',
+    }),
+
+    ...mapGetters('registry', {
+      fields: 'DATA_FIELDS',
+      selectedItems: 'SELECTED_DATA_ITEMS',
+    }),
+  },
+
+  methods: {
+    callExportFiles() {
+      try {
+        const params = { existsFile: true };
+        return this.exportFiles(null, params);
+      } catch (err) {
+        throw err;
+      }
     },
-  };
+
+    async callExportCSV() {
+      try {
+        const params = { ...this.getFilters, fields: this.fields, skipParent: true };
+        return this.exportCSV(params);
+      } catch (err) {
+        throw err;
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .history-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.the-history-heading {
+  .wt-button {
+    margin-left: 20px;
   }
 
-  .history-heading__h1 {
-    @extend .typo-heading-md;
-  }
+  .files-counter {
+    @extend %typo-body-sm;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    padding: 10px 15px;
+    margin-top: 10px;
+    background: var(--main-primary-color);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
 
-  .history-heading__actions-wrap {
-    display: flex;
-    align-items: center;
-    position: relative;
-
-    .cc-btn {
-      margin-left: (20px);
-    }
-
-    .files-counter {
-      $offset: (10px);
-      @extend .typo-body-sm;
-      position: absolute;
-      right: 0;
-      top: calc(100% + #{$offset});
-      padding: (10px) (15px);
-      background: #fff;
-      box-shadow: $box-shadow;
-      border-radius: $border-radius;
-
-      &__count {
-        @extend .typo-heading-sm;
-      }
+    &__count {
+      @extend %typo-strong-sm;
     }
   }
+}
 </style>

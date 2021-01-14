@@ -11,7 +11,7 @@ module.exports = {
     parser: 'babel-eslint',
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-useless-catch': 'off',
     'no-shadow': 'off',
@@ -19,6 +19,11 @@ module.exports = {
     indent: 'off',
     'no-underscore-dangle': 'off',
     'import/no-cycle': 'off',
+    'lines-between-class-members': [
+      'error',
+      'always',
+      { 'exceptAfterSingleLine': true },
+    ]
   },
   overrides: [
     {

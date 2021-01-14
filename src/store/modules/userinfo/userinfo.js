@@ -7,7 +7,7 @@ const defaultState = () => ({
   scope: [],
   roles: [],
   license: [],
-  language: localStorage.getItem('language'),
+  language: localStorage.getItem('lang'),
 });
 
 const state = {
@@ -20,10 +20,6 @@ const actions = {
   SET_SESSION: (context, session) => {
     context.dispatch('RESET_STATE');
     context.commit('SET_SESSION', session);
-  },
-
-  SET_DOMAIN_ID: (context, domainId) => {
-    context.commit('SET_DOMAIN_ID', domainId);
   },
 
   RESET_STATE: (context) => {
@@ -41,10 +37,6 @@ const mutations = {
     state.license = session.license;
     state.username = session.username;
     state.name = session.name;
-  },
-
-  SET_DOMAIN_ID: (state, domainId) => {
-    state.domainId = domainId;
   },
 
   RESET_STATE: (state) => {

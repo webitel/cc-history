@@ -7,102 +7,85 @@
         :key="key"
         @click.prevent.stop="togglePlay(file.id)"
       >
-        <icon v-if="file.id !== currentlyPlaying">
-          <svg class="icon icon-play_md md">
-            <use xlink:href="#icon-play_md"></use>
-          </svg>
-        </icon>
-        <icon v-else>
-          <svg class="icon icon-pause_md md">
-            <use xlink:href="#icon-pause_md"></use>
-          </svg>
-        </icon>
-        <div class="media-select__item__name">{{file.name | truncate}}</div>
+        <wt-icon :icon="mediaIcon(file)"></wt-icon>
+        <div class="media-select__item__name">{{ file.name | truncate }}</div>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-  import clickaway from '../../directives/clickaway';
+export default {
+  name: 'media-select',
+  props: {
+    files: {
+      type: Array,
+      required: true,
+    },
+    currentlyPlaying: {
+      type: String,
+    },
+  },
 
-  export default {
-    name: 'media-select',
-    directives: { clickaway },
-    filters: {
-      truncate(value) {
-        if (value) {
-          if (value.length < 18) return value;
-          return `${value.slice(0, 15)}...`;
-        }
-        return '';
-      },
+  methods: {
+    togglePlay(fileId) {
+      if (this.currentlyPlaying === fileId) {
+        this.$emit('play', '');
+      } else {
+        this.$emit('play', fileId);
+      }
     },
 
-    props: {
-      files: {
-        type: Array,
-        required: true,
-      },
-      currentlyPlaying: {
-        type: String,
-      },
+    mediaIcon(file) {
+      return file.id !== this.currentlyPlaying
+        ? 'play' : 'stop';
     },
 
-    methods: {
-      togglePlay(fileId) {
-        if (this.currentlyPlaying === fileId) {
-          this.$emit('play', '');
-        } else {
-          this.$emit('play', fileId);
-        }
-      },
-
-      close() {
-        this.$emit('close');
-      },
+    close() {
+      this.$emit('close');
     },
-  };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .media-select {
-    position: relative;
-    height: (24px);
-  }
+.media-select {
+  position: absolute;
+  right: 0;
+  height: 24px;
+}
 
-  .media-select__list {
-    position: absolute;
-    top: (24px + 14px); // icon + margin
-    right: 0;
-    background: #fff;
-    box-shadow: $box-shadow;
-    z-index: 1;
-    cursor: pointer;
+.media-select__list {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  background: var(--main-primary-color);
+  box-shadow: var(--box-shadow);
+  z-index: 1;
+  cursor: pointer;
 
   .media-select__item {
     display: flex;
     align-items: center;
-    min-width: (200px);
-    padding: (5px) (10px);
-    transition: $transition;
+    min-width: 200px;
+    padding: 5px 10px;
+    transition: var(--transition);
 
-      &:hover {
-        background: $list-option__hover;
+    &:hover {
+      background: var(--main-option-hover-color);
 
-        .icon {
-          fill: $icon-color__hover;
-          stroke: $icon-color__hover;
-        }
+      .wt-icon ::v-deep .wt-icon__icon {
+        fill: var(--icon--hover-color);
       }
-
-    .icon-wrap {
-      margin-right: (10px);
     }
 
-      &__name {
-        white-space: nowrap;
-      }
+    .wt-icon {
+      margin-right: 10px;
+    }
+
+    &__name {
+      white-space: nowrap;
     }
   }
+}
 </style>
