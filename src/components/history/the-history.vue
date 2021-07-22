@@ -1,5 +1,5 @@
 <template>
-  <div class="the-history">
+  <main v-if="hasAccess" class="the-history">
     <app-header/>
     <wt-notifications-bar/>
     <wt-page-wrapper>
@@ -13,10 +13,13 @@
         <history-main/>
       </template>
     </wt-page-wrapper>
-  </div>
+  </main>
+  <wt-error-page v-else type="403" @back="goToApplicationHub"></wt-error-page>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
 import AppHeader from './shared/app-header/app-header.vue';
 import HistoryHeading from './history-heading/the-history-heading.vue';
 import HistoryFilters from './history-filters/the-history-filters.vue';
@@ -29,6 +32,22 @@ export default {
     HistoryHeading,
     HistoryFilters,
     HistoryMain,
+  },
+
+  computed: {
+    ...mapGetters('userinfo', {
+      checkAppAccess: 'CHECK_APP_ACCESS',
+    }),
+    hasAccess() {
+      return this.checkAppAccess(WebitelApplications.HISTORY);
+    },
+  },
+
+  methods: {
+    goToApplicationHub() {
+      const adminUrl = process.env.VUE_APP_APPLICATION_HUB_URL;
+      window.location.href = adminUrl;
+    },
   },
 };
 </script>

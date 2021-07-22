@@ -1,5 +1,4 @@
 import RegistryAPIRepository from './history/registry/RegistryAPIRepository';
-import AuthAPIRepository from './auth/AuthAPIRepository';
 import AgentsAPIRepository from '../shared/filters/filter-agent/AgentsAPIRepository';
 import GatewaysAPIRepository from '../shared/filters/filter-gateway/GatewaysAPIRepository';
 import QueuesAPIRepository from '../shared/filters/filter-queues/QueuesAPIRepository';
@@ -15,7 +14,6 @@ const APIRepository = {
   queues: QueuesAPIRepository,
   teams: TeamsAPIRepository,
   users: UsersAPIRepository,
-  auth: AuthAPIRepository,
 };
 
 export default APIRepository;

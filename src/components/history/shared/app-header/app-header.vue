@@ -11,32 +11,55 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import APIRepository from '../../../../api/APIRepository';
-
-const authAPI = APIRepository.auth;
+import { mapState, mapGetters } from 'vuex';
+import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
+import authAPI from '@webitel/ui-sdk/src/modules/Userinfo/api/auth';
 
 export default {
   name: 'app-header',
   data: () => ({
-    currentApp: 'history',
     buildInfo: {
       release: process.env.VUE_APP_PACKAGE_VERSION,
       build: process.env.VUE_APP_BUILD_NUMBER,
-    },
-    apps: {
-      agent: { href: process.env.VUE_APP_AGENT_URL },
-      supervisor: { href: process.env.VUE_APP_SUPERVISOR_URL },
-      history: { href: process.env.VUE_APP_HISTORY_URL },
-      audit: { href: process.env.VUE_APP_AUDIT_URL },
-      admin: { href: process.env.VUE_APP_ADMIN_URL },
-      grafana: { href: process.env.VUE_APP_GRAFANA_URL },
     },
   }),
   computed: {
     ...mapState('userinfo', {
       user: (state) => state,
+      currentApp: (state) => state.thisApp,
     }),
+    ...mapGetters('userinfo', {
+      checkAccess: 'CHECK_APP_ACCESS',
+    }),
+    apps() {
+      const agent = {
+        name: WebitelApplications.AGENT,
+        href: process.env.VUE_APP_AGENT_URL,
+      };
+      const supervisor = {
+        name: WebitelApplications.SUPERVISOR,
+        href: process.env.VUE_APP_SUPERVISOR_URL,
+      };
+      const history = {
+        name: WebitelApplications.HISTORY,
+        href: process.env.VUE_APP_HISTORY_URL,
+      };
+      const audit = {
+        name: WebitelApplications.AUDIT,
+        href: process.env.VUE_APP_AUDIT_URL,
+      };
+      const admin = {
+        name: WebitelApplications.ADMIN,
+        href: process.env.VUE_APP_ADMIN_URL,
+      };
+      const grafana = {
+        name: WebitelApplications.ANALYTICS,
+        href: process.env.VUE_APP_GRAFANA_URL,
+      };
+      const apps = [admin, supervisor, agent, history, audit];
+      if (this.$config?.ON_SITE) apps.push(grafana);
+      return apps.filter(({ name }) => this.checkAccess(name));
+    },
   },
 
   methods: {
