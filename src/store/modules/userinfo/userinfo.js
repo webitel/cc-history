@@ -1,53 +1,24 @@
-const defaultState = () => ({
-  domainId: 0,
-  name: '',
-  username: '',
-  account: '',
-  userId: 0,
-  scope: [],
-  roles: [],
-  license: [],
-  language: localStorage.getItem('lang'),
-});
+import UserinfoStoreModule from '@webitel/ui-sdk/src/modules/Userinfo/store/UserinfoStoreModule';
+import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
+
+// register api's
+import authAPI from '@webitel/ui-sdk/src/modules/Userinfo/api/auth';
+import userinfoAPI from '@webitel/ui-sdk/src/modules/Userinfo/api/userinfo';
+import instance from '../../../api/instance';
+
+import router from '../../../router';
+
+authAPI.setInstance(instance);
+userinfoAPI.setInstance(instance);
 
 const state = {
-  ...defaultState(),
+  thisApp: WebitelApplications.HISTORY,
 };
-
-const getters = {};
 
 const actions = {
-  SET_SESSION: (context, session) => {
-    context.dispatch('RESET_STATE');
-    context.commit('SET_SESSION', session);
-  },
-
-  RESET_STATE: (context) => {
-    context.commit('RESET_STATE');
-  },
+  REDIRECT_TO_AUTH: () => router.replace('/auth'),
 };
 
-const mutations = {
-  SET_SESSION: (state, session) => {
-    state.domainId = session.dc;
-    state.account = session.preferredUsername;
-    state.roles = session.roles;
-    state.scope = session.scope;
-    state.userId = session.userId;
-    state.license = session.license;
-    state.username = session.username;
-    state.name = session.name;
-  },
+const userinfo = new UserinfoStoreModule().getModule({ state, actions });
 
-  RESET_STATE: (state) => {
-    Object.assign(state, defaultState());
-  },
-};
-
-export default {
-  namespaced: true,
-  state,
-  getters,
-  actions,
-  mutations,
-};
+export default userinfo;
