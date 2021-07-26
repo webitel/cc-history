@@ -15,6 +15,6 @@ describe('Registry: Filter components', () => {
     const wrapper = shallowMount(FilterPagination, {
       localVue, store, router,
     });
-    expect(wrapper.findComponent({ name: 'wt-pagination' }).element).toBeVisible();
+    expect(wrapper.findComponent({ name: 'wt-pagination' }).exists()).toBe(true);
   });
 });
