@@ -6,259 +6,259 @@
 const HangupCauseOptions = Object.freeze([
   {
     name: 'UNSPECIFIED',
-    code: '0',
+    code: 'UNSPECIFIED',
   },
   {
     name: 'UNALLOCATED_NUMBER',
-    code: '1',
+    code: 'UNALLOCATED_NUMBER',
   },
   {
     name: 'NO_ROUTE_TRANSIT_NET',
-    code: '2',
+    code: 'NO_ROUTE_TRANSIT_NET',
   },
   {
     name: 'NO_ROUTE_DESTINATION',
-    code: '3',
+    code: 'NO_ROUTE_DESTINATION',
   },
   {
     name: 'CHANNEL_UNACCEPTABLE',
-    code: '6',
+    code: 'CHANNEL_UNACCEPTABLE',
   },
   {
     name: 'CALL_AWARDED_DELIVERED',
-    code: '7',
+    code: 'CALL_AWARDED_DELIVERED',
   },
   {
     name: 'NORMAL_CLEARING',
-    code: '16',
+    code: 'NORMAL_CLEARING',
   },
   {
     name: 'USER_BUSY',
-    code: '17',
+    code: 'USER_BUSY',
   },
   {
     name: 'NO_USER_RESPONSE',
-    code: '18',
+    code: 'NO_USER_RESPONSE',
   },
   {
     name: 'NO_ANSWER',
-    code: '19',
+    code: 'NO_ANSWER',
   },
   {
     name: 'SUBSCRIBER_ABSENT',
-    code: '20',
+    code: 'SUBSCRIBER_ABSENT',
   },
   {
     name: 'CALL_REJECTED',
-    code: '21',
+    code: 'CALL_REJECTED',
   },
   {
     name: 'NUMBER_CHANGED',
-    code: '22',
+    code: 'NUMBER_CHANGED',
   },
   {
     name: 'REDIRECTION_TO_NEW_DESTINATION',
-    code: '23',
+    code: 'REDIRECTION_TO_NEW_DESTINATION',
   },
   {
     name: 'EXCHANGE_ROUTING_ERROR',
-    code: '25',
+    code: 'EXCHANGE_ROUTING_ERROR',
   },
   {
     name: 'DESTINATION_OUT_OF_ORDER',
-    code: '27',
+    code: 'DESTINATION_OUT_OF_ORDER',
   },
   {
     name: 'INVALID_NUMBER_FORMAT',
-    code: '28',
+    code: 'INVALID_NUMBER_FORMAT',
   },
   {
     name: 'FACILITY_REJECTED',
-    code: '29',
+    code: 'FACILITY_REJECTED',
   },
   {
     name: 'RESPONSE_TO_STATUS_ENQUIRY',
-    code: '30',
+    code: 'RESPONSE_TO_STATUS_ENQUIRY',
   },
   {
     name: 'NORMAL_UNSPECIFIED',
-    code: '31',
+    code: 'NORMAL_UNSPECIFIED',
   },
   {
     name: 'NORMAL_CIRCUIT_CONGESTION',
-    code: '34',
+    code: 'NORMAL_CIRCUIT_CONGESTION',
   },
   {
     name: 'NETWORK_OUT_OF_ORDER',
-    code: '38',
+    code: 'NETWORK_OUT_OF_ORDER',
   },
   {
     name: 'NORMAL_TEMPORARY_FAILURE',
-    code: '41',
+    code: 'NORMAL_TEMPORARY_FAILURE',
   },
   {
     name: 'SWITCH_CONGESTION',
-    code: '42',
+    code: 'SWITCH_CONGESTION',
   },
   {
     name: 'ACCESS_INFO_DISCARDED',
-    code: '43',
+    code: 'ACCESS_INFO_DISCARDED',
   },
   {
     name: 'REQUESTED_CHAN_UNAVAIL',
-    code: '44',
+    code: 'REQUESTED_CHAN_UNAVAIL',
   },
   {
     name: 'PRE_EMPTED',
-    code: '45',
+    code: 'PRE_EMPTED',
   },
   {
     name: 'FACILITY_NOT_SUBSCRIBED',
-    code: '50',
+    code: 'FACILITY_NOT_SUBSCRIBED',
   },
   {
     name: 'OUTGOING_CALL_BARRED',
-    code: '52',
+    code: 'OUTGOING_CALL_BARRED',
   },
   {
     name: 'INCOMING_CALL_BARRED',
-    code: '54',
+    code: 'INCOMING_CALL_BARRED',
   },
   {
     name: 'BEARERCAPABILITY_NOTAUTH',
-    code: '57',
+    code: 'BEARERCAPABILITY_NOTAUTH',
   },
   {
     name: 'BEARERCAPABILITY_NOTAVAIL',
-    code: '58',
+    code: 'BEARERCAPABILITY_NOTAVAIL',
   },
   {
     name: 'SERVICE_UNAVAILABLE',
-    code: '63',
+    code: 'SERVICE_UNAVAILABLE',
   },
   {
     name: 'BEARERCAPABILITY_NOTIMPL',
-    code: '65',
+    code: 'BEARERCAPABILITY_NOTIMPL',
   },
   {
     name: 'CHAN_NOT_IMPLEMENTED',
-    code: '66',
+    code: 'CHAN_NOT_IMPLEMENTED',
   },
   {
     name: 'FACILITY_NOT_IMPLEMENTED',
-    code: '69',
+    code: 'FACILITY_NOT_IMPLEMENTED',
   },
   {
     name: 'SERVICE_NOT_IMPLEMENTED',
-    code: '79',
+    code: 'SERVICE_NOT_IMPLEMENTED',
   },
   {
     name: 'INVALID_CALL_REFERENCE',
-    code: '81',
+    code: 'INVALID_CALL_REFERENCE',
   },
   {
     name: 'INCOMPATIBLE_DESTINATION',
-    code: '88',
+    code: 'INCOMPATIBLE_DESTINATION',
   },
   {
     name: 'INVALID_MSG_UNSPECIFIED',
-    code: '95',
+    code: 'INVALID_MSG_UNSPECIFIED',
   },
   {
     name: 'MANDATORY_IE_MISSING',
-    code: '96',
+    code: 'MANDATORY_IE_MISSING',
   },
   {
     name: 'MESSAGE_TYPE_NONEXIST',
-    code: '97',
+    code: 'MESSAGE_TYPE_NONEXIST',
   },
   {
     name: 'WRONG_MESSAGE',
-    code: '98',
+    code: 'WRONG_MESSAGE',
   },
   {
     name: 'IE_NONEXIST',
-    code: '99',
+    code: 'IE_NONEXIST',
   },
   {
     name: 'INVALID_IE_CONTENTS',
-    code: '100',
+    code: 'INVALID_IE_CONTENTS',
   },
   {
     name: 'WRONG_CALL_STATE',
-    code: '101',
+    code: 'WRONG_CALL_STATE',
   },
   {
     name: 'RECOVERY_ON_TIMER_EXPIRE',
-    code: '102',
+    code: 'RECOVERY_ON_TIMER_EXPIRE',
   },
   {
     name: 'MANDATORY_IE_LENGTH_ERROR',
-    code: '103',
+    code: 'MANDATORY_IE_LENGTH_ERROR',
   },
   {
     name: 'PROTOCOL_ERROR',
-    code: '111',
+    code: 'PROTOCOL_ERROR',
   },
   {
     name: 'INTERWORKING',
-    code: '127',
+    code: 'INTERWORKING',
   },
   {
     name: 'ORIGINATOR_CANCEL',
-    code: '487',
+    code: 'ORIGINATOR_CANCEL',
   },
   {
     name: 'CRASH',
-    code: '500',
+    code: 'CRASH',
   },
   {
     name: 'SYSTEM_SHUTDOWN',
-    code: '501',
+    code: 'SYSTEM_SHUTDOWN',
   },
   {
     name: 'LOSE_RACE',
-    code: '502',
+    code: 'LOSE_RACE',
   },
   {
     name: 'MANAGER_REQUEST',
-    code: '503',
+    code: 'MANAGER_REQUEST',
   },
   {
     name: 'BLIND_TRANSFER',
-    code: '600',
+    code: 'BLIND_TRANSFER',
   },
   {
     name: 'ATTENDED_TRANSFER',
-    code: '601',
+    code: 'ATTENDED_TRANSFER',
   },
   {
     name: 'ALLOTTED_TIMEOUT',
-    code: '602',
+    code: 'ALLOTTED_TIMEOUT',
   },
   {
     name: 'USER_CHALLENGE',
-    code: '603',
+    code: 'USER_CHALLENGE',
   },
   {
     name: 'MEDIA_TIMEOUT',
-    code: '604',
+    code: 'MEDIA_TIMEOUT',
   },
   {
     name: 'PICKED_OFF',
-    code: '605',
+    code: 'PICKED_OFF',
   },
   {
     name: 'USER_NOT_REGISTERED',
-    code: '606',
+    code: 'USER_NOT_REGISTERED',
   },
   {
     name: 'PROGRESS_TIMEOUT',
-    code: '607',
+    code: 'PROGRESS_TIMEOUT',
   },
   {
     name: 'GATEWAY_DOWN',
-    code: '609',
+    code: 'GATEWAY_DOWN',
   },
 ]);
 

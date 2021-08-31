@@ -32,6 +32,7 @@ export default {
       transferMerge: 'Call Merge',
       transferTo: 'Transfer To',
       noVariables: 'There are no variables',
+      callWave: 'Wave',
     },
   },
   dashboards: {

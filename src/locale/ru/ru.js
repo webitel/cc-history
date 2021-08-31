@@ -32,6 +32,7 @@ export default {
       transferMerge: 'Объединение Звонков',
       transferTo: 'Перевод На',
       noVariables: 'Этот звонок не имеет переменных',
+      callWave: 'Wave',
     },
   },
   dashboards: {
