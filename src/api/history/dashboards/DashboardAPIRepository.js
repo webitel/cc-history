@@ -13,20 +13,20 @@ const defaultParams = {
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
 const fetchDashboardsData = async ({
-                              aggs,
-                              from,
-                              to,
-                              user,
-                              agent,
-                              queue,
-                              team,
-                              gateway,
-                              durationFrom,
-                              durationTo,
-                              cause,
-                              direction,
-                              search,
-                            }) => {
+                                     aggs,
+                                     from,
+                                     to,
+                                     user,
+                                     agent,
+                                     queue,
+                                     team,
+                                     gateway,
+                                     durationFrom,
+                                     durationTo,
+                                     cause,
+                                     direction,
+                                     search,
+                                   }) => {
   try {
     const response = await callService.aggregateHistoryCall({
       aggs,
@@ -41,7 +41,7 @@ const fetchDashboardsData = async ({
       cause,
       direction,
       skip_parent: true,
-  });
+    });
     return formatResponse(response);
   } catch (err) {
     throw err;

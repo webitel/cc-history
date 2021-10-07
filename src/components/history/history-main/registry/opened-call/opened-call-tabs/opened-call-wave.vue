@@ -1,76 +1,82 @@
 <template>
-  <div class="call-wave-page">
+  <section class="call-wave-page">
     <wt-progress-bar
-      class="call-wave-progress"
       v-show="isLoading"
-      :value="loadProgress" :max="100
-  "></wt-progress-bar>
-    <div :class="isLoading ? 'call-wave-hide': ''">
-      <div class="call-wave-data">
-        <div class="call-wave-data-action">
+      :value="loadProgress" :max="100">
+    </wt-progress-bar>
+    <section :class="{'call-wave-page--hidden': isLoading}">
+      <div class="call-wave-download">
+        <wt-icon-btn icon="download"></wt-icon-btn>
+      </div>
+      <section class="call-wave-data--grid">
+        <section class="call-wave-data-legs-actions">
           <div class="call-wave-leg-top" v-if="!leftGain.disabled">
-            <div></div>
             <wt-icon-btn
-              :icon="!leftGain.muted ? 'sound-on': 'sound-off'"
-              :color="!leftGain.muted ? 'active': 'outline'"
+              :icon="leftGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleGain(leftGain)"
             ></wt-icon-btn>
           </div>
           <div class="call-wave-leg-bottom" v-if="!rightGain.disabled">
-            <div></div>
             <wt-icon-btn
-              :icon="!rightGain.muted ? 'sound-on': 'sound-off'"
-              :color="!rightGain.muted ? 'active': 'outline'"
+              :icon="rightGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleGain(rightGain)"
             ></wt-icon-btn>
           </div>
-        </div>
-        <div class="call-wave-data-plugin" v-if="file">
+        </section>
+        <section class="call-wave-data-plugin" v-if="file">
           <wavesurfer
             :options="waveOptions"
             :src="file"
             ref="surf">
           </wavesurfer>
           <div id="wave-timeline"></div>
-        </div>
-      </div>
-      <div class="call-wave-actions">
-
-        <div class="call-wave-zoom">
-          <input class="call-wave-zoom-range" type="range" min="0" max="200" v-model="zoom" />
-          {{ zoom }} %
-        </div>
-
-        <div class="call-wave-actions-primary">
-          <wt-button
-            :color="playbackRate === 2 ? 'active': 'secondary'"
-            @click="toggleRate()"
-          >x2</wt-button>
-          <wt-button color="secondary" @click="playPause">
-            {{ isPlaying ? 'Pause' : 'Play' }}
-          </wt-button>
-        </div>
-      </div>
-    </div>
-  </div>
+        </section>
+        <div></div> <!-- an empty div in order to position in the correct grid column -->
+        <section class="call-wave-actions">
+          <section class="call-wave-actions-buttons">
+            <wt-button :color="speedButtonColor(2)" @click="toggleRate(2)">
+              <wt-label>x2</wt-label>
+            </wt-button>
+            <wt-button :color="speedButtonColor(1.5)" @click="toggleRate(1.5)">
+              <wt-label>x1.5</wt-label>
+            </wt-button>
+            <wt-button :color="speedButtonColor(0.75)" @click="toggleRate(0.75)">
+              <wt-label>x0.75</wt-label>
+            </wt-button>
+            <wt-button :color="speedButtonColor(0.5)" @click="toggleRate(0.5)">
+              <wt-label>x0.5</wt-label>
+            </wt-button>
+            <wt-button :color="isPlaying ? 'primary': 'secondary'" @click="playPause">
+              <wt-icon :icon="!isPlaying ? 'play' : 'pause'"></wt-icon>
+            </wt-button>
+          </section>
+          <section class="call-wave-actions-buttons">
+            <wt-button color="secondary" :disabled="zoom >= 300" @click="changeZoom(20)">
+              <wt-label>+</wt-label>
+            </wt-button>
+            <wt-button color="secondary" :disabled="zoom <= 100" @click="changeZoom(-20)">
+              <wt-label>-</wt-label>
+            </wt-button>
+          </section>
+        </section>
+      </section>
+    </section>
+  </section>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
-import { mapState } from 'vuex';
 
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
 
 export default {
   name: 'opened-call-wave',
-  components: {},
-  mixins: [],
-  data() {
-    return {
+  data: () => ({
       isLoading: true,
       loadProgress: 0,
-      zoom: 0,
+      zoom: 100,
       playbackRate: 1,
       isPlaying: false,
       leftGain: {
@@ -86,6 +92,8 @@ export default {
         audio: null,
       },
       waveOptions: {
+        cursorWidth: 2,
+        splitChannels: true,
         minPxPerSec: 30,
         height: 150,
         pixelRatio: 1,
@@ -106,28 +114,15 @@ export default {
           channelColors: {
             0: {
               progressColor: 'hsla(119, 60%, 40%, 0.8)',
-              // waveColor: 'pink',
             },
             1: {
               progressColor: 'hsl(42, 100%, 50%)',
-              // waveColor: 'pink',
             },
           },
         },
-        // barWidth: 2,
-        // barRadius: 2,
-        cursorWidth: 1,
-        splitChannels: true,
       },
-    };
-  },
-  mounted() {
-    this.$nextTick(() => {
-      if (this.player && this.file) {
-        this.initWave();
-      }
-    });
-  },
+  }),
+
   computed: {
     ...mapState('registry/opened-call', {
       file: (state) => generateMediaURL(state.mainCall.files[0].id, true),
@@ -136,23 +131,22 @@ export default {
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
     },
-  },
-  watch: {
-    file() {
-      this.initWave();
-    },
-    zoom(val) {
-      const { player } = this;
-      player.zoom(+val);
+    speedButtonColor() {
+      return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
   },
+
   methods: {
+    changeZoom(value) {
+      this.zoom += value;
+      this.player.zoom(this.zoom);
+    },
+
     initWave() {
       const { player } = this;
       player.on('pause', this.changedPlaying.bind(this));
       player.on('finish', this.changedPlaying.bind(this));
       player.on('play', this.changedPlaying.bind(this));
-
       player.on('loading', this.showProgress.bind(this));
       player.on('ready', this.onReady.bind(this));
       player.on('destroy', this.hideProgress.bind(this));
@@ -190,9 +184,9 @@ export default {
     playPause() {
       this.player.playPause();
     },
-    toggleRate() {
+    toggleRate(value) {
       const { player } = this;
-      this.playbackRate = player.getPlaybackRate() === 2 ? 1 : 2;
+      this.playbackRate = this.playbackRate === value ? 1 : value;
 
       // https://github.com/katspaugh/wavesurfer.js/issues/2349
       const isPlaying = player.isPlaying();
@@ -233,57 +227,56 @@ export default {
       player._onResize();
     },
   },
-};
 
+  watch: {
+    file() {
+      this.initWave();
+    },
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      if (this.player && this.file) {
+        this.initWave();
+      }
+    });
+  },
+};
 </script>
 
-<style scoped>
-.call-wave-hide {
-  opacity: 0;
-}
+<style scoped lang="scss">
 .call-wave-page {
-  min-height: 150px;
-}
-.call-wave-actions {
-  display: inline-flex;
-  width: 100%;
-  margin-top: 5px;
-}
-.call-wave-data {
-  width: 100%;
-  position: relative;
-}
-.call-wave-data-plugin {
-  margin-left: 70px;
-}
-.call-wave-data-action {
-  width: 70px;
-  display: inline-block;
-  position: absolute;
-  height: 100%;
-}
-.call-wave-leg-top {
-  height: 50%;
-}
-.call-wave-leg-bottom {
-  height: 50%;
-}
-.call-wave-actions-primary {
-  margin: 0 auto;
-}
-.call-wave-zoom {
-  width: 150px;
-  position: absolute;
-  left: 30px;
-  text-align: center;
-}
-.call-wave-zoom-range {
-  width: 100%;
-}
-</style>
+  &--hidden {
+    display: none;
+  }
 
-<style>
-.call-wave-progress span.wt-progress-bar__progress {
-  height: 46px;
+  .call-wave-download {
+    text-align: right;
+  }
+
+  .call-wave-data--grid {
+    display: grid;
+    grid-gap: var(--component-spacing);
+    grid-template-columns: 70px 1fr;
+    grid-template-rows: repeat(2, auto);
+
+    .call-wave-data-legs-actions {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+
+    .call-wave-actions {
+      display: flex;
+      gap: var(--component-spacing);
+      justify-content: space-between;
+
+      .call-wave-actions-buttons {
+        display: flex;
+        gap: var(--component-spacing)
+      }
+    }
+  }
 }
 </style>
