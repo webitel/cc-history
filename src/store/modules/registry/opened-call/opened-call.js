@@ -57,7 +57,6 @@ const actions = {
     context.commit('SET_LEGS_DATA_LOADING', true);
     const params = await context.getters.GET_REQUEST_PARAMS;
     try {
-      debugger
       const { items } = await historyAPI.getHistory(params);
       context.commit('SET_LEGS_DATA_LIST', items);
     } catch (err) {
