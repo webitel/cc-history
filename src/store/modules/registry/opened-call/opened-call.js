@@ -29,7 +29,7 @@ const getters = {
     fields: getters.DATA_FIELDS,
     dependencyId: state.mainCallId,
     from: 0, // get All
-    to: Date.now(),
+    to: 0,
     size: 100,
     skipParent: false,
   }),
@@ -57,6 +57,7 @@ const actions = {
     context.commit('SET_LEGS_DATA_LOADING', true);
     const params = await context.getters.GET_REQUEST_PARAMS;
     try {
+      debugger
       const { items } = await historyAPI.getHistory(params);
       context.commit('SET_LEGS_DATA_LIST', items);
     } catch (err) {
