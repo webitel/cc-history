@@ -29,7 +29,7 @@ const getters = {
     fields: getters.DATA_FIELDS,
     dependencyId: state.mainCallId,
     from: 0, // get All
-    to: Date.now(),
+    to: 0,
     size: 100,
     skipParent: false,
   }),
