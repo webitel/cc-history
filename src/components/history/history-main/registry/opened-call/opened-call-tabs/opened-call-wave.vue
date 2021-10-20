@@ -10,17 +10,33 @@
       </div>
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
-          <div class="call-wave-leg-top" v-if="!leftGain.disabled">
+          <div class="call-wave-leg" v-if="!leftGain.disabled">
             <wt-icon-btn
               :icon="leftGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleGain(leftGain)"
             ></wt-icon-btn>
+            <wt-slider
+              :value="volumeLeftGain"
+              :min="0"
+              :max="2"
+              :step="0.01"
+              vertical
+              @input="volumeLeftChangeHandler"
+            />
           </div>
-          <div class="call-wave-leg-bottom" v-if="!rightGain.disabled">
+          <div class="call-wave-leg" v-if="!rightGain.disabled">
             <wt-icon-btn
               :icon="rightGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleGain(rightGain)"
             ></wt-icon-btn>
+            <wt-slider
+              :value="volumeRightGain"
+              :min="0"
+              :max="2"
+              :step="0.01"
+              vertical
+              @input="volumeRightChangeHandler"
+            />
           </div>
         </section>
         <section class="call-wave-data-plugin" v-if="file">
@@ -74,6 +90,8 @@ import generateMediaURL from '../../../../../../mixins/media/scripts/generateMed
 export default {
   name: 'opened-call-wave',
   data: () => ({
+      volumeLeftGain: 1,
+      volumeRightGain: 1,
       isLoading: true,
       loadProgress: 0,
       zoom: 100,
@@ -137,6 +155,14 @@ export default {
   },
 
   methods: {
+    volumeRightChangeHandler(value) {
+      this.volumeRightGain = value;
+      this.rightGain.audio.gain.value = value;
+    },
+    volumeLeftChangeHandler(value) {
+      this.volumeLeftGain = value;
+      this.leftGain.audio.gain.value = value;
+    },
     changeZoom(value) {
       this.zoom += value;
       this.player.zoom(this.zoom);
