@@ -15,14 +15,28 @@
               :icon="leftGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleGain(leftGain)"
             ></wt-icon-btn>
-            <wt-slider vertical v-model="volumeLeft" :min="0" :max="2" :step="0.01"/>
+            <wt-slider
+              vertical
+              :value="volumeLeftGain"
+              :min="0"
+              :max="2"
+              :step="0.01"
+              @input="volumeLeftChangeHandler"
+            />
           </div>
           <div class="call-wave-leg" v-if="!rightGain.disabled">
             <wt-icon-btn
               :icon="rightGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleGain(rightGain)"
             ></wt-icon-btn>
-            <wt-slider vertical v-model="volumeRight" :min="0" :max="2" :step="0.01"/>
+            <wt-slider
+              vertical
+              :value="volumeRightGain"
+              :min="0"
+              :max="2"
+              :step="0.01"
+              @input="volumeRightChangeHandler"
+            />
           </div>
         </section>
         <section class="call-wave-data-plugin" v-if="file">
@@ -76,8 +90,8 @@ import generateMediaURL from '../../../../../../mixins/media/scripts/generateMed
 export default {
   name: 'opened-call-wave',
   data: () => ({
-      volumeLeft: 1,
-      volumeRight: 1,
+      volumeLeftGain: 1,
+      volumeRightGain: 1,
       isLoading: true,
       loadProgress: 0,
       zoom: 100,
@@ -141,6 +155,14 @@ export default {
   },
 
   methods: {
+    volumeRightChangeHandler(value) {
+      this.volumeRightGain = value;
+      this.rightGain.audio.gain.value = value;
+    },
+    volumeLeftChangeHandler(value) {
+      this.volumeLeftGain = value;
+      this.leftGain.audio.gain.value = value;
+    },
     changeZoom(value) {
       this.zoom += value;
       this.player.zoom(this.zoom);
@@ -235,17 +257,6 @@ export default {
   watch: {
     file() {
       this.initWave();
-    },
-
-    // Since the audio object is initialized at the moment file is loaded, this object is not reactive as per documentation:
-    // https:vuejs.org/v2/guide/reactivity.html.
-    // To have correct reactivity on audio updates we have to watch changes and update audio values as per following way:
-
-    volumeLeft(value) {
-      this.leftGain.audio.gain.value = value;
-    },
-    volumeRight(value) {
-      this.rightGain.audio.gain.value = value;
     },
   },
 
