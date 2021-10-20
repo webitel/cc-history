@@ -16,11 +16,11 @@
               @click="toggleGain(leftGain)"
             ></wt-icon-btn>
             <wt-slider
-              vertical
               :value="volumeLeftGain"
               :min="0"
               :max="2"
               :step="0.01"
+              vertical
               @input="volumeLeftChangeHandler"
             />
           </div>
@@ -30,11 +30,11 @@
               @click="toggleGain(rightGain)"
             ></wt-icon-btn>
             <wt-slider
-              vertical
               :value="volumeRightGain"
               :min="0"
               :max="2"
               :step="0.01"
+              vertical
               @input="volumeRightChangeHandler"
             />
           </div>
