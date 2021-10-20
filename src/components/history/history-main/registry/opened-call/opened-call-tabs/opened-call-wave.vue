@@ -236,6 +236,11 @@ export default {
     file() {
       this.initWave();
     },
+
+    // Since the audio object is initialized at the moment file is loaded, this object is not reactive as per documentation:
+    // https:vuejs.org/v2/guide/reactivity.html.
+    // To have correct reactivity on audio updates we have to watch changes and update audio values as per following way:
+
     volumeLeft(value) {
       this.leftGain.audio.gain.value = value;
     },
