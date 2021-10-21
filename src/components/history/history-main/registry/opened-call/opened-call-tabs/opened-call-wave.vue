@@ -84,8 +84,35 @@
 import { mapState } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
+import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
+
+const formatCursorTime = (cursorTime) => {
+  return [cursorTime].map((time) => [
+      Math.floor((time % 3600) / 60), // minutes
+      (`00${Math.floor(time % 60)}`).slice(-2), // seconds
+    ].join(':'));
+};
+
+const cursorOptions = {
+  showTime: true,
+  opacity: 1,
+  customShowTimeStyle: {
+    backgroundColor: 'var(--contrast-color)',
+    color: 'var(--main-color)',
+    padding: 'var(--component-padding)',
+  },
+  formatTimeCallback: formatCursorTime,
+};
+
+const timelineOptions = {
+  container: '#wave-timeline',
+  primaryColor: 'var(--main-accent-color)',
+  secondaryColor: 'var(--transfer-color)',
+  primaryFontColor: 'var(--secondary-color)',
+  secondaryFontColor: 'var(--transfer-color)',
+}
 
 export default {
   name: 'opened-call-wave',
@@ -116,16 +143,9 @@ export default {
         height: 150,
         pixelRatio: 1,
         plugins: [
-          Markers.create({
-            markers: [],
-          }),
-          Timeline.create({
-            container: '#wave-timeline',
-            primaryColor: 'var(--main-accent-color)',
-            secondaryColor: 'var(--transfer-color)',
-            primaryFontColor: '#808080',
-            secondaryFontColor: 'var(--transfer-color)',
-          }),
+          Cursor.create(cursorOptions),
+          Markers.create({ markers: [] }),
+          Timeline.create(timelineOptions),
         ],
         splitChannelsOptions: {
           overlay: false,
@@ -199,10 +219,17 @@ export default {
       }
     },
     toggleGain(g) {
-      // eslint-disable-next-line no-param-reassign
-      g.audio.gain.value = g.audio.gain.value === 0 ? 1 : 0;
-      // eslint-disable-next-line no-param-reassign
-      g.muted = g.audio.gain.value === 0;
+        if (g.name === 'A') {
+          // eslint-disable-next-line no-param-reassign
+          g.audio.gain.value = g.audio.gain.value === 0 ? this.volumeLeftGain : 0;
+          // eslint-disable-next-line no-param-reassign
+          g.muted = g.audio.gain.value === 0;
+        } else {
+          // eslint-disable-next-line no-param-reassign
+          g.audio.gain.value = g.audio.gain.value === 0 ? this.volumeRightGain : 0;
+          // eslint-disable-next-line no-param-reassign
+          g.muted = g.audio.gain.value === 0;
+        }
     },
     changedPlaying() {
       this.isPlaying = this.player.isPlaying();
