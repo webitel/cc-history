@@ -13,7 +13,7 @@
           <div class="call-wave-leg" v-if="!leftGain.disabled">
             <wt-icon-btn
               :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-              @click="toggleGain(leftGain)"
+              @click="toggleLeftGain"
             ></wt-icon-btn>
             <wt-slider
               :value="volumeLeftGain"
@@ -27,7 +27,7 @@
           <div class="call-wave-leg" v-if="!rightGain.disabled">
             <wt-icon-btn
               :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-              @click="toggleGain(rightGain)"
+              @click="toggleRightGain"
             ></wt-icon-btn>
             <wt-slider
               :value="volumeRightGain"
@@ -85,15 +85,8 @@ import { mapState } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
-
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
-
-const formatCursorTime = (cursorTime) => {
-  return [cursorTime].map((time) => [
-      Math.floor((time % 3600) / 60), // minutes
-      (`00${Math.floor(time % 60)}`).slice(-2), // seconds
-    ].join(':'));
-};
 
 const cursorOptions = {
   showTime: true,
@@ -103,7 +96,7 @@ const cursorOptions = {
     color: 'var(--main-color)',
     padding: 'var(--component-padding)',
   },
-  formatTimeCallback: formatCursorTime,
+  formatTimeCallback: convertDuration,
 };
 
 const timelineOptions = {
@@ -218,18 +211,13 @@ export default {
         this.rightGain.disabled = false;
       }
     },
-    toggleGain(g) {
-        if (g.name === 'A') {
-          // eslint-disable-next-line no-param-reassign
-          g.audio.gain.value = g.audio.gain.value === 0 ? this.volumeLeftGain : 0;
-          // eslint-disable-next-line no-param-reassign
-          g.muted = g.audio.gain.value === 0;
-        } else {
-          // eslint-disable-next-line no-param-reassign
-          g.audio.gain.value = g.audio.gain.value === 0 ? this.volumeRightGain : 0;
-          // eslint-disable-next-line no-param-reassign
-          g.muted = g.audio.gain.value === 0;
-        }
+    toggleLeftGain() {
+      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
+      this.leftGain.muted = !this.leftGain.muted;
+    },
+    toggleRightGain() {
+      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
+      this.rightGain.muted = !this.rightGain.muted;
     },
     changedPlaying() {
       this.isPlaying = this.player.isPlaying();
