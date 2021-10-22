@@ -6,7 +6,8 @@
     </wt-progress-bar>
     <section :class="{'call-wave-page--hidden': isLoading}">
       <div class="call-wave-download">
-        <wt-icon-btn icon="download"></wt-icon-btn>
+        <wt-icon-btn icon="download" @click="downloadFile"></wt-icon-btn>
+        {{+call.files[0].id}}
       </div>
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
@@ -86,6 +87,7 @@ import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
 
 const cursorOptions = {
@@ -113,6 +115,7 @@ const timelineOptions = {
 
 export default {
   name: 'opened-call-wave',
+  mixins: [exportFilesMixin],
   data: () => ({
       volumeLeftGain: 1,
       volumeRightGain: 1,
@@ -172,6 +175,10 @@ export default {
   },
 
   methods: {
+    downloadFile() {
+      this.exportFiles(this.call.files);
+    },
+
     volumeRightChangeHandler(value) {
       this.volumeRightGain = value;
       this.rightGain.audio.gain.value = value;
@@ -281,6 +288,10 @@ export default {
     file() {
       this.initWave();
     },
+  },
+
+  created() {
+    this.initFilesExport({ filename: 'history-record' });
   },
 
   mounted() {
