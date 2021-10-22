@@ -45,7 +45,7 @@
             :src="file"
             ref="surf">
           </wavesurfer>
-          <div id="wave-timeline"></div>
+          <div id="wave-timeline" class="call-wave-timeline"></div>
         </section>
         <div></div> <!-- an empty div in order to position in the correct grid column -->
         <section class="call-wave-actions">
@@ -67,10 +67,10 @@
             </wt-button>
           </section>
           <section class="call-wave-actions-buttons">
-            <wt-button color="secondary" :disabled="zoom >= 300" @click="changeZoom(20)">
+            <wt-button color="secondary" :disabled="zoom > 1000" @click="increaseZoom">
               <wt-label>+</wt-label>
             </wt-button>
-            <wt-button color="secondary" :disabled="zoom <= 100" @click="changeZoom(-20)">
+            <wt-button color="secondary" :disabled="zoom < 0.001" @click="decreaseZoom">
               <wt-label>-</wt-label>
             </wt-button>
           </section>
@@ -101,11 +101,15 @@ const cursorOptions = {
 
 const timelineOptions = {
   container: '#wave-timeline',
-  primaryColor: 'var(--main-accent-color)',
-  secondaryColor: 'var(--transfer-color)',
-  primaryFontColor: 'var(--secondary-color)',
-  secondaryFontColor: 'var(--transfer-color)',
-}
+  notchPercentHeight: 1,
+  unlabeledNotchColor: 'var(--secondary-color)',
+  fontFamily: 'Montserrat Regular, monospace',
+  fontSize: 14,
+  labelPadding: 5,
+  primaryLabelInterval: 5,
+  secondaryLabelInterval: 10,
+  formatTimeCallback: convertDuration,
+};
 
 export default {
   name: 'opened-call-wave',
@@ -114,7 +118,7 @@ export default {
       volumeRightGain: 1,
       isLoading: true,
       loadProgress: 0,
-      zoom: 100,
+      zoom: 1,
       playbackRate: 1,
       isPlaying: false,
       leftGain: {
@@ -176,8 +180,12 @@ export default {
       this.volumeLeftGain = value;
       this.leftGain.audio.gain.value = value;
     },
-    changeZoom(value) {
-      this.zoom += value;
+    increaseZoom() {
+      this.zoom *= 2;
+      this.player.zoom(this.zoom);
+    },
+    decreaseZoom() {
+      this.zoom /= 2;
       this.player.zoom(this.zoom);
     },
 
@@ -317,6 +325,10 @@ export default {
         display: flex;
         gap: var(--component-spacing)
       }
+    }
+
+    .call-wave-timeline {
+      background-color: var(--secondary-color);
     }
   }
 }
