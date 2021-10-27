@@ -7,7 +7,6 @@
     <section :class="{'call-wave-page--hidden': isLoading}">
       <div class="call-wave-download">
         <wt-icon-btn icon="download" @click="downloadFile"></wt-icon-btn>
-        {{+call.files[0].id}}
       </div>
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
@@ -142,6 +141,7 @@ export default {
         minPxPerSec: 30,
         height: 150,
         pixelRatio: 1,
+        responsive: true,
         plugins: [
           Cursor.create(cursorOptions),
           Markers.create({ markers: [] }),
