@@ -152,4 +152,30 @@ export default {
       header: 'Select columns to show:',
     },
   },
+  enums: {
+    IntervalOptions: {
+      auto: 'Auto',
+      '15min': '15 min',
+      '30min': '30 min',
+      '1hour': '1 hour',
+      '3hours': '3 hour',
+      '6hours': '6 hour',
+      '12hours': '12 hour',
+      '1day': '1 day',
+      '2days': '2 days',
+      '1week': '1 week',
+      '2weeks': '2 weeks',
+      '1month': '1 month',
+      '3month': '3 month',
+      '6month': '6 month',
+      '1year': '1 year',
+    },
+    DirectionOptions: {
+      inbound: 'Inbound',
+      outbound: 'Outbound',
+    },
+    TagOptions: {
+      VoiceMail: 'Voice mail',
+    },
+  },
 };

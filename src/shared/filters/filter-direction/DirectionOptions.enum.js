@@ -7,11 +7,11 @@ import { CallDirection } from 'webitel-sdk';
  */
 const DirectionOptions = Object.freeze([
   {
-    name: 'Inbound',
+    name: 'enums.DirectionOptions.inbound',
     value: CallDirection.Inbound,
   },
   {
-    name: 'Outbound',
+    name: 'enums.DirectionOptions.outbound',
     value: CallDirection.Outbound,
   },
 ]);

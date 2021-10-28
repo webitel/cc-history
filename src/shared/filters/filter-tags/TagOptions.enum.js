@@ -1,6 +1,6 @@
 const TagOptions = Object.freeze([
   {
-    name: 'Voice mail',
+    name: 'enums.TagOptions.VoiceMail',
     value: 'vm',
   },
 ]);

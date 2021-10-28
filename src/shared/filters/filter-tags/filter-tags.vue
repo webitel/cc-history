@@ -14,14 +14,15 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import enumFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/enumFilterMixin';
+import enumTranslateMixin from '../../../mixins/trnslateEnum/enumTranslateMixin';
 import TagOptions from './TagOptions.enum';
 
 export default {
   name: 'filter-tags',
-  mixins: [enumFilterMixin],
+  mixins: [enumFilterMixin, enumTranslateMixin],
 
   data: () => ({
-    options: TagOptions,
+    TagOptions,
     filterQuery: 'tags',
   }),
 
@@ -31,6 +32,9 @@ export default {
       storedProp: (state) => state.tags.storedProp,
       multiple: (state) => state.tags.multiple,
     }),
+    options() {
+      return this.enumNameTranslate(this.TagOptions);
+    },
   },
 
   methods: {

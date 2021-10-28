@@ -15,13 +15,14 @@
 import { mapState, mapActions } from 'vuex';
 import enumFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/enumFilterMixin';
 import DirectionOptions from './DirectionOptions.enum';
+import enumTranslateMixin from '../../../mixins/trnslateEnum/enumTranslateMixin';
 
 export default {
   name: 'filter-direction',
-  mixins: [enumFilterMixin],
+  mixins: [enumFilterMixin, enumTranslateMixin],
 
   data: () => ({
-    options: DirectionOptions,
+    DirectionOptions,
     filterQuery: 'direction',
   }),
 
@@ -31,6 +32,9 @@ export default {
       storedProp: (state) => state.direction.storedProp,
       multiple: (state) => state.direction.multiple,
     }),
+    options() {
+      return this.enumNameTranslate(this.DirectionOptions);
+    },
   },
 
   methods: {

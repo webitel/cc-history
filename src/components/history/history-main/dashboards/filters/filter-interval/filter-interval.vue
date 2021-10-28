@@ -13,16 +13,17 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import enumFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/enumFilterMixin';
+import enumTranslateMixin from '../../../../../../mixins/trnslateEnum/enumTranslateMixin';
 import IntervalOptions from './IntervalOptions.enum';
 
 export default {
   name: 'filter-interval',
-  mixins: [enumFilterMixin],
+  mixins: [enumFilterMixin, enumTranslateMixin],
 
   data: () => ({
-    options: IntervalOptions,
+    IntervalOptions,
     filterQuery: 'interval',
   }),
 
@@ -32,6 +33,9 @@ export default {
       storedProp: (state) => state.intervalFilter.storedProp,
       multiple: (state) => state.intervalFilter.multiple,
     }),
+    options() {
+      return this.enumNameTranslate(this.IntervalOptions);
+    },
   },
   methods: {
     ...mapActions('dashboards', {
