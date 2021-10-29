@@ -40,6 +40,7 @@
           <wt-icon
             v-if="!item.parentId"
             class="icon__leg-marker"
+            icon-prefix="hs"
             icon="leg-a-marker"
             size="sm"
           ></wt-icon>
