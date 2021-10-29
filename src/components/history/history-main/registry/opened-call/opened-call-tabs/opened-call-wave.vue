@@ -113,12 +113,6 @@ const timelineOptions = {
   formatTimeCallback: convertDuration,
 };
 
-const holdTimeHandler = (holdTime, fileStart, fileEnd) => {
-  if (holdTime <= fileStart) return 0;
-  if (holdTime > fileEnd) return (fileEnd - fileStart) / 1000;
-  return ((holdTime - fileStart) / 1000).toFixed(2);
-};
-
 export default {
   name: 'opened-call-wave',
   mixins: [exportFilesMixin],
@@ -195,6 +189,7 @@ export default {
       this.volumeLeftGain = value;
       this.leftGain.audio.gain.value = value;
     },
+
     increaseZoom() {
       this.zoom *= 2;
       this.player.zoom(this.zoom);
@@ -234,15 +229,22 @@ export default {
         this.rightGain.disabled = false;
       }
     },
+
+    getHoldSecInterval(hold) {
+      return {
+        start: ((hold.start - this.call.files[0].startAt) / 1000).toFixed(2),
+        end: ((hold.stop - this.call.files[0].startAt) / 1000).toFixed(2),
+      };
+    },
     displayHolds() {
       this.call.hold.forEach(hold => this.player.addRegion({
-        start: holdTimeHandler(hold.start, this.call.files[0].startAt, this.call.files[0].stopAt),
-        end: holdTimeHandler(hold.stop, this.call.files[0].startAt, this.call.files[0].stopAt),
+        ...this.getHoldSecInterval(hold),
         color: 'var(--hold-color)',
         drag: false,
         resize: false,
       }));
     },
+
     toggleLeftGain() {
       this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
       this.leftGain.muted = !this.leftGain.muted;
@@ -251,12 +253,14 @@ export default {
       this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
       this.rightGain.muted = !this.rightGain.muted;
     },
+
     changedPlaying() {
       this.isPlaying = this.player.isPlaying();
     },
     playPause() {
       this.player.playPause();
     },
+
     toggleRate(value) {
       const { player } = this;
       this.playbackRate = this.playbackRate === value ? 1 : value;
@@ -267,6 +271,7 @@ export default {
       player.setPlaybackRate(this.playbackRate);
       if (isPlaying) this.playPause();
     },
+
     showProgress(progress) {
       this.loadProgress = +progress;
     },
@@ -274,11 +279,14 @@ export default {
       this.loadProgress = 0;
       this.isLoading = false;
     },
+
     onReady() {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-      this.displayHolds();
+      if (call.hold) {
+        this.displayHolds();
+      }
       player.addMarker({
         time: 0,
         position: 'top',
