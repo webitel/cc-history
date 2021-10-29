@@ -85,6 +85,7 @@ import { mapState } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
+import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
@@ -110,6 +111,12 @@ const timelineOptions = {
   primaryLabelInterval: 5,
   secondaryLabelInterval: 10,
   formatTimeCallback: convertDuration,
+};
+
+const holdTimeHandler = (holdTime, fileStart, fileEnd) => {
+  if (holdTime <= fileStart) return 0;
+  if (holdTime > fileEnd) return (fileEnd - fileStart) / 1000;
+  return ((holdTime - fileStart) / 1000).toFixed(2);
 };
 
 export default {
@@ -146,6 +153,7 @@ export default {
           Cursor.create(cursorOptions),
           Markers.create({ markers: [] }),
           Timeline.create(timelineOptions),
+          Regions.create({}),
         ],
         splitChannelsOptions: {
           overlay: false,
@@ -226,6 +234,15 @@ export default {
         this.rightGain.disabled = false;
       }
     },
+    displayHolds() {
+      this.call.hold.forEach(hold => this.player.addRegion({
+        start: holdTimeHandler(hold.start, this.call.files[0].startAt, this.call.files[0].stopAt),
+        end: holdTimeHandler(hold.stop, this.call.files[0].startAt, this.call.files[0].stopAt),
+        color: 'var(--hold-color)',
+        drag: false,
+        resize: false,
+      }));
+    },
     toggleLeftGain() {
       this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
       this.leftGain.muted = !this.leftGain.muted;
@@ -261,7 +278,7 @@ export default {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-
+      this.displayHolds();
       player.addMarker({
         time: 0,
         position: 'top',
