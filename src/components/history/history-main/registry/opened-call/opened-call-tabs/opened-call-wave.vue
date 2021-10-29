@@ -7,7 +7,6 @@
     <section :class="{'call-wave-page--hidden': isLoading}">
       <div class="call-wave-download">
         <wt-icon-btn icon="download" @click="downloadFile"></wt-icon-btn>
-        {{+call.files[0].id}}
       </div>
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
@@ -86,6 +85,7 @@ import { mapState } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
+import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
@@ -142,10 +142,12 @@ export default {
         minPxPerSec: 30,
         height: 150,
         pixelRatio: 1,
+        responsive: true,
         plugins: [
           Cursor.create(cursorOptions),
           Markers.create({ markers: [] }),
           Timeline.create(timelineOptions),
+          Regions.create({}),
         ],
         splitChannelsOptions: {
           overlay: false,
@@ -187,6 +189,7 @@ export default {
       this.volumeLeftGain = value;
       this.leftGain.audio.gain.value = value;
     },
+
     increaseZoom() {
       this.zoom *= 2;
       this.player.zoom(this.zoom);
@@ -226,6 +229,22 @@ export default {
         this.rightGain.disabled = false;
       }
     },
+
+    getHoldSecInterval(hold) {
+      return {
+        start: ((hold.start - this.call.files[0].startAt) / 1000).toFixed(2),
+        end: ((hold.stop - this.call.files[0].startAt) / 1000).toFixed(2),
+      };
+    },
+    displayHolds() {
+      this.call.hold.forEach(hold => this.player.addRegion({
+        ...this.getHoldSecInterval(hold),
+        color: 'var(--hold-color)',
+        drag: false,
+        resize: false,
+      }));
+    },
+
     toggleLeftGain() {
       this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
       this.leftGain.muted = !this.leftGain.muted;
@@ -234,12 +253,14 @@ export default {
       this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
       this.rightGain.muted = !this.rightGain.muted;
     },
+
     changedPlaying() {
       this.isPlaying = this.player.isPlaying();
     },
     playPause() {
       this.player.playPause();
     },
+
     toggleRate(value) {
       const { player } = this;
       this.playbackRate = this.playbackRate === value ? 1 : value;
@@ -250,6 +271,7 @@ export default {
       player.setPlaybackRate(this.playbackRate);
       if (isPlaying) this.playPause();
     },
+
     showProgress(progress) {
       this.loadProgress = +progress;
     },
@@ -257,11 +279,14 @@ export default {
       this.loadProgress = 0;
       this.isLoading = false;
     },
+
     onReady() {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-
+      if (call.hold) {
+        this.displayHolds();
+      }
       player.addMarker({
         time: 0,
         position: 'top',

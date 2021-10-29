@@ -37,6 +37,7 @@ const fetchHistory = async ({
                               ids,
                               dependencyId,
                               tags,
+                              hold,
                             }) => {
   try {
     const response = await callService.searchHistoryCall(
@@ -72,6 +73,7 @@ const fetchHistory = async ({
       undefined,
       dependencyId,
       tags,
+      hold,
     );
     return formatResponse(response);
   } catch (err) {
