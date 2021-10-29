@@ -56,6 +56,7 @@
 
           <wt-icon-btn
             class="table-action"
+            icon-prefix="hs"
             icon="forks"
             @click="openItem(item)"
           ></wt-icon-btn>
