@@ -45,6 +45,16 @@
             :src="file"
             ref="surf">
           </wavesurfer>
+          <div v-if="timeLineWidth && holdData.length" class="wave-holds-info">
+            <div
+              v-for="hld in holdData"
+              :key="hld.start"
+              class="wave-hold-info"
+              :style="{left: `${iconPosition(hld)}px`}">
+              <wt-icon icon="pause" color="hold"></wt-icon>
+              {{ hld.duration }}
+            </div>
+          </div>
           <div id="wave-timeline" class="call-wave-timeline"></div>
         </section>
         <div></div> <!-- an empty div in order to position in the correct grid column -->
@@ -113,6 +123,13 @@ const timelineOptions = {
   formatTimeCallback: convertDuration,
 };
 
+const getHoldSecInterval = ({ hold, file }) => {
+  const start = ((hold.start - file.startAt) / 1000).toFixed(2);
+  const end = ((hold.stop - file.startAt) / 1000).toFixed(2);
+  const duration = convertDuration((hold.stop - hold.start) / 1000);
+  return { start, end, duration };
+};
+
 export default {
   name: 'opened-call-wave',
   mixins: [exportFilesMixin],
@@ -124,6 +141,8 @@ export default {
       zoom: 1,
       playbackRate: 1,
       isPlaying: false,
+      timeLineWidth: 0,
+      holdData: [],
       leftGain: {
         disabled: false,
         muted: false,
@@ -173,6 +192,14 @@ export default {
     },
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
+    },
+    iconPosition() {
+      return (hold) => {
+        const fileLength = this.player.getDuration().toFixed(2);
+        const pxInSec = this.timeLineWidth / fileLength;
+        const position = (pxInSec * hold.start) - 70;
+        return position;
+      };
     },
   },
 
@@ -230,19 +257,15 @@ export default {
       }
     },
 
-    getHoldSecInterval(hold) {
-      return {
-        start: ((hold.start - this.call.files[0].startAt) / 1000).toFixed(2),
-        end: ((hold.stop - this.call.files[0].startAt) / 1000).toFixed(2),
-      };
-    },
     displayHolds() {
-      this.call.hold.forEach(hold => this.player.addRegion({
-        ...this.getHoldSecInterval(hold),
-        color: 'var(--hold-color)',
-        drag: false,
-        resize: false,
-      }));
+      this.holdData.forEach(hold => {
+        this.player.addRegion({
+          ...hold,
+          color: 'var(--hold-color)',
+          drag: false,
+          resize: false,
+        });
+      });
     },
 
     toggleLeftGain() {
@@ -279,12 +302,19 @@ export default {
       this.loadProgress = 0;
       this.isLoading = false;
     },
+    initializeHolds() {
+
+      this.call.hold.forEach((hold) => {
+        this.holdData.push(getHoldSecInterval({ hold, file: this.call.files[0] }));
+      });
+    },
 
     onReady() {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-      if (call.hold) {
+      if (this.call.hold) {
+        this.initializeHolds();
         this.displayHolds();
       }
       player.addMarker({
@@ -326,6 +356,9 @@ export default {
       }
     });
   },
+  updated() {
+    this.timeLineWidth = this.$refs.surf.$el.clientWidth;
+  },
 };
 </script>
 
@@ -363,9 +396,29 @@ export default {
       }
     }
 
-    .call-wave-timeline {
-      background-color: var(--secondary-color);
+    .call-wave-data-plugin {
+      position: relative;
+
+      .wavesurfer-region {
+        border: 10px solid firebrick;
+      }
+
+      .wave-holds-info {
+        .wave-hold-info {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          top: 250px;
+        }
+      }
+
+      .call-wave-timeline {
+        background-color: var(--secondary-color);
+      }
     }
+
+
   }
 }
 </style>
