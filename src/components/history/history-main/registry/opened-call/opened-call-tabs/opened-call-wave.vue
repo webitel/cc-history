@@ -210,10 +210,12 @@ export default {
 
     volumeRightChangeHandler(value) {
       this.volumeRightGain = value;
+      this.rightGain.muted = !this.volumeRightGain;
       this.rightGain.audio.gain.value = value;
     },
     volumeLeftChangeHandler(value) {
       this.volumeLeftGain = value;
+      this.leftGain.muted = !this.volumeLeftGain;
       this.leftGain.audio.gain.value = value;
     },
 
@@ -258,7 +260,7 @@ export default {
     },
 
     displayHolds() {
-      this.holdData.forEach(hold => {
+      this.holdData.forEach((hold) => {
         this.player.addRegion({
           ...hold,
           color: 'var(--hold-color)',
@@ -303,7 +305,6 @@ export default {
       this.isLoading = false;
     },
     initializeHolds() {
-
       this.call.hold.forEach((hold) => {
         this.holdData.push(getHoldSecInterval({ hold, file: this.call.files[0] }));
       });
