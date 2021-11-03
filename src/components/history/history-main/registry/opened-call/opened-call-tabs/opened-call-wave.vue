@@ -45,12 +45,13 @@
             :src="file"
             ref="surf">
           </wavesurfer>
-          <div v-if="timeLineWidth && holdData.length" class="wave-holds-info">
+          <div v-if="holdsExist">
             <div
               v-for="hld in holdData"
+              v-once
               :key="hld.start"
               class="wave-hold-info"
-              :style="{left: `${iconPosition(hld)}px`}">
+              :style="{ left: iconPosition(hld) }">
               <wt-icon icon="pause" color="hold"></wt-icon>
               {{ hld.duration }}
             </div>
@@ -100,6 +101,11 @@ import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
 
+// Some width constants in order to position hold icons correctly:
+const GRID_GAP = 15;
+const EQUALIZER_WIDTH = 70;
+const HOLD_INFO_WIDTH = 70;
+
 const cursorOptions = {
   showTime: true,
   opacity: 1,
@@ -134,52 +140,51 @@ export default {
   name: 'opened-call-wave',
   mixins: [exportFilesMixin],
   data: () => ({
-      volumeLeftGain: 1,
-      volumeRightGain: 1,
-      isLoading: true,
-      loadProgress: 0,
-      zoom: 1,
-      playbackRate: 1,
-      isPlaying: false,
-      timeLineWidth: 0,
-      holdData: [],
-      leftGain: {
-        disabled: false,
-        muted: false,
-        name: 'A',
-        audio: null,
-      },
-      rightGain: {
-        disabled: true,
-        muted: false,
-        name: 'B',
-        audio: null,
-      },
-      waveOptions: {
-        cursorWidth: 2,
-        splitChannels: true,
-        minPxPerSec: 30,
-        height: 150,
-        pixelRatio: 1,
-        responsive: true,
-        plugins: [
-          Cursor.create(cursorOptions),
-          Markers.create({ markers: [] }),
-          Timeline.create(timelineOptions),
-          Regions.create({}),
-        ],
-        splitChannelsOptions: {
-          overlay: false,
-          channelColors: {
-            0: {
-              progressColor: 'hsla(119, 60%, 40%, 0.8)',
-            },
-            1: {
-              progressColor: 'hsl(42, 100%, 50%)',
-            },
+    volumeLeftGain: 1,
+    volumeRightGain: 1,
+    isLoading: true,
+    loadProgress: 0,
+    zoom: 1,
+    playbackRate: 1,
+    isPlaying: false,
+    timeLineWidth: 0,
+    holdData: [],
+    leftGain: {
+      disabled: false,
+      muted: false,
+      name: 'A',
+      audio: null,
+    },
+    rightGain: {
+      disabled: true,
+      muted: false,
+      name: 'B',
+      audio: null,
+    },
+    waveOptions: {
+      cursorWidth: 2,
+      splitChannels: true,
+      minPxPerSec: 30,
+      height: 150,
+      pixelRatio: 1,
+      plugins: [
+        Cursor.create(cursorOptions),
+        Markers.create({ markers: [] }),
+        Timeline.create(timelineOptions),
+        Regions.create({}),
+      ],
+      splitChannelsOptions: {
+        overlay: false,
+        channelColors: {
+          0: {
+            progressColor: 'hsla(119, 60%, 40%, 0.8)',
+          },
+          1: {
+            progressColor: 'hsl(42, 100%, 50%)',
           },
         },
       },
+    },
   }),
 
   computed: {
@@ -193,12 +198,15 @@ export default {
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
-    iconPosition() {
+    holdsExist() {
+      return this.timeLineWidth && this.holdData.length > 0;
+    },
+    iconPosition() { // counting the width of audio track and icon absolute positioning
       return (hold) => {
         const fileLength = this.player.getDuration().toFixed(2);
         const pxInSec = this.timeLineWidth / fileLength;
-        const position = (pxInSec * hold.start) - 70;
-        return position;
+        const position = ((pxInSec * hold.start) - HOLD_INFO_WIDTH).toFixed();
+        return `${position}px`;
       };
     },
   },
@@ -305,8 +313,10 @@ export default {
       this.isLoading = false;
     },
     initializeHolds() {
-      this.call.hold.forEach((hold) => {
-        this.holdData.push(getHoldSecInterval({ hold, file: this.call.files[0] }));
+      this.holdData = [];
+      this.call.hold.map((hold) => {
+        const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
+        this.holdData.push(hld);
       });
     },
 
@@ -315,6 +325,7 @@ export default {
       this.onLoad();
       this.hideProgress();
       if (this.call.hold) {
+        this.timeLineWidth = this.$el.clientWidth - EQUALIZER_WIDTH - GRID_GAP;
         this.initializeHolds();
         this.displayHolds();
       }
@@ -357,9 +368,6 @@ export default {
       }
     });
   },
-  updated() {
-    this.timeLineWidth = this.$refs.surf.$el.clientWidth;
-  },
 };
 </script>
 
@@ -400,18 +408,12 @@ export default {
     .call-wave-data-plugin {
       position: relative;
 
-      .wavesurfer-region {
-        border: 10px solid firebrick;
-      }
-
-      .wave-holds-info {
-        .wave-hold-info {
-          position: absolute;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          top: 250px;
-        }
+      .wave-hold-info {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        bottom: 30px;
       }
 
       .call-wave-timeline {
