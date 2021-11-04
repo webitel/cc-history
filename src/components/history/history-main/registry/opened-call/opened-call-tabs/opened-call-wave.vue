@@ -6,7 +6,7 @@
     </wt-progress-bar>
     <section :class="{'call-wave-page--hidden': isLoading}">
       <div class="call-wave-download">
-        <wt-icon-btn icon="hs-download-record" @click="downloadFile" />
+        <wt-icon-btn icon="download-record" icon-prefix="hs" @click="downloadFile"/>
       </div>
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
@@ -79,10 +79,10 @@
           </section>
           <section class="call-wave-actions-buttons">
             <wt-button color="secondary" :disabled="zoom > 1000" @click="increaseZoom">
-              <wt-icon icon="zoom-in" />
+              <wt-icon icon="zoom-in"/>
             </wt-button>
             <wt-button color="secondary" :disabled="zoom < 0.001" @click="decreaseZoom">
-              <wt-icon icon="zoom-out" />
+              <wt-icon icon="zoom-out"/>
             </wt-button>
           </section>
         </section>
@@ -420,8 +420,6 @@ export default {
         background-color: var(--secondary-color);
       }
     }
-
-
   }
 }
 </style>
