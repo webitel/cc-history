@@ -6,7 +6,11 @@
     </wt-progress-bar>
     <section :class="{'call-wave-page--hidden': isLoading}">
       <div class="call-wave-download">
-        <wt-icon-btn icon="download-record" icon-prefix="hs" @click="downloadFile"/>
+        <wt-icon-btn
+          icon="download-record"
+          icon-prefix="hs"
+          @click="downloadFile"
+        ></wt-icon-btn>
       </div>
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
