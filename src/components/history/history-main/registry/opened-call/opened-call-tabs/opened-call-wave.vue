@@ -103,6 +103,7 @@ import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
+import { SoundTouch, SimpleFilter, getWebAudioNode } from 'soundtouchjs';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
 
 // Some width constants in order to position hold icons correctly:
@@ -189,6 +190,18 @@ export default {
         },
       },
     },
+    soundOptions: {
+      st: null,
+      soundtouchNode: null,
+      seekingPos: null,
+      seekingDiff: 0,
+      length: null,
+      splitter: null,
+      merger: null,
+      source: null,
+      leftGain: null,
+      rightGain: null,
+    },
   }),
 
   computed: {
@@ -251,24 +264,94 @@ export default {
       player.on('error', this.hideProgress.bind(this));
     },
 
-    onLoad() {
-      const { player } = this;
-      const stereo = player.backend.getPeaks().length === 2;
-      const splitter = player.backend.ac.createChannelSplitter(2);
-      const merger = player.backend.ac.createChannelMerger(2);
-      const leftGain = player.backend.ac.createGain();
-      const rightGain = player.backend.ac.createGain();
-      // Here is where the wavesurfer and web audio combine.
-      splitter.connect(leftGain, 0);
-      splitter.connect(rightGain, 1);
-      leftGain.connect(merger, 0, 0);
-      rightGain.connect(merger, 0, 1);
-      player.backend.setFilters([splitter, leftGain, merger]);
-      this.leftGain.audio = leftGain;
+    initSoundOptions() {
+      this.soundOptions.length = this.player.backend.buffer.length;
+      this.soundOptions.st = new SoundTouch(this.player.backend.ac.sampleRate);
+      this.soundOptions.splitter = this.player.backend.ac.createChannelSplitter(2);
+      this.soundOptions.merger = this.player.backend.ac.createChannelMerger(2);
+      this.soundOptions.leftGain = this.player.backend.ac.createGain();
+      this.soundOptions.rightGain = this.player.backend.ac.createGain();
+      this.soundOptions.splitter.connect(this.soundOptions.leftGain, 0);
+      this.soundOptions.splitter.connect(this.soundOptions.rightGain, 1);
+      this.soundOptions.leftGain.connect(this.soundOptions.merger, 0, 0);
+      this.soundOptions.rightGain.connect(this.soundOptions.merger, 0, 1);
+    },
+
+    setSoundFilters() {
+      this.player.backend.setFilters([this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger]);
+      this.leftGain.audio = this.soundOptions.leftGain;
+      const stereo = this.player.backend.getPeaks().length === 2;
       if (stereo) {
-        this.rightGain.audio = rightGain;
+        this.rightGain.audio = this.soundOptions.rightGain;
         this.rightGain.disabled = false;
       }
+      this.soundOptions.st = new SoundTouch(
+        this.player.backend.ac.sampleRate,
+      );
+      const channels = this.player.backend.buffer.numberOfChannels;
+      const leftChan = this.player.backend.buffer.getChannelData(0);
+      const rightChan = channels > 1 ? this.player.backend.buffer.getChannelData(1) : leftChan;
+
+      const that = this.soundOptions;
+      that.source = {
+        extract(target, numFrames, position) {
+          if (that.seekingPos != null) {
+            that.seekingDiff = that.seekingPos - position;
+            that.seekingPos = null;
+          }
+          // eslint-disable-next-line no-param-reassign
+          position += that.seekingDiff;
+          for (let i = 0; i < numFrames; i++) {
+            // eslint-disable-next-line no-param-reassign
+            target[i * 2] = leftChan[i + position];
+            // eslint-disable-next-line no-param-reassign
+            target[i * 2 + 1] = rightChan[i + position];
+          }
+          return Math.min(numFrames, that.length - position);
+        },
+      };
+    },
+    playFiltered() {
+      this.soundOptions.splitter = this.player.backend.ac.createChannelSplitter(2);
+      this.soundOptions.splitter.connect(this.soundOptions.leftGain, 0);
+      this.soundOptions.splitter.connect(this.soundOptions.rightGain, 1);
+      this.soundOptions.seekingPos = Math.floor(this.player.backend.getPlayedPercents() * this.soundOptions.length);
+      this.soundOptions.st.tempo = this.player.getPlaybackRate();
+      if (this.soundOptions.st.tempo === 1) {
+        this.player.backend.setFilter(this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger);
+      } else {
+        if (!this.soundOptions.soundtouchNode) {
+          const filter = new SimpleFilter(this.soundOptions.source, this.soundOptions.st);
+          this.soundOptions.soundtouchNode = getWebAudioNode(this.player.backend.ac, filter);
+          this.soundOptions.soundtouchNode.connect(this.soundOptions.splitter);
+        }
+        this.player.backend.setFilter(
+          this.soundOptions.soundtouchNode,
+          this.soundOptions.splitter,
+          this.soundOptions.leftGain,
+          this.soundOptions.merger,
+        );
+      }
+    },
+    pauseFiltered() {
+      if (this.soundOptions.soundtouchNode) {
+        this.soundOptions.soundtouchNode.disconnect();
+      }
+    },
+    seekFiltered() {
+      this.pauseFiltered();
+      const position = this.player.backend.getPlayedPercents() * this.soundOptions.length;
+      this.soundOptions.seekingPos = Math.floor(position);
+      this.playFiltered();
+    },
+
+    onLoad() {
+      const { player } = this;
+      this.initSoundOptions();
+      this.setSoundFilters();
+      player.on('play', this.playFiltered);
+      player.on('pause', this.pauseFiltered);
+      player.on('seek', this.seekFiltered);
     },
 
     displayHolds() {
