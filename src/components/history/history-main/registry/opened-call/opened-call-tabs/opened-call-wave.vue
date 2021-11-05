@@ -275,7 +275,7 @@ export default {
       this.holdData.forEach((hold) => {
         this.player.addRegion({
           ...hold,
-          color: 'var(--hold-color)',
+          color: 'hsla(var(--_hold-color), 0.2)',
           drag: false,
           resize: false,
         });
@@ -421,6 +421,7 @@ export default {
       }
 
       .call-wave-timeline {
+        height: 26px;
         background-color: var(--secondary-color);
       }
     }
