@@ -102,9 +102,8 @@ import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
-import { SoundTouch, SimpleFilter, getWebAudioNode } from 'soundtouchjs';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
+import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
 
 // Some width constants in order to position hold icons correctly:
 const GRID_GAP = 15;
@@ -143,7 +142,7 @@ const getHoldSecInterval = ({ hold, file }) => {
 
 export default {
   name: 'opened-call-wave',
-  mixins: [exportFilesMixin],
+  mixins: [callWaveMixin],
   data: () => ({
     volumeLeftGain: 1,
     volumeRightGain: 1,
@@ -154,18 +153,6 @@ export default {
     isPlaying: false,
     timeLineWidth: 0,
     holdData: [],
-    leftGain: {
-      disabled: false,
-      muted: false,
-      name: 'A',
-      audio: null,
-    },
-    rightGain: {
-      disabled: true,
-      muted: false,
-      name: 'B',
-      audio: null,
-    },
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
@@ -189,18 +176,6 @@ export default {
           },
         },
       },
-    },
-    soundOptions: {
-      st: null,
-      soundtouchNode: null,
-      seekingPos: null,
-      seekingDiff: 0,
-      length: null,
-      splitter: null,
-      merger: null,
-      source: null,
-      leftGain: null,
-      rightGain: null,
     },
   }),
 
@@ -229,10 +204,6 @@ export default {
   },
 
   methods: {
-    downloadFile() {
-      this.exportFiles(this.call.files);
-    },
-
     volumeRightChangeHandler(value) {
       this.volumeRightGain = value;
       this.rightGain.muted = !this.volumeRightGain;
@@ -243,7 +214,23 @@ export default {
       this.leftGain.muted = !this.volumeLeftGain;
       this.leftGain.audio.gain.value = value;
     },
-
+    toggleRate(value) {
+      const { player } = this;
+      this.playbackRate = this.playbackRate === value ? 1 : value;
+      // https://github.com/katspaugh/wavesurfer.js/issues/2349
+      const isPlaying = player.isPlaying();
+      if (isPlaying) this.playPause();
+      player.setPlaybackRate(this.playbackRate);
+      if (isPlaying) this.playPause();
+    },
+    toggleLeftGain() {
+      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
+      this.leftGain.muted = !this.leftGain.muted;
+    },
+    toggleRightGain() {
+      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
+      this.rightGain.muted = !this.rightGain.muted;
+    },
     increaseZoom() {
       this.zoom *= 2;
       this.player.zoom(this.zoom);
@@ -252,7 +239,6 @@ export default {
       this.zoom /= 2;
       this.player.zoom(this.zoom);
     },
-
     initWave() {
       const { player } = this;
       player.on('pause', this.changedPlaying.bind(this));
@@ -263,135 +249,18 @@ export default {
       player.on('destroy', this.hideProgress.bind(this));
       player.on('error', this.hideProgress.bind(this));
     },
-
-    initSoundOptions() {
-      this.soundOptions.length = this.player.backend.buffer.length;
-      this.soundOptions.st = new SoundTouch(this.player.backend.ac.sampleRate);
-      this.soundOptions.splitter = this.player.backend.ac.createChannelSplitter(2);
-      this.soundOptions.merger = this.player.backend.ac.createChannelMerger(2);
-      this.soundOptions.leftGain = this.player.backend.ac.createGain();
-      this.soundOptions.rightGain = this.player.backend.ac.createGain();
-      this.soundOptions.splitter.connect(this.soundOptions.leftGain, 0);
-      this.soundOptions.splitter.connect(this.soundOptions.rightGain, 1);
-      this.soundOptions.leftGain.connect(this.soundOptions.merger, 0, 0);
-      this.soundOptions.rightGain.connect(this.soundOptions.merger, 0, 1);
-    },
-
-    setSoundFilters() {
-      this.player.backend.setFilters([this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger]);
-      this.leftGain.audio = this.soundOptions.leftGain;
-      const stereo = this.player.backend.getPeaks().length === 2;
-      if (stereo) {
-        this.rightGain.audio = this.soundOptions.rightGain;
-        this.rightGain.disabled = false;
-      }
-      this.soundOptions.st = new SoundTouch(
-        this.player.backend.ac.sampleRate,
-      );
-      const channels = this.player.backend.buffer.numberOfChannels;
-      const leftChan = this.player.backend.buffer.getChannelData(0);
-      const rightChan = channels > 1 ? this.player.backend.buffer.getChannelData(1) : leftChan;
-
-      const that = this.soundOptions;
-      that.source = {
-        extract(target, numFrames, position) {
-          if (that.seekingPos != null) {
-            that.seekingDiff = that.seekingPos - position;
-            that.seekingPos = null;
-          }
-          // eslint-disable-next-line no-param-reassign
-          position += that.seekingDiff;
-          for (let i = 0; i < numFrames; i++) {
-            // eslint-disable-next-line no-param-reassign
-            target[i * 2] = leftChan[i + position];
-            // eslint-disable-next-line no-param-reassign
-            target[i * 2 + 1] = rightChan[i + position];
-          }
-          return Math.min(numFrames, that.length - position);
-        },
-      };
-    },
-    playFiltered() {
-      this.soundOptions.splitter = this.player.backend.ac.createChannelSplitter(2);
-      this.soundOptions.splitter.connect(this.soundOptions.leftGain, 0);
-      this.soundOptions.splitter.connect(this.soundOptions.rightGain, 1);
-      this.soundOptions.seekingPos = Math.floor(this.player.backend.getPlayedPercents() * this.soundOptions.length);
-      this.soundOptions.st.tempo = this.player.getPlaybackRate();
-      if (this.soundOptions.st.tempo === 1) {
-        this.player.backend.setFilter(this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger);
-      } else {
-        if (!this.soundOptions.soundtouchNode) {
-          const filter = new SimpleFilter(this.soundOptions.source, this.soundOptions.st);
-          this.soundOptions.soundtouchNode = getWebAudioNode(this.player.backend.ac, filter);
-          this.soundOptions.soundtouchNode.connect(this.soundOptions.splitter);
-        }
-        this.player.backend.setFilter(
-          this.soundOptions.soundtouchNode,
-          this.soundOptions.splitter,
-          this.soundOptions.leftGain,
-          this.soundOptions.merger,
-        );
-      }
-    },
-    pauseFiltered() {
-      if (this.soundOptions.soundtouchNode) {
-        this.soundOptions.soundtouchNode.disconnect();
-      }
-    },
-    seekFiltered() {
-      this.pauseFiltered();
-      const position = this.player.backend.getPlayedPercents() * this.soundOptions.length;
-      this.soundOptions.seekingPos = Math.floor(position);
-      this.playFiltered();
-    },
-
-    onLoad() {
-      const { player } = this;
-      this.initSoundOptions();
-      this.setSoundFilters();
-      player.on('play', this.playFiltered);
-      player.on('pause', this.pauseFiltered);
-      player.on('seek', this.seekFiltered);
-    },
-
     displayHolds() {
       this.holdData.forEach((hold) => {
         this.player.addRegion({
           ...hold,
           color: 'hsla(var(--_hold-color), 0.2)',
-          drag: false,
-          resize: false,
+          showTooltip: false,
         });
       });
+      Object.keys(this.player.regions.list).map((hold) => {
+        this.player.regions.list[hold].update({ resize: false, drag: false });
+      });
     },
-
-    toggleLeftGain() {
-      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
-      this.leftGain.muted = !this.leftGain.muted;
-    },
-    toggleRightGain() {
-      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
-      this.rightGain.muted = !this.rightGain.muted;
-    },
-
-    changedPlaying() {
-      this.isPlaying = this.player.isPlaying();
-    },
-    playPause() {
-      this.player.playPause();
-    },
-
-    toggleRate(value) {
-      const { player } = this;
-      this.playbackRate = this.playbackRate === value ? 1 : value;
-
-      // https://github.com/katspaugh/wavesurfer.js/issues/2349
-      const isPlaying = player.isPlaying();
-      if (isPlaying) this.playPause();
-      player.setPlaybackRate(this.playbackRate);
-      if (isPlaying) this.playPause();
-    },
-
     showProgress(progress) {
       this.loadProgress = +progress;
     },
@@ -406,7 +275,6 @@ export default {
         this.holdData.push(hld);
       });
     },
-
     onReady() {
       const { player, call } = this;
       this.onLoad();
@@ -432,20 +300,12 @@ export default {
       player.drawBuffer();
       this.redraw();
     },
-    redraw() {
-      const { player } = this;
-      player._onResize();
-    },
   },
 
   watch: {
     file() {
       this.initWave();
     },
-  },
-
-  created() {
-    this.initFilesExport({ filename: 'history-record' });
   },
 
   mounted() {
