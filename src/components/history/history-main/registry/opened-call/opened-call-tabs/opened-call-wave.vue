@@ -103,6 +103,8 @@ import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
+
+import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
 
 // Some width constants in order to position hold icons correctly:
@@ -204,6 +206,9 @@ export default {
   },
 
   methods: {
+    downloadFile() {
+      this.exportFiles(this.call.files);
+    },
     volumeRightChangeHandler(value) {
       this.volumeRightGain = value;
       this.rightGain.muted = !this.volumeRightGain;
@@ -306,6 +311,10 @@ export default {
     file() {
       this.initWave();
     },
+  },
+
+  created() {
+    this.initFilesExport({ filename: 'history-record' });
   },
 
   mounted() {

@@ -1,5 +1,13 @@
-import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import { getWebAudioNode, SimpleFilter, SoundTouch } from 'soundtouchjs';
+
+/* This mixin is created in order to correct sound pitch changing playback rate.
+
+Wavesurfer library uses the WebAudio API, which is not perfect when it comes to change speed of playing.
+When user changes playback speed, it triggers modification of sound pitch. To prevent it, we had to setup additional filters.
+'Soundtouch' library offers such filters, so we are using it.
+In order to have filters logic separated from the main file, we've created the mixin and put all the
+filters' related data and methods.
+A part, this mixin contatins methods, related to audio file download. */
 
 export default {
   mixins: [exportFilesMixin],
@@ -31,9 +39,6 @@ export default {
   }),
 
   methods: {
-    downloadFile() {
-      this.exportFiles(this.call.files);
-    },
     initSoundOptions() {
       // Initializiation of sound parameters and gains, needed to work with sound filters:
       this.soundOptions.length = this.player.backend.buffer.length;
@@ -140,9 +145,5 @@ export default {
       const { player } = this;
       player._onResize();
     },
-  },
-
-  created() {
-    this.initFilesExport({ filename: 'history-record' });
   },
 };
