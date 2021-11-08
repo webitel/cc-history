@@ -102,8 +102,10 @@ import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
+
+import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
+import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
 
 // Some width constants in order to position hold icons correctly:
 const GRID_GAP = 15;
@@ -142,7 +144,7 @@ const getHoldSecInterval = ({ hold, file }) => {
 
 export default {
   name: 'opened-call-wave',
-  mixins: [exportFilesMixin],
+  mixins: [callWaveMixin],
   data: () => ({
     volumeLeftGain: 1,
     volumeRightGain: 1,
@@ -153,18 +155,6 @@ export default {
     isPlaying: false,
     timeLineWidth: 0,
     holdData: [],
-    leftGain: {
-      disabled: false,
-      muted: false,
-      name: 'A',
-      audio: null,
-    },
-    rightGain: {
-      disabled: true,
-      muted: false,
-      name: 'B',
-      audio: null,
-    },
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
@@ -219,7 +209,6 @@ export default {
     downloadFile() {
       this.exportFiles(this.call.files);
     },
-
     volumeRightChangeHandler(value) {
       this.volumeRightGain = value;
       this.rightGain.muted = !this.volumeRightGain;
@@ -230,7 +219,23 @@ export default {
       this.leftGain.muted = !this.volumeLeftGain;
       this.leftGain.audio.gain.value = value;
     },
-
+    toggleRate(value) {
+      const { player } = this;
+      this.playbackRate = this.playbackRate === value ? 1 : value;
+      // https://github.com/katspaugh/wavesurfer.js/issues/2349
+      const isPlaying = player.isPlaying();
+      if (isPlaying) this.playPause();
+      player.setPlaybackRate(this.playbackRate);
+      if (isPlaying) this.playPause();
+    },
+    toggleLeftGain() {
+      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
+      this.leftGain.muted = !this.leftGain.muted;
+    },
+    toggleRightGain() {
+      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
+      this.rightGain.muted = !this.rightGain.muted;
+    },
     increaseZoom() {
       this.zoom *= 2;
       this.player.zoom(this.zoom);
@@ -239,7 +244,6 @@ export default {
       this.zoom /= 2;
       this.player.zoom(this.zoom);
     },
-
     initWave() {
       const { player } = this;
       player.on('pause', this.changedPlaying.bind(this));
@@ -250,65 +254,18 @@ export default {
       player.on('destroy', this.hideProgress.bind(this));
       player.on('error', this.hideProgress.bind(this));
     },
-
-    onLoad() {
-      const { player } = this;
-      const stereo = player.backend.getPeaks().length === 2;
-      const splitter = player.backend.ac.createChannelSplitter(2);
-      const merger = player.backend.ac.createChannelMerger(2);
-      const leftGain = player.backend.ac.createGain();
-      const rightGain = player.backend.ac.createGain();
-      // Here is where the wavesurfer and web audio combine.
-      splitter.connect(leftGain, 0);
-      splitter.connect(rightGain, 1);
-      leftGain.connect(merger, 0, 0);
-      rightGain.connect(merger, 0, 1);
-      player.backend.setFilters([splitter, leftGain, merger]);
-      this.leftGain.audio = leftGain;
-      if (stereo) {
-        this.rightGain.audio = rightGain;
-        this.rightGain.disabled = false;
-      }
-    },
-
     displayHolds() {
       this.holdData.forEach((hold) => {
         this.player.addRegion({
           ...hold,
-          color: 'var(--hold-color)',
-          drag: false,
-          resize: false,
+          color: 'hsla(var(--_hold-color), 0.2)',
+          showTooltip: false,
         });
       });
+      Object.keys(this.player.regions.list).map((hold) => {
+        this.player.regions.list[hold].update({ resize: false, drag: false });
+      });
     },
-
-    toggleLeftGain() {
-      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
-      this.leftGain.muted = !this.leftGain.muted;
-    },
-    toggleRightGain() {
-      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
-      this.rightGain.muted = !this.rightGain.muted;
-    },
-
-    changedPlaying() {
-      this.isPlaying = this.player.isPlaying();
-    },
-    playPause() {
-      this.player.playPause();
-    },
-
-    toggleRate(value) {
-      const { player } = this;
-      this.playbackRate = this.playbackRate === value ? 1 : value;
-
-      // https://github.com/katspaugh/wavesurfer.js/issues/2349
-      const isPlaying = player.isPlaying();
-      if (isPlaying) this.playPause();
-      player.setPlaybackRate(this.playbackRate);
-      if (isPlaying) this.playPause();
-    },
-
     showProgress(progress) {
       this.loadProgress = +progress;
     },
@@ -323,7 +280,6 @@ export default {
         this.holdData.push(hld);
       });
     },
-
     onReady() {
       const { player, call } = this;
       this.onLoad();
@@ -348,10 +304,6 @@ export default {
       }
       player.drawBuffer();
       this.redraw();
-    },
-    redraw() {
-      const { player } = this;
-      player._onResize();
     },
   },
 
@@ -421,6 +373,7 @@ export default {
       }
 
       .call-wave-timeline {
+        height: 26px;
         background-color: var(--secondary-color);
       }
     }
