@@ -144,7 +144,7 @@ const getHoldSecInterval = ({ hold, file }) => {
 
 export default {
   name: 'opened-call-wave',
-  mixins: [callWaveMixin],
+  mixins: [callWaveMixin, exportFilesMixin],
   data: () => ({
     volumeLeftGain: 1,
     volumeRightGain: 1,
