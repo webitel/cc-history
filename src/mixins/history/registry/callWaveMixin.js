@@ -10,7 +10,6 @@ filters' related data and methods.
 A part, this mixin contatins methods, related to audio file download. */
 
 export default {
-  mixins: [exportFilesMixin],
   data: () => ({
     soundOptions: {
       st: null,
