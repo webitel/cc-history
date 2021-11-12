@@ -2,12 +2,12 @@
   <section class="comment-form">
     <wt-timepicker
       class="comment-form__timepicker"
-      label="Begin"
+      :label="$t('reusable.from')"
       v-model="comment.startSec"
     ></wt-timepicker>
     <wt-timepicker
       class="comment-form__timepicker"
-      label="End"
+      :label="$t('reusable.to')"
       v-model="comment.endSec"
     ></wt-timepicker>
     <div class="comment-form-textarea">
@@ -24,7 +24,9 @@
         @click="expandTextarea"
       ></wt-icon-btn>
     </div>
-    <wt-button class="comment-form__button" @click="saveComment">Save</wt-button>
+    <wt-button class="comment-form__button" @click="saveComment">
+      {{ $t('reusable.save') }}
+    </wt-button>
   </section>
 </template>
 
@@ -53,6 +55,7 @@ export default {
 
 <style lang="scss" scoped>
 .comment-form::v-deep {
+  margin: var(--component-spacing) 0;
   display: flex;
   align-items: flex-start;
   gap: var(--component-spacing);
