@@ -4,14 +4,46 @@
       v-show="isLoading"
       :value="loadProgress" :max="100">
     </wt-progress-bar>
-    <section :class="{'call-wave-page--hidden': isLoading}">
-      <div class="call-wave-download">
-        <wt-icon-btn
-          icon="download-record"
-          icon-prefix="hs"
-          @click="downloadFile"
-        ></wt-icon-btn>
-      </div>
+    <section
+      class="call-wave-page-main"
+      :class="{'call-wave-page-main--hidden': isLoading}">
+      <section class="call-wave-toolbar">
+        <div class="toolbar-main">
+          <wt-checkbox
+            :value="showHolds"
+            :selected="showHolds"
+            @change="showHoldsHandler"
+            :label="$tc('registry.openedCall.hold', 2)"
+          ></wt-checkbox>
+          <wt-badge>
+            {{ holdsLength }}
+          </wt-badge>
+
+          <wt-checkbox
+            :value="showComments"
+            :selected="showComments"
+            @change="showCommentsHandler"
+            :label="$tc('registry.openedCall.comment', 2)"
+          ></wt-checkbox>
+          <wt-badge>{{ commentsLength }}</wt-badge>
+
+        </div>
+        <div class="toolbar-actions">
+          <wt-icon-btn
+            icon="note"
+            icon-prefix="hs"
+            @click="commentsModeHandler"
+          ></wt-icon-btn>
+          <wt-icon-btn
+            icon="download-record"
+            icon-prefix="hs"
+            @click="downloadFile"
+          ></wt-icon-btn>
+        </div>
+      </section>
+
+      <opened-call-comment-form v-if="commentsMode"/>
+
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
           <div class="call-wave-leg" v-if="!leftGain.disabled">
@@ -44,22 +76,27 @@
           </div>
         </section>
         <section class="call-wave-data-plugin" v-if="file">
+        <div style="position: relative; height: 42px">
+          <div v-if="holdsExist && showHolds">
+            <div
+              v-for="hld in holdData"
+              v-once
+              :key="hld.start"
+              class="wave-hold-icon"
+              :style="{ left: iconPosition(hld) }">
+              <wt-icon icon="pause" color="hold"></wt-icon>
+              <div class="wave-hold-info">
+                {{ hld.duration }}
+              </div>
+            </div>
+          </div>
+        </div>
           <wavesurfer
             :options="waveOptions"
             :src="file"
             ref="surf">
           </wavesurfer>
-          <div v-if="holdsExist">
-            <div
-              v-for="hld in holdData"
-              v-once
-              :key="hld.start"
-              class="wave-hold-info"
-              :style="{ left: iconPosition(hld) }">
-              <wt-icon icon="pause" color="hold"></wt-icon>
-              {{ hld.duration }}
-            </div>
-          </div>
+
           <div id="wave-timeline" class="call-wave-timeline"></div>
         </section>
         <div></div> <!-- an empty div in order to position in the correct grid column -->
@@ -96,7 +133,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
@@ -106,11 +143,12 @@ import generateMediaURL from '../../../../../../mixins/media/scripts/generateMed
 
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
+import OpenedCallCommentForm from './opened-call-comment-form';
 
 // Some width constants in order to position hold icons correctly:
 const GRID_GAP = 15;
 const EQUALIZER_WIDTH = 70;
-const HOLD_INFO_WIDTH = 70;
+// const HOLD_INFO_WIDTH = 70;
 
 const cursorOptions = {
   showTime: true,
@@ -130,9 +168,15 @@ const timelineOptions = {
   fontFamily: 'Montserrat Regular, monospace',
   fontSize: 14,
   labelPadding: 5,
-  primaryLabelInterval: 5,
-  secondaryLabelInterval: 10,
+  primaryLabelInterval: 3,
+  secondaryLabelInterval: 0,
   formatTimeCallback: convertDuration,
+};
+
+const commentOptions = {
+  showTooltip: false,
+  color: 'hsla(var(--_transfer-color), 0.2)',
+  resize: true,
 };
 
 const getHoldSecInterval = ({ hold, file }) => {
@@ -144,6 +188,7 @@ const getHoldSecInterval = ({ hold, file }) => {
 
 export default {
   name: 'opened-call-wave',
+  components: { OpenedCallCommentForm },
   mixins: [callWaveMixin, exportFilesMixin],
   data: () => ({
     volumeLeftGain: 1,
@@ -155,6 +200,11 @@ export default {
     isPlaying: false,
     timeLineWidth: 0,
     holdData: [],
+    showHolds: false,
+    commentData: [],
+    showComments: false,
+    canvasWidth: 0,
+    commentsMode: false,
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
@@ -193,19 +243,56 @@ export default {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
     holdsExist() {
+      console.log('AAAAAAAAA', this.timeLineWidth);
       return this.timeLineWidth && this.holdData.length > 0;
     },
     iconPosition() { // counting the width of audio track and icon absolute positioning
       return (hold) => {
         const fileLength = this.player.getDuration().toFixed(2);
         const pxInSec = this.timeLineWidth / fileLength;
-        const position = ((pxInSec * hold.start) - HOLD_INFO_WIDTH).toFixed();
+        // const position = ((pxInSec * hold.start) - HOLD_INFO_WIDTH).toFixed();
+        const position = (pxInSec * hold.start).toFixed();
         return `${position}px`;
       };
+    },
+    holdsLength() {
+      return this.call.hold ? this.call.hold.length : 0;
+    },
+    commentsLength() {
+      return this.call.annotations ? this.call.annotations.length : 0;
     },
   },
 
   methods: {
+    ...mapActions('registry/opened-call', {
+      addAnnotation: 'ADD_ANNOTATION',
+      editAnnotation: 'EDIT_ANNOTATION',
+    }),
+
+    commentsModeHandler() {
+      this.commentsMode = !this.commentsMode;
+      if (!this.commentsMode) {
+        this.player.redrawRegions();
+      }
+    },
+    redrawRegions() {
+      this.player.clearRegions();
+      this.player.clearMarkers();
+      if (this.showHolds) {
+        this.displayHolds();
+      }
+      if (this.showComments) {
+        this.displayComments();
+      }
+    },
+    showCommentsHandler() {
+      this.showComments = !this.showComments;
+      this.redrawRegions();
+    },
+    showHoldsHandler() {
+      this.showHolds = !this.showHolds;
+      this.redrawRegions();
+    },
     downloadFile() {
       this.exportFiles(this.call.files);
     },
@@ -253,6 +340,7 @@ export default {
       player.on('ready', this.onReady.bind(this));
       player.on('destroy', this.hideProgress.bind(this));
       player.on('error', this.hideProgress.bind(this));
+      player.enableDragSelection({ ...commentOptions });
     },
     displayHolds() {
       this.holdData.forEach((hold) => {
@@ -262,8 +350,26 @@ export default {
           showTooltip: false,
         });
       });
+
       Object.keys(this.player.regions.list).map((hold) => {
         this.player.regions.list[hold].update({ resize: false, drag: false });
+      });
+    },
+    displayComments() {
+      this.call.annotations.forEach((comment) => {
+        const note = {
+          start: comment.startSec,
+          end: comment.endSec,
+        };
+        this.player.addRegion({
+          ...note,
+          ...commentOptions,
+        });
+      });
+      this.player.on('region-update-end', () => {
+        console.log(this.player.regions.list);
+        console.log(Object.keys(this.player.regions.list).pop());
+        this.commentsMode = true;
       });
     },
     showProgress(progress) {
@@ -280,14 +386,26 @@ export default {
         this.holdData.push(hld);
       });
     },
+    initializeComments() {
+      this.call.annotations.map((annotation) => {
+        // const comment = getCommentSecInterval({ annotation, file: this.call.files[0] });
+        const comment = { start: annotation.start, end: annotation.end };
+        this.commentData.push(comment);
+      });
+    },
     onReady() {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
+      this.canvasWidth = this.player.drawer.width;
+      console.log('canvasWidth', this.canvasWidth);
       if (this.call.hold) {
         this.timeLineWidth = this.$el.clientWidth - EQUALIZER_WIDTH - GRID_GAP;
         this.initializeHolds();
-        this.displayHolds();
+        // this.displayHolds();
+      }
+      if (this.call.annotations) {
+        this.initializeComments();
       }
       player.addMarker({
         time: 0,
@@ -321,6 +439,8 @@ export default {
     this.$nextTick(() => {
       if (this.player && this.file) {
         this.initWave();
+        console.log('aaaa', this.player.drawer.width);
+        console.dir(this.$refs.iconsCanvas);
       }
     });
   },
@@ -329,12 +449,32 @@ export default {
 
 <style scoped lang="scss">
 .call-wave-page {
-  &--hidden {
-    display: none;
+
+  .call-wave-page-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--component-spacing);
+
+    &--hidden {
+      display: none;
+    }
   }
 
-  .call-wave-download {
-    text-align: right;
+  .call-wave-toolbar {
+    display: flex;
+    justify-content: space-between;
+
+    .toolbar-main {
+      display: flex;
+      flex: 1 0 auto;
+      gap: var(--component-spacing);
+      justify-content: center;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: var(--component-spacing);
+    }
   }
 
   .call-wave-data--grid {
@@ -364,12 +504,22 @@ export default {
     .call-wave-data-plugin {
       position: relative;
 
-      .wave-hold-info {
+      .wave-hold-icon {
         position: absolute;
         display: flex;
         flex-direction: column;
         align-items: center;
-        bottom: 30px;
+        //bottom: 30px;
+
+        .wave-hold-info {
+          visibility: hidden;
+        }
+
+        &:hover {
+          .wave-hold-info {
+            visibility: visible;
+          }
+        }
       }
 
       .call-wave-timeline {
