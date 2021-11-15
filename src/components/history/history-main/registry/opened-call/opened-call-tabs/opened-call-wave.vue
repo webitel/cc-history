@@ -75,22 +75,23 @@
             />
           </div>
         </section>
+
         <section class="call-wave-data-plugin" v-if="file">
-        <div style="position: relative; height: 42px">
-          <div v-if="holdsExist && showHolds">
-            <div
-              v-for="hld in holdData"
-              v-once
-              :key="hld.start"
-              class="wave-hold-icon"
-              :style="{ left: iconPosition(hld) }">
-              <wt-icon icon="pause" color="hold"></wt-icon>
-              <div class="wave-hold-info">
-                {{ hld.duration }}
+          <div style="position: relative; height: 42px">
+            <div v-if="holdsExist && showHolds">
+              <div
+                v-for="hld in holdData"
+                v-once
+                :key="hld.start"
+                class="wave-hold-icon"
+                :style="{ left: iconPosition(hld) }">
+                <wt-icon icon="pause" color="hold"></wt-icon>
+                <div class="wave-hold-info">
+                  {{ hld.duration }}
+                </div>
               </div>
             </div>
           </div>
-        </div>
           <wavesurfer
             :options="waveOptions"
             :src="file"
@@ -243,7 +244,6 @@ export default {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
     holdsExist() {
-      console.log('AAAAAAAAA', this.timeLineWidth);
       return this.timeLineWidth && this.holdData.length > 0;
     },
     iconPosition() { // counting the width of audio track and icon absolute positioning
@@ -326,10 +326,12 @@ export default {
     increaseZoom() {
       this.zoom *= 2;
       this.player.zoom(this.zoom);
+      this.canvasWidth = this.player.drawer.width;
     },
     decreaseZoom() {
       this.zoom /= 2;
       this.player.zoom(this.zoom);
+      this.canvasWidth = this.player.drawer.width;
     },
     initWave() {
       const { player } = this;
@@ -367,8 +369,6 @@ export default {
         });
       });
       this.player.on('region-update-end', () => {
-        console.log(this.player.regions.list);
-        console.log(Object.keys(this.player.regions.list).pop());
         this.commentsMode = true;
       });
     },
@@ -398,7 +398,6 @@ export default {
       this.onLoad();
       this.hideProgress();
       this.canvasWidth = this.player.drawer.width;
-      console.log('canvasWidth', this.canvasWidth);
       if (this.call.hold) {
         this.timeLineWidth = this.$el.clientWidth - EQUALIZER_WIDTH - GRID_GAP;
         this.initializeHolds();
@@ -439,8 +438,6 @@ export default {
     this.$nextTick(() => {
       if (this.player && this.file) {
         this.initWave();
-        console.log('aaaa', this.player.drawer.width);
-        console.dir(this.$refs.iconsCanvas);
       }
     });
   },
