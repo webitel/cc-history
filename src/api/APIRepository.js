@@ -1,3 +1,4 @@
+import CallAnnotationAPIRepository from './history/registry/CallAnnotationAPIRepository';
 import RegistryAPIRepository from './history/registry/RegistryAPIRepository';
 import AgentsAPIRepository from '../shared/filters/filter-agent/AgentsAPIRepository';
 import GatewaysAPIRepository from '../shared/filters/filter-gateway/GatewaysAPIRepository';
@@ -14,6 +15,7 @@ const APIRepository = {
   queues: QueuesAPIRepository,
   teams: TeamsAPIRepository,
   users: UsersAPIRepository,
+  annotations: CallAnnotationAPIRepository,
 };
 
 export default APIRepository;

@@ -1,7 +1,10 @@
+import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
+
 import APIRepository from '../../../../api/APIRepository';
 
 const historyAPI = APIRepository.history;
-const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'direction', 'from', 'to', 'destination', 'hold'];
+const annotationsAPI = APIRepository.annotations;
+const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'direction', 'from', 'to', 'destination', 'hold', 'annotations'];
 const REQUIRED_DATA_FIELDS = ['id', 'parent_id', 'transfer_from', 'transfer_to'];
 
 const transfersHeader = {
@@ -92,7 +95,20 @@ const actions = {
     context.commit('RESET_MAIN_CALL');
     context.commit('RESET_LEGS_DATA_LIST');
   },
+
+  ADD_ANNOTATION: async (context, annotation) => {
+    await annotationsAPI.add({ itemInstance: annotation });
+  },
+
+  EDIT_ANNOTATION: async (context, annotation) => {
+    await annotationsAPI.update({ itemInstance: annotation });
+  },
+
+  DELETE_ANNOTATION: async (context, annotation) => {
+    await annotationsAPI.delete({ itemInstance: annotation });
+  },
 };
+
 const mutations = {
   SET_MAIN_CALL: (state, mainCall) => {
     state.mainCall = mainCall;
@@ -127,10 +143,9 @@ const mutations = {
   },
 };
 
-export default {
-  namespaced: true,
-  state,
-  getters,
-  actions,
-  mutations,
-};
+const openedCall = new BaseStoreModule()
+  .attachAPIModule(annotationsAPI, historyAPI)
+  .generateAPIActions()
+  .getModule({ namespaced: true, state, getters, actions, mutations });
+
+export default openedCall;

@@ -25,8 +25,9 @@
             @change="showCommentsHandler"
             :label="$tc('registry.openedCall.comment', 2)"
           ></wt-checkbox>
-          <wt-badge>{{ commentsLength }}</wt-badge>
-
+          <wt-badge>
+            {{ commentsLength }}
+          </wt-badge>
         </div>
         <div class="toolbar-actions">
           <wt-icon-btn
@@ -42,7 +43,12 @@
         </div>
       </section>
 
-      <opened-call-comment-form v-if="commentsMode"/>
+      <opened-call-comment-form
+        v-if="commentsMode"
+        :callId="call.id"
+        :comment="selectedComment"
+        :key="selectedComment.id"
+      />
 
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
@@ -78,16 +84,28 @@
 
         <section class="call-wave-data-plugin" v-if="file">
           <div style="position: relative; height: 42px">
-            <div v-if="holdsExist && showHolds">
+            <div v-if="showHolds && call.hold">
               <div
-                v-for="hld in holdData"
-                v-once
-                :key="hld.start"
+                v-for="hold in call.hold"
+                :key="hold.start + hold.duration"
                 class="wave-hold-icon"
-                :style="{ left: iconPosition(hld) }">
-                <wt-icon icon="pause" color="hold"></wt-icon>
+                :style="{ left: iconPosition(hold) }">
+                <wt-icon-btn icon="pause" color="hold"></wt-icon-btn>
                 <div class="wave-hold-info">
-                  {{ hld.duration }}
+                  {{ formatDuration(hold.sec) }}
+                </div>
+              </div>
+            </div>
+            <div v-if="showComments && call.annotations">
+              <div
+                v-for="comment in call.annotations"
+                :key="comment.id"
+                class="wave-hold-icon"
+                :style="{ left: iconPosition(comment) }">
+                <wt-icon-btn icon="note" icon-prefix="hs" color="transfer"
+                             @click="editAnnotation(comment)"></wt-icon-btn>
+                <div class="wave-note-info">
+                  {{ comment.note }}
                 </div>
               </div>
             </div>
@@ -97,9 +115,9 @@
             :src="file"
             ref="surf">
           </wavesurfer>
-
           <div id="wave-timeline" class="call-wave-timeline"></div>
         </section>
+
         <div></div> <!-- an empty div in order to position in the correct grid column -->
         <section class="call-wave-actions">
           <section class="call-wave-actions-buttons">
@@ -134,7 +152,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
@@ -149,7 +167,6 @@ import OpenedCallCommentForm from './opened-call-comment-form';
 // Some width constants in order to position hold icons correctly:
 const GRID_GAP = 15;
 const EQUALIZER_WIDTH = 70;
-// const HOLD_INFO_WIDTH = 70;
 
 const cursorOptions = {
   showTime: true,
@@ -169,7 +186,7 @@ const timelineOptions = {
   fontFamily: 'Montserrat Regular, monospace',
   fontSize: 14,
   labelPadding: 5,
-  primaryLabelInterval: 3,
+  primaryLabelInterval: 5,
   secondaryLabelInterval: 0,
   formatTimeCallback: convertDuration,
 };
@@ -183,8 +200,7 @@ const commentOptions = {
 const getHoldSecInterval = ({ hold, file }) => {
   const start = ((hold.start - file.startAt) / 1000).toFixed(2);
   const end = ((hold.stop - file.startAt) / 1000).toFixed(2);
-  const duration = convertDuration((hold.stop - hold.start) / 1000);
-  return { start, end, duration };
+  return { start, end };
 };
 
 export default {
@@ -200,12 +216,10 @@ export default {
     playbackRate: 1,
     isPlaying: false,
     timeLineWidth: 0,
-    holdData: [],
     showHolds: false,
-    commentData: [],
     showComments: false,
-    canvasWidth: 0,
     commentsMode: false,
+    selectedComment: null,
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
@@ -243,15 +257,13 @@ export default {
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
-    holdsExist() {
-      return this.timeLineWidth && this.holdData.length > 0;
-    },
+
     iconPosition() { // counting the width of audio track and icon absolute positioning
       return (hold) => {
         const fileLength = this.player.getDuration().toFixed(2);
+        const start = (hold.start - this.call.files[0].startAt) / 1000 || hold.startSec;
         const pxInSec = this.timeLineWidth / fileLength;
-        // const position = ((pxInSec * hold.start) - HOLD_INFO_WIDTH).toFixed();
-        const position = (pxInSec * hold.start).toFixed();
+        const position = (pxInSec * start).toFixed();
         return `${position}px`;
       };
     },
@@ -261,23 +273,32 @@ export default {
     commentsLength() {
       return this.call.annotations ? this.call.annotations.length : 0;
     },
+    formatDuration() {
+      return (hold) => {
+        return convertDuration(hold.sec);
+      };
+    },
   },
 
   methods: {
-    ...mapActions('registry/opened-call', {
-      addAnnotation: 'ADD_ANNOTATION',
-      editAnnotation: 'EDIT_ANNOTATION',
-    }),
+    blockRegionResize() {
+      Object.keys(this.player.regions.list).map((region) => {
+        this.player.regions.list[region].update({ resize: false, drag: false });
+      });
+    },
+    editAnnotation(comment) {
+      this.selectedComment = comment;
+      this.commentsMode = true;
+    },
 
     commentsModeHandler() {
       this.commentsMode = !this.commentsMode;
       if (!this.commentsMode) {
-        this.player.redrawRegions();
+        this.selectedComment = null;
       }
     },
     redrawRegions() {
       this.player.clearRegions();
-      this.player.clearMarkers();
       if (this.showHolds) {
         this.displayHolds();
       }
@@ -326,12 +347,10 @@ export default {
     increaseZoom() {
       this.zoom *= 2;
       this.player.zoom(this.zoom);
-      this.canvasWidth = this.player.drawer.width;
     },
     decreaseZoom() {
       this.zoom /= 2;
       this.player.zoom(this.zoom);
-      this.canvasWidth = this.player.drawer.width;
     },
     initWave() {
       const { player } = this;
@@ -345,20 +364,19 @@ export default {
       player.enableDragSelection({ ...commentOptions });
     },
     displayHolds() {
-      this.holdData.forEach((hold) => {
+      this.call.hold.map((hold) => {
+        const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
         this.player.addRegion({
-          ...hold,
+          ...hld,
           color: 'hsla(var(--_hold-color), 0.2)',
           showTooltip: false,
         });
       });
 
-      Object.keys(this.player.regions.list).map((hold) => {
-        this.player.regions.list[hold].update({ resize: false, drag: false });
-      });
+      this.blockRegionResize();
     },
     displayComments() {
-      this.call.annotations.forEach((comment) => {
+      this.call.annotations.map((comment) => {
         const note = {
           start: comment.startSec,
           end: comment.endSec,
@@ -368,9 +386,7 @@ export default {
           ...commentOptions,
         });
       });
-      this.player.on('region-update-end', () => {
-        this.commentsMode = true;
-      });
+      this.blockRegionResize();
     },
     showProgress(progress) {
       this.loadProgress = +progress;
@@ -379,32 +395,20 @@ export default {
       this.loadProgress = 0;
       this.isLoading = false;
     },
-    initializeHolds() {
-      this.holdData = [];
-      this.call.hold.map((hold) => {
-        const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
-        this.holdData.push(hld);
-      });
-    },
-    initializeComments() {
-      this.call.annotations.map((annotation) => {
-        // const comment = getCommentSecInterval({ annotation, file: this.call.files[0] });
-        const comment = { start: annotation.start, end: annotation.end };
-        this.commentData.push(comment);
-      });
+    createComment(region) {
+      this.selectedComment = {
+        startSec: region.start.toFixed(),
+        endSec: region.end.toFixed(),
+        note: '',
+      };
+      this.commentsMode = true;
     },
     onReady() {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-      this.canvasWidth = this.player.drawer.width;
-      if (this.call.hold) {
+      if (this.call.hold || this.call.annotations) {
         this.timeLineWidth = this.$el.clientWidth - EQUALIZER_WIDTH - GRID_GAP;
-        this.initializeHolds();
-        // this.displayHolds();
-      }
-      if (this.call.annotations) {
-        this.initializeComments();
       }
       player.addMarker({
         time: 0,
@@ -421,6 +425,7 @@ export default {
       }
       player.drawBuffer();
       this.redraw();
+      player.on('region-update-end', this.createComment);
     },
   },
 
@@ -506,15 +511,34 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        //bottom: 30px;
 
         .wave-hold-info {
+          visibility: hidden;
+        }
+
+        .wave-note-info {
           visibility: hidden;
         }
 
         &:hover {
           .wave-hold-info {
             visibility: visible;
+          }
+
+          .wave-note-info {
+            visibility: visible;
+            box-sizing: border-box;
+            height: 100px;
+            width: 150px;
+            position: absolute;
+            top: 26px;
+            overflow: auto;
+            border: var(--input-border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            background: var(--main-color);
+            padding: 10px;
+            z-index: 5;
           }
         }
       }
