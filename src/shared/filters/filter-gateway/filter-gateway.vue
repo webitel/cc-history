@@ -4,9 +4,8 @@
     :label="$t('fields.gateway')"
     :track-by="storedProp"
     :multiple="multiple"
-    :search="search"
+    :search-method="search"
     :close-on-select="false"
-    :internal-search="false"
     @input="setValue({ filter: filterQuery, value: $event })"
     @reset="setValueToQuery({ value, filterQuery, storedProp })"
     @closed="setValueToQuery({ value, filterQuery, storedProp })"
@@ -37,11 +36,15 @@ export default {
   },
 
   methods: {
-    search: (search) => gatewayAPI.getGateways({ search }),
-    fetchSelected: gatewayAPI.getGatewaysByIds,
     ...mapActions('filters', {
       setValue: 'SET_FILTER',
     }),
+    search: gatewayAPI.getLookup,
+    fetchSelected: async (ids) => {
+      const params = { size: ids.length, ids };
+      const selected = await gatewayAPI.getLookup(params);
+      return selected.items;
+    },
   },
 };
 </script>

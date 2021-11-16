@@ -1,51 +1,16 @@
 import { AgentServiceApiFactory } from 'webitel-sdk';
+import { SdkListGetterApiConsumer } from 'webitel-sdk/esm2015/api-consumers';
 import instance from '../../../api/instance';
 import configuration from '../../../api/utils/openAPIConfig';
-import { formatOptions, defaultParams } from '../api/defaults/defaults';
 
 const agentService = new AgentServiceApiFactory(configuration, '', instance);
 
-export const fetchAgents = async ({
-                                      page,
-                                      size,
-                                      search,
-                                      fields,
-                                      id,
-                                  }) => {
-    try {
-        // eslint-disable-next-line no-param-reassign
-        if (search && search.slice(-1) !== '*') search += '*';
-        const response = await agentService.searchAgent(
-            page,
-            size,
-            search,
-            undefined,
-            fields,
-            null,
-            id,
-        );
-        return formatOptions(response);
-    } catch (err) {
-        throw err;
-    }
-};
+const listGetter = new SdkListGetterApiConsumer(agentService.searchAgent);
+
+const getAgentsLookup = (params) => listGetter.getLookup(params);
 
 const AgentsAPIRepository = {
-    getAgents(argParams) {
-        const params = {
-            ...defaultParams,
-            ...argParams,
-        };
-        return fetchAgents(params);
-    },
-    getAgentsByIds(idList) {
-        const params = {
-            ...defaultParams,
-            size: idList.length,
-            id: idList,
-        };
-        return fetchAgents(params);
-    },
+  getLookup: getAgentsLookup,
 };
 
 export default AgentsAPIRepository;
