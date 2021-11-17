@@ -47,7 +47,7 @@
         v-if="commentsMode"
         :callId="call.id"
         :comment="selectedComment"
-        :key="selectedComment.id"
+        :key="formKeyGenerator"
       />
 
       <section class="call-wave-data--grid">
@@ -251,6 +251,9 @@ export default {
       file: (state) => generateMediaURL(state.mainCall.files[0].id, true),
       call: (state) => state.mainCall,
     }),
+    formKeyGenerator() {
+      return this.selectedComment ? this.selectedComment.id : Math.random();
+    },
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
     },
@@ -402,6 +405,7 @@ export default {
         note: '',
       };
       this.commentsMode = true;
+      this.blockRegionResize();
     },
     onReady() {
       const { player, call } = this;
@@ -518,6 +522,18 @@ export default {
 
         .wave-note-info {
           visibility: hidden;
+          box-sizing: border-box;
+          height: 100px;
+          width: 150px;
+          position: absolute;
+          top: 26px;
+          overflow: auto;
+          border: var(--input-border);
+          border-radius: var(--border-radius);
+          box-shadow: var(--box-shadow);
+          background: var(--main-color);
+          padding: 10px;
+          z-index: 5;
         }
 
         &:hover {
@@ -527,18 +543,6 @@ export default {
 
           .wave-note-info {
             visibility: visible;
-            box-sizing: border-box;
-            height: 100px;
-            width: 150px;
-            position: absolute;
-            top: 26px;
-            overflow: auto;
-            border: var(--input-border);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            background: var(--main-color);
-            padding: 10px;
-            z-index: 5;
           }
         }
       }
