@@ -15,21 +15,21 @@ const itemCreator = new SdkCreatorApiConsumer(callService.createCallAnnotation, 
 const itemUpdater = new SdkUpdaterApiConsumer(callService.updateCallAnnotation, { fieldsToSend });
 const itemDeleter = new SdkDeleterApiConsumer(callService.deleteCallAnnotation);
 
-const addComment = ({ itemInstance }) => {
-  return itemCreator.createNestedItem({ parentId: itemInstance.callId, itemInstance });
-};
+const addComment = ({ itemInstance }) => (itemCreator.createNestedItem({
+  parentId: itemInstance.callId,
+  itemInstance,
+}));
 
-const updateComment = ({ itemInstance }) => {
-  return itemUpdater.updateNestedItem({
-    parentId: itemInstance.callId,
-    itemId: itemInstance.id,
-    itemInstance,
-  });
-};
+const updateComment = ({ itemInstance }) => (itemUpdater.updateNestedItem({
+  parentId: itemInstance.callId,
+  itemId: itemInstance.id,
+  itemInstance,
+}));
 
-const deleteComment = ({ itemInstance }) => {
-  return itemDeleter.deleteNestedItem({ parentId: itemInstance.callId, id: itemInstance.id });
-};
+const deleteComment = ({ itemInstance }) => (itemDeleter.deleteNestedItem({
+  parentId: itemInstance.callId,
+  id: itemInstance.id,
+}));
 
 const CallAnnotationAPIRepository = {
   add: addComment,

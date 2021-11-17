@@ -83,32 +83,32 @@
         </section>
 
         <section class="call-wave-data-plugin" v-if="file">
-          <div style="position: relative; height: 42px">
-            <div v-if="showHolds && call.hold">
-              <div
-                v-for="hold in call.hold"
-                :key="hold.start + hold.duration"
-                class="wave-hold-icon"
-                :style="{ left: iconPosition(hold) }">
-                <wt-icon-btn icon="pause" color="hold"></wt-icon-btn>
-                <div class="wave-hold-info">
-                  {{ formatDuration(hold.sec) }}
-                </div>
+          <div class="wave-icons-container">
+          <div v-if="showHolds && call.hold">
+            <div
+              v-for="hold in call.hold"
+              :key="hold.start + hold.duration"
+              class="wave-hold-icon"
+              :style="{ left: iconPosition(hold) }">
+              <wt-icon-btn icon="pause" color="hold"></wt-icon-btn>
+              <div class="wave-hold-info">
+                {{ formatDuration(hold.sec) }}
               </div>
             </div>
-            <div v-if="showComments && call.annotations">
-              <div
-                v-for="comment in call.annotations"
-                :key="comment.id"
-                class="wave-hold-icon"
-                :style="{ left: iconPosition(comment) }">
-                <wt-icon-btn icon="note" icon-prefix="hs" color="transfer"
-                             @click="editAnnotation(comment)"></wt-icon-btn>
-                <div class="wave-note-info">
-                  {{ comment.note }}
-                </div>
+          </div>
+          <div v-if="showComments && call.annotations">
+            <div
+              v-for="comment in call.annotations"
+              :key="comment.id"
+              class="wave-hold-icon"
+              :style="{ left: iconPosition(comment) }">
+              <wt-icon-btn icon="note" icon-prefix="hs" color="transfer"
+                           @click="editAnnotation(comment)"></wt-icon-btn>
+              <div class="wave-note-info">
+                {{ comment.note }}
               </div>
             </div>
+          </div>
           </div>
           <wavesurfer
             :options="waveOptions"
@@ -260,7 +260,6 @@ export default {
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
-
     iconPosition() { // counting the width of audio track and icon absolute positioning
       return (hold) => {
         const fileLength = this.player.getDuration().toFixed(2);
@@ -293,7 +292,6 @@ export default {
       this.selectedComment = comment;
       this.commentsMode = true;
     },
-
     commentsModeHandler() {
       this.commentsMode = !this.commentsMode;
       if (!this.commentsMode) {
@@ -302,10 +300,10 @@ export default {
     },
     redrawRegions() {
       this.player.clearRegions();
-      if (this.showHolds) {
+      if (this.showHolds && this.holdsLength) {
         this.displayHolds();
       }
-      if (this.showComments) {
+      if (this.showComments && this.commentsLength) {
         this.displayComments();
       }
     },
@@ -375,7 +373,6 @@ export default {
           showTooltip: false,
         });
       });
-
       this.blockRegionResize();
     },
     displayComments() {
@@ -510,39 +507,44 @@ export default {
     .call-wave-data-plugin {
       position: relative;
 
-      .wave-hold-icon {
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      .wave-icons-container {
+        height: 42px;
+        position: relative;
 
-        .wave-hold-info {
-          visibility: hidden;
-        }
-
-        .wave-note-info {
-          visibility: hidden;
-          box-sizing: border-box;
-          height: 100px;
-          width: 150px;
+        .wave-hold-icon {
           position: absolute;
-          top: 26px;
-          overflow: auto;
-          border: var(--input-border);
-          border-radius: var(--border-radius);
-          box-shadow: var(--box-shadow);
-          background: var(--main-color);
-          padding: 10px;
-          z-index: 5;
-        }
+          display: flex;
+          flex-direction: column;
+          align-items: center;
 
-        &:hover {
           .wave-hold-info {
-            visibility: visible;
+            visibility: hidden;
           }
 
           .wave-note-info {
-            visibility: visible;
+            visibility: hidden;
+            box-sizing: border-box;
+            height: 100px;
+            width: 150px;
+            position: absolute;
+            top: 26px;
+            overflow: auto;
+            border: var(--input-border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            background: var(--main-color);
+            padding: 10px;
+            z-index: 5;
+          }
+
+          &:hover {
+            .wave-hold-info {
+              visibility: visible;
+            }
+
+            .wave-note-info {
+              visibility: visible;
+            }
           }
         }
       }

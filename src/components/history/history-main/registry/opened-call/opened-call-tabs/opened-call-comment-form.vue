@@ -2,19 +2,19 @@
   <section class="comment-form">
     <wt-timepicker
       class="comment-form__timepicker"
+      v-model="draft.startSec"
       :label="$t('reusable.from')"
-      v-model="startSec"
     ></wt-timepicker>
     <wt-timepicker
       class="comment-form__timepicker"
+      v-model="draft.endSec"
       :label="$t('reusable.to')"
-      v-model="endSec"
     ></wt-timepicker>
     <div class="comment-form-textarea">
       <wt-textarea
         class="comment-form-textarea__textarea"
-        :class="{'comment-form-textarea--large': largeTextarea}"
-        v-model="note"
+        :class="{'comment-form-textarea--expanded': textAreaExpanded}"
+        v-model="draft.note"
         :label="$tc('registry.openedCall.comment', 1)"
       ></wt-textarea>
       <wt-icon-btn
@@ -27,7 +27,7 @@
     <wt-button class="comment-form__button" @click="saveComment">
       {{ $t('reusable.save') }}
     </wt-button>
-    <div v-if="id">
+    <div v-if="draft.id">
       <wt-button class="comment-form__button" @click="deleteComment">
         {{ $t('reusable.delete') }}
       </wt-button>
@@ -42,11 +42,13 @@ import { mapActions } from 'vuex';
 export default {
   name: 'opened-call-comment-form',
   data: () => ({
-    note: '',
-    startSec: 0,
-    endSec: 0,
-    id: '',
-    largeTextarea: false,
+    draft: {
+      note: '',
+      startSec: 0,
+      endSec: 0,
+      id: '',
+    },
+    textAreaExpanded: false,
   }),
 
   props: {
@@ -58,44 +60,36 @@ export default {
       type: Object,
     },
   },
+
   methods: {
     ...mapActions('registry/opened-call', {
-        addAnnotation: 'ADD_ANNOTATION',
-        editAnnotation: 'EDIT_ANNOTATION',
-        deleteAnnotation: 'DELETE_ANNOTATION',
+      addAnnotation: 'ADD_ANNOTATION',
+      editAnnotation: 'EDIT_ANNOTATION',
+      deleteAnnotation: 'DELETE_ANNOTATION',
     }),
     expandTextarea() {
-      this.largeTextarea = !this.largeTextarea;
+      this.textAreaExpanded = !this.textAreaExpanded;
     },
     saveComment() {
-      const commentData = {
-        callId: this.callId,
-        note: this.note,
-        startSec: this.startSec,
-        endSec: this.endSec,
-      };
-      return this.id
-        ? this.editAnnotation({
-          id: this.id,
-          ...commentData,
-        })
-        : this.addAnnotation(commentData);
+      if (this.draft.id) {
+        this.editAnnotation({ callId: this.callId, ...this.draft });
+      } else {
+        this.addAnnotation({ callId: this.callId, ...this.draft });
+      }
     },
     deleteComment() {
       this.deleteAnnotation({
-        id: this.id,
+        id: this.draft.id,
         callId: this.callId,
       });
     },
+    initCommentDraft() {
+      this.draft = this.comment ? this.comment : { note: '', startSec: 0, endSec: 0, id: '' };
+    },
   },
-  mounted() {
-    if (this.comment) {
-      this.note = this.comment.note;
-      this.startSec = this.comment.startSec;
-      this.endSec = this.comment.endSec;
-      this.id = this.comment.id;
 
-    }
+  mounted() {
+    this.initCommentDraft();
   },
 };
 </script>
@@ -123,7 +117,7 @@ export default {
       }
     }
 
-    &--large {
+    &--expanded {
       .wt-textarea__textarea {
         height: 150px;
       }

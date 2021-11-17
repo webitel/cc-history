@@ -144,8 +144,8 @@ const mutations = {
 };
 
 const openedCall = new BaseStoreModule()
-  .attachAPIModule(annotationsAPI, historyAPI)
+  .attachAPIModule(annotationsAPI)
   .generateAPIActions()
-  .getModule({ namespaced: true, state, getters, actions, mutations });
+  .getModule({ state, getters, actions, mutations });
 
 export default openedCall;
