@@ -17,6 +17,7 @@ const transfersLegMarkerHeader = {
 const state = {
   mainCallId: null,
   mainCall: {},
+  fileUrl: null,
   legsData: [],
   isLoading: false,
   isLegsDataLoading: false,
@@ -77,11 +78,18 @@ const actions = {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
+      if (!state.fileUrl) {
+        await context.dispatch('SET_FILE_URL', mainCall.files[0].id);
+      }
     } catch (err) {
       throw err;
     } finally {
       context.commit('SET_LOADING', false);
     }
+  },
+
+  SET_FILE_URL: (context, fileUrl) => {
+    context.commit('SET_FILE_URL', fileUrl);
   },
 
   SET_OPENED_CALL: async (context, item) => {
@@ -112,6 +120,10 @@ const actions = {
 const mutations = {
   SET_MAIN_CALL: (state, mainCall) => {
     state.mainCall = mainCall;
+  },
+
+  SET_FILE_URL: (state, fileUrl) => {
+    state.fileUrl = fileUrl;
   },
 
   RESET_MAIN_CALL: (state) => {

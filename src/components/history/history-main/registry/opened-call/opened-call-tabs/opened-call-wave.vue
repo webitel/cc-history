@@ -12,8 +12,8 @@
           <wt-checkbox
             :value="showHolds"
             :selected="showHolds"
-            @change="showHoldsHandler"
             :label="$tc('registry.openedCall.hold', 2)"
+            @change="showHoldsHandler"
           ></wt-checkbox>
           <wt-badge>
             {{ holdsLength }}
@@ -22,8 +22,8 @@
           <wt-checkbox
             :value="showComments"
             :selected="showComments"
-            @change="showCommentsHandler"
             :label="$tc('registry.openedCall.comment', 2)"
+            @change="showCommentsHandler"
           ></wt-checkbox>
           <wt-badge>
             {{ commentsLength }}
@@ -47,7 +47,8 @@
         v-if="commentsMode"
         :callId="call.id"
         :comment="selectedComment"
-        :key="formKeyGenerator"
+        @save="saveComment"
+        @delete="deleteComment"
       />
 
       <section class="call-wave-data--grid">
@@ -84,31 +85,31 @@
 
         <section class="call-wave-data-plugin" v-if="file">
           <div class="wave-icons-container">
-          <div v-if="showHolds && call.hold">
-            <div
-              v-for="hold in call.hold"
-              :key="hold.start + hold.duration"
-              class="wave-hold-icon"
-              :style="{ left: iconPosition(hold) }">
-              <wt-icon-btn icon="pause" color="hold"></wt-icon-btn>
-              <div class="wave-hold-info">
-                {{ formatDuration(hold.sec) }}
+            <div v-if="showHolds && call.hold">
+              <div
+                v-for="hold in call.hold"
+                :key="hold.start + hold.duration"
+                class="wave-hold-icon"
+                :style="{ left: iconPosition(hold) }">
+                <wt-icon-btn icon="pause" color="hold"></wt-icon-btn>
+                <div class="wave-hold-info">
+                  {{ formatDuration(hold) }}
+                </div>
               </div>
             </div>
-          </div>
-          <div v-if="showComments && call.annotations">
-            <div
-              v-for="comment in call.annotations"
-              :key="comment.id"
-              class="wave-hold-icon"
-              :style="{ left: iconPosition(comment) }">
-              <wt-icon-btn icon="note" icon-prefix="hs" color="transfer"
-                           @click="editAnnotation(comment)"></wt-icon-btn>
-              <div class="wave-note-info">
-                {{ comment.note }}
+            <div v-if="showComments && call.annotations">
+              <div
+                v-for="comment in call.annotations"
+                :key="comment.id"
+                class="wave-hold-icon"
+                :style="{ left: iconPosition(comment) }">
+                <wt-icon-btn icon="note" icon-prefix="hs" color="transfer"
+                             @click="editAnnotation(comment)"></wt-icon-btn>
+                <div class="wave-note-info">
+                  {{ comment.note }}
+                </div>
               </div>
             </div>
-          </div>
           </div>
           <wavesurfer
             :options="waveOptions"
@@ -152,17 +153,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
-
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
+import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
 import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
-import OpenedCallCommentForm from './opened-call-comment-form';
+import OpenedCallCommentForm from './opened-call-comment-form.vue';
 
 // Some width constants in order to position hold icons correctly:
 const GRID_GAP = 15;
@@ -186,7 +186,7 @@ const timelineOptions = {
   fontFamily: 'Montserrat Regular, monospace',
   fontSize: 14,
   labelPadding: 5,
-  primaryLabelInterval: 5,
+  primaryLabelInterval: 2,
   secondaryLabelInterval: 0,
   formatTimeCallback: convertDuration,
 };
@@ -226,6 +226,7 @@ export default {
       minPxPerSec: 30,
       height: 150,
       pixelRatio: 1,
+      responsive: true,
       plugins: [
         Cursor.create(cursorOptions),
         Markers.create({ markers: [] }),
@@ -248,12 +249,9 @@ export default {
 
   computed: {
     ...mapState('registry/opened-call', {
-      file: (state) => generateMediaURL(state.mainCall.files[0].id, true),
+      file: (state) => generateMediaURL(state.fileUrl, true),
       call: (state) => state.mainCall,
     }),
-    formKeyGenerator() {
-      return this.selectedComment ? this.selectedComment.id : Math.random();
-    },
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
     },
@@ -277,12 +275,18 @@ export default {
     },
     formatDuration() {
       return (hold) => {
-        return convertDuration(hold.sec);
+        return hold.sec ? convertDuration(hold.sec) : '00:00:00';
       };
     },
   },
 
   methods: {
+    ...mapActions('registry/opened-call', {
+      addAnnotation: 'ADD_ANNOTATION',
+      modifyAnnotation: 'EDIT_ANNOTATION',
+      deleteAnnotation: 'DELETE_ANNOTATION',
+      loadMainCall: 'LOAD_MAIN_CALL',
+    }),
     blockRegionResize() {
       Object.keys(this.player.regions.list).map((region) => {
         this.player.regions.list[region].update({ resize: false, drag: false });
@@ -292,10 +296,31 @@ export default {
       this.selectedComment = comment;
       this.commentsMode = true;
     },
+    async saveComment(draft) {
+      if (draft.id) {
+        await this.modifyAnnotation({ callId: this.call.id, ...draft });
+      } else {
+        await this.addAnnotation({ callId: this.call.id, ...draft });
+      }
+      this.player.enableDragSelection({ ...commentOptions });
+      this.commentsModeHandler();
+      await this.loadMainCall();
+      this.redrawRegions();
+    },
+    async deleteComment() {
+      await this.deleteAnnotation({
+        id: this.selectedComment.id,
+        callId: this.call.id,
+      });
+      this.commentsModeHandler();
+      await this.loadMainCall();
+      this.redrawRegions();
+    },
     commentsModeHandler() {
       this.commentsMode = !this.commentsMode;
       if (!this.commentsMode) {
         this.selectedComment = null;
+        this.player.enableDragSelection({ ...commentOptions });
       }
     },
     redrawRegions() {
@@ -396,6 +421,7 @@ export default {
       this.isLoading = false;
     },
     createComment(region) {
+      this.player.disableDragSelection();
       this.selectedComment = {
         startSec: region.start.toFixed(),
         endSec: region.end.toFixed(),
@@ -522,6 +548,7 @@ export default {
           }
 
           .wave-note-info {
+            @extend %wt-scrollbar;
             visibility: hidden;
             box-sizing: border-box;
             height: 100px;
@@ -556,4 +583,5 @@ export default {
     }
   }
 }
+
 </style>

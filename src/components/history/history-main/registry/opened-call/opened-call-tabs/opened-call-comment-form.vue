@@ -98,6 +98,7 @@ export default {
 
     &__textarea::v-deep {
       .wt-textarea__textarea {
+        @extend %wt-scrollbar;
         min-height: 0;
         height: 38px;
         padding-right: 50px;
@@ -106,6 +107,7 @@ export default {
 
     &--expanded::v-deep {
       .wt-textarea__textarea {
+        @extend %wt-scrollbar;
         height: 150px;
       }
     }
