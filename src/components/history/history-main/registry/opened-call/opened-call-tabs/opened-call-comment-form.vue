@@ -1,34 +1,32 @@
 <template>
   <section class="comment-form">
     <wt-timepicker
-      class="comment-form__timepicker"
       v-model="draft.startSec"
       :label="$t('reusable.from')"
     ></wt-timepicker>
     <wt-timepicker
-      class="comment-form__timepicker"
       v-model="draft.endSec"
       :label="$t('reusable.to')"
     ></wt-timepicker>
     <div class="comment-form-textarea">
       <wt-textarea
         class="comment-form-textarea__textarea"
-        :class="{'comment-form-textarea--expanded': textAreaExpanded}"
+        :class="{'comment-form-textarea--expanded': isTextareaExpanded}"
         v-model="draft.note"
         :label="$tc('registry.openedCall.comment', 1)"
       ></wt-textarea>
       <wt-icon-btn
-        class="comment-form-textarea--expand"
+        class="comment-form-textarea__expand-btn"
         icon="expand"
         size="sm"
         @click="expandTextarea"
       ></wt-icon-btn>
     </div>
-    <wt-button class="comment-form__button" @click="saveComment">
+    <wt-button @click="saveComment">
       {{ $t('reusable.save') }}
     </wt-button>
     <div v-if="draft.id">
-      <wt-button class="comment-form__button" @click="deleteComment">
+      <wt-button @click="deleteComment">
         {{ $t('reusable.delete') }}
       </wt-button>
     </div>
@@ -37,8 +35,6 @@
 
 <script>
 
-import { mapActions } from 'vuex';
-
 export default {
   name: 'opened-call-comment-form',
   data: () => ({
@@ -46,9 +42,8 @@ export default {
       note: '',
       startSec: 0,
       endSec: 0,
-      id: '',
     },
-    textAreaExpanded: false,
+    isTextareaExpanded: false,
   }),
 
   props: {
@@ -61,46 +56,38 @@ export default {
     },
   },
 
-  methods: {
-    ...mapActions('registry/opened-call', {
-      addAnnotation: 'ADD_ANNOTATION',
-      editAnnotation: 'EDIT_ANNOTATION',
-      deleteAnnotation: 'DELETE_ANNOTATION',
-    }),
-    expandTextarea() {
-      this.textAreaExpanded = !this.textAreaExpanded;
-    },
-    saveComment() {
-      if (this.draft.id) {
-        this.editAnnotation({ callId: this.callId, ...this.draft });
-      } else {
-        this.addAnnotation({ callId: this.callId, ...this.draft });
-      }
-    },
-    deleteComment() {
-      this.deleteAnnotation({
-        id: this.draft.id,
-        callId: this.callId,
-      });
-    },
-    initCommentDraft() {
-      this.draft = this.comment ? this.comment : { note: '', startSec: 0, endSec: 0, id: '' };
+  watch: {
+    comment: {
+      handler(value) {
+        if (value) {
+          this.draft = value;
+        }
+      },
+      immediate: true,
     },
   },
 
-  mounted() {
-    this.initCommentDraft();
+  methods: {
+    expandTextarea() {
+      this.isTextareaExpanded = !this.isTextareaExpanded;
+    },
+    saveComment() {
+      this.$emit('save', this.draft);
+    },
+    deleteComment() {
+      this.$emit('delete');
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.comment-form::v-deep {
+.comment-form {
   display: flex;
   align-items: flex-start;
   gap: var(--component-spacing);
 
-  .comment-form__timepicker {
+  .wt-timepicker {
     flex-grow: 0;
     flex-basis: auto;
   }
@@ -109,7 +96,7 @@ export default {
     flex-grow: 1;
     position: relative;
 
-    &__textarea {
+    &__textarea::v-deep {
       .wt-textarea__textarea {
         min-height: 0;
         height: 38px;
@@ -117,20 +104,20 @@ export default {
       }
     }
 
-    &--expanded {
+    &--expanded::v-deep {
       .wt-textarea__textarea {
         height: 150px;
       }
     }
 
-    &--expand {
+    &__expand-btn {
       position: absolute;
       right: 30px;
       top: 38px
     }
   }
 
-  .comment-form__button {
+  .wt-button {
     margin-top: 26px; // In order to position button correctly in center of inputs
   }
 }
