@@ -13,7 +13,7 @@
             :value="showHolds"
             :selected="showHolds"
             :label="$tc('registry.openedCall.hold', 2)"
-            @change="showHoldsHandler"
+            @change="toggleHolds"
           ></wt-checkbox>
           <wt-badge>
             {{ holdsSize }}
@@ -23,7 +23,7 @@
             :value="showComments"
             :selected="showComments"
             :label="$tc('registry.openedCall.comment', 2)"
-            @change="showCommentsHandler"
+            @change="toggleComments"
           ></wt-checkbox>
           <wt-badge>
             {{ commentsSize }}
@@ -33,7 +33,7 @@
           <wt-icon-btn
             icon="note"
             icon-prefix="hs"
-            @click="commentsModeHandler"
+            @click="toggleCommentMode"
           ></wt-icon-btn>
           <wt-icon-btn
             icon="download-record"
@@ -91,7 +91,10 @@
                 :key="hold.start + hold.duration"
                 class="wave-hold-icon"
                 :style="{ left: iconPosition(hold) }">
-                <wt-icon-btn icon="pause" color="hold"></wt-icon-btn>
+                <wt-icon-btn
+                  icon="pause"
+                  color="hold"
+                ></wt-icon-btn>
                 <div class="wave-hold-info">
                   {{ formatDuration(hold) }}
                 </div>
@@ -103,8 +106,12 @@
                 :key="comment.id"
                 class="wave-hold-icon"
                 :style="{ left: iconPosition(comment) }">
-                <wt-icon-btn icon="note" icon-prefix="hs" color="transfer"
-                             @click="editAnnotation(comment)"></wt-icon-btn>
+                <wt-icon-btn
+                  icon="note"
+                  icon-prefix="hs"
+                  color="transfer"
+                  @click="editAnnotation(comment)"
+                ></wt-icon-btn>
                 <div class="wave-note-info">
                   {{ comment.note }}
                 </div>
@@ -322,7 +329,7 @@ export default {
       this.selectedComment = null;
       this.player.enableDragSelection({ ...commentOptions });
     },
-    commentsModeHandler() {
+    toggleCommentMode() {
      return this.commentsMode ? this.closeCommentMode() : this.openCommentMode();
     },
     redrawRegions() {
@@ -334,11 +341,11 @@ export default {
         this.displayComments();
       }
     },
-    showCommentsHandler() {
+    toggleComments() {
       this.showComments = !this.showComments;
       this.redrawRegions();
     },
-    showHoldsHandler() {
+    toggleHolds() {
       this.showHolds = !this.showHolds;
       this.redrawRegions();
     },

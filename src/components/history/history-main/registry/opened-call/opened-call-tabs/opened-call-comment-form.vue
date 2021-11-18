@@ -59,9 +59,7 @@ export default {
   watch: {
     comment: {
       handler(value) {
-        if (value) {
-          this.draft = deepCopy(value);
-        }
+        this.initDraft(value);
       },
       immediate: true,
     },
@@ -70,6 +68,11 @@ export default {
   methods: {
     expandTextarea() {
       this.isTextareaExpanded = !this.isTextareaExpanded;
+    },
+    initDraft(draft) {
+      if (draft) {
+        this.draft = deepCopy(draft);
+      }
     },
     saveComment() {
       this.$emit('save', this.draft);

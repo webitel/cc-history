@@ -79,7 +79,7 @@ const actions = {
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
       if (!state.fileId) {
-        await context.dispatch('SET_FILE_URL', mainCall.files[0].id);
+        await context.dispatch('SET_FILE_ID', mainCall.files[0].id);
       }
     } catch (err) {
       throw err;
@@ -88,8 +88,8 @@ const actions = {
     }
   },
 
-  SET_FILE_URL: (context, fileId) => {
-    context.commit('SET_FILE_URL', fileId);
+  SET_FILE_ID: (context, fileId) => {
+    context.commit('SET_FILE_ID', fileId);
   },
 
   SET_OPENED_CALL: async (context, item) => {
@@ -101,21 +101,15 @@ const actions = {
   RESET_OPENED_CALL: (context) => {
     context.commit('RESET_CALL_ID');
     context.commit('RESET_MAIN_CALL');
-    context.commit('RESET_FILE_URL');
+    context.commit('RESET_FILE_ID');
     context.commit('RESET_LEGS_DATA_LIST');
   },
 
-  ADD_ANNOTATION: async (context, annotation) => {
-    await annotationsAPI.add({ itemInstance: annotation });
-  },
+  ADD_ANNOTATION: async (context, annotation) => annotationsAPI.add({ itemInstance: annotation }),
 
-  EDIT_ANNOTATION: async (context, annotation) => {
-    await annotationsAPI.update({ itemInstance: annotation });
-  },
+  EDIT_ANNOTATION: async (context, annotation) => annotationsAPI.update({ itemInstance: annotation }),
 
-  DELETE_ANNOTATION: async (context, annotation) => {
-    await annotationsAPI.delete({ itemInstance: annotation });
-  },
+  DELETE_ANNOTATION: async (context, annotation) => annotationsAPI.delete({ itemInstance: annotation }),
 };
 
 const mutations = {
@@ -123,7 +117,7 @@ const mutations = {
     state.mainCall = mainCall;
   },
 
-  SET_FILE_URL: (state, fileId) => {
+  SET_FILE_ID: (state, fileId) => {
     state.fileId = fileId;
   },
 
@@ -154,14 +148,12 @@ const mutations = {
   RESET_CALL_ID: (state) => {
     state.mainCallId = null;
   },
-  RESET_FILE_URL: (state) => {
+  RESET_FILE_ID: (state) => {
     state.fileId = null;
   },
 };
 
 const openedCall = new BaseStoreModule()
-  .attachAPIModule(annotationsAPI)
-  .generateAPIActions()
   .getModule({ state, getters, actions, mutations, });
 
 export default openedCall;
