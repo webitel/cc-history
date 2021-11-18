@@ -288,7 +288,7 @@ export default {
   methods: {
     ...mapActions('registry/opened-call', {
       addAnnotation: 'ADD_ANNOTATION',
-      modifyAnnotation: 'EDIT_ANNOTATION',
+      updateAnnotation: 'EDIT_ANNOTATION',
       deleteAnnotation: 'DELETE_ANNOTATION',
       loadMainCall: 'LOAD_MAIN_CALL',
     }),
@@ -308,7 +308,7 @@ export default {
     },
     async saveComment(draft) {
       if (draft.id) {
-        await this.modifyAnnotation({ callId: this.call.id, ...draft });
+        await this.updateAnnotation({ callId: this.call.id, ...draft });
       } else {
         await this.addAnnotation({ callId: this.call.id, ...draft });
       }
