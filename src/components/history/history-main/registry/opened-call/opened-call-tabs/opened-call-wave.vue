@@ -301,25 +301,25 @@ export default {
       this.selectedComment = comment;
       this.commentsMode = true;
     },
+    async updateRegions() {
+      this.closeCommentMode();
+      await this.loadMainCall();
+      this.redrawRegions();
+    },
     async saveComment(draft) {
       if (draft.id) {
         await this.modifyAnnotation({ callId: this.call.id, ...draft });
       } else {
         await this.addAnnotation({ callId: this.call.id, ...draft });
       }
-      this.player.enableDragSelection({ ...commentOptions });
-      this.closeCommentMode();
-      await this.loadMainCall();
-      this.redrawRegions();
+      await this.updateRegions();
     },
     async deleteComment() {
       await this.deleteAnnotation({
         id: this.selectedComment.id,
         callId: this.call.id,
       });
-      this.closeCommentMode();
-      await this.loadMainCall();
-      this.redrawRegions();
+      await this.updateRegions();
     },
     openCommentMode() {
       this.commentsMode = true;
