@@ -25,15 +25,15 @@
     <wt-button @click="saveComment">
       {{ $t('reusable.save') }}
     </wt-button>
-    <div v-if="draft.id">
-      <wt-button @click="deleteComment">
-        {{ $t('reusable.delete') }}
-      </wt-button>
-    </div>
+    <wt-button v-if="draft.id" @click="deleteComment">
+      {{ $t('reusable.delete') }}
+    </wt-button>
   </section>
 </template>
 
 <script>
+
+import deepCopy from 'deep-copy';
 
 export default {
   name: 'opened-call-comment-form',
@@ -60,7 +60,7 @@ export default {
     comment: {
       handler(value) {
         if (value) {
-          this.draft = value;
+          this.draft = deepCopy(value);
         }
       },
       immediate: true,

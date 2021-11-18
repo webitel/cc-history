@@ -17,7 +17,7 @@ const transfersLegMarkerHeader = {
 const state = {
   mainCallId: null,
   mainCall: {},
-  fileUrl: null,
+  fileId: null,
   legsData: [],
   isLoading: false,
   isLegsDataLoading: false,
@@ -78,7 +78,7 @@ const actions = {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
-      if (!state.fileUrl) {
+      if (!state.fileId) {
         await context.dispatch('SET_FILE_URL', mainCall.files[0].id);
       }
     } catch (err) {
@@ -88,8 +88,8 @@ const actions = {
     }
   },
 
-  SET_FILE_URL: (context, fileUrl) => {
-    context.commit('SET_FILE_URL', fileUrl);
+  SET_FILE_URL: (context, fileId) => {
+    context.commit('SET_FILE_URL', fileId);
   },
 
   SET_OPENED_CALL: async (context, item) => {
@@ -123,8 +123,8 @@ const mutations = {
     state.mainCall = mainCall;
   },
 
-  SET_FILE_URL: (state, fileUrl) => {
-    state.fileUrl = fileUrl;
+  SET_FILE_URL: (state, fileId) => {
+    state.fileId = fileId;
   },
 
   RESET_MAIN_CALL: (state) => {
@@ -155,13 +155,13 @@ const mutations = {
     state.mainCallId = null;
   },
   RESET_FILE_URL: (state) => {
-    state.fileUrl = null;
+    state.fileId = null;
   },
 };
 
 const openedCall = new BaseStoreModule()
   .attachAPIModule(annotationsAPI)
   .generateAPIActions()
-  .getModule({ state, getters, actions, mutations });
+  .getModule({ state, getters, actions, mutations, });
 
 export default openedCall;

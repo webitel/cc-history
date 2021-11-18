@@ -16,7 +16,7 @@
             @change="showHoldsHandler"
           ></wt-checkbox>
           <wt-badge>
-            {{ holdsLength }}
+            {{ holdsSize }}
           </wt-badge>
 
           <wt-checkbox
@@ -26,7 +26,7 @@
             @change="showCommentsHandler"
           ></wt-checkbox>
           <wt-badge>
-            {{ commentsLength }}
+            {{ commentsSize }}
           </wt-badge>
         </div>
         <div class="toolbar-actions">
@@ -249,7 +249,7 @@ export default {
 
   computed: {
     ...mapState('registry/opened-call', {
-      file: (state) => generateMediaURL(state.fileUrl, true),
+      file: (state) => generateMediaURL(state.fileId, true),
       call: (state) => state.mainCall,
     }),
     player() {
@@ -267,16 +267,14 @@ export default {
         return `${position}px`;
       };
     },
-    holdsLength() {
+    holdsSize() {
       return this.call.hold ? this.call.hold.length : 0;
     },
-    commentsLength() {
+    commentsSize() {
       return this.call.annotations ? this.call.annotations.length : 0;
     },
     formatDuration() {
-      return (hold) => {
-        return hold.sec ? convertDuration(hold.sec) : '00:00:00';
-      };
+      return (hold) => (hold.sec ? convertDuration(hold.sec) : '00:00:00');
     },
   },
 
@@ -303,7 +301,7 @@ export default {
         await this.addAnnotation({ callId: this.call.id, ...draft });
       }
       this.player.enableDragSelection({ ...commentOptions });
-      this.commentsModeHandler();
+      this.closeCommentMode();
       await this.loadMainCall();
       this.redrawRegions();
     },
@@ -312,23 +310,27 @@ export default {
         id: this.selectedComment.id,
         callId: this.call.id,
       });
-      this.commentsModeHandler();
+      this.closeCommentMode();
       await this.loadMainCall();
       this.redrawRegions();
     },
+    openCommentMode() {
+      this.commentsMode = true;
+    },
+    closeCommentMode() {
+      this.commentsMode = false;
+      this.selectedComment = null;
+      this.player.enableDragSelection({ ...commentOptions });
+    },
     commentsModeHandler() {
-      this.commentsMode = !this.commentsMode;
-      if (!this.commentsMode) {
-        this.selectedComment = null;
-        this.player.enableDragSelection({ ...commentOptions });
-      }
+     return this.commentsMode ? this.closeCommentMode() : this.openCommentMode();
     },
     redrawRegions() {
       this.player.clearRegions();
-      if (this.showHolds && this.holdsLength) {
+      if (this.showHolds && this.holdsSize) {
         this.displayHolds();
       }
-      if (this.showComments && this.commentsLength) {
+      if (this.showComments && this.commentsSize) {
         this.displayComments();
       }
     },
