@@ -33,6 +33,8 @@ export default {
       transferTo: 'Перевод На',
       noVariables: 'Этот звонок не имеет переменных',
       callWave: 'Wave',
+      hold: 'Удержание | Удержания',
+      comment: 'Комментарий | Комментарии',
     },
   },
   dashboards: {

@@ -4,14 +4,53 @@
       v-show="isLoading"
       :value="loadProgress" :max="100">
     </wt-progress-bar>
-    <section :class="{'call-wave-page--hidden': isLoading}">
-      <div class="call-wave-download">
-        <wt-icon-btn
-          icon="download-record"
-          icon-prefix="hs"
-          @click="downloadFile"
-        ></wt-icon-btn>
-      </div>
+    <section
+      class="call-wave-page-main"
+      :class="{'call-wave-page-main--hidden': isLoading}">
+      <section class="call-wave-toolbar">
+        <div class="toolbar-main">
+          <wt-checkbox
+            :value="showHolds"
+            :selected="showHolds"
+            :label="$tc('registry.openedCall.hold', 2)"
+            @change="toggleHolds"
+          ></wt-checkbox>
+          <wt-badge>
+            {{ holdsSize }}
+          </wt-badge>
+
+          <wt-checkbox
+            :value="showComments"
+            :selected="showComments"
+            :label="$tc('registry.openedCall.comment', 2)"
+            @change="toggleComments"
+          ></wt-checkbox>
+          <wt-badge>
+            {{ commentsSize }}
+          </wt-badge>
+        </div>
+        <div class="toolbar-actions">
+          <wt-icon-btn
+            icon="note"
+            icon-prefix="hs"
+            @click="toggleCommentMode"
+          ></wt-icon-btn>
+          <wt-icon-btn
+            icon="download-record"
+            icon-prefix="hs"
+            @click="downloadFile"
+          ></wt-icon-btn>
+        </div>
+      </section>
+
+      <opened-call-comment-form
+        v-if="commentsMode"
+        :callId="call.id"
+        :comment="selectedComment"
+        @save="saveComment"
+        @delete="deleteComment"
+      />
+
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
           <div class="call-wave-leg" v-if="!leftGain.disabled">
@@ -43,25 +82,50 @@
             />
           </div>
         </section>
+
         <section class="call-wave-data-plugin" v-if="file">
+          <div class="wave-icons-container">
+            <div v-if="showHolds && call.hold">
+              <div
+                v-for="hold in call.hold"
+                :key="hold.start + hold.duration"
+                class="wave-hold-icon"
+                :style="{ left: iconPosition(hold) }">
+                <wt-icon-btn
+                  icon="pause"
+                  color="hold"
+                ></wt-icon-btn>
+                <div class="wave-hold-info">
+                  {{ formatDuration(hold) }}
+                </div>
+              </div>
+            </div>
+            <div v-if="showComments && call.annotations">
+              <div
+                v-for="comment in call.annotations"
+                :key="comment.id"
+                class="wave-hold-icon"
+                :style="{ left: iconPosition(comment) }">
+                <wt-icon-btn
+                  icon="note"
+                  icon-prefix="hs"
+                  color="transfer"
+                  @click="editAnnotation(comment)"
+                ></wt-icon-btn>
+                <div class="wave-note-info">
+                  {{ comment.note }}
+                </div>
+              </div>
+            </div>
+          </div>
           <wavesurfer
             :options="waveOptions"
             :src="file"
             ref="surf">
           </wavesurfer>
-          <div v-if="holdsExist">
-            <div
-              v-for="hld in holdData"
-              v-once
-              :key="hld.start"
-              class="wave-hold-info"
-              :style="{ left: iconPosition(hld) }">
-              <wt-icon icon="pause" color="hold"></wt-icon>
-              {{ hld.duration }}
-            </div>
-          </div>
           <div id="wave-timeline" class="call-wave-timeline"></div>
         </section>
+
         <div></div> <!-- an empty div in order to position in the correct grid column -->
         <section class="call-wave-actions">
           <section class="call-wave-actions-buttons">
@@ -96,21 +160,20 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
-
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
+import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
 import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
+import OpenedCallCommentForm from './opened-call-comment-form.vue';
 
 // Some width constants in order to position hold icons correctly:
 const GRID_GAP = 15;
 const EQUALIZER_WIDTH = 70;
-const HOLD_INFO_WIDTH = 70;
 
 const cursorOptions = {
   showTime: true,
@@ -130,20 +193,26 @@ const timelineOptions = {
   fontFamily: 'Montserrat Regular, monospace',
   fontSize: 14,
   labelPadding: 5,
-  primaryLabelInterval: 5,
-  secondaryLabelInterval: 10,
+  primaryLabelInterval: 2,
+  secondaryLabelInterval: 0,
   formatTimeCallback: convertDuration,
+};
+
+const commentOptions = {
+  showTooltip: false,
+  color: 'hsla(var(--_transfer-color), 0.2)',
+  resize: true,
 };
 
 const getHoldSecInterval = ({ hold, file }) => {
   const start = ((hold.start - file.startAt) / 1000).toFixed(2);
   const end = ((hold.stop - file.startAt) / 1000).toFixed(2);
-  const duration = convertDuration((hold.stop - hold.start) / 1000);
-  return { start, end, duration };
+  return { start, end };
 };
 
 export default {
   name: 'opened-call-wave',
+  components: { OpenedCallCommentForm },
   mixins: [callWaveMixin, exportFilesMixin],
   data: () => ({
     volumeLeftGain: 1,
@@ -154,13 +223,17 @@ export default {
     playbackRate: 1,
     isPlaying: false,
     timeLineWidth: 0,
-    holdData: [],
+    showHolds: false,
+    showComments: false,
+    commentsMode: false,
+    selectedComment: null,
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
       minPxPerSec: 30,
       height: 150,
       pixelRatio: 1,
+      responsive: true,
       plugins: [
         Cursor.create(cursorOptions),
         Markers.create({ markers: [] }),
@@ -183,7 +256,7 @@ export default {
 
   computed: {
     ...mapState('registry/opened-call', {
-      file: (state) => generateMediaURL(state.mainCall.files[0].id, true),
+      file: (state) => generateMediaURL(state.fileId, true),
       call: (state) => state.mainCall,
     }),
     player() {
@@ -192,20 +265,90 @@ export default {
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
-    holdsExist() {
-      return this.timeLineWidth && this.holdData.length > 0;
-    },
     iconPosition() { // counting the width of audio track and icon absolute positioning
       return (hold) => {
         const fileLength = this.player.getDuration().toFixed(2);
+        const start = (hold.start - this.call.files[0].startAt) / 1000 || hold.startSec;
         const pxInSec = this.timeLineWidth / fileLength;
-        const position = ((pxInSec * hold.start) - HOLD_INFO_WIDTH).toFixed();
+        const position = (pxInSec * start).toFixed();
         return `${position}px`;
       };
+    },
+    holdsSize() {
+      return this.call.hold ? this.call.hold.length : 0;
+    },
+    commentsSize() {
+      return this.call.annotations ? this.call.annotations.length : 0;
+    },
+    formatDuration() {
+      return (hold) => (hold.sec ? convertDuration(hold.sec) : '00:00:00');
     },
   },
 
   methods: {
+    ...mapActions('registry/opened-call', {
+      addAnnotation: 'ADD_ANNOTATION',
+      modifyAnnotation: 'EDIT_ANNOTATION',
+      deleteAnnotation: 'DELETE_ANNOTATION',
+      loadMainCall: 'LOAD_MAIN_CALL',
+    }),
+    blockRegionResize() {
+      Object.keys(this.player.regions.list).map((region) => {
+        this.player.regions.list[region].update({ resize: false, drag: false });
+      });
+    },
+    editAnnotation(comment) {
+      this.selectedComment = comment;
+      this.commentsMode = true;
+    },
+    async updateRegions() {
+      this.closeCommentMode();
+      await this.loadMainCall();
+      this.redrawRegions();
+    },
+    async saveComment(draft) {
+      if (draft.id) {
+        await this.modifyAnnotation({ callId: this.call.id, ...draft });
+      } else {
+        await this.addAnnotation({ callId: this.call.id, ...draft });
+      }
+      await this.updateRegions();
+    },
+    async deleteComment() {
+      await this.deleteAnnotation({
+        id: this.selectedComment.id,
+        callId: this.call.id,
+      });
+      await this.updateRegions();
+    },
+    openCommentMode() {
+      this.commentsMode = true;
+    },
+    closeCommentMode() {
+      this.commentsMode = false;
+      this.selectedComment = null;
+      this.player.enableDragSelection({ ...commentOptions });
+    },
+    toggleCommentMode() {
+     return this.commentsMode ? this.closeCommentMode() : this.openCommentMode();
+    },
+    redrawRegions() {
+      this.player.clearRegions();
+      if (this.showHolds && this.holdsSize) {
+        this.displayHolds();
+      }
+      if (this.showComments && this.commentsSize) {
+        this.displayComments();
+      }
+    },
+    toggleComments() {
+      this.showComments = !this.showComments;
+      this.redrawRegions();
+    },
+    toggleHolds() {
+      this.showHolds = !this.showHolds;
+      this.redrawRegions();
+    },
     downloadFile() {
       this.exportFiles(this.call.files);
     },
@@ -253,18 +396,31 @@ export default {
       player.on('ready', this.onReady.bind(this));
       player.on('destroy', this.hideProgress.bind(this));
       player.on('error', this.hideProgress.bind(this));
+      player.enableDragSelection({ ...commentOptions });
     },
     displayHolds() {
-      this.holdData.forEach((hold) => {
+      this.call.hold.map((hold) => {
+        const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
         this.player.addRegion({
-          ...hold,
+          ...hld,
           color: 'hsla(var(--_hold-color), 0.2)',
           showTooltip: false,
         });
       });
-      Object.keys(this.player.regions.list).map((hold) => {
-        this.player.regions.list[hold].update({ resize: false, drag: false });
+      this.blockRegionResize();
+    },
+    displayComments() {
+      this.call.annotations.map((comment) => {
+        const note = {
+          start: comment.startSec,
+          end: comment.endSec,
+        };
+        this.player.addRegion({
+          ...note,
+          ...commentOptions,
+        });
       });
+      this.blockRegionResize();
     },
     showProgress(progress) {
       this.loadProgress = +progress;
@@ -273,21 +429,22 @@ export default {
       this.loadProgress = 0;
       this.isLoading = false;
     },
-    initializeHolds() {
-      this.holdData = [];
-      this.call.hold.map((hold) => {
-        const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
-        this.holdData.push(hld);
-      });
+    createComment(region) {
+      this.player.disableDragSelection();
+      this.selectedComment = {
+        startSec: region.start.toFixed(),
+        endSec: region.end.toFixed(),
+        note: '',
+      };
+      this.commentsMode = true;
+      this.blockRegionResize();
     },
     onReady() {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-      if (this.call.hold) {
+      if (this.call.hold || this.call.annotations) {
         this.timeLineWidth = this.$el.clientWidth - EQUALIZER_WIDTH - GRID_GAP;
-        this.initializeHolds();
-        this.displayHolds();
       }
       player.addMarker({
         time: 0,
@@ -304,6 +461,7 @@ export default {
       }
       player.drawBuffer();
       this.redraw();
+      player.on('region-update-end', this.createComment);
     },
   },
 
@@ -329,12 +487,32 @@ export default {
 
 <style scoped lang="scss">
 .call-wave-page {
-  &--hidden {
-    display: none;
+
+  .call-wave-page-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--component-spacing);
+
+    &--hidden {
+      display: none;
+    }
   }
 
-  .call-wave-download {
-    text-align: right;
+  .call-wave-toolbar {
+    display: flex;
+    justify-content: space-between;
+
+    .toolbar-main {
+      display: flex;
+      flex: 1 0 auto;
+      gap: var(--component-spacing);
+      justify-content: center;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: var(--component-spacing);
+    }
   }
 
   .call-wave-data--grid {
@@ -364,12 +542,47 @@ export default {
     .call-wave-data-plugin {
       position: relative;
 
-      .wave-hold-info {
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        bottom: 30px;
+      .wave-icons-container {
+        height: 42px;
+        position: relative;
+
+        .wave-hold-icon {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .wave-hold-info {
+            visibility: hidden;
+          }
+
+          .wave-note-info {
+            @extend %wt-scrollbar;
+            visibility: hidden;
+            box-sizing: border-box;
+            height: 100px;
+            width: 150px;
+            position: absolute;
+            top: 26px;
+            overflow: auto;
+            border: var(--input-border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            background: var(--main-color);
+            padding: 10px;
+            z-index: 5;
+          }
+
+          &:hover {
+            .wave-hold-info {
+              visibility: visible;
+            }
+
+            .wave-note-info {
+              visibility: visible;
+            }
+          }
+        }
       }
 
       .call-wave-timeline {
@@ -379,4 +592,5 @@ export default {
     }
   }
 }
+
 </style>
