@@ -101,6 +101,7 @@ const actions = {
   RESET_OPENED_CALL: (context) => {
     context.commit('RESET_CALL_ID');
     context.commit('RESET_MAIN_CALL');
+    context.commit('RESET_FILE_URL');
     context.commit('RESET_LEGS_DATA_LIST');
   },
 
@@ -152,6 +153,9 @@ const mutations = {
 
   RESET_CALL_ID: (state) => {
     state.mainCallId = null;
+  },
+  RESET_FILE_URL: (state) => {
+    state.fileUrl = null;
   },
 };
 
