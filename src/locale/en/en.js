@@ -33,6 +33,8 @@ export default {
       transferTo: 'Transfer To',
       noVariables: 'There are no variables',
       callWave: 'Wave',
+      hold: 'Hold | Holds',
+      comment: 'Note | Notes',
     },
   },
   dashboards: {

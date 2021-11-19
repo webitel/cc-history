@@ -4,8 +4,7 @@
     :label="$t('fields.queue')"
     :track-by="storedProp"
     :multiple="multiple"
-    :search="search"
-    :internal-search="false"
+    :search-method="search"
     :close-on-select="false"
     @input="setValue({ filter: filterQuery, value: $event })"
     @reset="setValueToQuery({ value, filterQuery, storedProp })"
@@ -39,8 +38,12 @@ export default {
     ...mapActions('filters', {
       setValue: 'SET_FILTER',
     }),
-    search: (search) => queueAPI.getQueues({ search }),
-    fetchSelected: queueAPI.getQueuesByIds,
+    search: queueAPI.getLookup,
+    fetchSelected: async (ids) => {
+      const params = { size: ids.length, ids };
+      const selected = await queueAPI.getLookup(params);
+      return selected.items;
+    },
   },
 };
 </script>

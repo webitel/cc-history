@@ -2,16 +2,19 @@
   <header class="dashboards-header">
     <wt-icon-btn
       :color="layout === '1' ? 'active': 'outline'"
+      icon-prefix="hs"
       icon="dashboard-grid-1"
       @click="$emit('reflow', '1')"
     ></wt-icon-btn>
     <wt-icon-btn
       :color="layout === '2' ? 'active': 'outline'"
+      icon-prefix="hs"
       icon="dashboard-grid-2"
       @click="$emit('reflow', '2')"
     ></wt-icon-btn>
     <wt-icon-btn
       :color="layout === '3' ? 'active': 'outline'"
+      icon-prefix="hs"
       icon="dashboard-grid-3"
       @click="$emit('reflow', '3')"
     ></wt-icon-btn>

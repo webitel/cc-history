@@ -40,6 +40,7 @@
           <wt-icon
             v-if="!item.parentId"
             class="icon__leg-marker"
+            icon-prefix="hs"
             icon="leg-a-marker"
             size="sm"
           ></wt-icon>
@@ -53,6 +54,7 @@
               <wt-icon
                 class="table-action"
                 icon="transfer-from"
+                icon-prefix="hs"
                 @mouseenter.native="highlightRow([item.transferFrom])"
                 @mouseleave.native="highlightRow([item.transferFrom])"
               ></wt-icon>
@@ -65,6 +67,7 @@
               <wt-icon
                 class="table-action"
                 icon="transfer-merge"
+                icon-prefix="hs"
                 @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
                 @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
               ></wt-icon>
@@ -77,6 +80,7 @@
               <wt-icon
                 class="table-action"
                 icon="transfer-to"
+                icon-prefix="hs"
                 @mouseenter.native="highlightRow([item.transferTo])"
                 @mouseleave.native="highlightRow([item.transferTo])"
               ></wt-icon>

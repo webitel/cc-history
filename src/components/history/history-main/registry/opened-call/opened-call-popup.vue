@@ -36,8 +36,10 @@ export default {
   }),
 
   watch: {
-    mainCall(mainCall) {
-      if (mainCall) this.resetCurrentTab();
+    'mainCall.id': function (value) {
+      if (value) {
+        this.resetCurrentTab();
+      };
     },
   },
 

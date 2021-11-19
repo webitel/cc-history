@@ -1,26 +1,14 @@
-import getOptionsFromAPI from '../api/defaults/APIdefaults';
-import { defaultParams } from '../api/defaults/defaults';
+import { EndpointListGetterApiConsumer } from 'webitel-sdk/esm2015/api-consumers';
+import instance from '../../../api/instance';
 
-const BASE_URL = '/users';
+const baseUrl = '/users';
 
-export const fetchUsers = async (params) => getOptionsFromAPI(BASE_URL, params);
+const listGetter = new EndpointListGetterApiConsumer({ instance, baseUrl });
+
+const getUsersLookup = (params) => listGetter.getLookup(params);
 
 const UsersAPIRepository = {
-  getUsers(argParams) {
-    const params = {
-      ...defaultParams,
-      ...argParams,
-    };
-    return fetchUsers(params);
-  },
-  getUsersByIds(idList) {
-    const params = {
-      ...defaultParams,
-      size: idList.length,
-      id: idList,
-    };
-    return fetchUsers(params);
-  },
+  getLookup: getUsersLookup,
 };
 
 export default UsersAPIRepository;
