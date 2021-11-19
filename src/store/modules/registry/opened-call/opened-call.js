@@ -78,7 +78,7 @@ const actions = {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
-      if (!state.fileId) {
+      if (!state.fileId && mainCall.files) {
         await context.dispatch('SET_FILE_ID', mainCall.files[0].id);
       }
     } catch (err) {
