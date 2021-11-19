@@ -36,12 +36,11 @@ export default {
   }),
 
   watch: {
-    // The reason to reset current tab is unclear, so we are commenting it out for the moment.
-    // In case resetting is needed, please uncomment the following method:
-
-    // mainCall(mainCall) {
-    //   if (mainCall) this.resetCurrentTab();
-    // },
+    'mainCall.id': function (value) {
+      if (value) {
+        this.resetCurrentTab();
+      };
+    },
   },
 
   computed: {
@@ -72,13 +71,9 @@ export default {
     },
   },
   methods: {
-
-    // The reason to reset current tab is unclear, so we are commenting it out for the moment.
-    // In case resetting is needed, please uncomment the following method:
-
-    // resetCurrentTab() {
-    //   this.currentTab = { value: 'call-info' };
-    // },
+    resetCurrentTab() {
+      this.currentTab = { value: 'call-info' };
+    },
   },
 };
 </script>
