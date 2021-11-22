@@ -84,40 +84,6 @@
         </section>
 
         <section class="call-wave-data-plugin" v-if="file">
-          <div class="wave-icons-container">
-            <div v-if="showHolds && call.hold">
-              <div
-                v-for="hold in call.hold"
-                :key="hold.start + hold.duration"
-                class="wave-hold-icon"
-                :style="{ left: iconPosition(hold) }">
-                <wt-icon-btn
-                  icon="pause"
-                  color="hold"
-                ></wt-icon-btn>
-                <div class="wave-hold-info">
-                  {{ formatDuration(hold) }}
-                </div>
-              </div>
-            </div>
-            <div v-if="showComments && call.annotations">
-              <div
-                v-for="comment in call.annotations"
-                :key="comment.id"
-                class="wave-hold-icon"
-                :style="{ left: iconPosition(comment) }">
-                <wt-icon-btn
-                  icon="note"
-                  icon-prefix="hs"
-                  color="transfer"
-                  @click="editAnnotation(comment)"
-                ></wt-icon-btn>
-                <div class="wave-note-info">
-                  {{ comment.note }}
-                </div>
-              </div>
-            </div>
-          </div>
           <wavesurfer
             :options="waveOptions"
             :src="file"
@@ -145,14 +111,14 @@
               <wt-icon :icon="!isPlaying ? 'play' : 'pause'"></wt-icon>
             </wt-button>
           </section>
-<!--          <section class="call-wave-actions-buttons">
+          <section class="call-wave-actions-buttons">
             <wt-button color="secondary" :disabled="zoom > 1000" @click="increaseZoom">
               <wt-icon icon="zoom-in"/>
             </wt-button>
             <wt-button color="secondary" :disabled="zoom < 0.001" @click="decreaseZoom">
               <wt-icon icon="zoom-out"/>
             </wt-button>
-          </section> -->
+          </section>
         </section>
       </section>
     </section>
@@ -160,20 +126,16 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
-import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
-import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
-import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
-import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
-import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import { mapActions, mapState } from 'vuex';
+import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
+import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
+import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
+import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
+import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
 import OpenedCallCommentForm from './opened-call-comment-form.vue';
-
-// Some width constants in order to position hold icons correctly:
-const GRID_GAP = 15;
-const EQUALIZER_WIDTH = 70;
 
 const cursorOptions = {
   showTime: true,
@@ -204,6 +166,20 @@ const commentOptions = {
   resize: true,
 };
 
+const infoBlockStyle = {
+  position: 'absolute',
+  zIndex: 15,
+  boxSizing: 'border-box',
+  overflow: 'auto',
+  backgroundColor: 'white',
+  border: 'var(--input-border)',
+  borderRadius: 'var(--border-radius)',
+  boxShadow: 'var(--box-shadow)',
+  background: 'var(--main-color)',
+  padding: '10px',
+  visibility: 'visible',
+};
+
 const getHoldSecInterval = ({ hold, file }) => {
   const start = ((hold.start - file.startAt) / 1000).toFixed(2);
   const end = ((hold.stop - file.startAt) / 1000).toFixed(2);
@@ -222,7 +198,6 @@ export default {
     zoom: 1,
     playbackRate: 1,
     isPlaying: false,
-    timeLineWidth: 0,
     showHolds: false,
     showComments: false,
     commentsMode: false,
@@ -264,15 +239,6 @@ export default {
     },
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
-    },
-    iconPosition() { // counting the width of audio track and icon absolute positioning
-      return (hold) => {
-        const fileLength = this.player.getDuration().toFixed(2);
-        const start = (hold.start - this.call.files[0].startAt) / 1000 || hold.startSec;
-        const pxInSec = this.timeLineWidth / fileLength;
-        const position = (pxInSec * start).toFixed();
-        return `${position}px`;
-      };
     },
     holdsSize() {
       return this.call.hold ? this.call.hold.length : 0;
@@ -330,7 +296,7 @@ export default {
       this.player.enableDragSelection({ ...commentOptions });
     },
     toggleCommentMode() {
-     return this.commentsMode ? this.closeCommentMode() : this.openCommentMode();
+      return this.commentsMode ? this.closeCommentMode() : this.openCommentMode();
     },
     redrawRegions() {
       this.player.clearRegions();
@@ -401,13 +367,82 @@ export default {
     displayHolds() {
       this.call.hold.map((hold) => {
         const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
-        this.player.addRegion({
+        const region = this.player.addRegion({
           ...hld,
           color: 'hsla(var(--_hold-color), 0.2)',
           showTooltip: false,
         });
+        this.displayHoldIcons(region, hold);
       });
       this.blockRegionResize();
+    },
+    displayHoldIcons(region, hold) {
+      const iconSection = document.createElement('div');
+      const iconElement = document.createElement('i');
+      const infoBlock = document.createElement('div');
+      infoBlock.style.visibility = 'hidden';
+      iconSection.style.position = 'relative';
+      iconSection.style.cursor = 'pointer';
+      iconSection.style.zIndex = 15;
+      if (region.element.offsetLeft < 30) {
+        iconSection.style.left = '8px';
+      } else {
+        iconSection.style.left = '-30px';
+      };
+      iconSection.appendChild(iconElement);
+      iconSection.appendChild(infoBlock);
+      region.element.appendChild(iconSection);
+      infoBlock.innerText = hold.sec ? convertDuration(hold.sec) : '00:00:00'
+      iconElement.innerHTML = '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
+      const durationStyle = {
+        ...infoBlockStyle,
+        width: '90px',
+        height: '50px',
+      };
+      iconElement.onmouseenter = () => {
+        this.player.cursor.hideCursor();
+        Object.assign(infoBlock.style, durationStyle);
+      };
+      iconElement.onmouseleave = () => {
+        this.player.cursor.showCursor();
+        infoBlock.style.visibility = 'hidden';
+      };
+    },
+
+    displayCommentIcons(region, comment) {
+      const iconSection = document.createElement('section');
+      const iconElement = document.createElement('i');
+      const infoBlock = document.createElement('div');
+      infoBlock.style.visibility = 'hidden';
+      iconSection.style.position = 'relative';
+      iconSection.style.cursor = 'pointer';
+      iconSection.style.zIndex = 15;
+      if (region.element.offsetLeft < 30) {
+        iconSection.style.left = '8px';
+      } else {
+        iconSection.style.left = '-30px';
+      }
+      iconSection.appendChild(iconElement);
+      iconSection.appendChild(infoBlock);
+      region.element.appendChild(iconSection);
+      infoBlock.innerText = comment.note;
+      iconElement.innerHTML = '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
+      const commentStyle = {
+        ...infoBlockStyle,
+        height: '100px',
+        width: '150px',
+      };
+      iconElement.onclick = () => {
+        this.editAnnotation(comment);
+      };
+      iconElement.onmouseenter = () => {
+        this.player.cursor.hideCursor();
+        Object.assign(infoBlock.style, commentStyle);
+      };
+      iconElement.onmouseleave = () => {
+        this.player.cursor.showCursor();
+        infoBlock.style.visibility = 'hidden';
+      };
     },
     displayComments() {
       this.call.annotations.map((comment) => {
@@ -415,13 +450,15 @@ export default {
           start: comment.startSec,
           end: comment.endSec,
         };
-        this.player.addRegion({
+        const region = this.player.addRegion({
           ...note,
           ...commentOptions,
         });
+        this.displayCommentIcons(region, comment);
       });
       this.blockRegionResize();
     },
+
     showProgress(progress) {
       this.loadProgress = +progress;
     },
@@ -443,9 +480,6 @@ export default {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-      if (this.call.hold || this.call.annotations) {
-        this.timeLineWidth = this.$el.clientWidth - EQUALIZER_WIDTH - GRID_GAP;
-      }
       player.addMarker({
         time: 0,
         position: 'top',
@@ -541,49 +575,6 @@ export default {
 
     .call-wave-data-plugin {
       position: relative;
-
-      .wave-icons-container {
-        height: 42px;
-        position: relative;
-
-        .wave-hold-icon {
-          position: absolute;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          .wave-hold-info {
-            visibility: hidden;
-          }
-
-          .wave-note-info {
-            @extend %wt-scrollbar;
-            visibility: hidden;
-            box-sizing: border-box;
-            height: 100px;
-            width: 150px;
-            position: absolute;
-            top: 26px;
-            overflow: auto;
-            border: var(--input-border);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            background: var(--main-color);
-            padding: 10px;
-            z-index: 5;
-          }
-
-          &:hover {
-            .wave-hold-info {
-              visibility: visible;
-            }
-
-            .wave-note-info {
-              visibility: visible;
-            }
-          }
-        }
-      }
 
       .call-wave-timeline {
         height: 26px;
