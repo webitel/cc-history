@@ -145,14 +145,14 @@
               <wt-icon :icon="!isPlaying ? 'play' : 'pause'"></wt-icon>
             </wt-button>
           </section>
-          <section class="call-wave-actions-buttons">
+<!--          <section class="call-wave-actions-buttons">
             <wt-button color="secondary" :disabled="zoom > 1000" @click="increaseZoom">
               <wt-icon icon="zoom-in"/>
             </wt-button>
             <wt-button color="secondary" :disabled="zoom < 0.001" @click="decreaseZoom">
               <wt-icon icon="zoom-out"/>
             </wt-button>
-          </section>
+          </section> -->
         </section>
       </section>
     </section>
