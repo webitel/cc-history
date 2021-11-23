@@ -1,4 +1,4 @@
-import { sortToQueryAdapter } from '@webitel/ui-sdk/src/scripts/sortQueryAdapters';
+  import { sortToQueryAdapter } from '@webitel/ui-sdk/src/scripts/sortQueryAdapters';
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './headers/historyHeaders';
 import openedCall from './opened-call/opened-call';

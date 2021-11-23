@@ -1,3 +1,4 @@
+import EnumFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/EnumFilterSchema';
 import APIRepository from '../../../api/APIRepository';
 import Dashboards
   from '../../../components/history/history-main/dashboards/dashboards/enums/Dashboards.enum';
@@ -11,12 +12,13 @@ const state = {
   dashboardsData: [],
   layout: '2',
   isLoading: false,
-  intervalFilter: {
+  intervalFilter: new EnumFilterSchema({
     value: IntervalOptions.find((interval) => interval.value === 'auto'),
     defaultValue: IntervalOptions.find((interval) => interval.value === 'auto'),
-    storedProp: 'value',
+    options: IntervalOptions,
+    locale: { label: 'fields.interval' },
     multiple: false,
-  },
+  }),
 };
 
 const getters = {};

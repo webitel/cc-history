@@ -7,15 +7,15 @@
     <form class="history-filters" :class="{'history-filters--opened': isOpened}">
       <filter-from class="history-filters__filter"/>
       <filter-to class="history-filters__filter"/>
-      <filter-direction class="history-filters__filter"/>
-      <filter-user class="history-filters__filter"/>
-      <filter-gateway class="history-filters__filter"/>
-      <filter-agent class="history-filters__filter"/>
-      <filter-team class="history-filters__filter"/>
-      <filter-queue class="history-filters__filter"/>
+      <component
+        class="history-filters__filter"
+        v-for="(filter, key) of filters"
+        :key="key"
+        :is="`abstract-${filter.type}-filter`"
+        :filter-query="filter.filterQuery"
+        :namespace="namespace"
+      ></component>
       <filter-duration class="history-filters__filter"/>
-      <filter-tags class="history-filters__filter"/>
-      <filter-cause class="history-filters__filter"/>
     </form>
     <wt-table-actions
       :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
@@ -26,43 +26,40 @@
 
 <script>
   import { mapActions } from 'vuex';
+  import AbstractApiFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-api-filter.vue';
+  import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-enum-filter.vue';
   import FilterFields from '../history-main/registry/filters/filter-table-fields/filter-table-fields.vue';
-  import FilterFrom from '../../../shared/filters/filter-from/filter-from.vue';
-  import FilterTo from '../../../shared/filters/filter-to/filter-to.vue';
-  // import FilterType from '../../../shared/filters/components/filter-type.vue';
-  import FilterDirection from '../../../shared/filters/filter-direction/filter-direction.vue';
-  import FilterUser from '../../../shared/filters/filter-user/filter-user.vue';
-  import FilterGateway from '../../../shared/filters/filter-gateway/filter-gateway.vue';
-  import FilterAgent from '../../../shared/filters/filter-agent/filter-agent.vue';
-  import FilterTeam from '../../../shared/filters/filter-queues/filter-queue.vue';
-  import FilterQueue from '../../../shared/filters/filter-teams/filter-team.vue';
-  import FilterCause from '../../../shared/filters/filter-cause/filter-cause.vue';
-  import FilterTags from '../../../shared/filters/filter-tags/filter-tags.vue';
-  import FilterDuration from '../../../shared/filters/filter-duration/filter-duration.vue';
+  import FilterFrom from '../../../shared/filters/components/filter-from.vue';
+  import FilterTo from '../../../shared/filters/components/filter-to.vue';
+  import FilterDuration from '../../../shared/filters/components/filter-duration.vue';
   import tableActionsHandlerMixin from '../../../mixins/tableActions/tableActionsHandlerMixin';
 
   export default {
     name: 'the-history-filters',
     mixins: [tableActionsHandlerMixin],
     components: {
+      AbstractApiFilter,
+      AbstractEnumFilter,
       FilterFields,
       FilterFrom,
       FilterTo,
-      // FilterType,
-      FilterDirection,
-      FilterUser,
-      FilterGateway,
-      FilterAgent,
-      FilterTeam,
-      FilterQueue,
-      FilterCause,
-      FilterTags,
       FilterDuration,
     },
 
     data: () => ({
       isOpened: false,
       isFilterFieldsOpened: false,
+      filters: [
+        { type: 'api', filterQuery: 'agent' },
+        { type: 'api', filterQuery: 'gateway' },
+        { type: 'api', filterQuery: 'queue' },
+        { type: 'api', filterQuery: 'team' },
+        { type: 'api', filterQuery: 'user' },
+        { type: 'enum', filterQuery: 'cause' },
+        { type: 'enum', filterQuery: 'direction' },
+        { type: 'enum', filterQuery: 'tags' },
+      ],
+      namespace: 'filters',
     }),
 
     methods: {
