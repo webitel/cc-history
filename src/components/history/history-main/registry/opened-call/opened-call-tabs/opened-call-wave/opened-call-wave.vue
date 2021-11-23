@@ -171,12 +171,10 @@ const infoBlockStyle = {
   zIndex: '9',
   boxSizing: 'border-box',
   overflow: 'auto',
-  // backgroundColor: 'white',
-  backgroundColor: 'rgba(255, 255, 255, 1)',
   border: 'var(--input-border)',
   borderRadius: 'var(--border-radius)',
   boxShadow: 'var(--box-shadow)',
-  background: 'var(--main-color)',
+  backgroundColor: 'var(--main-color)',
   padding: '10px',
   visibility: 'visible',
 };
