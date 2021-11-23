@@ -133,8 +133,8 @@ import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
-import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
-import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
+import callWaveMixin from '../../../../../../../mixins/history/registry/callWaveMixin';
+import generateMediaURL from '../../../../../../../mixins/media/scripts/generateMediaURL';
 import OpenedCallCommentForm from './opened-call-comment-form.vue';
 
 const cursorOptions = {
@@ -168,10 +168,11 @@ const commentOptions = {
 
 const infoBlockStyle = {
   position: 'absolute',
-  zIndex: 15,
+  zIndex: '9',
   boxSizing: 'border-box',
   overflow: 'auto',
-  backgroundColor: 'white',
+  // backgroundColor: 'white',
+  backgroundColor: 'rgba(255, 255, 255, 1)',
   border: 'var(--input-border)',
   borderRadius: 'var(--border-radius)',
   boxShadow: 'var(--box-shadow)',
@@ -246,9 +247,6 @@ export default {
     commentsSize() {
       return this.call.annotations ? this.call.annotations.length : 0;
     },
-    formatDuration() {
-      return (hold) => (hold.sec ? convertDuration(hold.sec) : '00:00:00');
-    },
   },
 
   methods: {
@@ -259,7 +257,7 @@ export default {
       loadMainCall: 'LOAD_MAIN_CALL',
     }),
     blockRegionResize() {
-      Object.keys(this.player.regions.list).map((region) => {
+      Object.keys(this.player.regions.list).forEach((region) => {
         this.player.regions.list[region].update({ resize: false, drag: false });
       });
     },
@@ -293,6 +291,10 @@ export default {
     closeCommentMode() {
       this.commentsMode = false;
       this.selectedComment = null;
+      const cancelledRegion = Object.keys(this.player.regions.list).find((region) => this.player.regions.list[region].element.children.length < 3);
+      if (cancelledRegion) {
+        this.redrawRegions();
+      };
       this.player.enableDragSelection({ ...commentOptions });
     },
     toggleCommentMode() {
@@ -365,7 +367,7 @@ export default {
       player.enableDragSelection({ ...commentOptions });
     },
     displayHolds() {
-      this.call.hold.map((hold) => {
+      this.call.hold.forEach((hold) => {
         const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
         const region = this.player.addRegion({
           ...hld,
@@ -377,81 +379,76 @@ export default {
       this.blockRegionResize();
     },
     displayHoldIcons(region, hold) {
-      const iconSection = document.createElement('div');
-      const iconElement = document.createElement('i');
-      const infoBlock = document.createElement('div');
-      infoBlock.style.visibility = 'hidden';
-      iconSection.style.position = 'relative';
-      iconSection.style.cursor = 'pointer';
-      iconSection.style.zIndex = 15;
-      if (region.element.offsetLeft < 30) {
-        iconSection.style.left = '8px';
-      } else {
-        iconSection.style.left = '-30px';
-      };
-      iconSection.appendChild(iconElement);
-      iconSection.appendChild(infoBlock);
-      region.element.appendChild(iconSection);
-      infoBlock.innerText = hold.sec ? convertDuration(hold.sec) : '00:00:00'
-      iconElement.innerHTML = '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
-      const durationStyle = {
+      const wrapperEl = document.createElement('div');
+      wrapperEl.style.position = 'relative';
+      wrapperEl.style.cursor = 'pointer';
+      wrapperEl.style.zIndex = '9';
+      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px'
+
+      const tooltipEl = document.createElement('div');
+      tooltipEl.style.visibility = 'hidden';
+      tooltipEl.innerText = hold.sec ? convertDuration(hold.sec) : '00:00:00';
+      const tooltipStyle = {
         ...infoBlockStyle,
         width: '90px',
         height: '50px',
       };
-      iconElement.onmouseenter = () => {
+
+      const iconEl = document.createElement('i');
+      iconEl.innerHTML = '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
+      iconEl.onmouseenter = () => {
         this.player.cursor.hideCursor();
-        Object.assign(infoBlock.style, durationStyle);
+        Object.assign(tooltipEl.style, tooltipStyle);
       };
-      iconElement.onmouseleave = () => {
+      iconEl.onmouseleave = () => {
         this.player.cursor.showCursor();
-        infoBlock.style.visibility = 'hidden';
+        tooltipEl.style.visibility = 'hidden';
       };
+
+      wrapperEl.appendChild(iconEl);
+      wrapperEl.appendChild(tooltipEl);
+      region.element.appendChild(wrapperEl);
     },
 
     displayCommentIcons(region, comment) {
-      const iconSection = document.createElement('section');
-      const iconElement = document.createElement('i');
-      const infoBlock = document.createElement('div');
-      infoBlock.style.visibility = 'hidden';
-      iconSection.style.position = 'relative';
-      iconSection.style.cursor = 'pointer';
-      iconSection.style.zIndex = 15;
-      if (region.element.offsetLeft < 30) {
-        iconSection.style.left = '8px';
-      } else {
-        iconSection.style.left = '-30px';
-      }
-      iconSection.appendChild(iconElement);
-      iconSection.appendChild(infoBlock);
-      region.element.appendChild(iconSection);
-      infoBlock.innerText = comment.note;
-      iconElement.innerHTML = '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
-      const commentStyle = {
+      const wrapperEl = document.createElement('section');
+      wrapperEl.style.position = 'absolute';
+      wrapperEl.style.cursor = 'pointer';
+      wrapperEl.style.zIndex = '9';
+      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px'
+
+      const tooltipEl = document.createElement('div');
+      tooltipEl.innerText = comment.note;
+      tooltipEl.style.visibility = 'hidden';
+      const tooltipStyle = {
         ...infoBlockStyle,
         height: '100px',
         width: '150px',
       };
-      iconElement.onclick = () => {
+
+      const iconEl = document.createElement('i');
+      iconEl.innerHTML = '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
+      iconEl.onclick = () => {
         this.editAnnotation(comment);
       };
-      iconElement.onmouseenter = () => {
+      iconEl.onmouseenter = () => {
         this.player.cursor.hideCursor();
-        Object.assign(infoBlock.style, commentStyle);
+        Object.assign(tooltipEl.style, tooltipStyle);
       };
-      iconElement.onmouseleave = () => {
+      iconEl.onmouseleave = () => {
         this.player.cursor.showCursor();
-        infoBlock.style.visibility = 'hidden';
+        tooltipEl.style.visibility = 'hidden';
       };
+
+      wrapperEl.appendChild(iconEl);
+      wrapperEl.appendChild(tooltipEl);
+      region.element.appendChild(wrapperEl);
     },
     displayComments() {
-      this.call.annotations.map((comment) => {
-        const note = {
+      this.call.annotations.forEach((comment) => {
+        const region = this.player.addRegion({
           start: comment.startSec,
           end: comment.endSec,
-        };
-        const region = this.player.addRegion({
-          ...note,
           ...commentOptions,
         });
         this.displayCommentIcons(region, comment);
