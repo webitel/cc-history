@@ -84,40 +84,6 @@
         </section>
 
         <section class="call-wave-data-plugin" v-if="file">
-          <div class="wave-icons-container">
-            <div v-if="showHolds && call.hold">
-              <div
-                v-for="hold in call.hold"
-                :key="hold.start + hold.duration"
-                class="wave-hold-icon"
-                :style="{ left: iconPosition(hold) }">
-                <wt-icon-btn
-                  icon="pause"
-                  color="hold"
-                ></wt-icon-btn>
-                <div class="wave-hold-info">
-                  {{ formatDuration(hold) }}
-                </div>
-              </div>
-            </div>
-            <div v-if="showComments && call.annotations">
-              <div
-                v-for="comment in call.annotations"
-                :key="comment.id"
-                class="wave-hold-icon"
-                :style="{ left: iconPosition(comment) }">
-                <wt-icon-btn
-                  icon="note"
-                  icon-prefix="hs"
-                  color="transfer"
-                  @click="editAnnotation(comment)"
-                ></wt-icon-btn>
-                <div class="wave-note-info">
-                  {{ comment.note }}
-                </div>
-              </div>
-            </div>
-          </div>
           <wavesurfer
             :options="waveOptions"
             :src="file"
@@ -145,14 +111,14 @@
               <wt-icon :icon="!isPlaying ? 'play' : 'pause'"></wt-icon>
             </wt-button>
           </section>
-<!--          <section class="call-wave-actions-buttons">
+          <section class="call-wave-actions-buttons">
             <wt-button color="secondary" :disabled="zoom > 1000" @click="increaseZoom">
               <wt-icon icon="zoom-in"/>
             </wt-button>
             <wt-button color="secondary" :disabled="zoom < 0.001" @click="decreaseZoom">
               <wt-icon icon="zoom-out"/>
             </wt-button>
-          </section> -->
+          </section>
         </section>
       </section>
     </section>
@@ -160,20 +126,16 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
-import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
-import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
-import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
-import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
-import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
-import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import { mapActions, mapState } from 'vuex';
+import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
+import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
+import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
+import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
+import callWaveMixin from '../../../../../../../mixins/history/registry/callWaveMixin';
+import generateMediaURL from '../../../../../../../mixins/media/scripts/generateMediaURL';
 import OpenedCallCommentForm from './opened-call-comment-form.vue';
-
-// Some width constants in order to position hold icons correctly:
-const GRID_GAP = 15;
-const EQUALIZER_WIDTH = 70;
 
 const cursorOptions = {
   showTime: true,
@@ -193,7 +155,7 @@ const timelineOptions = {
   fontFamily: 'Montserrat Regular, monospace',
   fontSize: 14,
   labelPadding: 5,
-  primaryLabelInterval: 2,
+  primaryLabelInterval: 5,
   secondaryLabelInterval: 0,
   formatTimeCallback: convertDuration,
 };
@@ -202,6 +164,18 @@ const commentOptions = {
   showTooltip: false,
   color: 'hsla(var(--_transfer-color), 0.2)',
   resize: true,
+};
+
+const tooltipStyle = {
+  minWidth: 0,
+  padding: 'var(--tooltip-padding)',
+  color: 'var(--tooltip-light-text-color)',
+  background: 'var(--tooltip-light-bg-color)',
+  borderRadius: 'var(--border-radius)',
+  boxShadow: 'var(--box-shadow)',
+  transition: 'var(--transition)',
+  opacity: 0,
+  zIndex: 'var(--tooltip-z-index)',
 };
 
 const getHoldSecInterval = ({ hold, file }) => {
@@ -222,7 +196,6 @@ export default {
     zoom: 1,
     playbackRate: 1,
     isPlaying: false,
-    timeLineWidth: 0,
     showHolds: false,
     showComments: false,
     commentsMode: false,
@@ -265,23 +238,11 @@ export default {
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
-    iconPosition() { // counting the width of audio track and icon absolute positioning
-      return (hold) => {
-        const fileLength = this.player.getDuration().toFixed(2);
-        const start = (hold.start - this.call.files[0].startAt) / 1000 || hold.startSec;
-        const pxInSec = this.timeLineWidth / fileLength;
-        const position = (pxInSec * start).toFixed();
-        return `${position}px`;
-      };
-    },
     holdsSize() {
       return this.call.hold ? this.call.hold.length : 0;
     },
     commentsSize() {
       return this.call.annotations ? this.call.annotations.length : 0;
-    },
-    formatDuration() {
-      return (hold) => (hold.sec ? convertDuration(hold.sec) : '00:00:00');
     },
   },
 
@@ -293,7 +254,7 @@ export default {
       loadMainCall: 'LOAD_MAIN_CALL',
     }),
     blockRegionResize() {
-      Object.keys(this.player.regions.list).map((region) => {
+      Object.keys(this.player.regions.list).forEach((region) => {
         this.player.regions.list[region].update({ resize: false, drag: false });
       });
     },
@@ -327,10 +288,17 @@ export default {
     closeCommentMode() {
       this.commentsMode = false;
       this.selectedComment = null;
+      const cancelledRegion = Object.keys(this.player.regions.list).find((region) => {
+        return this.player.regions.list[region].element.children.length < 3;
+      });
+      if (cancelledRegion) {
+        this.redrawRegions();
+      }
+      ;
       this.player.enableDragSelection({ ...commentOptions });
     },
     toggleCommentMode() {
-     return this.commentsMode ? this.closeCommentMode() : this.openCommentMode();
+      return this.commentsMode ? this.closeCommentMode() : this.openCommentMode();
     },
     redrawRegions() {
       this.player.clearRegions();
@@ -399,29 +367,85 @@ export default {
       player.enableDragSelection({ ...commentOptions });
     },
     displayHolds() {
-      this.call.hold.map((hold) => {
+      this.call.hold.forEach((hold) => {
         const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
-        this.player.addRegion({
+        const region = this.player.addRegion({
           ...hld,
           color: 'hsla(var(--_hold-color), 0.2)',
           showTooltip: false,
         });
+        this.displayHoldIcons(region, hold);
       });
       this.blockRegionResize();
+    },
+    displayHoldIcons(region, hold) {
+      const wrapperEl = document.createElement('div');
+      wrapperEl.style.position = 'absolute';
+      wrapperEl.style.cursor = 'pointer';
+      wrapperEl.style.zIndex = '9';
+      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px';
+
+      const tooltipEl = document.createElement('div');
+      Object.assign(tooltipEl.style, tooltipStyle);
+      tooltipEl.innerText = hold.sec ? convertDuration(hold.sec) : '00:00:00';
+
+      const iconEl = document.createElement('i');
+      iconEl.innerHTML = '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
+      iconEl.onmouseenter = () => {
+        this.player.cursor.hideCursor();
+        tooltipEl.style.opacity = '1';
+      };
+      iconEl.onmouseleave = () => {
+        this.player.cursor.showCursor();
+        tooltipEl.style.opacity = '0';
+      };
+
+      wrapperEl.appendChild(iconEl);
+      wrapperEl.appendChild(tooltipEl);
+      region.element.appendChild(wrapperEl);
+    },
+
+    displayCommentIcons(region, comment) {
+      const wrapperEl = document.createElement('section');
+      wrapperEl.style.position = 'absolute';
+      wrapperEl.style.cursor = 'pointer';
+      wrapperEl.style.zIndex = '9';
+      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px';
+
+      const tooltipEl = document.createElement('div');
+      tooltipEl.innerText = comment.note;
+      Object.assign(tooltipEl.style, tooltipStyle);
+
+      const iconEl = document.createElement('i');
+      iconEl.innerHTML = '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
+      iconEl.onclick = () => {
+        this.editAnnotation(comment);
+      };
+      iconEl.onmouseenter = () => {
+        this.player.cursor.hideCursor();
+        tooltipEl.style.opacity = '1';
+      };
+      iconEl.onmouseleave = () => {
+        this.player.cursor.showCursor();
+        tooltipEl.style.opacity = '0';
+      };
+
+      wrapperEl.appendChild(iconEl);
+      wrapperEl.appendChild(tooltipEl);
+      region.element.appendChild(wrapperEl);
     },
     displayComments() {
-      this.call.annotations.map((comment) => {
-        const note = {
+      this.call.annotations.forEach((comment) => {
+        const region = this.player.addRegion({
           start: comment.startSec,
           end: comment.endSec,
-        };
-        this.player.addRegion({
-          ...note,
           ...commentOptions,
         });
+        this.displayCommentIcons(region, comment);
       });
       this.blockRegionResize();
     },
+
     showProgress(progress) {
       this.loadProgress = +progress;
     },
@@ -443,9 +467,6 @@ export default {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-      if (this.call.hold || this.call.annotations) {
-        this.timeLineWidth = this.$el.clientWidth - EQUALIZER_WIDTH - GRID_GAP;
-      }
       player.addMarker({
         time: 0,
         position: 'top',
@@ -541,49 +562,6 @@ export default {
 
     .call-wave-data-plugin {
       position: relative;
-
-      .wave-icons-container {
-        height: 42px;
-        position: relative;
-
-        .wave-hold-icon {
-          position: absolute;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          .wave-hold-info {
-            visibility: hidden;
-          }
-
-          .wave-note-info {
-            @extend %wt-scrollbar;
-            visibility: hidden;
-            box-sizing: border-box;
-            height: 100px;
-            width: 150px;
-            position: absolute;
-            top: 26px;
-            overflow: auto;
-            border: var(--input-border);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            background: var(--main-color);
-            padding: 10px;
-            z-index: 5;
-          }
-
-          &:hover {
-            .wave-hold-info {
-              visibility: visible;
-            }
-
-            .wave-note-info {
-              visibility: visible;
-            }
-          }
-        }
-      }
 
       .call-wave-timeline {
         height: 26px;
