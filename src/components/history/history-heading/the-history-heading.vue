@@ -4,7 +4,11 @@
       {{ $t('reusable.history') }}
     </template>
     <template slot="actions">
-      <filter-search/>
+
+      <filter-search
+        namespace="filters"
+      ></filter-search>
+
       <wt-button
         color="secondary"
         :disabled="!dataList.length"
@@ -38,9 +42,9 @@
 import { mapState, mapGetters } from 'vuex';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
+import FilterSearch from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-search.vue';
 
 import generateMediaURL from '../../../mixins/media/scripts/generateMediaURL';
-import FilterSearch from '../../../shared/filters/filter-search/filter-search.vue';
 import APIRepository from '../../../api/APIRepository';
 
 export default {

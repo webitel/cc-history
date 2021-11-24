@@ -1,33 +1,62 @@
-import filtersModule from '@webitel/ui-sdk/src/modules/QueryFilters/store/queryFilters';
-import agent from '../../../shared/filters/filter-agent/filterAgent.schema';
-import cause from '../../../shared/filters/filter-cause/filterCause.schema';
-import direction from '../../../shared/filters/filter-direction/filterDirection.schema';
-import duration from '../../../shared/filters/filter-duration/filterDuration.schema';
-import from from '../../../shared/filters/filter-from/filterFrom.schema';
-import to from '../../../shared/filters/filter-to/filterTo.schema';
-import gateway from '../../../shared/filters/filter-gateway/filterGateway.schema';
-import queue from '../../../shared/filters/filter-queues/filterQueues.schema';
-import search from '../../../shared/filters/filter-search/filterSearch.schema';
-import tags from '../../../shared/filters/filter-tags/filterTags.schema';
-import team from '../../../shared/filters/filter-teams/filterTeams.schema';
-import user from '../../../shared/filters/filter-user/filterUser.schema';
+import QueryFiltersStoreModule from '@webitel/ui-sdk/src/modules/QueryFilters/store/QueryFiltersStoreModule';
+import ApiFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/ApiFilterSchema';
+import BaseFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/BaseFilterSchema';
+import EnumFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/EnumFilterSchema';
+import AgentsAPI from '../../../shared/filters/api/AgentsAPIRepository';
+import CauseOption from '../../../shared/filters/enums/HangupCauseOption.enum';
+import DirectionOptions from '../../../shared/filters/enums/DirectionOptions.enum';
+import GatewaysAPI from '../../../shared/filters/api/GatewaysAPIRepository';
+import QueuesAPI from '../../../shared/filters/api/QueuesAPIRepository';
+import TagOptions from '../../../shared/filters/enums/TagOptions.enum';
+import TeamAPI from '../../../shared/filters/api/TeamsAPIRepository';
+import UserAPI from '../../../shared/filters/api/UsersAPIRepository';
 
 const state = {
-  agent,
-  cause,
-  direction,
-  duration,
-  from,
-  to,
-  gateway,
-  queue,
-  search,
-  tags,
-  team,
-  user,
+  agent: new ApiFilterSchema({
+    API: AgentsAPI.getLookup,
+    locale: { label: 'fields.agent' },
+  }),
+  cause: new EnumFilterSchema({
+    options: CauseOption,
+    locale: { label: 'fields.cause' },
+  }),
+  direction: new EnumFilterSchema({
+    options: DirectionOptions,
+    locale: { label: 'fields.direction' },
+  }),
+  duration: new BaseFilterSchema({
+    value: { from: 0, to: null },
+    defaultValue: [],
+  }),
+  from: new BaseFilterSchema({
+    value: new Date().setHours(0, 0, 0, 0),
+    defaultValue: new Date().setHours(0, 0, 0, 0),
+  }),
+  to: new BaseFilterSchema({
+    value: new Date().setHours(23, 59, 59, 0),
+    defaultValue: new Date().setHours(23, 59, 59, 0),
+  }),
+  gateway: new ApiFilterSchema({
+    API: GatewaysAPI.getLookup,
+    locale: { label: 'fields.gateway' },
+  }),
+  queue: new ApiFilterSchema({
+    API: QueuesAPI.getLookup,
+    locale: { label: 'fields.queue' },
+  }),
+  search: new BaseFilterSchema(),
+  tags: new EnumFilterSchema({
+    options: TagOptions,
+    locale: { label: 'fields.tags' },
+  }),
+  team: new ApiFilterSchema({
+    API: TeamAPI.getLookup,
+    locale: { label: 'fields.team' },
+  }),
+  user: new ApiFilterSchema({
+    API: UserAPI.getLookup,
+    locale: { label: 'fields.user' },
+  }),
 };
 
-export default {
-  ...filtersModule(),
-  state,
-};
+export default new QueryFiltersStoreModule({ state }).getModule();

@@ -42,7 +42,18 @@ export default {
     newBtn: 'New Dashboard',
     dashboardSelect: 'Select dashboard:',
     dashboardConfig: 'Dashboard configuration:',
-    interval: 'Interval',
+    interval: {
+      interval: 'Interval',
+      options: {
+        auto: 'Auto',
+        min: '{value} min | {value} mins',
+        hour: '{value} hour | {value} hours',
+        day: '{value} day | {value} days',
+        week: '{value} week | {value} weeks',
+        month: '{value} month | {value} months',
+        year: '{value} year | {value} years',
+      },
+    },
     dashboardConfigForm: {
       name: 'Name',
       visualization: 'Visualization',
