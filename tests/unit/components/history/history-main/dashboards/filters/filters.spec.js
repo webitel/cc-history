@@ -15,6 +15,6 @@ describe('Dashboards: filter components', () => {
     const wrapper = shallowMount(FilterInterval, {
       localVue, store, router,
     });
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: 'abstract-enum-filter' }).exists()).toBe(true);
   });
 });

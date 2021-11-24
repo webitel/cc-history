@@ -13,4 +13,12 @@ describe('History filters section', () => {
     await wrapper.vm.$nextTick();
     expect(wrapper.find('.history-filters--opened').exists()).toBe(true);
   });
+
+  it('renders webitel-ui filters', () => {
+    const wrapper = shallowMount(HistoryFilters);
+    const abstractEnumFilters = wrapper.findAllComponents({ name: 'abstract-enum-filter' });
+    const abstractApiFilters = wrapper.findAllComponents({ name: 'abstract-api-filter' });
+    expect(abstractEnumFilters.length).toEqual(wrapper.vm.filters.filter(({ type }) => type === 'enum').length);
+    expect(abstractApiFilters.length).toEqual(wrapper.vm.filters.filter(({ type }) => type === 'api').length);
+  });
 });

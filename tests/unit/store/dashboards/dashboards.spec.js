@@ -25,7 +25,9 @@ describe('dashboards store actions', () => {
     state: dashboards.state,
     commit: jest.fn(),
     dispatch: jest.fn(),
-    rootGetters: jest.fn(),
+    rootGetters: {
+      'dashboards/filters/GET_FILTER': jest.fn(),
+    },
   };
   beforeEach(() => {
    newDashboard = new CallsCountDashboard();
@@ -121,15 +123,5 @@ describe('dashboards store actions', () => {
     const newLayout = '1';
     await dashboards.actions.CHANGE_LAYOUT(context, newLayout);
     expect(context.commit).toHaveBeenCalledWith('SET_LAYOUT', newLayout);
-  });
-
-  it('SET_INTERVAL commits SET_INTERVAL with defaultValue, if no interval passed', async () => {
-    await dashboards.actions.SET_INTERVAL(context);
-    expect(context.commit).toHaveBeenCalledWith('SET_INTERVAL', context.state.intervalFilter.defaultValue);
-  });
-
-  it('RESET_FILTERS dispatches SET_INTERVAL with defaultValue', async () => {
-    await dashboards.actions.RESET_FILTERS(context);
-    expect(context.dispatch).toHaveBeenCalledWith('SET_INTERVAL', context.state.intervalFilter.defaultValue);
   });
 });

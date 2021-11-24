@@ -21,6 +21,11 @@ describe('History heading section', () => {
     expect(wrapper.classes('the-history-heading')).toBe(true);
   });
 
+  it('renders search filter', () => {
+    const wrapper = shallowMount(HistoryHeading, { localVue, store });
+    expect(wrapper.findComponent({ name: 'filter-search' }).isVisible()).toBe(true);
+  });
+
   it('creates csv export module instance', () => {
     const wrapper = shallowMount(HistoryHeading, { localVue, store });
     expect(wrapper.vm.CSVExport instanceof CSVExport).toBe(true);

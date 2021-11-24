@@ -13,27 +13,6 @@ localVue.use(VueRouter);
 const router = new VueRouter();
 
 describe('Filter components', () => {
-  it('renders agent filter component', () => {
-    const wrapper = shallowMount(FilterAgent, {
-      localVue, store, router,
-    });
-    console.info(wrapper.findComponent({ name: 'wt-select' }).element);
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
-  });
-  it('renders cause filter component', () => {
-    const wrapper = shallowMount(FilterCause, {
-      localVue, store, router,
-    });
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
-  });
-
-  it('renders direction filter component', () => {
-    const wrapper = shallowMount(FilterDirection, {
-      localVue, store, router,
-    });
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
-  });
-
   it('renders duration filter component', () => {
     const wrapper = shallowMount(FilterDuration, {
       localVue, store, router,
@@ -48,52 +27,10 @@ describe('Filter components', () => {
     expect(wrapper.findComponent({ name: 'wt-datetimepicker' }).exists()).toBe(true);
   });
 
-  it('renders gateway filter component', () => {
-    const wrapper = shallowMount(FilterGateway, {
-      localVue, store, router,
-    });
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
-  });
-
-  it('renders queue filter component', () => {
-    const wrapper = shallowMount(FilterQueue, {
-      localVue, store, router,
-    });
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
-  });
-
-  it('renders search filter component', () => {
-    const wrapper = shallowMount(FilterSearch, {
-      localVue, store, router,
-    });
-    expect(wrapper.findComponent({ name: 'wt-search-bar' }).exists()).toBe(true);
-  });
-
-  it('renders tags filter component', () => {
-    const wrapper = shallowMount(FilterTags, {
-      localVue, store, router,
-    });
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
-  });
-
-  it('renders team filter component', () => {
-    const wrapper = shallowMount(FilterTeam, {
-      localVue, store, router,
-    });
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
-  });
-
   it('renders to filter component', () => {
     const wrapper = shallowMount(FilterTo, {
       localVue, store, router,
     });
     expect(wrapper.findComponent({ name: 'wt-datetimepicker' }).exists()).toBe(true);
-  });
-
-  it('renders user filter component', () => {
-    const wrapper = shallowMount(FilterUser, {
-      localVue, store, router,
-    });
-    expect(wrapper.findComponent({ name: 'wt-select' }).exists()).toBe(true);
   });
 });
