@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@webitel/ui-sdk": "^0.9.41",
+    "@webitel/ui-sdk": "^0.9.43",
     "axios": "^0.19.2",
     "bamboo-jest-reporter": "^1.0.3",
     "chart.js": "^2.9.3",

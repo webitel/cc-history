@@ -1,9 +1,7 @@
-import EnumFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/EnumFilterSchema';
 import APIRepository from '../../../api/APIRepository';
 import Dashboards
   from '../../../components/history/history-main/dashboards/dashboards/enums/Dashboards.enum';
-import IntervalOptions
-  from '../../../components/history/history-main/dashboards/filters/filter-interval/IntervalOptions.enum';
+import filters from './filters/filters';
 
 const DashboardAPI = APIRepository.dashboards;
 
@@ -12,16 +10,10 @@ const state = {
   dashboardsData: [],
   layout: '2',
   isLoading: false,
-  intervalFilter: new EnumFilterSchema({
-    value: IntervalOptions.find((interval) => interval.value === 'auto'),
-    defaultValue: IntervalOptions.find((interval) => interval.value === 'auto'),
-    options: IntervalOptions,
-    locale: { label: 'fields.interval' },
-    multiple: false,
-  }),
 };
 
-const getters = {};
+const getters = {
+};
 
 const actions = {
   ADD_DASHBOARD: async (context, { dashboard, options }) => {
@@ -43,7 +35,7 @@ const actions = {
     context.commit('SET_LOADING', true);
     try {
       const query = context.rootGetters['filters/GET_FILTERS'];
-      const interval = context.state.intervalFilter.value[context.state.intervalFilter.storedProp];
+      const interval = context.rootGetters['dashboards/filters/GET_FILTER']('interval');
       const aggs = context.state.dashboards
         .map((dashboard) => dashboard.getRequestAggregations({ interval }));
       const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
@@ -86,13 +78,6 @@ const actions = {
   SET_LAYOUT: (context, layout) => {
     context.commit('SET_LAYOUT', layout);
   },
-  SET_INTERVAL: (context, interval) => {
-    const { defaultValue } = context.state.intervalFilter;
-    context.commit('SET_INTERVAL', interval || defaultValue);
-  },
-  RESET_FILTERS: (context) => {
-    context.dispatch('SET_INTERVAL', context.state.intervalFilter.defaultValue);
-  },
 };
 
 const mutations = {
@@ -118,9 +103,6 @@ const mutations = {
   SET_LAYOUT: (state, layout) => {
     state.layout = layout;
   },
-  SET_INTERVAL: (state, interval) => {
-    state.intervalFilter.value = interval;
-  },
 };
 
 export default {
@@ -129,4 +111,5 @@ export default {
   getters,
   actions,
   mutations,
+  modules: { filters },
 };

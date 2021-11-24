@@ -40,7 +40,18 @@ export default {
     newBtn: 'Новий дашборд',
     dashboardSelect: 'Вибрати дашборд:',
     dashboardConfig: 'Конфігурація дашборду:',
-    interval: 'Інтервал',
+    interval: {
+      interval: 'Інтервал',
+      options: {
+        auto: 'Автоматично',
+        min: '{value} хв | {value} хв',
+        hour: '{value} година | {value} годин',
+        day: '{value} день | {value} днів',
+        week: '{value} тиждень | {value} тижнів',
+        month: '{value} місяць | {value} місяців',
+        year: '{value} рік | {value} років',
+      },
+    },
     dashboardConfigForm: {
       name: 'Назва',
       visualization: 'Візуалізація',

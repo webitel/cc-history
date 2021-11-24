@@ -42,7 +42,18 @@ export default {
     newBtn: 'Новый дашборд',
     dashboardSelect: 'Выбрать дашборд:',
     dashboardConfig: 'Конфигурация дашборда:',
-    interval: 'Интервал',
+    interval: {
+      interval: 'Интервал',
+      options: {
+        auto: 'Автоматически',
+        min: '{value} мин | {value} мин',
+        hour: '{value} час | {value} часов',
+        day: '{value} день | {value} дней',
+        week: '{value} неделя | {value} недель',
+        month: '{value} месяц | {value} месяцев',
+        year: '{value} год | {value} лет',
+      },
+    },
     dashboardConfigForm: {
       name: 'Название',
       visualization: 'Визуализация',
