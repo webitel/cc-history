@@ -155,7 +155,7 @@ const timelineOptions = {
   fontFamily: 'Montserrat Regular, monospace',
   fontSize: 14,
   labelPadding: 5,
-  primaryLabelInterval: 2,
+  primaryLabelInterval: 5,
   secondaryLabelInterval: 0,
   formatTimeCallback: convertDuration,
 };
@@ -166,7 +166,7 @@ const commentOptions = {
   resize: true,
 };
 
-const infoBlockStyle = {
+const tooltipStyle = {
   minWidth: 0,
   padding: 'var(--tooltip-padding)',
   color: 'var(--tooltip-light-text-color)',
@@ -288,7 +288,9 @@ export default {
     closeCommentMode() {
       this.commentsMode = false;
       this.selectedComment = null;
-      const cancelledRegion = Object.keys(this.player.regions.list).find((region) => this.player.regions.list[region].element.children.length < 3);
+      const cancelledRegion = Object.keys(this.player.regions.list).find((region) => {
+        return this.player.regions.list[region].element.children.length < 3;
+      });
       if (cancelledRegion) {
         this.redrawRegions();
       }
@@ -384,7 +386,7 @@ export default {
       wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px';
 
       const tooltipEl = document.createElement('div');
-      Object.assign(tooltipEl.style, infoBlockStyle);
+      Object.assign(tooltipEl.style, tooltipStyle);
       tooltipEl.innerText = hold.sec ? convertDuration(hold.sec) : '00:00:00';
 
       const iconEl = document.createElement('i');
@@ -412,7 +414,7 @@ export default {
 
       const tooltipEl = document.createElement('div');
       tooltipEl.innerText = comment.note;
-      Object.assign(tooltipEl.style, infoBlockStyle);
+      Object.assign(tooltipEl.style, tooltipStyle);
 
       const iconEl = document.createElement('i');
       iconEl.innerHTML = '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
