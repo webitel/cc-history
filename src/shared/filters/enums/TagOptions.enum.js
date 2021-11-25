@@ -1,6 +1,6 @@
 const TagOptions = Object.freeze([
   {
-    name: 'Voice mail',
+    locale: 'filters.tag.options.vm',
     value: 'vm',
   },
 ]);

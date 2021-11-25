@@ -152,6 +152,13 @@ export default {
     result: 'Result',
     sipCode: 'SIP code',
   },
+  filters: {
+    tag: {
+      options: {
+        vm: 'Voice mail',
+      },
+    },
+  },
   components: {
     dtPicker: {
       from: 'From:',

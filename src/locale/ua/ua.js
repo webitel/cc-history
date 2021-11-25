@@ -150,6 +150,13 @@ export default {
     result: 'Результат',
     sipCode: 'SIP код',
   },
+  filters: {
+    tag: {
+      options: {
+        vm: 'Голосова пошта',
+      },
+    },
+  },
   components: {
     dtPicker: {
       from: 'Від:',

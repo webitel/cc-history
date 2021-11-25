@@ -4,7 +4,7 @@ import IntervalOptions from '../../../../components/history/history-main/dashboa
 
 const state = {
   interval: new EnumFilterSchema({
-    value: IntervalOptions.find((interval) => interval.value === 'auto'),
+    value: {},
     defaultValue: IntervalOptions.find((interval) => interval.value === 'auto'),
     options: IntervalOptions,
     locale: { label: 'dashboards.interval.interval' },

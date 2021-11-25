@@ -152,6 +152,13 @@ export default {
     result: 'Результат',
     sipCode: 'SIP код',
   },
+  filters: {
+    tag: {
+      options: {
+        vm: 'Голосовая почта',
+      },
+    },
+  },
   components: {
     dtPicker: {
       from: 'От:',
