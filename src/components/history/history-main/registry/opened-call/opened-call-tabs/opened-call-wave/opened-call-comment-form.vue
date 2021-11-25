@@ -2,10 +2,12 @@
   <section class="comment-form">
     <wt-timepicker
       v-model="draft.startSec"
+      :v="$v.draft.startSec"
       :label="$t('reusable.from')"
     ></wt-timepicker>
     <wt-timepicker
       v-model="draft.endSec"
+      :v="$v.draft.endSec"
       :label="$t('reusable.to')"
     ></wt-timepicker>
     <div class="comment-form-textarea">
@@ -22,10 +24,16 @@
         @click="expandTextarea"
       ></wt-icon-btn>
     </div>
-    <wt-button @click="saveComment">
+    <wt-button
+      :disabled="isInvalid"
+      @click="saveComment"
+    >
       {{ $t('reusable.save') }}
     </wt-button>
-    <wt-button v-if="draft.id" @click="deleteComment">
+    <wt-button
+      v-if="draft.id"
+      @click="deleteComment"
+    >
       {{ $t('reusable.delete') }}
     </wt-button>
   </section>
@@ -33,7 +41,9 @@
 
 <script>
 
+// import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import deepCopy from 'deep-copy';
+import { required, maxValue, minValue } from 'vuelidate/lib/validators';
 
 export default {
   name: 'opened-call-comment-form',
@@ -51,9 +61,36 @@ export default {
       type: String,
       required: true,
     },
+    callDuration: {
+      type: Number,
+      required: true,
+    },
     comment: {
       type: Object,
     },
+  },
+
+  computed: {
+    isInvalid() {
+      this.$v.draft.$touch();
+      return this.$v.draft.$pending || this.$v.draft.$error;
+    },
+  },
+
+  validations() {
+    const draft = {
+      startSec: {
+        required,
+        minValue: minValue(0),
+        maxValue: maxValue(this.callDuration),
+      },
+      endSec: {
+        required,
+        minValue: minValue(0),
+        maxValue: maxValue(this.callDuration),
+      },
+    };
+    return { draft };
   },
 
   watch: {

@@ -1,8 +1,10 @@
 import { shallowMount } from '@vue/test-utils';
-import LineChart from '../../../../../../../../src/components/history/history-main/dashboards/_internals/charts/line-chart.vue';
-import DoughnutChart from '../../../../../../../../src/components/history/history-main/dashboards/_internals/charts/doughnut-chart.vue';
-import BarChart from '../../../../../../../../src/components/history/history-main/dashboards/_internals/charts/bar-chart.vue';
-import Metric from '../../../../../../../../src/components/history/history-main/dashboards/_internals/charts/metric.vue';
+import BarChart
+  from '../../../../../../../../src/components/history/history-main/dashboards/_internals/charts/bar-chart.vue';
+import DoughnutChart
+  from '../../../../../../../../src/components/history/history-main/dashboards/_internals/charts/doughnut-chart.vue';
+import LineChart
+  from '../../../../../../../../src/components/history/history-main/dashboards/_internals/charts/line-chart.vue';
 
 const chartData = { datasets: [], labels: [] };
 describe('Charts', () => {

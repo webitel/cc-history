@@ -46,6 +46,7 @@
       <opened-call-comment-form
         v-if="commentsMode"
         :callId="call.id"
+        :callDuration="callDuration"
         :comment="selectedComment"
         @save="saveComment"
         @delete="deleteComment"
@@ -178,10 +179,16 @@ const tooltipStyle = {
   zIndex: 'var(--tooltip-z-index)',
 };
 
-const getHoldSecInterval = ({ hold, file }) => {
+const getHoldSecInterval = ({
+                              hold,
+                              file,
+                            }) => {
   const start = ((hold.start - file.startAt) / 1000).toFixed(2);
   const end = ((hold.stop - file.startAt) / 1000).toFixed(2);
-  return { start, end };
+  return {
+    start,
+    end,
+  };
 };
 
 export default {
@@ -238,6 +245,9 @@ export default {
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
+    callDuration() {
+      return Math.round(this.player.getDuration());
+    },
     holdsSize() {
       return this.call.hold ? this.call.hold.length : 0;
     },
@@ -254,9 +264,13 @@ export default {
       loadMainCall: 'LOAD_MAIN_CALL',
     }),
     blockRegionResize() {
-      Object.keys(this.player.regions.list).forEach((region) => {
-        this.player.regions.list[region].update({ resize: false, drag: false });
-      });
+      Object.keys(this.player.regions.list)
+        .forEach((region) => {
+          this.player.regions.list[region].update({
+            resize: false,
+            drag: false,
+          });
+        });
     },
     editAnnotation(comment) {
       this.selectedComment = comment;
@@ -288,13 +302,12 @@ export default {
     closeCommentMode() {
       this.commentsMode = false;
       this.selectedComment = null;
-      const cancelledRegion = Object.keys(this.player.regions.list).find((region) => {
-        return this.player.regions.list[region].element.children.length < 3;
-      });
+      const cancelledRegion = Object.keys(this.player.regions.list)
+        .find((region) => this.player.regions.list[region].element.children.length < 3);
       if (cancelledRegion) {
         this.redrawRegions();
       }
-      ;
+
       this.player.enableDragSelection({ ...commentOptions });
     },
     toggleCommentMode() {
@@ -340,11 +353,15 @@ export default {
       if (isPlaying) this.playPause();
     },
     toggleLeftGain() {
-      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
+      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0
+        ? this.volumeLeftGain
+        : 0;
       this.leftGain.muted = !this.leftGain.muted;
     },
     toggleRightGain() {
-      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
+      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0
+        ? this.volumeRightGain
+        : 0;
       this.rightGain.muted = !this.rightGain.muted;
     },
     increaseZoom() {
@@ -368,7 +385,10 @@ export default {
     },
     displayHolds() {
       this.call.hold.forEach((hold) => {
-        const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
+        const hld = getHoldSecInterval({
+          hold,
+          file: this.call.files[0],
+        });
         const region = this.player.addRegion({
           ...hld,
           color: 'hsla(var(--_hold-color), 0.2)',
@@ -413,7 +433,7 @@ export default {
       wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px';
 
       const tooltipEl = document.createElement('div');
-      tooltipEl.innerText = comment.note;
+      tooltipEl.innerText = comment.note || '';
       Object.assign(tooltipEl.style, tooltipStyle);
 
       const iconEl = document.createElement('i');
@@ -464,7 +484,10 @@ export default {
       this.blockRegionResize();
     },
     onReady() {
-      const { player, call } = this;
+      const {
+        player,
+        call,
+      } = this;
       this.onLoad();
       this.hideProgress();
       player.addMarker({

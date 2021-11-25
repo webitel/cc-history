@@ -13,7 +13,7 @@ process.env.VUE_APP_APPLICATION_HUB_URL = process.env.NODE_ENV === 'production' 
 process.env.VUE_APP_PACKAGE_VERSION = require('./package.json').version;
 
 module.exports = {
-  lintOnSave: false,
+  // lintOnSave: false,
   transpileDependencies: ['@webitel/ui-sdk/src'],
   // publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
   publicPath: '/history',

@@ -2,8 +2,9 @@ import { getWebAudioNode, SimpleFilter, SoundTouch } from 'soundtouchjs';
 
 /* This mixin is created in order to correct sound pitch changing playback rate.
 
-Wavesurfer library uses the WebAudio API, which is not perfect when it comes to change speed of playing.
-When user changes playback speed, it triggers modification of sound pitch. To prevent it, we had to setup additional filters.
+Wavesurfer library uses the WebAudio API, which isn't perfect when it comes to change playing speed.
+When user changes playback speed, it triggers modification of sound pitch.
+To prevent it, we had to setup additional filters.
 'Soundtouch' library offers such filters, so we are using it.
 In order to have filters logic separated from the main file, we've created the mixin and put all the
 filters' related data and methods.
@@ -54,7 +55,9 @@ export default {
 
     setSoundFilters() {
       // setting sound filters to correct sound on different speeds:
-      this.player.backend.setFilters([this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger]);
+      this.player.backend.setFilters(
+        [this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger],
+      );
       this.leftGain.audio = this.soundOptions.leftGain;
       const stereo = this.player.backend.getPeaks().length === 2;
       if (stereo) {
@@ -97,7 +100,9 @@ export default {
       this.soundOptions.seekingPos = Math.floor(position);
       this.soundOptions.st.tempo = this.player.getPlaybackRate();
       if (this.soundOptions.st.tempo === 1) {
-        this.player.backend.setFilter(this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger);
+        this.player.backend.setFilter(
+          this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger,
+        );
       } else {
         // create new filter to correct sound when speed is changed:
         if (!this.soundOptions.soundtouchNode) {
