@@ -35,6 +35,8 @@ export default {
       callWave: 'Wave',
       hold: 'Удержание | Удержания',
       comment: 'Комментарий | Комментарии',
+      lessOrEqualTo: 'Значение должно быть меньше или равно ',
+      moreThan: 'Значение должно быть больше ',
     },
   },
   dashboards: {

@@ -33,6 +33,8 @@ export default {
       transferTo: 'Трансфер На',
       noVariables: 'Цей дзвінок не має змінних',
       callWave: 'Wave',
+      lessOrEqualTo: 'Значення має бути меншим або рівним ',
+      moreThan: 'Значення має бути більшим, ніж ',
     },
   },
   dashboards: {

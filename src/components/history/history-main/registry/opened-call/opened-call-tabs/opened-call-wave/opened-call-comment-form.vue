@@ -3,11 +3,13 @@
     <wt-timepicker
       v-model="draft.startSec"
       :v="$v.draft.startSec"
+      :custom-validators="customValidation"
       :label="$t('reusable.from')"
     ></wt-timepicker>
     <wt-timepicker
       v-model="draft.endSec"
       :v="$v.draft.endSec"
+      :custom-validators="customValidation"
       :label="$t('reusable.to')"
     ></wt-timepicker>
     <div class="comment-form-textarea">
@@ -25,7 +27,7 @@
       ></wt-icon-btn>
     </div>
     <wt-button
-      :disabled="isInvalid"
+      :disabled="computeDisabled"
       @click="saveComment"
     >
       {{ $t('reusable.save') }}
@@ -41,9 +43,10 @@
 
 <script>
 
-// import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import deepCopy from 'deep-copy';
-import { required, maxValue, minValue } from 'vuelidate/lib/validators';
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import { required, minValue } from 'vuelidate/lib/validators';
+import { lessOrEqualTo, moreThen } from '../../../../../../../utils/customValidators';
 
 export default {
   name: 'opened-call-comment-form',
@@ -71,7 +74,16 @@ export default {
   },
 
   computed: {
-    isInvalid() {
+    customValidation() {
+      return [{
+        name: 'lessOrEqualTo',
+        text: this.$t('registry.openedCall.lessOrEqualTo').concat(convertDuration(this.callDuration)),
+      }, {
+        name: 'moreThen',
+        text: this.$t('registry.openedCall.moreThan').concat(convertDuration(this.draft.startSec)),
+      }];
+    },
+    computeDisabled() {
       this.$v.draft.$touch();
       return this.$v.draft.$pending || this.$v.draft.$error;
     },
@@ -81,13 +93,13 @@ export default {
     const draft = {
       startSec: {
         required,
+        lessOrEqualTo: lessOrEqualTo(this.callDuration),
         minValue: minValue(0),
-        maxValue: maxValue(this.callDuration),
       },
       endSec: {
         required,
-        minValue: minValue(0),
-        maxValue: maxValue(this.callDuration),
+        lessOrEqualTo: lessOrEqualTo(this.callDuration),
+        moreThen: moreThen(this.draft.startSec),
       },
     };
     return { draft };

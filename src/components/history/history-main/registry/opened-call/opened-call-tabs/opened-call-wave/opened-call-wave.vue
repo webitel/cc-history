@@ -457,8 +457,8 @@ export default {
     displayComments() {
       this.call.annotations.forEach((comment) => {
         const region = this.player.addRegion({
-          start: comment.startSec,
-          end: comment.endSec,
+          start: +comment.startSec,
+          end: +comment.endSec,
           ...commentOptions,
         });
         this.displayCommentIcons(region, comment);

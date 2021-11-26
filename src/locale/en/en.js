@@ -35,6 +35,8 @@ export default {
       callWave: 'Wave',
       hold: 'Hold | Holds',
       comment: 'Note | Notes',
+      lessOrEqualTo: 'Should be less or equal to ',
+      moreThan: 'Should be more than ',
     },
   },
   dashboards: {
