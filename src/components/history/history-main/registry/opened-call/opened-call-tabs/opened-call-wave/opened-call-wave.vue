@@ -174,8 +174,7 @@ const tooltipStyle = {
   background: 'var(--tooltip-light-bg-color)',
   borderRadius: 'var(--border-radius)',
   boxShadow: 'var(--box-shadow)',
-  transition: 'var(--transition)',
-  opacity: 0,
+  display: 'none',
   zIndex: 'var(--tooltip-z-index)',
 };
 
@@ -411,13 +410,13 @@ export default {
 
       const iconEl = document.createElement('i');
       iconEl.innerHTML = '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
-      iconEl.onmouseenter = () => {
+      wrapperEl.onmouseenter = () => {
         this.player.cursor.hideCursor();
-        tooltipEl.style.opacity = '1';
+        tooltipEl.style.display = 'block';
       };
-      iconEl.onmouseleave = () => {
+      wrapperEl.onmouseleave = () => {
         this.player.cursor.showCursor();
-        tooltipEl.style.opacity = '0';
+        tooltipEl.style.display = 'none';
       };
 
       wrapperEl.appendChild(iconEl);
@@ -441,13 +440,13 @@ export default {
       iconEl.onclick = () => {
         this.editAnnotation(comment);
       };
-      iconEl.onmouseenter = () => {
+      wrapperEl.onmouseenter = () => {
         this.player.cursor.hideCursor();
-        tooltipEl.style.opacity = '1';
+        tooltipEl.style.display = 'block';
       };
-      iconEl.onmouseleave = () => {
+      wrapperEl.onmouseleave = () => {
         this.player.cursor.showCursor();
-        tooltipEl.style.opacity = '0';
+        tooltipEl.style.display = 'none';
       };
 
       wrapperEl.appendChild(iconEl);
