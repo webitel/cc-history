@@ -22,9 +22,12 @@
         @click="expandTextarea"
       ></wt-icon-btn>
     </div>
+<!--    TODO TEST: можна перевірити, чи на клік емітиться івент з драфтом -->
     <wt-button @click="saveComment">
       {{ $t('reusable.save') }}
     </wt-button>
+    <!--    TODO TEST: можна перевірити, чи на клік емітиться івент -->
+    <!--    TODO TEST: можна перевірити, чи малюється кнопка на едіт -->
     <wt-button v-if="draft.id" @click="deleteComment">
       {{ $t('reusable.delete') }}
     </wt-button>
@@ -35,6 +38,7 @@
 
 import deepCopy from 'deep-copy';
 
+/* todo test: renders a component? */
 export default {
   name: 'opened-call-comment-form',
   data: () => ({
@@ -66,6 +70,8 @@ export default {
   },
 
   methods: {
+    /* TODO TEST: це я би не перевіряв -- занадто просто. Хіба можна емітити клік на
+    *   іконку, і дивитись чи додається клас - якщо хочеш */
     expandTextarea() {
       this.isTextareaExpanded = !this.isTextareaExpanded;
     },

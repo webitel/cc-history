@@ -9,6 +9,9 @@ In order to have filters logic separated from the main file, we've created the m
 filters' related data and methods.
 A part, this mixin contatins methods, related to audio file download. */
 
+/* TODO TEST: ось це все я хз як протестити нормально, та й чи треба я сумніваюсь -
+     тому я би не тестив, а зробив припущення, що якщо вейв.вью проходить `renders a component` -
+      то з цією штукою все не так погано)) */
 export default {
   data: () => ({
     soundOptions: {
@@ -54,7 +57,11 @@ export default {
 
     setSoundFilters() {
       // setting sound filters to correct sound on different speeds:
-      this.player.backend.setFilters([this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger]);
+      this.player.backend.setFilters([
+        this.soundOptions.splitter,
+        this.soundOptions.leftGain,
+        this.soundOptions.merger,
+      ]);
       this.leftGain.audio = this.soundOptions.leftGain;
       const stereo = this.player.backend.getPeaks().length === 2;
       if (stereo) {
@@ -97,7 +104,11 @@ export default {
       this.soundOptions.seekingPos = Math.floor(position);
       this.soundOptions.st.tempo = this.player.getPlaybackRate();
       if (this.soundOptions.st.tempo === 1) {
-        this.player.backend.setFilter(this.soundOptions.splitter, this.soundOptions.leftGain, this.soundOptions.merger);
+        this.player.backend.setFilter(
+          this.soundOptions.splitter,
+          this.soundOptions.leftGain,
+          this.soundOptions.merger,
+          );
       } else {
         // create new filter to correct sound when speed is changed:
         if (!this.soundOptions.soundtouchNode) {
