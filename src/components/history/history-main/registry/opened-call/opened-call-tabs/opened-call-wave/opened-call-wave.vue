@@ -9,8 +9,8 @@
       :class="{'call-wave-page-main--hidden': isLoading}">
       <section class="call-wave-toolbar">
         <div class="toolbar-main">
-<!--          TODO TEST: ці чекбокси можна потестувати (точніше що на івент щось робиться) - але
-якщо там щось простеньке або важливе -- навскидку не можу придумати, що перевірити на цей клік -->
+          <!--          TODO TEST: ці чекбокси можна потестувати (точніше що на івент щось робиться) - але
+          якщо там щось простеньке або важливе -- навскидку не можу придумати, що перевірити на цей клік -->
           <wt-checkbox
             :value="showHolds"
             :selected="showHolds"
@@ -32,7 +32,7 @@
           </wt-badge>
         </div>
         <div class="toolbar-actions">
-<!--          TODO TEST: на клік по цій іконці opened-call-comment-form .isVisible() to be true -->
+          <!--          TODO TEST: на клік по цій іконці opened-call-comment-form .isVisible() to be true -->
           <wt-icon-btn
             icon="note"
             icon-prefix="hs"
@@ -46,9 +46,9 @@
         </div>
       </section>
 
-<!--      TODO TEST: тут можна перевірити, чи івенти сейв і деліт викликають мапЕкшенс методи
- (ці методи треба замокати при shallowMount як jest.fn(). САМЕ МЕТОДИ КОМПОНЕНТА -
- - СТОР МИ НЕ МОКАЄМО -->
+      <!--      TODO TEST: тут можна перевірити, чи івенти сейв і деліт викликають мапЕкшенс методи
+       (ці методи треба замокати при shallowMount як jest.fn(). САМЕ МЕТОДИ КОМПОНЕНТА -
+       - СТОР МИ НЕ МОКАЄМО -->
       <opened-call-comment-form
         v-if="commentsMode"
         :callId="call.id"
@@ -78,9 +78,9 @@
               :icon="rightGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleRightGain"
             ></wt-icon-btn>
-<!--      TODO TEST: тут можна дивитись, чи на "інпут" івент слайдера з таким-то велью,
-у замоканого плеера змінюється проперті на ту яку ти сетаєш правильно. На другий
- слайдер так само. -->
+            <!--      TODO TEST: тут можна дивитись, чи на "інпут" івент слайдера з таким-то велью,
+            у замоканого плеера змінюється проперті на ту яку ти сетаєш правильно. На другий
+             слайдер так само. -->
             <wt-slider
               :value="volumeRightGain"
               :min="0"
@@ -104,10 +104,10 @@
         <div></div> <!-- an empty div in order to position in the correct grid column -->
         <section class="call-wave-actions">
           <section class="call-wave-actions-buttons">
-<!--            TODO TEST: замокати плеер, дивитись чи на клік по одній з кнопок
- (на всі кнопки копіпастити тести якось не дуже :Ґ) викликається його
-setPlaybackRate: jest.fn() з параметром, який треба
--->
+            <!--            TODO TEST: замокати плеер, дивитись чи на клік по одній з кнопок
+             (на всі кнопки копіпастити тести якось не дуже :Ґ) викликається його
+            setPlaybackRate: jest.fn() з параметром, який треба
+            -->
             <wt-button :color="speedButtonColor(2)" @click="toggleRate(2)">
               <wt-label>x2</wt-label>
             </wt-button>
@@ -125,10 +125,10 @@ setPlaybackRate: jest.fn() з параметром, який треба
             </wt-button>
           </section>
           <section class="call-wave-actions-buttons">
-  <!--            TODO TEST: ЗАМОКАТИ tsis.player у свій об'єкт, у якому буде
-  zoom: jest.fn(), і на клік по цих кнопках перевіряти чи викликається цей метод з параметром,
-   який треба. Чи викликається increase/decreaseZoom - не важливо (якщо не впевнений, що розумієщ,
-    чому, напиши мені) -->
+            <!--            TODO TEST: ЗАМОКАТИ tsis.player у свій об'єкт, у якому буде
+            zoom: jest.fn(), і на клік по цих кнопках перевіряти чи викликається цей метод з параметром,
+             який треба. Чи викликається increase/decreaseZoom - не важливо (якщо не впевнений, що розумієщ,
+              чому, напиши мені) -->
             <wt-button color="secondary" :disabled="zoom > 1000" @click="increaseZoom">
               <wt-icon icon="zoom-in"/>
             </wt-button>
@@ -323,9 +323,9 @@ export default {
     closeCommentMode() {
       this.commentsMode = false;
       this.selectedComment = null;
-      const cancelledRegion = Object.keys(this.player.regions.list).find((region) => {
-        return this.player.regions.list[region].element.children.length < 3;
-      });
+      const cancelledRegion = Object.keys(this.player.regions.list).find((region) => (
+        this.player.regions.list[region].element.children.length < 3
+      ));
       if (cancelledRegion) {
         this.redrawRegions();
       }
@@ -352,6 +352,7 @@ export default {
       this.showHolds = !this.showHolds;
       this.redrawRegions();
     },
+    // TODO TEST: скачування, певне шо, шкода часу тестити - але якщо знаєш як швидко, то можна
     downloadFile() {
       this.exportFiles(this.call.files);
     },
@@ -390,6 +391,7 @@ export default {
       this.zoom /= 2;
       this.player.zoom(this.zoom);
     },
+    // TODO TEST: не бачу сенсу тестити - хіба, чи викликається цей метод на маунтед() і на вотчер
     initWave() {
       const { player } = this;
       player.on('pause', this.changedPlaying.bind(this));
@@ -483,7 +485,7 @@ export default {
       });
       this.blockRegionResize();
     },
-
+    // TODO TEST: не бачу сенсу тестити
     showProgress(progress) {
       this.loadProgress = +progress;
     },
