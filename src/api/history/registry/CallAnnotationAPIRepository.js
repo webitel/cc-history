@@ -15,6 +15,9 @@ const itemCreator = new SdkCreatorApiConsumer(callService.createCallAnnotation, 
 const itemUpdater = new SdkUpdaterApiConsumer(callService.updateCallAnnotation, { fieldsToSend });
 const itemDeleter = new SdkDeleterApiConsumer(callService.deleteCallAnnotation);
 
+/*TODO TEST: Апішки теж можна тесити. Десь я це прям наловчився зручно і класно робити --
+    здається у супервізорі. Пінгани мене за це, якщо не знайдег чи не впевнений будеш */
+
 const addComment = ({ itemInstance }) => (itemCreator.createNestedItem({
   parentId: itemInstance.callId,
   itemInstance,

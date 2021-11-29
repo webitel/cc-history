@@ -88,16 +88,22 @@ const actions = {
     }
   },
 
+  /* TODO TEST: можна тестувати. Екшени тестимо через мок контексту -- треба піддивитись у сусідніх
+  *   файлах, або у супервізорі */
   SET_FILE_ID: (context, fileId) => {
     context.commit('SET_FILE_ID', fileId);
   },
 
+  // TODO TEST: можна тестувати, що викликає цей комміт, і діспетч
   SET_OPENED_CALL: async (context, item) => {
     const mainCallId = item.id;
     context.commit('SET_CALL_ID', mainCallId);
     await context.dispatch('LOAD_MAIN_CALL', item);
   },
 
+  // TODO TEST: можна тестувати, що викликає ці комміти
+  /*Словом, у сторі ізольовано можна ізольовано потестити всі мутації і екшени, які не протиречать
+   здоровому глузду */
   RESET_OPENED_CALL: (context) => {
     context.commit('RESET_CALL_ID');
     context.commit('RESET_MAIN_CALL');
