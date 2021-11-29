@@ -45,8 +45,8 @@
 
       <opened-call-comment-form
         v-if="commentsMode"
-        :callId="call.id"
-        :callDuration="callDuration"
+        :call-id="call.id"
+        :call-duration="callDuration"
         :comment="selectedComment"
         @save="saveComment"
         @delete="deleteComment"
@@ -169,12 +169,15 @@ const commentOptions = {
 
 const tooltipStyle = {
   minWidth: 0,
+  position: 'absolute',
   padding: 'var(--tooltip-padding)',
   color: 'var(--tooltip-light-text-color)',
   background: 'var(--tooltip-light-bg-color)',
   borderRadius: 'var(--border-radius)',
   boxShadow: 'var(--box-shadow)',
-  display: 'none',
+  transition: 'var(--transition)',
+  opacity: '0',
+  pointerEvents: 'none',
   zIndex: 'var(--tooltip-z-index)',
 };
 
@@ -209,7 +212,6 @@ export default {
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
-      minPxPerSec: 30,
       height: 150,
       pixelRatio: 1,
       responsive: true,
@@ -412,11 +414,13 @@ export default {
       iconEl.innerHTML = '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
       wrapperEl.onmouseenter = () => {
         this.player.cursor.hideCursor();
-        tooltipEl.style.display = 'block';
+        tooltipEl.style.pointerEvents = 'auto';
+        tooltipEl.style.opacity = '1';
       };
       wrapperEl.onmouseleave = () => {
         this.player.cursor.showCursor();
-        tooltipEl.style.display = 'none';
+        tooltipEl.style.opacity = '0';
+        tooltipEl.style.pointerEvents = 'none';
       };
 
       wrapperEl.appendChild(iconEl);
@@ -442,11 +446,13 @@ export default {
       };
       wrapperEl.onmouseenter = () => {
         this.player.cursor.hideCursor();
-        tooltipEl.style.display = 'block';
+        tooltipEl.style.pointerEvents = 'auto';
+        tooltipEl.style.opacity = '1';
       };
       wrapperEl.onmouseleave = () => {
         this.player.cursor.showCursor();
-        tooltipEl.style.display = 'none';
+        tooltipEl.style.pointerEvents = 'none';
+        tooltipEl.style.opacity = '0';
       };
 
       wrapperEl.appendChild(iconEl);

@@ -3,13 +3,13 @@
     <wt-timepicker
       v-model="draft.startSec"
       :v="$v.draft.startSec"
-      :custom-validators="customValidation"
+      :custom-validators="customValidation(0)"
       :label="$t('reusable.from')"
     ></wt-timepicker>
     <wt-timepicker
       v-model="draft.endSec"
       :v="$v.draft.endSec"
-      :custom-validators="customValidation"
+      :custom-validators="customValidation(minimalEndCommentValue)"
       :label="$t('reusable.to')"
     ></wt-timepicker>
     <div class="comment-form-textarea">
@@ -27,7 +27,7 @@
       ></wt-icon-btn>
     </div>
     <wt-button
-      :disabled="computeDisabled"
+      :disabled="isDisabled"
       @click="saveComment"
     >
       {{ $t('reusable.save') }}
@@ -43,10 +43,9 @@
 
 <script>
 
-import deepCopy from 'deep-copy';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import { required, minValue } from 'vuelidate/lib/validators';
-import { lessOrEqualTo, moreThen } from '../../../../../../../utils/customValidators';
+import deepCopy from 'deep-copy';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 
 export default {
   name: 'opened-call-comment-form',
@@ -75,15 +74,18 @@ export default {
 
   computed: {
     customValidation() {
-      return [{
-        name: 'lessOrEqualTo',
-        text: this.$t('registry.openedCall.lessOrEqualTo').concat(convertDuration(this.callDuration)),
+      return (value) => [{
+        name: 'minValue',
+        text: this.$t('registry.openedCall.minValue').concat(convertDuration(value)),
       }, {
-        name: 'moreThen',
-        text: this.$t('registry.openedCall.moreThan').concat(convertDuration(this.draft.startSec)),
+        name: 'maxValue',
+        text: this.$t('registry.openedCall.maxValue').concat(convertDuration(this.callDuration)),
       }];
     },
-    computeDisabled() {
+    minimalEndCommentValue() {
+      return Math.min(this.callDuration, this.draft.startSec);
+    },
+    isDisabled() {
       this.$v.draft.$touch();
       return this.$v.draft.$pending || this.$v.draft.$error;
     },
@@ -93,13 +95,13 @@ export default {
     const draft = {
       startSec: {
         required,
-        lessOrEqualTo: lessOrEqualTo(this.callDuration),
         minValue: minValue(0),
+        maxValue: maxValue(this.callDuration),
       },
       endSec: {
         required,
-        lessOrEqualTo: lessOrEqualTo(this.callDuration),
-        moreThen: moreThen(this.draft.startSec),
+        minValue: minValue(this.draft.startSec),
+        maxValue: maxValue(this.callDuration),
       },
     };
     return { draft };
