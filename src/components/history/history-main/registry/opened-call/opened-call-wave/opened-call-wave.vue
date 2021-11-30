@@ -265,6 +265,8 @@ export default {
       this.commentsMode = false;
       this.selectedComment = null;
       const cancelledRegion = Object.keys(this.player.regions.list)
+        // cancelled comment has less than 3 DOM children, so we try to find if there is such comment.
+        // In order to redraw regions with no cancelled comments, we have to find it:
         .find((region) => this.player.regions.list[region].element.children.length < 3);
       if (cancelledRegion) {
         this.redrawRegions();
