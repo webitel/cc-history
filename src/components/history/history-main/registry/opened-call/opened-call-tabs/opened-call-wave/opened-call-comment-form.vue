@@ -27,7 +27,7 @@
       ></wt-icon-btn>
     </div>
     <wt-button
-      :disabled="isDisabled"
+      :disabled="disableSaving"
       @click="saveComment"
     >
       {{ $t('reusable.save') }}
@@ -76,16 +76,16 @@ export default {
     customValidation() {
       return (value) => [{
         name: 'minValue',
-        text: this.$t('registry.openedCall.minValue').concat(convertDuration(value)),
+        text: this.$t('validation.minValue').concat(` ${convertDuration(value)}`),
       }, {
         name: 'maxValue',
-        text: this.$t('registry.openedCall.maxValue').concat(convertDuration(this.callDuration)),
+        text: this.$t('validation.maxValue').concat(` ${convertDuration(this.callDuration)}`),
       }];
     },
     minimalEndCommentValue() {
       return Math.min(this.callDuration, this.draft.startSec);
     },
-    isDisabled() {
+    disableSaving() {
       this.$v.draft.$touch();
       return this.$v.draft.$pending || this.$v.draft.$error;
     },

@@ -35,8 +35,6 @@ export default {
       callWave: 'Wave',
       hold: 'Hold | Holds',
       comment: 'Note | Notes',
-      minValue: 'Value should be at least: ',
-      maxValue: 'Value should be not much than: ',
     },
   },
   dashboards: {

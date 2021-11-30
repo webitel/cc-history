@@ -436,7 +436,7 @@ export default {
       wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px';
 
       const tooltipEl = document.createElement('div');
-      tooltipEl.innerText = comment.note || '';
+      tooltipEl.innerText = comment.note;
       Object.assign(tooltipEl.style, tooltipStyle);
 
       const iconEl = document.createElement('i');

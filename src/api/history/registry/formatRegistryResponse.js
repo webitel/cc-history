@@ -12,6 +12,19 @@ const computeTime = (timestamp) => {
   return date.toLocaleTimeString();
 };
 
+const defaultSingleObjectComment = {
+  startSec: 0,
+  endSec: 0,
+  note: '',
+};
+
+const mapDefaultComments = (item) => (
+  item.annotations ? item.annotations.map((comment) => ({
+    ...defaultSingleObjectComment,
+    ...comment,
+  })) : []
+);
+
 const mapItems = (items) => {
   const defaultObject = {
     _isSelected: false,
@@ -35,6 +48,7 @@ const mapItems = (items) => {
     reportingSec: convertDuration(item.reportingSec),
     queueWaitSec: convertDuration(item.queueWaitSec),
     queueDurationSec: convertDuration(item.queueDurationSec),
+    annotations: mapDefaultComments(item),
   }));
 };
 
