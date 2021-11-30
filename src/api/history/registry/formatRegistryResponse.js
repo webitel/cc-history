@@ -12,7 +12,7 @@ const computeTime = (timestamp) => {
   return date.toLocaleTimeString();
 };
 
-const defaultSingleObjectComment = {
+const defaultComment = {
   startSec: 0,
   endSec: 0,
   note: '',
@@ -20,7 +20,7 @@ const defaultSingleObjectComment = {
 
 const mapDefaultComments = (item) => (
   item.annotations ? item.annotations.map((comment) => ({
-    ...defaultSingleObjectComment,
+    ...defaultComment,
     ...comment,
   })) : []
 );
