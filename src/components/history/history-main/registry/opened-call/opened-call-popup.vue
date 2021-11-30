@@ -17,9 +17,9 @@
 <script>
 import { mapState } from 'vuex';
 
-import CallInfo from './opened-call-tabs/opened-call-info/opened-call-info.vue';
-import CallLegs from './opened-call-tabs/opened-call-legs/opened-call-legs.vue';
-import CallWave from './opened-call-tabs/opened-call-wave/opened-call-wave.vue';
+import CallInfo from './opened-call-info/opened-call-info.vue';
+import CallLegs from './opened-call-legs/opened-call-legs.vue';
+import CallWave from './opened-call-wave/opened-call-wave.vue';
 
 export default {
   name: 'opened-item-popup',
