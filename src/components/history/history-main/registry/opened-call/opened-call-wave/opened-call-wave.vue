@@ -134,7 +134,7 @@ import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
-import callWaveMixin from '../../../../../../mixins/history/registry/callWaveMixin';
+import callWaveMixin from './mixins/soundFiltersMixin';
 import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
 import OpenedCallCommentForm from './opened-call-comment-form.vue';
 
