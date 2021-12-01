@@ -105,11 +105,15 @@ const actions = {
     context.commit('RESET_LEGS_DATA_LIST');
   },
 
-  ADD_ANNOTATION: async (context, annotation) => annotationsAPI.add({ itemInstance: annotation }),
-
-  EDIT_ANNOTATION: async (context, annotation) => annotationsAPI.update({ itemInstance: annotation }),
-
-  DELETE_ANNOTATION: async (context, annotation) => annotationsAPI.delete({ itemInstance: annotation }),
+  ADD_ANNOTATION: async (context, annotation) => (
+    annotationsAPI.add({ itemInstance: annotation })
+  ),
+  EDIT_ANNOTATION: async (context, annotation) => (
+    annotationsAPI.update({ itemInstance: annotation })
+  ),
+  DELETE_ANNOTATION: async (context, annotation) => (
+    annotationsAPI.delete({ itemInstance: annotation })
+  ),
 };
 
 const mutations = {
@@ -154,6 +158,8 @@ const mutations = {
 };
 
 const openedCall = new BaseStoreModule()
-  .getModule({ state, getters, actions, mutations, });
+  .getModule({
+ state, getters, actions, mutations,
+});
 
 export default openedCall;

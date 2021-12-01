@@ -1,9 +1,9 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import dashboards from '../../../../src/store/modules/dashboards/dashboards';
 import DashboardsAPIRepository from '../../../../src/api/history/dashboards/DashboardAPIRepository';
 import CallsCountDashboard
   from '../../../../src/components/history/history-main/dashboards/dashboards/CallsCountDashboard/CallsCountDashboard';
+import dashboards from '../../../../src/store/modules/dashboards/dashboards';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

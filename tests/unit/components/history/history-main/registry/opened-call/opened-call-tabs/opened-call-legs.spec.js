@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import OpenedCallLegs from '../../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-tabs/opened-call-legs/opened-call-legs.vue';
+import OpenedCallLegs from '../../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-legs/opened-call-legs.vue';
 import registry from '../../../../../../../../src/store/modules/registry/registry';
 import openedCall from '../../../../../../../../src/store/modules/registry/opened-call/opened-call';
 import RegistryAPIRepository from '../../../../../../../../src/api/history/registry/RegistryAPIRepository';

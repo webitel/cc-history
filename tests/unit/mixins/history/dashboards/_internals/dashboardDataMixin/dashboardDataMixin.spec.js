@@ -1,8 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import dashboardDataMixin
   from '../../../../../../../src/mixins/history/dashboards/_internals/dashboardDataMixin/dashboardDataMixin';
-import Visualizations
-  from '../../../../../../../src/components/history/history-main/dashboards/dashboards/enums/Visualizations.enum';
 
 describe('Dashboard data mixin', () => {
   let wrapper;

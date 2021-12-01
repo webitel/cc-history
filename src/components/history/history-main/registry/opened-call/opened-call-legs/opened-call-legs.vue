@@ -95,7 +95,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import TableDirection from '../../../_internals/table-templates/table-direction.vue';
+import TableDirection from '../../_internals/table-templates/table-direction.vue';
 
 export default {
   name: 'opened-call-legs',

@@ -45,7 +45,8 @@
 
       <opened-call-comment-form
         v-if="commentsMode"
-        :callId="call.id"
+        :call-id="call.id"
+        :call-duration="callDuration"
         :comment="selectedComment"
         @save="saveComment"
         @delete="deleteComment"
@@ -133,8 +134,10 @@ import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
-import callWaveMixin from '../../../../../../../mixins/history/registry/callWaveMixin';
-import generateMediaURL from '../../../../../../../mixins/media/scripts/generateMediaURL';
+import generateMediaURL from '../../../../../../mixins/media/scripts/generateMediaURL';
+import regionsMixin from './mixins/regionsMixin';
+import soundFiltersMixin from './mixins/soundFiltersMixin';
+
 import OpenedCallCommentForm from './opened-call-comment-form.vue';
 
 const cursorOptions = {
@@ -166,28 +169,10 @@ const commentOptions = {
   resize: true,
 };
 
-const tooltipStyle = {
-  minWidth: 0,
-  padding: 'var(--tooltip-padding)',
-  color: 'var(--tooltip-light-text-color)',
-  background: 'var(--tooltip-light-bg-color)',
-  borderRadius: 'var(--border-radius)',
-  boxShadow: 'var(--box-shadow)',
-  transition: 'var(--transition)',
-  opacity: 0,
-  zIndex: 'var(--tooltip-z-index)',
-};
-
-const getHoldSecInterval = ({ hold, file }) => {
-  const start = ((hold.start - file.startAt) / 1000).toFixed(2);
-  const end = ((hold.stop - file.startAt) / 1000).toFixed(2);
-  return { start, end };
-};
-
 export default {
   name: 'opened-call-wave',
   components: { OpenedCallCommentForm },
-  mixins: [callWaveMixin, exportFilesMixin],
+  mixins: [exportFilesMixin, soundFiltersMixin, regionsMixin],
   data: () => ({
     volumeLeftGain: 1,
     volumeRightGain: 1,
@@ -196,14 +181,11 @@ export default {
     zoom: 1,
     playbackRate: 1,
     isPlaying: false,
-    showHolds: false,
-    showComments: false,
     commentsMode: false,
     selectedComment: null,
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
-      minPxPerSec: 30,
       height: 150,
       pixelRatio: 1,
       responsive: true,
@@ -238,6 +220,9 @@ export default {
     speedButtonColor() {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
+    callDuration() {
+      return Math.round(this.player.getDuration());
+    },
     holdsSize() {
       return this.call.hold ? this.call.hold.length : 0;
     },
@@ -251,22 +236,13 @@ export default {
       addAnnotation: 'ADD_ANNOTATION',
       updateAnnotation: 'EDIT_ANNOTATION',
       deleteAnnotation: 'DELETE_ANNOTATION',
-      loadMainCall: 'LOAD_MAIN_CALL',
     }),
-    blockRegionResize() {
-      Object.keys(this.player.regions.list).forEach((region) => {
-        this.player.regions.list[region].update({ resize: false, drag: false });
-      });
-    },
+
     editAnnotation(comment) {
       this.selectedComment = comment;
       this.commentsMode = true;
     },
-    async updateRegions() {
-      this.closeCommentMode();
-      await this.loadMainCall();
-      this.redrawRegions();
-    },
+
     async saveComment(draft) {
       if (draft.id) {
         await this.updateAnnotation({ callId: this.call.id, ...draft });
@@ -288,35 +264,21 @@ export default {
     closeCommentMode() {
       this.commentsMode = false;
       this.selectedComment = null;
-      const cancelledRegion = Object.keys(this.player.regions.list).find((region) => {
-        return this.player.regions.list[region].element.children.length < 3;
-      });
+      // every comment region instance has DOM children: the icon with comment itself and two
+      // border lines indicating start and the end of region.
+      // We are looking if some region has no icon with comment. In case it exists, it means the
+      // comment was not saved and the region must be deleted to have a cleaner wave.
+      const cancelledRegion = Object.keys(this.player.regions.list)
+        .find((region) => this.player.regions.list[region].element.children.length < 3);
       if (cancelledRegion) {
         this.redrawRegions();
       }
-      ;
       this.player.enableDragSelection({ ...commentOptions });
     },
     toggleCommentMode() {
       return this.commentsMode ? this.closeCommentMode() : this.openCommentMode();
     },
-    redrawRegions() {
-      this.player.clearRegions();
-      if (this.showHolds && this.holdsSize) {
-        this.displayHolds();
-      }
-      if (this.showComments && this.commentsSize) {
-        this.displayComments();
-      }
-    },
-    toggleComments() {
-      this.showComments = !this.showComments;
-      this.redrawRegions();
-    },
-    toggleHolds() {
-      this.showHolds = !this.showHolds;
-      this.redrawRegions();
-    },
+
     downloadFile() {
       this.exportFiles(this.call.files);
     },
@@ -340,11 +302,15 @@ export default {
       if (isPlaying) this.playPause();
     },
     toggleLeftGain() {
-      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
+      this.leftGain.audio.gain.value = this.leftGain.audio.gain.value === 0
+        ? this.volumeLeftGain
+        : 0;
       this.leftGain.muted = !this.leftGain.muted;
     },
     toggleRightGain() {
-      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
+      this.rightGain.audio.gain.value = this.rightGain.audio.gain.value === 0
+        ? this.volumeRightGain
+        : 0;
       this.rightGain.muted = !this.rightGain.muted;
     },
     increaseZoom() {
@@ -366,85 +332,6 @@ export default {
       player.on('error', this.hideProgress.bind(this));
       player.enableDragSelection({ ...commentOptions });
     },
-    displayHolds() {
-      this.call.hold.forEach((hold) => {
-        const hld = getHoldSecInterval({ hold, file: this.call.files[0] });
-        const region = this.player.addRegion({
-          ...hld,
-          color: 'hsla(var(--_hold-color), 0.2)',
-          showTooltip: false,
-        });
-        this.displayHoldIcons(region, hold);
-      });
-      this.blockRegionResize();
-    },
-    displayHoldIcons(region, hold) {
-      const wrapperEl = document.createElement('div');
-      wrapperEl.style.position = 'absolute';
-      wrapperEl.style.cursor = 'pointer';
-      wrapperEl.style.zIndex = '9';
-      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px';
-
-      const tooltipEl = document.createElement('div');
-      Object.assign(tooltipEl.style, tooltipStyle);
-      tooltipEl.innerText = hold.sec ? convertDuration(hold.sec) : '00:00:00';
-
-      const iconEl = document.createElement('i');
-      iconEl.innerHTML = '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
-      iconEl.onmouseenter = () => {
-        this.player.cursor.hideCursor();
-        tooltipEl.style.opacity = '1';
-      };
-      iconEl.onmouseleave = () => {
-        this.player.cursor.showCursor();
-        tooltipEl.style.opacity = '0';
-      };
-
-      wrapperEl.appendChild(iconEl);
-      wrapperEl.appendChild(tooltipEl);
-      region.element.appendChild(wrapperEl);
-    },
-
-    displayCommentIcons(region, comment) {
-      const wrapperEl = document.createElement('section');
-      wrapperEl.style.position = 'absolute';
-      wrapperEl.style.cursor = 'pointer';
-      wrapperEl.style.zIndex = '9';
-      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-30px';
-
-      const tooltipEl = document.createElement('div');
-      tooltipEl.innerText = comment.note;
-      Object.assign(tooltipEl.style, tooltipStyle);
-
-      const iconEl = document.createElement('i');
-      iconEl.innerHTML = '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
-      iconEl.onclick = () => {
-        this.editAnnotation(comment);
-      };
-      iconEl.onmouseenter = () => {
-        this.player.cursor.hideCursor();
-        tooltipEl.style.opacity = '1';
-      };
-      iconEl.onmouseleave = () => {
-        this.player.cursor.showCursor();
-        tooltipEl.style.opacity = '0';
-      };
-
-      wrapperEl.appendChild(iconEl);
-      wrapperEl.appendChild(tooltipEl);
-      region.element.appendChild(wrapperEl);
-    },
-    displayComments() {
-      this.call.annotations.forEach((comment) => {
-        const region = this.player.addRegion({
-          start: comment.startSec,
-          end: comment.endSec,
-          ...commentOptions,
-        });
-        this.displayCommentIcons(region, comment);
-      });
-      this.blockRegionResize();
-    },
 
     showProgress(progress) {
       this.loadProgress = +progress;
@@ -461,10 +348,13 @@ export default {
         note: '',
       };
       this.commentsMode = true;
-      this.blockRegionResize();
+      this.blockRegionResize(this.player);
     },
     onReady() {
-      const { player, call } = this;
+      const {
+        player,
+        call,
+      } = this;
       this.onLoad();
       this.hideProgress();
       player.addMarker({

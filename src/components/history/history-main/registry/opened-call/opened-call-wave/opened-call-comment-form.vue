@@ -2,10 +2,14 @@
   <section class="comment-form">
     <wt-timepicker
       v-model="draft.startSec"
+      :v="$v.draft.startSec"
+      :custom-validators="customValidation(0)"
       :label="$t('reusable.from')"
     ></wt-timepicker>
     <wt-timepicker
       v-model="draft.endSec"
+      :v="$v.draft.endSec"
+      :custom-validators="customValidation(minimalEndCommentValue)"
       :label="$t('reusable.to')"
     ></wt-timepicker>
     <div class="comment-form-textarea">
@@ -22,10 +26,16 @@
         @click="expandTextarea"
       ></wt-icon-btn>
     </div>
-    <wt-button @click="saveComment">
+    <wt-button
+      :disabled="disableSaving"
+      @click="saveComment"
+    >
       {{ $t('reusable.save') }}
     </wt-button>
-    <wt-button v-if="draft.id" @click="deleteComment">
+    <wt-button
+      v-if="draft.id"
+      @click="deleteComment"
+    >
       {{ $t('reusable.delete') }}
     </wt-button>
   </section>
@@ -33,7 +43,9 @@
 
 <script>
 
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import deepCopy from 'deep-copy';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 
 export default {
   name: 'opened-call-comment-form',
@@ -51,9 +63,48 @@ export default {
       type: String,
       required: true,
     },
+    callDuration: {
+      type: Number,
+      required: true,
+    },
     comment: {
       type: Object,
     },
+  },
+
+  computed: {
+    customValidation() {
+      return (value) => [{
+        name: 'minValue',
+        text: this.$t('validation.minValue').concat(` ${convertDuration(value)}`),
+      }, {
+        name: 'maxValue',
+        text: this.$t('validation.maxValue').concat(` ${convertDuration(this.callDuration)}`),
+      }];
+    },
+    minimalEndCommentValue() {
+      return Math.min(this.callDuration, this.draft.startSec);
+    },
+    disableSaving() {
+      this.$v.draft.$touch();
+      return this.$v.draft.$pending || this.$v.draft.$error;
+    },
+  },
+
+  validations() {
+    const draft = {
+      startSec: {
+        required,
+        minValue: minValue(0),
+        maxValue: maxValue(this.callDuration),
+      },
+      endSec: {
+        required,
+        minValue: minValue(this.draft.startSec),
+        maxValue: maxValue(this.callDuration),
+      },
+    };
+    return { draft };
   },
 
   watch: {
