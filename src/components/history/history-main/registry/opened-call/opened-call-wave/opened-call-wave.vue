@@ -264,9 +264,10 @@ export default {
     closeCommentMode() {
       this.commentsMode = false;
       this.selectedComment = null;
+      // every comment region instance has 3 DOM children: the icon with comment itself and two
+      // border lines indicating start and the end of region.
+      // We are looking if some region has no icon with comment to decide if it needs to be deleted.
       const cancelledRegion = Object.keys(this.player.regions.list)
-        // cancelled comment has less than 3 DOM children, so we try to find if there is such comment.
-        // In order to redraw regions with no cancelled comments, we have to find it:
         .find((region) => this.player.regions.list[region].element.children.length < 3);
       if (cancelledRegion) {
         this.redrawRegions();
