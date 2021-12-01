@@ -264,9 +264,10 @@ export default {
     closeCommentMode() {
       this.commentsMode = false;
       this.selectedComment = null;
-      // every comment region instance has 3 DOM children: the icon with comment itself and two
+      // every comment region instance has DOM children: the icon with comment itself and two
       // border lines indicating start and the end of region.
-      // We are looking if some region has no icon with comment to decide if it needs to be deleted.
+      // We are looking if some region has no icon with comment. In case it exists, it means the
+      // comment was not saved and the region must be deleted to have a cleaner wave.
       const cancelledRegion = Object.keys(this.player.regions.list)
         .find((region) => this.player.regions.list[region].element.children.length < 3);
       if (cancelledRegion) {
