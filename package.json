@@ -10,7 +10,7 @@
     "lint:fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@webitel/ui-sdk": "^0.9.48",
+    "@webitel/ui-sdk": "^0.9.53",
     "axios": "^0.19.2",
     "bamboo-jest-reporter": "^1.0.3",
     "chart.js": "^2.9.3",
@@ -36,7 +36,7 @@
     "vuex": "^3.1.2",
     "wavesurfer.js": "^5.2.0",
     "wavesurfer.js-vue": "^1.0.0",
-    "webitel-sdk": "^0.1.84"
+    "webitel-sdk": "^0.1.87"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
