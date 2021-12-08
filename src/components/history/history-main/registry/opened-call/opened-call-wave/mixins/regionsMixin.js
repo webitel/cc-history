@@ -3,6 +3,7 @@ import { mapActions } from 'vuex';
 
 const tooltipStyle = {
   minWidth: 0,
+  boxSizing: 'border-box',
   position: 'absolute',
   padding: 'var(--tooltip-padding)',
   color: 'var(--tooltip-light-text-color)',
@@ -22,6 +23,50 @@ const getHoldSecInterval = ({ hold, file }) => {
     start,
     end,
   };
+};
+
+const formatCommentDate = (dateString) => new Date(+dateString).toLocaleString('uk-UA', {
+  day: 'numeric',
+  month: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+});
+
+const createHeaderBlock = (changedBy) => {
+  const commentAuthorEl = document.createElement('p');
+  commentAuthorEl.innerText = changedBy;
+  commentAuthorEl.style.fontSize = '14px';
+  commentAuthorEl.style.fontWeight = '700';
+
+  const creationDateEl = document.createElement('p');
+  creationDateEl.style.fontSize = '12px';
+
+  const hr = document.createElement('hr');
+  hr.style.background = 'var(--secondary-color)';
+  return { creationDateEl, commentAuthorEl, hr };
+};
+
+const createCommentHeader = (comment) => {
+  const commentHeader = document.createElement('div');
+  if (comment.updatedAt !== comment.createdAt) {
+    const updatedAt = formatCommentDate(comment.updatedAt);
+    const updatedBy = comment.updatedBy.name || comment.updatedBy.id;
+    const { creationDateEl, commentAuthorEl, hr } = createHeaderBlock(updatedBy);
+    creationDateEl.innerText = `Updated: ${updatedAt}`;
+    commentHeader.appendChild(commentAuthorEl);
+    commentHeader.appendChild(creationDateEl);
+    commentHeader.appendChild(hr);
+  }
+  const createdAt = formatCommentDate(comment.createdAt);
+  const createdBy = comment.createdBy.name || comment.createdBy.id;
+  const { creationDateEl, commentAuthorEl, hr } = createHeaderBlock(createdBy);
+  creationDateEl.innerText = `Created: ${createdAt}`;
+
+  commentHeader.appendChild(commentAuthorEl);
+  commentHeader.appendChild(creationDateEl);
+  commentHeader.appendChild(hr);
+  return commentHeader;
 };
 
 export default {
@@ -73,8 +118,18 @@ export default {
 
     displayCommentIcons(region, comment) {
       const { wrapperEl, iconEl, tooltipEl } = this.createIcon(region, this.player);
-      tooltipEl.innerText = comment.note;
+      const noteEl = document.createElement('p');
+      noteEl.innerText = `"${comment.note}"`;
       iconEl.innerHTML = '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
+      const commentHeader = createCommentHeader(comment);
+      tooltipEl.style.width = '300px';
+      const difference = region.element.offsetLeft + 300 - this.player.drawer.getWidth();
+      if (difference > 0) {
+        tooltipEl.style.left = `-${difference}px`;
+      }
+      tooltipEl.appendChild(commentHeader);
+      tooltipEl.appendChild(noteEl);
+
       iconEl.onclick = () => {
         this.editAnnotation(comment);
       };
