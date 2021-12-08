@@ -23,4 +23,42 @@ describe('Opened call comment form', () => {
     expect(wrapper.classes('comment-form'))
       .toBe(true);
   });
+
+  it('should emit save event', () => {
+    const wrapper = shallowMount(CommentForm, {
+      localVue,
+      propsData,
+      data: () => ({ draft: { note: 'note', startSec: 1, endSec: 2 } }),
+    });
+    wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
+    expect(wrapper.emitted().save[0][0]).toBeTruthy();
+  });
+
+  it('should emit draft data on save', () => {
+    const wrapper = shallowMount(CommentForm, {
+      localVue,
+      propsData,
+      data: () => ({ draft: { note: 'note', startSec: 1, endSec: 2 } }),
+    });
+    wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
+    expect(wrapper.emitted().save[0][0].note).toBe('note');
+  });
+
+  it('should render delete button', () => {
+    const wrapper = shallowMount(CommentForm, {
+      localVue,
+      propsData,
+      data: () => ({ draft: { id: 'id', note: 'note', startSec: 1, endSec: 2 } }),
+    });
+    expect(wrapper.findAllComponents({ name: 'wt-button' }).length).toBe(2);
+  });
+
+  it('should not render delete button when comment id was not passed', () => {
+    const wrapper = shallowMount(CommentForm, {
+      localVue,
+      propsData,
+      data: () => ({ draft: { note: 'note', startSec: 1, endSec: 2 } }),
+    });
+    expect(wrapper.findAllComponents({ name: 'wt-button' }).length).toBe(1);
+  });
 });
