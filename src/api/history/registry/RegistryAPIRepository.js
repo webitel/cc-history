@@ -45,7 +45,7 @@ const fetchHistory = async ({
     const response = await callService.searchHistoryCall(
       page,
       size,
-      `${search}`,
+      undefined,
       sort,
       fields,
       from,
@@ -63,7 +63,7 @@ const fetchHistory = async ({
       cause,
       existsFile,
       undefined,
-      undefined,
+      `${search}`,
       direction,
       undefined,
       undefined,
