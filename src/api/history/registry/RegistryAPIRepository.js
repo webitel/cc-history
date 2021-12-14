@@ -38,6 +38,7 @@ const fetchHistory = async ({
                               ids,
                               dependencyId,
                               tags,
+                              amdResult,
                               hold,
                               annotations,
                             }) => {
@@ -75,6 +76,7 @@ const fetchHistory = async ({
       undefined,
       dependencyId,
       tags,
+      amdResult,
       hold,
       annotations,
     );

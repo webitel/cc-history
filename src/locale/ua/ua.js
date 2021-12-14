@@ -16,6 +16,8 @@ export default {
     download: 'Скачати',
     from: 'Від',
     to: 'До',
+    agentDescription: 'Опис постобробки',
+    amdResult: 'Результат автовизначення',
   },
   headerSection: {
     filesLoaded: 'Файлів завантажено: ',

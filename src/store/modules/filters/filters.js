@@ -4,6 +4,7 @@ import BaseFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/B
 import EnumFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/EnumFilterSchema';
 import AgentsAPI from '../../../shared/filters/api/AgentsAPIRepository';
 import CauseOption from '../../../shared/filters/enums/HangupCauseOption.enum';
+import AmdResultOptions from '../../../shared/filters/enums/AmdResultOptions.enum';
 import DirectionOptions from '../../../shared/filters/enums/DirectionOptions.enum';
 import GatewaysAPI from '../../../shared/filters/api/GatewaysAPIRepository';
 import QueuesAPI from '../../../shared/filters/api/QueuesAPIRepository';
@@ -19,6 +20,10 @@ const state = {
   cause: new EnumFilterSchema({
     options: CauseOption,
     locale: { label: 'fields.cause' },
+  }),
+  amdResult: new EnumFilterSchema({
+    options: AmdResultOptions,
+    locale: { label: 'fields.amdResult' },
   }),
   direction: new EnumFilterSchema({
     options: DirectionOptions,

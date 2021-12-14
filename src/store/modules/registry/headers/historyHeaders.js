@@ -198,4 +198,16 @@ export default [
     sort: null,
     field: 'cause',
   },
+  {
+    value: 'amdResult',
+    show: true,
+    sort: null,
+    field: 'amd_result',
+  },
+  {
+    value: 'agentDescription',
+    show: true,
+    sort: null,
+    field: 'agent_description',
+  },
 ];
