@@ -58,6 +58,7 @@
         { type: 'api', filterQuery: 'queue' },
         { type: 'enum', filterQuery: 'tags' },
         { type: 'enum', filterQuery: 'cause' },
+        { type: 'enum', filterQuery: 'amdResult' },
       ],
       namespace: 'filters',
     }),

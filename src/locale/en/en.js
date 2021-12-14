@@ -151,6 +151,8 @@ export default {
     queueDurationSec: 'Queue duration',
     result: 'Result',
     sipCode: 'SIP code',
+    agentDescription: 'Agent description',
+    amdResult: 'AMD result',
   },
   filters: {
     tag: {
