@@ -149,8 +149,8 @@ export default {
     queueDurationSec: 'Тривалість в черзі',
     result: 'Результат',
     sipCode: 'SIP код',
-    agentDescription: 'Опис постобробки',
-    amdResult: 'Результат автовизначення',
+    agentDescription: 'Коментар оператора',
+    amdResult: 'AMD результат',
   },
   filters: {
     tag: {
