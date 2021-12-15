@@ -16,8 +16,6 @@ export default {
     download: 'Скачати',
     from: 'Від',
     to: 'До',
-    agentDescription: 'Опис постобробки',
-    amdResult: 'Результат автовизначення',
   },
   headerSection: {
     filesLoaded: 'Файлів завантажено: ',
@@ -151,6 +149,8 @@ export default {
     queueDurationSec: 'Тривалість в черзі',
     result: 'Результат',
     sipCode: 'SIP код',
+    agentDescription: 'Коментар оператора',
+    amdResult: 'AMD результат',
   },
   filters: {
     tag: {
