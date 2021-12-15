@@ -12,6 +12,12 @@ const computeTime = (timestamp) => {
   return date.toLocaleTimeString();
 };
 
+const computeDateAndTime = (timestamp) => {
+  if (!timestamp) return null;
+  const date = new Date(+timestamp);
+  return date.toLocaleString('en-GB');
+};
+
 const defaultComment = {
   startSec: 0,
   endSec: 0,
@@ -36,6 +42,7 @@ const mapItems = (items) => {
     time: computeTime(item.createdAt),
     bridgedAt: computeTime(item.bridgedAt),
     queueBridgedAt: computeTime(item.queueBridgedAt),
+    createdAt: computeDateAndTime(item.createdAt),
     answeredAt: computeTime(item.answeredAt),
     joinedAt: computeTime(item.joinedAt),
     leavingAt: computeTime(item.leavingAt),
