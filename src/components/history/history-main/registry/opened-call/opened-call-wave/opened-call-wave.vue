@@ -169,6 +169,12 @@ const commentOptions = {
   resize: true,
 };
 
+const createMarker = (color) => {
+  const marker = document.createElement('div');
+  marker.innerHTML = `<svg width="16" height="16" fill="${color}"><use xlink:href="#contacts"</svg>`;
+  return marker;
+};
+
 export default {
   name: 'opened-call-wave',
   components: { OpenedCallCommentForm },
@@ -362,12 +368,14 @@ export default {
         position: 'top',
         label: call.from.name || call.from.number,
         color: player.params.splitChannelsOptions.channelColors[0].progressColor,
+        markerElement: createMarker('var(--accent-color)'),
       });
       if (this.rightGain) {
         player.addMarker({
           time: 0,
           label: Object.keys(call.to).length ? (call.to.name || call.to.number) : call.destination,
           color: player.params.splitChannelsOptions.channelColors[1].progressColor,
+          markerElement: createMarker('var(--true-color)'),
         });
       }
       player.drawBuffer();
