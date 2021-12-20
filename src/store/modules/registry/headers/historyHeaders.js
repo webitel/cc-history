@@ -119,13 +119,12 @@ export default [
     sort: null,
     field: 'member',
   },
-  // {
-  //   text: i18n.t('fields.hangupBy'),
-  //   value: 'hangupBy',
-  //   show: false,
-  //   sort: null,
-  //   field: 'hangup_by',
-  // },
+  {
+    value: 'hangupBy',
+    show: false,
+    sort: null,
+    field: 'hangup_by',
+  },
   {
     value: 'duration',
     show: true,
