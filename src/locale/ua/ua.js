@@ -26,7 +26,7 @@ export default {
     registry: 'Історія',
     openedCall: {
       callInfo: 'Інформація',
-      agentDescription: 'Коментарій оператора',
+      agentDescription: 'Коментар оператора',
       callLegs: 'Legs A-B',
       transferFrom: 'Трансфер Від',
       transferMerge: 'Об\'єднання Дзвінків',
