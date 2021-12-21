@@ -116,7 +116,7 @@ export default {
   fields: {
     agent: 'Оператор',
     cause: 'Причина завершення',
-    direction: 'Спрямування',
+    direction: 'Напрямок',
     duration: 'Тривалість',
     from: 'Номер від',
     to: 'Номер кому',
