@@ -26,7 +26,7 @@ export default {
     registry: 'History',
     openedCall: {
       callInfo: 'Call info',
-      agentDescription: 'Agent description',
+      agentDescription: 'Agent`s comment',
       callLegs: 'Legs A-B',
       transferFrom: 'Transfer From',
       transferMerge: 'Call Merge',
@@ -151,7 +151,7 @@ export default {
     queueDurationSec: 'Queue duration',
     result: 'Result',
     sipCode: 'SIP code',
-    agentDescription: 'Agent\'s comment',
+    gentDescription: 'Agent`s comment',
     amdResult: 'AMD result',
   },
   filters: {

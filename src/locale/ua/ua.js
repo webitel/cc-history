@@ -26,7 +26,7 @@ export default {
     registry: 'Історія',
     openedCall: {
       callInfo: 'Інформація',
-      agentDescription: 'Коментарій оператора',
+      agentDescription: 'Коментар оператора',
       callLegs: 'Legs A-B',
       transferFrom: 'Трансфер Від',
       transferMerge: 'Об\'єднання Дзвінків',
@@ -116,7 +116,7 @@ export default {
   fields: {
     agent: 'Оператор',
     cause: 'Причина завершення',
-    direction: 'Спрямування',
+    direction: 'Напрямок',
     duration: 'Тривалість',
     from: 'Номер від',
     to: 'Номер кому',
