@@ -378,6 +378,11 @@ export default {
           markerElement: createMarker('var(--accent-color)'),
         });
       }
+      const createdMarkers = document.querySelectorAll('marker');
+      createdMarkers.forEach((marker) => {
+        // eslint-disable-next-line no-param-reassign
+        marker.children[1].children[1].style.fontFamily = '"Montserrat Regular", monospace';
+      });
       player.drawBuffer();
       this.redraw();
       player.on('region-update-end', this.createComment);
@@ -460,6 +465,13 @@ export default {
 
     .call-wave-data-plugin {
       position: relative;
+
+      ::v-deep marker {
+        div:nth-child(2) {
+          padding-left: var(--spacing--sm);
+          gap: var(--spacing--sm);
+        }
+      }
 
       .call-wave-timeline {
         height: 26px;
