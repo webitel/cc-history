@@ -227,7 +227,7 @@ export default {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
     callDuration() {
-      return Math.round(this.player.getDuration());
+      return Math.round(this.player?.getDuration());
     },
     holdsSize() {
       return this.call.hold ? this.call.hold.length : 0;
@@ -274,10 +274,10 @@ export default {
       // border lines indicating start and the end of region.
       // We are looking if some region has no icon with comment. In case it exists, it means the
       // comment was not saved and the region must be deleted to have a cleaner wave.
-      const cancelledRegion = Object.keys(this.player.regions.list)
-        .find((region) => this.player.regions.list[region].element.children.length < 3);
-      if (cancelledRegion) {
-        this.redrawRegions();
+      if (this.player.regions.list) {
+        const cancelledRegion = Object.keys(this.player.regions.list)
+          .find((region) => this.player.regions.list[region].element.children.length < 3);
+        if (cancelledRegion) this.redrawRegions();
       }
       this.player.enableDragSelection({ ...commentOptions });
     },
@@ -357,10 +357,7 @@ export default {
       this.blockRegionResize(this.player);
     },
     onReady() {
-      const {
-        player,
-        call,
-      } = this;
+      const { player, call } = this;
       this.onLoad();
       this.hideProgress();
       player.addMarker({
@@ -379,6 +376,9 @@ export default {
         });
       }
       const createdMarkers = document.querySelectorAll('marker');
+      // Library default font for every marker element has been set inline through javascript.
+      // To override default styling, using Webitel font we have to set it inline.
+      // Markers contain default children elements, so we are looking for the header to set font:
       createdMarkers.forEach((marker) => {
         // eslint-disable-next-line no-param-reassign
         marker.children[1].children[1].style.fontFamily = '"Montserrat Regular", monospace';
@@ -466,6 +466,9 @@ export default {
     .call-wave-data-plugin {
       position: relative;
 
+      // Setting styles to the marker icon and marker title:
+      // 1. Find the second marker`s child div (which is a title block with icon)
+      // 2. Set the padding-left (to have free space between wave border and icon), and the flex-gap
       ::v-deep marker {
         div:nth-child(2) {
           padding-left: var(--spacing--sm);

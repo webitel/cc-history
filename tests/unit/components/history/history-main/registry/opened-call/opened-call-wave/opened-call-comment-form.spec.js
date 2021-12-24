@@ -14,21 +14,26 @@ const propsData = {
   callDuration: 1,
 };
 
+const draft = {
+  note: 'note',
+  startSec: 1,
+  endSec: 2,
+};
+
 describe('Opened call comment form', () => {
   it('should render a component', () => {
     const wrapper = shallowMount(CommentForm, {
       localVue,
       propsData,
     });
-    expect(wrapper.classes('comment-form'))
-      .toBe(true);
+    expect(wrapper.classes('comment-form')).toBe(true);
   });
 
   it('should emit save event', () => {
     const wrapper = shallowMount(CommentForm, {
       localVue,
       propsData,
-      data: () => ({ draft: { note: 'note', startSec: 1, endSec: 2 } }),
+      data: () => ({ draft }),
     });
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
     expect(wrapper.emitted().save[0][0]).toBeTruthy();
@@ -38,27 +43,33 @@ describe('Opened call comment form', () => {
     const wrapper = shallowMount(CommentForm, {
       localVue,
       propsData,
-      data: () => ({ draft: { note: 'note', startSec: 1, endSec: 2 } }),
+      data: () => ({ draft }),
     });
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
-    expect(wrapper.emitted().save[0][0].note).toBe('note');
+    expect(wrapper.emitted().save[0][0].note).toBe(draft.note);
+    expect(wrapper.emitted().save[0][0].startSec).toBe(draft.startSec);
+    expect(wrapper.emitted().save[0][0].endSec).toBe(draft.endSec);
   });
 
   it('should render delete button', () => {
     const wrapper = shallowMount(CommentForm, {
       localVue,
       propsData,
-      data: () => ({ draft: { id: 'id', note: 'note', startSec: 1, endSec: 2 } }),
+      data: () => ({
+        draft: { ...draft, id: '1' },
+      }),
     });
-    expect(wrapper.findAllComponents({ name: 'wt-button' }).length).toBe(2);
+    expect(wrapper.findAllComponents({ name: 'wt-button' })
+      .filter((btn) => btn.props().color === 'danger').isVisible()).toBe(true);
   });
 
   it('should not render delete button when comment id was not passed', () => {
     const wrapper = shallowMount(CommentForm, {
       localVue,
       propsData,
-      data: () => ({ draft: { note: 'note', startSec: 1, endSec: 2 } }),
+      data: () => ({ draft }),
     });
-    expect(wrapper.findAllComponents({ name: 'wt-button' }).length).toBe(1);
+    expect(wrapper.findAllComponents({ name: 'wt-button' })
+      .filter((btn) => btn.props().color === 'danger').exists()).toBe(false);
   });
 });
