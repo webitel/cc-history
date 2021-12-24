@@ -376,9 +376,7 @@ export default {
         });
       }
       const createdMarkers = document.querySelectorAll('marker');
-      // Library default font for every marker element has been set inline through javascript.
-      // To override default styling, using Webitel font we have to set it inline.
-      // Markers contain default children elements, so we are looking for the header to set font:
+      // seting our font for marker title:
       createdMarkers.forEach((marker) => {
         // eslint-disable-next-line no-param-reassign
         marker.children[1].children[1].style.fontFamily = '"Montserrat Regular", monospace';
@@ -466,9 +464,7 @@ export default {
     .call-wave-data-plugin {
       position: relative;
 
-      // Setting styles to the marker icon and marker title:
-      // 1. Find the second marker`s child div (which is a title block with icon)
-      // 2. Set the padding-left (to have free space between wave border and icon), and the flex-gap
+      // setting css styles to marker title and icon
       ::v-deep marker {
         div:nth-child(2) {
           padding-left: var(--spacing--sm);
