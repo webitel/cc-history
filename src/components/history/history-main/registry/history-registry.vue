@@ -120,6 +120,12 @@ export default {
         this.loadList();
       },
     },
+    '$store.state.filters': {
+      handler() {
+        this.setPage(1);
+      },
+      deep: true,
+    },
   },
 
   created() {
@@ -147,6 +153,7 @@ export default {
     }),
     ...mapActions('registry', {
       loadList: 'LOAD_DATA_LIST',
+      setPage: 'SET_PAGE',
     }),
     ...mapActions('registry/opened-call', {
       setOpenedItem: 'SET_OPENED_CALL',
