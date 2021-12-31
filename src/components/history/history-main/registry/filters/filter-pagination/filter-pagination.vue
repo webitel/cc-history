@@ -18,7 +18,9 @@ import paginationFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixi
 export default {
   name: 'filter-pagination',
   mixins: [paginationFilterMixin],
-
+  data: () => ({
+    unsubscribeFilterChangeCallback: null,
+  }),
   computed: {
     ...mapState('registry', {
       page: (state) => state.page,
@@ -31,6 +33,24 @@ export default {
       setPage: 'SET_PAGE',
       setSize: 'SET_SIZE',
     }),
+    subscribeFilterChange() {
+      this.unsubscribeFilterChangeCallback = this.$store.subscribeAction((({ type }) => {
+        const triggerResetPageAtTypes = ['filters/SET_FILTER', 'registry/SET_SIZE'];
+        if (triggerResetPageAtTypes.includes(type) && this.page !== 1) {
+          this.resetPage();
+        }
+      }));
+    },
+    unsubscribeFilterChange() {
+      this.unsubscribeFilterChangeCallback();
+    },
+  },
+
+  mounted() {
+    this.subscribeFilterChange();
+  },
+  destroyed() {
+    this.unsubscribeFilterChange();
   },
 };
 </script>
