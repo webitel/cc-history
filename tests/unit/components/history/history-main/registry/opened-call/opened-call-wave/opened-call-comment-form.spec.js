@@ -46,12 +46,10 @@ describe('Opened call comment form', () => {
       data: () => ({ draft }),
     });
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
-    expect(wrapper.emitted().save[0][0].note).toBe(draft.note);
-    expect(wrapper.emitted().save[0][0].startSec).toBe(draft.startSec);
-    expect(wrapper.emitted().save[0][0].endSec).toBe(draft.endSec);
+    expect(wrapper.emitted().save[0][0]).toEqual(draft)
   });
 
-  it('should render delete button', () => {
+  it('should render delete button if "draft" props contains id field', () => {
     const wrapper = shallowMount(CommentForm, {
       localVue,
       propsData,
@@ -63,7 +61,7 @@ describe('Opened call comment form', () => {
       .filter((btn) => btn.props().color === 'danger').isVisible()).toBe(true);
   });
 
-  it('should not render delete button when comment id was not passed', () => {
+  it('should not render delete button if "draft" props does not contain id', () => {
     const wrapper = shallowMount(CommentForm, {
       localVue,
       propsData,

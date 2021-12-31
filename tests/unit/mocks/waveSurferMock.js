@@ -1,9 +1,9 @@
-const waveSurferMock = {
+const waveSurferMock = (jest) => ({
   regions: [],
   setPlaybackRate: jest.fn(),
   zoom: jest.fn(),
   clearRegions: jest.fn(),
-  addRegion: jest.fn(params => params),
+  addRegion: jest.fn((params) => params),
   backend: {
     buffer: [],
     ac: { sampleRate: 1 },
@@ -28,6 +28,6 @@ const waveSurferMock = {
   drawBuffer: () => {},
   _onResize: () => {},
   on: (event, callback) => ({ event, callback }),
-};
+});
 
 export default waveSurferMock
