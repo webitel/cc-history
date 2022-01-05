@@ -169,6 +169,12 @@ const commentOptions = {
   resize: true,
 };
 
+const createMarker = (color) => {
+  const marker = document.createElement('span');
+  marker.innerHTML = `<svg width="16" height="16" fill="${color}"><use xlink:href="#contacts"</svg>`;
+  return marker;
+};
+
 export default {
   name: 'opened-call-wave',
   components: { OpenedCallCommentForm },
@@ -221,7 +227,7 @@ export default {
       return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
     callDuration() {
-      return Math.round(this.player.getDuration());
+      return Math.round(this.player?.getDuration());
     },
     holdsSize() {
       return this.call.hold ? this.call.hold.length : 0;
@@ -268,10 +274,10 @@ export default {
       // border lines indicating start and the end of region.
       // We are looking if some region has no icon with comment. In case it exists, it means the
       // comment was not saved and the region must be deleted to have a cleaner wave.
-      const cancelledRegion = Object.keys(this.player.regions.list)
-        .find((region) => this.player.regions.list[region].element.children.length < 3);
-      if (cancelledRegion) {
-        this.redrawRegions();
+      if (this.player.regions.list) {
+        const cancelledRegion = Object.keys(this.player.regions.list)
+          .find((region) => this.player.regions.list[region].element.children.length < 3);
+        if (cancelledRegion) this.redrawRegions();
       }
       this.player.enableDragSelection({ ...commentOptions });
     },
@@ -351,10 +357,7 @@ export default {
       this.blockRegionResize(this.player);
     },
     onReady() {
-      const {
-        player,
-        call,
-      } = this;
+      const { player, call } = this;
       this.onLoad();
       this.hideProgress();
       player.addMarker({
@@ -362,14 +365,22 @@ export default {
         position: 'top',
         label: call.from.name || call.from.number,
         color: player.params.splitChannelsOptions.channelColors[0].progressColor,
+        markerElement: createMarker('var(--true-color)'),
       });
       if (this.rightGain) {
         player.addMarker({
           time: 0,
           label: Object.keys(call.to).length ? (call.to.name || call.to.number) : call.destination,
           color: player.params.splitChannelsOptions.channelColors[1].progressColor,
+          markerElement: createMarker('var(--accent-color)'),
         });
       }
+      const createdMarkers = document.querySelectorAll('marker');
+      // seting our font for marker title:
+      createdMarkers.forEach((marker) => {
+        // eslint-disable-next-line no-param-reassign
+        marker.children[1].children[1].style.fontFamily = '"Montserrat Regular", monospace';
+      });
       player.drawBuffer();
       this.redraw();
       player.on('region-update-end', this.createComment);
@@ -452,6 +463,14 @@ export default {
 
     .call-wave-data-plugin {
       position: relative;
+
+      // setting css styles to marker title and icon
+      ::v-deep marker {
+        div:nth-child(2) {
+          padding-left: var(--spacing--sm);
+          gap: var(--spacing--sm);
+        }
+      }
 
       .call-wave-timeline {
         height: 26px;
