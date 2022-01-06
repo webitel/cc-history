@@ -62,7 +62,10 @@
           ></wt-icon-btn>
         </template>
       </wt-table>
-      <filter-pagination :is-next="isNext"/>
+      <filter-pagination
+        :is-next="isNext"
+        namespace="registry/filters"
+      ></filter-pagination>
 
       <opened-call-popup
         v-show="isOpenedCallPopup"
@@ -92,8 +95,8 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
+import FilterPagination from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-pagination.vue';
 import OpenedCallPopup from './opened-call/opened-call-popup.vue';
-import FilterPagination from './filters/filter-pagination/filter-pagination.vue';
 import TableDirection from './_internals/table-templates/table-direction.vue';
 import MediaAction from './_internals/table-templates/table-media-action.vue';
 import historyHeadersMixin from '../../../../mixins/history/registry/historyHeadersMixin';
@@ -142,11 +145,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('filters', {
-      setFilterValue: 'SET_FILTER',
-    }),
     ...mapActions('registry', {
       loadList: 'LOAD_DATA_LIST',
+    }),
+    ...mapActions('query-controller', {
+      setValueToQuery: 'SET_VALUE_TO_QUERY',
     }),
     ...mapActions('registry/opened-call', {
       setOpenedItem: 'SET_OPENED_CALL',

@@ -1,7 +1,8 @@
-  import { sortToQueryAdapter } from '@webitel/ui-sdk/src/scripts/sortQueryAdapters';
+import { sortToQueryAdapter } from '@webitel/ui-sdk/src/scripts/sortQueryAdapters';
 import APIRepository from '../../../api/APIRepository';
 import historyHeaders from './headers/historyHeaders';
 import openedCall from './opened-call/opened-call';
+import filters from './filters/filters';
 
 const historyAPI = APIRepository.history;
 const REQUIRED_DATA_FIELDS = ['files', 'id'];
@@ -10,12 +11,21 @@ const state = {
   dataList: [],
   headers: historyHeaders,
   isLoading: false,
-  page: 1,
-  size: 10,
   isNext: false,
 };
 
 const getters = {
+  FILTERS: (state, getters, rootState, rootGetters) => {
+    const globalFilters = rootGetters['filters/GET_FILTERS'];
+    const registryFilters = rootGetters['registry/filters/GET_FILTERS'];
+    return {
+      ...globalFilters,
+      ...registryFilters,
+      fields: getters.DATA_FIELDS,
+      sort: getters.DATA_SORT,
+      skipParent: true,
+    };
+  },
   SELECTED_DATA_ITEMS: (state) => state.dataList.filter((item) => item._isSelected),
 
   DATA_SORT: (state) => {
@@ -37,17 +47,9 @@ const actions = {
 
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
-    const query = context.rootGetters['filters/GET_FILTERS'];
-    const params = {
-      ...query,
-      sort: context.getters.DATA_SORT,
-      fields: context.getters.DATA_FIELDS,
-      page: context.state.page,
-      size: context.state.size,
-      skipParent: true,
-    };
+    const query = context.getters.FILTERS;
     try {
-      const { items, next } = await historyAPI.getHistory(params);
+      const { items, next } = await historyAPI.getHistory(query);
       context.commit('SET_DATA_LIST', items);
       context.commit('SET_NEXT_PAGE', next);
     } catch (err) {
@@ -60,16 +62,6 @@ const actions = {
   },
   SET_HEADERS: (context, headers) => {
     context.commit('SET_HEADERS', headers);
-  },
-  SET_PAGE: (context, page) => {
-    context.commit('SET_PAGE', +page);
-  },
-  SET_SIZE: (context, size) => {
-    if (size) context.commit('SET_SIZE', +size);
-  },
-  RESET_FILTERS: (context) => {
-    context.dispatch('SET_PAGE', 1);
-    context.dispatch('SET_SIZE', 10);
   },
 };
 const mutations = {
@@ -85,12 +77,6 @@ const mutations = {
   SET_NEXT_PAGE: (state, isNext) => {
     state.isNext = isNext;
   },
-  SET_PAGE: (state, page) => {
-    state.page = page;
-  },
-  SET_SIZE: (state, size) => {
-    state.size = size;
-  },
 };
 
 export default {
@@ -99,5 +85,8 @@ export default {
   getters,
   actions,
   mutations,
-  modules: { 'opened-call': openedCall },
+  modules: {
+    filters,
+    'opened-call': openedCall,
+  },
 };

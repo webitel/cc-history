@@ -5,6 +5,7 @@ import filters from './modules/filters/filters';
 import registry from './modules/registry/registry';
 import dashboards from './modules/dashboards/dashboards';
 import userinfo from './modules/userinfo/userinfo';
+import queryController from './modules/query-controller/query-controller';
 
 Vue.use(Vuex);
 
@@ -17,7 +18,7 @@ const actions = {
   SET_APP_STATE: (context, state) => context.commit('SET_APP_STATE', state),
   RESET_FILTERS: (context) => {
     context.dispatch('filters/RESET_FILTERS');
-    context.dispatch(`${context.state.state}/RESET_FILTERS`);
+    context.dispatch(`${context.state.state}/filters/RESET_FILTERS`);
   },
 };
 
@@ -36,5 +37,6 @@ export default new Vuex.Store({
     registry,
     dashboards,
     userinfo,
+    'query-controller': queryController,
   },
 });

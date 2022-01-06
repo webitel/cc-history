@@ -5,11 +5,13 @@ import IntervalOptions from '../../../../components/history/history-main/dashboa
 const state = {
   interval: new EnumFilterSchema({
     value: {},
-    defaultValue: IntervalOptions.find((interval) => interval.value === 'auto'),
+    defaultValue: {},
     options: IntervalOptions,
     locale: { label: 'dashboards.interval.interval' },
     multiple: false,
   }),
 };
 
-export default new QueryFiltersStoreModule({ state }).getModule();
+export default new QueryFiltersStoreModule({ state })
+  .generateQueryControllerActions('query-controller')
+  .getModule();

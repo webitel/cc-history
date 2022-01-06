@@ -13,6 +13,7 @@ import TeamAPI from '../../../shared/filters/api/TeamsAPIRepository';
 import UserAPI from '../../../shared/filters/api/UsersAPIRepository';
 
 const state = {
+  search: new BaseFilterSchema(),
   agent: new ApiFilterSchema({
     API: AgentsAPI.getLookup,
     locale: { label: 'fields.agent' },
@@ -31,7 +32,7 @@ const state = {
   }),
   duration: new BaseFilterSchema({
     value: { from: 0, to: null },
-    defaultValue: [],
+    defaultValue: { from: 0, to: null },
   }),
   from: new BaseFilterSchema({
     value: new Date().setHours(0, 0, 0, 0),
@@ -49,7 +50,6 @@ const state = {
     API: QueuesAPI.getLookup,
     locale: { label: 'fields.queue' },
   }),
-  search: new BaseFilterSchema(),
   tags: new EnumFilterSchema({
     options: TagOptions,
     locale: { label: 'fields.tags' },
@@ -64,4 +64,6 @@ const state = {
   }),
 };
 
-export default new QueryFiltersStoreModule({ state }).getModule();
+export default new QueryFiltersStoreModule({ state })
+  .generateQueryControllerActions('query-controller')
+  .getModule();

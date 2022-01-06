@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
 import ColumnSelect from '../../../../../utils/table-column-select.vue';
 import historyHeadersMixin from '../../../../../../mixins/history/registry/historyHeadersMixin';
@@ -27,6 +28,9 @@ export default {
   }),
 
   methods: {
+    ...mapActions('query-controller', {
+      setValueToQuery: 'SET_VALUE_TO_QUERY',
+    }),
     change(headers) {
       this.setValue(headers);
       this.close();

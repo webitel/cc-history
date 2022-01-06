@@ -5,8 +5,14 @@
       @close="isFilterFieldsOpened = false"
     ></filter-fields>
     <form class="history-filters" :class="{'history-filters--opened': isOpened}">
-      <filter-from class="history-filters__filter"/>
-      <filter-to class="history-filters__filter"/>
+      <filter-from
+        class="history-filters__filter"
+        :namespace="namespace"
+      ></filter-from>
+      <filter-to
+        class="history-filters__filter"
+        :namespace="namespace"
+      ></filter-to>
       <component
         class="history-filters__filter"
         v-for="(filter, key) of filters"
@@ -15,7 +21,10 @@
         :filter-query="filter.filterQuery"
         :namespace="namespace"
       ></component>
-      <filter-duration class="history-filters__filter"/>
+      <filter-duration
+        class="history-filters__filter"
+        :namespace="namespace"
+      ></filter-duration>
     </form>
     <wt-table-actions
       :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
