@@ -36,7 +36,7 @@
     "vuex": "^3.1.2",
     "wavesurfer.js": "^5.2.0",
     "wavesurfer.js-vue": "^1.0.0",
-    "webitel-sdk": "^0.1.89"
+    "webitel-sdk": "^0.1.91"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",

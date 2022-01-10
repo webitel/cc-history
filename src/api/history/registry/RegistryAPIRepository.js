@@ -41,6 +41,7 @@ const fetchHistory = async ({
                               amdResult,
                               hold,
                               annotations,
+                              hangupDisposition,
                             }) => {
   try {
     const response = await callService.searchHistoryCall(
@@ -79,6 +80,7 @@ const fetchHistory = async ({
       amdResult,
       hold,
       annotations,
+      hangupDisposition,
     );
     return formatResponse(response);
   } catch (err) {

@@ -198,14 +198,20 @@ export default [
     field: 'cause',
   },
   {
+    value: 'hangupDisposition',
+    show: false,
+    sort: null,
+    field: 'hangup_disposition',
+  },
+  {
     value: 'amdResult',
-    show: true,
+    show: false,
     sort: null,
     field: 'amd_result',
   },
   {
     value: 'agentDescription',
-    show: true,
+    show: false,
     sort: null,
     field: 'agent_description',
   },
