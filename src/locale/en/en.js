@@ -153,6 +153,14 @@ export default {
     sipCode: 'SIP code',
     agentDescription: 'Agent`s comment',
     amdResult: 'AMD result',
+    hangupDisposition: 'Hangup disposition',
+  },
+  hangupDisposition: {
+    notAnswered: 'Not answered',
+    cancelled: 'Cancelled',
+    agentDropped: 'Agent dropped',
+    clientDropped: 'Client dropped',
+    error: 'Error',
   },
   filters: {
     tag: {

@@ -153,6 +153,14 @@ export default {
     sipCode: 'SIP код',
     agentDescription: 'Комментарий оператора',
     amdResult: 'AMD результат',
+    hangupDisposition: 'Результат завершения',
+  },
+  hangupDisposition: {
+    notAnswered: 'Не ответил',
+    cancelled: 'Отмена',
+    agentDropped: 'Оператор сбросил',
+    clientDropped: 'Клиент сбросил',
+    error: 'Ошибка',
   },
   filters: {
     tag: {
