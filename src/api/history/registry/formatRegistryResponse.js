@@ -1,6 +1,11 @@
 import { snakeToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 
+const formatHangupDisposition = (value) => {
+  if (value) return snakeToCamel(value);
+  return value;
+};
+
 const computeDate = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
@@ -57,7 +62,7 @@ const mapItems = (items) => {
     queueWaitSec: convertDuration(item.queueWaitSec),
     queueDurationSec: convertDuration(item.queueDurationSec),
     annotations: mapDefaultComments(item),
-    hangupDisposition: snakeToCamel(item.hangupDisposition),
+    hangupDisposition: formatHangupDisposition(item.hangupDisposition),
   }));
 };
 
