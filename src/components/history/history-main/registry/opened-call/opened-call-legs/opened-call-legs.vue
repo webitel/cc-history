@@ -37,7 +37,7 @@
           <div v-if="item.member">{{item.member.name}}</div>
         </template>
         <template slot="hangupDisposition" slot-scope="{ item }">
-          <div>{{ $t(item.hangupDisposition) }}</div>
+          <div>{{ $t(`hangupDisposition.${item.hangupDisposition}`) }}</div>
         </template>
         <template slot="legMarker" slot-scope="{ item }">
           <wt-icon

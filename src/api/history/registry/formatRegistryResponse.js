@@ -19,11 +19,6 @@ const computeDateAndTime = (timestamp) => {
   return date.toLocaleString('en-GB');
 };
 
-const formatHangupDisposition = (value) => {
-  if (value) return `hangupDisposition.${snakeToCamel(value)}`;
-  return '';
-};
-
 const defaultComment = {
   startSec: 0,
   endSec: 0,
@@ -62,7 +57,7 @@ const mapItems = (items) => {
     queueWaitSec: convertDuration(item.queueWaitSec),
     queueDurationSec: convertDuration(item.queueDurationSec),
     annotations: mapDefaultComments(item),
-    hangupDisposition: formatHangupDisposition(item.hangupDisposition),
+    hangupDisposition: snakeToCamel(item.hangupDisposition),
   }));
 };
 
