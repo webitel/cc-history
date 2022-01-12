@@ -57,7 +57,7 @@ const mapItems = (items) => {
     queueWaitSec: convertDuration(item.queueWaitSec),
     queueDurationSec: convertDuration(item.queueDurationSec),
     annotations: mapDefaultComments(item),
-    hangupDisposition: snakeToCamel(item.hangupDisposition),
+    hangupDisposition: item.hangupDisposition ? snakeToCamel(item.hangupDisposition) : '',
   }));
 };
 
