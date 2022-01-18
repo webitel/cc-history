@@ -16,13 +16,9 @@ const tooltipStyle = {
   zIndex: 'var(--tooltip-z-index)',
 };
 
-const getHoldSecInterval = ({ hold, file }) => {
-  const start = ((hold.start - file.startAt) / 1000).toFixed(2);
-  const end = ((hold.stop - file.startAt) / 1000).toFixed(2);
-  return {
-    start,
-    end,
-  };
+const holdStyle = {
+  backgroundColor: 'var(--hold-color)',
+  width: '4px',
 };
 
 const formatCommentDate = (dateString) => new Date(+dateString).toLocaleString('uk-UA', {
@@ -102,14 +98,13 @@ export default {
 
     displayHolds(call, player) {
       call.hold.forEach((hold) => {
-        const hld = getHoldSecInterval({
-          hold,
-          file: call.files[0],
-        });
         const region = player.addRegion({
-          ...hld,
-          color: 'hsla(var(--_hold-color), 0.2)',
+          start: ((hold.start - call.files[0].startAt) / 1000).toFixed(2),
           showTooltip: false,
+          handleStyle: {
+            right: holdStyle,
+            left: holdStyle,
+          },
         });
         this.displayHoldIcons(region, hold);
       });
