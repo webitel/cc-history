@@ -360,27 +360,32 @@ export default {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
-      player.addMarker({
-        time: 0,
-        position: 'top',
-        label: call.from.name || call.from.number || ' ',
-        color: player.params.splitChannelsOptions.channelColors[0].progressColor,
-        markerElement: createMarker('var(--true-color)'),
-      });
-      if (this.rightGain) {
+      try {
         player.addMarker({
           time: 0,
-          label: Object.keys(call.to).length ? (call.to.name || call.to.number) : call.destination,
-          color: player.params.splitChannelsOptions.channelColors[1].progressColor,
-          markerElement: createMarker('var(--accent-color)'),
+          position: 'top',
+          // in order to show empty FROM (not blocking mounting if name and number are not received)
+          label: call.from.name || call.from.number || ' ',
+          color: player.params.splitChannelsOptions.channelColors[0].progressColor,
+          markerElement: createMarker('var(--true-color)'),
         });
+        if (this.rightGain) {
+          player.addMarker({
+            time: 0,
+            label: call.to?.name || call.to?.number || call.destination,
+            color: player.params.splitChannelsOptions.channelColors[1].progressColor,
+            markerElement: createMarker('var(--accent-color)'),
+          });
+        }
+        const createdMarkers = document.querySelectorAll('marker');
+        // seting our font for marker title:
+        createdMarkers.forEach((marker) => {
+          // eslint-disable-next-line no-param-reassign
+          marker.children[1].children[1].style.fontFamily = '"Montserrat Regular", monospace';
+        });
+      } catch (err) {
+        throw err;
       }
-      const createdMarkers = document.querySelectorAll('marker');
-      // seting our font for marker title:
-      createdMarkers.forEach((marker) => {
-        // eslint-disable-next-line no-param-reassign
-        marker.children[1].children[1].style.fontFamily = '"Montserrat Regular", monospace';
-      });
       player.drawBuffer();
       this.redraw();
       player.on('region-update-end', this.createComment);
