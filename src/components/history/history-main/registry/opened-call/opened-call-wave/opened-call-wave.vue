@@ -363,7 +363,7 @@ export default {
       player.addMarker({
         time: 0,
         position: 'top',
-        label: call.from.name || call.from.number,
+        label: call.from.name || call.from.number || ' ',
         color: player.params.splitChannelsOptions.channelColors[0].progressColor,
         markerElement: createMarker('var(--true-color)'),
       });
