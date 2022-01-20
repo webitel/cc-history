@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import logoutAPI from '../../../../../../src/api/auth/AuthAPIRepository';
+import logoutAPI from '@webitel/ui-sdk/src/modules/Userinfo/api/auth';
 import AppHeader
   from '../../../../../../src/components/history/shared/app-header/app-header.vue';
 import userInfoStore from '../../../../../../src/store/modules/userinfo/userinfo';
@@ -22,7 +22,10 @@ describe('App Header', () => {
       modules: {
         userinfo: {
           ...userInfoStore,
-          state: user,
+          state: {
+            ...userInfoStore.state,
+            ...user,
+          },
         },
       },
     });

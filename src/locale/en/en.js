@@ -26,12 +26,15 @@ export default {
     registry: 'History',
     openedCall: {
       callInfo: 'Call info',
-      agentDescription: 'Agent description',
+      agentDescription: 'Agent`s comment',
       callLegs: 'Legs A-B',
       transferFrom: 'Transfer From',
       transferMerge: 'Call Merge',
       transferTo: 'Transfer To',
       noVariables: 'There are no variables',
+      callWave: 'Wave',
+      hold: 'Hold | Holds',
+      comment: 'Note | Notes',
     },
   },
   dashboards: {
@@ -39,7 +42,18 @@ export default {
     newBtn: 'New Dashboard',
     dashboardSelect: 'Select dashboard:',
     dashboardConfig: 'Dashboard configuration:',
-    interval: 'Interval',
+    interval: {
+      interval: 'Interval',
+      options: {
+        auto: 'Auto',
+        min: '{value} min | {value} mins',
+        hour: '{value} hour | {value} hours',
+        day: '{value} day | {value} days',
+        week: '{value} week | {value} weeks',
+        month: '{value} month | {value} months',
+        year: '{value} year | {value} years',
+      },
+    },
     dashboardConfigForm: {
       name: 'Name',
       visualization: 'Visualization',
@@ -137,6 +151,23 @@ export default {
     queueDurationSec: 'Queue duration',
     result: 'Result',
     sipCode: 'SIP code',
+    agentDescription: 'Agent`s comment',
+    amdResult: 'AMD result',
+    hangupDisposition: 'Hangup disposition',
+  },
+  hangupDisposition: {
+    notAnswered: 'Not answered',
+    cancelled: 'Cancelled',
+    agentDropped: 'Agent dropped',
+    clientDropped: 'Client dropped',
+    error: 'Error',
+  },
+  filters: {
+    tag: {
+      options: {
+        vm: 'Voice mail',
+      },
+    },
   },
   components: {
     dtPicker: {

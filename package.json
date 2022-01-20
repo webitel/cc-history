@@ -1,16 +1,16 @@
 {
-  "name": "statistics",
-  "version": "0.1.0",
+  "name": "history",
+  "version": "22.01.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build-and-run-locally": " npm run build && sudo docker run -p 80:80 -v ${PWD}/dist:/usr/share/nginx/html:rw -v ${HOME}/default.conf:/etc/nginx/conf.d/default.conf:ro -v ${PWD}/dist:/www/history:rw -v ${HOME}/Projects/web-client-auth/dist:/www/auth:ro --rm nginx",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint:fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@webitel/ui-sdk": "^0.6.52",
+    "@webitel/ui-sdk": "^0.9.57",
     "axios": "^0.19.2",
     "bamboo-jest-reporter": "^1.0.3",
     "chart.js": "^2.9.3",
@@ -24,6 +24,7 @@
     "jsdom": "^16.4.0",
     "jszip": "^3.4.0",
     "jszip-utils": "^0.1.0",
+    "soundtouchjs": "^0.1.29",
     "svg-sprite-loader": "^5.0.0",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",
@@ -33,7 +34,9 @@
     "vuejs-datepicker": "^1.6.2",
     "vuelidate": "^0.7.5",
     "vuex": "^3.1.2",
-    "webitel-sdk": "^0.1.6"
+    "wavesurfer.js": "^5.2.0",
+    "wavesurfer.js-vue": "^1.0.0",
+    "webitel-sdk": "^0.1.91"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",

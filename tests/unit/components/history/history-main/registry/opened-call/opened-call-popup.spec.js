@@ -17,37 +17,88 @@ describe('Opened call popup (wrapper)', () => {
     },
   });
   it('renders a component', () => {
-    const wrapper = shallowMount(OpenedCallPopup, { localVue, store });
-    expect(wrapper.exists()).toBe(true);
+    const wrapper = shallowMount(OpenedCallPopup, {
+      localVue,
+      store,
+    });
+    expect(wrapper.exists())
+      .toBe(true);
   });
 
   it('renders a component if main call has any children', () => {
     const wrapper = shallowMount(OpenedCallPopup, {
-      localVue, store, computed: {
+      localVue,
+      store,
+      computed: {
         mainCall() {
           return { hasChildren: true };
         },
       },
     });
-    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.exists())
+      .toBe(true);
   });
 
-  it('resets currentTab to call-info, if mainCall changes', async () => {
+  it('resets currentTab to call-info if id changes', async () => {
     const currentTab = { value: 'call-legs' };
     const callInfoTab = { value: 'call-info' };
     const wrapper = shallowMount(OpenedCallPopup, {
       localVue,
       store,
-      data: () => ({ mainCallTrigger: false, currentTab }),
+      data: () => ({
+        id: '1',
+        mainCallTrigger: false,
+        currentTab,
+      }),
       computed: {
         mainCall() {
-          return { mainCallTrigger: this.mainCallTrigger, hasChildren: true };
+          return {
+            id: this.id,
+            mainCallTrigger: this.mainCallTrigger,
+            hasChildren: true,
+          };
         },
       },
     });
-    expect(wrapper.vm.currentTab).toEqual(currentTab);
-    wrapper.setData({ mainCallTrigger: true });
+    expect(wrapper.vm.currentTab)
+      .toEqual(currentTab);
+    wrapper.setData({
+      id: '2',
+      mainCallTrigger: true,
+    });
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.currentTab).toEqual(callInfoTab);
+    expect(wrapper.vm.currentTab)
+      .toEqual(callInfoTab);
+  });
+
+  it('does not reset currentTab if id does not change', async () => {
+    const currentTab = { value: 'call-legs' };
+    const wrapper = shallowMount(OpenedCallPopup, {
+      localVue,
+      store,
+      data: () => ({
+        id: '1',
+        mainCallTrigger: false,
+        currentTab,
+      }),
+      computed: {
+        mainCall() {
+          return {
+            id: this.id,
+            mainCallTrigger: this.mainCallTrigger,
+            hasChildren: true,
+          };
+        },
+      },
+    });
+    expect(wrapper.vm.currentTab)
+      .toEqual(currentTab);
+    wrapper.setData({
+      id: '1',
+      mainCallTrigger: true,
+    });
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.currentTab)
+      .toEqual(currentTab);
   });
 });

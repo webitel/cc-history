@@ -1,7 +1,10 @@
+import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
+
 import APIRepository from '../../../../api/APIRepository';
 
 const historyAPI = APIRepository.history;
-const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description'];
+const annotationsAPI = APIRepository.annotations;
+const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'direction', 'from', 'to', 'destination', 'hold', 'annotations'];
 const REQUIRED_DATA_FIELDS = ['id', 'parent_id', 'transfer_from', 'transfer_to'];
 
 const transfersHeader = {
@@ -14,6 +17,7 @@ const transfersLegMarkerHeader = {
 const state = {
   mainCallId: null,
   mainCall: {},
+  fileId: null,
   legsData: [],
   isLoading: false,
   isLegsDataLoading: false,
@@ -29,7 +33,7 @@ const getters = {
     fields: getters.DATA_FIELDS,
     dependencyId: state.mainCallId,
     from: 0, // get All
-    to: Date.now(),
+    to: 0,
     size: 100,
     skipParent: false,
   }),
@@ -74,11 +78,18 @@ const actions = {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
+      if (!state.fileId && mainCall.files) {
+        await context.dispatch('SET_FILE_ID', mainCall.files[0].id);
+      }
     } catch (err) {
       throw err;
     } finally {
       context.commit('SET_LOADING', false);
     }
+  },
+
+  SET_FILE_ID: (context, fileId) => {
+    context.commit('SET_FILE_ID', fileId);
   },
 
   SET_OPENED_CALL: async (context, item) => {
@@ -90,12 +101,28 @@ const actions = {
   RESET_OPENED_CALL: (context) => {
     context.commit('RESET_CALL_ID');
     context.commit('RESET_MAIN_CALL');
+    context.commit('RESET_FILE_ID');
     context.commit('RESET_LEGS_DATA_LIST');
   },
+
+  ADD_ANNOTATION: async (context, annotation) => (
+    annotationsAPI.add({ itemInstance: annotation })
+  ),
+  EDIT_ANNOTATION: async (context, annotation) => (
+    annotationsAPI.update({ itemInstance: annotation })
+  ),
+  DELETE_ANNOTATION: async (context, annotation) => (
+    annotationsAPI.delete({ itemInstance: annotation })
+  ),
 };
+
 const mutations = {
   SET_MAIN_CALL: (state, mainCall) => {
     state.mainCall = mainCall;
+  },
+
+  SET_FILE_ID: (state, fileId) => {
+    state.fileId = fileId;
   },
 
   RESET_MAIN_CALL: (state) => {
@@ -125,12 +152,14 @@ const mutations = {
   RESET_CALL_ID: (state) => {
     state.mainCallId = null;
   },
+  RESET_FILE_ID: (state) => {
+    state.fileId = null;
+  },
 };
 
-export default {
-  namespaced: true,
-  state,
-  getters,
-  actions,
-  mutations,
-};
+const openedCall = new BaseStoreModule()
+  .getModule({
+ state, getters, actions, mutations,
+});
+
+export default openedCall;

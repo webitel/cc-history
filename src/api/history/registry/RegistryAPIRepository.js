@@ -1,4 +1,5 @@
 import { CallServiceApiFactory } from 'webitel-sdk';
+
 import instance from '../../instance';
 import configuration from '../../utils/openAPIConfig';
 import formatResponse from './formatRegistryResponse';
@@ -25,8 +26,7 @@ const fetchHistory = async ({
                               team,
                               gateway,
                               member,
-                              durationFrom,
-                              durationTo,
+                              duration,
                               skipParent,
                               parentId,
                               cause,
@@ -38,11 +38,18 @@ const fetchHistory = async ({
                               ids,
                               dependencyId,
                               tags,
+                              amdResult,
+                              hold,
+                              annotations,
+                              hangupDisposition,
                             }) => {
   try {
     const response = await callService.searchHistoryCall(
       page,
       size,
+      undefined,
+      sort,
+      fields,
       from,
       to,
       user,
@@ -51,17 +58,14 @@ const fetchHistory = async ({
       team,
       member,
       gateway,
-      `${search}`,
-      durationFrom,
-      durationTo,
+      duration?.from,
+      duration?.to,
       skipParent,
       parentId,
       cause,
       existsFile,
-      fields,
-      sort,
       undefined,
-      undefined,
+      `${search}`,
       direction,
       undefined,
       undefined,
@@ -73,6 +77,10 @@ const fetchHistory = async ({
       undefined,
       dependencyId,
       tags,
+      amdResult,
+      hold,
+      annotations,
+      hangupDisposition,
     );
     return formatResponse(response);
   } catch (err) {

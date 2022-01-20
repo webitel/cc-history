@@ -22,8 +22,8 @@ module.exports = {
     'lines-between-class-members': [
       'error',
       'always',
-      { 'exceptAfterSingleLine': true },
-    ]
+      { exceptAfterSingleLine: true },
+    ],
   },
   overrides: [
     {

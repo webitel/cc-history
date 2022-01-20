@@ -37,6 +37,11 @@
         <template slot="member" slot-scope="{ item }">
           <div v-if="item.member">{{ item.member.name }}</div>
         </template>
+        <template slot="hangupDisposition" slot-scope="{ item }">
+          <div v-if="item.hangupDisposition">
+            {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}
+          </div>
+        </template>
 
         <template slot="actions" slot-scope="{ item, index }">
           <media-action
@@ -56,6 +61,7 @@
 
           <wt-icon-btn
             class="table-action"
+            icon-prefix="hs"
             icon="forks"
             @click="openItem(item)"
           ></wt-icon-btn>

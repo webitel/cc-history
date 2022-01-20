@@ -15,16 +15,18 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
-import CallInfo from './opened-call-tabs/opened-call-info.vue';
-import CallLegs from './opened-call-tabs/opened-call-legs.vue';
+import CallInfo from './opened-call-info/opened-call-info.vue';
+import CallLegs from './opened-call-legs/opened-call-legs.vue';
+import CallWave from './opened-call-wave/opened-call-wave.vue';
 
 export default {
   name: 'opened-item-popup',
   components: {
     CallInfo,
     CallLegs,
+    CallWave,
   },
 
   data: () => ({
@@ -34,8 +36,8 @@ export default {
   }),
 
   watch: {
-    mainCall(mainCall) {
-      if (mainCall) this.resetCurrentTab();
+    'mainCall.id': function () {
+      this.resetCurrentTab();
     },
   },
 
@@ -43,8 +45,6 @@ export default {
     ...mapState('registry/opened-call', {
       mainCall: (state) => state.mainCall,
       isLoading: (state) => state.isLoading,
-    }),
-    ...mapGetters('registry/opened-call', {
     }),
 
     tabs() {
@@ -56,8 +56,13 @@ export default {
         text: this.$t('registry.openedCall.callLegs'),
         value: 'call-legs',
       };
+      const callWave = {
+        text: this.$t('registry.openedCall.callWave'),
+        value: 'call-wave',
+      };
       const tabs = [callInfo];
       if (this.mainCall.hasChildren) tabs.push(callLegs);
+      if (this.mainCall.files) tabs.push(callWave);
       return tabs;
     },
   },

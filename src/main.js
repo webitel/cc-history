@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
+import WaveSurferVue from 'wavesurfer.js-vue';
+
 import App from './the-app.vue';
 import router from './router';
 import store from './store';
@@ -9,9 +11,12 @@ import './plugins/webitel-ui';
 
 import './css/main.scss';
 
+import './assets/icons/sprite';
+
 Vue.config.productionTip = false;
 
 Vue.use(Vuelidate);
+Vue.use(WaveSurferVue);
 
 const fetchConfig = async () => {
   const response = await fetch(`${process.env.BASE_URL}config.json`);
