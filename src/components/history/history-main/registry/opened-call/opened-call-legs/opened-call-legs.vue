@@ -171,7 +171,7 @@ export default {
     background: #fff;
   }
   50% {
-    background: var(--main-option-hover-color);
+    background: var(--accent-secondary-color);
   }
   100% {
     background: #fff;
