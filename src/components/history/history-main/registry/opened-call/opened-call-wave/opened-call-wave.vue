@@ -146,7 +146,7 @@ const cursorOptions = {
   customShowTimeStyle: {
     backgroundColor: 'var(--contrast-color)',
     color: 'var(--main-color)',
-    padding: 'var(--component-padding)',
+    padding: 'var(--spacing-sm)',
   },
   formatTimeCallback: convertDuration,
 };
@@ -418,7 +418,7 @@ export default {
   .call-wave-page-main {
     display: flex;
     flex-direction: column;
-    gap: var(--component-spacing);
+    gap: var(--spacing-sm);
 
     &--hidden {
       display: none;
@@ -432,19 +432,19 @@ export default {
     .toolbar-main {
       display: flex;
       flex: 1 0 auto;
-      gap: var(--component-spacing);
+      gap: var(--spacing-sm);
       justify-content: center;
     }
 
     .toolbar-actions {
       display: flex;
-      gap: var(--component-spacing);
+      gap: var(--spacing-sm);
     }
   }
 
   .call-wave-data--grid {
     display: grid;
-    grid-gap: var(--component-spacing);
+    grid-gap: var(--spacing-sm);
     grid-template-columns: 70px 1fr;
     grid-template-rows: repeat(2, auto);
 
@@ -457,12 +457,12 @@ export default {
 
     .call-wave-actions {
       display: flex;
-      gap: var(--component-spacing);
+      gap: var(--spacing-sm);
       justify-content: space-between;
 
       .call-wave-actions-buttons {
         display: flex;
-        gap: var(--component-spacing)
+        gap: var(--spacing-sm)
       }
     }
 
@@ -472,8 +472,8 @@ export default {
       // setting css styles to marker title and icon
       ::v-deep marker {
         div:nth-child(2) {
-          padding-left: var(--spacing--sm);
-          gap: var(--spacing--sm);
+          padding-left: var(--spacing-xs);
+          gap: var(--spacing-xs);
         }
       }
 
