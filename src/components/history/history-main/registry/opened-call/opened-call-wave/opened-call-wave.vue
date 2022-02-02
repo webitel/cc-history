@@ -15,9 +15,9 @@
             :label="$tc('registry.openedCall.hold', 2)"
             @change="toggleHolds"
           ></wt-checkbox>
-          <wt-badge>
+          <wt-chip>
             {{ holdsSize }}
-          </wt-badge>
+          </wt-chip>
 
           <wt-checkbox
             :value="showComments"
@@ -25,9 +25,9 @@
             :label="$tc('registry.openedCall.comment', 2)"
             @change="toggleComments"
           ></wt-checkbox>
-          <wt-badge>
+          <wt-chip>
             {{ commentsSize }}
-          </wt-badge>
+          </wt-chip>
         </div>
         <div class="toolbar-actions">
           <wt-icon-btn
