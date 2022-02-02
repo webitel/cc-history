@@ -108,7 +108,7 @@ export default {
   }
 
   .files-counter {
-    @extend %typo-body-sm;
+    @extend %typo-caption;
     position: absolute;
     right: 0;
     top: 100%;
@@ -119,7 +119,7 @@ export default {
     border-radius: var(--border-radius);
 
     &__count {
-      @extend %typo-strong-sm;
+      @extend %typo-caption;
     }
   }
 }
