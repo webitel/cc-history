@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@webitel/ui-sdk": "^1.0.10",
-    "axios": "^0.21.2",
+    "axios": "^0.25.0",
     "bamboo-jest-reporter": "^1.0.3",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
