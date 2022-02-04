@@ -157,7 +157,7 @@ export default {
 
 // make 1st row (aka main parent) bold
 ::v-deep .wt-table__row-wrap:first-child .wt-table__td > div {
-  font-family: 'Montserrat Semi', sans-serif;
+  font-weight: 600;
 }
 
 // blinking animation to highlighted row

@@ -155,7 +155,7 @@ const timelineOptions = {
   container: '#wave-timeline',
   notchPercentHeight: 1,
   unlabeledNotchColor: 'var(--secondary-color)',
-  fontFamily: 'Montserrat Regular, monospace',
+  fontFamily: 'Montserrat, monospace',
   fontSize: 14,
   labelPadding: 5,
   primaryLabelInterval: 5,
@@ -381,7 +381,7 @@ export default {
         // seting our font for marker title:
         createdMarkers.forEach((marker) => {
           // eslint-disable-next-line no-param-reassign
-          marker.children[1].children[1].style.fontFamily = '"Montserrat Regular", monospace';
+          marker.children[1].children[1].style.fontFamily = '"Montserrat", monospace';
         });
       } catch (err) {
         throw err;
