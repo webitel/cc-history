@@ -51,7 +51,7 @@ export default {
 }
 
 .call-info-heading {
-  @extend %typo-strong-md;
+  @extend %typo-subtitle-2;
   margin-bottom: 30px;
 }
 
@@ -60,20 +60,20 @@ export default {
   align-items: center;
 
   &__key {
-    @extend %typo-strong-md;
+    @extend %typo-subtitle-2;
   }
 
   &__value {
-    @extend %typo-body-md;
+    @extend %typo-body-2;
     margin-left: (5px);
   }
 }
 
 .call-variables__empty-variables {
-  @extend %typo-body-md;
+  @extend %typo-body-2;
 }
 
 .call-agent-description {
-  @extend %typo-body-md;
+  @extend %typo-body-2;
 }
 </style>

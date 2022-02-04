@@ -140,7 +140,7 @@ export default {
 .comment-form {
   display: flex;
   align-items: flex-start;
-  gap: var(--component-spacing);
+  gap: var(--spacing-sm);
 
   .wt-timepicker {
     flex-grow: 0;

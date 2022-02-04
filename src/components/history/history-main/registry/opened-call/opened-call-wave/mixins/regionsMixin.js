@@ -162,7 +162,7 @@ export default {
       wrapperEl.style.position = 'absolute';
       wrapperEl.style.cursor = 'pointer';
       wrapperEl.style.zIndex = '9';
-      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--component-spacing)' : '-26px';
+      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--spacing-sm)' : '-26px';
       wrapperEl.onmouseenter = () => {
         player.cursor.hideCursor();
         tooltipEl.style.pointerEvents = 'auto';

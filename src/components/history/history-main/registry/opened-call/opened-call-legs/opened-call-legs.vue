@@ -157,7 +157,7 @@ export default {
 
 // make 1st row (aka main parent) bold
 ::v-deep .wt-table__row-wrap:first-child .wt-table__td > div {
-  font-family: 'Montserrat Semi', sans-serif;
+  font-weight: 600;
 }
 
 // blinking animation to highlighted row
@@ -171,7 +171,7 @@ export default {
     background: #fff;
   }
   50% {
-    background: var(--main-option-hover-color);
+    background: var(--accent-secondary-color);
   }
   100% {
     background: #fff;

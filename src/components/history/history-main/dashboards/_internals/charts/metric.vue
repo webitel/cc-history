@@ -119,27 +119,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-%typo-metric-aggregation-title {
-  font: 20px 'Montserrat Semi';
-  line-height: 1.2;
-};
-%typo-metric-aggregation-value {
-  font: 42px 'Montserrat Semi';
-  line-height: 1.2;
-};
-%typo-metric-value-title {
-  font: 20px 'Montserrat Semi';
-  line-height: 1.2;
-};
-%typo-metric-value-value {
-  font: 26px 'Montserrat Semi';
-  line-height: 1.2;
-};
-%typo-metric-value-percent {
-  font: 16px 'Montserrat Semi';
-  line-height: 1.2;
-};
-
 .metric {
   display: grid;
   grid-template-areas:
@@ -156,11 +135,11 @@ export default {
   margin-top: 30px;
 
   .metric__aggregation__title {
-    @extend %typo-metric-aggregation-title;
+    @extend %typo-heading-3;
   }
 
   .metric__aggregation__value {
-    @extend %typo-metric-aggregation-value;
+    @extend %typo-heading-1;
   }
 }
 
@@ -178,17 +157,17 @@ export default {
   }
 
   .metric__value__title {
-    @extend %typo-metric-value-title;
+    @extend %typo-subtitle-1;
     margin-top: 10px;
   }
 
   .metric__value__value {
-    @extend %typo-metric-value-value;
+    @extend %typo-heading-3;
     margin-top: 10px;
   }
 
   .metric__value__percent {
-    @extend %typo-metric-value-percent;
+    @extend %typo-subtitle-1;
     margin-top: 10px;
   }
 }
