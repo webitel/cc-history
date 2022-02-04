@@ -71,16 +71,16 @@ export default {
     cursor: pointer;
 
     &:hover, &--selected {
-      border-color: var(--main-accent-color);
+      border-color: var(--accent-color);
     }
 
     &__title {
-      @extend %typo-strong-md;
+      @extend %typo-subtitle-2;
       margin-bottom: 5px;
     }
 
     &__description {
-      @extend %typo-body-md;
+      @extend %typo-body-2;
     }
   }
 </style>

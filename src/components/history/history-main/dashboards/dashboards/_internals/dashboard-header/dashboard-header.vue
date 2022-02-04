@@ -37,7 +37,7 @@ export default {
   }
 
   .dashboard-header__heading {
-    @extend %typo-heading-md;
+    @extend %typo-heading-2;
   }
 
   .dashboard-header__actions-wrapper {

@@ -59,7 +59,7 @@ export default {
   position: absolute;
   top: 24px;
   right: 0;
-  background: var(--main-primary-color);
+  background: var(--main-color);
   box-shadow: var(--box-shadow);
   z-index: 1;
   cursor: pointer;
@@ -72,7 +72,7 @@ export default {
     transition: var(--transition);
 
     &:hover {
-      background: var(--main-option-hover-color);
+      background: var(--accent-secondary-color);
 
       .wt-icon ::v-deep .wt-icon__icon {
         fill: var(--icon--hover-color);

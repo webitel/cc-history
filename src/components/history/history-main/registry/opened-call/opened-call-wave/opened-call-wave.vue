@@ -15,9 +15,9 @@
             :label="$tc('registry.openedCall.hold', 2)"
             @change="toggleHolds"
           ></wt-checkbox>
-          <wt-badge>
+          <wt-chip>
             {{ holdsSize }}
-          </wt-badge>
+          </wt-chip>
 
           <wt-checkbox
             :value="showComments"
@@ -25,9 +25,9 @@
             :label="$tc('registry.openedCall.comment', 2)"
             @change="toggleComments"
           ></wt-checkbox>
-          <wt-badge>
+          <wt-chip>
             {{ commentsSize }}
-          </wt-badge>
+          </wt-chip>
         </div>
         <div class="toolbar-actions">
           <wt-icon-btn
@@ -146,7 +146,7 @@ const cursorOptions = {
   customShowTimeStyle: {
     backgroundColor: 'var(--contrast-color)',
     color: 'var(--main-color)',
-    padding: 'var(--component-padding)',
+    padding: 'var(--spacing-sm)',
   },
   formatTimeCallback: convertDuration,
 };
@@ -155,7 +155,7 @@ const timelineOptions = {
   container: '#wave-timeline',
   notchPercentHeight: 1,
   unlabeledNotchColor: 'var(--secondary-color)',
-  fontFamily: 'Montserrat Regular, monospace',
+  fontFamily: 'Montserrat, monospace',
   fontSize: 14,
   labelPadding: 5,
   primaryLabelInterval: 5,
@@ -381,7 +381,7 @@ export default {
         // seting our font for marker title:
         createdMarkers.forEach((marker) => {
           // eslint-disable-next-line no-param-reassign
-          marker.children[1].children[1].style.fontFamily = '"Montserrat Regular", monospace';
+          marker.children[1].children[1].style.fontFamily = '"Montserrat", monospace';
         });
       } catch (err) {
         throw err;
@@ -418,7 +418,7 @@ export default {
   .call-wave-page-main {
     display: flex;
     flex-direction: column;
-    gap: var(--component-spacing);
+    gap: var(--spacing-sm);
 
     &--hidden {
       display: none;
@@ -432,19 +432,19 @@ export default {
     .toolbar-main {
       display: flex;
       flex: 1 0 auto;
-      gap: var(--component-spacing);
+      gap: var(--spacing-sm);
       justify-content: center;
     }
 
     .toolbar-actions {
       display: flex;
-      gap: var(--component-spacing);
+      gap: var(--spacing-sm);
     }
   }
 
   .call-wave-data--grid {
     display: grid;
-    grid-gap: var(--component-spacing);
+    grid-gap: var(--spacing-sm);
     grid-template-columns: 70px 1fr;
     grid-template-rows: repeat(2, auto);
 
@@ -457,12 +457,12 @@ export default {
 
     .call-wave-actions {
       display: flex;
-      gap: var(--component-spacing);
+      gap: var(--spacing-sm);
       justify-content: space-between;
 
       .call-wave-actions-buttons {
         display: flex;
-        gap: var(--component-spacing)
+        gap: var(--spacing-sm)
       }
     }
 
@@ -472,8 +472,8 @@ export default {
       // setting css styles to marker title and icon
       ::v-deep marker {
         div:nth-child(2) {
-          padding-left: var(--spacing--sm);
-          gap: var(--spacing--sm);
+          padding-left: var(--spacing-xs);
+          gap: var(--spacing-xs);
         }
       }
 

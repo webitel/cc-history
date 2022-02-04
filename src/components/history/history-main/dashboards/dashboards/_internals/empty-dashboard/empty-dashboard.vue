@@ -34,12 +34,12 @@ export default {
 }
 
 .empty-dashboard__title {
-  @extend %typo-strong-lg;
+  @extend %typo-subtitle-1;
   margin: 10px auto 0;
 }
 
 .empty-dashboard__text {
-  @extend %typo-body-lg;
+  @extend %typo-body-1;
   margin: 10px auto 0;
 }
 </style>
