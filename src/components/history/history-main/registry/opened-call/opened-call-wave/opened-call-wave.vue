@@ -2,17 +2,19 @@
   <section class="call-wave-page">
     <wt-progress-bar
       v-show="isLoading"
-      :value="loadProgress" :max="100">
+      :max="100" :value="loadProgress"
+    >
     </wt-progress-bar>
     <section
+      :class="{'call-wave-page-main--hidden': isLoading}"
       class="call-wave-page-main"
-      :class="{'call-wave-page-main--hidden': isLoading}">
+    >
       <section class="call-wave-toolbar">
         <div class="toolbar-main">
           <wt-checkbox
-            :value="showHolds"
-            :selected="showHolds"
             :label="$tc('registry.openedCall.hold', 2)"
+            :selected="showHolds"
+            :value="showHolds"
             @change="toggleHolds"
           ></wt-checkbox>
           <wt-chip>
@@ -20,9 +22,9 @@
           </wt-chip>
 
           <wt-checkbox
-            :value="showComments"
-            :selected="showComments"
             :label="$tc('registry.openedCall.comment', 2)"
+            :selected="showComments"
+            :value="showComments"
             @change="toggleComments"
           ></wt-checkbox>
           <wt-chip>
@@ -45,50 +47,51 @@
 
       <opened-call-comment-form
         v-if="commentsMode"
-        :call-id="call.id"
         :call-duration="callDuration"
+        :call-id="call.id"
         :comment="selectedComment"
-        @save="saveComment"
         @delete="deleteComment"
+        @save="saveComment"
       />
 
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
-          <div class="call-wave-leg" v-if="!leftGain.disabled">
+          <div v-if="!leftGain.disabled" class="call-wave-leg">
             <wt-icon-btn
               :icon="leftGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleLeftGain"
             ></wt-icon-btn>
             <wt-slider
-              :value="volumeLeftGain"
-              :min="0"
               :max="2"
+              :min="0"
               :step="0.01"
+              :value="volumeLeftGain"
               vertical
               @input="volumeLeftChangeHandler"
             />
           </div>
-          <div class="call-wave-leg" v-if="!rightGain.disabled">
+          <div v-if="!rightGain.disabled" class="call-wave-leg">
             <wt-icon-btn
               :icon="rightGain.muted ? 'sound-off': 'sound-on'"
               @click="toggleRightGain"
             ></wt-icon-btn>
             <wt-slider
-              :value="volumeRightGain"
-              :min="0"
               :max="2"
+              :min="0"
               :step="0.01"
+              :value="volumeRightGain"
               vertical
               @input="volumeRightChangeHandler"
             />
           </div>
         </section>
 
-        <section class="call-wave-data-plugin" v-if="file">
+        <section v-if="file" class="call-wave-data-plugin">
           <wavesurfer
+            ref="surf"
             :options="waveOptions"
             :src="file"
-            ref="surf">
+          >
           </wavesurfer>
           <div id="wave-timeline" class="call-wave-timeline"></div>
         </section>
@@ -96,28 +99,52 @@
         <div></div> <!-- an empty div in order to position in the correct grid column -->
         <section class="call-wave-actions">
           <section class="call-wave-actions-buttons">
-            <wt-button :color="speedButtonColor(2)" @click="toggleRate(2)">
-              <wt-label>x2</wt-label>
+            <wt-button
+              :color="speedButtonColor(2)"
+              @click="toggleRate(2)"
+            >x2
             </wt-button>
-            <wt-button :color="speedButtonColor(1.5)" @click="toggleRate(1.5)">
-              <wt-label>x1.5</wt-label>
+            <wt-button
+              :color="speedButtonColor(1.5)"
+              @click="toggleRate(1.5)"
+            >x1.5
             </wt-button>
-            <wt-button :color="speedButtonColor(0.75)" @click="toggleRate(0.75)">
-              <wt-label>x0.75</wt-label>
+            <wt-button
+              :color="speedButtonColor(0.75)"
+              @click="toggleRate(0.75)"
+            >x0.75
             </wt-button>
-            <wt-button :color="speedButtonColor(0.5)" @click="toggleRate(0.5)">
-              <wt-label>x0.5</wt-label>
+            <wt-button
+              :color="speedButtonColor(0.5)"
+              @click="toggleRate(0.5)"
+            >x0.5
             </wt-button>
-            <wt-button :color="isPlaying ? 'primary': 'secondary'" @click="playPause">
-              <wt-icon :icon="!isPlaying ? 'play' : 'pause'"></wt-icon>
+            <wt-button
+              :color="isPlaying ? 'primary': 'secondary'"
+              contains-icon
+              @click="playPause"
+            >
+              <wt-icon
+                :icon="!isPlaying ? 'play' : 'pause'"
+              ></wt-icon>
             </wt-button>
           </section>
           <section class="call-wave-actions-buttons">
-            <wt-button color="secondary" :disabled="zoom > 1000" @click="increaseZoom">
-              <wt-icon icon="zoom-in"/>
+            <wt-button
+              :disabled="zoom > 1000"
+              color="secondary"
+              contains-icon
+              @click="increaseZoom"
+            >
+              <wt-icon icon="zoom-in" />
             </wt-button>
-            <wt-button color="secondary" :disabled="zoom < 0.001" @click="decreaseZoom">
-              <wt-icon icon="zoom-out"/>
+            <wt-button
+              :disabled="zoom < 0.001"
+              color="secondary"
+              contains-icon
+              @click="decreaseZoom"
+            >
+              <wt-icon icon="zoom-out" />
             </wt-button>
           </section>
         </section>
@@ -259,9 +286,9 @@ export default {
     },
     async deleteComment() {
       await this.deleteAnnotation({
-        id: this.selectedComment.id,
-        callId: this.call.id,
-      });
+                                    id: this.selectedComment.id,
+                                    callId: this.call.id,
+                                  });
       await this.updateRegions();
     },
     openCommentMode() {
@@ -275,7 +302,8 @@ export default {
       // We are looking if some region has no icon with comment. In case it exists, it means the
       // comment was not saved and the region must be deleted to have a cleaner wave.
       if (this.player.regions.list) {
-        const cancelledRegion = Object.keys(this.player.regions.list)
+        const cancelledRegion = Object
+          .keys(this.player.regions.list)
           .find((region) => this.player.regions.list[region].element.children.length < 3);
         if (cancelledRegion) this.redrawRegions();
       }
@@ -362,20 +390,22 @@ export default {
       this.hideProgress();
       try {
         player.addMarker({
-          time: 0,
-          position: 'top',
-          // in order to show empty FROM (not blocking mounting if name and number are not received)
-          label: call.from.name || call.from.number || ' ',
-          color: player.params.splitChannelsOptions.channelColors[0].progressColor,
-          markerElement: createMarker('var(--true-color)'),
-        });
+                           time: 0,
+                           position: 'top',
+                           /* in order to show empty FROM
+                            (not blocking mounting if name and number are not received) */
+                           label: call.from.name || call.from.number || ' ',
+                           color: player.params.splitChannelsOptions.channelColors[0].progressColor,
+                           markerElement: createMarker('var(--true-color)'),
+                         });
         if (this.rightGain) {
           player.addMarker({
-            time: 0,
-            label: call.to?.name || call.to?.number || call.destination,
-            color: player.params.splitChannelsOptions.channelColors[1].progressColor,
-            markerElement: createMarker('var(--accent-color)'),
-          });
+                             time: 0,
+                             label: call.to?.name || call.to?.number || call.destination,
+                             color: player.params.splitChannelsOptions
+                               .channelColors[1].progressColor,
+                             markerElement: createMarker('var(--accent-color)'),
+                           });
         }
         const createdMarkers = document.querySelectorAll('marker');
         // seting our font for marker title:
@@ -412,7 +442,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .call-wave-page {
 
   .call-wave-page-main {
@@ -432,8 +462,8 @@ export default {
     .toolbar-main {
       display: flex;
       flex: 1 0 auto;
-      gap: var(--spacing-sm);
       justify-content: center;
+      gap: var(--spacing-sm);
     }
 
     .toolbar-actions {
@@ -450,19 +480,27 @@ export default {
 
     .call-wave-data-legs-actions {
       display: flex;
+      align-items: center;
       flex-direction: column;
       justify-content: space-evenly;
-      align-items: center;
+
+      .call-wave-leg {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+      }
     }
 
     .call-wave-actions {
       display: flex;
-      gap: var(--spacing-sm);
       justify-content: space-between;
+      gap: var(--spacing-sm);
 
       .call-wave-actions-buttons {
         display: flex;
-        gap: var(--spacing-sm)
+        align-items: center;
+        gap: var(--spacing-sm);
       }
     }
 
