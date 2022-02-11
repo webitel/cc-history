@@ -32,7 +32,7 @@ export default {
       transferMerge: 'Об\'єднання Дзвінків',
       transferTo: 'Трансфер На',
       noVariables: 'Цей дзвінок не має змінних',
-      callWave: 'Wave',
+      callWave: 'Розмітка дзвінка',
     },
   },
   dashboards: {
