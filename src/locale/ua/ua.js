@@ -152,6 +152,7 @@ export default {
     agentDescription: 'Коментар оператора',
     amdResult: 'AMD результат',
     hangupDisposition: 'Результат завершення',
+    blindTransfer: 'Слепой перевод',
   },
   hangupDisposition: {
     notAnswered: 'Без відповіді',

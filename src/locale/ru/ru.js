@@ -154,6 +154,7 @@ export default {
     agentDescription: 'Комментарий оператора',
     amdResult: 'AMD результат',
     hangupDisposition: 'Результат завершения',
+    blindTransfer: 'Сліпий трансфер',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',
