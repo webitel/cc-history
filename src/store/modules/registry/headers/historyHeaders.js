@@ -215,4 +215,10 @@ export default [
     sort: null,
     field: 'agent_description',
   },
+  {
+    value: 'blindTransfer',
+    show: false,
+    sort: null,
+    field: 'blind_transfer',
+  },
 ];
