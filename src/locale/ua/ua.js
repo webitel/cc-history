@@ -32,7 +32,7 @@ export default {
       transferMerge: 'Об\'єднання Дзвінків',
       transferTo: 'Трансфер На',
       noVariables: 'Цей дзвінок не має змінних',
-      callWave: 'Wave',
+      callWave: 'Розмітка дзвінка',
     },
   },
   dashboards: {
@@ -152,6 +152,7 @@ export default {
     agentDescription: 'Коментар оператора',
     amdResult: 'AMD результат',
     hangupDisposition: 'Результат завершення',
+    blindTransfer: 'Сліпий трансфер',
   },
   hangupDisposition: {
     notAnswered: 'Без відповіді',

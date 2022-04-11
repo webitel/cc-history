@@ -32,7 +32,7 @@ export default {
       transferMerge: 'Объединение Звонков',
       transferTo: 'Перевод На',
       noVariables: 'Этот звонок не имеет переменных',
-      callWave: 'Wave',
+      callWave: 'Разметка звонка',
       hold: 'Удержание | Удержания',
       comment: 'Комментарий | Комментарии',
     },
@@ -154,6 +154,7 @@ export default {
     agentDescription: 'Комментарий оператора',
     amdResult: 'AMD результат',
     hangupDisposition: 'Результат завершения',
+    blindTransfer: 'Слепой перевод',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',

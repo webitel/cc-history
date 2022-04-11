@@ -122,7 +122,7 @@ export default {
 }
 
 .filter-duration__input-label {
-  @extend %typo-strong-lg;
+  @extend %typo-subtitle-1;
   margin-right: 5px;
 }
 

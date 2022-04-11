@@ -154,6 +154,7 @@ export default {
     agentDescription: 'Agent`s comment',
     amdResult: 'AMD result',
     hangupDisposition: 'Hangup disposition',
+    blindTransfer: 'Blind transfer',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',
