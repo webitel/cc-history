@@ -1,40 +1,40 @@
 <template>
   <section class="opened-call-legs">
-    <wt-loader v-show="isLoading"/>
-    <div class="table-wrapper" v-show="!isLoading">
+    <wt-loader v-show="isLoading" />
+    <div v-show="!isLoading" class="table-wrapper">
       <wt-table
         ref="call-legs-table"
-        :headers="headers"
         :data="tableData"
-        :selectable="false"
         :grid-actions="false"
+        :headers="headers"
+        :selectable="false"
       >
         <template slot="direction" slot-scope="{ item }">
-          <table-direction :item="item"/>
+          <table-direction :item="item" />
         </template>
         <template slot="from" slot-scope="{ item }">
-          <div v-if="item.from">{{item.from.number}}</div>
+          <div v-if="item.from">{{ item.from.number }}</div>
         </template>
         <template slot="to" slot-scope="{ item }">
-          <div v-if="item.to">{{item.to.number}}</div>
+          <div v-if="item.to">{{ item.to.number }}</div>
         </template>
         <template slot="user" slot-scope="{ item }">
-          <div v-if="item.user">{{item.user.name}}</div>
+          <div v-if="item.user">{{ item.user.name }}</div>
         </template>
         <template slot="gateway" slot-scope="{ item }">
-          <div v-if="item.gateway">{{item.gateway.name}}</div>
+          <div v-if="item.gateway">{{ item.gateway.name }}</div>
         </template>
         <template slot="agent" slot-scope="{ item }">
-          <div v-if="item.agent">{{item.agent.name}}</div>
+          <div v-if="item.agent">{{ item.agent.name }}</div>
         </template>
         <template slot="team" slot-scope="{ item }">
-          <div v-if="item.team">{{item.team.name}}</div>
+          <div v-if="item.team">{{ item.team.name }}</div>
         </template>
         <template slot="queue" slot-scope="{ item }">
-          <div v-if="item.queue">{{item.queue.name}}</div>
+          <div v-if="item.queue">{{ item.queue.name }}</div>
         </template>
         <template slot="member" slot-scope="{ item }">
-          <div v-if="item.member">{{item.member.name}}</div>
+          <div v-if="item.member">{{ item.member.name }}</div>
         </template>
         <template slot="hangupDisposition" slot-scope="{ item }">
           <div v-if="item.hangupDisposition">
@@ -45,52 +45,60 @@
           <wt-icon
             v-if="!item.parentId"
             class="icon__leg-marker"
-            icon-prefix="hs"
             icon="leg-a-marker"
+            icon-prefix="hs"
             size="sm"
           ></wt-icon>
         </template>
         <template slot="transfers" slot-scope="{ item }">
           <div class="transfers-wrap">
-            <div
-              class="transfer-icon"
+            <wt-tooltip
               :class="{'hidden': !item.transferFrom}"
-            >
-              <wt-icon
-                class="table-action"
-                icon="transfer-from"
-                icon-prefix="hs"
-                @mouseenter.native="highlightRow([item.transferFrom])"
-                @mouseleave.native="highlightRow([item.transferFrom])"
-              ></wt-icon>
-              <wt-tooltip>{{ $t('registry.openedCall.transferFrom') }}</wt-tooltip>
-            </div>
-            <div
               class="transfer-icon"
+            >
+              <template v-slot:activator>
+                <wt-icon
+                  class="table-action"
+                  icon="transfer-from"
+                  icon-prefix="hs"
+                  @mouseenter.native="highlightRow([item.transferFrom])"
+                  @mouseleave.native="highlightRow([item.transferFrom])"
+                ></wt-icon>
+              </template>
+              {{ $t('registry.openedCall.transferFrom') }}
+            </wt-tooltip>
+
+            <wt-tooltip
               :class="{'hidden': !item.transferFrom || !item.transferTo}"
-            >
-              <wt-icon
-                class="table-action"
-                icon="transfer-merge"
-                icon-prefix="hs"
-                @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
-                @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
-              ></wt-icon>
-              <wt-tooltip>{{ $t('registry.openedCall.transferMerge') }}</wt-tooltip>
-            </div>
-            <div
               class="transfer-icon"
-              :class="{'hidden': !item.transferTo}"
             >
-              <wt-icon
-                class="table-action"
-                icon="transfer-to"
-                icon-prefix="hs"
-                @mouseenter.native="highlightRow([item.transferTo])"
-                @mouseleave.native="highlightRow([item.transferTo])"
-              ></wt-icon>
-              <wt-tooltip>{{ $t('registry.openedCall.transferTo') }}</wt-tooltip>
-            </div>
+              <template v-slot:activator>
+                <wt-icon
+                  class="table-action"
+                  icon="transfer-merge"
+                  icon-prefix="hs"
+                  @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
+                  @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
+                ></wt-icon>
+              </template>
+              {{ $t('registry.openedCall.transferMerge') }}
+            </wt-tooltip>
+
+            <wt-tooltip
+              :class="{'hidden': !item.transferTo}"
+              class="transfer-icon"
+            >
+              <template v-slot:activator>
+                <wt-icon
+                  class="table-action"
+                  icon="transfer-to"
+                  icon-prefix="hs"
+                  @mouseenter.native="highlightRow([item.transferTo])"
+                  @mouseleave.native="highlightRow([item.transferTo])"
+                ></wt-icon>
+              </template>
+              {{ $t('registry.openedCall.transferTo') }}
+            </wt-tooltip>
           </div>
         </template>
       </wt-table>
@@ -99,7 +107,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import TableDirection from '../../_internals/table-templates/table-direction.vue';
 
 export default {
@@ -186,8 +194,8 @@ export default {
 // "A" leg marker positioning to left top corner of its row
 .icon__leg-marker {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
 }
 
 // transfer icons container
@@ -203,19 +211,6 @@ export default {
   // separate icons for proper animation
   &:nth-child(2) {
     margin: 0 3px;
-  }
-
-  .wt-tooltip {
-    position: absolute;
-    top: 50%;
-    right: calc(100% + 10px);
-    white-space: nowrap; // prevent break between words
-    transform: translate(0, -50%);
-  }
-
-  &:hover .wt-tooltip {
-    opacity: 1;
-    pointer-events: auto;
   }
 }
 </style>
