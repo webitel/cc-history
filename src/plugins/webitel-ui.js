@@ -7,7 +7,7 @@ import eventBus from '@webitel/ui-sdk/src/scripts/eventBus';
 
 import i18n from '../locale/i18n';
 import '@webitel/ui-sdk/dist/ui-sdk.css';
-import '@webitel/ui-sdk/src/css/main.scss';
+
 import '@webitel/ui-sdk/dist/img/sprite';
 
 const globals = {
