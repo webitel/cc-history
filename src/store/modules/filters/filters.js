@@ -28,6 +28,7 @@ const state = {
   direction: new EnumFilterSchema({
     options: DirectionOptions,
     locale: { label: 'fields.direction' },
+    multiple: false,
   }),
   duration: new BaseFilterSchema({
     value: { from: 0, to: null },
