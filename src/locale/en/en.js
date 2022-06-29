@@ -32,7 +32,7 @@ export default {
       transferMerge: 'Call Merge',
       transferTo: 'Transfer To',
       noVariables: 'There are no variables',
-      callWave: 'Wave',
+      callVisualization: 'Call visualization',
       hold: 'Hold | Holds',
       comment: 'Note | Notes',
     },

@@ -203,7 +203,7 @@ const createMarker = (color) => {
 };
 
 export default {
-  name: 'opened-call-wave',
+  name: 'opened-call-visualization',
   components: { OpenedCallCommentForm },
   mixins: [exportFilesMixin, soundFiltersMixin, regionsMixin],
   data: () => ({

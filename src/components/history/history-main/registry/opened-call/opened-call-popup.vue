@@ -19,14 +19,14 @@ import { mapState } from 'vuex';
 
 import CallInfo from './opened-call-info/opened-call-info.vue';
 import CallLegs from './opened-call-legs/opened-call-legs.vue';
-import CallWave from './opened-call-wave/opened-call-wave.vue';
+import CallVisualization from './opened-call-visualization/opened-call-visualization.vue';
 
 export default {
   name: 'opened-item-popup',
   components: {
     CallInfo,
     CallLegs,
-    CallWave,
+    CallVisualization,
   },
 
   data: () => ({
@@ -57,8 +57,8 @@ export default {
         value: 'call-legs',
       };
       const callWave = {
-        text: this.$t('registry.openedCall.callWave'),
-        value: 'call-wave',
+        text: this.$t('registry.openedCall.callVisualization'),
+        value: 'call-visualization',
       };
       const tabs = [callInfo];
       if (this.mainCall.hasChildren) tabs.push(callLegs);

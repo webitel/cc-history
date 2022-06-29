@@ -55,7 +55,8 @@
           <wt-icon-btn
             v-if="item.files"
             class="table-action"
-            icon="download"
+            icon="download-record"
+            icon-prefix="hs"
             @click="exportFiles(item.files)"
           ></wt-icon-btn>
 
@@ -186,7 +187,7 @@ export default {
 }
 
 .table-action {
-  margin-left: 20px;
+  margin-left: var(--spacing-xs);
 
   &:first-child {
     margin-left: 0;

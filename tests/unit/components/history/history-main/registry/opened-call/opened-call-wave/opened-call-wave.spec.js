@@ -3,7 +3,7 @@ import deepCopy from 'deep-copy';
 import Vuex from 'vuex';
 import WaveSurferVue from 'wavesurfer.js-vue';
 import OpenedCallWave
-  from '../../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-wave/opened-call-wave.vue';
+  from '../../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-visualization/opened-call-visualization.vue';
 import registry from '../../../../../../../../src/store/modules/registry/registry';
 import playerMock from '../../../../../../mocks/waveSurferMock';
 

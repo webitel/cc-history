@@ -3,7 +3,7 @@ import Vuelidate from 'vuelidate';
 import Vuex from 'vuex';
 
 import CommentForm
-  from '../../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-wave/opened-call-comment-form.vue';
+  from '../../../../../../../../src/components/history/history-main/registry/opened-call/opened-call-visualization/opened-call-comment-form.vue';
 
 const localVue = createLocalVue();
 localVue.use(Vuelidate);
