@@ -26,6 +26,7 @@ const fetchDashboardsData = async ({
                                      cause,
                                      direction,
                                      search,
+                                     fts,
                                    }) => {
   try {
     const response = await callService.aggregateHistoryCall({
@@ -40,6 +41,7 @@ const fetchDashboardsData = async ({
       duration: { from: durationFrom, to: durationTo },
       cause,
       direction,
+      fts,
       skip_parent: true,
     });
     return formatResponse(response);

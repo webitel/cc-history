@@ -1,3 +1,6 @@
+import SearchMode
+  from '../../../modules/heading/modules/filters/enums/SearchMode.enum';
+
 export default {
   reusable: {
     answer: 'Answer',
@@ -168,6 +171,11 @@ export default {
       options: {
         vm: 'Voice mail',
       },
+    },
+    search: {
+      settingsHint: 'Search mode',
+      [SearchMode.SEARCH]: 'Regular search',
+      [SearchMode.FTS]: 'Full text search',
     },
   },
   components: {

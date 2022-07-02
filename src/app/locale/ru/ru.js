@@ -1,3 +1,6 @@
+import SearchMode
+  from '../../../modules/heading/modules/filters/enums/SearchMode.enum';
+
 export default {
   reusable: {
     answer: 'Ответить',
@@ -168,6 +171,11 @@ export default {
       options: {
         vm: 'Голосовая почта',
       },
+    },
+    search: {
+      settingsHint: 'Настройки поиска',
+      [SearchMode.SEARCH]: 'Обычный поиск',
+      [SearchMode.FTS]: 'Полнотекстовый поиск',
     },
   },
   components: {
