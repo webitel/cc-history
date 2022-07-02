@@ -23,7 +23,7 @@ describe('History heading section', () => {
 
   it('renders search filter', () => {
     const wrapper = shallowMount(HistoryHeading, { localVue, store });
-    expect(wrapper.findComponent({ name: 'filter-search' }).isVisible()).toBe(true);
+    expect(wrapper.findComponent({ name: 'history-search' }).isVisible()).toBe(true);
   });
 
   it('creates csv export module instance', () => {

@@ -42,7 +42,7 @@
 import { mapState, mapGetters } from 'vuex';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
-import FilterSearch from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-search.vue';
+import FilterSearch from '../modules/filters/components/filter-search.vue';
 
 import generateMediaURL from '../../main/modules/registry/mixins/media/scripts/generateMediaURL';
 import APIRepository from '../../../app/api/APIRepository';

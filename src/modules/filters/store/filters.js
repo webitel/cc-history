@@ -51,6 +51,7 @@ const state = {
     locale: { label: 'fields.queue' },
   }),
   search: new BaseFilterSchema(),
+  fts: new BaseFilterSchema(),
   tags: new EnumFilterSchema({
     options: TagOptions,
     locale: { label: 'fields.tags' },
