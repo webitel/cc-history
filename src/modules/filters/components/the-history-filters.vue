@@ -59,6 +59,8 @@
         { type: 'enum', filterQuery: 'tags' },
         { type: 'enum', filterQuery: 'cause' },
         { type: 'enum', filterQuery: 'amdResult' },
+        { type: 'enum', filterQuery: 'hasRecording' },
+        { type: 'enum', filterQuery: 'hasTranscription' },
       ],
       namespace: 'filters',
     }),

@@ -177,6 +177,8 @@ export default {
       [SearchMode.SEARCH]: 'Обычный поиск',
       [SearchMode.FTS]: 'Полнотекстовый поиск',
     },
+    hasRecording: 'Запись разговора',
+    hasTranscription: 'Транскрипция',
   },
   components: {
     dtPicker: {

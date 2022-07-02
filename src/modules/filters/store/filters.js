@@ -8,6 +8,8 @@ import AmdResultOptions from '../enums/AmdResultOptions.enum';
 import DirectionOptions from '../enums/DirectionOptions.enum';
 import GatewaysAPI from '../api/GatewaysAPIRepository';
 import QueuesAPI from '../api/QueuesAPIRepository';
+import HasRecording from '../enums/HasRecording.enum';
+import HasTranscription from '../enums/HasTranscription.enum';
 import TagOptions from '../enums/TagOptions.enum';
 import TeamAPI from '../api/TeamsAPIRepository';
 import UserAPI from '../api/UsersAPIRepository';
@@ -63,6 +65,16 @@ const state = {
   user: new ApiFilterSchema({
     API: UserAPI.getLookup,
     locale: { label: 'fields.user' },
+  }),
+  hasRecording: new EnumFilterSchema({
+    options: HasRecording,
+    locale: { label: 'filters.hasRecording' },
+    multiple: false,
+  }),
+  hasTranscription: new EnumFilterSchema({
+    options: HasTranscription,
+    locale: { label: 'filters.hasTranscription' },
+    multiple: false,
   }),
 };
 

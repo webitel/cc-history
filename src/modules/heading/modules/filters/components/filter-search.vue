@@ -18,7 +18,7 @@
               icon="filter"
             ></wt-icon-btn>
           </template>
-          {{ $t('filters.search.searchHint') }}
+          {{ $t('filters.search.settingsHint') }}
         </wt-tooltip>
       </template>
       <template v-slot:option="{ value, text }">
