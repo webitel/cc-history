@@ -25,20 +25,20 @@ module.exports = {
   collectCoverageFrom: [
     '!src/**/api/**/*.{js,vue}',
 
-    'src/components/**/*.{js,vue}',
+    'src/**/components/**/*.{js,vue}',
 
-    'src/store/**/*.{js,vue}',
+    'src/**/store/**/*.{js,vue}',
 
-    'src/shared/**/*.{js,vue}',
+    'src/**/shared/**/*.{js,vue}',
 
-    'src/mixins/**/*.{js,vue}',
+    'src/**/mixins/**/*.{js,vue}',
     '!src/**/index.js', // No need to cover bootstrap file
     '!src/**/main.js', // No need to cover bootstrap file
   ],
   setupFiles: [
     'jest-canvas-mock',
     './tests/config/config.js',
-    './src/plugins/webitel-ui.js',
+    './src/app/plugins/webitel-ui.js',
   ],
   setupFilesAfterEnv: ['./tests/config/jest.config.js'],
 };
