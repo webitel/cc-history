@@ -177,6 +177,8 @@ export default {
       [SearchMode.SEARCH]: 'Звичайний пошук',
       [SearchMode.FTS]: 'Повнотекстовий пошук',
     },
+    hasRecording: 'Запис розмови',
+    hasTranscription: 'Транскрипція',
   },
   components: {
     dtPicker: {

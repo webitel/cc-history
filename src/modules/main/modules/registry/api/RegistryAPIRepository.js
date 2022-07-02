@@ -43,6 +43,8 @@ const fetchHistory = async ({
                               hold,
                               annotations,
                               hangupDisposition,
+                              hasRecording,
+                              hasTranscription,
                             }) => {
   try {
     const response = await callService.searchHistoryCall(
@@ -83,6 +85,8 @@ const fetchHistory = async ({
       hold,
       annotations,
       hangupDisposition,
+      hasRecording ? (hasRecording === 'true') : undefined,
+      hasTranscription ? (hasTranscription === 'true') : undefined,
     );
     return formatResponse(response);
   } catch (err) {
