@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import HistoryRegistry from '../history-registry.vue';
 import registry from '../../store/registry';
-import openedHistoryCall from '../../modules/opened-call/store/opened-call';
+import openedHistoryCall from '../../modules/call/store/call';
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
@@ -24,7 +24,7 @@ describe('History table', () => {
         registry: {
           ...registry,
           modules: {
-            'opened-call': { ...openedHistoryCall },
+            'call': { ...openedHistoryCall },
           },
         },
       },
@@ -33,21 +33,5 @@ describe('History table', () => {
   it('renders a component', () => {
     const wrapper = shallowMount(HistoryRegistry, { localVue, router, store });
     expect(wrapper.classes('history-registry')).toBe(true);
-  });
-
-  it('sets opened call to open', () => {
-    const wrapper = shallowMount(HistoryRegistry, { localVue, router, store });
-    const item = { id: '1' };
-    wrapper.vm.openItem(item);
-    expect(SET_OPENED_CALL).toHaveBeenCalled();
-    expect(SET_OPENED_CALL.mock.calls.pop()[1]).toEqual(item);
-  });
-
-  it('resets opened call', () => {
-    const wrapper = shallowMount(HistoryRegistry, {
-      localVue, router, store, computed: { isOpenedCallPopup() { return true; } },
-    });
-    wrapper.findComponent({ name: 'opened-item-popup' }).vm.$emit('close');
-    expect(RESET_OPENED_CALL).toHaveBeenCalled();
   });
 });

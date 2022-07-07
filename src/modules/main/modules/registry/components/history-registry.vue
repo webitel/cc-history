@@ -60,20 +60,18 @@
             @click="exportFiles(item.files)"
           ></wt-icon-btn>
 
-          <wt-icon-btn
+          <router-link
+            :to="`/${item.id}`"
             class="table-action"
-            icon-prefix="hs"
-            icon="forks"
-            @click="openItem(item)"
-          ></wt-icon-btn>
+          >
+            <wt-icon
+              icon-prefix="hs"
+              icon="forks"
+            ></wt-icon>
+          </router-link>
         </template>
       </wt-table>
       <filter-pagination :is-next="isNext"/>
-
-      <opened-call-popup
-        v-show="isOpenedCallPopup"
-        @close="closeCallPopup"
-      ></opened-call-popup>
 
       <wt-player
         v-show="audioURL"
@@ -95,10 +93,9 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
-import OpenedCallPopup from '../modules/opened-call/components/opened-call-popup.vue';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
@@ -114,7 +111,6 @@ export default {
     exportFilesMixin,
   ],
   components: {
-    OpenedCallPopup,
     FilterPagination,
     TableDirection,
     MediaAction,
@@ -142,9 +138,6 @@ export default {
       isLoading: (state) => state.isLoading,
       isNext: (state) => state.isNext,
     }),
-    ...mapGetters('registry/opened-call', {
-      isOpenedCallPopup: 'IS_CALL_ID',
-    }),
   },
 
   methods: {
@@ -154,18 +147,6 @@ export default {
     ...mapActions('registry', {
       loadList: 'LOAD_DATA_LIST',
     }),
-    ...mapActions('registry/opened-call', {
-      setOpenedItem: 'SET_OPENED_CALL',
-      resetOpenedItem: 'RESET_OPENED_CALL',
-    }),
-
-    openItem(item) {
-      this.setOpenedItem(item);
-    },
-
-    closeCallPopup() {
-      this.resetOpenedItem();
-    },
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <section class="opened-call-legs">
+  <section>
     <wt-loader v-show="isLoading" />
     <div v-show="!isLoading" class="table-wrapper">
       <wt-table
@@ -65,7 +65,7 @@
                   @mouseleave.native="highlightRow([item.transferFrom])"
                 ></wt-icon>
               </template>
-              {{ $t('registry.openedCall.transferFrom') }}
+              {{ $t('registry.call.transferFrom') }}
             </wt-tooltip>
 
             <wt-tooltip
@@ -81,7 +81,7 @@
                   @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
                 ></wt-icon>
               </template>
-              {{ $t('registry.openedCall.transferMerge') }}
+              {{ $t('registry.call.transferMerge') }}
             </wt-tooltip>
 
             <wt-tooltip
@@ -97,7 +97,7 @@
                   @mouseleave.native="highlightRow([item.transferTo])"
                 ></wt-icon>
               </template>
-              {{ $t('registry.openedCall.transferTo') }}
+              {{ $t('registry.call.transferTo') }}
             </wt-tooltip>
           </div>
         </template>
@@ -111,7 +111,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
 
 export default {
-  name: 'opened-call-legs',
+  name: 'call-legs',
   components: {
     TableDirection,
   },
@@ -121,12 +121,12 @@ export default {
   },
 
   computed: {
-    ...mapState('registry/opened-call', {
+    ...mapState('registry/call', {
       legsData: (state) => state.legsData,
       mainCall: (state) => state.mainCall,
       isLoading: (state) => state.isLegsDataLoading,
     }),
-    ...mapGetters('registry/opened-call', {
+    ...mapGetters('registry/call', {
       headers: 'HEADERS',
     }),
 
@@ -139,7 +139,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('registry/opened-call', {
+    ...mapActions('registry/call', {
       loadList: 'LOAD_LEGS_DATA_LIST',
     }),
 

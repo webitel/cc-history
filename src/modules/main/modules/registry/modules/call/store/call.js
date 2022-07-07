@@ -24,7 +24,6 @@ const state = {
 };
 
 const getters = {
-  IS_CALL_ID: (state) => !!state.mainCallId,
   HEADERS: (state, getters, rootState) => (
     [...rootState.registry.headers, transfersHeader, transfersLegMarkerHeader]
   ),
@@ -157,9 +156,9 @@ const mutations = {
   },
 };
 
-const openedCall = new BaseStoreModule()
+const call = new BaseStoreModule()
   .getModule({
  state, getters, actions, mutations,
 });
 
-export default openedCall;
+export default call;

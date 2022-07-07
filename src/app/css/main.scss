@@ -6,11 +6,11 @@ html {
 }
 
 body {
+  @extend %typo-body-1;
   min-height: 100vh;
   height: 100vh;
   margin: 0;
   font-family: 'Montserrat', monospace;
-  font-size: 100%;
   background: var(--page-bg-color);
 }
 
