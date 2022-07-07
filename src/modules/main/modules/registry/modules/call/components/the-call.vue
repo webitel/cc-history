@@ -3,7 +3,9 @@
     <template v-slot:header>
       <wt-headline>
         <template v-slot:title>
-          {{ 'callll' }}
+          <wt-headline-nav
+            :path="path"
+          ></wt-headline-nav>
         </template>
         <template v-slot:actions>
           <wt-button
@@ -48,7 +50,6 @@ export default {
       value: 'call-info',
     },
   }),
-
   computed: {
     ...mapState('registry/call', {
       mainCall: (state) => state.mainCall,
@@ -73,6 +74,15 @@ export default {
       if (this.mainCall.files) tabs.push(callWave);
       return tabs;
     },
+    callId() {
+      return this.$route.fullPath.split('/').pop();
+    },
+    path() {
+      return [
+        { name: this.$t('registry.registry') },
+        { name: `${this.$t('registry.call.callInfo')} (${this.callId})` },
+      ];
+    },
   },
   methods: {
     ...mapActions({
@@ -85,7 +95,7 @@ export default {
     }),
   },
   created() {
-    this.setMainCall({ id: this.$route.fullPath.split('/').pop() });
+    this.setMainCall({ id: this.callId });
   },
   destroyed() {
     this.resetMainCall();
