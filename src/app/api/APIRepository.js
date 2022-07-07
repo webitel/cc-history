@@ -1,4 +1,4 @@
-import CallAnnotationAPIRepository from '../../modules/main/modules/registry/modules/opened-call/api/CallAnnotationAPIRepository';
+import CallAnnotationAPIRepository from '../../modules/main/modules/registry/modules/call/api/CallAnnotationAPIRepository';
 import RegistryAPIRepository from '../../modules/main/modules/registry/api/RegistryAPIRepository';
 import DashboardAPIRepository from '../../modules/main/modules/dashboards/api/DashboardAPIRepository';
 

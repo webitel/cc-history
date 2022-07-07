@@ -27,7 +27,7 @@ export default {
   },
   registry: {
     registry: 'History',
-    openedCall: {
+    call: {
       callInfo: 'Call info',
       agentDescription: 'Agent`s comment',
       callLegs: 'Legs A-B',

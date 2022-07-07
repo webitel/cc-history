@@ -71,7 +71,7 @@ export default {
     showHolds: false,
   }),
   methods: {
-    ...mapActions('registry/opened-call', { loadMainCall: 'LOAD_MAIN_CALL' }),
+    ...mapActions('registry/call', { loadMainCall: 'LOAD_MAIN_CALL' }),
 
     async updateRegions() {
       this.closeCommentMode();

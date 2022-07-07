@@ -1,8 +1,8 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import OpenedCallLegs from '../opened-call-legs.vue';
+import callLegs from '../call-legs.vue';
 import registry from '../../../../../store/registry';
-import openedCall from '../../../store/opened-call';
+import call from '../../../store/call';
 import RegistryAPIRepository from '../../../../../api/RegistryAPIRepository';
 
 const localVue = createLocalVue();
@@ -14,23 +14,23 @@ jest.mock('../../../../../api/RegistryAPIRepository');
 RegistryAPIRepository.getHistory.mockImplementation(() => Promise.resolve({ items: legsData }));
 
 describe('Opened call legs tab', () => {
-  openedCall.state.mainCall = mainCall;
+  call.state.mainCall = mainCall;
   const store = new Vuex.Store({
     modules: {
       registry: {
         ...registry,
-        modules: { 'opened-call': openedCall },
+        modules: { call },
       },
     },
   });
 
   it('renders a component', () => {
-    const wrapper = shallowMount(OpenedCallLegs, { localVue, store });
-    expect(wrapper.classes('opened-call-legs')).toBe(true);
+    const wrapper = shallowMount(callLegs, { localVue, store });
+    expect(wrapper.isVisible()).toBe(true);
   });
 
   it('fills table with data from API', () => {
-    const wrapper = shallowMount(OpenedCallLegs, { localVue, store });
+    const wrapper = shallowMount(callLegs, { localVue, store });
     expect(RegistryAPIRepository.getHistory).toHaveBeenCalled();
     expect(wrapper.vm.legsData).toEqual(legsData);
   });

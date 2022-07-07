@@ -12,7 +12,7 @@
       <section class="call-wave-toolbar">
         <div class="toolbar-main">
           <wt-checkbox
-            :label="$tc('registry.openedCall.hold', 2)"
+            :label="$tc('registry.call.hold', 2)"
             :selected="showHolds"
             :value="showHolds"
             @change="toggleHolds"
@@ -22,7 +22,7 @@
           </wt-chip>
 
           <wt-checkbox
-            :label="$tc('registry.openedCall.comment', 2)"
+            :label="$tc('registry.call.comment', 2)"
             :selected="showComments"
             :value="showComments"
             @change="toggleComments"
@@ -45,7 +45,7 @@
         </div>
       </section>
 
-      <opened-call-comment-form
+      <call-comment-form
         v-if="commentsMode"
         :call-duration="callDuration"
         :call-id="call.id"
@@ -164,8 +164,7 @@ import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import generateMediaURL from '../../../../mixins/media/scripts/generateMediaURL';
 import regionsMixin from './mixins/regionsMixin';
 import soundFiltersMixin from './mixins/soundFiltersMixin';
-
-import OpenedCallCommentForm from './opened-call-comment-form.vue';
+import CallCommentForm from './call-comment-form.vue';
 
 const cursorOptions = {
   showTime: true,
@@ -203,8 +202,8 @@ const createMarker = (color) => {
 };
 
 export default {
-  name: 'opened-call-visualization',
-  components: { OpenedCallCommentForm },
+  name: 'call-visualization',
+  components: { CallCommentForm },
   mixins: [exportFilesMixin, soundFiltersMixin, regionsMixin],
   data: () => ({
     volumeLeftGain: 1,
@@ -243,7 +242,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('registry/opened-call', {
+    ...mapState('registry/call', {
       file: (state) => generateMediaURL(state.fileId, true),
       call: (state) => state.mainCall,
     }),
@@ -265,7 +264,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('registry/opened-call', {
+    ...mapActions('registry/call', {
       addAnnotation: 'ADD_ANNOTATION',
       updateAnnotation: 'EDIT_ANNOTATION',
       deleteAnnotation: 'DELETE_ANNOTATION',

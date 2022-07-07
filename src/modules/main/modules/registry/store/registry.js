@@ -1,7 +1,7 @@
   import { sortToQueryAdapter } from '@webitel/ui-sdk/src/scripts/sortQueryAdapters';
 import APIRepository from '../../../../../app/api/APIRepository';
 import historyHeaders from './headers/headers';
-import openedCall from '../modules/opened-call/store/opened-call';
+import call from '../modules/call/store/call';
 
 const historyAPI = APIRepository.history;
 const REQUIRED_DATA_FIELDS = ['files', 'id'];
@@ -99,5 +99,5 @@ export default {
   getters,
   actions,
   mutations,
-  modules: { 'opened-call': openedCall },
+  modules: { call },
 };

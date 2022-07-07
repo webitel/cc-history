@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import OpenedCallInfo from '../opened-call-info.vue';
-import openedCall from '../../../store/opened-call';
+import callInfo from '../call-info.vue';
+import call from '../../../store/call';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -12,25 +12,25 @@ describe('Opened call info tab', () => {
     modules: {
       registry: {
         namespaced: true,
-        modules: { 'opened-call': openedCall },
+        modules: { 'call': call },
       },
     },
   });
 
   it('renders a component without variables', () => {
-    const wrapper = shallowMount(OpenedCallInfo, { localVue, store });
-    expect(wrapper.classes('opened-call-info')).toBe(true);
+    const wrapper = shallowMount(callInfo, { localVue, store });
+    expect(wrapper.classes('call-info')).toBe(true);
   });
 
   it('renders a component with call variables', () => {
-    openedCall.state.mainCall = { variables };
-    const wrapper = shallowMount(OpenedCallInfo, { localVue, store });
+    call.state.mainCall = { variables };
+    const wrapper = shallowMount(callInfo, { localVue, store });
     expect(wrapper.findAll('.call-variable').length).toBe(Object.keys(variables).length);
   });
 
   it('renders variables texts', () => {
-    openedCall.state.mainCall = { variables };
-    const wrapper = shallowMount(OpenedCallInfo, { localVue, store });
+    call.state.mainCall = { variables };
+    const wrapper = shallowMount(callInfo, { localVue, store });
     const varKey = Object.keys(variables)[0];
     expect(wrapper.find('.call-variable__key').text()).toBe(`${varKey}:`);
     expect(wrapper.find('.call-variable__value').text()).toBe(variables[varKey]);

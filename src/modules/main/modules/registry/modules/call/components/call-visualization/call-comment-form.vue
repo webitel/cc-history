@@ -17,7 +17,7 @@
         class="comment-form-textarea__textarea"
         :class="{'comment-form-textarea--expanded': isTextareaExpanded}"
         v-model="draft.note"
-        :label="$tc('registry.openedCall.comment', 1)"
+        :label="$tc('registry.call.comment', 1)"
       ></wt-textarea>
       <wt-icon-btn
         class="comment-form-textarea__expand-btn"
@@ -49,7 +49,7 @@ import deepCopy from 'deep-copy';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 
 export default {
-  name: 'opened-call-comment-form',
+  name: 'call-comment-form',
   data: () => ({
     draft: {
       note: '',
