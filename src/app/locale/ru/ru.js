@@ -39,6 +39,9 @@ export default {
       hold: 'Удержание | Удержания',
       comment: 'Комментарий | Комментарии',
     },
+    stt: {
+      downloadTxt: 'Скачать TXT',
+    },
   },
   dashboards: {
     dashboards: 'Дашборды',

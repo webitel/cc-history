@@ -39,6 +39,9 @@ export default {
       hold: 'Hold | Holds',
       comment: 'Note | Notes',
     },
+    stt: {
+      downloadTxt: 'Download TXT',
+    },
   },
   dashboards: {
     dashboards: 'Dashboards',

@@ -9,6 +9,17 @@
           v-model="channel.show"
           :label="`${$t('vocabulary.channel')} ${channel.value}`"
         ></wt-checkbox>
+        <wt-tooltip
+          class="call-transcript-toolbar__download-action"
+        >
+          <template v-slot:activator>
+            <wt-icon-btn
+              icon="stt-download"
+              @click="downloadTxt"
+            ></wt-icon-btn>
+          </template>
+          {{ $t('registry.stt.downloadTxt') }}
+        </wt-tooltip>
       </div>
       <wt-table
         :data="filteredData"
@@ -20,6 +31,7 @@
 </template>
 
 <script>
+import saveAs from 'file-saver';
 import CallTranscriptAPI from '../../../../stt/api/CallTranscriptAPI';
 
 export default {
@@ -83,6 +95,11 @@ export default {
         ),
       ].map((channel) => ({ value: channel, show: true }));
     },
+    downloadTxt() {
+      const text = this.filteredData.map(({ phrase }) => `- ${phrase}`).join('\n');
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      return saveAs(blob, `Transcript ${this.transcript.id}`);
+    },
   },
   watch: {
     transcript: {
@@ -100,10 +117,17 @@ export default {
 
 <style lang="scss" scoped>
 .call-transcript-toolbar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-xs);
+  padding: 0 calc(var(--icon-md-size) + var(--spacing-xs)); // absolute pos to align actions right
   margin-bottom: var(--spacing-xs);
+
+  .call-transcript-toolbar__download-action {
+    position: absolute;
+    right: 0;
+  }
 }
 </style>
