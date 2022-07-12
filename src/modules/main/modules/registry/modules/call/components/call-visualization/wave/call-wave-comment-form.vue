@@ -49,7 +49,7 @@ import deepCopy from 'deep-copy';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 
 export default {
-  name: 'call-comment-form',
+  name: 'call-wave-comment-form',
   data: () => ({
     draft: {
       note: '',

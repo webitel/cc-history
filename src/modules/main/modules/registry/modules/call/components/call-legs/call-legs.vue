@@ -107,7 +107,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { mapActions, mapState } from 'vuex';
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
 
 export default {
@@ -115,32 +116,42 @@ export default {
   components: {
     TableDirection,
   },
-
-  created() {
-    this.loadList();
+  props: {
+    call: {
+      type: Object,
+      required: true,
+    },
+    namespace: {
+      type: String,
+    },
   },
 
   computed: {
-    ...mapState('registry/call', {
-      legsData: (state) => state.legsData,
-      mainCall: (state) => state.mainCall,
-      isLoading: (state) => state.isLegsDataLoading,
+    ...mapState({
+      legsData(state) {
+        return getNamespacedState(state, this.namespace).legsData;
+      },
+      isLoading(state) {
+        return getNamespacedState(state, this.namespace).isLegsDataLoading;
+      },
     }),
-    ...mapGetters('registry/call', {
-      headers: 'HEADERS',
-    }),
+    headers() {
+      return this.$store.getters[`${this.namespace}/HEADERS`];
+    },
 
     tableData() {
       return [
-        this.mainCall,
+        this.call,
         ...this.legsData,
       ];
     },
   },
 
   methods: {
-    ...mapActions('registry/call', {
-      loadList: 'LOAD_LEGS_DATA_LIST',
+    ...mapActions({
+      loadList(dispatch, payload) {
+        return dispatch(`${this.namespace}/LOAD_LEGS_DATA_LIST`, payload);
+      },
     }),
 
     highlightRow(ids) {
@@ -157,6 +168,9 @@ export default {
         }
       });
     },
+  },
+  created() {
+    this.loadList();
   },
 };
 </script>

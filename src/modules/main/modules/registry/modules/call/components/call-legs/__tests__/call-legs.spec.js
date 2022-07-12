@@ -13,6 +13,11 @@ const legsData = [{ id: '2', transferFrom: '1', transferTo: '3' }, { id: '3', tr
 jest.mock('../../../../../api/RegistryAPIRepository');
 RegistryAPIRepository.getHistory.mockImplementation(() => Promise.resolve({ items: legsData }));
 
+const propsData = {
+  call: mainCall,
+  namespace: 'registry/call',
+};
+
 describe('Opened call legs tab', () => {
   call.state.mainCall = mainCall;
   const store = new Vuex.Store({
@@ -25,12 +30,12 @@ describe('Opened call legs tab', () => {
   });
 
   it('renders a component', () => {
-    const wrapper = shallowMount(callLegs, { localVue, store });
+    const wrapper = shallowMount(callLegs, { localVue, store, propsData });
     expect(wrapper.isVisible()).toBe(true);
   });
 
   it('fills table with data from API', () => {
-    const wrapper = shallowMount(callLegs, { localVue, store });
+    const wrapper = shallowMount(callLegs, { localVue, store, propsData });
     expect(RegistryAPIRepository.getHistory).toHaveBeenCalled();
     expect(wrapper.vm.legsData).toEqual(legsData);
   });

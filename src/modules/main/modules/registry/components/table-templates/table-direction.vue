@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <wt-icon :icon="callStateIcon" :color="callStateIconColor"></wt-icon>
-  </div>
+  <wt-icon :icon="callStateIcon" :color="callStateIconColor"></wt-icon>
 </template>
 
 <script>

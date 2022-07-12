@@ -3,7 +3,7 @@ import deepCopy from 'deep-copy';
 import Vuex from 'vuex';
 import WaveSurferVue from 'wavesurfer.js-vue';
 import callWave
-  from '../call-visualization.vue';
+  from '../wave/call-wave.vue';
 import registry from '../../../../../store/registry';
 import playerMock from '../../../../../../../../../../tests/unit/mocks/waveSurferMock';
 
@@ -76,10 +76,10 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    expect(wrapper.findComponent({ name: 'call-comment-form' }).isVisible()).toBe(true);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).isVisible()).toBe(true);
     await wrapper.findAllComponents({ name: 'wt-icon-btn' })
       .filter((btn) => btn.props().icon === 'note').wrappers[0].vm.$emit('click');
-    expect(wrapper.findComponent({ name: 'call-comment-form' }).exists()).toBe(false);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists()).toBe(false);
   });
 
   it('opens comment form on commentsMode change to true', async () => {
@@ -92,10 +92,10 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    expect(wrapper.findComponent({ name: 'opened-call-comment-form' }).exists()).toBe(false);
+    expect(wrapper.findComponent({ name: 'opened-call-wave-comment-form' }).exists()).toBe(false);
     await wrapper.findAllComponents({ name: 'wt-icon-btn' })
       .filter((btn) => btn.props().icon === 'note').wrappers[0].vm.$emit('click');
-    expect(wrapper.findComponent({ name: 'call-comment-form' }).isVisible()).toBe(true);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).isVisible()).toBe(true);
   });
 
   it('emits save event with comment draft object and calls the add annotation action if no id passed', async () => {
@@ -111,7 +111,7 @@ describe('Opened call wave', () => {
     wrapper.vm.addAnnotation = actionMocks.ADD_ANNOTATION;
     const draftWithNoId = { ...draft };
     delete draftWithNoId.id;
-    await wrapper.findComponent({ name: 'call-comment-form' }).vm.$emit('save', draftWithNoId);
+    await wrapper.findComponent({ name: 'call-wave-comment-form' }).vm.$emit('save', draftWithNoId);
     expect(actionMocks.ADD_ANNOTATION).toHaveBeenCalledWith(expect.objectContaining({
       endSec: 2, note: 'draft', startSec: 1, callId: 'id'
     }))
@@ -128,8 +128,8 @@ describe('Opened call wave', () => {
       },
     });
     wrapper.vm.updateAnnotation = actionMocks.EDIT_ANNOTATION;
-    await wrapper.findComponent({ name: 'call-comment-form' }).vm.$emit('save', draft);
-    expect(wrapper.findComponent({ name: 'call-comment-form' }).emitted().save[0][0]).toBe(draft);
+    await wrapper.findComponent({ name: 'call-wave-comment-form' }).vm.$emit('save', draft);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).emitted().save[0][0]).toBe(draft);
     expect(actionMocks.EDIT_ANNOTATION).toHaveBeenCalled();
   });
 
@@ -144,8 +144,8 @@ describe('Opened call wave', () => {
       },
     });
     wrapper.vm.deleteAnnotation = actionMocks.DELETE_ANNOTATION;
-    await wrapper.findComponent({ name: 'call-comment-form' }).vm.$emit('delete', draft);
-    expect(wrapper.findComponent({ name: 'call-comment-form' }).emitted().delete.length).toBe(1);
+    await wrapper.findComponent({ name: 'call-wave-comment-form' }).vm.$emit('delete', draft);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).emitted().delete.length).toBe(1);
     expect(actionMocks.DELETE_ANNOTATION).toHaveBeenCalled();
   });
 

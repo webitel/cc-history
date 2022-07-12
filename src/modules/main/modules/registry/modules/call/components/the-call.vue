@@ -24,7 +24,11 @@
           v-model="currentTab"
           :tabs="tabs"
         ></wt-tabs>
-        <component :is="currentTab.value" />
+        <component
+          :is="currentTab.value"
+          :call="mainCall"
+          :namespace="namespace"
+        ></component>
       </div>
     </template>
   </wt-page-wrapper>
@@ -32,6 +36,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import CallInfo from './call-info/call-info.vue';
 import CallLegs from './call-legs/call-legs.vue';
 import CallVisualization from './call-visualization/call-visualization.vue';
@@ -51,31 +56,38 @@ export default {
     },
   }),
   computed: {
-    ...mapState('registry/call', {
-      mainCall: (state) => state.mainCall,
-      isLoading: (state) => state.isLoading,
+    ...mapState({
+      mainCall(state) {
+        return getNamespacedState(state, this.namespace).mainCall;
+      },
+      isLoading(state) {
+        return getNamespacedState(state, this.namespace).isLoading;
+      },
     }),
-
+    tabValues() {
+      return {
+        INFO: {
+          text: this.$t('registry.call.callInfo'),
+          value: 'call-info',
+        },
+        LEGS: {
+          text: this.$t('registry.call.callLegs'),
+          value: 'call-legs',
+        },
+        VISUALIZATION: {
+          text: this.$t('registry.call.callVisualization'),
+          value: 'call-visualization',
+        },
+      };
+    },
     tabs() {
-      const callInfo = {
-        text: this.$t('registry.call.callInfo'),
-        value: 'call-info',
-      };
-      const callLegs = {
-        text: this.$t('registry.call.callLegs'),
-        value: 'call-legs',
-      };
-      const callWave = {
-        text: this.$t('registry.call.callVisualization'),
-        value: 'call-visualization',
-      };
-      const tabs = [callInfo];
-      if (this.mainCall.hasChildren) tabs.push(callLegs);
-      if (this.mainCall.files) tabs.push(callWave);
+      const tabs = [this.tabValues.INFO];
+      if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
+      if (this.mainCall.files) tabs.push(this.tabValues.VISUALIZATION);
       return tabs;
     },
     callId() {
-      return this.$route.fullPath.split('/').pop();
+      return this.$route.path.split('/').pop();
     },
     path() {
       return [
@@ -93,9 +105,21 @@ export default {
         return dispatch(`${this.namespace}/RESET_OPENED_CALL`, payload);
       },
     }),
+    setInitialTab() {
+      let tab;
+      switch (this.$route.hash) {
+        case '#transcript':
+          tab = this.tabValues.VISUALIZATION;
+          break;
+        default:
+          tab = this.tabValues.INFO;
+      }
+      this.currentTab = tab;
+    },
   },
   created() {
     this.setMainCall({ id: this.callId });
+    this.setInitialTab();
   },
   destroyed() {
     this.resetMainCall();
@@ -107,7 +131,7 @@ export default {
 .history-tabs-wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   width: 100%;
 }
 </style>
