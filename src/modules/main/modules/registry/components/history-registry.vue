@@ -1,17 +1,17 @@
 <template>
   <div class="content-wrapper history-registry">
-    <wt-loader v-show="isLoading"/>
+    <wt-loader v-show="isLoading" />
     <div class="table-wrapper">
       <wt-table
         v-show="!isLoading"
         ref="wt-table"
-        :headers="headers"
         :data="dataList"
+        :headers="headers"
         sortable
         @sort="sort"
       >
         <template slot="direction" slot-scope="{ item }">
-          <table-direction :item="item"/>
+          <table-direction :item="item" />
         </template>
         <template slot="from" slot-scope="{ item }">
           <div v-if="item.from">{{ item.from.number }}</div>
@@ -43,72 +43,64 @@
           </div>
         </template>
 
-        <template slot="actions" slot-scope="{ item, index }">
+        <template slot="actions" slot-scope="{ item }">
           <media-action
             v-if="item.files"
+            :currently-playing="currentlyPlaying"
+            :files="item.files"
+            @play="play"
+            @stop="closePlayer"
             class="table-action"
-            :class="{'active': openedMediaIndex === index}"
-            :is-any-files-playing="isAnyFilesPlaying(item.files)"
-            @click.native.stop="openMedia(index, $event)"
           ></media-action>
 
-          <wt-icon-btn
-            v-if="item.files"
+          <router-link
+            v-if="item.files && item.files[0].transcripts"
+            :to="`/${item.id}#transcript`"
             class="table-action"
-            icon="download-record"
-            icon-prefix="hs"
-            @click="exportFiles(item.files)"
-          ></wt-icon-btn>
+          >
+            <wt-icon
+              icon="stt"
+            ></wt-icon>
+          </router-link>
 
           <router-link
             :to="`/${item.id}`"
             class="table-action"
           >
             <wt-icon
-              icon-prefix="hs"
               icon="forks"
+              icon-prefix="hs"
             ></wt-icon>
           </router-link>
         </template>
       </wt-table>
-      <filter-pagination :is-next="isNext"/>
+      <filter-pagination :is-next="isNext" />
 
       <wt-player
         v-show="audioURL"
         :src="audioURL"
-        @play="isPlayingNow = true"
         @close="closePlayer"
+        @play="isPlayingNow = true"
       ></wt-player>
-
-      <media-select
-        ref="media-select"
-        v-show="isMediaSelectOpened"
-        :files="mediaFiles"
-        :currently-playing="currentlyPlaying"
-        @play="play"
-        @close="closeMedia"
-      ></media-select>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
+import { mapActions, mapState } from 'vuex';
+import historyHeadersMixin from '../mixins/historyHeadersMixin';
+import playMediaMixin from '../mixins/media/playMediaMixin';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
-import historyHeadersMixin from '../mixins/historyHeadersMixin';
-import showMediaMixin from '../mixins/media/showMediaMixin';
 
 export default {
   name: 'history-registry',
   mixins: [
     historyHeadersMixin,
     sortFilterMixin,
-    showMediaMixin,
-    exportFilesMixin,
+    playMediaMixin,
   ],
   components: {
     FilterPagination,
@@ -122,10 +114,6 @@ export default {
         this.loadList();
       },
     },
-  },
-
-  created() {
-    this.initFilesExport({ filename: 'history-records' });
   },
 
   mounted() {
@@ -155,11 +143,11 @@ export default {
 .table-wrapper {
   position: relative;
   display: flex;
+  flex: 1 1 100%;
   flex-direction: column;
   justify-content: space-between;
-  flex: 1 1 100%;
-  width: 100%;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .wt-pagination {
@@ -168,6 +156,7 @@ export default {
 }
 
 .table-action {
+  line-height: 0;
   margin-left: var(--spacing-xs);
 
   &:first-child {

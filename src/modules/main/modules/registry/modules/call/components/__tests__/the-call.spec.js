@@ -22,7 +22,7 @@ describe('Opened call popup (wrapper)', () => {
       store,
       mocks: {
         $route: {
-          fullPath: '',
+          path: '',
         },
       },
     });
@@ -41,7 +41,7 @@ describe('Opened call popup (wrapper)', () => {
       },
       mocks: {
         $route: {
-          fullPath: '',
+          path: '',
         },
       },
     });

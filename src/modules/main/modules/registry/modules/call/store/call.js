@@ -4,7 +4,7 @@ import APIRepository from '../../../../../../../app/api/APIRepository';
 
 const historyAPI = APIRepository.history;
 const annotationsAPI = APIRepository.annotations;
-const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'direction', 'from', 'to', 'destination', 'hold', 'annotations'];
+const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'files_job', 'direction', 'from', 'to', 'destination', 'hold', 'annotations'];
 const REQUIRED_DATA_FIELDS = ['id', 'parent_id', 'transfer_from', 'transfer_to'];
 
 const transfersHeader = {
