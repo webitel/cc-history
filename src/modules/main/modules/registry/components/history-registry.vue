@@ -54,7 +54,7 @@
           ></media-action>
 
           <router-link
-            v-if="item.files[0].transcripts"
+            v-if="item.files && item.files[0].transcripts"
             :to="`/${item.id}#transcript`"
             class="table-action"
           >

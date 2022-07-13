@@ -38,9 +38,14 @@ export default {
       callVisualization: 'Візуалізація дзвінка',
       hold: 'Утримання | Утримання',
       comment: 'Комментар | Комментарі',
+      stt: {
+        noTranscript: 'Транскрипція файлу відсутня',
+        transcribingInProgress: 'Виконується транскрипція файлу. Будь ласка, оновіть сторінку через хвилину.',
+      },
     },
     stt: {
       downloadTxt: 'Завантажити TXT',
+      transcribe: 'Транскрибувати',
     },
   },
   dashboards: {

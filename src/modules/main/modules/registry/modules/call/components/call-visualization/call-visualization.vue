@@ -10,7 +10,9 @@
       ></wt-select>
     <call-wave></call-wave>
     <call-transcript
-      :transcript="currentFile.transcripts[0]"
+      :call="call"
+      :transcript="currentFileTranscript"
+      :namespace="namespace"
     ></call-transcript>
   </section>
 </template>
@@ -30,10 +32,18 @@ export default {
       type: Object,
       required: true,
     },
+    namespace: {
+      type: String,
+    },
   },
   data: () => ({
     currentFile: {},
   }),
+  computed: {
+    currentFileTranscript() {
+      return this.currentFile.transcripts ? this.currentFile.transcripts[0] : null;
+    },
+  },
   methods: {
     initCurrentFile() {
       [this.currentFile] = this.call.files;
