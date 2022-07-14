@@ -38,12 +38,16 @@ export default {
       callVisualization: 'Call visualization',
       hold: 'Hold | Holds',
       comment: 'Note | Notes',
+      wave: {
+        wave: 'Call Wave',
+      },
       stt: {
         noTranscript: 'There is no transciption for this file',
         transcribingInProgress: 'Transcription is in progress now. Please, refresh page in a minute.',
       },
     },
     stt: {
+      transcription: 'Transcription',
       downloadTxt: 'Download TXT',
       transcribe: 'Transcribe',
     },

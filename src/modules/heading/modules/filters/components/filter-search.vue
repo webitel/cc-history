@@ -6,7 +6,13 @@
       debounce
       @input="setValue({ filter: filterQuery, value: $event })"
       @search="setValueToQuery({ filterQuery, value: $event })"
-    ></wt-search-bar>
+    >
+      <template v-slot:search-icon v-if="filterQuery === SearchMode.FTS">
+        <wt-icon
+          icon="stt-search"
+        ></wt-icon>
+      </template>
+    </wt-search-bar>
     <wt-context-menu
       :options="searchModeOptions"
       @click="changeMode($event.option)"
@@ -46,6 +52,7 @@ export default {
     },
   },
   data: () => ({
+    SearchMode,
     filterQuery: SearchMode.SEARCH,
   }),
   computed: {
@@ -64,13 +71,22 @@ export default {
   },
   methods: {
     changeMode({ value }) {
+      this.setValue({ filter: this.filterQuery, value: '' });
+      this.setValueToQuery({ filterQuery: this.filterQuery, value: '' });
       this.filterQuery = value;
     },
     restore() {
       const search = this.getValueFromQuery({ filterQuery: SearchMode.SEARCH });
-      if (search) this.restoreValue({ value: search, filterQuery: SearchMode.SEARCH });
+      if (search) {
+        this.restoreValue({ value: search, filterQuery: SearchMode.SEARCH });
+        return;
+      }
+
       const fts = this.getValueFromQuery({ filterQuery: SearchMode.FTS });
-      if (fts) this.restoreValue({ value: fts, filterQuery: SearchMode.FTS });
+      if (fts) {
+        this.restoreValue({ value: fts, filterQuery: SearchMode.FTS });
+        this.changeMode({ value: SearchMode.FTS });
+      }
     },
     restoreValue({ filterQuery, value }) {
       this.setValue({ filter: filterQuery, value });

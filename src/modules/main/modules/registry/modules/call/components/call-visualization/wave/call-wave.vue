@@ -1,5 +1,43 @@
 <template>
   <section class="call-wave-page">
+    <call-visualization-header>
+      <template v-slot:title>
+        {{ $t('registry.call.wave.wave') }}
+      </template>
+      <template v-if="!isLoading" v-slot:main>
+        <wt-checkbox
+          :label="$tc('registry.call.hold', 2)"
+          :selected="showHolds"
+          :value="showHolds"
+          @change="toggleHolds"
+        ></wt-checkbox>
+        <wt-chip>
+          {{ holdsSize }}
+        </wt-chip>
+        <wt-checkbox
+          :label="$tc('registry.call.comment', 2)"
+          :selected="showComments"
+          :value="showComments"
+          @change="toggleComments"
+        ></wt-checkbox>
+        <wt-chip>
+          {{ commentsSize }}
+        </wt-chip>
+      </template>
+      <template v-if="!isLoading" v-slot:actions>
+        <wt-icon-btn
+          icon="note"
+          icon-prefix="hs"
+          @click="toggleCommentMode"
+        ></wt-icon-btn>
+        <wt-icon-btn
+          icon="download-record"
+          icon-prefix="hs"
+          @click="downloadFile"
+        ></wt-icon-btn>
+      </template>
+    </call-visualization-header>
+
     <wt-progress-bar
       v-show="isLoading"
       :max="100" :value="loadProgress"
@@ -9,42 +47,6 @@
       :class="{'call-wave-page-main--hidden': isLoading}"
       class="call-wave-page-main"
     >
-      <section class="call-wave-toolbar">
-        <div class="toolbar-main">
-          <wt-checkbox
-            :label="$tc('registry.call.hold', 2)"
-            :selected="showHolds"
-            :value="showHolds"
-            @change="toggleHolds"
-          ></wt-checkbox>
-          <wt-chip>
-            {{ holdsSize }}
-          </wt-chip>
-
-          <wt-checkbox
-            :label="$tc('registry.call.comment', 2)"
-            :selected="showComments"
-            :value="showComments"
-            @change="toggleComments"
-          ></wt-checkbox>
-          <wt-chip>
-            {{ commentsSize }}
-          </wt-chip>
-        </div>
-        <div class="toolbar-actions">
-          <wt-icon-btn
-            icon="note"
-            icon-prefix="hs"
-            @click="toggleCommentMode"
-          ></wt-icon-btn>
-          <wt-icon-btn
-            icon="download-record"
-            icon-prefix="hs"
-            @click="downloadFile"
-          ></wt-icon-btn>
-        </div>
-      </section>
-
       <call-comment-form
         v-if="commentsMode"
         :call-duration="callDuration"
@@ -162,6 +164,7 @@ import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import generateMediaURL from '../../../../../mixins/media/scripts/generateMediaURL';
+import CallVisualizationHeader from '../call-visualization-header.vue';
 import regionsMixin from '../mixins/regionsMixin';
 import soundFiltersMixin from '../mixins/soundFiltersMixin';
 import CallCommentForm from './call-wave-comment-form.vue';
@@ -203,7 +206,7 @@ const createMarker = (color) => {
 
 export default {
   name: 'call-visualization',
-  components: { CallCommentForm },
+  components: { CallVisualizationHeader, CallCommentForm },
   mixins: [exportFilesMixin, soundFiltersMixin, regionsMixin],
   data: () => ({
     volumeLeftGain: 1,
@@ -285,9 +288,9 @@ export default {
     },
     async deleteComment() {
       await this.deleteAnnotation({
-                                    id: this.selectedComment.id,
-                                    callId: this.call.id,
-                                  });
+        id: this.selectedComment.id,
+        callId: this.call.id,
+      });
       await this.updateRegions();
     },
     openCommentMode() {
@@ -302,8 +305,8 @@ export default {
       // comment was not saved and the region must be deleted to have a cleaner wave.
       if (this.player.regions.list) {
         const cancelledRegion = Object
-          .keys(this.player.regions.list)
-          .find((region) => this.player.regions.list[region].element.children.length < 3);
+        .keys(this.player.regions.list)
+        .find((region) => this.player.regions.list[region].element.children.length < 3);
         if (cancelledRegion) this.redrawRegions();
       }
       this.player.enableDragSelection({ ...commentOptions });
@@ -389,22 +392,22 @@ export default {
       this.hideProgress();
       try {
         player.addMarker({
-                           time: 0,
-                           position: 'top',
-                           /* in order to show empty FROM
-                            (not blocking mounting if name and number are not received) */
-                           label: call.from.name || call.from.number || ' ',
-                           color: player.params.splitChannelsOptions.channelColors[0].progressColor,
-                           markerElement: createMarker('var(--true-color)'),
-                         });
+          time: 0,
+          position: 'top',
+          /* in order to show empty FROM
+           (not blocking mounting if name and number are not received) */
+          label: call.from.name || call.from.number || ' ',
+          color: player.params.splitChannelsOptions.channelColors[0].progressColor,
+          markerElement: createMarker('var(--true-color)'),
+        });
         if (this.rightGain) {
           player.addMarker({
-                             time: 0,
-                             label: call.to?.name || call.to?.number || call.destination,
-                             color: player.params.splitChannelsOptions
-                               .channelColors[1].progressColor,
-                             markerElement: createMarker('var(--accent-color)'),
-                           });
+            time: 0,
+            label: call.to?.name || call.to?.number || call.destination,
+            color: player.params.splitChannelsOptions
+              .channelColors[1].progressColor,
+            markerElement: createMarker('var(--accent-color)'),
+          });
         }
         const createdMarkers = document.querySelectorAll('marker');
         // seting our font for marker title:
@@ -442,6 +445,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.call-visualization-header {
+  margin-bottom: var(--spacing-sm);
+}
+
 .call-wave-page {
 
   .call-wave-page-main {
@@ -451,23 +458,6 @@ export default {
 
     &--hidden {
       display: none;
-    }
-  }
-
-  .call-wave-toolbar {
-    display: flex;
-    justify-content: space-between;
-
-    .toolbar-main {
-      display: flex;
-      flex: 1 0 auto;
-      justify-content: center;
-      gap: var(--spacing-sm);
-    }
-
-    .toolbar-actions {
-      display: flex;
-      gap: var(--spacing-sm);
     }
   }
 

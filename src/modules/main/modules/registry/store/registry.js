@@ -4,7 +4,7 @@ import historyHeaders from './headers/headers';
 import call from '../modules/call/store/call';
 
 const historyAPI = APIRepository.history;
-const REQUIRED_DATA_FIELDS = ['files', 'id', 'files_job', 'transcriptions'];
+const REQUIRED_DATA_FIELDS = ['files', 'id', 'files_job', 'transcripts'];
 
 const state = {
   dataList: [],

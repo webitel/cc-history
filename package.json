@@ -12,12 +12,13 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",
-    "@webitel/ui-sdk": "^2.0.16-6",
+    "@webitel/ui-sdk": "^2.0.16-9",
     "axios": "^0.27.2",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
     "deep-copy": "^1.4.2",
     "deep-equal": "^2.0.3",
+    "file-saver": "^2.0.5",
     "jszip": "^3.4.0",
     "jszip-utils": "^0.1.0",
     "node-polyfill-webpack-plugin": "^1.1.4",
@@ -30,7 +31,7 @@
     "vuex": "^3.6.2",
     "wavesurfer.js": "^5.2.0",
     "wavesurfer.js-vue": "^1.0.0",
-    "webitel-sdk": "^0.1.140"
+    "webitel-sdk": "^0.1.142"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",

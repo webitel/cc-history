@@ -38,12 +38,14 @@ export default {
       callVisualization: 'Визуализация звонка',
       hold: 'Удержание | Удержания',
       comment: 'Комментарий | Комментарии',
+      wave: { wave: 'Разметка звонка', },
       stt: {
         noTranscript: 'Транскрипция файла отсутствует',
         transcribingInProgress: 'Выполняется транскрипция файла. Пожалуйста, обновите страницу через минуту.',
       },
     },
     stt: {
+      transcription: 'Транскрипция',
       downloadTxt: 'Скачать TXT',
       transcribe: 'Транскрибировать',
     },
