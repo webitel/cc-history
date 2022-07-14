@@ -185,7 +185,7 @@ export default {
       [SearchMode.SEARCH]: 'Regular search',
       [SearchMode.FTS]: 'Full text search',
     },
-    hasRecording: 'Has recording',
+    hasFile: 'Has recording',
     hasTranscription: 'Has transcription',
   },
   components: {

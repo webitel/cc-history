@@ -185,7 +185,7 @@ export default {
       [SearchMode.SEARCH]: 'Обычный поиск',
       [SearchMode.FTS]: 'Полнотекстовый поиск',
     },
-    hasRecording: 'Запись разговора',
+    hasFile: 'Запись разговора',
     hasTranscription: 'Транскрипция',
   },
   components: {

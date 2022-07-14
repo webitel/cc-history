@@ -53,15 +53,11 @@
             class="table-action"
           ></media-action>
 
-          <router-link
-            v-if="item.files && item.files[0].transcripts"
-            :to="`/${item.id}#transcript`"
+          <stt-action
+            v-if="item.files"
             class="table-action"
-          >
-            <wt-icon
-              icon="stt"
-            ></wt-icon>
-          </router-link>
+            :item="item"
+          ></stt-action>
 
           <router-link
             :to="`/${item.id}`"
@@ -94,6 +90,7 @@ import playMediaMixin from '../mixins/media/playMediaMixin';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
+import SttAction from '../modules/stt/components/table-stt-action.vue';
 
 export default {
   name: 'history-registry',
@@ -106,6 +103,7 @@ export default {
     FilterPagination,
     TableDirection,
     MediaAction,
+    SttAction,
   },
 
   watch: {

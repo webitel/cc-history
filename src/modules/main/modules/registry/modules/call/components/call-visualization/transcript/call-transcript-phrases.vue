@@ -17,6 +17,10 @@
               icon="stt-download"
               @click="downloadTxt"
             ></wt-icon-btn>
+            <wt-icon-btn
+              icon="bucket"
+              @click="deleteTranscription"
+            ></wt-icon-btn>
           </template>
           {{ $t('registry.stt.downloadTxt') }}
         </wt-tooltip>
@@ -99,6 +103,10 @@ export default {
       const text = this.filteredData.map(({ phrase }) => `- ${phrase}`).join('\n');
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       return saveAs(blob, `Transcript ${this.transcript.id}`);
+    },
+    deleteTranscription() {
+      const fileId = this.transcript.id;
+      CallTranscriptAPI.delete({ fileId });
     },
   },
   watch: {

@@ -1,4 +1,4 @@
-const HasRecording = Object.freeze([
+const hasFile = Object.freeze([
   {
     locale: 'vocabulary.yes',
     value: 'true',
@@ -9,4 +9,4 @@ const HasRecording = Object.freeze([
   },
 ]);
 
-export default HasRecording;
+export default hasFile;

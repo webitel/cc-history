@@ -30,7 +30,6 @@ const fetchHistory = async ({
                               skipParent,
                               parentId,
                               cause,
-                              existsFile,
                               fields,
                               sort,
                               direction,
@@ -40,10 +39,8 @@ const fetchHistory = async ({
                               tags,
                               amdResult,
                               fts,
-                              hold,
-                              annotations,
                               hangupDisposition,
-                              hasRecording,
+                              hasFile,
                               hasTranscription,
                             }) => {
   try {
@@ -66,7 +63,7 @@ const fetchHistory = async ({
       skipParent,
       parentId,
       cause,
-      existsFile,
+      hasFile,
       undefined,
       `${search}`,
       direction,
@@ -82,11 +79,8 @@ const fetchHistory = async ({
       tags,
       amdResult,
       fts,
-      hold,
-      annotations,
       hangupDisposition,
-      hasRecording ? (hasRecording === 'true') : undefined,
-      hasTranscription ? (hasTranscription === 'true') : undefined,
+      hasTranscription,
     );
     return formatResponse(response);
   } catch (err) {

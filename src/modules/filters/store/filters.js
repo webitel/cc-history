@@ -8,7 +8,7 @@ import AmdResultOptions from '../enums/AmdResultOptions.enum';
 import DirectionOptions from '../enums/DirectionOptions.enum';
 import GatewaysAPI from '../api/GatewaysAPIRepository';
 import QueuesAPI from '../api/QueuesAPIRepository';
-import HasRecording from '../enums/HasRecording.enum';
+import hasFile from '../enums/HasFile.enum';
 import HasTranscription from '../enums/HasTranscription.enum';
 import TagOptions from '../enums/TagOptions.enum';
 import TeamAPI from '../api/TeamsAPIRepository';
@@ -66,9 +66,9 @@ const state = {
     API: UserAPI.getLookup,
     locale: { label: 'fields.user' },
   }),
-  hasRecording: new EnumFilterSchema({
-    options: HasRecording,
-    locale: { label: 'filters.hasRecording' },
+  hasFile: new EnumFilterSchema({
+    options: hasFile,
+    locale: { label: 'filters.hasFile' },
     multiple: false,
   }),
   hasTranscription: new EnumFilterSchema({

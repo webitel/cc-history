@@ -82,7 +82,7 @@ export default {
   methods: {
     callExportFiles() {
       try {
-        const params = { existsFile: true };
+        const params = { hasFile: 'true' };
         return this.exportFiles(null, params);
       } catch (err) {
         throw err;

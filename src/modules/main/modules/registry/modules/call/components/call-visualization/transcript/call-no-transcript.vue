@@ -46,8 +46,8 @@ export default {
       },
     }),
     async transcribe() {
-      const fileId = this.call.files[0].id;
-      await CallTranscriptAPI.create({ fileId: [fileId] });
+      const callId = this.call.id;
+      await CallTranscriptAPI.create({ callId });
       return this.refreshCall();
     },
   },
