@@ -32,7 +32,7 @@ export default {
   computed: {
     currentState() {
       if (this.item.filesJob) return this.states[this.item.filesJob];
-      if (this.item.files[0].transcripts) {
+      if (this.item.transcripts) {
         return this.states[TranscriptionState.DONE];
       }
       return this.states[TranscriptionState.NONE];

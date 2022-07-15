@@ -8,11 +8,15 @@
         track-by="id"
         :clearable="false"
       ></wt-select>
-    <call-wave></call-wave>
+    <call-wave
+      :call="call"
+      :file="currentFile"
+    ></call-wave>
     <call-transcript
       :call="call"
-      :transcript="currentFileTranscript"
+      :file="currentFile"
       :namespace="namespace"
+      @delete="deleteTranscript"
     ></call-transcript>
   </section>
 </template>
@@ -39,14 +43,18 @@ export default {
   data: () => ({
     currentFile: {},
   }),
-  computed: {
-    currentFileTranscript() {
-      return this.currentFile.transcripts ? this.currentFile.transcripts[0] : null;
-    },
-  },
   methods: {
     initCurrentFile() {
       [this.currentFile] = this.call.files;
+    },
+    deleteTranscript(transcript) {
+      const index = this.call.transcripts.indexOf(transcript);
+      /**
+       * we mock deletion of transcription with sending api request from call-transcript.vue
+       * to prevent refreshing of all call data and page reload
+       */
+      // eslint-disable-next-line vue/no-mutating-props
+      this.call.transcripts.splice(index, 1);
     },
   },
   created() {

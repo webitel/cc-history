@@ -54,7 +54,6 @@
           ></media-action>
 
           <stt-action
-            v-if="item.files"
             class="table-action"
             :item="item"
           ></stt-action>

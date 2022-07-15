@@ -88,11 +88,11 @@
           </div>
         </section>
 
-        <section v-if="file" class="call-wave-data-plugin">
+        <section v-if="fileUrl" class="call-wave-data-plugin">
           <wavesurfer
             ref="surf"
             :options="waveOptions"
-            :src="file"
+            :src="fileUrl"
           >
           </wavesurfer>
           <div id="wave-timeline" class="call-wave-timeline"></div>
@@ -158,7 +158,7 @@
 <script>
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
@@ -205,9 +205,19 @@ const createMarker = (color) => {
 };
 
 export default {
-  name: 'call-visualization',
+  name: 'call-wave',
   components: { CallVisualizationHeader, CallCommentForm },
   mixins: [exportFilesMixin, soundFiltersMixin, regionsMixin],
+  props: {
+    call: {
+      type: Object,
+      required: true,
+    },
+    file: {
+      type: Object,
+      required: true,
+    },
+  },
   data: () => ({
     volumeLeftGain: 1,
     volumeRightGain: 1,
@@ -245,10 +255,9 @@ export default {
   }),
 
   computed: {
-    ...mapState('registry/call', {
-      file: (state) => generateMediaURL(state.fileId, true),
-      call: (state) => state.mainCall,
-    }),
+    fileUrl() {
+      return generateMediaURL(this.file.id, true);
+    },
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
     },
@@ -370,6 +379,7 @@ export default {
     },
 
     showProgress(progress) {
+      this.isLoading = true;
       this.loadProgress = +progress;
     },
     hideProgress() {
@@ -425,7 +435,7 @@ export default {
   },
 
   watch: {
-    file() {
+    fileUrl() {
       this.initWave();
     },
   },
@@ -436,7 +446,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      if (this.player && this.file) {
+      if (this.player && this.fileUrl) {
         this.initWave();
       }
     });

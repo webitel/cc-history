@@ -9,10 +9,13 @@
           v-for="(channel) of channels"
           :key="channel.value"
           v-model="channel.show"
-          :label="`${$t('vocabulary.channel')} ${channel.value}`"
+          :label="channel.value"
         ></wt-checkbox>
       </template>
-      <template v-if="transcript" v-slot:actions>
+      <template
+        v-if="transcript"
+        v-slot:actions
+      >
         <wt-tooltip>
           <template v-slot:activator>
             <wt-icon-btn
@@ -38,16 +41,19 @@
       class="call-transcript"
     >
       <wt-loader v-show="isLoading"></wt-loader>
+    <div class="call-transcript__table-wrapper">
       <wt-table
         v-show="!isLoading"
         :data="filteredData"
         :headers="headers"
         :selectable="false"
       ></wt-table>
+    </div>
     </article>
     <call-no-transcript
       v-else
       :call="call"
+      :file="file"
       :namespace="namespace"
     ></call-no-transcript>
   </section>
@@ -70,7 +76,7 @@ export default {
       type: Object,
       required: true,
     },
-    transcript: {
+    file: {
       type: Object,
     },
     namespace: {
@@ -107,12 +113,15 @@ export default {
                                  startSec, endSec, phrase, channel,
                                }) => ({
         time: `${startSec} - ${endSec}`,
-        channel: channel || 0,
+        channel: channel ? (this.call.to?.name || 1) : (this.call.from?.name || 0),
         phrase,
       }));
     },
     filteredData() {
-      return this.data.filter((line) => this.channels[line.channel]?.show);
+      return this.data.filter(({ channel }) => this.channels[channel]?.show);
+    },
+    transcript() {
+      return (this.call.transcripts || []).find(({ fileId }) => this.file.id === fileId);
     },
   },
   methods: {
@@ -129,7 +138,9 @@ export default {
         ...new Set(
           this.data.map(({ channel }) => channel),
         ),
-      ].map((channel) => ({ value: channel, show: true }));
+      ].reduce((channels, channel) => (
+        { ...channels, [channel]: { value: channel, show: true } }
+      ), {});
     },
     downloadTxt() {
       const text = this.filteredData.map(({ phrase }) => `- ${phrase}`).join('\n');
@@ -139,12 +150,17 @@ export default {
     deleteTranscription() {
       const fileId = this.transcript.id;
       CallTranscriptAPI.delete({ fileId });
+      this.$emit('delete', this.transcript);
+    },
+    resetCallTranscript() {
+      this.phrases = [];
     },
   },
   watch: {
     transcript: {
-      handler() {
-        this.loadCallTranscript();
+      handler(value) {
+        if (value) this.loadCallTranscript();
+        else this.resetCallTranscript();
       },
       immediate: true,
     },
@@ -158,5 +174,11 @@ export default {
 <style lang="scss" scoped>
 .call-visualization-header {
   margin-bottom: var(--spacing-sm);
+}
+
+.call-transcript__table-wrapper {
+  @extend %wt-scrollbar;
+  max-height: 60vh;
+  overflow: auto;
 }
 </style>

@@ -6,10 +6,7 @@ const transcriptService = new FileTranscriptServiceApiFactory(configuration, '',
 
 const createTranscript = async ({ callId }) => {
   const uuid = Array.isArray(callId) ? callId : [callId];
-  const response = await transcriptService.createFileTranscript({
-    uuid,
-    locale: 'uk-UA',
-  });
+  const response = await transcriptService.createFileTranscript({ uuid });
   return response;
 };
 
