@@ -35,7 +35,7 @@ describe('History heading section', () => {
     const exportCSVMock = jest.fn();
     const wrapper = shallowMount(HistoryHeading, { localVue, store, router });
     wrapper.vm.exportCSV = exportCSVMock;
-    wrapper.findAllComponents({ name: 'wt-button' }).at(1).vm.$emit('click');
+    wrapper.findAllComponents({ name: 'wt-button' }).at(2).vm.$emit('click');
     expect(exportCSVMock).toHaveBeenCalled();
   });
 });
