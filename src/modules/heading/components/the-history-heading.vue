@@ -10,6 +10,14 @@
       ></filter-search>
 
       <wt-button
+        :disabled="!selectedItems.length"
+        color="secondary"
+        @click="bulkTranscribe"
+        :loading="isTranscribing"
+      >{{ $t('registry.stt.transcribe') }}
+      </wt-button>
+
+      <wt-button
         color="secondary"
         :disabled="!dataList.length"
         :loading="isFilesLoading"
@@ -39,9 +47,10 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
+import CallTranscriptAPI from '../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
 import FilterSearch from '../modules/filters/components/filter-search.vue';
 
 import generateMediaURL from '../../main/modules/registry/mixins/media/scripts/generateMediaURL';
@@ -54,16 +63,9 @@ export default {
     exportFilesMixin,
   ],
   components: { FilterSearch },
-
-  created() {
-    this.initCSVExport(APIRepository.history.getHistory, { filename: 'history' });
-    this.initFilesExport({
-      fetchMethod: APIRepository.history.getHistory,
-      filename: 'history-records',
-      filesURL: generateMediaURL,
-    });
-  },
-
+  data: () => ({
+    isTranscribing: false,
+  }),
   computed: {
     ...mapState('registry', {
       dataList: (state) => state.dataList,
@@ -80,6 +82,9 @@ export default {
   },
 
   methods: {
+    ...mapActions('registry', {
+      loadDataList: 'LOAD_DATA_LIST',
+    }),
     callExportFiles() {
       try {
         const params = { hasFile: 'true' };
@@ -97,6 +102,24 @@ export default {
         throw err;
       }
     },
+    async bulkTranscribe() {
+      try {
+        this.isTranscribing = true;
+        const callId = this.selectedItems.map(({ id }) => id);
+        await CallTranscriptAPI.create({ callId });
+      } finally {
+        await this.loadDataList();
+        this.isTranscribing = false;
+      }
+    },
+  },
+  created() {
+    this.initCSVExport(APIRepository.history.getHistory, { filename: 'history' });
+    this.initFilesExport({
+      fetchMethod: APIRepository.history.getHistory,
+      filename: 'history-records',
+      filesURL: generateMediaURL,
+    });
   },
 };
 </script>
