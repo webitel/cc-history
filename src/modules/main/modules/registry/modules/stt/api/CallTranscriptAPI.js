@@ -15,8 +15,14 @@ const getTranscript = async ({ id, page = 1, size = 10000 }) => {
   return response.items;
 };
 
-const deleteTranscript = ({ fileId }) => {
-  return transcriptService.deleteFileTranscript({ id: [fileId] });
+const deleteTranscript = ({ fileId, callId }) => {
+  let body;
+  if (fileId) {
+    body = { id: Array.isArray(fileId) ? fileId : [fileId] };
+  } else {
+    body = { uuid: Array.isArray(callId) ? callId : [callId] };
+  }
+  return transcriptService.deleteFileTranscript(body);
 };
 
 const CallTranscriptAPI = {

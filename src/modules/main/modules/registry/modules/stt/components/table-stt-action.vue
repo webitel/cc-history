@@ -4,12 +4,16 @@
       size="sm"
       color="icon"
     ></wt-loader>
-    <wt-icon-btn
-      v-else
-      :color="currentState.color"
-      :icon="currentState.icon"
-      @click="currentState.handler()"
-    ></wt-icon-btn>
+  <wt-tooltip v-else>
+    <template v-slot:activator>
+      <wt-icon-btn
+        :color="currentState.color"
+        :icon="currentState.icon"
+        @click="currentState.handler()"
+      ></wt-icon-btn>
+    </template>
+      {{ currentState.tooltip }}
+  </wt-tooltip>
 </template>
 
 <script>
@@ -31,7 +35,7 @@ export default {
   }),
   computed: {
     currentState() {
-      if (this.item.filesJob) return this.states[this.item.filesJob];
+      if (this.fileJob) return this.states[this.fileJob.state];
       if (this.item.transcripts) {
         return this.states[TranscriptionState.DONE];
       }
@@ -40,26 +44,33 @@ export default {
     states() {
       return {
         [TranscriptionState.IDLE]: {
-          value: [TranscriptionState.IDLE],
+          value: TranscriptionState.IDLE,
           icon: 'idle',
+          tooltip: this.$t('registry.stt.jobState.idle'),
         },
         [TranscriptionState.DONE]: {
-          value: [TranscriptionState.DONE],
+          value: TranscriptionState.DONE,
           icon: 'docs',
           color: 'success',
+          tooltip: this.$tc('registry.stt.transcription', 1),
           handler: this.handleDoneClick,
         },
         [TranscriptionState.ERROR]: {
-          value: [TranscriptionState.ERROR],
+          value: TranscriptionState.ERROR,
           icon: 'attention',
+          tooltip: this.fileJob?.errorDetail,
           handler: this.handleErrorClick,
         },
         [TranscriptionState.NONE]: {
-          value: [TranscriptionState.NONE],
+          value: TranscriptionState.NONE,
           icon: 'stt',
+          tooltip: this.$t('registry.stt.transcribe'),
           handler: this.handleStartJob,
         },
       };
+    },
+    fileJob() {
+      return this.item.filesJob ? this.item.filesJob[0] : null;
     },
   },
   methods: {

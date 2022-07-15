@@ -45,9 +45,12 @@ export default {
       },
     },
     stt: {
-      transcription: 'Транскрипция',
+      transcription: 'Транскрипция | Транскрипции',
       downloadTxt: 'Скачать TXT',
       transcribe: 'Транскрибировать',
+      jobState: {
+        idle: 'Ожидает',
+      },
     },
   },
   dashboards: {

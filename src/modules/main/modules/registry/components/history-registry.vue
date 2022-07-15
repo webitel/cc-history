@@ -53,7 +53,9 @@
             class="table-action"
           ></media-action>
 
+<!--          v-if transcript can be added, exists, or already in progress -->
           <stt-action
+            v-if="item.files || item.transcripts || item.filesJob"
             class="table-action"
             :item="item"
           ></stt-action>

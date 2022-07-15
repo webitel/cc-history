@@ -2,7 +2,7 @@
   <section class="call-transcript">
     <call-visualization-header>
       <template v-slot:title>
-        {{ $t('registry.stt.transcription') }}
+        {{ $tc('registry.stt.transcription', 1) }}
       </template>
       <template v-slot:main>
         <wt-checkbox
@@ -147,9 +147,9 @@ export default {
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       return saveAs(blob, `Transcript ${this.transcript.id}`);
     },
-    deleteTranscription() {
+    async deleteTranscription() {
       const fileId = this.transcript.id;
-      CallTranscriptAPI.delete({ fileId });
+      await CallTranscriptAPI.delete({ fileId });
       this.$emit('delete', this.transcript);
     },
     resetCallTranscript() {

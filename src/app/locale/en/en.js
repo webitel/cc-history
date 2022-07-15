@@ -47,9 +47,12 @@ export default {
       },
     },
     stt: {
-      transcription: 'Transcription',
+      transcription: 'Transcription | Transcriptions',
       downloadTxt: 'Download TXT',
       transcribe: 'Transcribe',
+      jobState: {
+        idle: 'Idle',
+      },
     },
   },
   dashboards: {

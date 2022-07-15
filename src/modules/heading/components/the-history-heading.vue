@@ -11,16 +11,16 @@
 
       <wt-button
         :disabled="!selectedItems.length"
+        :loading="isTranscribing"
         color="secondary"
         @click="bulkTranscribe"
-        :loading="isTranscribing"
       >{{ $t('registry.stt.transcribe') }}
       </wt-button>
 
       <wt-button
-        color="secondary"
         :disabled="!dataList.length"
         :loading="isFilesLoading"
+        color="secondary"
         @click="callExportFiles"
       >{{ $t('reusable.download') }}
       </wt-button>
@@ -37,24 +37,33 @@
         </div>
       </div>
       <wt-button
-        :loading="isCSVLoading"
         :disabled="!dataList.length"
+        :loading="isCSVLoading"
+        color="secondary"
         @click="callExportCSV"
       >{{ $t('headerSection.exportCSV') }}
       </wt-button>
+
+      <wt-button-select
+        :options="deleteOptions"
+        :disabled="!selectedItems.length"
+        color="secondary"
+        @click:option="$event.handler()"
+      >{{ $t('reusable.delete') }}...
+      </wt-button-select>
     </template>
   </wt-headline>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
-import CallTranscriptAPI from '../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
-import FilterSearch from '../modules/filters/components/filter-search.vue';
+import { mapActions, mapGetters, mapState } from 'vuex';
+import APIRepository from '../../../app/api/APIRepository';
 
 import generateMediaURL from '../../main/modules/registry/mixins/media/scripts/generateMediaURL';
-import APIRepository from '../../../app/api/APIRepository';
+import CallTranscriptAPI from '../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
+import FilterSearch from '../modules/filters/components/filter-search.vue';
 
 export default {
   name: 'the-history-heading',
@@ -79,6 +88,15 @@ export default {
       fields: 'DATA_FIELDS',
       selectedItems: 'SELECTED_DATA_ITEMS',
     }),
+    deleteOptions() {
+      return [
+        {
+          value: 'transcript',
+          text: this.$tc('registry.stt.transcription', 2),
+          handler: this.bulkDeleteTranscripts.bind(this),
+        },
+      ];
+    },
   },
 
   methods: {
@@ -112,6 +130,14 @@ export default {
         this.isTranscribing = false;
       }
     },
+    async bulkDeleteTranscripts() {
+      try {
+        const callId = this.selectedItems.map(({ id }) => id);
+        await CallTranscriptAPI.delete({ callId });
+      } finally {
+        await this.loadDataList();
+      }
+    },
   },
   created() {
     this.initCSVExport(APIRepository.history.getHistory, { filename: 'history' });
@@ -126,20 +152,20 @@ export default {
 
 <style lang="scss" scoped>
 .the-history-heading {
-  .wt-button {
+  .wt-button, .wt-button-select {
     margin-left: 20px;
   }
 
   .files-counter {
     @extend %typo-caption;
     position: absolute;
-    right: 0;
     top: 100%;
-    padding: 10px 15px;
+    right: 0;
     margin-top: 10px;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
     background: var(--main-color);
     box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
 
     &__count {
       @extend %typo-caption;
