@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { mapActions, mapState } from 'vuex';
 import CallInfo from './call-info/call-info.vue';
 import CallLegs from './call-legs/call-legs.vue';
 import CallVisualization from './call-visualization/call-visualization.vue';
@@ -83,7 +83,8 @@ export default {
     tabs() {
       const tabs = [this.tabValues.INFO];
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
-      if (this.mainCall.files) tabs.push(this.tabValues.VISUALIZATION);
+      if (this.mainCall.files?.length || this.mainCall.transcripts?.length
+        || this.mainCall.filesJob?.length) tabs.push(this.tabValues.VISUALIZATION);
       return tabs;
     },
     callId() {
@@ -131,7 +132,7 @@ export default {
 .history-tabs-wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
   width: 100%;
+  gap: var(--spacing-sm);
 }
 </style>

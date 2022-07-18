@@ -52,6 +52,9 @@ export default {
         idle: 'Очікує',
       },
     },
+    recordings: {
+      recording: 'Запис | Записи',
+    },
   },
   dashboards: {
     dashboards: 'Дашборди',

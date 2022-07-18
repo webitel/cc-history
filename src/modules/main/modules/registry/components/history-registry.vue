@@ -55,7 +55,7 @@
 
 <!--          v-if transcript can be added, exists, or already in progress -->
           <stt-action
-            v-if="item.files || item.transcripts || item.filesJob"
+            v-if="showItemStt(item)"
             class="table-action"
             :item="item"
             @delete="handleTranscriptDelete({ call: item, transcript: $event })"
@@ -137,6 +137,9 @@ export default {
     }),
     handleTranscriptDelete({ call, transcript }) {
       call.transcripts.splice(call.transcripts.indexOf(transcript), 1);
+    },
+    showItemStt(item) {
+      return item.files || item.transcripts?.length || item.filesJob;
     },
   },
 };

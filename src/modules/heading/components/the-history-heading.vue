@@ -62,6 +62,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import APIRepository from '../../../app/api/APIRepository';
 
 import generateMediaURL from '../../main/modules/registry/mixins/media/scripts/generateMediaURL';
+import CallRecordingsAPI from '../../main/modules/registry/modules/recordings/api/CallRecordingsAPI';
 import CallTranscriptAPI from '../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
 import FilterSearch from '../modules/filters/components/filter-search.vue';
 
@@ -90,6 +91,11 @@ export default {
     }),
     deleteOptions() {
       return [
+        {
+          value: 'transcript',
+          text: this.$tc('registry.recordings.recording', 2),
+          handler: this.bulkDeleteRecordings.bind(this),
+        },
         {
           value: 'transcript',
           text: this.$tc('registry.stt.transcription', 2),
@@ -134,6 +140,15 @@ export default {
       try {
         const callId = this.selectedItems.map(({ id }) => id);
         await CallTranscriptAPI.delete({ callId });
+      } finally {
+        await this.loadDataList();
+      }
+    },
+    async bulkDeleteRecordings() {
+      try {
+        const fileIds = this.selectedItems
+        .reduce((fileIds, { files }) => fileIds.concat(files.map(({ id }) => id)), []);
+        await CallRecordingsAPI.delete(fileIds);
       } finally {
         await this.loadDataList();
       }

@@ -54,6 +54,9 @@ export default {
         idle: 'Idle',
       },
     },
+    recordings: {
+      recording: 'Recording | Recordings',
+    },
   },
   dashboards: {
     dashboards: 'Dashboards',

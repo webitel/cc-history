@@ -1,13 +1,13 @@
 <template>
   <section class="call-visualization">
-      <wt-select
-        class="call-visualization__filepicker"
-        v-model="currentFile"
-        :label="$t('vocabulary.file')"
-        :options="call.files"
-        track-by="id"
-        :clearable="false"
-      ></wt-select>
+    <wt-select
+      v-model="currentFile"
+      :clearable="false"
+      :label="$t('vocabulary.file')"
+      :options="currentFIleOptions"
+      class="call-visualization__filepicker"
+      track-by="id"
+    ></wt-select>
     <call-wave
       :call="call"
       :file="currentFile"
@@ -41,11 +41,18 @@ export default {
     },
   },
   data: () => ({
-    currentFile: {},
+    currentFile: null,
   }),
+  computed: {
+    currentFIleOptions() {
+      return this.call.files
+        || (this.call.transcripts || this.call.filesJob)
+        .map(({ id }) => ({ id, name: id }));
+    },
+  },
   methods: {
     initCurrentFile() {
-      [this.currentFile] = this.call.files;
+      [this.currentFile] = this.currentFIleOptions;
     },
     deleteTranscript(transcript) {
       const index = this.call.transcripts.indexOf(transcript);

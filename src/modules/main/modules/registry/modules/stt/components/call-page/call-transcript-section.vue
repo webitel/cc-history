@@ -83,7 +83,8 @@ export default {
       return this.data.filter(({ channel }) => this.channels[channel]?.show);
     },
     transcript() {
-      return (this.call.transcripts || []).find(({ fileId }) => this.file.id === fileId);
+      return (this.call.transcripts || [])
+      .find(({ fileId, id }) => this.file.id === fileId || this.file.id === id);
     },
   },
   methods: {
