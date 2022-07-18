@@ -58,6 +58,7 @@
             v-if="item.files || item.transcripts || item.filesJob"
             class="table-action"
             :item="item"
+            @delete="handleTranscriptDelete({ call: item, transcript: $event })"
           ></stt-action>
 
           <router-link
@@ -91,7 +92,7 @@ import playMediaMixin from '../mixins/media/playMediaMixin';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
-import SttAction from '../modules/stt/components/table-stt-action.vue';
+import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 
 export default {
   name: 'history-registry',
@@ -134,6 +135,9 @@ export default {
     ...mapActions('registry', {
       loadList: 'LOAD_DATA_LIST',
     }),
+    handleTranscriptDelete({ call, transcript }) {
+      call.transcripts.splice(call.transcripts.indexOf(transcript), 1);
+    },
   },
 };
 </script>

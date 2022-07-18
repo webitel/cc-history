@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import CallTranscript from './transcript/call-transcript.vue';
+import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallWave from './wave/call-wave.vue';
 
 export default {

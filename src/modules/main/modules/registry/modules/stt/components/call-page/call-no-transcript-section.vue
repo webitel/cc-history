@@ -31,7 +31,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import CallTranscriptAPI from '../../../../stt/api/CallTranscriptAPI';
+import CallTranscriptAPI from '../../api/CallTranscriptAPI';
 
 export default {
   name: 'call-no-transcript',
