@@ -51,6 +51,7 @@ export default {
       jobState: {
         idle: 'Очікує',
       },
+      error: 'Відбулась помилка транскрибування',
     },
     recordings: {
       recording: 'Запис | Записи',

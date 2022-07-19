@@ -53,6 +53,7 @@ export default {
       jobState: {
         idle: 'Idle',
       },
+      error: 'There was an error during call transcription',
     },
     recordings: {
       recording: 'Recording | Recordings',

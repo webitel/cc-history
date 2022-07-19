@@ -72,7 +72,7 @@ export default {
         [TranscriptionState.ERROR]: {
           value: TranscriptionState.ERROR,
           icon: 'attention',
-          tooltip: this.fileJob?.errorDetail,
+          tooltip: this.$t('registry.stt.error'),
           handler: this.handleStartJob,
         },
         [TranscriptionState.NONE]: {

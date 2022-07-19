@@ -1,7 +1,22 @@
 <template>
   <article class="call-no-transcript">
     <div
-      v-if="isLoading || fileJob"
+      class="call-no-transcript__wrapper"
+      v-if="fileJob && fileJob.state === JobState.Error"
+    >
+      <p class="call-no-transcript__text">{{ $t('registry.stt.error') }}</p>
+      <wt-icon
+        icon="attention"
+        size="xl"
+        color="danger"
+      ></wt-icon>
+      <wt-button
+        @click="transcribe"
+      >{{ $t('reusable.retry') }}
+      </wt-button>
+    </div>
+    <div
+      v-else-if="isLoading || fileJob"
       class="call-no-transcript__wrapper"
     >
       <p class="call-no-transcript__text">{{ $t('registry.call.stt.transcribingInProgress') }}</p>
@@ -31,6 +46,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
 import CallTranscriptAPI from '../../api/CallTranscriptAPI';
 
 export default {
@@ -50,6 +66,7 @@ export default {
   },
   data: () => ({
     isLoading: false,
+    JobState: HistoryFileJobHistoryFileJobState,
   }),
   computed: {
     fileJob() {
