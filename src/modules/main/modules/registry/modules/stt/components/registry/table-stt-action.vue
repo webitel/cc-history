@@ -73,6 +73,7 @@ export default {
           value: TranscriptionState.ERROR,
           icon: 'attention',
           tooltip: this.fileJob?.errorDetail,
+          handler: this.handleStartJob,
         },
         [TranscriptionState.NONE]: {
           value: TranscriptionState.NONE,
