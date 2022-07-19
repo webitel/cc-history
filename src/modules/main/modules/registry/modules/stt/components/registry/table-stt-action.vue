@@ -46,7 +46,7 @@ export default {
   }),
   computed: {
     currentState() {
-      if (this.fileJob) return this.states[this.fileJob.state];
+      if (this.fileJob) return this.jobStates(this.fileJob.state);
       if (this.item.transcripts?.length) {
         return this.states[TranscriptionState.DONE];
       }
@@ -88,6 +88,17 @@ export default {
     },
   },
   methods: {
+    jobStates(state) {
+      switch (state) {
+        case TranscriptionState.ACTIVE:
+        case TranscriptionState.FINISHED:
+          return this.states[TranscriptionState.ACTIVE];
+        case TranscriptionState.ERROR:
+          return this.states[TranscriptionState.ERROR];
+        default:
+          return this.states[TranscriptionState.IDLE];
+      }
+    },
     handleDoneClick() {
       this.isSttPopup = true;
     },
