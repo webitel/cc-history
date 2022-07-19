@@ -9,12 +9,12 @@
     <template v-slot:main>
       <div class="stt-popup-toolbar">
         <wt-select
+          v-model="transcript"
           :clearable="false"
           :label="$t('vocabulary.file')"
-          :options="selectTranscriptOptions"
-          :track-by="null"
-          :value="transcript.id"
-          @input="handleTranscrirptSelect"
+          :options="call.transcripts"
+          option-label="id"
+          track-by="id"
         ></wt-select>
         <div class="stt-popup-toolbar__actions">
           <stt-download-action
@@ -58,20 +58,10 @@ export default {
   },
   data: () => ({
     transcript: null,
-    transcriptId: null,
   }),
-  computed: {
-    selectTranscriptOptions() {
-      return this.call.transcripts.map(({ id }) => id);
-    },
-  },
   methods: {
     initCurrentTranscript() {
       [this.transcript] = this.call.transcripts;
-      this.transcriptId = this.transcript.id;
-    },
-    handleTranscrirptSelect(value) {
-      this.transcript = this.call.transcripts.find(({ id }) => id === value);
     },
     async handleDeleteTranscription() {
       await this.deleteTranscription();

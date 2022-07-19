@@ -1,27 +1,28 @@
 <template>
-    <div class="table-stt-action">
-      <wt-loader
-        v-if="startSpin || currentState.value === TranscriptionState.ACTIVE"
-        size="sm"
-        color="icon"
-      ></wt-loader>
-      <wt-tooltip v-else>
-        <template v-slot:activator>
-          <wt-icon-btn
-            :color="currentState.color"
-            :icon="currentState.icon"
-            @click="currentState.handler()"
-          ></wt-icon-btn>
-        </template>
-        {{ currentState.tooltip }}
-      </wt-tooltip>
-      <stt-popup
-        v-if="isSttPopup"
-        :call="item"
-        @close="isSttPopup = false"
-        @delete="$emit('delete', $event)"
-      ></stt-popup>
-    </div>
+  <div class="table-stt-action">
+    <stt-popup
+      v-if="isSttPopup"
+      :call="item"
+      @close="isSttPopup = false"
+      @delete="$emit('delete', $event)"
+    ></stt-popup>
+
+    <wt-loader
+      v-if="startSpin || currentState.value === TranscriptionState.ACTIVE"
+      color="icon"
+      size="sm"
+    ></wt-loader>
+    <wt-tooltip v-else>
+      <template v-slot:activator>
+        <wt-icon-btn
+          :color="currentState.color"
+          :icon="currentState.icon"
+          @click="currentState.handler()"
+        ></wt-icon-btn>
+      </template>
+      {{ currentState.tooltip }}
+    </wt-tooltip>
+  </div>
 </template>
 
 <script>
@@ -45,8 +46,21 @@ export default {
     isSttPopup: false,
   }),
   computed: {
+    fileJob() {
+      return this.item.filesJob ? this.item.filesJob[0] : null;
+    },
     currentState() {
-      if (this.fileJob) return this.jobStates(this.fileJob.state);
+      if (this.fileJob) {
+        switch (this.fileJob.state) {
+          case TranscriptionState.ACTIVE:
+          case TranscriptionState.FINISHED:
+            return this.states[TranscriptionState.ACTIVE];
+          case TranscriptionState.ERROR:
+            return this.states[TranscriptionState.ERROR];
+          default:
+            return this.states[TranscriptionState.IDLE];
+        }
+      }
       if (this.item.transcripts?.length) {
         return this.states[TranscriptionState.DONE];
       }
@@ -83,22 +97,8 @@ export default {
         },
       };
     },
-    fileJob() {
-      return this.item.filesJob ? this.item.filesJob[0] : null;
-    },
   },
   methods: {
-    jobStates(state) {
-      switch (state) {
-        case TranscriptionState.ACTIVE:
-        case TranscriptionState.FINISHED:
-          return this.states[TranscriptionState.ACTIVE];
-        case TranscriptionState.ERROR:
-          return this.states[TranscriptionState.ERROR];
-        default:
-          return this.states[TranscriptionState.IDLE];
-      }
-    },
     handleDoneClick() {
       this.isSttPopup = true;
     },
