@@ -44,6 +44,7 @@
     >
     </wt-progress-bar>
     <section
+      v-show="!isLoading"
       :class="{'call-wave-page-main--hidden': isLoading}"
       class="call-wave-page-main"
     >
@@ -93,8 +94,7 @@
             ref="surf"
             :options="waveOptions"
             :src="fileUrl"
-          >
-          </wavesurfer>
+          ></wavesurfer>
           <div id="wave-timeline" class="call-wave-timeline"></div>
         </section>
 
@@ -396,7 +396,7 @@ export default {
       this.commentsMode = true;
       this.blockRegionResize(this.player);
     },
-    onReady() {
+    async onReady() {
       const { player, call } = this;
       this.onLoad();
       this.hideProgress();
@@ -428,7 +428,9 @@ export default {
       } catch (err) {
         throw err;
       }
-      player.drawBuffer();
+
+      await this.$nextTick();
+      player.drawBuffer(); // https://github.com/katspaugh/wavesurfer.js/issues/1127#issuecomment-309044858
       this.redraw();
       player.on('region-update-end', this.createComment);
     },
@@ -436,7 +438,7 @@ export default {
 
   watch: {
     fileUrl() {
-      this.initWave();
+      this.player.load(this.fileUrl);
     },
   },
 
