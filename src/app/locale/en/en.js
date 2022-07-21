@@ -196,7 +196,7 @@ export default {
       settingsHint: 'Search mode',
       [SearchMode.SEARCH]: 'Regular search',
       [SearchMode.FTS]: 'Full text search',
-      [SearchMode.DESCRIPTION]: 'Agent`s comment',
+      [SearchMode.DESCRIPTION]: 'Agent\'s comment',
     },
     hasFile: 'Has recording',
     hasTranscription: 'Has transcription',
