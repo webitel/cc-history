@@ -19,6 +19,11 @@ export default {
     download: 'Скачать',
     from: 'От',
     to: 'До',
+    both: 'Все',
+  },
+  confirmDelete: {
+    title: 'Подтверждение удаления',
+    askConfirmation: 'Вы уверенны что хотите удалить {count} запись? | Вы уверенны что хотите удалить {count} записей?',
   },
   headerSection: {
     filesLoaded: 'Файлов скачано: ',
@@ -54,7 +59,7 @@ export default {
       error: 'Произошла ошибка транскрибирования',
     },
     recordings: {
-      recording: 'Запис | Записи',
+      recording: 'Запись разговора | Записи разговоров',
     },
   },
   dashboards: {

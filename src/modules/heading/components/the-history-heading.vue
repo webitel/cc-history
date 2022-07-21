@@ -4,6 +4,12 @@
       {{ $t('reusable.history') }}
     </template>
     <template slot="actions">
+      <confirm-delete-popup
+        v-if="deletedCount"
+        :callback="deleteCallback"
+        :count="deletedCount"
+        @close="handleDeleteClose"
+      ></confirm-delete-popup>
 
       <filter-search
         namespace="filters"
@@ -45,8 +51,8 @@
       </wt-button>
 
       <wt-button-select
-        :options="deleteOptions"
         :disabled="!selectedItems.length"
+        :options="deleteOptions"
         color="secondary"
         @click:option="$event.handler()"
       >{{ $t('reusable.delete') }}...
@@ -60,6 +66,7 @@ import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportC
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import APIRepository from '../../../app/api/APIRepository';
+import ConfirmDeletePopup from '../../../app/components/utils/confirm-delete-popup.vue';
 
 import generateMediaURL from '../../main/modules/registry/mixins/media/scripts/generateMediaURL';
 import CallRecordingsAPI from '../../main/modules/registry/modules/recordings/api/CallRecordingsAPI';
@@ -72,9 +79,15 @@ export default {
     exportCSVMixin,
     exportFilesMixin,
   ],
-  components: { FilterSearch },
+  components: {
+    FilterSearch,
+    ConfirmDeletePopup,
+  },
   data: () => ({
     isTranscribing: false,
+
+    deletedCount: null,
+    deleteCallback: null,
   }),
   computed: {
     ...mapState('registry', {
@@ -90,16 +103,44 @@ export default {
       selectedItems: 'SELECTED_DATA_ITEMS',
     }),
     deleteOptions() {
+      const loadListAfter = (callback) => async () => {
+        try {
+          await callback();
+        } finally { await this.loadDataList(); }
+      };
       return [
         {
-          value: 'transcript',
+          value: 'recording',
           text: this.$tc('registry.recordings.recording', 2),
-          handler: this.bulkDeleteRecordings.bind(this),
+          handler: () => {
+            this.deletedCount = this.selectedItems.length;
+            this.deleteCallback = loadListAfter(
+              this.bulkDeleteRecordings.bind(this),
+            );
+          },
         },
         {
           value: 'transcript',
           text: this.$tc('registry.stt.transcription', 2),
-          handler: this.bulkDeleteTranscripts.bind(this),
+          handler: () => {
+            this.deletedCount = this.selectedItems.length;
+            this.deleteCallback = loadListAfter(
+              this.bulkDeleteTranscripts.bind(this),
+            );
+          },
+        },
+        {
+          value: 'both',
+          text: this.$t('reusable.both'),
+          handler: () => {
+            this.deletedCount = this.selectedItems.length;
+            this.deleteCallback = loadListAfter(
+              async () => Promise.allSettled([
+                this.bulkDeleteRecordings.bind(this)(),
+                this.bulkDeleteTranscripts.bind(this)(),
+              ]),
+            );
+          },
         },
       ];
     },
@@ -137,21 +178,17 @@ export default {
       }
     },
     async bulkDeleteTranscripts() {
-      try {
-        const callId = this.selectedItems.map(({ id }) => id);
-        await CallTranscriptAPI.delete({ callId });
-      } finally {
-        await this.loadDataList();
-      }
+      const callId = this.selectedItems.map(({ id }) => id);
+      return CallTranscriptAPI.delete({ callId });
     },
     async bulkDeleteRecordings() {
-      try {
-        const fileIds = this.selectedItems
-        .reduce((fileIds, { files }) => fileIds.concat(files.map(({ id }) => id)), []);
-        await CallRecordingsAPI.delete(fileIds);
-      } finally {
-        await this.loadDataList();
-      }
+      const fileIds = this.selectedItems
+      .reduce((fileIds, { files }) => fileIds.concat(files.map(({ id }) => id)), []);
+      return CallRecordingsAPI.delete(fileIds);
+    },
+    handleDeleteClose() {
+      this.deletedCount = null;
+      this.deleteCallback = null;
     },
   },
   created() {

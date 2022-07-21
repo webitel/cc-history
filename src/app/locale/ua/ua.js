@@ -19,6 +19,11 @@ export default {
     download: 'Скачати',
     from: 'Від',
     to: 'До',
+    both: 'Все',
+  },
+  confirmDelete: {
+    title: 'Підтвердження видалення',
+    askConfirmation: 'Ви впевнені що хочете видалити {count} запис? | Ви впевнені що хочете видалити {count} записів?',
   },
   headerSection: {
     filesLoaded: 'Файлів завантажено: ',
@@ -54,7 +59,7 @@ export default {
       error: 'Відбулась помилка транскрибування',
     },
     recordings: {
-      recording: 'Запис | Записи',
+      recording: 'Запис розмови | Записи розмов',
     },
   },
   dashboards: {
