@@ -13,12 +13,12 @@ export default {
         {
           value: 'time',
           text: this.$t('vocabulary.time'),
-          width: '140px',
+            width: '120px',
         },
         {
           value: 'channel',
           text: this.$t('vocabulary.channel'),
-          width: '100px',
+          width: '340px',
         },
         {
           value: 'phrase',
