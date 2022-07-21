@@ -29,7 +29,7 @@ export default {
     registry: 'History',
     call: {
       callInfo: 'Call info',
-      agentDescription: 'Agent`s comment',
+      agentDescription: 'Agent\'s comment',
       callLegs: 'Legs A-B',
       transferFrom: 'Transfer From',
       transferMerge: 'Call Merge',
