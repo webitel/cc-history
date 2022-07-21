@@ -3,7 +3,7 @@ import Vuelidate from 'vuelidate';
 import Vuex from 'vuex';
 
 import CommentForm
-  from '../wave/call-wave-comment-form.vue';
+  from '../call-wave-comment-form.vue';
 
 const localVue = createLocalVue();
 localVue.use(Vuelidate);

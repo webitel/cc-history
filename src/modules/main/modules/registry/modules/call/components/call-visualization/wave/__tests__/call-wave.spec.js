@@ -1,11 +1,11 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils';
+import { createLocalVue, shallowMount, mount } from '@vue/test-utils';
 import deepCopy from 'deep-copy';
 import Vuex from 'vuex';
 import WaveSurferVue from 'wavesurfer.js-vue';
 import callWave
-  from '../wave/call-wave.vue';
-import registry from '../../../../../store/registry';
-import playerMock from '../../../../../../../../../../tests/unit/mocks/waveSurferMock';
+  from '../call-wave.vue';
+import registry from '../../../../../../store/registry';
+import playerMock from '../../../../../../../../../../../tests/unit/mocks/waveSurferMock';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -72,12 +72,20 @@ describe('Opened call wave', () => {
     expect(wrapper.classes('call-wave-page')).toBe(true);
   });
 
-  it.skip('closes comment form on commentsMode changed to false', async () => {
-    const wrapper = shallowMount(callWave, {
+  it('closes comment form on commentsMode changed to false', async () => {
+    const wrapper = mount(callWave, {
       localVue,
       store,
       propsData,
-      data: () => ({ commentsMode: true }),
+      stubs: { Wavesurfer: true },
+      mocks: {
+        $v: {
+          draft: {
+            $touch: jest.fn(),
+          },
+        },
+      },
+      data: () => ({ commentsMode: true, isLoading: false }),
       computed: {
         call: () => callMock,
         player: () => player,
@@ -89,12 +97,16 @@ describe('Opened call wave', () => {
     expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists()).toBe(false);
   });
 
-  it.skip('opens comment form on commentsMode change to true', async () => {
-    const wrapper = shallowMount(callWave, {
+  it('opens comment form on commentsMode change to true', async () => {
+    const wrapper = mount(callWave, {
       localVue,
       store,
       propsData,
-      data: () => ({ commentsMode: false }),
+      stubs: { Wavesurfer: true },
+      data: () => ({
+        commentsMode: false,
+        isLoading: false,
+      }),
       computed: {
         call: () => callMock,
         player: () => player,
@@ -103,7 +115,7 @@ describe('Opened call wave', () => {
     expect(wrapper.findComponent({ name: 'opened-call-wave-comment-form' }).exists()).toBe(false);
     await wrapper.findAllComponents({ name: 'wt-icon-btn' })
       .filter((btn) => btn.props().icon === 'note').wrappers[0].vm.$emit('click');
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).isVisible()).toBe(true);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists()).toBe(true);
   });
 
   it('emits save event with comment draft object and calls the add annotation action if no id passed', async () => {
@@ -227,12 +239,16 @@ describe('Opened call wave', () => {
     expect(player.zoom.mock.calls[0][0]).toBe(zoom * 2);
   });
 
-  it.skip('"holds" checkbox calls regions-related methods', async () => {
-    const wrapper = shallowMount(callWave, {
+  it('"holds" checkbox calls regions-related methods', async () => {
+    const wrapper = mount(callWave, {
       localVue,
       store,
       propsData,
-      data: () => ({ showHolds: false }),
+      stubs: { Wavesurfer: true },
+      data: () => ({
+        showHolds: false,
+        isLoading: false,
+      }),
       computed: {
         call: () => callMock,
         player: () => player,
@@ -243,13 +259,17 @@ describe('Opened call wave', () => {
     expect(player.clearRegions).toHaveBeenCalled();
   });
 
-  it.skip('"notes" checkbox calls regions-related methods', async () => {
+  it('"notes" checkbox calls regions-related methods', async () => {
     callMock.annotations.push({ startSec: 0, endSec: 1, note: 'note' });
-    const wrapper = shallowMount(callWave, {
+    const wrapper = mount(callWave, {
       localVue,
       store,
       propsData,
-      data: () => ({ showComments: false }),
+      stubs: { Wavesurfer: true },
+      data: () => ({
+        showComments: false,
+        isLoading: false,
+      }),
       computed: {
         call: () => callMock,
         player: () => player,

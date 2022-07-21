@@ -24,7 +24,7 @@ describe('History table', () => {
         registry: {
           ...registry,
           modules: {
-            'call': { ...openedHistoryCall },
+            call: { ...openedHistoryCall },
           },
         },
       },

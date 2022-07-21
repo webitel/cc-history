@@ -4,7 +4,9 @@
       class="call-no-transcript__wrapper"
       v-if="fileJob && fileJob.state === JobState.Error"
     >
-      <p class="call-no-transcript__text">{{ $t('registry.stt.error') }}</p>
+      <p class="call-no-transcript__text">
+        {{ $t('registry.stt.error') }}
+      </p>
       <wt-icon
         icon="attention"
         size="xl"
@@ -15,22 +17,28 @@
       >{{ $t('reusable.retry') }}
       </wt-button>
     </div>
+
     <div
       v-else-if="isLoading || fileJob"
       class="call-no-transcript__wrapper"
     >
-      <p class="call-no-transcript__text">{{ $t('registry.call.stt.transcribingInProgress') }}</p>
+      <p class="call-no-transcript__text">
+        {{ $t('registry.call.stt.transcribingInProgress') }}
+      </p>
       <wt-loader></wt-loader>
       <wt-button
         @click="refreshCall"
       >{{ $t('reusable.refresh') }}
       </wt-button>
     </div>
+
     <div
       class="call-no-transcript__wrapper"
       v-else
     >
-      <p class="call-no-transcript__text">{{ $t('registry.call.stt.noTranscript') }}</p>
+      <p class="call-no-transcript__text">
+        {{ $t('registry.call.stt.noTranscript') }}
+      </p>
       <wt-icon
         icon="stt"
         size="xl"

@@ -70,6 +70,7 @@ export default {
     },
     file: {
       type: Object,
+      required: true,
     },
     namespace: {
       type: String,
