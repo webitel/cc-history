@@ -19,6 +19,11 @@ export default {
     download: 'Download',
     from: 'From',
     to: 'To',
+    both: 'Both',
+  },
+  confirmDelete: {
+    title: 'Delete confirmation',
+    askConfirmation: 'Are you sure you want to delete {count} item? | Are you sure you want to delete {count} items?',
   },
   headerSection: {
     filesLoaded: 'Files loaded: ',
