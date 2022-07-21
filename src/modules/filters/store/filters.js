@@ -54,6 +54,7 @@ const state = {
   }),
   search: new BaseFilterSchema(),
   fts: new BaseFilterSchema(),
+  description: new BaseFilterSchema(),
   tags: new EnumFilterSchema({
     options: TagOptions,
     locale: { label: 'fields.tags' },

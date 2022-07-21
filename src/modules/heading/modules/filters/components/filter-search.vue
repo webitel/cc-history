@@ -12,6 +12,11 @@
           icon="stt-search"
         ></wt-icon>
       </template>
+      <template v-slot:search-icon v-else-if="filterQuery === SearchMode.DESCRIPTION">
+        <wt-icon
+          icon="stt-search"
+        ></wt-icon>
+      </template>
     </wt-search-bar>
     <wt-context-menu
       :options="searchModeOptions"
@@ -66,6 +71,10 @@ export default {
           value: SearchMode.FTS,
           text: this.$t(`filters.search.${SearchMode.FTS}`),
         },
+        {
+          value: SearchMode.DESCRIPTION,
+          text: this.$t(`filters.search.${SearchMode.DESCRIPTION}`),
+        },
       ];
     },
   },
@@ -86,6 +95,13 @@ export default {
       if (fts) {
         this.restoreValue({ value: fts, filterQuery: SearchMode.FTS });
         this.changeMode({ value: SearchMode.FTS });
+        return;
+      }
+
+      const desc = this.getValueFromQuery({ filterQuery: SearchMode.DESCRIPTION });
+      if (desc) {
+        this.restoreValue({ value: desc, filterQuery: SearchMode.DESCRIPTION });
+        this.changeMode({ value: SearchMode.DESCRIPTION });
       }
     },
     restoreValue({ filterQuery, value }) {
