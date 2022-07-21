@@ -42,6 +42,7 @@ const fetchHistory = async ({
                               hangupDisposition,
                               hasFile,
                               hasTranscription,
+                              description,
                             }) => {
   try {
     const response = await callService.searchHistoryCall(
@@ -81,6 +82,7 @@ const fetchHistory = async ({
       fts,
       hangupDisposition,
       hasTranscription,
+      description,
     );
     return formatResponse(response);
   } catch (err) {

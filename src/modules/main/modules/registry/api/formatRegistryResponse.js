@@ -53,6 +53,7 @@ const mapItems = (items) => {
     holdSec: convertDuration(item.holdSec),
     waitSec: convertDuration(item.waitSec),
     billSec: convertDuration(item.billSec),
+    talkSec: convertDuration(item.talkSec),
     reportingSec: convertDuration(item.reportingSec),
     queueWaitSec: convertDuration(item.queueWaitSec),
     queueDurationSec: convertDuration(item.queueDurationSec),
