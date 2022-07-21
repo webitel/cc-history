@@ -162,6 +162,12 @@ export default [
     field: 'bill_sec',
   },
   {
+    value: 'talkSec',
+    show: true,
+    sort: null,
+    field: 'talk_sec',
+  },
+  {
     value: 'reportingSec',
     show: false,
     sort: null,
