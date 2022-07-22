@@ -9,6 +9,7 @@
       track-by="id"
     ></wt-select>
     <call-wave
+      v-if="call.files"
       :call="call"
       :file="currentFile"
     ></call-wave>
