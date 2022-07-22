@@ -31,11 +31,11 @@ describe('History heading section', () => {
     expect(wrapper.vm.CSVExport instanceof CSVExport).toBe(true);
   });
 
-  it.skip('calls exportCSV mixin method at "export" button click', async () => {
+  it('calls exportCSV mixin method at "export" button click', async () => {
     const exportCSVMock = jest.fn();
     const wrapper = shallowMount(HistoryHeading, { localVue, store, router });
     wrapper.vm.exportCSV = exportCSVMock;
-    wrapper.findAllComponents({ name: 'wt-button' }).at(2).vm.$emit('click');
+    wrapper.findAllComponents({ name: 'wt-button' }).at(1).vm.$emit('click');
     expect(exportCSVMock).toHaveBeenCalled();
   });
 });
