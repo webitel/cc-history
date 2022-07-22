@@ -4,32 +4,26 @@
       {{ $t('reusable.history') }}
     </template>
     <template slot="actions">
-      <confirm-delete-popup
-        v-if="deletedCount"
-        :callback="deleteCallback"
-        :count="deletedCount"
-        @close="handleDeleteClose"
-      ></confirm-delete-popup>
 
       <filter-search
         namespace="filters"
       ></filter-search>
 
-      <wt-button
-        :disabled="!selectedItems.length"
-        :loading="isTranscribing"
-        color="secondary"
-        @click="bulkTranscribe"
-      >{{ $t('registry.stt.transcribe') }}
-      </wt-button>
+      <history-transcribe-action
+        class="history-action"
+        :selected="selectedItems"
+        @refresh="loadDataList"
+      ></history-transcribe-action>
 
       <wt-button
+        class="history-action"
         :disabled="!dataList.length"
         :loading="isFilesLoading"
         color="secondary"
         @click="callExportFiles"
       >{{ $t('reusable.download') }}
       </wt-button>
+
       <div v-show="isCSVLoading || isFilesLoading" class="files-counter">
         <div>
           {{ $t('headerSection.filesLoaded') }}
@@ -43,20 +37,18 @@
         </div>
       </div>
       <wt-button
+        class="history-action"
         :disabled="!dataList.length"
         :loading="isCSVLoading"
         color="secondary"
         @click="callExportCSV"
       >{{ $t('headerSection.exportCSV') }}
       </wt-button>
-
-      <wt-button-select
-        :disabled="!selectedItems.length"
-        :options="deleteOptions"
-        color="secondary"
-        @click:option="$event.handler()"
-      >{{ $t('reusable.delete') }}...
-      </wt-button-select>
+      <history-delete-action
+        class="history-action"
+        :selected="selectedItems"
+        @refresh="loadDataList"
+      ></history-delete-action>
     </template>
   </wt-headline>
 </template>
@@ -66,12 +58,11 @@ import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportC
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import APIRepository from '../../../app/api/APIRepository';
-import ConfirmDeletePopup from '../../../app/components/utils/confirm-delete-popup.vue';
 
 import generateMediaURL from '../../main/modules/registry/mixins/media/scripts/generateMediaURL';
-import CallRecordingsAPI from '../../main/modules/registry/modules/recordings/api/CallRecordingsAPI';
-import CallTranscriptAPI from '../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
 import FilterSearch from '../modules/filters/components/filter-search.vue';
+import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
+import HistoryDeleteAction from './actions/history-delete-action.vue';
 
 export default {
   name: 'the-history-heading',
@@ -81,14 +72,9 @@ export default {
   ],
   components: {
     FilterSearch,
-    ConfirmDeletePopup,
+    HistoryTranscribeAction,
+    HistoryDeleteAction,
   },
-  data: () => ({
-    isTranscribing: false,
-
-    deletedCount: null,
-    deleteCallback: null,
-  }),
   computed: {
     ...mapState('registry', {
       dataList: (state) => state.dataList,
@@ -102,48 +88,6 @@ export default {
       fields: 'DATA_FIELDS',
       selectedItems: 'SELECTED_DATA_ITEMS',
     }),
-    deleteOptions() {
-      const loadListAfter = (callback) => async () => {
-        try {
-          await callback();
-        } finally { await this.loadDataList(); }
-      };
-      return [
-        {
-          value: 'recording',
-          text: this.$tc('registry.recordings.recording', 2),
-          handler: () => {
-            this.deletedCount = this.selectedItems.length;
-            this.deleteCallback = loadListAfter(
-              this.bulkDeleteRecordings.bind(this),
-            );
-          },
-        },
-        {
-          value: 'transcript',
-          text: this.$tc('registry.stt.transcription', 2),
-          handler: () => {
-            this.deletedCount = this.selectedItems.length;
-            this.deleteCallback = loadListAfter(
-              this.bulkDeleteTranscripts.bind(this),
-            );
-          },
-        },
-        {
-          value: 'both',
-          text: this.$t('reusable.both'),
-          handler: () => {
-            this.deletedCount = this.selectedItems.length;
-            this.deleteCallback = loadListAfter(
-              async () => Promise.allSettled([
-                this.bulkDeleteRecordings.bind(this)(),
-                this.bulkDeleteTranscripts.bind(this)(),
-              ]),
-            );
-          },
-        },
-      ];
-    },
   },
 
   methods: {
@@ -167,29 +111,6 @@ export default {
         throw err;
       }
     },
-    async bulkTranscribe() {
-      try {
-        this.isTranscribing = true;
-        const callId = this.selectedItems.map(({ id }) => id);
-        await CallTranscriptAPI.create({ callId });
-      } finally {
-        await this.loadDataList();
-        this.isTranscribing = false;
-      }
-    },
-    async bulkDeleteTranscripts() {
-      const callId = this.selectedItems.map(({ id }) => id);
-      return CallTranscriptAPI.delete({ callId });
-    },
-    async bulkDeleteRecordings() {
-      const fileIds = this.selectedItems
-      .reduce((fileIds, { files }) => fileIds.concat(files.map(({ id }) => id)), []);
-      return CallRecordingsAPI.delete(fileIds);
-    },
-    handleDeleteClose() {
-      this.deletedCount = null;
-      this.deleteCallback = null;
-    },
   },
   created() {
     this.initCSVExport(APIRepository.history.getHistory, { filename: 'history' });
@@ -204,7 +125,7 @@ export default {
 
 <style lang="scss" scoped>
 .the-history-heading {
-  .wt-button, .wt-button-select {
+  .history-action {
     margin-left: 20px;
   }
 
