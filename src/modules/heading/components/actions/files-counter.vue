@@ -1,12 +1,12 @@
 <template>
   <div class="files-counter">
-    <div>
+    <div class="files-counter__line-wrapper">
       {{ $t('headerSection.filesLoaded') }}
       <span class="files-counter__count">
         {{ downloadProgress }}
       </span>
     </div>
-    <div v-show="zippingProgress">
+    <div class="files-counter__line-wrapper" v-show="zippingProgress">
       {{ $t('headerSection.zippingProgress') }}
       <span class="files-counter__count">
         {{ zippingProgress }}%
@@ -40,6 +40,11 @@ export default {
   border-radius: var(--border-radius);
   background: var(--main-color);
   box-shadow: var(--box-shadow);
+
+  &__line-wrapper {
+    display: flex;
+    align-items: center;
+  }
 
   &__count {
     @extend %typo-caption;

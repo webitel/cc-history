@@ -15,18 +15,19 @@
         @refresh="loadDataList"
       ></history-transcribe-action>
 
-      <history-download-action
-        class="history-action"
-        :data-list="dataList"
-        :filters="getFilters"
-      ></history-download-action>
-
       <history-export-csv-action
         class="history-action"
         :data-list="dataList"
         :filters="getFilters"
         :fileds="fields"
       ></history-export-csv-action>
+
+      <history-download-action
+        class="history-action"
+        :data-list="dataList"
+        :filters="getFilters"
+        :selected="selectedItems"
+      ></history-download-action>
 
       <history-delete-action
         class="history-action"
