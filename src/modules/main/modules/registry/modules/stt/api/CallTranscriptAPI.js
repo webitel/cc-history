@@ -12,7 +12,7 @@ const createTranscript = async ({ callId }) => {
 
 const getTranscript = async ({ id, page = 1, size = 10000 }) => {
   const response = await transcriptService.getFileTranscriptPhrases(id, page, size);
-  return response.items;
+  return response.items || [];
 };
 
 const deleteTranscript = ({ fileId, callId }) => {

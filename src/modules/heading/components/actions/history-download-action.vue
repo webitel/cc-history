@@ -1,17 +1,17 @@
 <template>
   <div class="history-download-action">
-    <wt-button
-      class="history-action"
+    <wt-button-select
       :disabled="!dataList.length"
-      :loading="isFilesLoading"
+      :options="downloadOptions"
+      class="history-action"
       color="secondary"
-      @click="callExportFiles"
-    >{{ $t('reusable.download') }}
-    </wt-button>
+      @click:option="$event.handler()"
+    >{{ $t('reusable.download') }}...
+    </wt-button-select>
     <files-counter
-      v-show="isFilesLoading"
-      :download-progress="filesDownloadProgress"
-      :zipping-progress="filesZippingProgress"
+      v-show="isLoading"
+      :download-progress="downloadProgress"
+      :zipping-progress="zippingProgress"
     ></files-counter>
   </div>
 </template>
@@ -21,11 +21,16 @@ import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exp
 import APIRepository from '../../../../app/api/APIRepository';
 import generateMediaURL from '../../../main/modules/registry/mixins/media/scripts/generateMediaURL';
 import historyActionMixin from '../../mixins/historyActionMixin';
+import downloadTranscriptsMixin from '../../mixins/downloadTranscriptsMixin';
 import FilesCounter from './files-counter.vue';
 
 export default {
   name: 'history-download-action',
-  mixins: [historyActionMixin, exportFilesMixin],
+  mixins: [
+    historyActionMixin,
+    exportFilesMixin,
+    downloadTranscriptsMixin,
+  ],
   components: { FilesCounter },
   props: {
     dataList: {
@@ -35,8 +40,34 @@ export default {
       type: Object,
     },
   },
+  computed: {
+    isLoading() {
+      return this.isTranscriptsLoading || this.isFilesLoading;
+    },
+    downloadProgress() {
+      return this.transcriptDownloadProgress || this.filesDownloadProgress;
+    },
+    zippingProgress() {
+      return this.transcriptZippingProgress || this.filesZippingProgress;
+    },
+    downloadOptions() {
+      return [
+        {
+          value: 'recording',
+          text: this.$tc('registry.recordings.recording', 2),
+          handler: this.callExportFiles.bind(this),
+        },
+        {
+          value: 'transcript',
+          text: this.$tc('registry.stt.transcription', 2),
+          handler: this.exportTranscripts.bind(this),
+        },
+      ];
+    },
+  },
   methods: {
     callExportFiles() {
+      if (this.isLoading) return;
       try {
         const params = { ...this.filters, hasFile: 'true' };
         return this.exportFiles(null, params);
