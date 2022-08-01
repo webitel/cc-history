@@ -41,7 +41,7 @@ const getters = {
     fields: getters.MAIN_CALL_FIELDS,
     from: 0, // get All
     to: Date.now(),
-    ids: [state.mainCallId],
+    id: [state.mainCallId],
   }),
 
   DATA_FIELDS: (state, getters, rootState) => {

@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",
-    "@webitel/ui-sdk": "^2.0.16-13",
+    "@webitel/ui-sdk": "^2.0.20",
     "axios": "^0.27.2",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
@@ -31,7 +31,7 @@
     "vuex": "^3.6.2",
     "wavesurfer.js": "^5.2.0",
     "wavesurfer.js-vue": "^1.0.0",
-    "webitel-sdk": "^0.1.144"
+    "webitel-sdk": "^0.1.145"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
