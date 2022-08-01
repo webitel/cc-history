@@ -2,7 +2,7 @@
   <article class="call-no-transcript">
     <div
       class="call-no-transcript__wrapper"
-      v-if="fileJob && fileJob.state === JobState.Error"
+      v-if="!isLoading && fileJob && fileJob.state === JobState.Error"
     >
       <p class="call-no-transcript__text">
         {{ $t('registry.stt.error') }}
