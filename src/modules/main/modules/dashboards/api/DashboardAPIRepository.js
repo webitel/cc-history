@@ -51,7 +51,7 @@ const fetchDashboardsData = async ({
       tags,
       amd_result: amdResult,
       has_file: hasFile,
-      has_transcription: hasTranscription,
+      has_transcript: hasTranscription,
       description,
       member,
       hangup_disposition: hangupDisposition,
