@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Auth from '@webitel/ui-sdk/src/modules/Userinfo/components/the-auth.vue';
 import History from '../components/the-history.vue';
+import HistoryMainPage from '../components/history-main-page.vue';
 import Call from '../../modules/main/modules/registry/modules/call/components/the-call.vue';
 
 Vue.use(VueRouter);
@@ -14,13 +15,20 @@ const routes = [
   },
   {
     path: '/',
-    name: 'history',
+    name: 'main-wrapper',
     component: History,
-  },
-  {
-    path: '/*',
-    name: 'call',
-    component: Call,
+    children: [
+      {
+        path: '/',
+        name: 'history',
+        component: HistoryMainPage,
+      },
+      {
+        path: '/*',
+        name: 'call',
+        component: Call,
+      },
+    ],
   },
   {
     path: '*',
