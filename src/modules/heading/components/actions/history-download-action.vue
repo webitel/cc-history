@@ -41,6 +41,7 @@ export default {
     },
   },
   computed: {
+    selectedItems() { return this.selected; }, // needed for exportFilesMixin
     isLoading() {
       return this.isTranscriptsLoading || this.isFilesLoading;
     },
