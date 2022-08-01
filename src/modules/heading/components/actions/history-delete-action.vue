@@ -86,7 +86,11 @@ export default {
     },
     async bulkDeleteRecordings() {
       const fileIds = this.selected
-      .reduce((fileIds, { files }) => fileIds.concat(files.map(({ id }) => id)), []);
+      .reduce(
+        (fileIds, { files }) => (files ? fileIds
+        .concat(files.map(({ id }) => id)) : fileIds),
+        [],
+      );
       return CallRecordingsAPI.delete(fileIds);
     },
     handleDeleteClose() {
