@@ -18,7 +18,7 @@ export default {
         {
           value: 'channel',
           text: this.$t('vocabulary.channel'),
-          width: '340px',
+          width: '140px',
         },
         {
           value: 'phrase',

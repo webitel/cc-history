@@ -1,6 +1,7 @@
 <template>
   <wt-popup
     class="stt-popup"
+    :min-width="720"
     @close="$emit('close')"
   >
     <template v-slot:title>
@@ -32,6 +33,7 @@
           :data="data"
           :headers="headers"
           :selectable="false"
+          :grid-actions="false"
         ></wt-table>
       </div>
     </template>
