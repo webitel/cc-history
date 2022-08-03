@@ -2,7 +2,7 @@
   <article class="call-no-transcript">
     <div
       class="call-no-transcript__wrapper"
-      v-if="!isLoading && fileJob && fileJob.state === JobState.Error"
+      v-if="fileJob && fileJob.state === JobState.Error"
     >
       <p class="call-no-transcript__text">
         {{ $t('registry.stt.error') }}
@@ -19,7 +19,7 @@
     </div>
 
     <div
-      v-else-if="isLoading || fileJob"
+      v-else-if="fileJob"
       class="call-no-transcript__wrapper"
     >
       <p class="call-no-transcript__text">
@@ -73,7 +73,6 @@ export default {
     },
   },
   data: () => ({
-    isLoading: false,
     JobState: HistoryFileJobHistoryFileJobState,
   }),
   computed: {
@@ -90,7 +89,7 @@ export default {
     async transcribe() {
       const callId = this.call.id;
       await CallTranscriptAPI.create({ callId });
-      this.isLoading = true;
+      this.refreshCall();
     },
   },
 };
