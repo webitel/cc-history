@@ -44,13 +44,22 @@ export default {
   grid-template-columns: 1fr 1fr;
 }
 
+.call-variables {
+  min-width: 0;
+}
+
 .call-variable {
   display: flex;
   align-items: center;
+  min-width: 0;
 
   &__key {
     @extend %typo-subtitle-1;
     margin-right: var(--spacing-xs);
+  }
+
+  &__value {
+    word-break: break-all;
   }
 }
 </style>

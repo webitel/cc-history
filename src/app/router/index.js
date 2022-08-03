@@ -15,7 +15,6 @@ const routes = [
   },
   {
     path: '/',
-    name: 'main-wrapper',
     component: History,
     children: [
       {

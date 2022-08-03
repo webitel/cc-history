@@ -3,7 +3,7 @@ import SttPopup from '../stt-popup.vue';
 import transcriptPhrasesMixin from '../../../mixins/transcriptPhrasesMixin';
 
 const transcripts = [];
-const propsData = { call: { transcripts } };
+const propsData = { callId: '1' };
 
 describe('SttPopup', () => {
   beforeEach(() => {
@@ -19,13 +19,15 @@ describe('SttPopup', () => {
     });
     expect(wrapper.isVisible()).toBe(true);
   });
-  it('initializes with first passed transcript', () => {
-    const transcript = { id: 1 };
-    transcripts.push(transcript);
+  it('fetches call with transcripts', async () => {
+    const mock = jest.fn();
+    jest.spyOn(SttPopup.methods, 'loadCall')
+    .mockImplementationOnce(mock);
     const wrapper = shallowMount(SttPopup, {
       propsData,
     });
-    expect(wrapper.vm.transcript).toBe(transcript);
+    await wrapper.vm.$nextTick();
+    expect(mock).toHaveBeenCalled();
   });
   it('closes popup if no transcripts after delete', async () => {
     const wrapper = shallowMount(SttPopup, {

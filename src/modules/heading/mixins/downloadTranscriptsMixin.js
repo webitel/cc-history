@@ -11,10 +11,12 @@ const collectTranscriptIds = (historyItems) => historyItems.reduce((
   { transcripts },
 ) => ids.concat(transcripts.map(({ id }) => id)), []);
 
-const generateTxt = (phrases) => {
-  const text = phrases.reduce((txt, { phrase }) => (phrase
-    ? txt.concat((`- ${phrase}`)).concat('\n')
-    : txt), '');
+const generateTxt = (phrases, { from, to }) => {
+  const text = phrases.map(({
+                              phrase, channel, startSec, endSec,
+                            }) => (
+    `${startSec}-${endSec} [${channel ? to?.name || channel : from?.name || channel}] ${phrase || ''}`
+  )).join('\n');
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
   return blob;
 };
@@ -26,7 +28,7 @@ const fetchHistory = (_params) => {
     ..._params,
     size: 5000,
     hasTranscription: true,
-    fields: ['created_at', 'transcripts'],
+    fields: ['created_at', 'from', 'to', 'transcripts'],
   };
   return APIRepository.history.getHistory(params);
 };
@@ -39,18 +41,23 @@ export default {
   }),
   methods: {
     async _downloadSelectedTranscripts(items, zip) {
-      const findTranscriptDate = (transcriptId) => {
+      const findTranscript = (transcriptId) => {
         const item = items.find(({ transcripts }) => transcripts
         .some(({ id }) => id === transcriptId));
-        return item.createdAt.replaceAll('/', '.');
+        return item;
       };
 
       const ids = collectTranscriptIds(items);
       // eslint-disable-next-line no-restricted-syntax
       for (const id of ids) {
         const phrases = await fetchPhrases(id);
-        const txt = generateTxt(phrases);
-        const fileName = `${id} at ${findTranscriptDate(id)}`;
+        const txt = generateTxt(phrases, {
+          from: findTranscript(id).from,
+          to: findTranscript(id).to,
+        });
+        const fileName = `${id} at ${findTranscript(id)
+        .createdAt
+        .replaceAll('/', '.')}`;
         zip.file(`${fileName}.txt`, txt);
         this.transcriptDownloadProgress += 1;
       }
@@ -72,9 +79,14 @@ export default {
         const zip = new JSZip();
 
         if (this.selected.length) {
-          const selectedWithTranscript = this.selected
-          .filter(({ transcripts }) => transcripts?.length);
-          await this._downloadSelectedTranscripts(selectedWithTranscript, zip);
+          const selectedIdsWithTranscript = this.selected
+          .reduce((ids, { id, transcripts }) => (transcripts?.length ? ids.concat(id) : ids), []);
+
+          await this._downloadAllTranscripts(zip, {
+            filters: {
+              ...this.filters, id: selectedIdsWithTranscript,
+            },
+          });
         } else {
           await this._downloadAllTranscripts(zip, { filters: this.filters });
         }

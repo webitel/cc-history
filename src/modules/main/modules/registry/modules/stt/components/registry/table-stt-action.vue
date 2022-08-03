@@ -2,7 +2,7 @@
   <div class="table-stt-action">
     <stt-popup
       v-if="isSttPopup"
-      :call="item"
+      :call-id="item.id"
       @close="isSttPopup = false"
       @delete="$emit('delete', $event)"
     ></stt-popup>
