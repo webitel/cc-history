@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import APIRepository from '../../../../../../../../app/api/APIRepository';
 import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
 import SttDeleteAction from '../utils/stt-delete-action.vue';
 import SttDownloadAction from '../utils/stt-download-action.vue';
@@ -53,12 +54,13 @@ export default {
     SttDownloadAction,
   },
   props: {
-    call: {
-      type: Object,
+    callId: {
+      type: String,
       required: true,
     },
   },
   data: () => ({
+    call: { transcripts: [] },
     transcript: null,
   }),
   methods: {
@@ -69,9 +71,25 @@ export default {
       await this.deleteTranscription();
       this.transcript = this.call.transcripts[0] || this.$emit('close');
     },
+    async loadCall() {
+      /*
+      loading call separately is needed for transcript channels representation
+       */
+      const params = {
+        id: this.callId,
+        from: 0,
+        fields: ['from', 'to', 'id', 'createdAt', 'transcripts'],
+      };
+      const res = await APIRepository.history.getHistory(params);
+      [this.call] = res.items;
+    },
+    async initialize() {
+      await this.loadCall();
+      this.initCurrentTranscript();
+    },
   },
   created() {
-    this.initCurrentTranscript();
+    this.initialize();
   },
 };
 </script>

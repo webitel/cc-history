@@ -18,6 +18,7 @@ describe('SaveTranscriptPhrasesMixin', () => {
     const wrapper = shallowMount(Component, {
       data: () => ({
         transcript: { id: 'jest' },
+        call: {},
       }),
     });
     wrapper.vm.downloadTxt([]);
