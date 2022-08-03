@@ -136,7 +136,8 @@ export default {
       loadList: 'LOAD_DATA_LIST',
     }),
     handleTranscriptDelete({ call, transcript }) {
-      call.transcripts.splice(call.transcripts.indexOf(transcript), 1);
+      // should find transcript instead of indexOf cause transcript source is not that call
+      call.transcripts.splice(call.transcripts.findIndex(({ id }) => id === transcript.id), 1);
     },
     showItemStt(item) {
       return item.files || item.transcripts?.length || item.filesJob;
