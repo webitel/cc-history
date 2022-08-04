@@ -15,7 +15,9 @@ const generateTxt = (phrases, { from, to }) => {
   const text = phrases.map(({
                               phrase, channel, startSec, endSec,
                             }) => (
-    `${startSec}-${endSec} [${channel ? to?.name || channel : from?.name || channel}] ${phrase || ''}`
+    `${startSec}-${endSec} [${channel
+      ? to?.name || to?.number || to?.destination || channel
+      : from?.name || from?.number || from?.destination || channel}] ${phrase || ''}`
   )).join('\n');
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
   return blob;
@@ -80,7 +82,9 @@ export default {
 
         if (this.selected.length) {
           const selectedIdsWithTranscript = this.selected
-          .reduce((ids, { id, transcripts }) => (transcripts?.length ? ids.concat(id) : ids), []);
+          .reduce((ids, { id, transcripts }) => (transcripts?.length
+            ? ids.concat(id)
+            : ids), []);
 
           await this._downloadAllTranscripts(zip, {
             filters: {
