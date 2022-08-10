@@ -1,0 +1,59 @@
+import { shallowMount, mount } from '@vue/test-utils';
+import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
+import TranscriptionState from '../../../enums/TranscriptionState.enum';
+import TableSttAction from '../table-stt-action.vue';
+
+let item;
+let propsData;
+
+describe('TableSttAction', () => {
+  beforeEach(() => {
+    item = {};
+    propsData = { item };
+  });
+
+  it('renders a component', () => {
+    const wrapper = shallowMount(TableSttAction, { propsData });
+    expect(wrapper.isVisible()).toBe(true);
+  });
+  it('correctly computed fileJob from item.filesJob', () => {
+    const job = {};
+    item.filesJob = [job];
+    const wrapper = shallowMount(TableSttAction, { propsData });
+    expect(wrapper.vm.fileJob).toBe(job);
+  });
+  it('currentState for IDLE fileJob is IDLE', () => {
+    item.filesJob = [{ state: HistoryFileJobHistoryFileJobState.Idle }];
+    const wrapper = shallowMount(TableSttAction, { propsData });
+    expect(wrapper.vm.currentState.value).toBe(TranscriptionState.IDLE);
+  });
+  it('currentState for ERROR fileJob is ERROR', () => {
+    item.filesJob = [{ state: HistoryFileJobHistoryFileJobState.Error }];
+    const wrapper = shallowMount(TableSttAction, { propsData });
+    expect(wrapper.vm.currentState.value).toBe(TranscriptionState.ERROR);
+  });
+  it('currentState for existing transcripts is DONE', () => {
+    item.transcripts = [{}];
+    const wrapper = shallowMount(TableSttAction, { propsData });
+    expect(wrapper.vm.currentState.value).toBe(TranscriptionState.DONE);
+  });
+  it('currentState for no fileJob or transcripts is NONE', () => {
+    const wrapper = shallowMount(TableSttAction, { propsData });
+    expect(wrapper.vm.currentState.value).toBe(TranscriptionState.NONE);
+  });
+  it('activator icon-btn for NONE state triggers handleJobStart method', () => {
+    const wrapper = mount(TableSttAction, { propsData });
+    expect(wrapper.vm.currentState.value).toBe(TranscriptionState.NONE);
+
+    /**
+     * Don't know why, but I can't catch handleStartJob itself :(
+     */
+    const mock = jest.fn();
+    // jest.spyOn(TableSttAction.methods, 'handleStartJob')
+    // .mockImplementationOnce(mock);
+    wrapper.vm.currentState.handler = mock;
+
+    wrapper.findComponent({ name: 'wt-icon-btn' }).vm.$emit('click');
+    expect(mock).toHaveBeenCalled();
+  });
+});

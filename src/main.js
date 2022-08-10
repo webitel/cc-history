@@ -3,15 +3,15 @@ import Vuelidate from 'vuelidate';
 import WaveSurferVue from 'wavesurfer.js-vue';
 
 import App from './the-app.vue';
-import router from './router';
-import store from './store';
-import i18n from './locale/i18n';
+import router from './app/router';
+import store from './app/store';
+import i18n from './app/locale/i18n';
 
-import './plugins/webitel-ui';
+import './app/plugins/webitel-ui';
 
-import './css/main.scss';
+import './app/css/main.scss';
 
-import './assets/icons/sprite';
+import './app/assets/icons/sprite';
 
 Vue.config.productionTip = false;
 
