@@ -8,7 +8,7 @@
     ></confirm-delete-popup>
 
     <wt-button-select
-      :disabled="!selected.length"
+      :disabled="disableDelete"
       :options="deleteOptions"
       color="secondary"
       @click:option="$event.handler()"
@@ -34,6 +34,11 @@ export default {
     deleteCallback: null,
   }),
   computed: {
+    disableDelete() {
+      console.info(this.selected);
+      return !this.selected.length || this.selected
+      .every(({ files, transcripts }) => !files && !transcripts);
+    },
     deleteOptions() {
       const loadListAfter = (callback) => async () => {
         try {
