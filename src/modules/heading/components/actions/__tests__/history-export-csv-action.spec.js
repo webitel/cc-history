@@ -4,7 +4,7 @@ import HistoryExportCsvAction from '../history-export-csv-action.vue';
 
 const dataList = [];
 
-const propsData = { dataList };
+const propsData = { dataList, fields: [] };
 
 describe('HistoryExportCsvAction', () => {
   it('renders a component', () => {
