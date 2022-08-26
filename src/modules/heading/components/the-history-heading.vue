@@ -19,7 +19,7 @@
         class="history-action"
         :data-list="dataList"
         :filters="getFilters"
-        :fileds="fields"
+        :fields="fields"
       ></history-export-csv-action>
 
       <history-download-action
