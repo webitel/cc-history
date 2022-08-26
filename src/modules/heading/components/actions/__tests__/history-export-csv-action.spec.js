@@ -4,7 +4,7 @@ import HistoryExportCsvAction from '../history-export-csv-action.vue';
 
 const dataList = [];
 
-const propsData = { dataList };
+const propsData = { dataList, fields: [] };
 
 describe('HistoryExportCsvAction', () => {
   it('renders a component', () => {
@@ -23,5 +23,15 @@ describe('HistoryExportCsvAction', () => {
     wrapper.vm.exportCSV = exportCSVMock;
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
     expect(exportCSVMock).toHaveBeenCalled();
+  });
+
+  it('cleanups fields before exportCSC', async () => {
+    const fields = ['id', 'files_job', 'agent', 'transcripts', 'jest'];
+    const output = ['agent', 'jest'];
+    const exportCSVMock = jest.fn();
+    const wrapper = shallowMount(HistoryExportCsvAction, { propsData: { ...propsData, fields } });
+    wrapper.vm.exportCSV = exportCSVMock;
+    wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
+    expect(exportCSVMock.mock.calls[0][0].fields).toEqual(output);
   });
 });
