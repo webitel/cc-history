@@ -27,7 +27,7 @@ describe('HistoryExportCsvAction', () => {
 
   it('cleanups fields before exportCSC', async () => {
     const fields = ['id', 'files_job', 'agent', 'transcripts', 'jest'];
-    const output = ['agent', 'jest'];
+    const output = ['id', 'agent', 'jest'];
     const exportCSVMock = jest.fn();
     const wrapper = shallowMount(HistoryExportCsvAction, { propsData: { ...propsData, fields } });
     wrapper.vm.exportCSV = exportCSVMock;
