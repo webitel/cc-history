@@ -43,7 +43,7 @@ export default {
   methods: {
     async callExportCSV() {
       // remove service fields
-      const fields = this.fields.filter((field) => !['id', 'files', 'files_job', 'transcripts'].includes(field));
+      const fields = this.fields.filter((field) => !['files', 'files_job', 'transcripts'].includes(field));
       try {
         const params = { ...this.filters, fields, skipParent: true };
         return this.exportCSV(params);
