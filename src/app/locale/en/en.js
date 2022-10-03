@@ -47,7 +47,7 @@ export default {
         wave: 'Call Wave',
       },
       stt: {
-        noTranscript: 'There is no transciption for this file',
+        noTranscript: 'There is no transcription for this file',
         transcribingInProgress: 'Transcription is in progress now. Please, refresh page in a minute.',
       },
     },
