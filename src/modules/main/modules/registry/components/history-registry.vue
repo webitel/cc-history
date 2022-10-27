@@ -37,6 +37,9 @@
         <template slot="member" slot-scope="{ item }">
           <div v-if="item.member">{{ item.member.name }}</div>
         </template>
+        <template slot="grantee" slot-scope="{ item }">
+          <div v-if="item.grantee">{{ item.grantee.name }}</div>
+        </template>
         <template slot="hangupDisposition" slot-scope="{ item }">
           <div v-if="item.hangupDisposition">
             {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}

@@ -181,6 +181,7 @@ export default {
     amdResult: 'AMD результат',
     hangupDisposition: 'Результат завершения',
     blindTransfer: 'Слепой перевод',
+    grantee: 'Получатель',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',

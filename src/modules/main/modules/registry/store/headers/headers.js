@@ -227,4 +227,10 @@ export default [
     sort: null,
     field: 'blind_transfer',
   },
+  {
+    value: 'grantee',
+    show: false,
+    sort: null,
+    field: 'grantee',
+  },
 ];

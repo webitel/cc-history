@@ -35,7 +35,6 @@ export default {
   }),
   computed: {
     disableDelete() {
-      console.info(this.selected);
       return !this.selected.length || this.selected
       .every(({ files, transcripts }) => !files && !transcripts);
     },

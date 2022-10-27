@@ -3,6 +3,7 @@ import ApiFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/Ap
 import BaseFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/BaseFilterSchema';
 import EnumFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/EnumFilterSchema';
 import AgentsAPI from '../api/AgentsAPIRepository';
+import RolesAPI from '../api/RolesAPIRepository';
 import CauseOption from '../enums/HangupCauseOption.enum';
 import AmdResultOptions from '../enums/AmdResultOptions.enum';
 import DirectionOptions from '../enums/DirectionOptions.enum';
@@ -66,6 +67,10 @@ const state = {
   user: new ApiFilterSchema({
     API: UserAPI.getLookup,
     locale: { label: 'fields.user' },
+  }),
+  grantee: new ApiFilterSchema({
+    API: RolesAPI.getLookup,
+    locale: { label: 'fields.grantee' },
   }),
   hasFile: new EnumFilterSchema({
     options: hasFile,

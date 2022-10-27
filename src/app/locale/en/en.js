@@ -183,6 +183,7 @@ export default {
     amdResult: 'AMD result',
     hangupDisposition: 'Hangup disposition',
     blindTransfer: 'Blind transfer',
+    grantee: 'Grantee',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',

@@ -56,6 +56,7 @@
         { type: 'api', filterQuery: 'agent' },
         { type: 'api', filterQuery: 'team' },
         { type: 'api', filterQuery: 'queue' },
+        { type: 'api', filterQuery: 'grantee' },
         { type: 'enum', filterQuery: 'tags' },
         { type: 'enum', filterQuery: 'cause' },
         { type: 'enum', filterQuery: 'amdResult' },
