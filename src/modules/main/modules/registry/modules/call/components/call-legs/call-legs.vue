@@ -33,6 +33,9 @@
         <template slot="queue" slot-scope="{ item }">
           <div v-if="item.queue">{{ item.queue.name }}</div>
         </template>
+        <template slot="grantee" slot-scope="{ item }">
+          <div v-if="item.grantee">{{ item.grantee.name }}</div>
+        </template>
         <template slot="member" slot-scope="{ item }">
           <div v-if="item.member">{{ item.member.name }}</div>
         </template>
