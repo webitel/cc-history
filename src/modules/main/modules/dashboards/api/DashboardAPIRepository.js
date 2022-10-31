@@ -33,6 +33,7 @@ const fetchDashboardsData = async ({
                                      hasFile,
                                      hasTranscription,
                                      description,
+                                     grantee,
                                    }) => {
   try {
     const response = await callService.aggregateHistoryCall({
@@ -43,6 +44,7 @@ const fetchDashboardsData = async ({
       queue_id: queue,
       team_id: team,
       gateway_id: gateway,
+      grantee_id: grantee,
       q: `${search}`,
       duration,
       cause,

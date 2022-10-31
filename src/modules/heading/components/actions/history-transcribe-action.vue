@@ -1,6 +1,6 @@
 <template>
   <wt-button
-    :disabled="!selected.length"
+    :disabled="disableTranscribe"
     :loading="isTranscribing"
     color="secondary"
     @click="bulkTranscribe"
@@ -18,6 +18,16 @@ export default {
   data: () => ({
     isTranscribing: false,
   }),
+  computed: {
+    disableTranscribe() {
+      /*
+      Trascribe only if selected has file, but has no transcripts
+      can't filter by filesJob cause if transcript is triggered, but no refresh, there's no filesJob
+       */
+      return !this.selected.length || this.selected
+        .every(({ files, transcripts }) => !files || transcripts);
+    },
+  },
   methods: {
     async bulkTranscribe() {
       try {

@@ -181,6 +181,7 @@ export default {
     amdResult: 'AMD результат',
     hangupDisposition: 'Результат завершення',
     blindTransfer: 'Сліпий трансфер',
+    grantee: 'Отримувач',
   },
   hangupDisposition: {
     notAnswered: 'Без відповіді',
