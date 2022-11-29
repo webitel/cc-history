@@ -47,7 +47,7 @@ describe('Opened call wave', () => {
     },
   };
 
-  const player = playerMock(jest)
+  const player = playerMock(jest);
   beforeEach(() => {
     jest.clearAllMocks();
     store = new Vuex.Store({
@@ -134,8 +134,8 @@ describe('Opened call wave', () => {
     delete draftWithNoId.id;
     await wrapper.findComponent({ name: 'call-wave-comment-form' }).vm.$emit('save', draftWithNoId);
     expect(actionMocks.ADD_ANNOTATION).toHaveBeenCalledWith(expect.objectContaining({
-      endSec: 2, note: 'draft', startSec: 1, callId: 'id'
-    }))
+      endSec: 2, note: 'draft', startSec: 1, callId: 'id',
+    }));
   });
 
   it('emits save event with comment draft object on save and calls the edit annotation method', async () => {
@@ -273,6 +273,7 @@ describe('Opened call wave', () => {
       computed: {
         call: () => callMock,
         player: () => player,
+        annotations: () => callMock.annotations,
       },
     });
     const displayComments = jest.fn();
@@ -281,7 +282,7 @@ describe('Opened call wave', () => {
       .filter((checkbox) => checkbox.props().label.includes('comment')).wrappers[0].vm.$emit('change');
     expect(wrapper.vm.$data.showComments).toBe(true);
     expect(displayComments).toHaveBeenCalled();
-    expect(displayComments.mock.calls[0][0]).toEqual(callMock);
+    expect(displayComments.mock.calls[0][0]).toEqual(callMock.annotations);
     expect(displayComments.mock.calls[0][1]).toEqual(player);
   });
 });

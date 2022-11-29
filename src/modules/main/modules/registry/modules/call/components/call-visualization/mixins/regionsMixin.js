@@ -75,17 +75,17 @@ export default {
 
     async updateRegions() {
       this.closeCommentMode();
-      await this.loadMainCall();
+      await this.loadAnnotations();
       this.redrawRegions();
     },
 
     redrawRegions() {
       this.player.clearRegions();
       if (this.showHolds && this.holdsSize) {
-        this.displayHolds(this.call, this.player);
+        this.displayHolds(this.call.hold, this.player);
       }
       if (this.showComments && this.commentsSize) {
-        this.displayComments(this.call, this.player);
+        this.displayComments(this.annotations, this.player);
       }
     },
 
@@ -96,10 +96,10 @@ export default {
       region.element.appendChild(wrapperEl);
     },
 
-    displayHolds(call, player) {
-      call.hold.forEach((hold) => {
+    displayHolds(hold, player) {
+      hold.forEach((hold) => {
         const region = player.addRegion({
-          start: ((hold.start - call.files[0].startAt) / 1000).toFixed(2),
+          start: ((hold.start - this.call.files[0].startAt) / 1000).toFixed(2),
           showTooltip: false,
           handleStyle: {
             right: holdStyle,
@@ -131,8 +131,8 @@ export default {
       region.element.appendChild(wrapperEl);
     },
 
-    displayComments(call, player) {
-      call.annotations.forEach((comment) => {
+    displayComments(annotations, player) {
+      annotations.forEach((comment) => {
         const region = player.addRegion({
           start: +comment.startSec,
           end: +comment.endSec,
