@@ -51,16 +51,16 @@
             v-if="item.files"
             :currently-playing="currentlyPlaying"
             :files="item.files"
+            class="table-action"
             @play="play"
             @stop="closePlayer"
-            class="table-action"
           ></media-action>
 
-<!--          v-if transcript can be added, exists, or already in progress -->
+          <!--          v-if transcript can be added, exists, or already in progress -->
           <stt-action
             v-if="showItemStt(item)"
-            class="table-action"
             :item="item"
+            class="table-action"
             @delete="handleTranscriptDelete({ call: item, transcript: $event })"
           ></stt-action>
 
@@ -93,9 +93,9 @@ import { mapActions, mapState } from 'vuex';
 import historyHeadersMixin from '../mixins/historyHeadersMixin';
 import playMediaMixin from '../mixins/media/playMediaMixin';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
+import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
-import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 
 export default {
   name: 'history-registry',
@@ -166,8 +166,8 @@ export default {
 }
 
 .table-action {
-  line-height: 0;
   margin-left: var(--spacing-xs);
+  line-height: 0;
 
   &:first-child {
     margin-left: 0;
@@ -177,5 +177,20 @@ export default {
 .media-select {
   position: absolute;
   right: 28px;
+}
+
+// make action icons fixed to right
+.wt-table ::v-deep .wt-table__tr {
+  .wt-table__td__actions {
+    position: sticky;
+    right: 0;
+    background: var(--main-color);
+  }
+
+  &:nth-child(2n) {
+    .wt-table__td__actions {
+      background: var(--table-secondary-color);
+    }
+  }
 }
 </style>
