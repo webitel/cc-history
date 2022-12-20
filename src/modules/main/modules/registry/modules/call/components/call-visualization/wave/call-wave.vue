@@ -158,7 +158,7 @@
 <script>
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
@@ -255,6 +255,9 @@ export default {
   }),
 
   computed: {
+    ...mapState('registry/call', {
+      annotations: (state) => state.mainCallAnnotations,
+    }),
     fileUrl() {
       return generateMediaURL(this.file.id, true);
     },
@@ -271,7 +274,7 @@ export default {
       return this.call.hold ? this.call.hold.length : 0;
     },
     commentsSize() {
-      return this.call.annotations ? this.call.annotations.length : 0;
+      return this.annotations ? this.annotations.length : 0;
     },
   },
 
@@ -280,6 +283,7 @@ export default {
       addAnnotation: 'ADD_ANNOTATION',
       updateAnnotation: 'EDIT_ANNOTATION',
       deleteAnnotation: 'DELETE_ANNOTATION',
+      loadAnnotations: 'LOAD_MAIN_CALL_ANNOTATIONS',
     }),
 
     editAnnotation(comment) {
@@ -444,6 +448,7 @@ export default {
 
   created() {
     this.initFilesExport({ filename: 'history-record' });
+    this.loadAnnotations();
   },
 
   mounted() {
@@ -462,7 +467,6 @@ export default {
 }
 
 .call-wave-page {
-
   .call-wave-page-main {
     display: flex;
     flex-direction: column;
@@ -521,6 +525,11 @@ export default {
         background-color: var(--secondary-color);
       }
     }
+  }
+
+  ::v-deep .wavesurfer-region {
+    /* prevent region itself from overlapping other region icon with info tooltip on it */
+    z-index: auto !important;
   }
 }
 

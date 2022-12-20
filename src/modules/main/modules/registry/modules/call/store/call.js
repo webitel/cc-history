@@ -4,7 +4,7 @@ import APIRepository from '../../../../../../../app/api/APIRepository';
 
 const historyAPI = APIRepository.history;
 const annotationsAPI = APIRepository.annotations;
-const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'files_job', 'transcripts', 'direction', 'from', 'to', 'destination', 'hold', 'annotations'];
+const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'files_job', 'transcripts', 'direction', 'from', 'to', 'destination', 'hold'];
 const REQUIRED_DATA_FIELDS = ['id', 'parent_id', 'transfer_from', 'transfer_to'];
 
 const transfersHeader = {
@@ -17,6 +17,7 @@ const transfersLegMarkerHeader = {
 const state = {
   mainCallId: null,
   mainCall: {},
+  mainCallAnnotations: [],
   fileId: null,
   legsData: [],
   isLoading: false,
@@ -87,6 +88,18 @@ const actions = {
     }
   },
 
+  LOAD_MAIN_CALL_ANNOTATIONS: async (context) => {
+    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS;
+    params.fields = ['annotations'];
+    try {
+      const { items } = await historyAPI.getHistory(params);
+      const { annotations } = items[0];
+      context.commit('SET_MAIN_CALL_ANNOTATIONS', annotations);
+    } catch (err) {
+      throw err;
+    }
+  },
+
   SET_FILE_ID: (context, fileId) => {
     context.commit('SET_FILE_ID', fileId);
   },
@@ -118,6 +131,9 @@ const actions = {
 const mutations = {
   SET_MAIN_CALL: (state, mainCall) => {
     state.mainCall = mainCall;
+  },
+  SET_MAIN_CALL_ANNOTATIONS: (state, annotations) => {
+    state.mainCallAnnotations = annotations;
   },
 
   SET_FILE_ID: (state, fileId) => {
