@@ -20,6 +20,7 @@ export default {
     from: 'From',
     to: 'To',
     both: 'Both',
+    logs: 'Log | Logs',
   },
   confirmDelete: {
     title: 'Delete confirmation',
