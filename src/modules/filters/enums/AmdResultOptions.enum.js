@@ -16,6 +16,10 @@ const AmdResultOptions = Object.freeze([
     name: 'MACHINE',
     value: 'MACHINE',
   },
+  {
+    name: 'CANCEL',
+    value: 'CANCEL',
+  },
 ]);
 
 export default AmdResultOptions;
