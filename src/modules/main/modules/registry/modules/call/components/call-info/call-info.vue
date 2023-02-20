@@ -34,8 +34,8 @@
       v-if="call.agentDescription"
       class="call-info__item"
     >
-      <h2 class="call-info__title">{{ $t('registry.call.agentDescription') }}:</h2>
-      <div class="call-info__value">{{ call.agentDescription }}</div>
+      <h3 class="call-info__title">{{ $t('registry.call.agentDescription') }}:</h3>
+      <span class="call-info__value">{{ call.agentDescription }}</span>
     </div>
   </section>
 </template>
