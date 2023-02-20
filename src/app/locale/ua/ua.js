@@ -20,6 +20,7 @@ export default {
     from: 'Від',
     to: 'До',
     both: 'Все',
+    logs: 'Лог | Логи',
   },
   confirmDelete: {
     title: 'Підтвердження видалення',
