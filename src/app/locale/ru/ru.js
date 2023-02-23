@@ -40,7 +40,7 @@ export default {
       transferFrom: 'Перевод От',
       transferMerge: 'Объединение Звонков',
       transferTo: 'Перевод На',
-      noVariables: 'Этот звонок не имеет переменных',
+      noInfo: 'Этот звонок не имеет информации',
       callVisualization: 'Визуализация звонка',
       hold: 'Удержание | Удержания',
       comment: 'Комментарий | Комментарии',
