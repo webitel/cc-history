@@ -27,7 +27,7 @@
       </div>
 
     </div>
-    <div v-if="defaultValue">
+    <div v-if="emptyValue">
       {{ $t('registry.call.noInfo') }}
     </div>
     <div
@@ -57,8 +57,8 @@ export default {
     amdLogs() {
       return this.call.amdAiLogs.join(', ');
     },
-    defaultValue() {
-      return (!this.call.variables && !this.call.amdResult) || (!this.call.variables && this.call.amdResult === 'undefined');
+    emptyValue() {
+      return !this.call.variables && (!this.call.amdResult || this.call.amdResult === 'undefined');
     },
     isDisplayAmdLogs() {
       return this.call.amdResult && this.call.amdResult !== 'undefined';
