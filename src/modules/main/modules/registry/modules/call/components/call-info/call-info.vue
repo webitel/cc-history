@@ -57,11 +57,11 @@ export default {
     amdLogs() {
       return this.call.amdAiLogs.join(', ');
     },
-    emptyValue() {
-      return !this.call.variables && (!this.call.amdResult || this.call.amdResult === 'undefined');
-    },
     isDisplayAmdLogs() {
       return this.call.amdResult && this.call.amdResult !== 'undefined';
+    },
+    emptyValue() {
+      return !this.call.variables && !this.isDisplayAmdLogs;
     },
   },
 };
