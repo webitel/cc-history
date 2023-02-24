@@ -40,7 +40,7 @@ export default {
       transferFrom: 'Трансфер Від',
       transferMerge: 'Об\'єднання Дзвінків',
       transferTo: 'Трансфер На',
-      noVariables: 'Цей дзвінок не має змінних',
+      noInfo: 'Цей дзвінок не має інформації',
       callVisualization: 'Візуалізація дзвінка',
       hold: 'Утримання | Утримання',
       comment: 'Комментар | Комментарі',

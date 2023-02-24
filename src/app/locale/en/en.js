@@ -40,7 +40,7 @@ export default {
       transferFrom: 'Transfer From',
       transferMerge: 'Call Merge',
       transferTo: 'Transfer To',
-      noVariables: 'There are no variables',
+      noInfo: 'There is no info',
       callVisualization: 'Call visualization',
       hold: 'Hold | Holds',
       comment: 'Note | Notes',

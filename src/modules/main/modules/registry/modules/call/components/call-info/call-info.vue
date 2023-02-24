@@ -14,7 +14,7 @@
       </li>
     </ul>
     <div
-      v-if="call.amdResult"
+      v-if="isDisplayAmdLogs"
       class="call-info__wrapper"
     >
       <div class="call-info__item">
@@ -23,12 +23,12 @@
       </div>
       <div class="call-info__item">
         <h3 class="call-info__title">{{ $tc('reusable.logs', 2) }}:</h3>
-        <span class="call-info__value">{{ amdAiLogs }}</span>
+        <span class="call-info__value">{{ amdLogs }}</span>
       </div>
 
     </div>
-    <div v-else>
-      {{ $t('registry.call.noVariables') }}
+    <div v-if="emptyValue">
+      {{ $t('registry.call.noInfo') }}
     </div>
     <div
       v-if="call.agentDescription"
@@ -54,8 +54,14 @@ export default {
       return Object.keys(this.call.variables)
       .map((key) => ({ key, value: this.call.variables[key] }));
     },
-    amdAiLogs() {
+    amdLogs() {
       return this.call.amdAiLogs.join(', ');
+    },
+    isDisplayAmdLogs() {
+      return this.call.amdResult && this.call.amdResult !== 'undefined';
+    },
+    emptyValue() {
+      return !this.call.variables && !this.isDisplayAmdLogs;
     },
   },
 };
