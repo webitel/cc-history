@@ -1,25 +1,15 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
+import { shallowMount } from '@vue/test-utils';
 import TheCall
   from '../the-call.vue';
-import call from '../../store/call';
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
 describe('Opened call popup (wrapper)', () => {
-  const store = new Vuex.Store({
-    modules: {
-      registry: {
-        namespaced: true,
-        modules: { call },
-      },
-    },
-  });
   it('renders a component', () => {
+    jest.spyOn(TheCall.methods, 'setMainCall').mockImplementationOnce(jest.fn());
     const wrapper = shallowMount(TheCall, {
-      localVue,
-      store,
+      computed: {
+        mainCall() { return {}; },
+        isLoading() { return false; },
+      },
       mocks: {
         $route: {
           path: '',
@@ -31,13 +21,13 @@ describe('Opened call popup (wrapper)', () => {
   });
 
   it('renders a component if main call has any children', () => {
+    jest.spyOn(TheCall.methods, 'setMainCall').mockImplementationOnce(jest.fn());
     const wrapper = shallowMount(TheCall, {
-      localVue,
-      store,
       computed: {
         mainCall() {
           return { hasChildren: true };
         },
+        isLoading() { return false; },
       },
       mocks: {
         $route: {

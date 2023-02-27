@@ -1,22 +1,42 @@
 <template>
   <section class="call-info">
-    <ul v-if="call.variables" class="call-variables">
+    <ul
+      v-if="call.variables"
+      class="call-info__wrapper"
+    >
       <li
         v-for="(variable, key) of variables"
         :key="key"
-        class="call-variable"
+        class="call-info__item"
       >
-        <h3 class="call-variable__key">{{ variable.key }}:</h3>
-        <span class="call-variable__value">{{ variable.value }}</span>
+        <h3 class="call-info__title">{{ variable.key }}:</h3>
+        <span class="call-info__value">{{ variable.value }}</span>
       </li>
     </ul>
-    <div v-else class="call-variables__empty-variables">
-      {{ $t('registry.call.noVariables') }}
+    <div
+      v-if="isDisplayAmdLogs"
+      class="call-info__wrapper"
+    >
+      <div class="call-info__item">
+        <h3 class="call-info__title">{{ $t('fields.amdResult') }}:</h3>
+        <span class="call-info__value">{{ call.amdResult }}</span>
+      </div>
+      <div class="call-info__item">
+        <h3 class="call-info__title">{{ $tc('reusable.logs', 2) }}:</h3>
+        <span class="call-info__value">{{ amdLogs }}</span>
+      </div>
+
     </div>
-    <article v-if="call.agentDescription" class="call-info__wrapper">
-      <h2 class="call-info-heading">{{ $t('registry.call.agentDescription') }}</h2>
-      <div class="call-agent-description">{{ call.agentDescription }}</div>
-    </article>
+    <div v-if="emptyValue">
+      {{ $t('registry.call.noInfo') }}
+    </div>
+    <div
+      v-if="call.agentDescription"
+      class="call-info__item"
+    >
+      <h3 class="call-info__title">{{ $t('registry.call.agentDescription') }}:</h3>
+      <span class="call-info__value">{{ call.agentDescription }}</span>
+    </div>
   </section>
 </template>
 
@@ -34,6 +54,15 @@ export default {
       return Object.keys(this.call.variables)
       .map((key) => ({ key, value: this.call.variables[key] }));
     },
+    amdLogs() {
+      return this.call.amdAiLogs.join(', ');
+    },
+    isDisplayAmdLogs() {
+      return this.call.amdResult && this.call.amdResult !== 'undefined';
+    },
+    emptyValue() {
+      return !this.call.variables && !this.isDisplayAmdLogs;
+    },
   },
 };
 </script>
@@ -42,18 +71,21 @@ export default {
 .call-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-}
+  gap: var(--spacing-sm);
 
-.call-variables {
-  min-width: 0;
-}
+  &__wrapper {
+    padding: var(--spacing-sm);
+    border: 1px dashed var(--secondary-color);
+    border-radius: var(--spacing-2xs);
+  }
 
-.call-variable {
-  display: flex;
-  align-items: center;
-  min-width: 0;
+  &__item {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
 
-  &__key {
+  &__title {
     @extend %typo-subtitle-1;
     margin-right: var(--spacing-xs);
   }
