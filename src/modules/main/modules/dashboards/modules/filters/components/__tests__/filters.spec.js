@@ -1,19 +1,19 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import VueRouter from 'vue-router';
-import Vuex from 'vuex';
+import { shallowMount } from '@vue/test-utils';
+import { createRouter, createWebHistory } from 'vue-router';
 import FilterInterval from '../interval/filter-interval.vue';
 import store from '../../../../../../../../app/store';
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueRouter);
-
-const router = new VueRouter();
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [],
+});
 
 describe('Dashboards: filter components', () => {
   it('renders interval filter component', () => {
     const wrapper = shallowMount(FilterInterval, {
-      localVue, store, router,
+      global: {
+        plugins: [store, router],
+      },
     });
     expect(wrapper.findComponent({ name: 'abstract-enum-filter' }).exists()).toBe(true);
   });

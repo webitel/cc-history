@@ -163,6 +163,7 @@ import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
+import Wavesurfer from './wavesurfer.vue';
 import generateMediaURL from '../../../../../mixins/media/scripts/generateMediaURL';
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import regionsMixin from '../mixins/regionsMixin';
@@ -206,7 +207,11 @@ const createMarker = (color) => {
 
 export default {
   name: 'call-wave',
-  components: { CallVisualizationHeader, CallCommentForm },
+  components: {
+    CallVisualizationHeader,
+    CallCommentForm,
+    Wavesurfer,
+  },
   mixins: [exportFilesMixin, soundFiltersMixin, regionsMixin],
   props: {
     call: {
@@ -264,9 +269,6 @@ export default {
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
     },
-    speedButtonColor() {
-      return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
-    },
     callDuration() {
       return Math.round(this.player?.getDuration());
     },
@@ -286,6 +288,9 @@ export default {
       loadAnnotations: 'LOAD_MAIN_CALL_ANNOTATIONS',
     }),
 
+    speedButtonColor(value) {
+      return this.playbackRate === value ? 'primary' : 'secondary';
+    },
     editAnnotation(comment) {
       this.selectedComment = comment;
       this.commentsMode = true;

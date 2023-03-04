@@ -9,15 +9,15 @@ import LineChart
 const chartData = { datasets: [], labels: [] };
 describe('Charts', () => {
   it('renders a line chart', () => {
-    const wrapper = shallowMount(LineChart, { propsData: { chartData } });
+    const wrapper = shallowMount(LineChart, { props: { chartData } });
     expect(wrapper.exists()).toBe(true);
   });
   it('renders a doughnut chart', () => {
-    const wrapper = shallowMount(DoughnutChart, { propsData: { chartData } });
+    const wrapper = shallowMount(DoughnutChart, { props: { chartData } });
     expect(wrapper.exists()).toBe(true);
   });
   it('renders a bar chart', () => {
-    const wrapper = shallowMount(BarChart, { propsData: { chartData } });
+    const wrapper = shallowMount(BarChart, { props: { chartData } });
     expect(wrapper.exists()).toBe(true);
   });
 });

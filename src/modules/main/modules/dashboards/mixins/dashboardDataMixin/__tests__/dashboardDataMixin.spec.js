@@ -15,7 +15,7 @@ describe('Dashboard data mixin', () => {
     };
     wrapper = shallowMount(Component, {
       data: () => ({ dashboard: null }),
-      mocks: { $route: { query: { interval: 'auto' } } },
+      global: { mocks: { $route: { query: { interval: 'auto' } } } },
     });
   });
 
@@ -25,22 +25,27 @@ describe('Dashboard data mixin', () => {
 
   it('Line data', () => {
     const dataSource = {
-      datasets: new Map([['inbound', { data: [10] }], ['outbound', { data: [5] }]]),
+      datasets: new Map([
+        ['inbound', { data: [10] }],
+        ['outbound', { data: [5] }],
+      ]),
       dates: new Map([['01.07', 15]]),
     };
     wrapper.vm.normalizeData = () => dataSource;
     const data = {
-      datasets: [{
-        backgroundColor: '1',
-        borderColor: '1',
-        data: [10],
-        label: 'inbound',
-      }, {
-        backgroundColor: '2',
-        borderColor: '2',
-        data: [5],
-        label: 'outbound',
-      }],
+      datasets: [
+        {
+          backgroundColor: '1',
+          borderColor: '1',
+          data: [10],
+          label: 'inbound',
+        }, {
+          backgroundColor: '2',
+          borderColor: '2',
+          data: [5],
+          label: 'outbound',
+        },
+      ],
       labels: [],
     };
     const lineData = wrapper.vm.lineData();
@@ -48,7 +53,10 @@ describe('Dashboard data mixin', () => {
   });
   it('Doughnut data', () => {
     const dataSource = {
-      datasets: new Map([['inbound', { data: [10] }], ['outbound', { data: [5] }]]),
+      datasets: new Map([
+        ['inbound', { data: [10] }],
+        ['outbound', { data: [5] }],
+      ]),
       dates: new Map([['01.07', 15]]),
     };
     wrapper.vm.normalizeData = () => dataSource;
@@ -61,22 +69,27 @@ describe('Dashboard data mixin', () => {
   });
   it('Bar data', () => {
     const dataSource = {
-      datasets: new Map([['inbound', { data: [10] }], ['outbound', { data: [5] }]]),
+      datasets: new Map([
+        ['inbound', { data: [10] }],
+        ['outbound', { data: [5] }],
+      ]),
       dates: new Map([['01.07', 15]]),
     };
     wrapper.vm.normalizeData = () => dataSource;
     const data = {
-      datasets: [{
-        backgroundColor: '1',
-        borderColor: '1',
-        data: [10],
-        label: 'inbound',
-      }, {
-        backgroundColor: '2',
-        borderColor: '2',
-        data: [5],
-        label: 'outbound',
-      }],
+      datasets: [
+        {
+          backgroundColor: '1',
+          borderColor: '1',
+          data: [10],
+          label: 'inbound',
+        }, {
+          backgroundColor: '2',
+          borderColor: '2',
+          data: [5],
+          label: 'outbound',
+        },
+      ],
       labels: [],
     };
     const barData = wrapper.vm.barData();

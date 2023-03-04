@@ -1,12 +1,7 @@
-import { createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
 import DashboardsAPIRepository from '../../api/DashboardAPIRepository';
 import CallsCountDashboard
   from '../../components/dashboards/CallsCountDashboard/CallsCountDashboard';
 import dashboards from '../dashboards';
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
 jest.mock('../../api/DashboardAPIRepository');
 

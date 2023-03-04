@@ -1,9 +1,9 @@
 <template>
   <wt-popup class="dashboard-config" @close="$emit('close')">
-    <template slot="title">
+    <template v-slot:title>
       {{ $t('dashboards.dashboardSelect') }}
     </template>
-    <template slot="main">
+    <template v-slot:main>
       <form class="dashboard-config-form">
         <wt-input
           v-model="options.name"
@@ -53,7 +53,7 @@
         ></wt-checkbox>
       </form>
     </template>
-    <template slot="actions">
+    <template v-slot:actions>
       <wt-button
         @click="save"
       >{{ $t('reusable.save') }}</wt-button>

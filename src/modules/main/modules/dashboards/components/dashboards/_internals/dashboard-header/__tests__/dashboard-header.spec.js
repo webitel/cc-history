@@ -9,7 +9,7 @@ describe('Dashboard header', () => {
 
   it('renders passed name prop', () => {
     const name = 'jest';
-    const wrapper = shallowMount(DashboardHeader, { propsData: { name } });
+    const wrapper = shallowMount(DashboardHeader, { props: { name } });
     expect(wrapper.find('.dashboard-header__heading').text()).toBe(name);
   });
 

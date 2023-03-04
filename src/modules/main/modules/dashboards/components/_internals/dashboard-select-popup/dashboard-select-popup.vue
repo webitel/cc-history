@@ -1,9 +1,9 @@
 <template>
   <wt-popup class="dashboard-select" @close="$emit('close')">
-    <template slot="title">
+    <template v-slot:title>
       {{ $t('dashboards.dashboardSelect') }}
     </template>
-    <template slot="main">
+    <template v-slot:main>
       <ul class="dashboard-select__options-list">
         <li
           class="dashboard-select__option"
@@ -17,7 +17,7 @@
         </li>
       </ul>
     </template>
-    <template slot="actions">
+    <template v-slot:actions>
       <wt-button
         :disabled="!selected"
         @click="selectDashboard"

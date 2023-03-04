@@ -1,12 +1,7 @@
-import { createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
 import CallAnnotationAPIRepository
   from '../../api/CallAnnotationAPIRepository';
 import call from '../call';
 import getContextMock from '../../../../../../../../../tests/unit/mocks/store/contextMock';
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
 jest.mock('../../api/CallAnnotationAPIRepository');
 
