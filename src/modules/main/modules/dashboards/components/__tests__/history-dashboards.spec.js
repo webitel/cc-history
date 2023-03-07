@@ -1,14 +1,14 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import VueRouter from 'vue-router';
+import { shallowMount, mount } from '@vue/test-utils';
+import { createStore } from 'vuex';
+import { createRouter, createWebHistory } from 'vue-router';
 import HistoryDashboards from '../history-dashboards.vue';
 import dashboards from '../../store/dashboards';
 import CallsCountDashboard from '../dashboards/CallsCountDashboard/CallsCountDashboard';
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-localVue.use(Vuex);
-const router = new VueRouter();
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [],
+});
 
 const dashboard = new CallsCountDashboard();
 describe('History dashboards', () => {
@@ -21,7 +21,7 @@ describe('History dashboards', () => {
   };
 
   beforeEach(() => {
-    store = new Vuex.Store({
+    store = createStore({
       modules: {
         dashboards: {
           ...dashboards,
@@ -31,13 +31,21 @@ describe('History dashboards', () => {
     });
   });
   it('renders a component', () => {
-    const wrapper = shallowMount(HistoryDashboards, { localVue, router, store });
+    const wrapper = shallowMount(HistoryDashboards, {
+      global: {
+        plugins: [store, router],
+      },
+    });
     expect(wrapper.exists()).toBe(true);
   });
 
   it('at dashboards header reflow event, calls CHANGE_LAYOUT', async () => {
     const newLayout = '3';
-    const wrapper = shallowMount(HistoryDashboards, { localVue, router, store });
+    const wrapper = shallowMount(HistoryDashboards, {
+      global: {
+        plugins: [store, router],
+      },
+    });
     wrapper.findComponent({ name: 'dashboards-header' }).vm.$emit('reflow', newLayout);
     expect(actions.CHANGE_LAYOUT.mock.calls.pop()).toContain(newLayout);
   });
@@ -46,9 +54,9 @@ describe('History dashboards', () => {
     const configuredDashboard = dashboard;
     const options = { name: '1' };
     const wrapper = shallowMount(HistoryDashboards, {
-      localVue,
-      router,
-      store,
+      global: {
+        plugins: [store, router],
+      },
       data: () => ({ isDashboardConfig: true, configuredDashboard }),
     });
     wrapper.findComponent({ name: 'dashboard-config-popup' })
@@ -60,10 +68,10 @@ describe('History dashboards', () => {
   it('at dashboard header edit event, sets configuredDashboard', async () => {
     const dashboards = () => [dashboard];
     const openDashboardConfig = jest.fn();
-    const wrapper = shallowMount(HistoryDashboards, {
-      localVue,
-      router,
-      store,
+    const wrapper = mount(HistoryDashboards, {
+      global: {
+        plugins: [store, router],
+      },
       computed: { dashboards },
     });
     wrapper.vm.openDashboardConfig = openDashboardConfig;
@@ -75,10 +83,10 @@ describe('History dashboards', () => {
   it('at dashboard header delete event, calls DELETE_DASHBOARD', async () => {
     const dashboards = () => [dashboard];
     const openDashboardConfig = jest.fn();
-    const wrapper = shallowMount(HistoryDashboards, {
-      localVue,
-      router,
-      store,
+    const wrapper = mount(HistoryDashboards, {
+      global: {
+        plugins: [store, router],
+      },
       computed: { dashboards },
     });
     wrapper.vm.openDashboardConfig = openDashboardConfig;
@@ -90,9 +98,9 @@ describe('History dashboards', () => {
 
   it('at dashboard select input event, sets configuredDashboard', async () => {
     const wrapper = shallowMount(HistoryDashboards, {
-      localVue,
-      router,
-      store,
+      global: {
+        plugins: [store, router],
+      },
       data: () => ({ isDashboardSelect: true }),
     });
     wrapper.findComponent({ name: 'dashboard-select-popup' }).vm.$emit('input', dashboard);

@@ -1,9 +1,9 @@
 <template>
   <wt-headline class="the-history-heading">
-    <template slot="title">
+    <template v-slot:title>
       {{ $t('reusable.history') }}
     </template>
-    <template slot="actions">
+    <template v-slot:actions>
 
       <filter-search
         namespace="filters"

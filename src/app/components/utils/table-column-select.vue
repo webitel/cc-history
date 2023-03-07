@@ -3,10 +3,10 @@
     class="column-select"
     @close="$emit('close')"
   >
-    <template slot="header">
+    <template v-slot:header>
       <h1 class="column-select__heading">{{$t('components.columnSelect.header')}}</h1>
     </template>
-    <template slot="main">
+    <template v-slot:main>
       <ul class="column-select__list">
         <li
           class="column-select__item"
@@ -18,7 +18,7 @@
         </li>
       </ul>
     </template>
-    <template slot="actions">
+    <template v-slot:actions>
       <wt-button
         @click="setShownColumns"
       >{{ $t('reusable.add') }}

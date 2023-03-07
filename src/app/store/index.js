@@ -1,12 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import StoreModules from '../../modules/main/enums/StoreModules.enum';
 import filters from '../../modules/filters/store/filters';
 import registry from '../../modules/main/modules/registry/store/registry';
 import dashboards from '../../modules/main/modules/dashboards/store/dashboards';
 import userinfo from '../../modules/userinfo/store/userinfo';
-
-Vue.use(Vuex);
 
 const state = {
   state: StoreModules.REGISTRY,
@@ -27,7 +24,7 @@ const mutations = {
   },
 };
 
-export default new Vuex.Store({
+export default createStore({
   state,
   actions,
   mutations,

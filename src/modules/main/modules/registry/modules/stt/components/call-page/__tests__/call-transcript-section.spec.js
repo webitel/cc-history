@@ -3,17 +3,17 @@ import CallTranscriptSection from '../call-transcript-section.vue';
 
 let call;
 let file;
-let propsData;
+let props;
 
 describe('CallTranscriptSection', () => {
   beforeEach(() => {
     file = { id: 1 };
     call = { files: [file] };
-    propsData = { file, call };
+    props = { file, call };
   });
 
   it('renders a component', () => {
-    const wrapper = shallowMount(CallTranscriptSection, { propsData });
+    const wrapper = shallowMount(CallTranscriptSection, { props });
     expect(wrapper.isVisible()).toBe(true);
   });
 });

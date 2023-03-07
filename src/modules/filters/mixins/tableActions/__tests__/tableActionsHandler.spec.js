@@ -1,12 +1,11 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import VueRouter from 'vue-router';
-import Vuex from 'vuex';
+import { shallowMount } from '@vue/test-utils';
+import { createRouter, createWebHistory } from 'vue-router';
 import tableActionsHandlerMixin from '../tableActionsHandlerMixin';
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueRouter);
-const router = new VueRouter();
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [],
+});
 
 jest.mock('../../../../main/modules/registry/api/RegistryAPIRepository');
 
@@ -21,8 +20,7 @@ describe('Table actions handler', () => {
       methods: { loadData, resetFilters },
     };
     wrapper = shallowMount(Component, {
-      localVue,
-      router,
+      global: { plugins: [router] },
     });
   });
 

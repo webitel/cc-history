@@ -4,24 +4,28 @@ import TheCall
 
 describe('Opened call popup (wrapper)', () => {
   it('renders a component', () => {
-    jest.spyOn(TheCall.methods, 'setMainCall').mockImplementationOnce(jest.fn());
+    jest.spyOn(TheCall.methods, 'setMainCall')
+    .mockImplementationOnce(jest.fn());
     const wrapper = shallowMount(TheCall, {
       computed: {
         mainCall() { return {}; },
         isLoading() { return false; },
       },
-      mocks: {
-        $route: {
-          path: '',
+      global: {
+        mocks: {
+          $route: {
+            path: '',
+          },
         },
       },
     });
     expect(wrapper.exists())
-      .toBe(true);
+    .toBe(true);
   });
 
   it('renders a component if main call has any children', () => {
-    jest.spyOn(TheCall.methods, 'setMainCall').mockImplementationOnce(jest.fn());
+    jest.spyOn(TheCall.methods, 'setMainCall')
+    .mockImplementationOnce(jest.fn());
     const wrapper = shallowMount(TheCall, {
       computed: {
         mainCall() {
@@ -29,13 +33,15 @@ describe('Opened call popup (wrapper)', () => {
         },
         isLoading() { return false; },
       },
-      mocks: {
-        $route: {
-          path: '',
+      global: {
+        mocks: {
+          $route: {
+            path: '',
+          },
         },
       },
     });
     expect(wrapper.exists())
-      .toBe(true);
+    .toBe(true);
   });
 });

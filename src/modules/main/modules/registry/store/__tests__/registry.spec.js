@@ -1,13 +1,13 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import VueRouter from 'vue-router';
+import { shallowMount } from '@vue/test-utils';
+import { createStore } from 'vuex';
+import { createRouter, createWebHistory } from 'vue-router';
 import registry from '../registry';
 import RegistryAPIRepository from '../../api/RegistryAPIRepository';
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueRouter);
-const router = new VueRouter();
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [],
+});
 
 jest.mock('../../api/RegistryAPIRepository');
 
@@ -18,9 +18,13 @@ RegistryAPIRepository.getHistory.mockImplementation(() => Promise.resolve({ item
 describe('registry store', () => {
   let store;
   beforeEach(() => {
-    store = new Vuex.Store({ modules: { registry } });
+    store = createStore({ modules: { registry } });
     const Component = { render() {} };
-    shallowMount(Component, { localVue, store, router });
+    shallowMount(Component, {
+      global: {
+        plugins: [store, router],
+      },
+    });
   });
   it('correctly filters selected data items', async () => {
     items[0]._isSelected = true;

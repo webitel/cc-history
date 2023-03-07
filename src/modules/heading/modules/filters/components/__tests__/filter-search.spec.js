@@ -1,22 +1,20 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils';
-import VueRouter from 'vue-router';
-import Vuex from 'vuex';
+import { shallowMount } from '@vue/test-utils';
+import { createRouter, createWebHistory } from 'vue-router';
 import store from '../../../../../../app/store';
 import FilterSearch from '../filter-search.vue';
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueRouter);
-
-const router = new VueRouter();
+const router = new createRouter({
+  history: createWebHistory(),
+  routes: [],
+});
 
 describe('FilterSearch', () => {
   it('renders a component', () => {
     const wrapper = shallowMount(FilterSearch, {
-      localVue,
-      store,
-      router,
-      propsData: {
+      global: {
+        plugins: [store, router],
+      },
+      props: {
         namespace: 'filters',
       },
     });

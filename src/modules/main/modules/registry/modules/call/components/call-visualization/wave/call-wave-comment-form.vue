@@ -2,13 +2,13 @@
   <section class="comment-form">
     <wt-timepicker
       v-model="draft.startSec"
-      :v="$v.draft.startSec"
+      :v="v$.draft.startSec"
       :custom-validators="customValidation(0)"
       :label="$t('reusable.from')"
     ></wt-timepicker>
     <wt-timepicker
       v-model="draft.endSec"
-      :v="$v.draft.endSec"
+      :v="v$.draft.endSec"
       :custom-validators="customValidation(minimalEndCommentValue)"
       :label="$t('reusable.to')"
     ></wt-timepicker>
@@ -46,7 +46,8 @@
 
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import deepCopy from 'deep-copy';
-import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import { useVuelidate } from '@vuelidate/core';
+import { required, minValue, maxValue } from '@vuelidate/validators';
 
 export default {
   name: 'call-wave-comment-form',
@@ -75,23 +76,27 @@ export default {
 
   computed: {
     customValidation() {
-      return (value) => [{
-        name: 'minValue',
-        text: this.$t('validation.minValue').concat(` ${convertDuration(value)}`),
-      }, {
-        name: 'maxValue',
-        text: this.$t('validation.maxValue').concat(` ${convertDuration(this.callDuration)}`),
-      }];
+      return (value) => [
+        {
+          name: 'minValue',
+          text: this.$t('validation.minValue').concat(` ${convertDuration(value)}`),
+        }, {
+          name: 'maxValue',
+          text: this.$t('validation.maxValue').concat(` ${convertDuration(this.callDuration)}`),
+        },
+      ];
     },
     minimalEndCommentValue() {
       return Math.min(this.callDuration, this.draft.startSec);
     },
     disableSaving() {
-      this.$v.draft.$touch();
-      return this.$v.draft.$pending || this.$v.draft.$error;
+      this.v$.draft.$touch();
+      return this.v$.draft.$pending || this.v$.draft.$error;
     },
   },
-
+  setup: () => ({
+    v$: useVuelidate(),
+  }),
   validations() {
     const draft = {
       startSec: {
