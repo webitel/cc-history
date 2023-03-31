@@ -59,6 +59,7 @@ const mapItems = (items) => {
     queueDurationSec: convertDuration(item.queueDurationSec),
     annotations: mapDefaultComments(item),
     hangupDisposition: item.hangupDisposition ? snakeToCamel(item.hangupDisposition) : '',
+    score: item.scoreRequired ? Math.round(item.scoreRequired) : null,
   }));
 };
 
