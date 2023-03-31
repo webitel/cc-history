@@ -88,6 +88,11 @@ const fetchHistory = async ({
       description,
       undefined,
       grantee,
+      undefined,
+      undefined,
+      undefined,
+      rated,
+      ratedBy,
     );
     return formatResponse(response);
   } catch (err) {
@@ -97,7 +102,6 @@ const fetchHistory = async ({
 
 const RegistryAPIRepository = {
   async getHistory(argParams) {
-    console.log('argParams', argParams);
     const params = {
       ...defaultParams,
       ...argParams,

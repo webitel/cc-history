@@ -85,7 +85,7 @@ const state = {
   }),
   rated: new EnumFilterSchema({
     options: RatedOptions,
-    locale: { label: 'fields.rated' },
+    locale: { label: 'filters.rated' },
     multiple: false,
   }),
   ratedBy: new ApiFilterSchema({

@@ -207,6 +207,7 @@ export default {
     },
     hasFile: 'Запись разговора',
     hasTranscription: 'Транскрипция',
+    rated: 'Оценены',
   },
   components: {
     dtPicker: {
