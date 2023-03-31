@@ -21,6 +21,8 @@ const fetchHistory = async ({
                               from,
                               to,
                               user,
+                              rated,
+                              ratedBy,
                               agent,
                               queue,
                               team,
@@ -95,6 +97,7 @@ const fetchHistory = async ({
 
 const RegistryAPIRepository = {
   async getHistory(argParams) {
+    console.log('argParams', argParams);
     const params = {
       ...defaultParams,
       ...argParams,

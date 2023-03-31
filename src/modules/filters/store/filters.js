@@ -7,6 +7,7 @@ import RolesAPI from '../api/RolesAPIRepository';
 import CauseOption from '../enums/HangupCauseOption.enum';
 import AmdResultOptions from '../enums/AmdResultOptions.enum';
 import DirectionOptions from '../enums/DirectionOptions.enum';
+import RatedOptions from "../enums/RatedOptions.enum";
 import GatewaysAPI from '../api/GatewaysAPIRepository';
 import QueuesAPI from '../api/QueuesAPIRepository';
 import hasFile from '../enums/HasFile.enum';
@@ -81,6 +82,15 @@ const state = {
     options: HasTranscription,
     locale: { label: 'filters.hasTranscription' },
     multiple: false,
+  }),
+  rated: new EnumFilterSchema({
+    options: RatedOptions,
+    locale: { label: 'fields.rated' },
+    multiple: false,
+  }),
+  ratedBy: new ApiFilterSchema({
+    API: UserAPI.getLookup,
+    locale: { label: 'fields.ratedBy' },
   }),
 };
 

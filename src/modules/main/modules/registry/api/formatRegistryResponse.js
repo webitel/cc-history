@@ -65,6 +65,7 @@ const mapItems = (items) => {
 
 const formatResponse = (response) => {
   if (response.items) {
+    console.log('response.items:', response.items);
     return {
       next: response.next || false,
       items: mapItems(response.items),
