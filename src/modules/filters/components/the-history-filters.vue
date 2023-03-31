@@ -62,6 +62,8 @@
         { type: 'enum', filterQuery: 'amdResult' },
         { type: 'enum', filterQuery: 'hasFile' },
         { type: 'enum', filterQuery: 'hasTranscription' },
+        { type: 'api', filterQuery: 'ratedBy' },
+        { type: 'enum', filterQuery: 'rated' },
       ],
       namespace: 'filters',
     }),

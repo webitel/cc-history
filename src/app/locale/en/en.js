@@ -209,6 +209,7 @@ export default {
     },
     hasFile: 'Has recording',
     hasTranscription: 'Has transcription',
+    rated: 'Rated',
   },
   components: {
     dtPicker: {

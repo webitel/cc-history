@@ -21,6 +21,8 @@ const fetchHistory = async ({
                               from,
                               to,
                               user,
+                              rated,
+                              ratedBy,
                               agent,
                               queue,
                               team,
@@ -86,6 +88,11 @@ const fetchHistory = async ({
       description,
       undefined,
       grantee,
+      undefined,
+      undefined,
+      undefined,
+      rated,
+      ratedBy,
     );
     return formatResponse(response);
   } catch (err) {
