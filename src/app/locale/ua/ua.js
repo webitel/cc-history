@@ -183,6 +183,8 @@ export default {
     hangupDisposition: 'Результат завершення',
     blindTransfer: 'Сліпий трансфер',
     grantee: 'Отримувач',
+    ratedBy: 'Оцінено ким',
+    score: 'Оцінка',
   },
   hangupDisposition: {
     notAnswered: 'Без відповіді',

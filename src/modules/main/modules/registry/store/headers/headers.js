@@ -233,4 +233,16 @@ export default [
     sort: null,
     field: 'grantee',
   },
+  {
+    value: 'score',
+    show: false,
+    sort: null,
+    field: 'score_required',
+  },
+  {
+    value: 'ratedBy',
+    show: false,
+    sort: null,
+    field: 'rated_by',
+  },
 ];

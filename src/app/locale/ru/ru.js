@@ -183,6 +183,8 @@ export default {
     hangupDisposition: 'Результат завершения',
     blindTransfer: 'Слепой перевод',
     grantee: 'Получатель',
+    ratedBy: 'Оценено кем',
+    score: 'Оценка',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',

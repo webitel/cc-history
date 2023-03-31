@@ -185,6 +185,8 @@ export default {
     hangupDisposition: 'Hangup disposition',
     blindTransfer: 'Blind transfer',
     grantee: 'Grantee',
+    ratedBy: 'Rated by',
+    score: 'Score',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',
