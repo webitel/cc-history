@@ -1,31 +1,31 @@
 <template>
-  <div class="filter-duration">
+  <div class="filter-total-duration">
     <wt-label>{{ $t('fields.duration') }}</wt-label>
-    <div class="filter-duration__inputs-wrapper">
-      <div class="filter-duration__input-wrapper">
+    <div class="filter-total-duration__inputs-wrapper">
+      <div class="filter-total-duration__input-wrapper">
         <wt-label
-          class="filter-duration__input-label"
-          for="filter-duration-from"
+          class="filter-total-duration__input-label"
+          for="filter-total-duration-from"
         >{{ $t('components.duration.from') }}
         </wt-label>
         <wt-input
-          class="filter-duration-input"
-          name="filter-duration-from"
+          class="filter-total-duration-input"
+          name="filter-total-duration-from"
           :value="value.from"
           type="number"
           :number-min="0"
           @input="setFrom"
         ></wt-input>
       </div>
-      <div class="filter-duration__input-wrapper">
+      <div class="filter-total-duration__input-wrapper">
         <wt-label
-          class="filter-duration__input-label"
-          for="filter-duration-to"
+          class="filter-total-duration__input-label"
+          for="filter-total-duration-to"
         >{{ $t('components.duration.to') }}
         </wt-label>
         <wt-input
-          class="filter-duration-input"
-          name="filter-duration-to"
+          class="filter-total-duration-input"
+          name="filter-total-duration-to"
           :value="value.to"
           type="number"
           :number-min="0"
@@ -42,7 +42,7 @@ import debounce from '@webitel/ui-sdk/src/scripts/debounce';
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
 
 export default {
-  name: 'filter-duration',
+  name: 'filter-total-duration',
   mixins: [baseFilterMixin],
 
   created() {
@@ -52,7 +52,7 @@ export default {
   },
 
   computed: {
-    ...mapState('filters', { value: (state) => state.duration.value }),
+    ...mapState('filters', { value: (state) => state.talkSec.value }),
   },
 
   methods: {
@@ -60,51 +60,51 @@ export default {
       setValue: 'SET_FILTER',
     }),
     restore() {
-      this.restoreDurationFrom();
-      this.restoreDurationTo();
+      this.restoreTotalDurationFrom();
+      this.restoreTotalDurationTo();
     },
 
-    restoreDurationFrom() {
+    restoreTotalDurationFrom() {
       const from = 0;
-      const queryValue = this.$route.query.durationFrom;
-      console.log('restoreDurationFrom queryValue:', queryValue);
+      const queryValue = this.$route.query.talkFrom;
       // this.value.from = +queryValue || from;
+      console.log('restoreTotalDurationTo queryValue:', queryValue);
       const value = { from: +queryValue || from, to: this.value.to };
-      console.log('restoreDurationFrom value:', value);
-      this.setValue({ filter: 'duration', value });
+      console.log('restoreTotalDurationTo value:', value);
+      this.setValue({ filter: 'talkSec', value });
     },
 
-    restoreDurationTo() {
+    restoreTotalDurationTo() {
       const to = null;
-      const queryValue = this.$route.query.durationTo;
-      console.log('restoreDurationTo queryValue:', queryValue);
+      const queryValue = this.$route.query.talkTo;
       // this.value.to = +queryValue || to;
+      console.log('restoreTotalDurationTo queryValue:', queryValue);
       const value = { from: this.value.from, to: +queryValue || to };
-      console.log('restoreDurationTo value:', value);
-      this.setValue({ filter: 'duration', value });
+      console.log('restoreTotalDurationFrom value:', value);
+      this.setValue({ filter: 'talkSec', value });
     },
 
     setFrom(value) {
       this.setValueToQuery({
-        filterQuery: 'durationFrom',
+        filterQuery: 'talkFrom',
         value,
       });
-      this.restoreDurationFrom();
+      this.restoreTotalDurationFrom();
     },
 
     setTo(value) {
       this.setValueToQuery({
-        filterQuery: 'durationTo',
+        filterQuery: 'talkTo',
         value,
       });
-      this.restoreDurationTo();
+      this.restoreTotalDurationTo();
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.filter-duration {
+.filter-total-duration {
 
   & > .wt-label {
     margin-bottom: 10px;
@@ -119,23 +119,23 @@ export default {
   }
 }
 
-.filter-duration__inputs-wrapper,
-.filter-duration__input-wrapper {
+.filter-total-duration__inputs-wrapper,
+.filter-total-duration__input-wrapper {
   display: flex;
   align-items: center;
 }
 
-.filter-duration__input-label {
+.filter-total-duration__input-label {
   @extend %typo-subtitle-1;
   margin-right: 5px;
 }
 
-.filter-duration__input-wrapper {
+.filter-total-duration__input-wrapper {
   &:focus-within .wt-label {
     color: var(--form-label--active-color)
   }
 
-  .filter-duration-input {
+  .filter-total-duration-input {
     width: 70px;
   }
 

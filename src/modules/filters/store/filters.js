@@ -92,6 +92,10 @@ const state = {
     API: UserAPI.getLookup,
     locale: { label: 'fields.ratedBy' },
   }),
+  talkSec: new BaseFilterSchema({
+    value: { from: 0, to: null },
+    defaultValue: [],
+  }),
 };
 
 export default new QueryFiltersStoreModule({ state }).getModule();

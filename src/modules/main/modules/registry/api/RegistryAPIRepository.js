@@ -46,6 +46,8 @@ const fetchHistory = async ({
                               hasTranscription,
                               description,
                               grantee,
+                              talkFrom,
+                              talkTo,
                             }) => {
   try {
     const response = await callService.searchHistoryCall(
@@ -89,8 +91,8 @@ const fetchHistory = async ({
       undefined,
       grantee,
       undefined,
-      undefined,
-      undefined,
+      talkFrom,
+      talkTo,
       rated,
       ratedBy,
     );

@@ -16,6 +16,7 @@
         :namespace="namespace"
       ></component>
       <filter-duration class="history-filters__filter"/>
+      <filter-total-duration class="history-filters__filter"/>
     </form>
     <wt-table-actions
       :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
@@ -33,11 +34,13 @@
   import FilterTo from './filters/filter-to.vue';
   import FilterDuration from './filters/filter-duration.vue';
   import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
+  import FilterTotalDuration from "@/modules/filters/components/filters/filter-total-duration";
 
   export default {
     name: 'the-history-filters',
     mixins: [tableActionsHandlerMixin],
     components: {
+      FilterTotalDuration,
       AbstractApiFilter,
       AbstractEnumFilter,
       FilterFields,
