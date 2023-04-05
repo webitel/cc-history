@@ -16,7 +16,12 @@
         :namespace="namespace"
       ></component>
       <filter-duration class="history-filters__filter"/>
-      <filter-total-duration class="history-filters__filter"/>
+<!--      <filter-total-duration class="history-filters__filter"/>-->
+      <filter-from-to
+        class="history-filters__filter"
+        :filter-query="'duration'"
+        :label="$t('fields.duration')"/>
+      <filter-score class="history-filters__filter"/>
     </form>
     <wt-table-actions
       :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
@@ -26,6 +31,7 @@
 </template>
 
 <script>
+
   import { mapActions } from 'vuex';
   import AbstractApiFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-api-filter.vue';
   import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-enum-filter.vue';
@@ -34,12 +40,14 @@
   import FilterTo from './filters/filter-to.vue';
   import FilterDuration from './filters/filter-duration.vue';
   import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
-  import FilterTotalDuration from "@/modules/filters/components/filters/filter-total-duration";
+  import FilterTotalDuration from './filters/filter-total-duration.vue';
+  import FilterScore from './filters/filter-score.vue';
 
   export default {
     name: 'the-history-filters',
     mixins: [tableActionsHandlerMixin],
     components: {
+      FilterScore,
       FilterTotalDuration,
       AbstractApiFilter,
       AbstractEnumFilter,

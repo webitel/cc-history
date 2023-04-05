@@ -214,7 +214,7 @@ export default {
       from: 'От:',
       to: 'До:',
     },
-    duration: {
+    filterSec: {
       from: 'От (сек):',
       to: 'До (сек):',
     },

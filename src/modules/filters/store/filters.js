@@ -96,6 +96,10 @@ const state = {
     value: { from: 0, to: null },
     defaultValue: [],
   }),
+  scoreRequired: new BaseFilterSchema({
+    value: { from: 0, to: 100 },
+    defaultValue: [],
+  }),
 };
 
 export default new QueryFiltersStoreModule({ state }).getModule();

@@ -68,9 +68,7 @@ export default {
       const from = 0;
       const queryValue = this.$route.query.talkFrom;
       // this.value.from = +queryValue || from;
-      console.log('restoreTotalDurationTo queryValue:', queryValue);
       const value = { from: +queryValue || from, to: this.value.to };
-      console.log('restoreTotalDurationTo value:', value);
       this.setValue({ filter: 'talkSec', value });
     },
 
@@ -78,22 +76,20 @@ export default {
       const to = null;
       const queryValue = this.$route.query.talkTo;
       // this.value.to = +queryValue || to;
-      console.log('restoreTotalDurationTo queryValue:', queryValue);
       const value = { from: this.value.from, to: +queryValue || to };
-      console.log('restoreTotalDurationFrom value:', value);
       this.setValue({ filter: 'talkSec', value });
     },
 
-    setFrom(value) {
-      this.setValueToQuery({
+    async setFrom(value) {
+      await this.setValueToQuery({
         filterQuery: 'talkFrom',
         value,
       });
       this.restoreTotalDurationFrom();
     },
 
-    setTo(value) {
-      this.setValueToQuery({
+    async setTo(value) {
+      await this.setValueToQuery({
         filterQuery: 'talkTo',
         value,
       });
