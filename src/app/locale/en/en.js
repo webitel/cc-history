@@ -210,20 +210,23 @@ export default {
     hasFile: 'Has recording',
     hasTranscription: 'Has transcription',
     rated: 'Rated',
+    duration: 'Duration (Sec)',
+    totalDuration: 'Duration (Sec)',
+    score: 'Score (%)',
   },
   components: {
     dtPicker: {
       from: 'From:',
       to: 'To:',
     },
-    filterSec: {
-      from: 'From (sec):',
-      to: 'To (sec):',
-    },
-    filterPerc: {
-      from: 'From (%):',
-      to: 'To (%):',
-    },
+    // filterSec: {
+    //   from: 'From (sec):',
+    //   to: 'To (sec):',
+    // },
+    // filterPerc: {
+    //   from: 'From (%):',
+    //   to: 'To (%):',
+    // },
     columnSelect: {
       header: 'Select columns to show:',
     },

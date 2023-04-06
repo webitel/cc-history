@@ -46,7 +46,7 @@ const fetchHistory = async ({
                               hasTranscription,
                               description,
                               grantee,
-                              talkSec,
+                              talk,
                               scoreRequired,
                             }) => {
   try {
@@ -91,8 +91,8 @@ const fetchHistory = async ({
       undefined,
       grantee,
       undefined,
-      talkSec?.from,
-      talkSec?.to,
+      talk?.from,
+      talk?.to,
       rated,
       ratedBy,
       scoreRequired?.from,

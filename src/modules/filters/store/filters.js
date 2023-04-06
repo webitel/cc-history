@@ -92,7 +92,7 @@ const state = {
     API: UserAPI.getLookup,
     locale: { label: 'fields.ratedBy' },
   }),
-  talkSec: new BaseFilterSchema({
+  talk: new BaseFilterSchema({
     value: { from: 0, to: null },
     defaultValue: [],
   }),

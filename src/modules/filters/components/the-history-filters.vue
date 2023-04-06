@@ -15,13 +15,14 @@
         :filter-query="filter.filterQuery"
         :namespace="namespace"
       ></component>
-      <filter-duration class="history-filters__filter"/>
-<!--      <filter-total-duration class="history-filters__filter"/>-->
       <filter-from-to
         class="history-filters__filter"
-        :filter-query="'duration'"
-        :label="$t('fields.duration')"/>
-      <filter-score class="history-filters__filter"/>
+        v-for="(filter, key) of filtersFromTo"
+        :key="key"
+        :filter-query="filter.filterQuery"
+        :label="$t(filter.label)"
+        :namespace="namespace"
+      />
     </form>
     <wt-table-actions
       :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
@@ -42,6 +43,7 @@
   import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
   import FilterTotalDuration from './filters/filter-total-duration.vue';
   import FilterScore from './filters/filter-score.vue';
+  import FilterFromTo from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-from-to.vue'
 
   export default {
     name: 'the-history-filters',
@@ -55,6 +57,7 @@
       FilterFrom,
       FilterTo,
       FilterDuration,
+      FilterFromTo,
     },
 
     data: () => ({
@@ -75,6 +78,11 @@
         { type: 'enum', filterQuery: 'hasTranscription' },
         { type: 'api', filterQuery: 'ratedBy' },
         { type: 'enum', filterQuery: 'rated' },
+      ],
+      filtersFromTo: [
+        { label: 'filters.duration', filterQuery: 'duration' },
+        { label: 'filters.totalDuration', filterQuery: 'talk' },
+        { label: 'filters.score', filterQuery: 'scoreRequired' },
       ],
       namespace: 'filters',
     }),
