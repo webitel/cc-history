@@ -214,10 +214,6 @@ export default {
       from: 'От:',
       to: 'До:',
     },
-    filterSec: {
-      from: 'От (сек):',
-      to: 'До (сек):',
-    },
     columnSelect: {
       header: 'Добавить колонки:',
     },

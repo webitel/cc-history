@@ -20,6 +20,7 @@
         v-for="(filter, key) of filtersFromTo"
         :key="key"
         :filter-query="filter.filterQuery"
+        :number-max="filter.numberMax"
         :label="$t(filter.label)"
         :namespace="namespace"
       />
@@ -39,24 +40,18 @@
   import FilterFields from '../../main/modules/registry/modules/filters/components/filter-table-fields/filter-table-fields.vue';
   import FilterFrom from './filters/filter-from.vue';
   import FilterTo from './filters/filter-to.vue';
-  import FilterDuration from './filters/filter-duration.vue';
   import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
-  import FilterTotalDuration from './filters/filter-total-duration.vue';
-  import FilterScore from './filters/filter-score.vue';
   import FilterFromTo from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-from-to.vue'
 
   export default {
     name: 'the-history-filters',
     mixins: [tableActionsHandlerMixin],
     components: {
-      FilterScore,
-      FilterTotalDuration,
       AbstractApiFilter,
       AbstractEnumFilter,
       FilterFields,
       FilterFrom,
       FilterTo,
-      FilterDuration,
       FilterFromTo,
     },
 
@@ -82,7 +77,7 @@
       filtersFromTo: [
         { label: 'filters.duration', filterQuery: 'duration' },
         { label: 'filters.totalDuration', filterQuery: 'talk' },
-        { label: 'filters.score', filterQuery: 'scoreRequired' },
+        { label: 'filters.score', filterQuery: 'scoreRequired', numberMax: 100 },
       ],
       namespace: 'filters',
     }),

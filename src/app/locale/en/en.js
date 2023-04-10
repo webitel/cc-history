@@ -219,14 +219,6 @@ export default {
       from: 'From:',
       to: 'To:',
     },
-    // filterSec: {
-    //   from: 'From (sec):',
-    //   to: 'To (sec):',
-    // },
-    // filterPerc: {
-    //   from: 'From (%):',
-    //   to: 'To (%):',
-    // },
     columnSelect: {
       header: 'Select columns to show:',
     },
