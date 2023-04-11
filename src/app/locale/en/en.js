@@ -211,7 +211,7 @@ export default {
     hasTranscription: 'Has transcription',
     rated: 'Rated',
     duration: 'Duration (Sec)',
-    totalDuration: 'Duration (Sec)',
+    totalDuration: 'Total duration (Sec)',
     score: 'Score (%)',
   },
   components: {

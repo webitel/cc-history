@@ -37,11 +37,11 @@
   import { mapActions } from 'vuex';
   import AbstractApiFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-api-filter.vue';
   import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-enum-filter.vue';
+  import FilterFromTo from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-from-to.vue';
   import FilterFields from '../../main/modules/registry/modules/filters/components/filter-table-fields/filter-table-fields.vue';
   import FilterFrom from './filters/filter-from.vue';
   import FilterTo from './filters/filter-to.vue';
   import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
-  import FilterFromTo from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-from-to.vue'
 
   export default {
     name: 'the-history-filters',

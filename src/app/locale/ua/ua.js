@@ -208,6 +208,9 @@ export default {
     hasFile: 'Запис розмови',
     hasTranscription: 'Транскрипція',
     rated: 'Оцінені',
+    duration: 'Тривалість (Sec)',
+    totalDuration: 'Тривалість розмови (Sec)',
+    score: 'Оцінка (%)',
   },
   components: {
     dtPicker: {
