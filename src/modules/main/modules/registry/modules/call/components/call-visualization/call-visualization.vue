@@ -13,6 +13,19 @@
       :call="call"
       :file="currentFile"
     ></call-wave>
+    <div v-else class="history-tabs-wrapper">
+      <wt-tabs
+        v-model="currentTab"
+        :tabs="tabs"
+      ></wt-tabs>
+      <component
+        :is="currentTab.value"
+        :call="call"
+        :file="currentFile"
+        :namespace="namespace"
+        @delete="deleteTranscript"
+      ></component>
+    </div>
     <call-transcript
       :call="call"
       :file="currentFile"
@@ -24,6 +37,7 @@
 
 <script>
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
+import CallEvaluation from '../../../stt/components/call-page/call-evaluation-section.vue';
 import CallWave from './wave/call-wave.vue';
 
 export default {
@@ -31,6 +45,7 @@ export default {
   components: {
     CallWave,
     CallTranscript,
+    CallEvaluation,
   },
   props: {
     call: {
@@ -43,12 +58,34 @@ export default {
   },
   data: () => ({
     currentFile: null,
+    currentTab: {
+      value: 'call-transcript',
+    },
   }),
   computed: {
     currentFIleOptions() {
       return this.call.files
         || (this.call.transcripts || this.call.filesJob)
         .map(({ id }) => ({ id, name: id }));
+    },
+    tabValues() {
+      return {
+        TRANSCRIPT: {
+          // text: this.$t('registry.call.callInfo'),
+          value: 'call-transcript',
+        },
+        EVALUATION: {
+          // text: this.$t('registry.call.callLegs'),
+          value: 'call-evaluation',
+        },
+      };
+    },
+    tabs() {
+      const tabs = [this.tabValues.TRANSCRIPT];
+      if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
+      if (this.mainCall.files?.length || this.mainCall.transcripts?.length
+        || this.mainCall.filesJob?.length) tabs.push(this.tabValues.VISUALIZATION);
+      return tabs;
     },
   },
   methods: {
