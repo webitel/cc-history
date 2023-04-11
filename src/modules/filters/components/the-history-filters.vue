@@ -76,8 +76,8 @@
       ],
       filtersFromTo: [
         { label: 'filters.duration', filterQuery: 'duration' },
-        { label: 'filters.totalDuration', filterQuery: 'talk' },
-        { label: 'filters.score', filterQuery: 'scoreRequired', numberMax: 100 },
+        { label: 'filters.talkSec', filterQuery: 'talkSec' },
+        { label: 'filters.score', filterQuery: 'score', numberMax: 100 },
       ],
       namespace: 'filters',
     }),
