@@ -23,14 +23,12 @@
         :call="call"
         :file="currentFile"
         :namespace="namespace"
-        @delete="deleteTranscript"
       ></component>
     </div>
     <call-transcript
       :call="call"
       :file="currentFile"
       :namespace="namespace"
-      @delete="deleteTranscript"
     ></call-transcript>
   </section>
 </template>

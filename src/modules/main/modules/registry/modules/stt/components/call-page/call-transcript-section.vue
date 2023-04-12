@@ -20,7 +20,7 @@
           @click="downloadTxt(filteredData)"
         ></stt-download-action>
         <stt-delete-action
-          @click="deleteTranscription"
+          @click="deleteTranscript"
         ></stt-delete-action>
       </template>
     </call-visualization-header>
@@ -53,6 +53,7 @@ import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
 import SttDeleteAction from '../utils/stt-delete-action.vue';
 import SttDownloadAction from '../utils/stt-download-action.vue';
 import CallNoTranscript from './call-no-transcript-section.vue';
+import CallTranscriptAPI from "@/modules/main/modules/registry/modules/stt/api/CallTranscriptAPI";
 
 export default {
   name: 'call-transcript',
@@ -97,6 +98,17 @@ export default {
       ].reduce((channels, channel) => (
         { ...channels, [channel]: { value: channel, show: true } }
       ), {});
+    },
+    async deleteTranscript() {
+      const fileId = this.transcript.id;
+      const index = this.call.transcripts.indexOf(this.transcript);
+      await CallTranscriptAPI.delete({ fileId });
+      /**
+       * we mock deletion of transcription with sending api request from call-transcript.vue
+       * to prevent refreshing of all call data and page reload
+       */
+      // eslint-disable-next-line vue/no-mutating-props
+      this.call.transcripts.splice(index, 1);
     },
   },
   watch: {
