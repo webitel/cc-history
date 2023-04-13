@@ -13,7 +13,7 @@
       :call="call"
       :file="currentFile"
     ></call-wave>
-    <div v-else class="history-tabs-wrapper">
+    <div class="history-tabs-wrapper">
       <wt-tabs
         v-model="currentTab"
         :tabs="tabs"
@@ -25,11 +25,11 @@
         :namespace="namespace"
       ></component>
     </div>
-    <call-transcript
-      :call="call"
-      :file="currentFile"
-      :namespace="namespace"
-    ></call-transcript>
+<!--    <call-transcript-->
+<!--      :call="call"-->
+<!--      :file="currentFile"-->
+<!--      :namespace="namespace"-->
+<!--    ></call-transcript>-->
   </section>
 </template>
 
@@ -69,21 +69,20 @@ export default {
     tabValues() {
       return {
         TRANSCRIPT: {
-          // text: this.$t('registry.call.callInfo'),
+          text: this.$t('registry.stt.transcription'),
           value: 'call-transcript',
         },
         EVALUATION: {
-          // text: this.$t('registry.call.callLegs'),
+          text: this.$t('registry.stt.evaluation'),
           value: 'call-evaluation',
         },
       };
     },
     tabs() {
-      const tabs = [this.tabValues.TRANSCRIPT];
-      if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
-      if (this.mainCall.files?.length || this.mainCall.transcripts?.length
-        || this.mainCall.filesJob?.length) tabs.push(this.tabValues.VISUALIZATION);
-      return tabs;
+      return [this.tabValues.TRANSCRIPT, this.tabValues.EVALUATION];
+      // if (this.call.hasChildren) tabs.push(this.tabValues.LEGS);
+      // if (this.call.files?.length || this.call.transcripts?.length
+      //   || this.call.filesJob?.length) tabs.push(this.tabValues.EVALUATION);
     },
   },
   methods: {

@@ -1,65 +1,22 @@
 <template>
   <section class="call-evaluation">
-    <call-visualization-header>
-      <template v-slot:title>
         evaluation
-      </template>
-      <template v-slot:main>
-        <wt-checkbox
-          v-for="(channel) of channels"
-          :key="channel.value"
-          v-model="channel.show"
-          :label="channel.value"
-        ></wt-checkbox>
-      </template>
-      <template
-        v-if="transcript"
-        v-slot:actions
-      >
-        <stt-download-action
-          @click="downloadTxt(filteredData)"
-        ></stt-download-action>
-        <stt-delete-action
-          @click="deleteTranscription"
-        ></stt-delete-action>
-      </template>
-    </call-visualization-header>
-    <article
-      v-if="transcript"
-      class="call-evaluation"
-    >
-      <wt-loader v-show="isLoading"></wt-loader>
-      <div class="call-evaluation__table-wrapper">
-        <wt-table
-          v-show="!isLoading"
-          :data="filteredData"
-          :headers="headers"
-          :selectable="false"
-        ></wt-table>
-      </div>
-    </article>
-    <call-no-transcript
-      v-else
-      :call="call"
-      :file="file"
-      :namespace="namespace"
-    ></call-no-transcript>
+    <audit-form
+      v-model:questions="auditQuestions"
+      mode="create"
+    ></audit-form>
   </section>
 </template>
 
 <script>
-import CallVisualizationHeader from '../../../call/components/call-visualization/call-visualization-header.vue';
-import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
-import SttDeleteAction from '../utils/stt-delete-action.vue';
-import SttDownloadAction from '../utils/stt-download-action.vue';
+
+import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-form.vue';
 
 export default {
   name: 'call-evaluation',
-  mixins: [transcriptPhrasesMixin],
+  // mixins: [transcriptPhrasesMixin],
   components: {
-    SttDeleteAction,
-    SttDownloadAction,
-    CallVisualizationHeader,
+    AuditForm,
   },
   props: {
     call: {
@@ -75,7 +32,30 @@ export default {
     },
   },
   data: () => ({
-    channels: [],
+    auditQuestions: [
+      {
+        required: true,
+        question: "My Anketa number 1",
+        type: "question_option",
+        options: [
+          {
+            name: "My first var!",
+            score: 5,
+          },
+          {
+            name: "My lorem ipsum var!",
+            score: 10,
+          }
+        ]
+      },
+      {
+        required: true,
+        question: "My anketa number two!",
+        type: "question_score",
+        min: 1,
+        max: 5,
+      }
+    ],
   }),
   computed: {
     filteredData() {

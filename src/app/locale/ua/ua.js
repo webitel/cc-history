@@ -54,6 +54,7 @@ export default {
       transcription: 'Транскрипція | Транскрипції',
       downloadTxt: 'Завантажити TXT',
       transcribe: 'Транскрибувати',
+      evaluation: 'Оцінка',
       jobState: {
         idle: 'Очікує',
       },

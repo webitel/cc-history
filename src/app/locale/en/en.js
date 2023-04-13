@@ -56,6 +56,7 @@ export default {
       transcription: 'Transcription | Transcriptions',
       downloadTxt: 'Download TXT',
       transcribe: 'Transcribe',
+      evaluation: 'Evaluation',
       jobState: {
         idle: 'Idle',
       },
