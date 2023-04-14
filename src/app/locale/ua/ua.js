@@ -145,7 +145,7 @@ export default {
     agent: 'Оператор',
     cause: 'Причина завершення',
     direction: 'Напрямок',
-    duration: 'Тривалість',
+    duration: 'Загальна тривалість',
     from: 'Номер від',
     to: 'Номер кому',
     dateTime: 'Дата и Час:',
@@ -208,15 +208,14 @@ export default {
     hasFile: 'Запис розмови',
     hasTranscription: 'Транскрипція',
     rated: 'Оцінені',
+    duration: 'Загальна тривалість (Sec)',
+    talkSec: 'Тривалість розмови (Sec)',
+    score: 'Оцінка (%)',
   },
   components: {
     dtPicker: {
       from: 'Від:',
       to: 'До:',
-    },
-    duration: {
-      from: 'Від (сек):',
-      to: 'До (сек):',
     },
     columnSelect: {
       header: 'Додати колонки:',

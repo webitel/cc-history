@@ -15,7 +15,15 @@
         :filter-query="filter.filterQuery"
         :namespace="namespace"
       ></component>
-      <filter-duration class="history-filters__filter"/>
+      <filter-from-to
+        class="history-filters__filter"
+        v-for="(filter, key) of filtersFromTo"
+        :key="key"
+        :filter-query="filter.filterQuery"
+        :number-max="filter.numberMax"
+        :label="$t(filter.label)"
+        :namespace="namespace"
+      />
     </form>
     <wt-table-actions
       :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
@@ -25,13 +33,14 @@
 </template>
 
 <script>
+
   import { mapActions } from 'vuex';
   import AbstractApiFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-api-filter.vue';
   import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-enum-filter.vue';
+  import FilterFromTo from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-from-to.vue';
   import FilterFields from '../../main/modules/registry/modules/filters/components/filter-table-fields/filter-table-fields.vue';
   import FilterFrom from './filters/filter-from.vue';
   import FilterTo from './filters/filter-to.vue';
-  import FilterDuration from './filters/filter-duration.vue';
   import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
 
   export default {
@@ -43,7 +52,7 @@
       FilterFields,
       FilterFrom,
       FilterTo,
-      FilterDuration,
+      FilterFromTo,
     },
 
     data: () => ({
@@ -64,6 +73,11 @@
         { type: 'enum', filterQuery: 'hasTranscription' },
         { type: 'api', filterQuery: 'ratedBy' },
         { type: 'enum', filterQuery: 'rated' },
+      ],
+      filtersFromTo: [
+        { label: 'filters.duration', filterQuery: 'duration' },
+        { label: 'filters.talkSec', filterQuery: 'talkSec' },
+        { label: 'filters.score', filterQuery: 'score', numberMax: 100 },
       ],
       namespace: 'filters',
     }),
