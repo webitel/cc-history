@@ -1,9 +1,6 @@
 <template>
   <section class="call-transcript">
-    <call-visualization-header>
-      <template v-slot:title>
-        {{ $tc('registry.stt.transcription', 1) }}
-      </template>
+    <call-visualization-header v-if="transcript">
       <template v-slot:main>
         <wt-checkbox
           v-for="(channel) of channels"
@@ -12,10 +9,7 @@
           :label="channel.value"
         ></wt-checkbox>
       </template>
-      <template
-        v-if="transcript"
-        v-slot:actions
-      >
+      <template v-slot:actions>
         <stt-download-action
           @click="downloadTxt(filteredData)"
         ></stt-download-action>
@@ -48,12 +42,12 @@
 </template>
 
 <script>
+import CallTranscriptAPI from "@/modules/main/modules/registry/modules/stt/api/CallTranscriptAPI";
 import CallVisualizationHeader from '../../../call/components/call-visualization/call-visualization-header.vue';
 import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
 import SttDeleteAction from '../utils/stt-delete-action.vue';
 import SttDownloadAction from '../utils/stt-download-action.vue';
 import CallNoTranscript from './call-no-transcript-section.vue';
-import CallTranscriptAPI from "@/modules/main/modules/registry/modules/stt/api/CallTranscriptAPI";
 
 export default {
   name: 'call-transcript',

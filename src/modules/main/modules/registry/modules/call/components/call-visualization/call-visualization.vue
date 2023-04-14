@@ -25,11 +25,6 @@
         :namespace="namespace"
       ></component>
     </div>
-<!--    <call-transcript-->
-<!--      :call="call"-->
-<!--      :file="currentFile"-->
-<!--      :namespace="namespace"-->
-<!--    ></call-transcript>-->
   </section>
 </template>
 

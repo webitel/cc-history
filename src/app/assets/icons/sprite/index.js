@@ -5,6 +5,7 @@ import './hs-download-record.svg';
 import './hs-forks.svg';
 import './hs-leg-a-marker.svg';
 import './hs-note.svg';
+import './hs-rate.svg';
 import './hs-transfer-from.svg';
 import './hs-transfer-merge.svg';
 import './hs-transfer-to.svg';

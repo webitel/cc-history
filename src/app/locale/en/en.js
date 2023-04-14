@@ -49,6 +49,7 @@ export default {
       },
       stt: {
         noTranscript: 'There is no transcription for this file',
+        noEvaluation: 'There isn`t evaluation yet',
         transcribingInProgress: 'Transcription is in progress now. Please, refresh page in a minute.',
       },
     },
@@ -57,6 +58,7 @@ export default {
       downloadTxt: 'Download TXT',
       transcribe: 'Transcribe',
       evaluation: 'Evaluation',
+      rateTheCall: 'Rate the call',
       jobState: {
         idle: 'Idle',
       },
