@@ -5,7 +5,7 @@
       <p class="call-no-evaluation__text">
         {{ $t('registry.call.stt.noEvaluation') }}
       </p>
-      <wt-button @click="transcribe">
+      <wt-button @click="$emit('rateCall')">
         {{ $t('registry.stt.rateTheCall') }}
       </wt-button>
     </div>

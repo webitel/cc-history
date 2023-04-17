@@ -13,6 +13,7 @@ export default {
     close: 'Закрити',
     logout: 'Вийти',
     search: 'Пошук',
+    start: 'Почати',
     description: 'Опис',
     settings: 'Налаштування',
     history: 'Історія',

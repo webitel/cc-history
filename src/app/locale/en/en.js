@@ -13,6 +13,7 @@ export default {
     close: 'Close',
     logout: 'Logout',
     search: 'Search',
+    start: 'Start',
     description: 'Description',
     settings: 'Settings',
     history: 'History',
