@@ -53,12 +53,16 @@ export default {
         noEvaluation: 'There isn`t evaluation yet',
         transcribingInProgress: 'Transcription is in progress now. Please, refresh page in a minute.',
       },
+      evaluation: {
+        evaluation: 'Evaluation',
+        scorecard: 'Scorecard',
+        selectTheScorecard: 'Select the scorecard',
+      }
     },
     stt: {
       transcription: 'Transcription | Transcriptions',
       downloadTxt: 'Download TXT',
       transcribe: 'Transcribe',
-      evaluation: 'Evaluation',
       rateTheCall: 'Rate the call',
       jobState: {
         idle: 'Idle',

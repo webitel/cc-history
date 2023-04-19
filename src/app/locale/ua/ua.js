@@ -50,12 +50,16 @@ export default {
         noTranscript: 'Транскрипція файлу відсутня',
         transcribingInProgress: 'Виконується транскрипція файлу. Будь ласка, оновіть сторінку через хвилину.',
       },
+      evaluation: {
+        evaluation: 'Оцінювання',
+        scorecard: 'Анкета',
+        selectTheScorecard: 'Обрати анкету',
+      }
     },
     stt: {
       transcription: 'Транскрипція | Транскрипції',
       downloadTxt: 'Завантажити TXT',
       transcribe: 'Транскрибувати',
-      evaluation: 'Оцінка',
       jobState: {
         idle: 'Очікує',
       },

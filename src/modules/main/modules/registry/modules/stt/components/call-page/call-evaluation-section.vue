@@ -9,7 +9,7 @@
     <call-no-evaluation v-else @rateCall="isScorecardSelectOpened = true" />
     <select-scored-popup
       v-if="isScorecardSelectOpened"
-      :value="['some', 'some', 'some', 'some']"
+      :value="scorecards"
       @close="isScorecardSelectOpened = false"
     ></select-scored-popup>
   </section>
@@ -20,6 +20,7 @@
 import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-form.vue';
 import SelectScoredPopup from './select-scorecard-popup.vue';
 import CallNoEvaluation from './call-no-evaluation-section.vue';
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: 'call-evaluation',
@@ -67,21 +68,24 @@ export default {
     isScorecardSelectOpened: false,
   }),
   computed: {
+    ...mapState('registry', {
+      scorecards: (state) => state.scorecards,
+    }),
     evaluation() {
       // return (this.call.transcripts || [])
       //   .find(({ fileId, id }) => this.file.id === fileId || this.file.id === id);
     },
   },
+  created() {
+    console.log('state in eval section:', this.$store.state.registry);
+  },
+  mounted() {
+    this.loadScorecards();
+  },
   methods: {
-    // initChannels() {
-    //   this.channels = [
-    //     ...new Set(
-    //       this.data.map(({ channel }) => channel),
-    //     ),
-    //   ].reduce((channels, channel) => (
-    //     { ...channels, [channel]: { value: channel, show: true } }
-    //   ), {});
-    // },
+    ...mapActions('registry', {
+      loadScorecards: 'LOAD_SCORECARDS',
+    }),
   },
   watch: {
     data() {

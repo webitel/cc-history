@@ -5,19 +5,19 @@
     @close="$emit('close')"
   >
     <template v-slot:header>
-      <h1 class="column-select__heading">{{$t('components.columnSelect.header')}}</h1>
+      <h1 class="column-select__heading">{{$t('registry.call.evaluation.selectTheScorecard')}}</h1>
     </template>
     <template v-slot:main>
       <wt-select
-        v-model="score"
-        :label="$t('dashboards.dashboardConfigForm.visualization')"
+        v-model="scorecard"
+        :label="$t('registry.call.evaluation.scorecard')"
         :options="some"
         track-by="value"
         :clearable="false"></wt-select>
     </template>
     <template v-slot:actions>
       <wt-button
-        @click="setShownColumns"
+        @click="selectScorecard"
       >{{ $t('reusable.start') }}
       </wt-button>
       <wt-button
@@ -41,16 +41,19 @@ export default {
     },
   },
 
-  model: {
-    prop: 'value',
-    event: 'change',
-  },
+  // model: {
+  //   prop: 'value',
+  //   event: 'change',
+  // },
 
   data: () => ({
     draft: [], // headers draft
     some: ['some', 'some', 'some', 'some'],
-    score: null,
+    scorecard: null,
   }),
+  created() {
+    console.log('scorecards in popup:', this.value);
+  },
 
   // watch: {
   //   value: {
@@ -62,12 +65,8 @@ export default {
   // },
 
   methods: {
-    setShownColumns() {
-      this.$emit('change', this.draft);
-    },
-
-    fillHeadersDraft() {
-      this.draft = deepCopy(this.value);
+    selectScorecard() {
+      this.$emit('change', this.scorecard);
     },
   },
 };
