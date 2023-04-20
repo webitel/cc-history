@@ -1,7 +1,8 @@
 <template>
   <wt-popup
     class="column-select"
-    width="500"
+    width="480"
+    overflow
     @close="$emit('close')"
   >
     <template v-slot:header>
@@ -11,9 +12,9 @@
       <wt-select
         v-model="scorecard"
         :label="$t('registry.call.evaluation.scorecard')"
-        :options="some"
-        track-by="value"
-        :clearable="false"></wt-select>
+        :search-method="loadScorecards"
+        :clearable="false"
+      ></wt-select>
     </template>
     <template v-slot:actions>
       <wt-button
@@ -30,10 +31,10 @@
 </template>
 
 <script>
-import deepCopy from 'deep-copy';
+import AuditAPIRepository from '../../api/CallEvaluationAPI';
 
 export default {
-  name: 'select-scored-popup',
+  name: 'select-scorecard-popup',
   props: {
     value: {
       type: Array,
@@ -41,19 +42,9 @@ export default {
     },
   },
 
-  // model: {
-  //   prop: 'value',
-  //   event: 'change',
-  // },
-
   data: () => ({
-    draft: [], // headers draft
-    some: ['some', 'some', 'some', 'some'],
     scorecard: null,
   }),
-  created() {
-    console.log('scorecards in popup:', this.value);
-  },
 
   // watch: {
   //   value: {
@@ -68,6 +59,11 @@ export default {
     selectScorecard() {
       this.$emit('change', this.scorecard);
     },
+    loadScorecards: (params) => AuditAPIRepository.getLookup({
+                                                               ...params,
+                                                               fields: ['id', 'name', 'questions'],
+                                                               enabled: true,
+                                                             }),
   },
 };
 </script>

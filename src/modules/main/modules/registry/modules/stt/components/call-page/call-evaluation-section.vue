@@ -1,32 +1,31 @@
 <template>
   <section class="call-evaluation">
     <audit-form
-      v-if="auditResult.length"
-      :questions="auditQuestions"
+      v-if="scorecard.questions"
+      :questions="scorecard.questions"
       v-model:result="auditResult"
       mode="fill"
     ></audit-form>
     <call-no-evaluation v-else @rateCall="isScorecardSelectOpened = true" />
-    <select-scored-popup
-      v-if="isScorecardSelectOpened"
-      :value="scorecards"
+    <select-scorecard-popup
+      v-show="isScorecardSelectOpened"
+      @change="setScorecard"
       @close="isScorecardSelectOpened = false"
-    ></select-scored-popup>
+    ></select-scorecard-popup>
   </section>
 </template>
 
 <script>
 
 import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-form.vue';
-import SelectScoredPopup from './select-scorecard-popup.vue';
+import SelectScorecardPopup from './select-scorecard-popup.vue';
 import CallNoEvaluation from './call-no-evaluation-section.vue';
-import {mapActions, mapState} from "vuex";
 
 export default {
   name: 'call-evaluation',
   // mixins: [transcriptPhrasesMixin],
   components: {
-    SelectScoredPopup,
+    SelectScorecardPopup,
     CallNoEvaluation,
     AuditForm,
   },
@@ -40,56 +39,13 @@ export default {
     },
   },
   data: () => ({
-    auditQuestions: [
-      // {
-      //   required: true,
-      //   question: 'My Anketa number 1',
-      //   type: 'question_option',
-      //   options: [
-      //     {
-      //       name: 'My first var!',
-      //       score: 5,
-      //     },
-      //     {
-      //       name: 'My lorem ipsum var!',
-      //       score: 10,
-      //     },
-      //   ],
-      // },
-      // {
-      //   required: true,
-      //   question: 'My anketa number two!',
-      //   type: 'question_score',
-      //   min: 1,
-      //   max: 5,
-      // },
-    ],
+    scorecard: {},
     auditResult: [],
     isScorecardSelectOpened: false,
   }),
-  computed: {
-    ...mapState('registry', {
-      scorecards: (state) => state.scorecards,
-    }),
-    evaluation() {
-      // return (this.call.transcripts || [])
-      //   .find(({ fileId, id }) => this.file.id === fileId || this.file.id === id);
-    },
-  },
-  created() {
-    console.log('state in eval section:', this.$store.state.registry);
-  },
-  mounted() {
-    this.loadScorecards();
-  },
   methods: {
-    ...mapActions('registry', {
-      loadScorecards: 'LOAD_SCORECARDS',
-    }),
-  },
-  watch: {
-    data() {
-      this.initChannels();
+    setScorecard(sc) {
+      this.scorecard = sc;
     },
   },
 };

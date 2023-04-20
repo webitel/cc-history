@@ -34,7 +34,6 @@ const fetchAudit = async ({
       undefined,
       active,
       question,
-
     );
     return formatResponse(response);
   } catch (err) {

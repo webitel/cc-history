@@ -4,12 +4,10 @@ import historyHeaders from './headers/headers';
 import call from '../modules/call/store/call';
 
 const historyAPI = APIRepository.history;
-const auditAPI = APIRepository.audit;
 const REQUIRED_DATA_FIELDS = ['files', 'id', 'files_job', 'transcripts'];
 
 const state = {
   dataList: [],
-  scorecards: [],
   headers: historyHeaders,
   isLoading: false,
   page: 1,
@@ -37,8 +35,6 @@ const getters = {
 const actions = {
   LOAD_DATA: (context, payload) => context.dispatch('LOAD_DATA_LIST', payload),
 
-  LOAD_SCORECARDS: (context, payload) => context.dispatch('LOAD_SCORECARDS_LIST', payload),
-
   LOAD_DATA_LIST: async (context) => {
     context.commit('SET_LOADING', true);
     const query = context.rootGetters['filters/GET_FILTERS'];
@@ -61,26 +57,6 @@ const actions = {
       throw err;
     } finally {
       context.commit('SET_LOADING', false);
-    }
-  },
-
-  LOAD_SCORECARDS_LIST: async (context) => {
-    // const query = context.rootGetters['filters/GET_FILTERS'];
-    // const params = {
-    //   // ...query,
-    //   // sort: context.getters.DATA_SORT,
-    //   // fields: context.getters.DATA_FIELDS,
-    //   page: context.state.page,
-    //   size: context.state.size,
-    //   skipParent: true,
-    // };
-    try {
-      const { items } = await auditAPI.getAudit({});
-      console.log('store auditAPI items:', items);
-      context.commit('SET_SCORECARDS', items);
-    } catch (err) {
-      context.commit('SET_SCORECARDS', []);
-      throw err;
     }
   },
 

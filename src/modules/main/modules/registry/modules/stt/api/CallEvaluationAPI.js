@@ -5,9 +5,31 @@ import configuration from '../../../../../../../app/api/utils/openAPIConfig';
 
 const auditService = new AuditFormServiceApiFactory(configuration, '', instance);
 
-const listGetter = new SdkListGetterApiConsumer(auditService.searchAuditForm);
+const _getScorecardsLookup = (getList) => function ({
+                                                page,
+                                                size,
+                                                search,
+                                                sort,
+                                                fields,
+                                                enabled,
+                                              }) {
+  const params = [
+    page,
+    size,
+    search,
+    sort,
+    fields,
+    undefined,
+    undefined,
+    enabled,
+  ];
+  return getList(params);
+};
 
-const getAuditLookup = (params) => listGetter.getLookup(params);
+const listGetter = new SdkListGetterApiConsumer(auditService.searchAuditForm)
+  .setGetListMethod(_getScorecardsLookup);
+
+const getAuditLookup = (params) => listGetter.getList(params);
 
 const AuditAPIRepository = {
   getLookup: getAuditLookup,
