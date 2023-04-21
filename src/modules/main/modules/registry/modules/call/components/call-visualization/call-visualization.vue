@@ -75,9 +75,6 @@ export default {
     },
     tabs() {
       return [this.tabValues.TRANSCRIPT, this.tabValues.EVALUATION];
-      // if (this.call.hasChildren) tabs.push(this.tabValues.LEGS);
-      // if (this.call.files?.length || this.call.transcripts?.length
-      //   || this.call.filesJob?.length) tabs.push(this.tabValues.EVALUATION);
     },
   },
   methods: {

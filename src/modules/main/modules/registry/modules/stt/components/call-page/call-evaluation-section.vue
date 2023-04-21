@@ -1,14 +1,31 @@
 <template>
   <section class="call-evaluation">
-    <audit-form
-      v-if="scorecard.questions"
-      :questions="scorecard.questions"
-      v-model:result="auditResult"
-      mode="fill"
-    ></audit-form>
+    <div v-if="scorecard.questions" class="call-evaluation__audit-form-wrap">
+      <audit-form
+        v-model:result="auditResult"
+        mode="fill"
+        :questions="scorecard.questions"
+      ></audit-form>
+      <wt-textarea
+        v-model="comment"
+        class="call-evaluation__audit-form__comment"
+        :label="$t('registry.call.evaluation.comment')"
+      ></wt-textarea>
+      <div class="call-evaluation__audit-form__actions">
+        <wt-button @click="saveEvaluation">
+          {{ $t('reusable.save') }}
+        </wt-button>
+        <wt-button
+          color="secondary"
+          @click="closeEvaluationForm"
+        >{{ $t('reusable.cancel') }}
+        </wt-button>
+      </div>
+    </div>
     <call-no-evaluation v-else @rateCall="isScorecardSelectOpened = true" />
+    {{ auditResult }}
     <select-scorecard-popup
-      v-show="isScorecardSelectOpened"
+      v-show="isScorecardSelectOpened && !scorecard.questions"
       @change="setScorecard"
       @close="isScorecardSelectOpened = false"
     ></select-scorecard-popup>
@@ -23,42 +40,39 @@ import CallNoEvaluation from './call-no-evaluation-section.vue';
 
 export default {
   name: 'call-evaluation',
-  // mixins: [transcriptPhrasesMixin],
   components: {
     SelectScorecardPopup,
     CallNoEvaluation,
     AuditForm,
   },
   props: {
-    call: {
-      type: Object,
-      required: true,
-    },
+    // call: {
+    //   type: Object,
+    //   required: true,
+    // },
     namespace: {
       type: String,
     },
   },
   data: () => ({
+    isScorecardSelectOpened: false,
     scorecard: {},
     auditResult: [],
-    isScorecardSelectOpened: false,
+    comment: '',
   }),
   methods: {
-    setScorecard(sc) {
-      this.scorecard = sc;
+    setScorecard(value) {
+      this.scorecard = value;
+    },
+    saveEvaluation() {
+      //компонувати всю інфу в потрібний для беку формат + інціювати відкриття сторінки результату
+    },
+    closeEvaluationForm() {
+      this.scorecard = {};
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.call-visualization-header {
-  margin-bottom: var(--spacing-sm);
-}
-
-.call-evaluation__table-wrapper {
-  @extend %wt-scrollbar;
-  overflow: auto;
-  max-height: 60vh;
-}
 </style>

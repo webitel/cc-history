@@ -46,18 +46,10 @@ export default {
     scorecard: null,
   }),
 
-  // watch: {
-  //   value: {
-  //     handler() {
-  //       this.fillHeadersDraft();
-  //     },
-  //     immediate: true,
-  //   },
-  // },
-
   methods: {
     selectScorecard() {
       this.$emit('change', this.scorecard);
+      this.$emit('close');
     },
     loadScorecards: (params) => AuditAPIRepository.getLookup({
                                                                ...params,

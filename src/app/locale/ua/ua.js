@@ -54,6 +54,7 @@ export default {
         evaluation: 'Оцінювання',
         scorecard: 'Анкета',
         selectTheScorecard: 'Обрати анкету',
+        comment: 'Коментар',
       }
     },
     stt: {

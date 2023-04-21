@@ -78,9 +78,6 @@ const mutations = {
   SET_DATA_LIST: (state, dataList) => {
     state.dataList = dataList;
   },
-  SET_SCORECARDS: (state, scorecards) => {
-    state.scorecards = scorecards;
-  },
   SET_HEADERS: (state, headers) => {
     state.headers = headers;
   },

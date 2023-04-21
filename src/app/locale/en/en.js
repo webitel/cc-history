@@ -57,6 +57,7 @@ export default {
         evaluation: 'Evaluation',
         scorecard: 'Scorecard',
         selectTheScorecard: 'Select the scorecard',
+        comment: 'Comment',
       }
     },
     stt: {
