@@ -1,5 +1,5 @@
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
-
+import evaluation from '../modules/evaluation/store/evaluation';
 import APIRepository from '../../../../../../../app/api/APIRepository';
 
 const historyAPI = APIRepository.history;
@@ -173,6 +173,7 @@ const mutations = {
 };
 
 const call = new BaseStoreModule()
+  .setChildModules({ evaluation })
   .getModule({
  state, getters, actions, mutations,
 });

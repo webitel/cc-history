@@ -22,7 +22,7 @@
         :is="currentTab.value"
         :call="call"
         :file="currentFile"
-        :namespace="namespace"
+        :namespace="currentTab.namespace"
       ></component>
     </div>
   </section>
@@ -30,7 +30,7 @@
 
 <script>
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
-import CallEvaluation from '../../../stt/components/call-page/call-evaluation-section.vue';
+import CallEvaluation from '../../modules/evaluation/components/call-evaluation-section.vue';
 import CallWave from './wave/call-wave.vue';
 
 export default {
@@ -66,10 +66,12 @@ export default {
         TRANSCRIPT: {
           text: this.$t('registry.stt.transcription'),
           value: 'call-transcript',
+          namespace: this.namespace,
         },
         EVALUATION: {
-          text: this.$t('registry.stt.evaluation'),
+          text: this.$t('registry.call.evaluation.evaluation'),
           value: 'call-evaluation',
+          namespace: `${this.namespace}/evaluation`,
         },
       };
     },

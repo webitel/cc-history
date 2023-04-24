@@ -15,7 +15,7 @@
 <script>
 
 import { mapActions } from 'vuex';
-import CallTranscriptAPI from '../../api/CallTranscriptAPI';
+import CallEvaluationAPI from '../api/CallEvaluationAPI';
 
 export default {
   name: 'call-no-evaluation',
@@ -35,18 +35,18 @@ export default {
   //     return (this.call.filesJob || []).find(({ fileId }) => this.file.id === fileId);
   //   },
   // },
-  methods: {
-    ...mapActions({
-                    refreshCall(dispatch, payload) {
-                      return dispatch(`${this.namespace}/LOAD_MAIN_CALL`, payload);
-                    },
-                  }),
-    async transcribe() {
-      const callId = this.call.id;
-      await CallTranscriptAPI.create({ callId });
-      this.refreshCall();
-    },
-  },
+  // methods: {
+  //   ...mapActions({
+  //                   refreshCall(dispatch, payload) {
+  //                     return dispatch(`${this.namespace}/LOAD_MAIN_CALL`, payload);
+  //                   },
+  //                 }),
+  //   async transcribe() {
+  //     const callId = this.call.id;
+  //     await CallTranscriptAPI.create({ callId });
+  //     this.refreshCall();
+  //   },
+  // },
 };
 </script>
 

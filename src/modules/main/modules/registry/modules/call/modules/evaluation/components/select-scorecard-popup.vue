@@ -6,7 +6,9 @@
     @close="$emit('close')"
   >
     <template v-slot:header>
-      <h1 class="column-select__heading">{{$t('registry.call.evaluation.selectTheScorecard')}}</h1>
+      <h1 class="column-select__heading">
+        {{$t('registry.call.evaluation.selectTheScorecard')}}
+      </h1>
     </template>
     <template v-slot:main>
       <wt-select
@@ -14,12 +16,11 @@
         :label="$t('registry.call.evaluation.scorecard')"
         :search-method="loadScorecards"
         :clearable="false"
-      ></wt-select>
+      />
     </template>
     <template v-slot:actions>
-      <wt-button
-        @click="selectScorecard"
-      >{{ $t('reusable.start') }}
+      <wt-button :disabled="!scorecard" @click="selectScorecard">
+        {{ $t('reusable.start') }}
       </wt-button>
       <wt-button
         color="secondary"
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-import AuditAPIRepository from '../../api/CallEvaluationAPI';
+import CallEvaluationAPI from '../api/CallEvaluationAPI';
 
 export default {
   name: 'select-scorecard-popup',
@@ -51,10 +52,11 @@ export default {
       this.$emit('change', this.scorecard);
       this.$emit('close');
     },
-    loadScorecards: (params) => AuditAPIRepository.getLookup({
+    loadScorecards: (params) => CallEvaluationAPI.getLookup({
                                                                ...params,
                                                                fields: ['id', 'name', 'questions'],
                                                                enabled: true,
+                                                               active: true,
                                                              }),
   },
 };

@@ -21,10 +21,10 @@ export default {
     // AuditForm,
   },
   props: {
-    // call: {
-    //   type: Object,
-    //   required: true,
-    // },
+    value: {
+      type: Object,
+      required: true,
+    },
     // namespace: {
     //   type: String,
     // },
