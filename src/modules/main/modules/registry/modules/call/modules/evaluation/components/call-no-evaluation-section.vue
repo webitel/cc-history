@@ -34,6 +34,7 @@ export default {
 .call-no-evaluation {
   margin-top: var(--spacing-sm);
   border: 1px dashed var(--secondary-color);
+  border-radius: var(--border-radius);
 }
 
 .call-no-evaluation__wrapper {

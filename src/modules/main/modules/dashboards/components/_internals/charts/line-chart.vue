@@ -1,11 +1,17 @@
-<script>
-import { Line, mixins } from 'vue-chartjs';
+<template>
+  <Line
+    :chart-data="chartData"
+  ></Line>
+</template>
 
-const { reactiveProp } = mixins;
+<script>
+import 'chart.js/auto';
+import { Line } from 'vue-chartjs';
+
 export default {
-  extends: Line,
-  mixins: [reactiveProp],
+  components: { Line },
   props: {
+    chartData: {},
     data: {
       type: Object,
       default: null,
@@ -22,9 +28,6 @@ export default {
       type: Number,
       default: null,
     },
-  },
-  mounted() {
-    this.renderChart(this.chartData, this.options);
   },
 };
 </script>

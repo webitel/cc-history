@@ -156,7 +156,7 @@ export default {
     agent: 'Agent',
     cause: 'Hangup cause',
     direction: 'Direction',
-    duration: 'Duration',
+    duration: 'Total duration',
     from: 'From',
     to: 'To',
     dateTime: 'Date & Time:',
@@ -183,7 +183,7 @@ export default {
     holdSec: 'Hold',
     waitSec: 'Wait',
     billSec: 'Billing',
-    talkSec: 'Talk',
+    talkSec: 'Talk duration',
     reportingSec: 'Reporting',
     queueWaitSec: 'Queue wait',
     queueDurationSec: 'Queue duration',
@@ -219,15 +219,14 @@ export default {
     hasFile: 'Has recording',
     hasTranscription: 'Has transcription',
     rated: 'Rated',
+    duration: 'Total duration (Sec)',
+    talkSec: 'Talk duration (Sec)',
+    score: 'Score (%)',
   },
   components: {
     dtPicker: {
       from: 'From:',
       to: 'To:',
-    },
-    duration: {
-      from: 'From (sec):',
-      to: 'To (sec):',
     },
     columnSelect: {
       header: 'Select columns to show:',

@@ -1,11 +1,17 @@
-<script>
-import { Doughnut, mixins } from 'vue-chartjs';
+<template>
+  <Doughnut
+    :chart-data="chartData"
+  ></Doughnut>
+</template>
 
-const { reactiveProp } = mixins;
+<script>
+import 'chart.js/auto';
+import { Doughnut } from 'vue-chartjs';
+
 export default {
-  extends: Doughnut,
-  mixins: [reactiveProp],
+  components: { Doughnut },
   props: {
+    chartData: {},
     options: {
       type: Object,
       default: null,
@@ -18,9 +24,6 @@ export default {
       type: Number,
       default: null,
     },
-  },
-  mounted() {
-    this.renderChart(this.chartData, this.options);
   },
 };
 </script>

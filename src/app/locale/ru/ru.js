@@ -152,7 +152,7 @@ export default {
     agent: 'Оператор',
     cause: 'Причина окончания',
     direction: 'Направление',
-    duration: 'Длительность',
+    duration: 'Общая длительность',
     from: 'Номер от',
     to: 'Номер кому',
     dateTime: 'Дата и Время:',
@@ -215,15 +215,14 @@ export default {
     hasFile: 'Запись разговора',
     hasTranscription: 'Транскрипция',
     rated: 'Оценены',
+    duration: 'Общая длительность (Sec)',
+    talkSec: 'Длительность разговора (Sec)',
+    score: 'Оценка (%)',
   },
   components: {
     dtPicker: {
       from: 'От:',
       to: 'До:',
-    },
-    duration: {
-      from: 'От (сек):',
-      to: 'До (сек):',
     },
     columnSelect: {
       header: 'Добавить колонки:',

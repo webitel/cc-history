@@ -36,12 +36,6 @@ import CallEvaluationAPI from '../api/CallEvaluationAPI';
 
 export default {
   name: 'select-scorecard-popup',
-  props: {
-    value: {
-      type: Array,
-      required: true,
-    },
-  },
 
   data: () => ({
     scorecard: null,
