@@ -1,17 +1,18 @@
 <template>
   <section class="call-evaluation">
-    <div v-if="scorecard.questions && !result" class="call-evaluation__audit-form-wrap">
+    <div v-if="scorecard.questions && !result.id" class="call-evaluation__audit-form-wrap">
       <audit-form
         v-model:result="auditResult"
+        class="call-evaluation__audit-form"
         mode="fill"
         :questions="scorecard.questions"
       />
       <wt-textarea
         v-model="comment"
-        class="call-evaluation__audit-form__comment"
+        class="call-evaluation__audit-form--comment"
         :label="$t('registry.call.evaluation.comment')"
       />
-      <div class="call-evaluation__audit-form__actions">
+      <div class="call-evaluation__audit-form--actions">
         <wt-button @click="saveEvaluation">
           {{ $t('reusable.save') }}
         </wt-button>
@@ -29,7 +30,7 @@
       @close="handleScorecardsPopup"
     />
     <wt-loader v-show="isLoading"/>
-    <call-evaluation-result v-show="result" :value="result"/>
+    <call-evaluation-result v-show="result.id" :value="result"/>
   </section>
 </template>
 
@@ -85,7 +86,6 @@ export default {
       this.scorecard = value;
     },
     saveEvaluation() {
-      console.log('call:', this.call, 'answers:', this.auditResult, 'form:', this.scorecard);
       const result = {
         answers: [...this.auditResult],
         call_id: this.call.id,
@@ -95,7 +95,6 @@ export default {
           name: this.scorecard.name,
         },
       };
-      console.log('result:', result);
       return this.sendEvaluation(result);
     },
     closeEvaluationForm() {
@@ -115,9 +114,13 @@ export default {
     flex-direction: column;
     margin: var(--spacing-sm) 0;
     gap: var(--spacing-sm);
+  }
 
-    &__actions {
-
+  &__audit-form {
+    &--actions {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-sm);
     }
   }
 }
