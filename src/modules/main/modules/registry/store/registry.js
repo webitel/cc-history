@@ -48,7 +48,6 @@ const actions = {
     };
     try {
       const { items, next } = await historyAPI.getHistory(params);
-      console.log('store historyAPI items:', items);
       context.commit('SET_DATA_LIST', items);
       context.commit('SET_NEXT_PAGE', next);
     } catch (err) {

@@ -12,7 +12,6 @@ const actions = {
     context.commit('SET_LOADING', true);
     try {
     const result = await CallEvaluationAPI.sendAuditResult(evaluation);
-    console.log('result after request:', result);
     context.commit('SET_RESULT', result);
     } finally {
       context.commit('SET_LOADING', false);
