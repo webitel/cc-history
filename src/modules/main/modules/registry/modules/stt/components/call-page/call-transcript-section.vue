@@ -14,7 +14,7 @@
           @click="downloadTxt(filteredData)"
         ></stt-download-action>
         <stt-delete-action
-          @click="deleteTranscription"
+          @click="deleteTranscript"
         ></stt-delete-action>
       </template>
     </call-visualization-header>
