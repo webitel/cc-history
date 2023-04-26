@@ -41,9 +41,14 @@ const sendAuditResult = (params) => {
   return auditService.createAuditFormRate(params);
 };
 
+const getResult = ({ formId }) => (auditService.searchAuditRate({
+  formId,
+}));
+
 const AuditAPIRepository = {
   getLookup: getAuditLookup,
   sendAuditResult,
+  getResult,
 };
 
 export default AuditAPIRepository;
