@@ -1,36 +1,36 @@
 <template>
   <section class="call-evaluation">
-<!--    <div v-if="scorecard.questions && !result.id" class="call-evaluation__audit-form-wrap">-->
-<!--      <audit-form-->
-<!--        v-model:result="auditResult"-->
-<!--        class="call-evaluation__audit-form"-->
-<!--        mode="fill"-->
-<!--        :questions="scorecard.questions"-->
-<!--      />-->
-<!--      <wt-textarea-->
-<!--        v-model="comment"-->
-<!--        class="call-evaluation__audit-form&#45;&#45;comment"-->
-<!--        :label="$t('registry.call.evaluation.comment')"-->
-<!--      />-->
-<!--      <div class="call-evaluation__audit-form&#45;&#45;actions">-->
-<!--        <wt-button @click="saveEvaluation">-->
-<!--          {{ $t('reusable.save') }}-->
-<!--        </wt-button>-->
-<!--        <wt-button-->
-<!--          color="secondary"-->
-<!--          @click="closeEvaluationForm"-->
-<!--        >{{ $t('reusable.cancel') }}-->
-<!--        </wt-button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <call-no-evaluation v-else @rateCall="handleScorecardsPopup"/>-->
-<!--    <select-scorecard-popup-->
-<!--      v-show="isScorecardSelectOpened && !scorecard.questions"-->
-<!--      @change="setScorecard"-->
-<!--      @close="handleScorecardsPopup"-->
-<!--    />-->
-<!--    <wt-loader v-show="isLoading"/>-->
-    <call-evaluation-result :value="result"/>
+    <div v-if="scorecard.questions && !result.id" class="call-evaluation__audit-form-wrap">
+      <audit-form
+        v-model:result="auditResult"
+        class="call-evaluation__audit-form"
+        mode="fill"
+        :questions="scorecard.questions"
+      />
+      <wt-textarea
+        v-model="comment"
+        class="call-evaluation__audit-form--comment"
+        :label="$t('registry.call.evaluation.comment')"
+      />
+      <div class="call-evaluation__audit-form--actions">
+        <wt-button @click="saveEvaluation">
+          {{ $t('reusable.save') }}
+        </wt-button>
+        <wt-button
+          color="secondary"
+          @click="closeEvaluationForm"
+        >{{ $t('reusable.cancel') }}
+        </wt-button>
+      </div>
+    </div>
+    <call-no-evaluation v-else @rateCall="handleScorecardsPopup"/>
+    <select-scorecard-popup
+      v-show="isScorecardSelectOpened && !scorecard.questions"
+      @change="setScorecard"
+      @close="handleScorecardsPopup"
+    />
+    <wt-loader v-show="isLoading"/>
+<!--    <call-evaluation-result :value="result"/>-->
   </section>
 </template>
 
@@ -99,6 +99,7 @@ export default {
           name: this.scorecard.name,
         },
       };
+      console.log('saveEvaluation result:', result);
       return this.sendEvaluation(result);
     },
     closeEvaluationForm() {
