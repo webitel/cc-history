@@ -17,6 +17,15 @@ const actions = {
       context.commit('SET_LOADING', false);
     }
   },
+  GET_EVALUATION: async (context, id) => {
+    context.commit('SET_LOADING', true);
+    try {
+      const result = await CallEvaluationAPI.getResult(id);
+      context.commit('SET_RESULT', result);
+    } finally {
+      context.commit('SET_LOADING', false);
+    }
+  },
 };
 
 const mutations = {

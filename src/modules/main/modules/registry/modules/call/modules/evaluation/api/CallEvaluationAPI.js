@@ -37,7 +37,6 @@ const listGetter = new SdkListGetterApiConsumer(auditService.searchAuditForm)
 
 const getAuditLookup = (params) => listGetter.getList(params);
 const sendAuditResult = (params) => {
-  console.info(params);
   return auditService.createAuditFormRate(params);
 };
 

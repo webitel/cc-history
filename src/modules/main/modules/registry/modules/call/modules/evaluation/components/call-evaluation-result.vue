@@ -39,7 +39,7 @@
       </div>
       <ul class="call-evaluation-result__scorecard-items">
         <li
-          v-for="(item, index) in result.questions"
+          v-for="(item, index) in value.questions"
           :key="item.question"
           class="call-evaluation-result__scorecard-item"
         >
@@ -47,9 +47,14 @@
             {{ item.question }}
           </div>
           <div class="call-evaluation-result__scorecard-item-answer">
-            <wt-icon icon="star--filled" size="md" color="accent"/>
+            <div class="call-evaluation-result__scorecard-item-answer-title">
+              Some Title
+            </div>
             <div class="call-evaluation-result__scorecard-item-answer-score">
-              {{ result.answers[index].score }}
+              <wt-icon icon="star--filled" size="md" color="accent"/>
+              <div class="call-evaluation-result__scorecard-item-answer-score-number">
+                {{ value.answers[index].score }}
+              </div>
             </div>
           </div>
         </li>
@@ -64,17 +69,17 @@ export default {
   components: {
   },
   props: {
-    // value: {
-    //   type: Object,
-    //   required: true,
-    // },
+    value: {
+      type: Object,
+      required: true,
+    },
   },
   data: () => ({
     resultMock: {
   answers: [
   {
-    'score': 0
-  }
+    score: 0,
+  },
 ],
   comment: 'string',
   created_at: 'string',
@@ -94,25 +99,25 @@ export default {
     options: [
       {
         name: 'string',
-        score: 0
-      }
+        score: 0,
+      },
     ],
     question: 'string',
     required: true,
-    type: 'question_default'
-  }
+    type: 'question_default',
+  },
 ],
   rated_user: {
   id: 'string',
-    name: 'string'
+    name: 'string',
 },
   score_optional: 0,
   score_required: 0,
   updated_at: 'string',
   updated_by: {
   id: 'string',
-    name: 'string'
-}
+    name: 'string',
+},
     },
     result: {
       id: '37',
@@ -135,7 +140,7 @@ export default {
           type: 'question_score',
           question: 'Titlefggfgdsgdsgsgsg',
           min: 1,
-          max: 4
+          max: 4,
         },
         {
           type: 'question_option',
@@ -143,18 +148,40 @@ export default {
           options: [
             {
               name: 'sssbbb',
-              score: 10
-            }
-          ]
-        }
+              score: 100,
+            },
+          ],
+        },
+        {
+          type: 'question_option',
+          question: 'Title',
+          options: [
+            {
+              name: 'sssbbb',
+              score: 10,
+            },
+          ],
+        },
+        {
+          type: 'question_score',
+          question: 'Titlefggfgdsgdsgsgsg',
+          min: 1,
+          max: 4,
+        },
       ],
       answers: [
         {
-          score: 4
+          score: 4,
         },
         {
-          score: 10
-        }
+          score: 10,
+        },
+        {
+          score: 100,
+        },
+        {
+          score: 2,
+        },
       ],
       score_optional: 100,
       comment: '0',
@@ -241,21 +268,28 @@ export default {
 
   &__scorecard-item {
     flex: 1;
-    padding: var(--spacing-xs) 0;
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     border-bottom: 1px solid var(--secondary-color);
   }
 
   &__scorecard-item-question {
     @extend %typo-subtitle-1;
+    padding: var(--spacing-xs) 0;
   }
 
   &__scorecard-item-answer {
     display: flex;
+    padding: var(--spacing-xs) 0;
+    justify-content: space-between;
   }
 
   &__scorecard-item-answer-score {
+    display: flex;
+  }
+
+  &__scorecard-item-answer-score-number {
       @extend %typo-body-2;
       margin-left: var(--spacing-sm);
       padding: var(--chip-padding);
