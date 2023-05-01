@@ -30,7 +30,7 @@
 <!--      @close="handleScorecardsPopup"-->
 <!--    />-->
 <!--    <wt-loader v-show="isLoading"/>-->
-    <call-evaluation-result :value="result"/>
+    <call-evaluation-result v-if="result.id" :value="result"/>
   </section>
 </template>
 
@@ -67,8 +67,7 @@ export default {
     comment: '',
   }),
   mounted() {
-    console.log('call rate id:', this.call.rateId);
-    this.loadResult(this.call.rateId);
+    if(this.call.rateId) this.loadResult(this.call.rateId);
   },
   computed: {
     ...mapState({

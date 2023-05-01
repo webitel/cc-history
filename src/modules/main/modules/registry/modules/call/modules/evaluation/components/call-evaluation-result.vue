@@ -13,26 +13,41 @@
           </span>
         </div>
         <div
-          v-if="result.comment"
+          v-if="value.comment"
           class="call-evaluation-result__scorecard-info-comment"
         >
             <span class="call-evaluation-result__scorecard-info-item-title">
               Comment
             </span>
             <span class="call-evaluation-result__scorecard-info-item-value">
-              {{ result.comment }}
+              {{ value.comment }}
             </span>
         </div>
         <div class="call-evaluation-result__scorecard-info-rating">
-          <div class="call-evaluation-result__scorecard-info-rating-icon-wrap">
-            <wt-icon
-              icon="star--filled"
-              size="xl"
-              color="secondary"
+          <div
+            v-if="value.scoreRequired"
+            class="call-evaluation-result__scorecard-info-rating-icon-wrap"
+          >
+            <img
+              src="../../../../../../../../../../src/app/assets/icons/star--filled.svg"
+              alt="star"
               class="call-evaluation-result__scorecard-info-rating-icon"
-            />
+            >
             <span class="call-evaluation-result__scorecard-info-rating-score">
-            {{ result.score_optional }}
+            {{ Math.round(value.scoreRequired) }}
+            </span>
+          </div>
+          <div
+            v-if="value.scoreOptional"
+            class="call-evaluation-result__scorecard-info-rating-icon-wrap"
+          >
+            <img
+              src="../../../../../../../../../../src/app/assets/icons/star--filled.svg"
+              alt="star"
+              class="call-evaluation-result__scorecard-info-rating-icon"
+            >
+            <span class="call-evaluation-result__scorecard-info-rating-score">
+            {{ Math.round(value.scoreOptional) }}
             </span>
           </div>
         </div>
@@ -48,7 +63,7 @@
           </div>
           <div class="call-evaluation-result__scorecard-item-answer">
             <div class="call-evaluation-result__scorecard-item-answer-title">
-              Some Title
+              {{ answerTitle(item, index) }}
             </div>
             <div class="call-evaluation-result__scorecard-item-answer-score">
               <wt-icon icon="star--filled" size="md" color="accent"/>
@@ -66,8 +81,7 @@
 
 export default {
   name: 'call-evaluation-result',
-  components: {
-  },
+  components: {},
   props: {
     value: {
       type: Object,
@@ -75,133 +89,26 @@ export default {
     },
   },
   data: () => ({
-    resultMock: {
-  answers: [
-  {
-    score: 0,
-  },
-],
-  comment: 'string',
-  created_at: 'string',
-  created_by: {
-  id: 'string',
-    name: 'string'
-},
-  form: {
-  id: 'string',
-    name: 'string'
-},
-  id: 'string',
-  questions: [
-  {
-    max: 0,
-    min: 0,
-    options: [
-      {
-        name: 'string',
-        score: 0,
-      },
-    ],
-    question: 'string',
-    required: true,
-    type: 'question_default',
-  },
-],
-  rated_user: {
-  id: 'string',
-    name: 'string',
-},
-  score_optional: 0,
-  score_required: 0,
-  updated_at: 'string',
-  updated_by: {
-  id: 'string',
-    name: 'string',
-},
-    },
-    result: {
-      id: '37',
-      created_at: '1682510684602',
-      created_by: {
-        id: '9678',
-        name: 'ye.pohranichna'
-      },
-      updated_at: '1682510684602',
-      updated_by: {
-        id: '9678',
-        name: 'ye.pohranichna'
-      },
-      form: {
-        id: '48',
-        name: 'LeraLera11ww'
-      },
-      questions: [
-        {
-          type: 'question_score',
-          question: 'Titlefggfgdsgdsgsgsg',
-          min: 1,
-          max: 4,
-        },
-        {
-          type: 'question_option',
-          question: 'Title',
-          options: [
-            {
-              name: 'sssbbb',
-              score: 100,
-            },
-          ],
-        },
-        {
-          type: 'question_option',
-          question: 'Title',
-          options: [
-            {
-              name: 'sssbbb',
-              score: 10,
-            },
-          ],
-        },
-        {
-          type: 'question_score',
-          question: 'Titlefggfgdsgdsgsgsg',
-          min: 1,
-          max: 4,
-        },
-      ],
-      answers: [
-        {
-          score: 4,
-        },
-        {
-          score: 10,
-        },
-        {
-          score: 100,
-        },
-        {
-          score: 2,
-        },
-      ],
-      score_optional: 100,
-      comment: '0',
-      rated_user: {
-        id: '10',
-        name: 'igor igor igor igor igor igor'
-      }
-    },
   }),
   computed: {
     scorecardInfo() {
+      const date = new Date(Number(this.value.createdAt));
       return [
-        { title: 'Rated by', value: this.result.created_by.name },
-        { title: 'Agent', value: this.result.rated_user.name },
-        { title: 'Date', value: this.result.created_at },
-        { title: 'Scorecard', value: this.result.form.name },
+        {title: 'Rated by', value: this.value.createdBy.name},
+        {title: 'Agent', value: this.value.ratedUser.name},
+        {title: 'Date', value: date.toLocaleDateString()},
+        {title: 'Scorecard', value: this.value.form.name},
       ];
-    }
+    },
   },
   methods: {
+    answerTitle(item, index) {
+      if(item.options) {
+        const currentOption = item.options.find(option => option.score === this.value.answers[index].score);
+        return currentOption.name;
+        // because this.value.answers[index] doesn`t have field 'name'
+      }
+    },
   },
 };
 </script>
@@ -262,6 +169,10 @@ export default {
     }
   }
 
+  &__scorecard-info-rating-icon {
+    fill: var(--secondary-color);
+  }
+
   &__scorecard-items {
     flex: 1;
   }
@@ -280,9 +191,9 @@ export default {
   }
 
   &__scorecard-item-answer {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 100px;
     padding: var(--spacing-xs) 0;
-    justify-content: space-between;
   }
 
   &__scorecard-item-answer-score {
