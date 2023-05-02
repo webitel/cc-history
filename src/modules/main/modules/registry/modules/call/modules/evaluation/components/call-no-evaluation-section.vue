@@ -5,7 +5,7 @@
       <p class="call-no-evaluation__text">
         {{ $t('registry.call.stt.noEvaluation') }}
       </p>
-      <wt-button @click="$emit('rateCall')">
+      <wt-button @click="$emit('openScorecardPopup')">
         {{ $t('registry.stt.rateTheCall') }}
       </wt-button>
     </div>
@@ -13,9 +13,6 @@
 </template>
 
 <script>
-
-import { mapActions } from 'vuex';
-import CallEvaluationAPI from '../api/CallEvaluationAPI';
 
 export default {
   name: 'call-no-evaluation',

@@ -115,6 +115,7 @@ const actions = {
     context.commit('RESET_MAIN_CALL');
     context.commit('RESET_FILE_ID');
     context.commit('RESET_LEGS_DATA_LIST');
+    context.commit('RESET_EVALUATION_RESULT');
   },
 
   ADD_ANNOTATION: async (context, annotation) => (
@@ -150,6 +151,10 @@ const mutations = {
 
   RESET_LEGS_DATA_LIST: (state) => {
     state.legsData = [];
+  },
+
+  RESET_EVALUATION_RESULT: (state) => {
+    state.evaluation.result = {};
   },
 
   SET_LOADING: (state, isLoading) => {

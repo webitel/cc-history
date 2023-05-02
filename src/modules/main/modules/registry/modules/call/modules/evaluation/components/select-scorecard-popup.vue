@@ -47,11 +47,11 @@ export default {
       this.$emit('close');
     },
     loadScorecards: (params) => CallEvaluationAPI.getLookup({
-                                                               ...params,
-                                                               fields: ['id', 'name', 'questions'],
-                                                               enabled: true,
-                                                               active: true,
-                                                             }),
+       ...params,
+       fields: ['id', 'name', 'questions'],
+       enabled: true,
+       active: true,
+     }),
   },
 };
 </script>
