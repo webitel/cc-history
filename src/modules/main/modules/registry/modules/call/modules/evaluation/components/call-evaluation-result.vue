@@ -3,8 +3,17 @@
       <div class="call-evaluation-result__scorecard-info">
         <scorecard-info :value="scorecardInfo" :comment="value.comment" />
         <div class="call-evaluation-result__scorecard-info-rating">
-          <call-evaluation-score v-if="value.scoreOptional" :value="value.scoreOptional" color="active"/>
-          <call-evaluation-score v-if="value.scoreRequired" :value="value.scoreRequired" />
+          <call-evaluation-score
+            v-if="value.scoreOptional"
+            :value="value.scoreOptional"
+            color="active"
+            :title="'Mandatory'"
+          />
+          <call-evaluation-score
+            v-if="value.scoreRequired"
+            :value="value.scoreRequired"
+            :title="'Optional'"
+          />
         </div>
       </div>
     <call-evaluation-answers :value="value" />

@@ -5,7 +5,10 @@
         :key="item.question"
         class="call-evaluation-answers__item"
       >
-        <div class="call-evaluation-answers__question">
+        <div
+          class="call-evaluation-answers__question"
+          :class="{'call-evaluation-answers__question--required': item.required }"
+        >
           {{ item.question }}
         </div>
         <div class="call-evaluation-answers__answer">
@@ -63,6 +66,11 @@ export default {
   &__question {
     @extend %typo-subtitle-1;
     padding: var(--spacing-2xs) 0 var(--spacing-3xs);
+
+    &--required::after {
+      content: "*";
+      color: var(--false-color);
+    }
   }
 
   &__answer {
@@ -72,7 +80,7 @@ export default {
   &__answer-score-wrap {
     width: 100%;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
   }
 
   &__answer-score {

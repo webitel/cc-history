@@ -3,6 +3,7 @@
     class="call-evaluation-score"
     :class="{'call-evaluation-score--active': color === 'active'}"
   >
+    <div class="call-evaluation-score__icon">
     <img
       src="../../../../../../../../../app/assets/icons/star--default.svg"
       alt="star-default"
@@ -16,6 +17,10 @@
     <span class="call-evaluation-score__value">
       {{ Math.round(value) }}
     </span>
+    </div>
+    <span v-if="title" class="call-evaluation-score__title">
+    {{ title }}
+  </span>
   </div>
 </template>
 
@@ -33,6 +38,9 @@ export default {
       default: 'default',
       options: ['default', 'active'],
     },
+    title: {
+      type: String,
+    }
   },
 };
 </script>
@@ -40,9 +48,15 @@ export default {
 <style lang="scss" scoped>
 
 .call-evaluation-score {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   &__icon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+
     &--active {
       display: none;
     }
@@ -56,10 +70,15 @@ export default {
     color: var(--contrast-color);
     transform: translate(-50%, -50%);
   }
+
+  &__title {
+    @extend %typo-subtitle-1;
+    color: var(--contrast-color);
+  }
 }
 
 .call-evaluation-score--active {
-  &__icon {
+  .call-evaluation-score__icon {
     &--default {
       display: none;
     }
@@ -68,7 +87,7 @@ export default {
     }
   }
 
-  &__value {
+  .call-evaluation-score__value {
     color: var(--main-color);
   }
 }

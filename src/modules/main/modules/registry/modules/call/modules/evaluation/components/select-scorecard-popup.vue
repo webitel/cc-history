@@ -1,12 +1,12 @@
 <template>
   <wt-popup
-    class="column-select"
+    class="select-scorecard-popup"
     width="480"
     overflow
     @close="$emit('close')"
   >
     <template v-slot:header>
-      <h1 class="column-select__heading">
+      <h1 class="select-scorecard-popup__heading">
         {{$t('registry.call.evaluation.selectTheScorecard')}}
       </h1>
     </template>
@@ -57,24 +57,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.column-select__heading {
-  text-align: center;
-}
-
-.column-select__list {
-  @extend %wt-scrollbar;
-  max-height: 35vh;
-  min-width: 550px;
-  overflow: auto;
-}
-
-.column-select__item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.wt-button:first-child {
-  margin-right: 20px;
-}
 </style>

@@ -4,35 +4,19 @@
       v-if="!scorecard.questions && !result.id"
       @openScorecardPopup="handleScorecardsPopup"
     />
-    <div v-if="scorecard.questions && !result.id" class="call-evaluation__audit-form-wrap">
-      <audit-form
-        v-model:result="auditResult"
-        class="call-evaluation__audit-form"
-        mode="fill"
-        :questions="scorecard.questions"
+      <call-evaluation-form
+        v-if="scorecard.questions && !result.id"
+        :scorecard="scorecard"
+        :callId="call.id"
+        :namespace="this.namespace"
+        @close="closeEvaluationForm"
       />
-      <wt-textarea
-        v-model="comment"
-        class="call-evaluation__audit-form--comment"
-        :label="$t('registry.call.evaluation.comment')"
-      />
-      <div class="call-evaluation__audit-form--actions">
-        <wt-button @click="saveEvaluation">
-          {{ $t('reusable.save') }}
-        </wt-button>
-        <wt-button
-          color="secondary"
-          @click="closeEvaluationForm"
-        >{{ $t('reusable.cancel') }}
-        </wt-button>
-      </div>
-    </div>
     <select-scorecard-popup
       v-show="isScorecardSelectOpened && !scorecard.questions"
       @change="setScorecard"
       @close="handleScorecardsPopup"
     />
-    <call-evaluation-result v-if="call.rateId && result.id" :value="result"/>
+    <call-evaluation-result v-if="result.id" :value="result"/>
     <wt-loader v-show="isLoading"/>
   </section>
 </template>
@@ -44,10 +28,13 @@ import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-fo
 import CallEvaluationResult from './call-evaluation-result.vue';
 import SelectScorecardPopup from './select-scorecard-popup.vue';
 import CallNoEvaluation from './call-no-evaluation-section.vue';
+import CallEvaluationForm
+  from "@/modules/main/modules/registry/modules/call/modules/evaluation/components/call-evaluation-form";
 
 export default {
   name: 'call-evaluation',
   components: {
+    CallEvaluationForm,
     CallEvaluationResult,
     SelectScorecardPopup,
     CallNoEvaluation,
@@ -65,11 +52,9 @@ export default {
   data: () => ({
     isScorecardSelectOpened: false,
     scorecard: {},
-    auditResult: [],
-    comment: '',
   }),
   mounted() {
-    console.log('this.call.rateId:', this.call.rateId);
+    console.log('mounted', this.call.rateId);
     if (this.call.rateId) this.loadResult(this.call.rateId);
   },
   computed: {
@@ -84,27 +69,12 @@ export default {
   },
   methods: {
     ...mapActions({
-      sendEvaluation(dispatch, payload) {
-        return dispatch(`${this.namespace}/SEND_EVALUATION`, payload);
-      },
       loadResult(dispatch, payload) {
         return dispatch(`${this.namespace}/GET_EVALUATION`, payload);
       },
     }),
     setScorecard(value) {
       this.scorecard = value;
-    },
-    saveEvaluation() {
-      const result = {
-        answers: [...this.auditResult],
-        call_id: this.call.id,
-        comment: this.comment,
-        form: {
-          id: this.scorecard.id,
-          name: this.scorecard.name,
-        },
-      };
-      this.sendEvaluation(result);
     },
     closeEvaluationForm() {
       this.scorecard = {};
@@ -118,19 +88,6 @@ export default {
 
 <style lang="scss" scoped>
 .call-evaluation {
-  &__audit-form-wrap {
-    display: flex;
-    flex-direction: column;
-    margin: var(--spacing-sm) 0;
-    gap: var(--spacing-sm);
-  }
 
-  &__audit-form {
-    &--actions {
-      display: flex;
-      justify-content: center;
-      gap: var(--spacing-sm);
-    }
-  }
 }
 </style>
