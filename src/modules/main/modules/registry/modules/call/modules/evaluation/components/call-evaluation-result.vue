@@ -6,13 +6,14 @@
           <call-evaluation-score
             v-if="value.scoreOptional"
             :value="value.scoreOptional"
-            color="active"
-            :title="'Mandatory'"
+            :title="$t('registry.call.evaluation.mandatory')"
+            color="success"
           />
           <call-evaluation-score
             v-if="value.scoreRequired"
             :value="value.scoreRequired"
-            :title="'Optional'"
+            :title="$t('registry.call.evaluation.optional')"
+            color="secondary"
           />
         </div>
       </div>
@@ -45,10 +46,10 @@ export default {
     scorecardInfo() {
       const date = new Date(Number(this.value.createdAt));
       return [
-        { title: 'Rated by', value: this.value.createdBy.name },
-        { title: 'Agent', value: this.value.ratedUser.name },
-        { title: 'Date', value: date.toLocaleDateString() },
-        { title: 'Scorecard', value: this.value.form.name },
+        { title: this.$t('fields.ratedBy'), value: this.value.createdBy.name },
+        { title: this.$t('fields.agent'), value: this.value.ratedUser.name },
+        { title: this.$t('fields.date'), value: date.toLocaleDateString() },
+        { title: this.$t('registry.call.evaluation.scorecard'), value: this.value.form.name },
       ];
     },
   },
@@ -74,7 +75,7 @@ export default {
     margin: var(--spacing-xs) 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    gap: var(--spacing-sm);
   }
 }
 

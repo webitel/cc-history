@@ -1,12 +1,12 @@
 <template>
   <article class="call-no-evaluation">
     <div class="call-no-evaluation__wrapper">
-      <wt-icon icon="hs-rate" size="xl"/>
+<!--      <wt-icon icon="hs-rate" size="xl"/>-->
       <p class="call-no-evaluation__text">
-        {{ $t('registry.call.stt.noEvaluation') }}
+        {{ $t('registry.call.evaluation.noEvaluation') }}
       </p>
       <wt-button @click="$emit('openScorecardPopup')">
-        {{ $t('registry.stt.rateTheCall') }}
+        {{ $t('registry.call.evaluation.rateTheCall') }} //!!
       </wt-button>
     </div>
   </article>

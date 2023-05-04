@@ -2,6 +2,7 @@
   <div class="scorecard-info">
     <div
       v-for="item in value"
+      :key="item.title"
       class="scorecard-info__item"
     >
       <span class="scorecard-info__item-title">
@@ -16,7 +17,7 @@
       class="scorecard-info__comment"
     >
       <span class="scorecard-info__comment-title">
-        Comment
+        {{ $t('registry.call.comment') }}
       </span>
       <span class="scorecard-info__comment-text">
         {{ comment }}

@@ -9,7 +9,7 @@
     <wt-textarea
       v-model="comment"
       class="call-evaluation-form__comment"
-      :label="$t('registry.call.evaluation.comment')"
+      :label="$t('registry.call.comment')"
     />
     <div class="call-evaluation-form__actions">
       <wt-button @click="saveEvaluation">
@@ -26,7 +26,7 @@
 
 <script>
 
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-form.vue';
 
 export default {
@@ -46,7 +46,7 @@ export default {
     namespace: {
       type: String,
       required: true,
-    }
+    },
   },
   data: () => ({
     auditResult: [],

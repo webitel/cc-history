@@ -24,12 +24,10 @@
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
-import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-form.vue';
 import CallEvaluationResult from './call-evaluation-result.vue';
 import SelectScorecardPopup from './select-scorecard-popup.vue';
 import CallNoEvaluation from './call-no-evaluation-section.vue';
-import CallEvaluationForm
-  from "@/modules/main/modules/registry/modules/call/modules/evaluation/components/call-evaluation-form";
+import CallEvaluationForm from './call-evaluation-form.vue';
 
 export default {
   name: 'call-evaluation',
@@ -38,7 +36,6 @@ export default {
     CallEvaluationResult,
     SelectScorecardPopup,
     CallNoEvaluation,
-    AuditForm,
   },
   props: {
     call: {
@@ -54,7 +51,6 @@ export default {
     scorecard: {},
   }),
   mounted() {
-    console.log('mounted', this.call.rateId);
     if (this.call.rateId) this.loadResult(this.call.rateId);
   },
   computed: {
@@ -87,7 +83,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.call-evaluation {
-
-}
 </style>
