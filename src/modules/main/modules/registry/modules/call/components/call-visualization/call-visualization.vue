@@ -51,9 +51,7 @@ export default {
   },
   data: () => ({
     currentFile: null,
-    currentTab: {
-      value: 'call-transcript',
-    },
+    currentTab: {},
   }),
   computed: {
     currentFIleOptions() {
@@ -95,6 +93,7 @@ export default {
   },
   created() {
     this.initCurrentFile();
+    this.currentTab = this.tabValues.TRANSCRIPT;
   },
 };
 </script>

@@ -44,10 +44,11 @@ export default {
         rateTheCall: ' Оценить звонок',
         evaluation: 'Оценивание',
         scorecard: 'Анкета',
+        comment: 'Коментарий',
         selectTheScorecard: 'Выбрать анкету',
         noEvaluation: 'Оценки еще нет',
-        optional: 'Optional',
-        mandatory: 'Mandatory',
+        optional: 'Опциональная',
+        mandatory: 'Обязательная',
       },
     },
     stt: {

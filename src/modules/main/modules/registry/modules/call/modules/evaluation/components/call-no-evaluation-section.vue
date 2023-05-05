@@ -1,12 +1,15 @@
 <template>
   <article class="call-no-evaluation">
     <div class="call-no-evaluation__wrapper">
-<!--      <wt-icon icon="hs-rate" size="xl"/>-->
+      <wt-icon icon="scorecard" size="3xl"/>
       <p class="call-no-evaluation__text">
         {{ $t('registry.call.evaluation.noEvaluation') }}
       </p>
-      <wt-button @click="$emit('openScorecardPopup')">
-        {{ $t('registry.call.evaluation.rateTheCall') }} //!!
+      <wt-button
+        class="call-no-evaluation__button"
+        @click="$emit('openScorecardPopup')"
+      >
+        {{ $t('registry.call.evaluation.rateTheCall') }}
       </wt-button>
     </div>
   </article>
@@ -32,19 +35,19 @@ export default {
   margin-top: var(--spacing-sm);
   border: 1px dashed var(--secondary-color);
   border-radius: var(--border-radius);
-}
 
-.call-no-evaluation__wrapper {
-  height: 248px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
+  &__wrapper {
+    height: 248px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
 
-.call-no-evaluation__text {
-  text-align: center;
+  &__text {
+    text-align: center;
+  }
 }
 
 </style>

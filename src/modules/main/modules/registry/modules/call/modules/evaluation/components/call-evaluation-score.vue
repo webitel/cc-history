@@ -2,7 +2,7 @@
   <div class="call-evaluation-score">
       <wt-icon
         icon="star--filled"
-        size="xl"
+        size="3xl"
         :color="color"
         class="call-evaluation-score__icon"
       />

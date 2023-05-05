@@ -17,7 +17,7 @@
       class="scorecard-info__comment"
     >
       <span class="scorecard-info__comment-title">
-        {{ $t('registry.call.comment') }}
+        {{ $t('registry.call.evaluation.comment') }}
       </span>
       <span class="scorecard-info__comment-text">
         {{ comment }}

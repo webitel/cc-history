@@ -32,8 +32,8 @@ const mutations = {
   SET_RESULT: (state, result) => {
     state.result = result;
   },
-  SET_LOADING: (state, bool) => {
-    state.isEvalLoadingt = bool;
+  SET_LOADING: (state, value) => {
+    state.isEvalLoadingt = value;
   },
 };
 

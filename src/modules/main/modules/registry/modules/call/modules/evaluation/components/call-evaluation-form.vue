@@ -9,7 +9,7 @@
     <wt-textarea
       v-model="comment"
       class="call-evaluation-form__comment"
-      :label="$t('registry.call.comment')"
+      :label="$t('registry.call.evaluation.comment')"
     />
     <div class="call-evaluation-form__actions">
       <wt-button @click="saveEvaluation">

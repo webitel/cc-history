@@ -46,6 +46,7 @@ export default {
         rateTheCall: 'Rate the call',
         evaluation: 'Evaluation',
         scorecard: 'Scorecard',
+        comment: 'Comment',
         selectTheScorecard: 'Select the scorecard',
         noEvaluation: 'There isn`t evaluation yet',
         optional: 'Optional',
