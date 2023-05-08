@@ -46,9 +46,9 @@ export default {
         scorecard: 'Анкета',
         comment: 'Коментар',
         selectTheScorecard: 'Обрати анкету',
-        noEvaluation: 'Оцінки наразі немає',
-        optional: 'Опціональна',
-        mandatory: 'Обов\'язкова',
+        noEvaluation: 'Дзвінок ще не оцінений',
+        optional: 'Опціональні',
+        mandatory: 'Обов\'язкові',
       },
     },
     stt: {
