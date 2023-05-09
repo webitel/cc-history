@@ -59,34 +59,42 @@
 
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
-          <div v-if="!leftGain.disabled" class="call-wave-leg">
-            <wt-icon-btn
-              :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-              @click="toggleLeftGain"
-            ></wt-icon-btn>
+          <wt-tooltip
+            v-if="!leftGain.disabled"
+            :popper-triggers="['hover']"
+          >
+            <template v-slot:activator>
+              <wt-icon-btn
+                :icon="leftGain.muted ? 'sound-off': 'sound-on'"
+                @click="toggleLeftGain"
+              ></wt-icon-btn>
+            </template>
             <wt-slider
               :max="2"
               :min="0"
               :step="0.01"
               :value="volumeLeftGain"
-              vertical
               @input="volumeLeftChangeHandler"
-            />
-          </div>
-          <div v-if="!rightGain.disabled" class="call-wave-leg">
-            <wt-icon-btn
-              :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-              @click="toggleRightGain"
-            ></wt-icon-btn>
+            ></wt-slider>
+          </wt-tooltip>
+          <wt-tooltip
+            v-if="!rightGain.disabled"
+            :popper-triggers="['hover']"
+          >
+            <template v-slot:activator>
+              <wt-icon-btn
+                :icon="rightGain.muted ? 'sound-off': 'sound-on'"
+                @click="toggleRightGain"
+              ></wt-icon-btn>
+            </template>
             <wt-slider
               :max="2"
               :min="0"
               :step="0.01"
               :value="volumeRightGain"
-              vertical
               @input="volumeRightChangeHandler"
-            />
-          </div>
+            ></wt-slider>
+          </wt-tooltip>
         </section>
 
         <section v-if="fileUrl" class="call-wave-data-plugin">
@@ -186,7 +194,8 @@ const timelineOptions = {
   notchPercentHeight: 1,
   unlabeledNotchColor: 'var(--secondary-color)',
   fontFamily: 'Montserrat, monospace',
-  fontSize: 14,
+  fontSize: 12,
+  height: 16,
   labelPadding: 5,
   primaryLabelInterval: 5,
   secondaryLabelInterval: 0,
@@ -236,7 +245,7 @@ export default {
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
-      height: 150,
+      height: 96,
       pixelRatio: 1,
       responsive: true,
       plugins: [
@@ -493,13 +502,6 @@ export default {
       align-items: center;
       flex-direction: column;
       justify-content: space-evenly;
-
-      .call-wave-leg {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-        gap: var(--spacing-xs);
-      }
     }
 
     .call-wave-actions {
@@ -526,8 +528,7 @@ export default {
       }
 
       .call-wave-timeline {
-        height: 26px;
-        background-color: var(--secondary-color);
+        background-color: var(--secondary-color-50);
       }
     }
   }
