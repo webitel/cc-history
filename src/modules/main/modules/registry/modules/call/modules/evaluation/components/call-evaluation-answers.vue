@@ -17,7 +17,11 @@
           </div>
           <div class="call-evaluation-answers__answer-score-wrap">
             <div class="call-evaluation-answers__answer-score">
-              <wt-icon icon="star--filled" size="md" color="accent"/>
+              <wt-icon
+                icon="star--filled"
+                size="md"
+                color="accent"
+              />
               <div class="call-evaluation-answers__answer-score-number">
                 {{ value.answers[index].score }}
               </div>

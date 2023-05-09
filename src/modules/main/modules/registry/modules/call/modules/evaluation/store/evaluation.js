@@ -4,7 +4,7 @@ import CallEvaluationAPI from '../api/CallEvaluationAPI';
 const state = {
   evaluation: {},
   result: {},
-  isEvalLoading: false,
+  isEvaluationLoading: false,
 };
 
 const actions = {
@@ -33,7 +33,10 @@ const mutations = {
     state.result = result;
   },
   SET_LOADING: (state, value) => {
-    state.isEvalLoadingt = value;
+    state.isEvaluationLoading = value;
+  },
+  RESET_EVALUATION_RESULT: (state) => {
+    state.result = {};
   },
 };
 

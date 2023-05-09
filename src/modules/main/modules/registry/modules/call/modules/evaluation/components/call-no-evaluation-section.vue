@@ -7,7 +7,7 @@
       </p>
       <wt-button
         class="call-no-evaluation__button"
-        @click="$emit('openScorecardPopup')"
+        @click="$emit('rate')"
       >
         {{ $t('registry.call.evaluation.rateTheCall') }}
       </wt-button>
@@ -37,7 +37,7 @@ export default {
   border-radius: var(--border-radius);
 
   &__wrapper {
-    height: 248px;
+    padding: var(--spacing-sm);
     display: flex;
     align-items: center;
     justify-content: center;

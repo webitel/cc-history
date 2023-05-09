@@ -3,23 +3,23 @@
     <div
       v-for="item in value"
       :key="item.title"
-      class="scorecard-info__item"
+      class="scorecard-info-item"
     >
-      <span class="scorecard-info__item-title">
+      <span class="scorecard-info-item__title">
         {{ item.title }}
       </span>
-      <span class="scorecard-info__item-value">
+      <span class="scorecard-info-item__value">
         {{ item.value }}
       </span>
     </div>
     <div
       v-if="comment"
-      class="scorecard-info__comment"
+      class="scorecard-info-comment"
     >
-      <span class="scorecard-info__comment-title">
+      <span class="scorecard-info-comment__title">
         {{ $t('registry.call.evaluation.comment') }}
       </span>
-      <span class="scorecard-info__comment-text">
+      <span class="scorecard-info-comment__text">
         {{ comment }}
       </span>
     </div>
@@ -44,30 +44,28 @@ export default {
 
 <style lang="scss" scoped>
 
-.scorecard-info {
-  &__item {
+.scorecard-info-item {
     display: flex;
     justify-content: space-between;
     padding: var(--spacing-xs) 0;
     border-bottom: 1px solid var(--secondary-color);
     gap: var(--spacing-sm);
 
-    &-title {
+    &__title {
       @extend %typo-subtitle-1;
     }
 
-    &-value {
+    &__value {
       @extend %typo-body-1;
     }
   }
 
-  &__comment {
+  .scorecard-info-comment {
     display: flex;
     flex-direction: column;
     padding: var(--spacing-xs) 0;
     border-bottom: 1px solid var(--secondary-color);
     gap: var(--spacing-xxs);
   }
-}
 
 </style>

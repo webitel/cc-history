@@ -1,5 +1,5 @@
 <template>
-  <div class="call-evaluation-form__wrap">
+  <div class="call-evaluation-form-wrap">
     <audit-form
       v-model:result="auditResult"
       class="call-evaluation-form"

@@ -2,15 +2,15 @@
   <section class="call-evaluation">
     <call-no-evaluation
       v-if="!scorecard.questions && !result.id"
-      @openScorecardPopup="handleScorecardsPopup"
+      @rate="handleScorecardsPopup"
     />
-      <call-evaluation-form
-        v-if="scorecard.questions && !result.id"
-        :scorecard="scorecard"
-        :callId="call.id"
-        :namespace="this.namespace"
-        @close="closeEvaluationForm"
-      />
+    <call-evaluation-form
+      v-if="scorecard.questions && !result.id"
+      :scorecard="scorecard"
+      :call-id="call.id"
+      :namespace="namespace"
+      @close="closeEvaluationForm"
+    />
     <select-scorecard-popup
       v-show="isScorecardSelectOpened && !scorecard.questions"
       @change="setScorecard"
