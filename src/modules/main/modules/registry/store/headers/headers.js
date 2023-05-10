@@ -245,4 +245,16 @@ export default [
     sort: null,
     field: 'rated_by',
   },
+  {
+    value: 'memberId',
+    show: false,
+    sort: null,
+    field: 'member',
+  },
+  {
+    value: 'attemptId',
+    show: false,
+    sort: null,
+    field: 'attempt_id',
+  },
 ];

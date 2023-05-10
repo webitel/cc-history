@@ -187,6 +187,8 @@ export default {
     grantee: 'Grantee',
     ratedBy: 'Rated by',
     score: 'Score',
+    memberId: 'Member Id',
+    attemptId: 'Attempt Id',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',

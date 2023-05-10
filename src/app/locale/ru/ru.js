@@ -185,6 +185,8 @@ export default {
     grantee: 'Получатель',
     ratedBy: 'Оценено кем',
     score: 'Оценка',
+    memberId: 'Id абонента',
+    attemptId: 'Id попытки',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',
