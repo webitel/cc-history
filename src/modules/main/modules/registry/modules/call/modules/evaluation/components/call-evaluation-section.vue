@@ -12,7 +12,7 @@
       @close="closeEvaluationForm"
     />
     <select-scorecard-popup
-      v-show="isScorecardSelectOpened && !scorecard.questions"
+      v-show="isScorecardSelectOpened"
       @change="setScorecard"
       @close="handleScorecardsPopup"
     />

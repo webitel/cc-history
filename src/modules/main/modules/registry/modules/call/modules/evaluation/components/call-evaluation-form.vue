@@ -76,17 +76,17 @@ export default {
 
 <style lang="scss" scoped>
 .call-evaluation-form {
-  &__wrap {
-    display: flex;
-    flex-direction: column;
-    margin: var(--spacing-sm) 0;
-    gap: var(--spacing-sm);
-  }
-
   &__actions {
     display: flex;
     justify-content: center;
     gap: var(--spacing-sm);
   }
+}
+
+.call-evaluation-form-wrap {
+  display: flex;
+  flex-direction: column;
+  margin: var(--spacing-sm) 0;
+  gap: var(--spacing-sm);
 }
 </style>
