@@ -194,6 +194,7 @@ export default {
     agentDropped: 'Оператор скинув',
     clientDropped: 'Клієнт скинув',
     error: 'Помилка',
+    ended: 'Завершено системою',
   },
   filters: {
     tag: {

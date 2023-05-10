@@ -196,6 +196,7 @@ export default {
     agentDropped: 'Agent dropped',
     clientDropped: 'Client dropped',
     error: 'Error',
+    ended: 'Ended by system',
   },
   filters: {
     tag: {
