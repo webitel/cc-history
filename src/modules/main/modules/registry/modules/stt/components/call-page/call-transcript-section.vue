@@ -115,7 +115,7 @@ export default {
 
 <style lang="scss" scoped>
 .call-visualization-header {
-  margin-bottom: var(--spacing-sm);
+  margin: var(--spacing-sm) 0;
 }
 
 .call-transcript__table-wrapper {

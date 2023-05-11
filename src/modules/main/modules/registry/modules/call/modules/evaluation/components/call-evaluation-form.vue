@@ -61,7 +61,7 @@ export default {
     saveEvaluation() {
       const result = {
         answers: this.auditResult,
-        call_id: this.callId,
+        callId: this.callId,
         comment: this.comment,
         form: {
           id: this.scorecard.id,
