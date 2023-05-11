@@ -2,7 +2,12 @@
   <section class="call-evaluation">
     <call-no-evaluation
       v-if="!scorecard.questions && !result.id"
-      @rate="handleScorecardsPopup"
+      @rate="toggleScorecardsPopup"
+    />
+    <select-scorecard-popup
+      v-show="isScorecardSelectOpened"
+      @change="setScorecard"
+      @close="toggleScorecardsPopup"
     />
     <call-evaluation-form
       v-if="scorecard.questions && !result.id"
@@ -10,11 +15,6 @@
       :call-id="call.id"
       :namespace="namespace"
       @close="closeEvaluationForm"
-    />
-    <select-scorecard-popup
-      v-show="isScorecardSelectOpened"
-      @change="setScorecard"
-      @close="handleScorecardsPopup"
     />
     <call-evaluation-result v-if="result.id" :value="result"/>
     <wt-loader v-show="isLoading"/>
@@ -56,7 +56,7 @@ export default {
   computed: {
     ...mapState({
         isLoading(state) {
-          return getNamespacedState(state, this.namespace).isEvalLoading;
+          return getNamespacedState(state, this.namespace).isEvaluationLoading;
         },
         result(state) {
           return getNamespacedState(state, this.namespace).result;
@@ -75,7 +75,7 @@ export default {
     closeEvaluationForm() {
       this.scorecard = {};
     },
-    handleScorecardsPopup() {
+    toggleScorecardsPopup() {
       this.isScorecardSelectOpened = !this.isScorecardSelectOpened;
     },
   },

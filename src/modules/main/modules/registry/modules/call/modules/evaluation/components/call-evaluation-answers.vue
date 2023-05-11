@@ -12,17 +12,17 @@
           {{ item.question }}
         </div>
         <div class="call-evaluation-answers-item__answer">
-          <div class="call-evaluation-answers-item__answer-title">
+          <div class="call-evaluation-answers-item__title">
             {{ answerTitle(item, index) }}
           </div>
-          <div class="call-evaluation-answers-item__answer-score-wrap">
-            <div class="call-evaluation-answers-item__answer-score">
+          <div class="call-evaluation-answers-item__score-wrap">
+            <div class="call-evaluation-answers-item__score">
               <wt-icon
                 icon="star--filled"
                 size="md"
                 color="accent"
               />
-              <div class="call-evaluation-answers-item__answer-score-number">
+              <div class="call-evaluation-answers-item__score-number">
                 {{ value.answers[index].score }}
               </div>
             </div>
@@ -81,18 +81,18 @@ export default {
       padding: var(--spacing-2xs) 0;
     }
 
-    &__answer-score-wrap {
+    &__score-wrap {
       width: 100%;
       display: flex;
       justify-content: flex-end;
     }
 
-    &__answer-score {
+    &__score {
       width: 100px;
       display: flex;
     }
 
-    &__answer-score-number {
+    &__score-number {
       @extend %typo-body-2;
       margin-left: var(--spacing-xs);
       padding: var(--chip-padding);

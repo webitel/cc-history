@@ -74,7 +74,9 @@ export default {
       };
     },
     tabs() {
-      return [this.tabValues.TRANSCRIPT, this.tabValues.EVALUATION];
+      return this.call.user
+        ? [this.tabValues.TRANSCRIPT, this.tabValues.EVALUATION]
+        : [this.tabValues.TRANSCRIPT];
     },
   },
   methods: {
