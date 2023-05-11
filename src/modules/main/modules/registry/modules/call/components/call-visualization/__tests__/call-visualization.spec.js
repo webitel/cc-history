@@ -18,7 +18,7 @@ describe('CallVisualization', () => {
     const file = { id: 'jest' };
     call.files = [file];
     const wrapper = shallowMount(CallVisualization, { props });
-    expect(wrapper.vm.currentFile).toBe(file);
+    expect(wrapper.vm.currentFile).toStrictEqual(file);
   });
   it('deleteTranscript removes file from call transcripts list', () => {
     const file = { id: 'jest' };

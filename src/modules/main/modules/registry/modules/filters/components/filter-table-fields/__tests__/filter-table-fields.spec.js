@@ -1,15 +1,10 @@
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from 'vuex';
-import { createRouter, createWebHistory } from 'vue-router';
+import router from '../../../../../../../../../app/router';
 import FilterTableFields from '../filter-table-fields.vue';
 import registry from '../../../../../store/registry';
 
 import '../../../../../../../../../../tests/unit/mocks/localStorageMock'; // mock localStorage
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [],
-});
 
 const headers = [
   { name: 'header1', value: 'h1' },

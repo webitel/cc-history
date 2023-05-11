@@ -72,7 +72,7 @@ describe('History dashboards', () => {
       global: {
         plugins: [store, router],
       },
-      computed: { dashboards },
+      computed: { ...HistoryDashboards.computed, dashboards },
     });
     wrapper.vm.openDashboardConfig = openDashboardConfig;
     wrapper.findComponent({ name: 'dashboard-header' })
@@ -87,7 +87,7 @@ describe('History dashboards', () => {
       global: {
         plugins: [store, router],
       },
-      computed: { dashboards },
+      computed: { ...HistoryDashboards.computed, dashboards },
     });
     wrapper.vm.openDashboardConfig = openDashboardConfig;
     wrapper.findComponent({ name: 'dashboard-header' })

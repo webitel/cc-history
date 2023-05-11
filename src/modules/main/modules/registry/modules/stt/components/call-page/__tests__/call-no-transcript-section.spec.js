@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, mount } from '@vue/test-utils';
 import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
 import CallNoTranscriptSection from '../call-no-transcript-section.vue';
 import CallTranscriptAPI from '../../../api/CallTranscriptAPI';
@@ -33,13 +33,16 @@ describe('CallNoTranscriptSection', () => {
     const wrapper = shallowMount(CallNoTranscriptSection, {
       props,
     });
-    expect(wrapper.vm.fileJob).toBe(fileJob);
+    expect(wrapper.vm.fileJob).toStrictEqual(fileJob);
   });
   it('"transcribe" btn click calls "create" api method with call id', () => {
     const callId = 'jest';
     call.id = callId;
 
-    const wrapper = shallowMount(CallNoTranscriptSection, {
+    jest.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
+    .mockImplementationOnce(() => {});
+
+    const wrapper = mount(CallNoTranscriptSection, {
       props,
     });
     const mock = jest.fn();
@@ -60,7 +63,10 @@ describe('CallNoTranscriptSection', () => {
     file.id = 1;
     call.filesJob = [{ fileId: 1, state: HistoryFileJobHistoryFileJobState.Error }];
 
-    const wrapper = shallowMount(CallNoTranscriptSection, {
+    jest.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
+    .mockImplementationOnce(() => {});
+
+    const wrapper = mount(CallNoTranscriptSection, {
       props,
     });
 
