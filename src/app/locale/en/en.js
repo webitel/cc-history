@@ -188,6 +188,8 @@ export default {
     grantee: 'Grantee',
     ratedBy: 'Rated by',
     score: 'Score',
+    memberId: 'Member Id',
+    attemptId: 'Attempt Id',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',
@@ -195,6 +197,7 @@ export default {
     agentDropped: 'Agent dropped',
     clientDropped: 'Client dropped',
     error: 'Error',
+    ended: 'Ended by system',
   },
   filters: {
     tag: {

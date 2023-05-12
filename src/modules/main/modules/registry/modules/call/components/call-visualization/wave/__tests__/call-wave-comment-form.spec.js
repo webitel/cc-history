@@ -47,7 +47,7 @@ describe('Opened call comment form', () => {
       }),
     });
     expect(wrapper.findAllComponents({ name: 'wt-button' })
-      .filter((btn) => btn.props().color === 'danger').isVisible()).toBe(true);
+      .find((btn) => btn.props().color === 'danger').isVisible()).toBe(true);
   });
 
   it('should not render delete button if "draft" props does not contain id', () => {
@@ -56,6 +56,6 @@ describe('Opened call comment form', () => {
       data: () => ({ draft }),
     });
     expect(wrapper.findAllComponents({ name: 'wt-button' })
-      .filter((btn) => btn.props().color === 'danger').exists()).toBe(false);
+      .find((btn) => btn.props().color === 'danger')).toBeFalsy();
   });
 });

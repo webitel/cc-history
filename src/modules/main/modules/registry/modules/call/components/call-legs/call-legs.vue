@@ -39,6 +39,9 @@
         <template v-slot:member="{ item }">
           <div v-if="item.member">{{ item.member.name }}</div>
         </template>
+        <template v-slot:memberId="{ item }">
+          <div v-if="item.member">{{ item.member.id }}</div>
+        </template>
         <template v-slot:hangupDisposition="{ item }">
           <div v-if="item.hangupDisposition">
             {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}

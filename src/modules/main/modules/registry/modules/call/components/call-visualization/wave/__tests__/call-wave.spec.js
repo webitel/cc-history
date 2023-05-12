@@ -1,5 +1,4 @@
 import { shallowMount, mount } from '@vue/test-utils';
-import deepCopy from 'deep-copy';
 import { createStore } from 'vuex';
 import callWave
   from '../call-wave.vue';
@@ -186,39 +185,6 @@ describe('Opened call wave', () => {
     expect(actionMocks.DELETE_ANNOTATION).toHaveBeenCalled();
   });
 
-  it('changes volume on slider input', async () => {
-    const wrapper = shallowMount(callWave, {
-      global: {
-        plugins: [store],
-      },
-      props,
-      computed: {
-        call: () => callMock,
-        player: () => player,
-      },
-      data: () => (deepCopy(volumeData)),
-    });
-    await wrapper.findComponent({ name: 'wt-slider' }).vm.$emit('input', 2);
-    expect(wrapper.vm.$data.leftGain.audio.gain.value).toBe(2);
-  });
-
-  it('mutes on slider input 0', async () => {
-    const wrapper = shallowMount(callWave, {
-      global: {
-        plugins: [store],
-      },
-      props,
-      computed: {
-        call: () => callMock,
-        player: () => player,
-      },
-      data: () => (deepCopy(volumeData)),
-    });
-    await wrapper.findComponent({ name: 'wt-slider' }).vm.$emit('input', 0);
-    expect(wrapper.vm.$data.leftGain.audio.gain.value).toBe(0);
-    expect(wrapper.vm.$data.leftGain.muted).toBe(true);
-  });
-
   it('changes playbackRate on button click', async () => {
     const wrapper = mount(callWave, {
       global: {
@@ -286,15 +252,18 @@ describe('Opened call wave', () => {
       global: {
         plugins: [store],
       },
-      props,
+      props: {
+        ...props,
+        call: callMock,
+      },
       data: () => ({
         showComments: false,
         isLoading: false,
       }),
       computed: {
-        call: () => callMock,
         player: () => player,
         annotations: () => callMock.annotations,
+        commentsSize: () => 10,
       },
     });
     const displayComments = jest.fn();

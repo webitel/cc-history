@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, mount } from '@vue/test-utils';
 import DashboardConfigPopup from '../dashboard-config-popup.vue';
 import Dashboards from '../../../dashboards/enums/Dashboards.enum';
 
@@ -10,7 +10,7 @@ describe('Dashboard config popup', () => {
   });
 
   it('passes dashboard config options with default values', () => {
-    const wrapper = shallowMount(DashboardConfigPopup, { props: { dashboard } });
+    const wrapper = mount(DashboardConfigPopup, { props: { dashboard } });
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click'); // 1st button is submit
     expect(wrapper.emitted().input.pop()).toEqual([dashboard.options]);
   });

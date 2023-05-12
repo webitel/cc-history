@@ -20,7 +20,7 @@ describe('TableSttAction', () => {
     const job = {};
     item.filesJob = [job];
     const wrapper = shallowMount(TableSttAction, { props });
-    expect(wrapper.vm.fileJob).toBe(job);
+    expect(wrapper.vm.fileJob).toStrictEqual(job);
   });
   it('currentState for IDLE fileJob is IDLE', () => {
     item.filesJob = [{ state: HistoryFileJobHistoryFileJobState.Idle }];

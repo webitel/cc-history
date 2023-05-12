@@ -186,6 +186,8 @@ export default {
     grantee: 'Получатель',
     ratedBy: 'Оценено кем',
     score: 'Оценка',
+    memberId: 'Id абонента',
+    attemptId: 'Id попытки',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',
@@ -193,6 +195,7 @@ export default {
     agentDropped: 'Оператор сбросил',
     clientDropped: 'Клиент сбросил',
     error: 'Ошибка',
+    ended: 'Завершено системой',
   },
   filters: {
     tag: {

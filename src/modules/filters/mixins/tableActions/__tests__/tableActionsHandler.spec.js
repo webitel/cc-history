@@ -1,11 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
-import { createRouter, createWebHistory } from 'vue-router';
+import router from '../../../../../app/router';
 import tableActionsHandlerMixin from '../tableActionsHandlerMixin';
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [],
-});
 
 jest.mock('../../../../main/modules/registry/api/RegistryAPIRepository');
 
