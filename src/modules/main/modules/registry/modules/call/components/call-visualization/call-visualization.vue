@@ -101,6 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .call-visualization {
   display: flex;
   flex-direction: column;
@@ -110,4 +111,5 @@ export default {
     width: 460px;
   }
 }
+
 </style>

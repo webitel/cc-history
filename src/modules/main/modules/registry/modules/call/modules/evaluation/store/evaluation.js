@@ -2,7 +2,6 @@ import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStor
 import CallEvaluationAPI from '../api/CallEvaluationAPI';
 
 const state = {
-  evaluation: {},
   result: {},
   isEvaluationLoading: false,
 };

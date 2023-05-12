@@ -45,27 +45,27 @@ export default {
 <style lang="scss" scoped>
 
 .scorecard-info-item {
-    display: flex;
-    justify-content: space-between;
-    padding: var(--spacing-xs) 0;
-    border-bottom: 1px solid var(--secondary-color);
-    gap: var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid var(--secondary-color);
+  gap: var(--spacing-sm);
 
-    &__title {
-      @extend %typo-subtitle-1;
-    }
-
-    &__value {
-      @extend %typo-body-1;
-    }
+  &__title {
+    @extend %typo-subtitle-1;
   }
 
-  .scorecard-info-comment {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-xs) 0;
-    border-bottom: 1px solid var(--secondary-color);
-    gap: var(--spacing-xxs);
+  &__value {
+    @extend %typo-body-1;
   }
+}
+
+.scorecard-info-comment {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid var(--secondary-color);
+  gap: var(--spacing-xxs);
+}
 
 </style>

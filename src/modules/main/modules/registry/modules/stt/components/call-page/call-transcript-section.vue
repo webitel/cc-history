@@ -114,6 +114,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .call-visualization-header {
   margin: var(--spacing-sm) 0;
 }
@@ -123,4 +124,5 @@ export default {
   overflow: auto;
   max-height: 60vh;
 }
+
 </style>

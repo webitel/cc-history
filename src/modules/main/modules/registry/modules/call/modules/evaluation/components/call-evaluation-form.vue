@@ -75,6 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .call-evaluation-form {
   &__actions {
     display: flex;
@@ -89,4 +90,5 @@ export default {
   margin: var(--spacing-sm) 0;
   gap: var(--spacing-sm);
 }
+
 </style>
