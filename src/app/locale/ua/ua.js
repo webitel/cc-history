@@ -197,6 +197,10 @@ export default {
     ended: 'Завершено системою',
   },
   filters: {
+    preset: {
+      preset: 'Пресет | Пресети',
+      presetName: 'Ім\'я пресета',
+    },
     tag: {
       options: {
         vm: 'Голосова пошта',
