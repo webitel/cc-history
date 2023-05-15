@@ -2,6 +2,7 @@ import QueryFiltersStoreModule from '@webitel/ui-sdk/src/modules/QueryFilters/st
 import ApiFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/ApiFilterSchema';
 import BaseFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/BaseFilterSchema';
 import EnumFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/EnumFilterSchema';
+import isEmpty from '@webitel/ui-sdk/src/scripts/isEmpty';
 import AgentsAPI from '../api/AgentsAPIRepository';
 import RolesAPI from '../api/RolesAPIRepository';
 import CauseOption from '../enums/HangupCauseOption.enum';
@@ -102,4 +103,12 @@ const state = {
   }),
 };
 
-export default new QueryFiltersStoreModule({ state }).getModule();
+const getters = {
+  GET_FULL_FILTER_VALUES: (state) => Object.keys(state)
+    .reduce((filters, filterKey) => {
+      const filterValue = state[filterKey].value;
+      return isEmpty(filterValue) ? filters : { ...filters, [filterKey]: filterValue };
+    }, {}),
+};
+
+export default new QueryFiltersStoreModule({ state, getters }).getModule();
