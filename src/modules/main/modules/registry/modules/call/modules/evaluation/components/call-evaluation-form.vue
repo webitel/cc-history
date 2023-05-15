@@ -1,8 +1,8 @@
 <template>
-  <div class="call-evaluation-form-wrap">
+  <div class="call-evaluation-form">
     <audit-form
       v-model:result="auditResult"
-      class="call-evaluation-form"
+      class="call-evaluation-form__audit-form"
       mode="fill"
       :questions="scorecard.questions"
     />
@@ -77,18 +77,16 @@ export default {
 <style lang="scss" scoped>
 
 .call-evaluation-form {
+  display: flex;
+  flex-direction: column;
+  margin: var(--spacing-sm) 0;
+  gap: var(--spacing-sm);
+
   &__actions {
     display: flex;
     justify-content: center;
     gap: var(--spacing-sm);
   }
-}
-
-.call-evaluation-form-wrap {
-  display: flex;
-  flex-direction: column;
-  margin: var(--spacing-sm) 0;
-  gap: var(--spacing-sm);
 }
 
 </style>
