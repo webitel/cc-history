@@ -9,7 +9,7 @@
     <span class="call-evaluation-score__value">
       {{ Math.round(value) }}
     </span>
-    <span v-if="title" class="call-evaluation-score__title">
+    <span class="call-evaluation-score__title">
     {{ title }}
   </span>
   </div>
@@ -26,7 +26,6 @@ export default {
     },
     color: {
       type: String,
-      default: 'default',
     },
     title: {
       type: String,

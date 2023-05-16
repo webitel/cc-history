@@ -19,14 +19,6 @@
 
 export default {
   name: 'call-no-evaluation',
-  props: {
-    call: {
-      type: Object,
-    },
-    namespace: {
-      type: String,
-    },
-  },
 };
 </script>
 
@@ -37,12 +29,12 @@ export default {
   border-radius: var(--border-radius);
 
   &__wrapper {
-    padding: var(--spacing-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
   }
 
   &__text {

@@ -1,33 +1,38 @@
 <template>
   <section class="call-evaluation">
-    <call-no-evaluation
-      v-if="!scorecard.questions && !result.id"
-      @rate="toggleScorecardsPopup"
-    />
     <select-scorecard-popup
-      v-show="isScorecardSelectOpened"
+      v-if="isScorecardSelectOpened"
       @change="setScorecard"
       @close="toggleScorecardsPopup"
     />
-    <call-evaluation-form
-      v-if="scorecard.questions && !result.id"
-      :scorecard="scorecard"
-      :call-id="call.id"
-      :namespace="namespace"
-      @close="closeEvaluationForm"
-    />
-    <call-evaluation-result v-if="result.id" :value="result"/>
     <wt-loader v-show="isLoading"/>
+    <div v-if="!isLoading">
+      <call-no-evaluation
+        v-if="!scorecard.questions && !result.id"
+        @rate="toggleScorecardsPopup"
+      ></call-no-evaluation>
+      <call-evaluation-form
+        v-if="scorecard.questions && !result.id"
+        :scorecard="scorecard"
+        :call-id="call.id"
+        :namespace="namespace"
+        @close="closeEvaluationForm"
+      ></call-evaluation-form>
+      <call-evaluation-result
+        v-if="result.id"
+        :result="result"
+      ></call-evaluation-result>
+    </div>
   </section>
 </template>
 
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
-import CallEvaluationResult from './call-evaluation-result.vue';
-import SelectScorecardPopup from './select-scorecard-popup.vue';
-import CallNoEvaluation from './call-no-evaluation-section.vue';
-import CallEvaluationForm from './call-evaluation-form.vue';
+import CallEvaluationResult from './result/call-evaluation-result.vue';
+import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
+import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
+import CallEvaluationForm from './form/call-evaluation-form.vue';
 
 export default {
   name: 'call-evaluation',
@@ -50,9 +55,6 @@ export default {
     isScorecardSelectOpened: false,
     scorecard: {},
   }),
-  mounted() {
-    if (this.call.rateId) this.loadResult(this.call.rateId);
-  },
   computed: {
     ...mapState({
         isLoading(state) {
@@ -78,6 +80,9 @@ export default {
     toggleScorecardsPopup() {
       this.isScorecardSelectOpened = !this.isScorecardSelectOpened;
     },
+  },
+  mounted() {
+    if (this.call.rateId) this.loadResult(this.call.rateId);
   },
 };
 </script>

@@ -36,16 +36,14 @@ const listGetter = new SdkListGetterApiConsumer(auditService.searchAuditForm)
   .setGetListMethod(_getScorecardsLookup);
 
 const getAuditLookup = (params) => listGetter.getList(params);
-const sendAuditResult = (params) => {
-  return auditService.createAuditFormRate(params);
-};
+const sendAuditResult = (params) => auditService.createAuditFormRate(params);
 
 const getResult = (id) => (auditService.readAuditRate(id));
 
-const AuditAPIRepository = {
+const CallEvaluationAPI = {
   getLookup: getAuditLookup,
   sendAuditResult,
   getResult,
 };
 
-export default AuditAPIRepository;
+export default CallEvaluationAPI;

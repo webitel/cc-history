@@ -6,9 +6,7 @@
     @close="$emit('close')"
   >
     <template v-slot:header>
-      <h1 class="select-scorecard-popup__heading">
-        {{$t('registry.call.evaluation.selectTheScorecard')}}
-      </h1>
+      {{$t('registry.call.evaluation.selectTheScorecard')}}
     </template>
     <template v-slot:main>
       <wt-select
@@ -19,8 +17,10 @@
       />
     </template>
     <template v-slot:actions>
-      <wt-button :disabled="!scorecard" @click="selectScorecard">
-        {{ $t('reusable.start') }}
+      <wt-button
+        :disabled="!scorecard"
+        @click="selectScorecard"
+      >{{ $t('reusable.start') }}
       </wt-button>
       <wt-button
         color="secondary"
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import CallEvaluationAPI from '../api/CallEvaluationAPI';
+import CallEvaluationAPI from '../../api/CallEvaluationAPI';
 
 export default {
   name: 'select-scorecard-popup',

@@ -25,6 +25,7 @@ const actions = {
       context.commit('SET_LOADING', false);
     }
   },
+  RESET_EVALUATION_RESULT: (context, payload) => context.commit('RESET_EVALUATION_RESULT', payload),
 };
 
 const mutations = {

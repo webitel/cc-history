@@ -1,25 +1,25 @@
 <template>
-  <div class="scorecard-info">
+  <div class="call-evaluation-result">
     <div
-      v-for="item in value"
-      :key="item.title"
-      class="scorecard-info-item"
+      v-for="({ title, value }) in info"
+      :key="title"
+      class="call-evaluation-result-item"
     >
-      <span class="scorecard-info-item__title">
-        {{ item.title }}
+      <span class="call-evaluation-result-item__title">
+        {{ title }}
       </span>
-      <span class="scorecard-info-item__value">
-        {{ item.value }}
+      <span class="call-evaluation-result-item__value">
+        {{ value }}
       </span>
     </div>
     <div
       v-if="comment"
-      class="scorecard-info-comment"
+      class="call-evaluation-result-comment"
     >
-      <span class="scorecard-info-comment__title">
+      <span class="call-evaluation-result-comment__title">
         {{ $t('registry.call.evaluation.comment') }}
       </span>
-      <span class="scorecard-info-comment__text">
+      <span class="call-evaluation-result-comment__text">
         {{ comment }}
       </span>
     </div>
@@ -29,9 +29,9 @@
 <script>
 
 export default {
-  name: 'scorecard-info',
+  name: 'call-evaluation-result-info',
   props: {
-    value: {
+    info: {
       type: Array,
       required: true,
     },
@@ -44,7 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 
-.scorecard-info-item {
+.call-evaluation-result-item {
   display: flex;
   justify-content: space-between;
   padding: var(--spacing-xs) 0;
@@ -60,7 +60,7 @@ export default {
   }
 }
 
-.scorecard-info-comment {
+.call-evaluation-result-comment {
   display: flex;
   flex-direction: column;
   padding: var(--spacing-xs) 0;

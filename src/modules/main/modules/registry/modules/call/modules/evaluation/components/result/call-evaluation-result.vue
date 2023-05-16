@@ -1,23 +1,26 @@
 <template>
   <section class="call-evaluation-result">
       <div class="call-evaluation-result__scorecard-info">
-        <scorecard-info :value="scorecardInfo" :comment="value.comment" />
+        <call-evaluation-result-info
+          :info="scorecardInfo"
+          :comment="result.comment"
+        ></call-evaluation-result-info>
         <div class="call-evaluation-result__scorecard-info-rating">
           <call-evaluation-score
-            v-if="value.scoreOptional"
-            :value="value.scoreOptional"
+            v-if="result.scoreOptional"
+            :value="result.scoreOptional"
             :title="$t('registry.call.evaluation.mandatory')"
             color="success"
           />
           <call-evaluation-score
-            v-if="value.scoreRequired"
-            :value="value.scoreRequired"
+            v-if="result.scoreRequired"
+            :value="result.scoreRequired"
             :title="$t('registry.call.evaluation.optional')"
             color="secondary"
           />
         </div>
       </div>
-    <call-evaluation-answers :value="value" />
+    <call-evaluation-answers :result="result" />
   </section>
 </template>
 
@@ -25,35 +28,30 @@
 
 import CallEvaluationAnswers from './call-evaluation-answers.vue';
 import CallEvaluationScore from './call-evaluation-score.vue';
-import ScorecardInfo from './scorecard-info.vue';
+import CallEvaluationResultInfo from './call-evaluation-result-info.vue';
 
 export default {
   name: 'call-evaluation-result',
   components: {
-    ScorecardInfo,
+    CallEvaluationResultInfo,
     CallEvaluationAnswers,
     CallEvaluationScore,
   },
   props: {
-    value: {
+    result: {
       type: Object,
       required: true,
     },
   },
-  data: () => ({
-  }),
   computed: {
     scorecardInfo() {
-      const date = new Date(Number(this.value.createdAt));
       return [
-        { title: this.$t('fields.ratedBy'), value: this.value.createdBy.name },
-        { title: this.$t('fields.agent'), value: this.value.ratedUser.name },
-        { title: this.$t('fields.date'), value: date.toLocaleDateString() },
-        { title: this.$t('registry.call.evaluation.scorecard'), value: this.value.form.name },
+        { title: this.$t('fields.ratedBy'), value: this.result.createdBy.name },
+        { title: this.$t('fields.agent'), value: this.result.ratedUser.name },
+        { title: this.$t('fields.date'), value: new Date(+this.result.createdAt).toLocaleDateString() },
+        { title: this.$t('registry.call.evaluation.scorecard'), value: this.result.form.name },
       ];
     },
-  },
-  methods: {
   },
 };
 </script>

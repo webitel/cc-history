@@ -110,12 +110,12 @@ const actions = {
     await context.dispatch('LOAD_MAIN_CALL', item);
   },
 
-  RESET_OPENED_CALL: (context) => {
+  RESET_OPENED_CALL: async (context) => {
     context.commit('RESET_CALL_ID');
     context.commit('RESET_MAIN_CALL');
     context.commit('RESET_FILE_ID');
     context.commit('RESET_LEGS_DATA_LIST');
-    context.commit('evaluation/RESET_EVALUATION_RESULT');
+    await context.dispatch('evaluation/RESET_EVALUATION_RESULT');
   },
 
   ADD_ANNOTATION: async (context, annotation) => (

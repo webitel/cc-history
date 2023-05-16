@@ -1,7 +1,7 @@
 <template>
   <ul class="call-evaluation-answers">
       <li
-        v-for="(item, index) in value.questions"
+        v-for="(item, index) in result.questions"
         :key="item.question"
         class="call-evaluation-answers-item"
       >
@@ -23,7 +23,7 @@
                 color="accent"
               />
               <div class="call-evaluation-answers-item__score-number">
-                {{ value.answers[index].score }}
+                {{ result.answers[index].score }}
               </div>
             </div>
           </div>
@@ -37,7 +37,7 @@
 export default {
   name: 'call-evaluation-answers',
   props: {
-    value: {
+    result: {
       type: Object,
       required: true,
     },
@@ -45,7 +45,7 @@ export default {
   methods: {
     answerTitle(item, index) {
       if (item.options) {
-        const currentOption = item.options.find((option) => option.score === this.value.answers[index].score);
+        const currentOption = item.options.find((option) => option.score === this.result.answers[index].score);
         return currentOption.name;
         // because this.value.answers[index] doesn`t have field 'name'
       }
