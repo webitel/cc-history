@@ -1,9 +1,6 @@
 <template>
   <section class="call-transcript">
-    <call-visualization-header>
-      <template v-slot:title>
-        {{ $tc('registry.stt.transcription', 1) }}
-      </template>
+    <call-visualization-header v-if="transcript">
       <template v-slot:main>
         <wt-checkbox
           v-for="(channel) of channels"
@@ -12,15 +9,12 @@
           :label="channel.value"
         ></wt-checkbox>
       </template>
-      <template
-        v-if="transcript"
-        v-slot:actions
-      >
+      <template v-slot:actions>
         <stt-download-action
           @click="downloadTxt(filteredData)"
         ></stt-download-action>
         <stt-delete-action
-          @click="deleteTranscription"
+          @click="deleteTranscript"
         ></stt-delete-action>
       </template>
     </call-visualization-header>
@@ -48,6 +42,7 @@
 </template>
 
 <script>
+import CallTranscriptAPI from "@/modules/main/modules/registry/modules/stt/api/CallTranscriptAPI";
 import CallVisualizationHeader from '../../../call/components/call-visualization/call-visualization-header.vue';
 import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
 import SttDeleteAction from '../utils/stt-delete-action.vue';
@@ -98,6 +93,17 @@ export default {
         { ...channels, [channel]: { value: channel, show: true } }
       ), {});
     },
+    async deleteTranscript() {
+      const fileId = this.transcript.id;
+      const index = this.call.transcripts.indexOf(this.transcript);
+      await CallTranscriptAPI.delete({ fileId });
+      /**
+       * we mock deletion of transcription with sending api request from call-transcript.vue
+       * to prevent refreshing of all call data and page reload
+       */
+      // eslint-disable-next-line vue/no-mutating-props
+      this.call.transcripts.splice(index, 1);
+    },
   },
   watch: {
     data() {
@@ -108,8 +114,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .call-visualization-header {
-  margin-bottom: var(--spacing-sm);
+  margin: var(--spacing-sm) 0;
 }
 
 .call-transcript__table-wrapper {
@@ -117,4 +124,5 @@ export default {
   overflow: auto;
   max-height: 60vh;
 }
+
 </style>

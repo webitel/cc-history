@@ -1,10 +1,10 @@
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
-
+import evaluation from '../modules/evaluation/store/evaluation';
 import APIRepository from '../../../../../../../app/api/APIRepository';
 
 const historyAPI = APIRepository.history;
 const annotationsAPI = APIRepository.annotations;
-const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'files_job', 'transcripts', 'direction', 'from', 'to', 'destination', 'hold', 'amd_ai_logs', 'amd_result'];
+const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'files_job', 'transcripts', 'direction', 'from', 'to', 'destination', 'hold', 'amd_ai_logs', 'amd_result', 'rate_id'];
 const REQUIRED_DATA_FIELDS = ['id', 'parent_id', 'transfer_from', 'transfer_to'];
 
 const transfersHeader = {
@@ -110,11 +110,12 @@ const actions = {
     await context.dispatch('LOAD_MAIN_CALL', item);
   },
 
-  RESET_OPENED_CALL: (context) => {
+  RESET_OPENED_CALL: async (context) => {
     context.commit('RESET_CALL_ID');
     context.commit('RESET_MAIN_CALL');
     context.commit('RESET_FILE_ID');
     context.commit('RESET_LEGS_DATA_LIST');
+    await context.dispatch('evaluation/RESET_EVALUATION_RESULT');
   },
 
   ADD_ANNOTATION: async (context, annotation) => (
@@ -173,6 +174,7 @@ const mutations = {
 };
 
 const call = new BaseStoreModule()
+  .setChildModules({ evaluation })
   .getModule({
  state, getters, actions, mutations,
 });

@@ -129,10 +129,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .history-tabs-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: var(--spacing-sm);
 }
+
 </style>
