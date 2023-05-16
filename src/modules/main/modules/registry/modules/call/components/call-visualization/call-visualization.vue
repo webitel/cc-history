@@ -1,17 +1,8 @@
 <template>
   <section class="call-visualization">
-    <wt-select
-      v-model="currentFile"
-      :clearable="false"
-      :label="$t('vocabulary.file')"
-      :options="currentFIleOptions"
-      class="call-visualization__filepicker"
-      track-by="id"
-    ></wt-select>
     <call-wave
       v-if="call.files"
       :call="call"
-      :file="currentFile"
     ></call-wave>
     <div class="history-tabs-wrapper">
       <wt-tabs
@@ -21,7 +12,6 @@
       <component
         :is="currentTab.value"
         :call="call"
-        :file="currentFile"
         :namespace="currentTab.namespace"
       ></component>
     </div>
@@ -50,15 +40,9 @@ export default {
     },
   },
   data: () => ({
-    currentFile: null,
     currentTab: {},
   }),
   computed: {
-    currentFIleOptions() {
-      return this.call.files
-        || (this.call.transcripts || this.call.filesJob)
-        .map(({ id }) => ({ id, name: id }));
-    },
     tabValues() {
       return {
         TRANSCRIPT: {
@@ -79,13 +63,7 @@ export default {
         : [this.tabValues.TRANSCRIPT];
     },
   },
-  methods: {
-    initCurrentFile() {
-      [this.currentFile] = this.currentFIleOptions;
-    },
-  },
   created() {
-    this.initCurrentFile();
     this.currentTab = this.tabValues.TRANSCRIPT;
   },
 };

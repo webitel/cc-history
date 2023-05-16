@@ -2,7 +2,15 @@
   <section class="call-wave-page">
     <call-visualization-header>
       <template v-slot:title>
-        {{ $t('registry.call.wave.wave') }}
+        <wt-select
+          :value="file"
+          :clearable="false"
+          :placeholder="$t('vocabulary.file')"
+          :options="fileOptions"
+          class="call-visualization__filepicker"
+          track-by="id"
+          @change="setFile"
+        ></wt-select>
       </template>
       <template v-if="!isLoading" v-slot:main>
         <wt-checkbox
@@ -166,7 +174,7 @@
 <script>
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
@@ -227,10 +235,6 @@ export default {
       type: Object,
       required: true,
     },
-    file: {
-      type: Object,
-      required: true,
-    },
   },
   data: () => ({
     volumeLeftGain: 1,
@@ -271,11 +275,16 @@ export default {
   computed: {
     ...mapState('registry/call', {
       annotations: (state) => state.mainCallAnnotations,
+      file: (state) => state.selectedRecordingFile,
+    }),
+    ...mapGetters('registry/call', {
+      fileOptions: 'RECORDING_FILE_SELECT_OPTIONS',
     }),
     fileUrl() {
       return generateMediaURL(this.file.id, true);
     },
     player() {
+      console.info('here!', this.$refs.surf);
       return this.$refs.surf && this.$refs.surf.waveSurfer;
     },
     callDuration() {
@@ -295,6 +304,8 @@ export default {
       updateAnnotation: 'EDIT_ANNOTATION',
       deleteAnnotation: 'DELETE_ANNOTATION',
       loadAnnotations: 'LOAD_MAIN_CALL_ANNOTATIONS',
+
+      setFile: 'SET_RECORDING_FILE',
     }),
 
     speedButtonColor(value) {
@@ -452,20 +463,31 @@ export default {
       this.redraw();
       player.on('region-update-end', this.createComment);
     },
+    initFile() {
+      this.setFile(this.fileOptions[0]);
+    },
   },
 
   watch: {
     fileUrl() {
-      this.player.load(this.fileUrl);
+      // at first fileUrl set to truthy value, there's no player yet
+      if (this.player) this.player.load(this.fileUrl);
     },
   },
-
   created() {
+    this.initFile();
     this.initFilesExport({ filename: 'history-record' });
     this.loadAnnotations();
   },
 
-  mounted() {
+  async mounted() {
+    console.info(this.fileUrl);
+    await this.$nextTick();
+    await this.$nextTick();
+    await this.$nextTick();
+    await this.$nextTick();
+    await this.$nextTick();
+    console.info(this.player);
     this.$nextTick(() => {
       if (this.player && this.fileUrl) {
         this.initWave();
