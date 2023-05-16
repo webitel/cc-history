@@ -43,6 +43,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.call-evaluation-result {
+  display: flex;
+  flex-direction: column;
+}
 
 .call-evaluation-result-item {
   display: flex;

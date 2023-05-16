@@ -83,15 +83,6 @@ export default {
     initCurrentFile() {
       [this.currentFile] = this.currentFIleOptions;
     },
-    deleteTranscript(transcript) {
-      const index = this.call.transcripts.indexOf(transcript);
-      /**
-       * we mock deletion of transcription with sending api request from call-transcript.vue
-       * to prevent refreshing of all call data and page reload
-       */
-      // eslint-disable-next-line vue/no-mutating-props
-      this.call.transcripts.splice(index, 1);
-    },
   },
   created() {
     this.initCurrentFile();

@@ -60,7 +60,6 @@ export default {
 
 .call-evaluation-result {
   display: flex;
-  margin-top: var(--spacing-sm);
   padding: var(--spacing-sm);
   gap: var(--spacing-sm);
 
@@ -77,4 +76,7 @@ export default {
   }
 }
 
+.call-evaluation-answers {
+  flex: 1;
+}
 </style>
