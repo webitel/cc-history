@@ -17,6 +17,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-xs);
+  align-items: center;
   flex-wrap: nowrap;
   padding: var(--spacing-xs) var(--spacing-sm);
   background: var(--secondary-color-50);

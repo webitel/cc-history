@@ -40,11 +40,12 @@ const getters = {
     skipParent: false,
   }),
 
-  GET_MAIN_CALL_REQUEST_PARAMS: (state, getters) => ({
-    fields: getters.MAIN_CALL_FIELDS,
+  GET_MAIN_CALL_REQUEST_PARAMS: (state, getters) => (params = {}) => ({
+    fields: [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
     from: 0, // get All
     to: Date.now(),
     id: [state.mainCallId],
+    ...params,
   }),
 
   DATA_FIELDS: (state, getters, rootState) => {
@@ -55,10 +56,8 @@ const getters = {
     return fields;
   },
 
-  MAIN_CALL_FIELDS: (state, getters) => [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
-
   RECORDING_FILE_SELECT_OPTIONS: (state) => state.mainCall.files
-      || (state.mainCall.transcripts || state.mainCall.filesJob)
+      || (state.mainCall.transcripts || state.mainCall.filesJob) || []
         .map(({ id }) => ({ id, name: id })),
 };
 
@@ -79,13 +78,18 @@ const actions = {
 
   LOAD_MAIN_CALL: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS;
+    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS();
     try {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
       if (!state.fileId && mainCall.files) {
         await context.dispatch('SET_FILE_ID', mainCall.files[0].id);
+      }
+      if (context.getters.RECORDING_FILE_SELECT_OPTIONS) {
+        // we should initialize recording file before opening "call visualization" tab
+        // so that player would initialize correctly
+        await context.dispatch('INITIALIZE_RECORDING_FILE');
       }
     } catch (err) {
       throw err;
@@ -135,6 +139,7 @@ const actions = {
     annotationsAPI.delete({ itemInstance: annotation })
   ),
 
+  INITIALIZE_RECORDING_FILE: (context) => context.dispatch('SET_RECORDING_FILE', context.getters.RECORDING_FILE_SELECT_OPTIONS[0]),
   SET_RECORDING_FILE: (context, file) => context.commit('SET_RECORDING_FILE', file),
 };
 

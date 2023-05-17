@@ -3,11 +3,11 @@
     <call-visualization-header>
       <template v-slot:title>
         <wt-select
+          class="call-wave-page__file-select"
           :value="file"
           :clearable="false"
           :placeholder="$t('vocabulary.file')"
           :options="fileOptions"
-          class="call-visualization__filepicker"
           track-by="id"
           @change="setFile"
         ></wt-select>
@@ -284,7 +284,6 @@ export default {
       return generateMediaURL(this.file.id, true);
     },
     player() {
-      console.info('here!', this.$refs.surf);
       return this.$refs.surf && this.$refs.surf.waveSurfer;
     },
     callDuration() {
@@ -463,31 +462,19 @@ export default {
       this.redraw();
       player.on('region-update-end', this.createComment);
     },
-    initFile() {
-      this.setFile(this.fileOptions[0]);
-    },
   },
 
   watch: {
     fileUrl() {
-      // at first fileUrl set to truthy value, there's no player yet
-      if (this.player) this.player.load(this.fileUrl);
+      this.player.load(this.fileUrl);
     },
   },
   created() {
-    this.initFile();
     this.initFilesExport({ filename: 'history-record' });
     this.loadAnnotations();
   },
 
-  async mounted() {
-    console.info(this.fileUrl);
-    await this.$nextTick();
-    await this.$nextTick();
-    await this.$nextTick();
-    await this.$nextTick();
-    await this.$nextTick();
-    console.info(this.player);
+  mounted() {
     this.$nextTick(() => {
       if (this.player && this.fileUrl) {
         this.initWave();
@@ -500,9 +487,17 @@ export default {
 <style lang="scss" scoped>
 .call-visualization-header {
   margin-bottom: var(--spacing-sm);
+
+  :deep(.call-visualization-header__title) {
+    line-height: unset;
+  }
 }
 
 .call-wave-page {
+  .call-wave-page__file-select {
+    width: 280px;
+  }
+
   .call-wave-page-main {
     display: flex;
     flex-direction: column;

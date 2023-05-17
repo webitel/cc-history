@@ -14,10 +14,4 @@ describe('CallVisualization', () => {
     const wrapper = shallowMount(CallVisualization, { props });
     expect(wrapper.isVisible()).toBe(true);
   });
-  it('initially sets currentFile to first file from item.files', () => {
-    const file = { id: 'jest' };
-    call.files = [file];
-    const wrapper = shallowMount(CallVisualization, { props });
-    expect(wrapper.vm.currentFile).toStrictEqual(file);
-  });
 });
