@@ -159,13 +159,12 @@ export default {
       return this.$refs['preset-select'].fetchOptions();
     },
     setPreset(preset) {
+      this.resetFilters();
       this.preset = preset;
       if (!isEmpty(preset)) {
         Object.entries(preset.preset).forEach(([filter, value]) => {
           this.setFilter({ filter, value });
         });
-      } else {
-        this.resetFilters();
       }
       this.loadData();
     },
