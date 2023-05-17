@@ -14,9 +14,10 @@ export default {
 
 <style lang="scss" scoped>
 .call-visualization-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xs);
   align-items: center;
-  justify-content: space-between;
   flex-wrap: nowrap;
   padding: var(--spacing-xs) var(--spacing-sm);
   background: var(--secondary-color-50);
@@ -32,6 +33,10 @@ export default {
     align-items: center;
     justify-content: center;
     gap: var(--spacing-xs);
+  }
+
+  .call-visualization-header__actions {
+    justify-content: flex-end;
   }
 }
 </style>

@@ -5,16 +5,21 @@ import CallTranscriptAPI from '../../../api/CallTranscriptAPI';
 let call;
 let file;
 let props;
+let computed;
 
 describe('CallTranscriptSection', () => {
   beforeEach(() => {
     file = { id: 1 };
     call = { files: [file] };
-    props = { file, call };
+    props = { call };
+    computed = {
+      ...CallTranscriptSection.computed,
+      file: () => file,
+    };
   });
 
   it('renders a component', () => {
-    const wrapper = shallowMount(CallTranscriptSection, { props });
+    const wrapper = shallowMount(CallTranscriptSection, { props, computed });
     expect(wrapper.isVisible()).toBe(true);
   });
 
@@ -22,9 +27,10 @@ describe('CallTranscriptSection', () => {
     file = { id: 'jest' };
     call.files = [file];
     call.transcripts = [file];
-    props = { file, call };
+    props = { call };
+    computed.file = () => file;
     CallTranscriptAPI.delete = jest.fn();
-    const wrapper = shallowMount(CallTranscriptSection, { props });
+    const wrapper = shallowMount(CallTranscriptSection, { props, computed });
     await wrapper.vm.deleteTranscript(file);
     expect(call.transcripts.length).toBe(0);
   });

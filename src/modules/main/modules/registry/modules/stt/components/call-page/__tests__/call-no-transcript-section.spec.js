@@ -6,23 +6,30 @@ import CallTranscriptAPI from '../../../api/CallTranscriptAPI';
 let call;
 let file;
 let props;
+let computed;
 
 describe('CallNoTranscriptSection', () => {
   beforeEach(() => {
     file = { id: 1 };
     call = { files: [file] };
-    props = { file, call };
+    props = { call };
+    computed = {
+      ...CallNoTranscriptSection.computed,
+      file: () => file,
+    };
   });
 
   it('renders a component', () => {
     const wrapper = shallowMount(CallNoTranscriptSection, {
       props,
+      computed,
     });
     expect(wrapper.isVisible()).toBe(true);
   });
   it('falsy fileJob computed, if call has no filesJob', () => {
     const wrapper = shallowMount(CallNoTranscriptSection, {
       props,
+      computed,
     });
     expect(wrapper.vm.fileJob).toBeFalsy();
   });
@@ -32,6 +39,7 @@ describe('CallNoTranscriptSection', () => {
     file.id = 'jst';
     const wrapper = shallowMount(CallNoTranscriptSection, {
       props,
+      computed,
     });
     expect(wrapper.vm.fileJob).toStrictEqual(fileJob);
   });
@@ -44,6 +52,7 @@ describe('CallNoTranscriptSection', () => {
 
     const wrapper = mount(CallNoTranscriptSection, {
       props,
+      computed,
     });
     const mock = jest.fn();
     jest.spyOn(CallTranscriptAPI, 'create')
@@ -68,6 +77,7 @@ describe('CallNoTranscriptSection', () => {
 
     const wrapper = mount(CallNoTranscriptSection, {
       props,
+      computed,
     });
 
     const mock = jest.fn();

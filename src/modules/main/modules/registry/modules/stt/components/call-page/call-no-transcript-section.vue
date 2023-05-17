@@ -53,7 +53,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { mapActions, mapState } from 'vuex';
 import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
 import CallTranscriptAPI from '../../api/CallTranscriptAPI';
 
@@ -61,10 +62,6 @@ export default {
   name: 'call-no-transcript',
   props: {
     call: {
-      type: Object,
-      required: true,
-    },
-    file: {
       type: Object,
       required: true,
     },
@@ -76,6 +73,11 @@ export default {
     JobState: HistoryFileJobHistoryFileJobState,
   }),
   computed: {
+    ...mapState({
+      file(state) {
+        return getNamespacedState(state, this.namespace).selectedRecordingFile;
+      },
+    }),
     fileJob() {
       return (this.call.filesJob || []).find(({ fileId }) => this.file.id === fileId);
     },
