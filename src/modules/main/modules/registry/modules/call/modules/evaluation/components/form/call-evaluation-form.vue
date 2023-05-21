@@ -5,6 +5,7 @@
       class="call-evaluation-form__audit-form"
       mode="fill"
       :questions="scorecard.questions"
+      @update:validation="invalid = $event.invalid"
     />
     <wt-textarea
       v-model="comment"
@@ -12,7 +13,10 @@
       :label="$t('registry.call.evaluation.comment')"
     />
     <div class="call-evaluation-form__actions">
-      <wt-button @click="saveEvaluation">
+      <wt-button
+        :disabled="invalid"
+        @click="saveEvaluation"
+      >
         {{ $t('reusable.save') }}
       </wt-button>
       <wt-button
@@ -51,6 +55,7 @@ export default {
   data: () => ({
     auditResult: [],
     comment: '',
+    invalid: true,
   }),
   methods: {
     ...mapActions({
