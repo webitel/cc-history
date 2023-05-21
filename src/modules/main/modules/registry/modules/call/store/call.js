@@ -98,8 +98,8 @@ const actions = {
     }
   },
 
-  LOAD_MAIN_CALL_ANNOTATIONS: async (context) => {
-    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS;
+  LOAD_MAIN_CALL_ANNOTATIONS: async (context, query = {}) => {
+    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS(query);
     params.fields = ['annotations'];
     try {
       const { items } = await historyAPI.getHistory(params);

@@ -84,7 +84,6 @@ export default {
       if (this.showHolds && this.holdsSize) {
         this.displayHolds(this.call.hold, this.player);
       }
-      console.info(this.showComments, this.commentsSize);
       if (this.showComments && this.commentsSize) {
         this.displayComments(this.annotations, this.player);
       }
