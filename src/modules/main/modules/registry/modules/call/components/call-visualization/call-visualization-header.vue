@@ -1,7 +1,6 @@
 <template>
   <header class="call-visualization-header">
-    <h3 class="call-visualization-header__title"><slot name="title"></slot></h3>
-    <div class="call-visualization-header__main"><slot name="main"></slot></div>
+    <h3 class="call-visualization-header__main"><slot name="main"></slot></h3>
     <div class="call-visualization-header__actions"><slot name="actions"></slot></div>
   </header>
 </template>
@@ -15,7 +14,7 @@ export default {
 <style lang="scss" scoped>
 .call-visualization-header {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 1fr;
   gap: var(--spacing-xs);
   align-items: center;
   flex-wrap: nowrap;
@@ -23,11 +22,13 @@ export default {
   background: var(--secondary-color-50);
   border-radius: var(--border-radius);
 
-  .call-visualization-header__title {
+  .call-visualization-header__main {
     @extend %typo-heading-3;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
   }
 
-  .call-visualization-header__main,
   .call-visualization-header__actions {
     display: flex;
     align-items: center;

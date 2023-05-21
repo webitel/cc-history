@@ -1,7 +1,7 @@
 <template>
   <section class="call-wave-page">
     <call-visualization-header>
-      <template v-slot:title>
+      <template v-slot:main>
         <wt-select
           class="call-wave-page__file-select"
           :value="file"
@@ -11,26 +11,29 @@
           track-by="id"
           @change="setFile"
         ></wt-select>
-      </template>
-      <template v-if="!isLoading" v-slot:main>
-        <wt-checkbox
-          :label="$tc('registry.call.hold', 2)"
-          :selected="showHolds"
-          :value="showHolds"
-          @change="toggleHolds"
-        ></wt-checkbox>
-        <wt-chip>
-          {{ holdsSize }}
-        </wt-chip>
-        <wt-checkbox
-          :label="$tc('registry.call.comment', 2)"
-          :selected="showComments"
-          :value="showComments"
-          @change="toggleComments"
-        ></wt-checkbox>
-        <wt-chip>
-          {{ commentsSize }}
-        </wt-chip>
+        <div
+          v-if="!isLoading"
+          class="call-wave-page__region-actions"
+        >
+          <wt-checkbox
+            :label="$tc('registry.call.hold', 2)"
+            :selected="showHolds"
+            :value="showHolds"
+            @change="toggleHolds"
+          ></wt-checkbox>
+          <wt-chip>
+            {{ holdsSize }}
+          </wt-chip>
+          <wt-checkbox
+            :label="$tc('registry.call.comment', 2)"
+            :selected="showComments"
+            :value="showComments"
+            @change="toggleComments"
+          ></wt-checkbox>
+          <wt-chip>
+            {{ commentsSize }}
+          </wt-chip>
+        </div>
       </template>
       <template v-if="!isLoading" v-slot:actions>
         <wt-icon-btn
@@ -496,6 +499,13 @@ export default {
 .call-wave-page {
   .call-wave-page__file-select {
     width: 280px;
+  }
+
+  .call-wave-page__region-actions {
+    display: flex;
+    align-items: center;
+    justify-content:  center;
+    gap: var(--spacing-xs);
   }
 
   .call-wave-page-main {
