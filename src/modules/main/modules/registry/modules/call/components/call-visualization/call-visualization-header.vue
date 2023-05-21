@@ -23,7 +23,6 @@ export default {
   border-radius: var(--border-radius);
 
   .call-visualization-header__main {
-    @extend %typo-heading-3;
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);

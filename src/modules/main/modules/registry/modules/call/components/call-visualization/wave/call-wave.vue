@@ -490,10 +490,6 @@ export default {
 <style lang="scss" scoped>
 .call-visualization-header {
   margin-bottom: var(--spacing-sm);
-
-  :deep(.call-visualization-header__title) {
-    line-height: unset;
-  }
 }
 
 .call-wave-page {

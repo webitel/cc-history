@@ -11,13 +11,17 @@
       @close="closePresetFormPopup"
     ></preset-form-popup>
     <form class="history-filters" :class="{'history-filters--opened': isOpened}">
-      <wt-select
+      <preset-filter
         ref="preset-select"
-        :value="preset"
-        :label="$t('filters.preset.preset', 1)"
-        :search-method="searchPresets"
+        :preset-filter-schema="{
+          value: preset,
+          defaultValue: {},
+          multiple: false,
+          storedProp: 'id',
+          locale: { label: ['filters.preset.preset', 1] },
+        }"
         @input="setPreset"
-      ></wt-select>
+      ></preset-filter>
       <filter-from class="history-filters__filter" />
       <filter-to class="history-filters__filter" />
       <component
@@ -74,6 +78,7 @@ import FilterTo from './filters/filter-to.vue';
 import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
 import PresetQueryAPI from '../api/PresetQueryAPI';
 import PresetFormPopup from './preset-form-popup.vue';
+import PresetFilter from './preset-filter.vue';
 
 export default {
   name: 'the-history-filters',
@@ -86,6 +91,7 @@ export default {
     FilterTo,
     FilterFromTo,
     PresetFormPopup,
+    PresetFilter,
   },
 
   data: () => ({
@@ -146,7 +152,6 @@ export default {
         return dispatch(`${this.namespace}/SET_FILTER`, payload);
       },
     }),
-    searchPresets: PresetQueryAPI.getList,
     openPresetFormPopup() {
       this.isPresetFormPopup = true;
     },
@@ -156,7 +161,7 @@ export default {
     },
     updatePresetOptions() {
       // We need to force a reload of options list after preset deletion
-      return this.$refs['preset-select'].fetchOptions();
+      return this.$refs['preset-select'].$refs['preset-filter'].fetchOptions();
     },
     setPreset(preset) {
       this.resetFilters();
