@@ -34,6 +34,8 @@
 <script>
 import CallEvaluationAPI from '../../api/CallEvaluationAPI';
 
+const scorecardCacheKey = 'history-last-used-scorecard';
+
 export default {
   name: 'select-scorecard-popup',
 
@@ -44,7 +46,15 @@ export default {
   methods: {
     selectScorecard() {
       this.$emit('change', this.scorecard);
+      this.cacheScorecard(this.scorecard);
       this.$emit('close');
+    },
+    cacheScorecard(scorecard) {
+      sessionStorage.setItem(scorecardCacheKey, JSON.stringify(scorecard));
+    },
+    setScorecardFromCache() {
+      const scorecard = sessionStorage.getItem(scorecardCacheKey);
+      if (scorecard) this.scorecard = JSON.parse(scorecard);
     },
     loadScorecards: (params) => CallEvaluationAPI.getLookup({
        ...params,
@@ -52,6 +62,9 @@ export default {
        enabled: true,
        active: true,
      }),
+  },
+  created() {
+    this.setScorecardFromCache();
   },
 };
 </script>
