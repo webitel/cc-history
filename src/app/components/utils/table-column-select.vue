@@ -11,7 +11,7 @@
       <ul class="column-select__list">
         <li
           class="column-select__item"
-          v-for="(col, key) of sortedDraft"
+          v-for="(col, key) of draft"
           :key="key"
           @click.capture.prevent="col.show = !col.show"
         >
@@ -64,10 +64,7 @@ export default {
   },
   computed: {
     sortedDraft() {
-      return this.draft.sort((a, b) => {
-        return a.text > b.text ? 1: -1;
-        // sorting headers for alphabet
-      });
+      return
     }
   },
 
@@ -77,7 +74,10 @@ export default {
     },
 
     fillHeadersDraft() {
-      this.draft = deepCopy(this.value);
+      this.draft = deepCopy(this.value).sort((a, b) => {
+        return a.text > b.text ? 1: -1;
+        // sorting headers for alphabet
+      });
     },
   },
 };
