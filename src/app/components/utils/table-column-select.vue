@@ -62,11 +62,6 @@ export default {
       immediate: true,
     },
   },
-  computed: {
-    sortedDraft() {
-      return
-    }
-  },
 
   methods: {
     setShownColumns() {
