@@ -2,6 +2,7 @@
   <wt-popup
     class="column-select"
     @close="$emit('close')"
+    width="800"
   >
     <template v-slot:header>
       <h1 class="column-select__heading">{{$t('components.columnSelect.header')}}</h1>
@@ -10,7 +11,7 @@
       <ul class="column-select__list">
         <li
           class="column-select__item"
-          v-for="(col, key) of draft"
+          v-for="(col, key) of sortedDraft"
           :key="key"
           @click.capture.prevent="col.show = !col.show"
         >
@@ -33,45 +34,53 @@
 </template>
 
 <script>
-  import deepCopy from 'deep-copy';
+import deepCopy from 'deep-copy';
 
-  export default {
-    name: 'table-column-select',
-    props: {
-      value: {
-        type: Array,
-        required: true,
+export default {
+  name: 'table-column-select',
+  props: {
+    value: {
+      type: Array,
+      required: true,
+    },
+  },
+
+  model: {
+    prop: 'value',
+    event: 'change',
+  },
+
+  data: () => ({
+    draft: [], // headers draft
+  }),
+
+  watch: {
+    value: {
+      handler() {
+        this.fillHeadersDraft();
       },
+      immediate: true,
+    },
+  },
+  computed: {
+    sortedDraft() {
+      return this.draft.sort((a, b) => {
+        return a.text > b.text ? 1: -1;
+        // sorting headers for alphabet
+      });
+    }
+  },
+
+  methods: {
+    setShownColumns() {
+      this.$emit('change', this.draft);
     },
 
-    model: {
-      prop: 'value',
-      event: 'change',
+    fillHeadersDraft() {
+      this.draft = deepCopy(this.value);
     },
-
-    data: () => ({
-      draft: [], // headers draft
-    }),
-
-    watch: {
-      value: {
-        handler() {
-          this.fillHeadersDraft();
-        },
-        immediate: true,
-      },
-    },
-
-    methods: {
-      setShownColumns() {
-        this.$emit('change', this.draft);
-      },
-
-      fillHeadersDraft() {
-        this.draft = deepCopy(this.value);
-      },
-    },
-  };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -81,18 +90,19 @@
 
 .column-select__list {
   @extend %wt-scrollbar;
-  max-height: 35vh;
+  max-height: 48vh;
   min-width: 550px;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: initial;
 }
 
 .column-select__item {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
-}
-
-.wt-button:first-child {
-  margin-right: 20px;
+  margin-right: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
 }
 </style>
