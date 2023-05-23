@@ -50,10 +50,10 @@ export default {
       this.$emit('close');
     },
     cacheScorecard(scorecard) {
-      sessionStorage.setItem(scorecardCacheKey, JSON.stringify(scorecard));
+      localStorage.setItem(scorecardCacheKey, JSON.stringify(scorecard));
     },
     setScorecardFromCache() {
-      const scorecard = sessionStorage.getItem(scorecardCacheKey);
+      const scorecard = localStorage.getItem(scorecardCacheKey);
       if (scorecard) this.scorecard = JSON.parse(scorecard);
     },
     loadScorecards: (params) => CallEvaluationAPI.getLookup({
