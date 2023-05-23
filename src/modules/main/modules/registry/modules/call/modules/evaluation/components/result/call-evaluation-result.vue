@@ -7,14 +7,14 @@
         ></call-evaluation-result-info>
         <div class="call-evaluation-result__scorecard-info-rating">
           <call-evaluation-score
-            v-if="result.scoreOptional"
-            :value="result.scoreOptional"
+            v-if="result.scoreRequired"
+            :value="result.scoreRequired"
             :title="$t('registry.call.evaluation.mandatory')"
             color="success"
           />
           <call-evaluation-score
-            v-if="result.scoreRequired"
-            :value="result.scoreRequired"
+            v-if="result.scoreOptional"
+            :value="result.scoreOptional"
             :title="$t('registry.call.evaluation.optional')"
             color="secondary"
           />
