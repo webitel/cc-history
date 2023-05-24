@@ -11,11 +11,11 @@
       <ul class="column-select__list">
         <li
           class="column-select__item"
-          v-for="(col, key) of draft"
+          v-for="(column, key) of sortedDraft"
           :key="key"
-          @click.capture.prevent="col.show = !col.show"
+          @click.capture.prevent="column.show = !column.show"
         >
-          <wt-checkbox v-model="col.show" :label="col.text"/>
+          <wt-checkbox v-model="column.show" :label="column.text"/>
         </li>
       </ul>
     </template>
@@ -52,6 +52,7 @@ export default {
 
   data: () => ({
     draft: [], // headers draft
+    sortedDraft: [],
   }),
 
   watch: {
@@ -63,17 +64,35 @@ export default {
     },
   },
 
+  mounted() {
+    this.sortedDraft = this.value.sort((a, b) => {
+      return a.text > b.text ? 1: -1;
+      // sorting headers for alphabet just in popup
+    });
+  },
+
   methods: {
     setShownColumns() {
-      this.$emit('change', this.draft);
+      const newDraft = this.draft.map((item) => {
+        return {
+          ...item,
+          show: this.sortedDraft.find((header) => header.value === item.value).show,
+        }
+      });
+      this.$emit('change', newDraft);
     },
 
     fillHeadersDraft() {
-      this.draft = deepCopy(this.value).sort((a, b) => {
-        return a.text > b.text ? 1: -1;
-        // sorting headers for alphabet
-      });
+      this.draft = deepCopy(this.value);
     },
+
+    // toggleHeader(column) {
+    //   this.draft = this.draft.map((item) => {
+    //     if(item.value === column.value) return { ...item, show: !item.show };
+    //     return item;
+    //   });
+    //   column.show = !column.show;
+    // },
   },
 };
 </script>
