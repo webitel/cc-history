@@ -6,7 +6,7 @@
       class="call-evaluation-answers-item"
     >
       <div
-        :class="{'call-evaluation-answers__question--required': required }"
+        :class="{'call-evaluation-answers-item__question--required': required }"
         class="call-evaluation-answers-item__question"
       >
         {{ question }}
