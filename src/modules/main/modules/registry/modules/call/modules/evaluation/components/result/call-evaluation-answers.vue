@@ -6,25 +6,30 @@
       class="call-evaluation-answers-item"
     >
       <div
-        :class="{'call-evaluation-answers__question--required': required }"
+        :class="{'call-evaluation-answers-item__question--required': required }"
         class="call-evaluation-answers-item__question"
       >
         {{ question }}
       </div>
-      <div class="call-evaluation-answers-item__answer">
+      <div
+        class="call-evaluation-answers-item__answer"
+        v-if="answerScore"
+      >
         <div class="call-evaluation-answers-item__title">
           {{ answerName }}
         </div>
-        <div class="call-evaluation-answers-item__score-wrap">
+        <div
+          class="call-evaluation-answers-item__score-wrap"
+        >
           <div class="call-evaluation-answers-item__score">
             <wt-icon
               color="accent"
               icon="star--filled"
               size="md"
             />
-            <div class="call-evaluation-answers-item__score-number">
+            <wt-chip>
               {{ answerScore }}
-            </div>
+            </wt-chip>
           </div>
         </div>
       </div>
@@ -50,7 +55,7 @@ export default {
           required,
           answerScore: this.result.answers[index].score,
           answerName: options
-            ? options.find(({ score }) => score === this.result.answers[index].score).name
+            ? options.find(({ score }) => score === this.result.answers[index].score)?.name || ''
             : '',
         };
       });
@@ -89,15 +94,6 @@ export default {
   &__score {
     display: flex;
     width: 100px;
-  }
-
-  &__score-number {
-    @extend %typo-body-2;
-    margin-left: var(--spacing-xs);
-    padding: var(--chip-padding);
-    color: var(--contrast-color);
-    border-radius: var(--chip-border-radius);
-    background-color: var(--chip-bg-color);
   }
 }
 

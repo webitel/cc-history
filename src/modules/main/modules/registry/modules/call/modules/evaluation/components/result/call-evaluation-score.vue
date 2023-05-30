@@ -7,7 +7,7 @@
         class="call-evaluation-score__icon"
       />
     <span class="call-evaluation-score__value">
-      {{ Math.round(value) }}
+      {{ value.toFixed(2) }}
     </span>
     <span class="call-evaluation-score__title">
     {{ title }}

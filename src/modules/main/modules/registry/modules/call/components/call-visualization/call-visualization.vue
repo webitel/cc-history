@@ -58,7 +58,7 @@ export default {
       };
     },
     tabs() {
-      return this.call.user
+      return this.call.allowEvaluation
         ? [this.tabValues.TRANSCRIPT, this.tabValues.EVALUATION]
         : [this.tabValues.TRANSCRIPT];
     },
