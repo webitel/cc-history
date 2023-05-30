@@ -1,9 +1,9 @@
 <template>
   <section class="history-section history-filters-section">
-    <filter-fields
-      v-show="isFilterFieldsOpened"
-      @close="isFilterFieldsOpened = false"
-    ></filter-fields>
+<!--    <filter-fields-->
+<!--      v-show="isFilterFieldsOpened"-->
+<!--      @close="isFilterFieldsOpened = false"-->
+<!--    ></filter-fields>-->
     <preset-form-popup
       v-if="isPresetFormPopup"
       :name="preset.name"
@@ -58,9 +58,11 @@
       </div>
     </form>
     <wt-table-actions
-      :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
+      :icons="['refresh', 'filter-reset', 'settings']"
       @input="tableActionsHandler"
-    ></wt-table-actions>
+    >
+      <filter-fields />
+    </wt-table-actions>
   </section>
 </template>
 

@@ -1,14 +1,25 @@
 <template>
-  <column-select
-    :value="headers"
+  <!--  <column-select-->
+  <!--    :value="headers"-->
+  <!--    @change="change"-->
+  <!--    @close="close"-->
+  <!--  ></column-select>-->
+<!--  <wt-table-column-select-->
+<!--    :headers="headers"-->
+<!--    @change="change"-->
+<!--    @close="close"-->
+<!--  ></wt-table-column-select>-->
+  <column-select-lib
+    :headers="headers"
     @change="change"
     @close="close"
-  ></column-select>
+    />
 </template>
 
 <script>
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
 import ColumnSelect from '../../../../../../../../app/components/utils/table-column-select.vue';
+import ColumnSelectLib from '../../../../../../../../app/components/utils/table-column-select-lib.vue';
 import historyHeadersMixin from '../../../../mixins/historyHeadersMixin';
 
 export default {
@@ -17,8 +28,14 @@ export default {
     baseFilterMixin,
     historyHeadersMixin,
   ],
+  props: {
+    staticHeaders: {
+      type: Array,
+    },
+  },
   components: {
     ColumnSelect,
+    ColumnSelectLib
   },
 
   data: () => ({
@@ -43,8 +60,8 @@ export default {
       if (!queryValue && storageValue) {
         this.setValueToQuery({ filterQuery, value: storageValue, storedProp: this.storedProp });
       }
-      if (queryValue || storageValue) {
-        this.restoreValue(queryValue || storageValue);
+      if (queryValue, storageValue) {
+        this.restoreValue(queryValue, storageValue);
       }
     },
 
