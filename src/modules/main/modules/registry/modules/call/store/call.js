@@ -1,10 +1,10 @@
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
-
+import evaluation from '../modules/evaluation/store/evaluation';
 import APIRepository from '../../../../../../../app/api/APIRepository';
 
 const historyAPI = APIRepository.history;
 const annotationsAPI = APIRepository.annotations;
-const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'files_job', 'transcripts', 'direction', 'from', 'to', 'destination', 'hold', 'amd_ai_logs', 'amd_result'];
+const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'files_job', 'transcripts', 'direction', 'from', 'to', 'destination', 'hold', 'amd_ai_logs', 'amd_result', 'rate_id', 'allow_evaluation'];
 const REQUIRED_DATA_FIELDS = ['id', 'parent_id', 'transfer_from', 'transfer_to'];
 
 const transfersHeader = {
@@ -22,6 +22,8 @@ const state = {
   legsData: [],
   isLoading: false,
   isLegsDataLoading: false,
+
+  selectedRecordingFile: {},
 };
 
 const getters = {
@@ -38,11 +40,12 @@ const getters = {
     skipParent: false,
   }),
 
-  GET_MAIN_CALL_REQUEST_PARAMS: (state, getters) => ({
-    fields: getters.MAIN_CALL_FIELDS,
+  GET_MAIN_CALL_REQUEST_PARAMS: (state, getters) => (params = {}) => ({
+    fields: [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
     from: 0, // get All
     to: Date.now(),
     id: [state.mainCallId],
+    ...params,
   }),
 
   DATA_FIELDS: (state, getters, rootState) => {
@@ -53,7 +56,9 @@ const getters = {
     return fields;
   },
 
-  MAIN_CALL_FIELDS: (state, getters) => [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
+  RECORDING_FILE_SELECT_OPTIONS: (state) => state.mainCall.files
+      || (state.mainCall.transcripts || state.mainCall.filesJob) || []
+        .map(({ id }) => ({ id, name: id })),
 };
 
 const actions = {
@@ -73,13 +78,18 @@ const actions = {
 
   LOAD_MAIN_CALL: async (context) => {
     context.commit('SET_LOADING', true);
-    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS;
+    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS();
     try {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
       if (!state.fileId && mainCall.files) {
         await context.dispatch('SET_FILE_ID', mainCall.files[0].id);
+      }
+      if (context.getters.RECORDING_FILE_SELECT_OPTIONS) {
+        // we should initialize recording file before opening "call visualization" tab
+        // so that player would initialize correctly
+        await context.dispatch('INITIALIZE_RECORDING_FILE');
       }
     } catch (err) {
       throw err;
@@ -88,8 +98,8 @@ const actions = {
     }
   },
 
-  LOAD_MAIN_CALL_ANNOTATIONS: async (context) => {
-    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS;
+  LOAD_MAIN_CALL_ANNOTATIONS: async (context, query = {}) => {
+    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS(query);
     params.fields = ['annotations'];
     try {
       const { items } = await historyAPI.getHistory(params);
@@ -110,11 +120,13 @@ const actions = {
     await context.dispatch('LOAD_MAIN_CALL', item);
   },
 
-  RESET_OPENED_CALL: (context) => {
+  RESET_OPENED_CALL: async (context) => {
     context.commit('RESET_CALL_ID');
     context.commit('RESET_MAIN_CALL');
     context.commit('RESET_FILE_ID');
     context.commit('RESET_LEGS_DATA_LIST');
+    await context.dispatch('SET_RECORDING_FILE', {});
+    await context.dispatch('evaluation/RESET_EVALUATION_RESULT');
   },
 
   ADD_ANNOTATION: async (context, annotation) => (
@@ -126,6 +138,9 @@ const actions = {
   DELETE_ANNOTATION: async (context, annotation) => (
     annotationsAPI.delete({ itemInstance: annotation })
   ),
+
+  INITIALIZE_RECORDING_FILE: (context) => context.dispatch('SET_RECORDING_FILE', context.getters.RECORDING_FILE_SELECT_OPTIONS[0]),
+  SET_RECORDING_FILE: (context, file) => context.commit('SET_RECORDING_FILE', file),
 };
 
 const mutations = {
@@ -170,9 +185,14 @@ const mutations = {
   RESET_FILE_ID: (state) => {
     state.fileId = null;
   },
+
+  SET_RECORDING_FILE: (state, file) => {
+    state.selectedRecordingFile = file;
+  },
 };
 
 const call = new BaseStoreModule()
+  .setChildModules({ evaluation })
   .getModule({
  state, getters, actions, mutations,
 });

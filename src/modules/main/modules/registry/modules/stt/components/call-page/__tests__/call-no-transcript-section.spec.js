@@ -1,28 +1,35 @@
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, mount } from '@vue/test-utils';
 import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
 import CallNoTranscriptSection from '../call-no-transcript-section.vue';
 import CallTranscriptAPI from '../../../api/CallTranscriptAPI';
 
 let call;
 let file;
-let propsData;
+let props;
+let computed;
 
 describe('CallNoTranscriptSection', () => {
   beforeEach(() => {
     file = { id: 1 };
     call = { files: [file] };
-    propsData = { file, call };
+    props = { call };
+    computed = {
+      ...CallNoTranscriptSection.computed,
+      file: () => file,
+    };
   });
 
   it('renders a component', () => {
     const wrapper = shallowMount(CallNoTranscriptSection, {
-      propsData,
+      props,
+      computed,
     });
     expect(wrapper.isVisible()).toBe(true);
   });
   it('falsy fileJob computed, if call has no filesJob', () => {
     const wrapper = shallowMount(CallNoTranscriptSection, {
-      propsData,
+      props,
+      computed,
     });
     expect(wrapper.vm.fileJob).toBeFalsy();
   });
@@ -31,16 +38,21 @@ describe('CallNoTranscriptSection', () => {
     call.filesJob = [fileJob];
     file.id = 'jst';
     const wrapper = shallowMount(CallNoTranscriptSection, {
-      propsData,
+      props,
+      computed,
     });
-    expect(wrapper.vm.fileJob).toBe(fileJob);
+    expect(wrapper.vm.fileJob).toStrictEqual(fileJob);
   });
   it('"transcribe" btn click calls "create" api method with call id', () => {
     const callId = 'jest';
     call.id = callId;
 
-    const wrapper = shallowMount(CallNoTranscriptSection, {
-      propsData,
+    jest.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
+    .mockImplementationOnce(() => {});
+
+    const wrapper = mount(CallNoTranscriptSection, {
+      props,
+      computed,
     });
     const mock = jest.fn();
     jest.spyOn(CallTranscriptAPI, 'create')
@@ -60,8 +72,12 @@ describe('CallNoTranscriptSection', () => {
     file.id = 1;
     call.filesJob = [{ fileId: 1, state: HistoryFileJobHistoryFileJobState.Error }];
 
-    const wrapper = shallowMount(CallNoTranscriptSection, {
-      propsData,
+    jest.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
+    .mockImplementationOnce(() => {});
+
+    const wrapper = mount(CallNoTranscriptSection, {
+      props,
+      computed,
     });
 
     const mock = jest.fn();

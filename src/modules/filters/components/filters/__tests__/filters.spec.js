@@ -1,36 +1,26 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import VueRouter from 'vue-router';
-import Vuex from 'vuex';
+import { shallowMount } from '@vue/test-utils';
+import { createRouter, createWebHistory } from 'vue-router';
 import store from '../../../../../app/store';
-import FilterDuration from '../filter-duration.vue';
 import FilterFrom from '../filter-from.vue';
 import FilterTo from '../filter-to.vue';
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueRouter);
-
-const router = new VueRouter();
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [],
+});
 
 describe('Filter components', () => {
-  it('renders duration filter component', () => {
-    const wrapper = shallowMount(FilterDuration, {
-      localVue, store, router,
-    });
-    expect(wrapper.classes('filter-duration')).toBe(true);
-  });
-
   it('renders from filter component', () => {
     const wrapper = shallowMount(FilterFrom, {
-      localVue, store, router,
+      global: { plugins: [router, store] },
     });
-    expect(wrapper.findComponent({ name: 'wt-datetimepicker' }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: 'wt-datepicker' }).exists()).toBe(true);
   });
 
   it('renders to filter component', () => {
     const wrapper = shallowMount(FilterTo, {
-      localVue, store, router,
+      global: { plugins: [router, store] },
     });
-    expect(wrapper.findComponent({ name: 'wt-datetimepicker' }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: 'wt-datepicker' }).exists()).toBe(true);
   });
 });

@@ -58,6 +58,7 @@ const actions = {
       context.commit('SET_LOADING', false);
     }
   },
+
   SET_HEADERS: (context, headers) => {
     context.commit('SET_HEADERS', headers);
   },

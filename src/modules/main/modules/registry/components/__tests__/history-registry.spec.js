@@ -1,14 +1,14 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import VueRouter from 'vue-router';
+import { shallowMount } from '@vue/test-utils';
+import { createStore } from 'vuex';
+import { createRouter, createWebHistory } from 'vue-router';
 import HistoryRegistry from '../history-registry.vue';
 import registry from '../../store/registry';
 import openedHistoryCall from '../../modules/call/store/call';
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-localVue.use(Vuex);
-const router = new VueRouter();
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [],
+});
 
 describe('History table', () => {
   let store;
@@ -19,7 +19,7 @@ describe('History table', () => {
   openedHistoryCall.actions.RESET_OPENED_CALL = RESET_OPENED_CALL;
 
   beforeEach(() => {
-    store = new Vuex.Store({
+    store = createStore({
       modules: {
         registry: {
           ...registry,
@@ -31,7 +31,11 @@ describe('History table', () => {
     });
   });
   it('renders a component', () => {
-    const wrapper = shallowMount(HistoryRegistry, { localVue, router, store });
+    const wrapper = shallowMount(HistoryRegistry, {
+      global: {
+        plugins: [store, router],
+      },
+    });
     expect(wrapper.classes('history-registry')).toBe(true);
   });
 });

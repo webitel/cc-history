@@ -21,6 +21,8 @@ const fetchHistory = async ({
                               from,
                               to,
                               user,
+                              rated,
+                              ratedBy,
                               agent,
                               queue,
                               team,
@@ -44,6 +46,8 @@ const fetchHistory = async ({
                               hasTranscription,
                               description,
                               grantee,
+                              talkSec,
+                              score,
                             }) => {
   try {
     const response = await callService.searchHistoryCall(
@@ -86,6 +90,13 @@ const fetchHistory = async ({
       description,
       undefined,
       grantee,
+      undefined,
+      talkSec?.from,
+      talkSec?.to,
+      rated,
+      ratedBy,
+      score?.from,
+      score?.to,
     );
     return formatResponse(response);
   } catch (err) {

@@ -1,28 +1,39 @@
 <template>
   <section class="call-wave-page">
     <call-visualization-header>
-      <template v-slot:title>
-        {{ $t('registry.call.wave.wave') }}
-      </template>
-      <template v-if="!isLoading" v-slot:main>
-        <wt-checkbox
-          :label="$tc('registry.call.hold', 2)"
-          :selected="showHolds"
-          :value="showHolds"
-          @change="toggleHolds"
-        ></wt-checkbox>
-        <wt-chip>
-          {{ holdsSize }}
-        </wt-chip>
-        <wt-checkbox
-          :label="$tc('registry.call.comment', 2)"
-          :selected="showComments"
-          :value="showComments"
-          @change="toggleComments"
-        ></wt-checkbox>
-        <wt-chip>
-          {{ commentsSize }}
-        </wt-chip>
+      <template v-slot:main>
+        <wt-select
+          class="call-wave-page__file-select"
+          :value="file"
+          :clearable="false"
+          :placeholder="$t('vocabulary.file')"
+          :options="fileOptions"
+          track-by="id"
+          @change="setFile"
+        ></wt-select>
+        <div
+          v-if="!isLoading"
+          class="call-wave-page__region-actions"
+        >
+          <wt-checkbox
+            :label="$tc('registry.call.hold', 2)"
+            :selected="showHolds"
+            :value="showHolds"
+            @change="toggleHolds"
+          ></wt-checkbox>
+          <wt-chip>
+            {{ holdsSize }}
+          </wt-chip>
+          <wt-checkbox
+            :label="$tc('registry.call.comment', 2)"
+            :selected="showComments"
+            :value="showComments"
+            @change="toggleComments"
+          ></wt-checkbox>
+          <wt-chip>
+            {{ commentsSize }}
+          </wt-chip>
+        </div>
       </template>
       <template v-if="!isLoading" v-slot:actions>
         <wt-icon-btn
@@ -59,34 +70,42 @@
 
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
-          <div v-if="!leftGain.disabled" class="call-wave-leg">
-            <wt-icon-btn
-              :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-              @click="toggleLeftGain"
-            ></wt-icon-btn>
+          <wt-tooltip
+            v-if="!leftGain.disabled"
+            :popper-triggers="['hover']"
+          >
+            <template v-slot:activator>
+              <wt-icon-btn
+                :icon="leftGain.muted ? 'sound-off': 'sound-on'"
+                @click="toggleLeftGain"
+              ></wt-icon-btn>
+            </template>
             <wt-slider
               :max="2"
               :min="0"
               :step="0.01"
               :value="volumeLeftGain"
-              vertical
               @input="volumeLeftChangeHandler"
-            />
-          </div>
-          <div v-if="!rightGain.disabled" class="call-wave-leg">
-            <wt-icon-btn
-              :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-              @click="toggleRightGain"
-            ></wt-icon-btn>
+            ></wt-slider>
+          </wt-tooltip>
+          <wt-tooltip
+            v-if="!rightGain.disabled"
+            :popper-triggers="['hover']"
+          >
+            <template v-slot:activator>
+              <wt-icon-btn
+                :icon="rightGain.muted ? 'sound-off': 'sound-on'"
+                @click="toggleRightGain"
+              ></wt-icon-btn>
+            </template>
             <wt-slider
               :max="2"
               :min="0"
               :step="0.01"
               :value="volumeRightGain"
-              vertical
               @input="volumeRightChangeHandler"
-            />
-          </div>
+            ></wt-slider>
+          </wt-tooltip>
         </section>
 
         <section v-if="fileUrl" class="call-wave-data-plugin">
@@ -158,11 +177,12 @@
 <script>
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
+import Wavesurfer from './wavesurfer.vue';
 import generateMediaURL from '../../../../../mixins/media/scripts/generateMediaURL';
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import regionsMixin from '../mixins/regionsMixin';
@@ -185,7 +205,8 @@ const timelineOptions = {
   notchPercentHeight: 1,
   unlabeledNotchColor: 'var(--secondary-color)',
   fontFamily: 'Montserrat, monospace',
-  fontSize: 14,
+  fontSize: 12,
+  height: 16,
   labelPadding: 5,
   primaryLabelInterval: 5,
   secondaryLabelInterval: 0,
@@ -206,14 +227,14 @@ const createMarker = (color) => {
 
 export default {
   name: 'call-wave',
-  components: { CallVisualizationHeader, CallCommentForm },
+  components: {
+    CallVisualizationHeader,
+    CallCommentForm,
+    Wavesurfer,
+  },
   mixins: [exportFilesMixin, soundFiltersMixin, regionsMixin],
   props: {
     call: {
-      type: Object,
-      required: true,
-    },
-    file: {
       type: Object,
       required: true,
     },
@@ -231,7 +252,7 @@ export default {
     waveOptions: {
       cursorWidth: 2,
       splitChannels: true,
-      height: 150,
+      height: 96,
       pixelRatio: 1,
       responsive: true,
       plugins: [
@@ -257,15 +278,16 @@ export default {
   computed: {
     ...mapState('registry/call', {
       annotations: (state) => state.mainCallAnnotations,
+      file: (state) => state.selectedRecordingFile,
+    }),
+    ...mapGetters('registry/call', {
+      fileOptions: 'RECORDING_FILE_SELECT_OPTIONS',
     }),
     fileUrl() {
       return generateMediaURL(this.file.id, true);
     },
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
-    },
-    speedButtonColor() {
-      return (value) => (this.playbackRate === value ? 'primary' : 'secondary');
     },
     callDuration() {
       return Math.round(this.player?.getDuration());
@@ -284,8 +306,13 @@ export default {
       updateAnnotation: 'EDIT_ANNOTATION',
       deleteAnnotation: 'DELETE_ANNOTATION',
       loadAnnotations: 'LOAD_MAIN_CALL_ANNOTATIONS',
+
+      setFile: 'SET_RECORDING_FILE',
     }),
 
+    speedButtonColor(value) {
+      return this.playbackRate === value ? 'primary' : 'secondary';
+    },
     editAnnotation(comment) {
       this.selectedComment = comment;
       this.commentsMode = true;
@@ -445,7 +472,6 @@ export default {
       this.player.load(this.fileUrl);
     },
   },
-
   created() {
     this.initFilesExport({ filename: 'history-record' });
     this.loadAnnotations();
@@ -467,6 +493,17 @@ export default {
 }
 
 .call-wave-page {
+  .call-wave-page__file-select {
+    width: 280px;
+  }
+
+  .call-wave-page__region-actions {
+    display: flex;
+    align-items: center;
+    justify-content:  center;
+    gap: var(--spacing-xs);
+  }
+
   .call-wave-page-main {
     display: flex;
     flex-direction: column;
@@ -488,13 +525,6 @@ export default {
       align-items: center;
       flex-direction: column;
       justify-content: space-evenly;
-
-      .call-wave-leg {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-        gap: var(--spacing-xs);
-      }
     }
 
     .call-wave-actions {
@@ -521,8 +551,7 @@ export default {
       }
 
       .call-wave-timeline {
-        height: 26px;
-        background-color: var(--secondary-color);
+        background-color: var(--secondary-color-50);
       }
     }
   }

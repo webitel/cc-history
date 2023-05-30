@@ -1,22 +1,15 @@
-import Vue from 'vue';
-import Vuelidate from 'vuelidate';
-import WaveSurferVue from 'wavesurfer.js-vue';
+import { createApp } from 'vue';
 
 import App from './the-app.vue';
 import router from './app/router';
 import store from './app/store';
 import i18n from './app/locale/i18n';
 
-import './app/plugins/webitel-ui';
+import WebitelUi from './app/plugins/webitel-ui';
 
 import './app/css/main.scss';
 
 import './app/assets/icons/sprite';
-
-Vue.config.productionTip = false;
-
-Vue.use(Vuelidate);
-Vue.use(WaveSurferVue);
 
 const fetchConfig = async () => {
   const response = await fetch(`${process.env.BASE_URL}config.json`);
@@ -24,17 +17,18 @@ const fetchConfig = async () => {
 };
 
 const createVueInstance = () => {
-  new Vue({
-    router,
-    store,
-    i18n,
-    render: (h) => h(App),
-  }).$mount('#app');
+  const app = createApp(App)
+  .use(router)
+  .use(store)
+  .use(i18n)
+  .use(...WebitelUi);
+  return app;
 };
 
 // init IIFE
 (async () => {
   const config = await fetchConfig();
-  Vue.prototype.$config = config;
-  createVueInstance();
+  const app = createVueInstance();
+  app.provide('$config', config);
+  app.mount('#app');
 })();

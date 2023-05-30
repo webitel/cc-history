@@ -9,42 +9,48 @@
         :headers="headers"
         :selectable="false"
       >
-        <template slot="direction" slot-scope="{ item }">
+        <template v-slot:direction="{ item }">
           <table-direction :item="item" />
         </template>
-        <template slot="from" slot-scope="{ item }">
+        <template v-slot:from="{ item }">
           <div v-if="item.from">{{ item.from.number }}</div>
         </template>
-        <template slot="to" slot-scope="{ item }">
+        <template v-slot:to="{ item }">
           <div v-if="item.to">{{ item.to.number }}</div>
         </template>
-        <template slot="user" slot-scope="{ item }">
+        <template v-slot:user="{ item }">
           <div v-if="item.user">{{ item.user.name }}</div>
         </template>
-        <template slot="gateway" slot-scope="{ item }">
+        <template v-slot:gateway="{ item }">
           <div v-if="item.gateway">{{ item.gateway.name }}</div>
         </template>
-        <template slot="agent" slot-scope="{ item }">
+        <template v-slot:agent="{ item }">
           <div v-if="item.agent">{{ item.agent.name }}</div>
         </template>
-        <template slot="team" slot-scope="{ item }">
+        <template v-slot:team="{ item }">
           <div v-if="item.team">{{ item.team.name }}</div>
         </template>
-        <template slot="queue" slot-scope="{ item }">
+        <template v-slot:queue="{ item }">
           <div v-if="item.queue">{{ item.queue.name }}</div>
         </template>
-        <template slot="grantee" slot-scope="{ item }">
+        <template v-slot:grantee="{ item }">
           <div v-if="item.grantee">{{ item.grantee.name }}</div>
         </template>
-        <template slot="member" slot-scope="{ item }">
+        <template v-slot:member="{ item }">
           <div v-if="item.member">{{ item.member.name }}</div>
         </template>
-        <template slot="hangupDisposition" slot-scope="{ item }">
+        <template v-slot:ratedBy="{ item }">
+          <div v-if="item.ratedBy">{{ item.ratedBy.name }}</div>
+        </template>
+        <template v-slot:memberId="{ item }">
+          <div v-if="item.member">{{ item.member.id }}</div>
+        </template>
+        <template v-slot:hangupDisposition="{ item }">
           <div v-if="item.hangupDisposition">
             {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}
           </div>
         </template>
-        <template slot="legMarker" slot-scope="{ item }">
+        <template v-slot:legMarker="{ item }">
           <wt-icon
             v-if="!item.parentId"
             class="icon__leg-marker"
@@ -53,7 +59,7 @@
             size="sm"
           ></wt-icon>
         </template>
-        <template slot="transfers" slot-scope="{ item }">
+        <template v-slot:transfers="{ item }">
           <div class="transfers-wrap">
             <wt-tooltip
               :class="{'hidden': !item.transferFrom}"

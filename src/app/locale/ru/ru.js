@@ -5,20 +5,11 @@ export default {
   reusable: {
     answer: 'Ответить',
     reject: 'Сбросить',
-    send: 'Отправить',
-    add: 'Добавить',
-    ok: 'OK',
-    save: 'Сохранить',
-    cancel: 'Отменить',
-    close: 'Закрыть',
     logout: 'Выйти',
-    search: 'Поиск',
     description: 'Описание',
     settings: 'Настройки',
     history: 'История',
     download: 'Скачать',
-    from: 'От',
-    to: 'До',
     both: 'Все',
     logs: 'Лог | Логи',
   },
@@ -44,10 +35,20 @@ export default {
       callVisualization: 'Визуализация звонка',
       hold: 'Удержание | Удержания',
       comment: 'Комментарий | Комментарии',
-      wave: { wave: 'Разметка звонка', },
+      wave: { wave: 'Разметка звонка' },
       stt: {
         noTranscript: 'Транскрипция файла отсутствует',
         transcribingInProgress: 'Выполняется транскрипция файла. Пожалуйста, обновите страницу через минуту.',
+      },
+      evaluation: {
+        rateTheCall: ' Оценить звонок',
+        evaluation: 'Оценивание',
+        scorecard: 'Анкета',
+        comment: 'Коментарий',
+        selectTheScorecard: 'Выбрать анкету',
+        noEvaluation: 'Звонок еще не оценен',
+        optional: 'Опциональные',
+        mandatory: 'Обязательные',
       },
     },
     stt: {
@@ -145,7 +146,7 @@ export default {
     agent: 'Оператор',
     cause: 'Причина окончания',
     direction: 'Направление',
-    duration: 'Длительность',
+    duration: 'Общая длительность',
     from: 'Номер от',
     to: 'Номер кому',
     dateTime: 'Дата и Время:',
@@ -183,6 +184,10 @@ export default {
     hangupDisposition: 'Результат завершения',
     blindTransfer: 'Слепой перевод',
     grantee: 'Получатель',
+    ratedBy: 'Оценено кем',
+    score: 'Оценка',
+    memberId: 'Id абонента',
+    attemptId: 'Id попытки',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',
@@ -190,8 +195,13 @@ export default {
     agentDropped: 'Оператор сбросил',
     clientDropped: 'Клиент сбросил',
     error: 'Ошибка',
+    ended: 'Завершено системой',
   },
   filters: {
+    preset: {
+      preset: 'Пресет | Пресеты',
+      presetName: 'Имя пресета',
+    },
     tag: {
       options: {
         vm: 'Голосовая почта',
@@ -205,15 +215,15 @@ export default {
     },
     hasFile: 'Запись разговора',
     hasTranscription: 'Транскрипция',
+    rated: 'Оценены',
+    duration: 'Общая длительность (Sec)',
+    talkSec: 'Длительность разговора (Sec)',
+    score: 'Оценка (%)',
   },
   components: {
     dtPicker: {
       from: 'От:',
       to: 'До:',
-    },
-    duration: {
-      from: 'От (сек):',
-      to: 'До (сек):',
     },
     columnSelect: {
       header: 'Добавить колонки:',

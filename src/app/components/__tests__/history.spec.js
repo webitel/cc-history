@@ -1,10 +1,8 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
+import { shallowMount } from '@vue/test-utils';
+import { createStore } from 'vuex';
 import TheHistory from '../the-history.vue';
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const store = new Vuex.Store({
+const store = createStore({
   modules: {
     userinfo: { namespaced: true },
   },
@@ -19,8 +17,9 @@ describe('The History', () => {
 
   it('renders a component', () => {
     const wrapper = shallowMount(TheHistory, {
-      localVue,
-      store,
+      global: {
+        plugins: [store],
+      },
       computed: {
         hasAccess() { return appAccess; },
       },
@@ -31,8 +30,9 @@ describe('The History', () => {
   it('error page is shown, if there is no access to workspace', () => {
     appAccess = false;
     const wrapper = shallowMount(TheHistory, {
-      localVue,
-      store,
+      global: {
+        plugins: [store],
+      },
       computed: {
         hasAccess() { return appAccess; },
       },

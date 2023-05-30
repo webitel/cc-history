@@ -2,11 +2,13 @@ import QueryFiltersStoreModule from '@webitel/ui-sdk/src/modules/QueryFilters/st
 import ApiFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/ApiFilterSchema';
 import BaseFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/BaseFilterSchema';
 import EnumFilterSchema from '@webitel/ui-sdk/src/modules/QueryFilters/classes/EnumFilterSchema';
+import isEmpty from '@webitel/ui-sdk/src/scripts/isEmpty';
 import AgentsAPI from '../api/AgentsAPIRepository';
 import RolesAPI from '../api/RolesAPIRepository';
 import CauseOption from '../enums/HangupCauseOption.enum';
 import AmdResultOptions from '../enums/AmdResultOptions.enum';
 import DirectionOptions from '../enums/DirectionOptions.enum';
+import RatedOptions from '../enums/RatedOptions.enum';
 import GatewaysAPI from '../api/GatewaysAPIRepository';
 import QueuesAPI from '../api/QueuesAPIRepository';
 import hasFile from '../enums/HasFile.enum';
@@ -82,6 +84,31 @@ const state = {
     locale: { label: 'filters.hasTranscription' },
     multiple: false,
   }),
+  rated: new EnumFilterSchema({
+    options: RatedOptions,
+    locale: { label: 'filters.rated' },
+    multiple: false,
+  }),
+  ratedBy: new ApiFilterSchema({
+    API: UserAPI.getLookup,
+    locale: { label: 'fields.ratedBy' },
+  }),
+  talkSec: new BaseFilterSchema({
+    value: { from: 0, to: null },
+    defaultValue: [],
+  }),
+  score: new BaseFilterSchema({
+    value: { from: 0, to: 100 },
+    defaultValue: [],
+  }),
 };
 
-export default new QueryFiltersStoreModule({ state }).getModule();
+const getters = {
+  GET_FULL_FILTER_VALUES: (state) => Object.keys(state)
+    .reduce((filters, filterKey) => {
+      const filterValue = state[filterKey].value;
+      return isEmpty(filterValue) ? filters : { ...filters, [filterKey]: filterValue };
+    }, {}),
+};
+
+export default new QueryFiltersStoreModule({ state, getters }).getModule();

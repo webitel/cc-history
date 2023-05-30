@@ -13,6 +13,8 @@ const tooltipStyle = {
   transition: 'var(--transition)',
   opacity: '0',
   pointerEvents: 'none',
+  height: '140px',
+  overflow: 'auto',
   zIndex: 'var(--tooltip-z-index)',
 };
 

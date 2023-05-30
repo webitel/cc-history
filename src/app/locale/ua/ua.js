@@ -5,20 +5,11 @@ export default {
   reusable: {
     answer: 'Відповісти',
     reject: 'Скинути',
-    send: 'Відправити',
-    add: 'Додати',
-    ok: 'OK',
-    save: 'Зберегти',
-    cancel: 'Скасувати',
-    close: 'Закрити',
     logout: 'Вийти',
-    search: 'Пошук',
     description: 'Опис',
     settings: 'Налаштування',
     history: 'Історія',
     download: 'Скачати',
-    from: 'Від',
-    to: 'До',
     both: 'Все',
     logs: 'Лог | Логи',
   },
@@ -48,6 +39,16 @@ export default {
       stt: {
         noTranscript: 'Транскрипція файлу відсутня',
         transcribingInProgress: 'Виконується транскрипція файлу. Будь ласка, оновіть сторінку через хвилину.',
+      },
+      evaluation: {
+        rateTheCall: 'Оцінити дзвінок',
+        evaluation: 'Оцінювання',
+        scorecard: 'Анкета',
+        comment: 'Коментар',
+        selectTheScorecard: 'Обрати анкету',
+        noEvaluation: 'Дзвінок ще не оцінений',
+        optional: 'Опціональні',
+        mandatory: 'Обов\'язкові',
       },
     },
     stt: {
@@ -145,7 +146,7 @@ export default {
     agent: 'Оператор',
     cause: 'Причина завершення',
     direction: 'Напрямок',
-    duration: 'Тривалість',
+    duration: 'Загальна тривалість',
     from: 'Номер від',
     to: 'Номер кому',
     dateTime: 'Дата и Час:',
@@ -183,6 +184,10 @@ export default {
     hangupDisposition: 'Результат завершення',
     blindTransfer: 'Сліпий трансфер',
     grantee: 'Отримувач',
+    ratedBy: 'Оцінено ким',
+    score: 'Оцінка',
+    memberId: 'Id абонента',
+    attemptId: 'Id спроби',
   },
   hangupDisposition: {
     notAnswered: 'Без відповіді',
@@ -190,8 +195,13 @@ export default {
     agentDropped: 'Оператор скинув',
     clientDropped: 'Клієнт скинув',
     error: 'Помилка',
+    ended: 'Завершено системою',
   },
   filters: {
+    preset: {
+      preset: 'Пресет | Пресети',
+      presetName: 'Ім\'я пресета',
+    },
     tag: {
       options: {
         vm: 'Голосова пошта',
@@ -205,15 +215,15 @@ export default {
     },
     hasFile: 'Запис розмови',
     hasTranscription: 'Транскрипція',
+    rated: 'Оцінені',
+    duration: 'Загальна тривалість (Sec)',
+    talkSec: 'Тривалість розмови (Sec)',
+    score: 'Оцінка (%)',
   },
   components: {
     dtPicker: {
       from: 'Від:',
       to: 'До:',
-    },
-    duration: {
-      from: 'Від (сек):',
-      to: 'До (сек):',
     },
     columnSelect: {
       header: 'Додати колонки:',

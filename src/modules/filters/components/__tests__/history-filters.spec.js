@@ -18,7 +18,7 @@ describe('History filters section', () => {
     const wrapper = shallowMount(HistoryFilters);
     const abstractEnumFilters = wrapper.findAllComponents({ name: 'abstract-enum-filter' });
     const abstractApiFilters = wrapper.findAllComponents({ name: 'abstract-api-filter' });
-    expect(abstractEnumFilters.length).toEqual(wrapper.vm.filters.filter(({ type }) => type === 'enum').length);
-    expect(abstractApiFilters.length).toEqual(wrapper.vm.filters.filter(({ type }) => type === 'api').length);
+    expect(abstractEnumFilters.length).toEqual(wrapper.vm.selectFilters.filter(({ type }) => type === 'enum').length);
+    expect(abstractApiFilters.length).toEqual(wrapper.vm.selectFilters.filter(({ type }) => type === 'api').length);
   });
 });

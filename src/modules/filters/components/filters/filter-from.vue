@@ -1,9 +1,10 @@
 <template>
-  <wt-datetimepicker
+  <wt-datepicker
     :value="value"
     :label="$t('components.dtPicker.from')"
-    @change="handleChange"
-  ></wt-datetimepicker>
+    mode="datetime"
+    @input="handleChange"
+  ></wt-datepicker>
 </template>
 
 <script>

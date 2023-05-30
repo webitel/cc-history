@@ -1,15 +1,10 @@
-import { createLocalVue, shallowMount, mount } from '@vue/test-utils';
-import deepCopy from 'deep-copy';
-import Vuex from 'vuex';
-import WaveSurferVue from 'wavesurfer.js-vue';
+import { shallowMount, mount } from '@vue/test-utils';
+import { createStore } from 'vuex';
 import callWave
   from '../call-wave.vue';
 import registry from '../../../../../../store/registry';
-import playerMock from '../../../../../../../../../../../tests/unit/mocks/waveSurferMock';
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(WaveSurferVue);
+import playerMock
+  from '../../../../../../../../../../../tests/unit/mocks/waveSurferMock';
 
 describe('Opened call wave', () => {
   const callMock = {
@@ -20,7 +15,7 @@ describe('Opened call wave', () => {
     hold: [],
   };
 
-  const propsData = {
+  const props = {
     call: callMock,
     file: {},
   };
@@ -50,7 +45,7 @@ describe('Opened call wave', () => {
   const player = playerMock(jest);
   beforeEach(() => {
     jest.clearAllMocks();
-    store = new Vuex.Store({
+    store = createStore({
       modules: {
         registry: {
           ...registry,
@@ -61,9 +56,10 @@ describe('Opened call wave', () => {
 
   it('renders a component', () => {
     const wrapper = shallowMount(callWave, {
-      localVue,
-      store,
-      propsData,
+      global: {
+        plugins: [store],
+      },
+      props,
       computed: {
         call: () => callMock,
         player: () => player,
@@ -74,14 +70,15 @@ describe('Opened call wave', () => {
 
   it('closes comment form on commentsMode changed to false', async () => {
     const wrapper = mount(callWave, {
-      localVue,
-      store,
-      propsData,
-      stubs: { Wavesurfer: true },
-      mocks: {
-        $v: {
-          draft: {
-            $touch: jest.fn(),
+      props,
+
+      global: {
+        plugins: [store],
+        mocks: {
+          v$: {
+            draft: {
+              $touch: jest.fn(),
+            },
           },
         },
       },
@@ -91,18 +88,20 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).isVisible()).toBe(true);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' })
+    .isVisible()).toBe(true);
     await wrapper.findAllComponents({ name: 'wt-icon-btn' })
-      .filter((btn) => btn.props().icon === 'note').wrappers[0].vm.$emit('click');
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists()).toBe(false);
+    .filter((btn) => btn.props().icon === 'note').at(0).vm.$emit('click');
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists())
+    .toBe(false);
   });
 
   it('opens comment form on commentsMode change to true', async () => {
     const wrapper = mount(callWave, {
-      localVue,
-      store,
-      propsData,
-      stubs: { Wavesurfer: true },
+      global: {
+        plugins: [store],
+      },
+      props,
       data: () => ({
         commentsMode: false,
         isLoading: false,
@@ -112,17 +111,20 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    expect(wrapper.findComponent({ name: 'opened-call-wave-comment-form' }).exists()).toBe(false);
+    expect(wrapper.findComponent({ name: 'opened-call-wave-comment-form' })
+    .exists()).toBe(false);
     await wrapper.findAllComponents({ name: 'wt-icon-btn' })
-      .filter((btn) => btn.props().icon === 'note').wrappers[0].vm.$emit('click');
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists()).toBe(true);
+    .filter((btn) => btn.props().icon === 'note').at(0).vm.$emit('click');
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists())
+    .toBe(true);
   });
 
   it('emits save event with comment draft object and calls the add annotation action if no id passed', async () => {
-    const wrapper = shallowMount(callWave, {
-      localVue,
-      store,
-      propsData,
+    const wrapper = mount(callWave, {
+      global: {
+        plugins: [store],
+      },
+      props,
       data: () => ({ commentsMode: true }),
       computed: {
         call: () => callMock,
@@ -132,17 +134,21 @@ describe('Opened call wave', () => {
     wrapper.vm.addAnnotation = actionMocks.ADD_ANNOTATION;
     const draftWithNoId = { ...draft };
     delete draftWithNoId.id;
-    await wrapper.findComponent({ name: 'call-wave-comment-form' }).vm.$emit('save', draftWithNoId);
-    expect(actionMocks.ADD_ANNOTATION).toHaveBeenCalledWith(expect.objectContaining({
+    await wrapper.findComponent({ name: 'call-wave-comment-form' })
+    .vm
+    .$emit('save', draftWithNoId);
+    expect(actionMocks.ADD_ANNOTATION)
+    .toHaveBeenCalledWith(expect.objectContaining({
       endSec: 2, note: 'draft', startSec: 1, callId: 'id',
     }));
   });
 
   it('emits save event with comment draft object on save and calls the edit annotation method', async () => {
-    const wrapper = shallowMount(callWave, {
-      localVue,
-      store,
-      propsData,
+    const wrapper = mount(callWave, {
+      global: {
+        plugins: [store],
+      },
+      props,
       data: () => ({ commentsMode: true }),
       computed: {
         call: () => callMock,
@@ -150,16 +156,20 @@ describe('Opened call wave', () => {
       },
     });
     wrapper.vm.updateAnnotation = actionMocks.EDIT_ANNOTATION;
-    await wrapper.findComponent({ name: 'call-wave-comment-form' }).vm.$emit('save', draft);
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).emitted().save[0][0]).toBe(draft);
+    await wrapper.findComponent({ name: 'call-wave-comment-form' })
+    .vm
+    .$emit('save', draft);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' })
+    .emitted().save[0][0]).toBe(draft);
     expect(actionMocks.EDIT_ANNOTATION).toHaveBeenCalled();
   });
 
   it('emits delete event and calls a delete method', async () => {
-    const wrapper = shallowMount(callWave, {
-      localVue,
-      store,
-      propsData,
+    const wrapper = mount(callWave, {
+      global: {
+        plugins: [store],
+      },
+      props,
       data: () => ({ commentsMode: true, selectedComment: draft }),
       computed: {
         call: () => callMock,
@@ -167,47 +177,20 @@ describe('Opened call wave', () => {
       },
     });
     wrapper.vm.deleteAnnotation = actionMocks.DELETE_ANNOTATION;
-    await wrapper.findComponent({ name: 'call-wave-comment-form' }).vm.$emit('delete', draft);
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).emitted().delete.length).toBe(1);
+    await wrapper.findComponent({ name: 'call-wave-comment-form' })
+    .vm
+    .$emit('delete', draft);
+    expect(wrapper.findComponent({ name: 'call-wave-comment-form' })
+    .emitted().delete.length).toBe(1);
     expect(actionMocks.DELETE_ANNOTATION).toHaveBeenCalled();
   });
 
-  it('changes volume on slider input', async () => {
-    const wrapper = shallowMount(callWave, {
-      localVue,
-      store,
-      propsData,
-      computed: {
-        call: () => callMock,
-        player: () => player,
-      },
-      data: () => (deepCopy(volumeData)),
-    });
-    await wrapper.findComponent({ name: 'wt-slider' }).vm.$emit('input', 2);
-    expect(wrapper.vm.$data.leftGain.audio.gain.value).toBe(2);
-  });
-
-  it('mutes on slider input 0', async () => {
-    const wrapper = shallowMount(callWave, {
-      localVue,
-      store,
-      propsData,
-      computed: {
-        call: () => callMock,
-        player: () => player,
-      },
-      data: () => (deepCopy(volumeData)),
-    });
-    await wrapper.findComponent({ name: 'wt-slider' }).vm.$emit('input', 0);
-    expect(wrapper.vm.$data.leftGain.audio.gain.value).toBe(0);
-    expect(wrapper.vm.$data.leftGain.muted).toBe(true);
-  });
-
   it('changes playbackRate on button click', async () => {
-    const wrapper = shallowMount(callWave, {
-      localVue,
-      store,
-      propsData,
+    const wrapper = mount(callWave, {
+      global: {
+        plugins: [store],
+      },
+      props,
       data: () => ({ playbackRate: 1, isPlaying: false }),
       computed: {
         call: () => callMock,
@@ -215,7 +198,7 @@ describe('Opened call wave', () => {
       },
     });
     await wrapper.findAllComponents({ name: 'wt-button' })
-      .filter((btn) => btn.text() === 'x2').wrappers[0].vm.$emit('click');
+    .filter((btn) => btn.text() === 'x2').at(0).vm.$emit('click');
     expect(wrapper.vm.$data.playbackRate).toBe(2);
     expect(player.setPlaybackRate).toBeCalled();
     expect(player.setPlaybackRate.mock.calls[0][0]).toBe(2);
@@ -223,10 +206,11 @@ describe('Opened call wave', () => {
 
   it('changes zoom on zoom button click', async () => {
     const zoom = 1;
-    const wrapper = shallowMount(callWave, {
-      localVue,
-      store,
-      propsData,
+    const wrapper = mount(callWave, {
+      global: {
+        plugins: [store],
+      },
+      props,
       data: () => ({ zoom }),
       computed: {
         call: () => callMock,
@@ -234,17 +218,18 @@ describe('Opened call wave', () => {
       },
     });
     await wrapper.findAllComponents({ name: 'wt-button' })
-      .filter((btn) => btn.html().includes('zoom-in')).wrappers[0].vm.$emit('click');
+    .filter((btn) => btn.html()
+    .includes('zoom-in')).at(0).vm.$emit('click');
     expect(player.zoom).toHaveBeenCalled();
     expect(player.zoom.mock.calls[0][0]).toBe(zoom * 2);
   });
 
   it('"holds" checkbox calls regions-related methods', async () => {
     const wrapper = mount(callWave, {
-      localVue,
-      store,
-      propsData,
-      stubs: { Wavesurfer: true },
+      global: {
+        plugins: [store],
+      },
+      props,
       data: () => ({
         showHolds: false,
         isLoading: false,
@@ -255,31 +240,38 @@ describe('Opened call wave', () => {
       },
     });
     await wrapper.findAllComponents({ name: 'wt-checkbox' })
-      .filter((checkbox) => checkbox.props().label.includes('hold')).wrappers[0].vm.$emit('change');
+    .filter((checkbox) => checkbox.props()
+    .label
+    .includes('hold')).at(0).vm.$emit('change');
     expect(player.clearRegions).toHaveBeenCalled();
   });
 
   it('"notes" checkbox calls regions-related methods', async () => {
     callMock.annotations.push({ startSec: 0, endSec: 1, note: 'note' });
     const wrapper = mount(callWave, {
-      localVue,
-      store,
-      propsData,
-      stubs: { Wavesurfer: true },
+      global: {
+        plugins: [store],
+      },
+      props: {
+        ...props,
+        call: callMock,
+      },
       data: () => ({
         showComments: false,
         isLoading: false,
       }),
       computed: {
-        call: () => callMock,
         player: () => player,
         annotations: () => callMock.annotations,
+        commentsSize: () => 10,
       },
     });
     const displayComments = jest.fn();
     wrapper.vm.displayComments = displayComments;
     await wrapper.findAllComponents({ name: 'wt-checkbox' })
-      .filter((checkbox) => checkbox.props().label.includes('comment')).wrappers[0].vm.$emit('change');
+    .filter((checkbox) => checkbox.props()
+    .label
+    .includes('comment')).at(0).vm.$emit('change');
     expect(wrapper.vm.$data.showComments).toBe(true);
     expect(displayComments).toHaveBeenCalled();
     expect(displayComments.mock.calls[0][0]).toEqual(callMock.annotations);

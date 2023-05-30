@@ -2,40 +2,20 @@ import { shallowMount } from '@vue/test-utils';
 import TheCall
   from '../the-call.vue';
 
-describe('Opened call popup (wrapper)', () => {
+describe('Opened call', () => {
   it('renders a component', () => {
-    jest.spyOn(TheCall.methods, 'setMainCall').mockImplementationOnce(jest.fn());
+    jest.spyOn(TheCall.methods, 'setMainCall')
+    .mockImplementationOnce(jest.fn());
     const wrapper = shallowMount(TheCall, {
-      computed: {
-        mainCall() { return {}; },
-        isLoading() { return false; },
-      },
-      mocks: {
-        $route: {
-          path: '',
+      global: {
+        mocks: {
+          $route: {
+            path: '',
+          },
         },
       },
     });
     expect(wrapper.exists())
-      .toBe(true);
-  });
-
-  it('renders a component if main call has any children', () => {
-    jest.spyOn(TheCall.methods, 'setMainCall').mockImplementationOnce(jest.fn());
-    const wrapper = shallowMount(TheCall, {
-      computed: {
-        mainCall() {
-          return { hasChildren: true };
-        },
-        isLoading() { return false; },
-      },
-      mocks: {
-        $route: {
-          path: '',
-        },
-      },
-    });
-    expect(wrapper.exists())
-      .toBe(true);
+    .toBe(true);
   });
 });

@@ -4,45 +4,45 @@ import TranscriptionState from '../../../enums/TranscriptionState.enum';
 import TableSttAction from '../table-stt-action.vue';
 
 let item;
-let propsData;
+let props;
 
 describe('TableSttAction', () => {
   beforeEach(() => {
     item = {};
-    propsData = { item };
+    props = { item };
   });
 
   it('renders a component', () => {
-    const wrapper = shallowMount(TableSttAction, { propsData });
+    const wrapper = shallowMount(TableSttAction, { props });
     expect(wrapper.isVisible()).toBe(true);
   });
   it('correctly computed fileJob from item.filesJob', () => {
     const job = {};
     item.filesJob = [job];
-    const wrapper = shallowMount(TableSttAction, { propsData });
-    expect(wrapper.vm.fileJob).toBe(job);
+    const wrapper = shallowMount(TableSttAction, { props });
+    expect(wrapper.vm.fileJob).toStrictEqual(job);
   });
   it('currentState for IDLE fileJob is IDLE', () => {
     item.filesJob = [{ state: HistoryFileJobHistoryFileJobState.Idle }];
-    const wrapper = shallowMount(TableSttAction, { propsData });
+    const wrapper = shallowMount(TableSttAction, { props });
     expect(wrapper.vm.currentState.value).toBe(TranscriptionState.IDLE);
   });
   it('currentState for ERROR fileJob is ERROR', () => {
     item.filesJob = [{ state: HistoryFileJobHistoryFileJobState.Error }];
-    const wrapper = shallowMount(TableSttAction, { propsData });
+    const wrapper = shallowMount(TableSttAction, { props });
     expect(wrapper.vm.currentState.value).toBe(TranscriptionState.ERROR);
   });
   it('currentState for existing transcripts is DONE', () => {
     item.transcripts = [{}];
-    const wrapper = shallowMount(TableSttAction, { propsData });
+    const wrapper = shallowMount(TableSttAction, { props });
     expect(wrapper.vm.currentState.value).toBe(TranscriptionState.DONE);
   });
   it('currentState for no fileJob or transcripts is NONE', () => {
-    const wrapper = shallowMount(TableSttAction, { propsData });
+    const wrapper = shallowMount(TableSttAction, { props });
     expect(wrapper.vm.currentState.value).toBe(TranscriptionState.NONE);
   });
   it('activator icon-btn for NONE state triggers handleJobStart method', () => {
-    const wrapper = mount(TableSttAction, { propsData });
+    const wrapper = mount(TableSttAction, { props });
     expect(wrapper.vm.currentState.value).toBe(TranscriptionState.NONE);
 
     /**

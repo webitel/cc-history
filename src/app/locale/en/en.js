@@ -5,20 +5,11 @@ export default {
   reusable: {
     answer: 'Answer',
     reject: 'Reject',
-    send: 'Send',
-    add: 'Add',
-    ok: 'OK',
-    save: 'Save',
-    cancel: 'Cancel',
-    close: 'Close',
     logout: 'Logout',
-    search: 'Search',
     description: 'Description',
     settings: 'Settings',
     history: 'History',
     download: 'Download',
-    from: 'From',
-    to: 'To',
     both: 'Both',
     logs: 'Log | Logs',
   },
@@ -50,6 +41,16 @@ export default {
       stt: {
         noTranscript: 'There is no transcription for this file',
         transcribingInProgress: 'Transcription is in progress now. Please, refresh page in a minute.',
+      },
+      evaluation: {
+        rateTheCall: 'Rate the call',
+        evaluation: 'Evaluation',
+        scorecard: 'Scorecard',
+        comment: 'Comment',
+        selectTheScorecard: 'Select the scorecard',
+        noEvaluation: 'There isn`t evaluation yet',
+        optional: 'Optional',
+        mandatory: 'Mandatory',
       },
     },
     stt: {
@@ -147,7 +148,7 @@ export default {
     agent: 'Agent',
     cause: 'Hangup cause',
     direction: 'Direction',
-    duration: 'Duration',
+    duration: 'Total duration',
     from: 'From',
     to: 'To',
     dateTime: 'Date & Time:',
@@ -174,7 +175,7 @@ export default {
     holdSec: 'Hold',
     waitSec: 'Wait',
     billSec: 'Billing',
-    talkSec: 'Talk',
+    talkSec: 'Talk duration',
     reportingSec: 'Reporting',
     queueWaitSec: 'Queue wait',
     queueDurationSec: 'Queue duration',
@@ -185,6 +186,10 @@ export default {
     hangupDisposition: 'Hangup disposition',
     blindTransfer: 'Blind transfer',
     grantee: 'Grantee',
+    ratedBy: 'Rated by',
+    score: 'Score',
+    memberId: 'Member Id',
+    attemptId: 'Attempt Id',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',
@@ -192,8 +197,13 @@ export default {
     agentDropped: 'Agent dropped',
     clientDropped: 'Client dropped',
     error: 'Error',
+    ended: 'Ended by system',
   },
   filters: {
+    preset: {
+      preset: 'Preset | Presets',
+      presetName: 'Preset name',
+    },
     tag: {
       options: {
         vm: 'Voice mail',
@@ -207,15 +217,15 @@ export default {
     },
     hasFile: 'Has recording',
     hasTranscription: 'Has transcription',
+    rated: 'Rated',
+    duration: 'Total duration (Sec)',
+    talkSec: 'Talk duration (Sec)',
+    score: 'Score (%)',
   },
   components: {
     dtPicker: {
       from: 'From:',
       to: 'To:',
-    },
-    duration: {
-      from: 'From (sec):',
-      to: 'To (sec):',
     },
     columnSelect: {
       header: 'Select columns to show:',
