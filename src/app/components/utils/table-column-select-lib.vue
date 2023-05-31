@@ -12,6 +12,7 @@
     <wt-popup
       v-if="isColumnSelectPopup"
       class="wt-table-column-select__popup"
+      :width="popupWidth"
       @close="close"
     >
       <template v-slot:title>
@@ -20,14 +21,14 @@
       <template v-slot:main>
         <ul class="wt-table-column-select__popup__list">
           <li
-            v-for="(col, key) of changeableDraft"
+            v-for="(column, key) of changeableDraft"
             :key="key"
             class="wt-table-column-select__popup__item"
-            @click.capture.prevent="col.show = !col.show"
+            @click.capture.prevent="column.show = !column.show"
           >
             <wt-checkbox
-              v-model="col.show"
-              :label="shownColLabel(col)"
+              v-model="column.show"
+              :label="shownColLabel(column)"
             ></wt-checkbox>
           </li>
         </ul>
@@ -63,6 +64,9 @@ export default {
       default: () => [],
       description: 'Header values to exclude from selection',
     },
+    popupWidth: {
+      type: [Number, String],
+    },
   },
 
   model: {
@@ -85,7 +89,7 @@ export default {
   computed: {
     changeableDraft() {
       return this.draft.filter((header) => !this.staticHeaders.includes(header.value)).sort((a, b) => {
-        return a.text > b.text ? 1: -1;
+        return a.text > b.text ? 1 : -1;
         // sorting headers for alphabet just in popup
       });
     },
@@ -107,7 +111,6 @@ export default {
       this.draft = deepCopy(this.headers);
     },
     setShownColumns() {
-      console.log('this.draft:', this.draft, 'changeableDraft:', this.changeableDraft);
       this.$emit('change', this.draft);
       this.close();
     },
@@ -116,14 +119,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.wt-table-column-select {
+  line-height: 0; // prevent 24x28 icon heght :/
+}
+
 .wt-table-column-select__heading {
   text-align: center;
 }
 
-.wt-table-column-select__list {
+.wt-table-column-select__popup__list {
   @extend %wt-scrollbar;
-  max-height: 48vh;
-  min-width: 550px;
+  max-height: 48vh; // fixme popup fixed sizes
+  min-width: 550px; // fixme popup fixed sizes
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -131,11 +139,11 @@ export default {
   align-items: initial;
 }
 
-.wt-table-column-select__item {
+.wt-table-column-select__popup__item {
   display: flex;
   align-items: center;
   margin-right: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
 }
-</style>
 
+</style>

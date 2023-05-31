@@ -1,18 +1,20 @@
 <template>
-  <!--  <column-select-->
-  <!--    :value="headers"-->
-  <!--    @change="change"-->
-  <!--    @close="close"-->
-  <!--  ></column-select>-->
+<!--    <column-select-->
+<!--      :value="headers"-->
+<!--      @change="change"-->
+<!--      @close="close"-->
+<!--    ></column-select>-->
 <!--  <wt-table-column-select-->
 <!--    :headers="headers"-->
 <!--    @change="change"-->
 <!--    @close="close"-->
 <!--  ></wt-table-column-select>-->
   <column-select-lib
+    class="filter-table-fields"
     :headers="headers"
+    :static-headers="staticHeaders"
+    popup-width="800"
     @change="change"
-    @close="close"
     />
 </template>
 
