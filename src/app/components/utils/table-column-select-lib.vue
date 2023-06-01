@@ -12,14 +12,13 @@
     <wt-popup
       v-if="isColumnSelectPopup"
       class="wt-table-column-select__popup"
-      :width="popupWidth"
       @close="close"
     >
       <template v-slot:title>
         {{ $t('webitelUI.tableColumnSelect.title') }}
       </template>
       <template v-slot:main>
-        <ul class="wt-table-column-select__popup__list">
+        <ul class="wt-table-column-select__popup__list--md">
           <li
             v-for="(column, key) of changeableDraft"
             :key="key"
@@ -75,7 +74,295 @@ export default {
   },
 
   data: () => ({
-    draft: [], // headers draft
+    draft: [
+        {
+          value: "date",
+          show: true,
+          sort: null,
+          field: "created_at",
+          text: "Date"
+        },
+        {
+          value: "time",
+          show: true,
+          sort: null,
+          field: "created_at",
+          text: "Time"
+        },
+        {
+          value: "direction",
+          show: true,
+          sort: null,
+          field: "direction",
+          text: "Direction"
+        },
+        {
+          value: "answeredAt",
+          show: true,
+          sort: null,
+          field: "answered_at",
+          text: "Answered at reporting"
+        },
+        {
+          value: "bridgedAt",
+          show: false,
+          sort: null,
+          field: "bridged_at",
+          text: "Bridged at"
+        },
+        {
+          value: "queueBridgedAt",
+          show: false,
+          sort: null,
+          field: "queue_bridged_at",
+          text: "Queue bridged at"
+        },
+        {
+          value: "joinedAt",
+          show: false,
+          sort: null,
+          field: "joined_at",
+          text: "Joined at"
+        },
+        {
+          value: "leavingAt",
+          show: false,
+          sort: null,
+          field: "leaving_at",
+          text: "Leaving at"
+        },
+        {
+          value: "hangupAt",
+          show: false,
+          sort: null,
+          field: "hangup_at",
+          text: "Hangup at"
+        },
+        {
+          value: "reportingAt",
+          show: false,
+          sort: null,
+          field: "reporting_at",
+          text: "Reporting at"
+        },
+        {
+          value: "user",
+          show: true,
+          sort: null,
+          field: "user",
+          text: "User"
+        },
+        {
+          value: "extension",
+          show: false,
+          sort: null,
+          field: "extension",
+          text: "Extension"
+        },
+        {
+          value: "from",
+          show: true,
+          sort: null,
+          field: "from",
+          text: "From"
+        },
+        {
+          value: "to",
+          show: false,
+          sort: null,
+          field: "to",
+          text: "To"
+        },
+      {
+        value: "date",
+        show: true,
+        sort: null,
+        field: "created_at",
+        text: "Date"
+      },
+      {
+        value: "time",
+        show: true,
+        sort: null,
+        field: "created_at",
+        text: "Time"
+      },
+      {
+        value: "direction",
+        show: true,
+        sort: null,
+        field: "direction",
+        text: "Direction"
+      },
+      {
+        value: "answeredAt",
+        show: true,
+        sort: null,
+        field: "answered_at",
+        text: "Answered at"
+      },
+      {
+        value: "bridgedAt",
+        show: false,
+        sort: null,
+        field: "bridged_at",
+        text: "Bridged at"
+      },
+      {
+        value: "queueBridgedAt",
+        show: false,
+        sort: null,
+        field: "queue_bridged_at",
+        text: "Queue bridged at"
+      },
+      {
+        value: "joinedAt",
+        show: false,
+        sort: null,
+        field: "joined_at",
+        text: "Joined at"
+      },
+      {
+        value: "leavingAt",
+        show: false,
+        sort: null,
+        field: "leaving_at",
+        text: "Leaving at"
+      },
+      {
+        value: "hangupAt",
+        show: false,
+        sort: null,
+        field: "hangup_at",
+        text: "Hangup at"
+      },
+      {
+        value: "reportingAt",
+        show: false,
+        sort: null,
+        field: "reporting_at",
+        text: "Reporting at"
+      },
+      {
+        value: "user",
+        show: true,
+        sort: null,
+        field: "user",
+        text: "User"
+      },
+      {
+        value: "extension",
+        show: false,
+        sort: null,
+        field: "extension",
+        text: "Extension"
+      },
+      {
+        value: "from",
+        show: true,
+        sort: null,
+        field: "from",
+        text: "From"
+      },
+      {
+        value: "to",
+        show: false,
+        sort: null,
+        field: "to",
+        text: "To To To To To"
+      },
+      {
+        value: "reportingAt",
+        show: false,
+        sort: null,
+        field: "reporting_at",
+        text: "Reporting at"
+      },
+      {
+        value: "user",
+        show: true,
+        sort: null,
+        field: "user",
+        text: "Sssssssser"
+      },
+      {
+        value: "extension",
+        show: false,
+        sort: null,
+        field: "extension",
+        text: "Extension Extension"
+      },
+      {
+        value: "from",
+        show: true,
+        sort: null,
+        field: "from",
+        text: "From"
+      },
+      {
+        value: "to",
+        show: false,
+        sort: null,
+        field: "to",
+        text: "Odmdmdmdo"
+      },
+      {
+        value: "reportingAt",
+        show: false,
+        sort: null,
+        field: "reporting_at",
+        text: "Leporting at sfdsfd"
+      },
+      {
+        value: "user",
+        show: true,
+        sort: null,
+        field: "user",
+        text: "Sssssssser"
+      },
+      {
+        value: "extension",
+        show: false,
+        sort: null,
+        field: "extension",
+        text: "Extension Extension"
+      },
+      {
+        value: "leavingAt",
+        show: false,
+        sort: null,
+        field: "leaving_at",
+        text: "Leaving at"
+      },
+      {
+        value: "hangupAt",
+        show: false,
+        sort: null,
+        field: "hangup_at",
+        text: "Hangup at"
+      },
+      {
+        value: "reportingAt",
+        show: false,
+        sort: null,
+        field: "reporting_at",
+        text: "Reporting at"
+      },
+      {
+        value: "user",
+        show: true,
+        sort: null,
+        field: "user",
+        text: "User User5rrr"
+      },
+      {
+        value: "extension",
+        show: false,
+        sort: null,
+        field: "extension",
+        text: "Fffff Extension"
+      },
+    ], // headers draft
     isColumnSelectPopup: false,
   }),
 
@@ -88,6 +375,7 @@ export default {
   },
   computed: {
     changeableDraft() {
+      console.log(this.draft);
       return this.draft.filter((header) => !this.staticHeaders.includes(header.value)).sort((a, b) => {
         return a.text > b.text ? 1 : -1;
         // sorting headers for alphabet just in popup
@@ -108,7 +396,8 @@ export default {
       this.isColumnSelectPopup = false;
     },
     fillHeadersDraft() {
-      this.draft = deepCopy(this.headers);
+      console.log(this.draft);
+      // this.draft = deepCopy(this.headers);
     },
     setShownColumns() {
       this.$emit('change', this.draft);
@@ -121,7 +410,7 @@ export default {
 <style lang="scss" scoped>
 
 .wt-table-column-select {
-  line-height: 0; // prevent 24x28 icon heght :/
+  line-height: 0; // prevent 24x28 icon height :/
 }
 
 .wt-table-column-select__heading {
@@ -131,12 +420,26 @@ export default {
 .wt-table-column-select__popup__list {
   @extend %wt-scrollbar;
   max-height: 48vh; // fixme popup fixed sizes
-  min-width: 550px; // fixme popup fixed sizes
+  width: calc(800px - var(--spacing-lg)); // fixme popup fixed sizes
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: initial;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &--sm {
+    width: calc(800px - var(--spacing-lg));
+  }
+
+  &--md {
+    width: calc(800px - var(--spacing-lg));
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(12, auto);
+    grid-auto-flow: column;
+  }
 }
 
 .wt-table-column-select__popup__item {
@@ -144,6 +447,8 @@ export default {
   align-items: center;
   margin-right: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
+  //width: calc(100%/3);
+  flex: 1;
 }
 
 </style>
