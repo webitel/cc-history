@@ -56,7 +56,7 @@ export default {
         name: WebitelApplications.ANALYTICS,
         href: process.env.VUE_APP_GRAFANA_URL,
       };
-      const apps = [admin, supervisor, agent, history, audit];
+      const apps = [admin, supervisor, agent, history, audit, grafana];
       if (this.$config?.ON_SITE) apps.push(grafana);
       return apps.filter(({ name }) => this.checkAccess(name));
     },
