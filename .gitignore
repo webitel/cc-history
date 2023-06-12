@@ -4,7 +4,6 @@ node_modules
 /coverage
 demo.html
 jest.json
-package-lock.json
 
 # local env files
 .env.local
