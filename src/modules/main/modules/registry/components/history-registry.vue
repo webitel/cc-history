@@ -1,7 +1,19 @@
 <template>
   <div class="content-wrapper history-registry">
     <wt-loader v-show="isLoading" />
-    <div class="table-wrapper">
+    <wt-dummy
+      v-if="isEmptyWorkspace && !isLoading"
+      :src="hsDummy"
+      :locale="$t('dashboards.empty.workspace')"
+      class="history-registry__dummy"
+    ></wt-dummy>
+    <wt-dummy
+      v-if="isEmptyWorkspaceAfterSearch && !isLoading"
+      :src="hsDummyAfterSearch"
+      :locale="$t('dashboards.empty.description')"
+      class="history-registry__dummy"
+    ></wt-dummy>
+    <div v-if="!isEmptyWorkspace && !isEmptyWorkspaceAfterSearch" class="table-wrapper">
       <wt-table
         v-show="!isLoading"
         ref="wt-table"
@@ -95,6 +107,7 @@
 
 <script>
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
+import isEmpty from '@webitel/ui-sdk/src/scripts/isEmpty';
 import { mapActions, mapState } from 'vuex';
 import historyHeadersMixin from '../mixins/historyHeadersMixin';
 import playMediaMixin from '../mixins/media/playMediaMixin';
@@ -102,6 +115,8 @@ import FilterPagination from '../modules/filters/components/filter-pagination/fi
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
+import HsDummy from '../../../../../app/assets/icons/dummy/hs-dummy.svg';
+import HsDummyAfterSearch from '../../../../../app/assets/icons/dummy/hs-dummy-after-search.svg';
 
 export default {
   name: 'history-registry',
@@ -116,25 +131,40 @@ export default {
     MediaAction,
     SttAction,
   },
-
+  data: () => ({
+    isEmptyWorkspace: false,
+    isEmptyWorkspaceAfterSearch: false,
+  }),
   watch: {
     '$route.query': {
-      handler() {
-        this.loadList();
+      async handler() {
+        await this.loadList();
+        this.isEmptyWorkspaceAfterSearch = !this.dataList.length ? true : false;
       },
     },
   },
 
-  mounted() {
-    this.loadList();
+  async mounted() {
+    await this.loadList();
+    if (!isEmpty(this.$route.query) && !this.dataList.length) return this.isEmptyWorkspaceAfterSearch = true;
+    if (!this.dataList.length) this.isEmptyWorkspace = true;
   },
-
+  unmounted() {
+    this.isEmptyWorkspaceAfterSearch = false;
+    this.isEmptyWorkspace = false;
+  },
   computed: {
     ...mapState('registry', {
       dataList: (state) => state.dataList,
       isLoading: (state) => state.isLoading,
       isNext: (state) => state.isNext,
     }),
+    hsDummy() {
+      return HsDummy;
+    },
+    hsDummyAfterSearch() {
+      return HsDummyAfterSearch;
+    },
   },
 
   methods: {
@@ -156,6 +186,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.history-registry__dummy {
+  height: 50vh;
+}
+
 .table-wrapper {
   position: relative;
   display: flex;

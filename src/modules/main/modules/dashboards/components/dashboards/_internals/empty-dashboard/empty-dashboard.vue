@@ -1,7 +1,9 @@
 <template>
   <div class="empty-dashboard">
     <div class="empty-dashboard__wrapper">
-      <img class="empty-dashboard__pic" src="../../../../../../../../app/assets/oops.svg" alt="Oops..">
+      <img
+        class="empty-dashboard__pic"
+        src="../../../../../../../../app/assets/icons/dummy/hs-dummy-after-search.svg" alt="Oops..">
       <h3 class="empty-dashboard__title">{{ $t('dashboards.empty.title') }}</h3>
       <p class="empty-dashboard__text">{{ $t('dashboards.empty.description') }}</p>
     </div>

@@ -116,6 +116,7 @@ export default {
     empty: {
       title: 'Нет данных',
       description: 'Пожалуйста, проверьте настройки фильтров',
+      workspace: 'Сегодня звонков не было',
     },
     callsByPeriod: {
       title: 'Звонки за период',
