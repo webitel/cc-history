@@ -17,6 +17,7 @@ import authAPI from '@webitel/ui-sdk/src/modules/Userinfo/api/auth';
 
 export default {
   name: 'app-header',
+  inject: ['$config'],
   data: () => ({
     buildInfo: {
       release: process.env.VUE_APP_PACKAGE_VERSION,
