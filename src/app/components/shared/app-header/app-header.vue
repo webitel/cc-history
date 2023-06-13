@@ -17,6 +17,7 @@ import authAPI from '@webitel/ui-sdk/src/modules/Userinfo/api/auth';
 
 export default {
   name: 'app-header',
+  inject: ['$config'],
   data: () => ({
     buildInfo: {
       release: process.env.VUE_APP_PACKAGE_VERSION,
@@ -56,7 +57,7 @@ export default {
         name: WebitelApplications.ANALYTICS,
         href: process.env.VUE_APP_GRAFANA_URL,
       };
-      const apps = [admin, supervisor, agent, history, audit, grafana];
+      const apps = [admin, supervisor, agent, history, audit];
       if (this.$config?.ON_SITE) apps.push(grafana);
       return apps.filter(({ name }) => this.checkAccess(name));
     },
