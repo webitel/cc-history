@@ -1,27 +1,14 @@
 <template>
-<!--    <column-select-->
-<!--      :value="headers"-->
-<!--      @change="change"-->
-<!--      @close="close"-->
-<!--    ></column-select>-->
-<!--  <wt-table-column-select-->
-<!--    :headers="headers"-->
-<!--    @change="change"-->
-<!--    @close="close"-->
-<!--  ></wt-table-column-select>-->
-  <column-select-lib
+  <wt-table-column-select
     class="filter-table-fields"
     :headers="headers"
     :static-headers="staticHeaders"
-    popup-width="800"
     @change="change"
     />
 </template>
 
 <script>
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
-import ColumnSelect from '../../../../../../../../app/components/utils/table-column-select.vue';
-import ColumnSelectLib from '../../../../../../../../app/components/utils/table-column-select-lib.vue';
 import historyHeadersMixin from '../../../../mixins/historyHeadersMixin';
 
 export default {
@@ -34,10 +21,6 @@ export default {
     staticHeaders: {
       type: Array,
     },
-  },
-  components: {
-    ColumnSelect,
-    ColumnSelectLib
   },
 
   data: () => ({
