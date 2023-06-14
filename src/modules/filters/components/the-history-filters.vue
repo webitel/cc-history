@@ -1,9 +1,5 @@
 <template>
   <section class="history-section history-filters-section">
-<!--    <filter-fields-->
-<!--      v-show="isFilterFieldsOpened"-->
-<!--      @close="isFilterFieldsOpened = false"-->
-<!--    ></filter-fields>-->
     <preset-form-popup
       v-if="isPresetFormPopup"
       :name="preset.name"

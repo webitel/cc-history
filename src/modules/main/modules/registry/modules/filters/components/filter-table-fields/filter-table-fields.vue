@@ -45,8 +45,8 @@ export default {
       if (!queryValue && storageValue) {
         this.setValueToQuery({ filterQuery, value: storageValue, storedProp: this.storedProp });
       }
-      if (queryValue, storageValue) {
-        this.restoreValue(queryValue, storageValue);
+      if (queryValue || storageValue) {
+        this.restoreValue(queryValue || storageValue);
       }
     },
 
