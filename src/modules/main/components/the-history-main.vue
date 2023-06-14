@@ -1,7 +1,7 @@
 <template>
   <section class="history-section history-main">
     <wt-tabs
-      v-if="!isHiddenTabs"
+      v-if="!isEmptyData"
       :current="currentTab"
       :tabs="tabs"
       @change="changeTab($event.value)"
@@ -22,9 +22,6 @@ export default {
     Registry,
     Dashboards,
   },
-  data: () => ({
-    isHiddenTabs: false,
-  }),
   computed: {
     ...mapState({
       state: (state) => state.state,
@@ -41,19 +38,14 @@ export default {
         value: state,
       }));
     },
+    isEmptyData() {
+      return this.dataList.length ? false : true;
+    },
   },
   methods: {
     ...mapActions({
       changeTab: 'SET_APP_STATE',
     }),
-  },
-  watch: {
-    dataList: {
-      handler() {
-        this.isHiddenTabs = this.dataList.length ? false : true;
-      },
-      immediate: true,
-    },
   },
 };
 </script>

@@ -2,18 +2,12 @@
   <div class="content-wrapper history-registry">
     <wt-loader v-show="isLoading" />
     <wt-dummy
-      v-if="isEmptyWorkspace && !isLoading"
-      :src="hsDummy"
-      :locale="$t('dashboards.empty.workspace')"
+      v-if="dummyValue && !isLoading"
+      :src="dummyImg"
+      :locale="dummyLocale"
       class="history-registry__dummy"
     ></wt-dummy>
-    <wt-dummy
-      v-if="isEmptyWorkspaceAfterSearch && !isLoading"
-      :src="hsDummyAfterSearch"
-      :locale="$t('dashboards.empty.description')"
-      class="history-registry__dummy"
-    ></wt-dummy>
-    <div v-if="!isEmptyWorkspace && !isEmptyWorkspaceAfterSearch" class="table-wrapper">
+    <div v-else class="table-wrapper">
       <wt-table
         v-show="!isLoading"
         ref="wt-table"
@@ -107,7 +101,6 @@
 
 <script>
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
-import isEmpty from '@webitel/ui-sdk/src/scripts/isEmpty';
 import { mapActions, mapState } from 'vuex';
 import historyHeadersMixin from '../mixins/historyHeadersMixin';
 import playMediaMixin from '../mixins/media/playMediaMixin';
@@ -115,8 +108,8 @@ import FilterPagination from '../modules/filters/components/filter-pagination/fi
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
-import HsDummy from '../../../../../app/assets/icons/dummy/hs-dummy.svg';
-import HsDummyAfterSearch from '../../../../../app/assets/icons/dummy/hs-dummy-after-search.svg';
+import Dummy from '../../../../../app/assets/icons/dummy/hs-dummy.svg';
+import DummyAfterSearch from '../../../../../app/assets/icons/dummy/hs-dummy-after-search.svg';
 
 export default {
   name: 'history-registry',
@@ -132,26 +125,19 @@ export default {
     SttAction,
   },
   data: () => ({
-    isEmptyWorkspace: false,
-    isEmptyWorkspaceAfterSearch: false,
+    dummyValue: '',
   }),
   watch: {
     '$route.query': {
       async handler() {
         await this.loadList();
-        this.isEmptyWorkspaceAfterSearch = !this.dataList.length ? true : false;
+        this.handleDummyValue;
       },
     },
   },
-
   async mounted() {
     await this.loadList();
-    if (!isEmpty(this.$route.query) && !this.dataList.length) return this.isEmptyWorkspaceAfterSearch = true;
-    if (!this.dataList.length) this.isEmptyWorkspace = true;
-  },
-  unmounted() {
-    this.isEmptyWorkspaceAfterSearch = false;
-    this.isEmptyWorkspace = false;
+    this.handleDummyValue;
   },
   computed: {
     ...mapState('registry', {
@@ -159,11 +145,21 @@ export default {
       isLoading: (state) => state.isLoading,
       isNext: (state) => state.isNext,
     }),
-    hsDummy() {
-      return HsDummy;
+    handleDummyValue() {
+      if (!this.dataList.length) {
+        if (Object.values(this.$route.query).some((filter) => filter.length)) {
+           this.dummyValue = 'empty search';
+        } else this.dummyValue = 'empty';
+      } else this.dummyValue = '';
+      return this.dummyValue;
     },
-    hsDummyAfterSearch() {
-      return HsDummyAfterSearch;
+    dummyImg() {
+      if (this.dummyValue === 'empty') return Dummy;
+      if (this.dummyValue === 'empty search') return DummyAfterSearch;
+    },
+    dummyLocale() {
+      if (this.dummyValue === 'empty') return this.$t('dashboards.empty.workspace');
+      if (this.dummyValue === 'empty search') return this.$t('dashboards.empty.description');
     },
   },
 
