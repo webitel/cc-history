@@ -3,8 +3,8 @@
     <wt-loader v-show="isLoading" />
     <wt-dummy
       v-if="dummyValue && !isLoading"
-      :src="dummyProps.src"
-      :locale="dummyProps.locale"
+      :src="dummyValue.src"
+      :locale="dummyValue.locale"
       class="history-registry__dummy"
     ></wt-dummy>
     <div v-else class="table-wrapper">
@@ -128,13 +128,11 @@ export default {
     '$route.query': {
       async handler() {
         await this.loadList();
-        this.dummyValue;
       },
     },
   },
   async mounted() {
     await this.loadList();
-    this.dummyValue;
   },
   computed: {
     ...mapState('registry', {
@@ -145,21 +143,17 @@ export default {
     dummyValue() {
       if (!this.dataList.length) {
         if (Object.values(this.$route.query).some((filter) => filter.length)) {
-          return 'empty search';
+          return {
+            src: DummyAfterSearch,
+            locale: this.$t('dashboards.empty.description'),
+          };
         }
-        return 'empty';
+        return {
+          src: Dummy,
+          locale: this.$t('dashboards.empty.workspace'),
+        };
       }
       return '';
-    },
-    dummyProps() {
-      if (this.dummyValue === 'empty') return {
-        src: Dummy,
-        locale: this.$t('dashboards.empty.workspace'),
-      };
-      if (this.dummyValue === 'empty search') return {
-        src: DummyAfterSearch,
-        locale: this.$t('dashboards.empty.description'),
-      };
     },
   },
 
