@@ -3,8 +3,8 @@
     <wt-loader v-show="isLoading" />
     <wt-dummy
       v-if="dummyValue && !isLoading"
-      :src="dummyImg"
-      :locale="dummyLocale"
+      :src="dummyProps.src"
+      :locale="dummyProps.locale"
       class="history-registry__dummy"
     ></wt-dummy>
     <div v-else class="table-wrapper">
@@ -124,20 +124,17 @@ export default {
     MediaAction,
     SttAction,
   },
-  data: () => ({
-    dummyValue: '',
-  }),
   watch: {
     '$route.query': {
       async handler() {
         await this.loadList();
-        this.handleDummyValue;
+        this.dummyValue;
       },
     },
   },
   async mounted() {
     await this.loadList();
-    this.handleDummyValue;
+    this.dummyValue;
   },
   computed: {
     ...mapState('registry', {
@@ -145,21 +142,24 @@ export default {
       isLoading: (state) => state.isLoading,
       isNext: (state) => state.isNext,
     }),
-    handleDummyValue() {
+    dummyValue() {
       if (!this.dataList.length) {
         if (Object.values(this.$route.query).some((filter) => filter.length)) {
-           this.dummyValue = 'empty search';
-        } else this.dummyValue = 'empty';
-      } else this.dummyValue = '';
-      return this.dummyValue;
+          return 'empty search';
+        }
+        return 'empty';
+      }
+      return '';
     },
-    dummyImg() {
-      if (this.dummyValue === 'empty') return Dummy;
-      if (this.dummyValue === 'empty search') return DummyAfterSearch;
-    },
-    dummyLocale() {
-      if (this.dummyValue === 'empty') return this.$t('dashboards.empty.workspace');
-      if (this.dummyValue === 'empty search') return this.$t('dashboards.empty.description');
+    dummyProps() {
+      if (this.dummyValue === 'empty') return {
+        src: Dummy,
+        locale: this.$t('dashboards.empty.workspace'),
+      };
+      if (this.dummyValue === 'empty search') return {
+        src: DummyAfterSearch,
+        locale: this.$t('dashboards.empty.description'),
+      };
     },
   },
 

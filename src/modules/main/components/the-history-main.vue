@@ -39,7 +39,7 @@ export default {
       }));
     },
     isEmptyData() {
-      return this.dataList.length ? false : true;
+      return !this.dataList.length;
     },
   },
   methods: {
