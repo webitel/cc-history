@@ -1,9 +1,5 @@
 <template>
   <section class="history-section history-filters-section">
-    <filter-fields
-      v-show="isFilterFieldsOpened"
-      @close="isFilterFieldsOpened = false"
-    ></filter-fields>
     <preset-form-popup
       v-if="isPresetFormPopup"
       :name="preset.name"
@@ -58,9 +54,11 @@
       </div>
     </form>
     <wt-table-actions
-      :icons="['refresh', 'column-select', 'filter-reset', 'settings']"
+      :icons="['refresh', 'filter-reset', 'settings']"
       @input="tableActionsHandler"
-    ></wt-table-actions>
+    >
+      <filter-fields v-model="headers" />
+    </wt-table-actions>
   </section>
 </template>
 
@@ -71,6 +69,7 @@ import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/compone
 import FilterFromTo from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-from-to.vue';
 import isEmpty from '@webitel/ui-sdk/src/scripts/isEmpty';
 import { EnginePresetQuerySection } from 'webitel-sdk';
+import historyHeadersMixin from '../../main/modules/registry/mixins/historyHeadersMixin';
 import FilterFields
   from '../../main/modules/registry/modules/filters/components/filter-table-fields/filter-table-fields.vue';
 import FilterFrom from './filters/filter-from.vue';
@@ -82,7 +81,7 @@ import PresetFilter from './preset-filter.vue';
 
 export default {
   name: 'the-history-filters',
-  mixins: [tableActionsHandlerMixin],
+  mixins: [tableActionsHandlerMixin, historyHeadersMixin],
   components: {
     AbstractApiFilter,
     AbstractEnumFilter,

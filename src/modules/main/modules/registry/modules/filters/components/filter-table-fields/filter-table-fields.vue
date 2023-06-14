@@ -1,14 +1,14 @@
 <template>
-  <column-select
-    :value="headers"
+  <wt-table-column-select
+    class="filter-table-fields"
+    :headers="headers"
+    :static-headers="staticHeaders"
     @change="change"
-    @close="close"
-  ></column-select>
+    />
 </template>
 
 <script>
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
-import ColumnSelect from '../../../../../../../../app/components/utils/table-column-select.vue';
 import historyHeadersMixin from '../../../../mixins/historyHeadersMixin';
 
 export default {
@@ -17,8 +17,10 @@ export default {
     baseFilterMixin,
     historyHeadersMixin,
   ],
-  components: {
-    ColumnSelect,
+  props: {
+    staticHeaders: {
+      type: Array,
+    },
   },
 
   data: () => ({
