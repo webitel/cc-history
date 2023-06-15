@@ -114,8 +114,7 @@ export default {
       false: 'Не соединены',
     },
     empty: {
-      title: 'Нет данных',
-      description: 'Пожалуйста, проверьте настройки фильтров',
+      resultSearch: 'Пожалуйста, проверьте настройки фильтров',
       workspace: 'Сегодня звонков не было',
     },
     callsByPeriod: {

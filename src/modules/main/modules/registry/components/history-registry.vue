@@ -145,7 +145,7 @@ export default {
         if (Object.values(this.$route.query).some((filter) => filter.length)) {
           return {
             src: DummyAfterSearch,
-            locale: this.$t('dashboards.empty.description'),
+            locale: this.$t('dashboards.empty.resultSearch'),
           };
         }
         return {

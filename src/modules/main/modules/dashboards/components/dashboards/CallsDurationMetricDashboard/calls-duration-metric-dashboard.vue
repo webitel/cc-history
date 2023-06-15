@@ -6,8 +6,8 @@
   ></metric>
   <wt-dummy
     v-else
-    :src="dummySrc"
-    :locale="$t('dashboards.empty.description')"
+    :src="dummy"
+    :locale="$t('dashboards.empty.resultSearch')"
   ></wt-dummy>
 </template>
 
@@ -19,15 +19,15 @@ import Dummy from '../../../../../../../app/assets/dummy/hs-dummy-after-search.s
 export default {
   name: 'calls-count-metric-dashboard',
   mixins: [dashboardMixin],
+  data: () => ({
+    dummy: Dummy,
+  }),
   computed: {
     options() {
       return {
         aggregation: this.dashboard.options.aggregation,
         convertData: convertDuration,
       };
-    },
-    dummySrc() {
-      return Dummy;
     },
   },
 };
