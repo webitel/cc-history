@@ -126,13 +126,13 @@ export default {
   },
   watch: {
     '$route.query': {
-      async handler() {
-        await this.loadList();
+      handler() {
+        this.loadList();
       },
     },
   },
-  async mounted() {
-    await this.loadList();
+  mounted() {
+    this.loadList();
   },
   computed: {
     ...mapState('registry', {

@@ -1,7 +1,6 @@
 <template>
   <section class="history-section history-main">
     <wt-tabs
-      v-if="!isEmptyData"
       :current="currentTab"
       :tabs="tabs"
       @change="changeTab($event.value)"
@@ -37,9 +36,6 @@ export default {
         text: this.$t(`${state}.${state}`),
         value: state,
       }));
-    },
-    isEmptyData() {
-      return !this.dataList.length;
     },
   },
   methods: {
