@@ -21,7 +21,7 @@
         <h3 class="call-info__title">{{ $t('fields.amdResult') }}:</h3>
         <span class="call-info__value">{{ call.amdResult }}</span>
       </div>
-      <div class="call-info__item">
+      <div class="call-info__item" v-if="amdLogs">
         <h3 class="call-info__title">{{ $tc('reusable.logs', 2) }}:</h3>
         <span class="call-info__value">{{ amdLogs }}</span>
       </div>
@@ -55,7 +55,7 @@ export default {
       .map((key) => ({ key, value: this.call.variables[key] }));
     },
     amdLogs() {
-      return this.call.amdAiLogs.join(', ');
+      return this.call.amdAiLogs && this.call.amdAiLogs.join(', ');
     },
     isDisplayAmdLogs() {
       return this.call.amdResult && this.call.amdResult !== 'undefined';
