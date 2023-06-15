@@ -108,8 +108,8 @@ import FilterPagination from '../modules/filters/components/filter-pagination/fi
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
-import Dummy from '../../../../../app/assets/icons/dummy/hs-dummy.svg';
-import DummyAfterSearch from '../../../../../app/assets/icons/dummy/hs-dummy-after-search.svg';
+import Dummy from '../../../../../app/assets/dummy/hs-dummy.svg';
+import DummyAfterSearch from '../../../../../app/assets/dummy/hs-dummy-after-search.svg';
 
 export default {
   name: 'history-registry',
