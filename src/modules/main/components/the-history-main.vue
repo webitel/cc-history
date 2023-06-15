@@ -25,9 +25,6 @@ export default {
     ...mapState({
       state: (state) => state.state,
     }),
-    ...mapState('registry', {
-      dataList: (state) => state.dataList,
-    }),
     currentTab() {
       return { value: this.state };
     },
