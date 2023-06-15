@@ -1,7 +1,13 @@
 <template>
   <div class="content-wrapper history-registry">
     <wt-loader v-show="isLoading" />
-    <div class="table-wrapper">
+    <wt-dummy
+      v-if="dummyValue && !isLoading"
+      :src="dummyValue.src"
+      :locale="dummyValue.locale"
+      class="history-registry__dummy"
+    ></wt-dummy>
+    <div v-else class="table-wrapper">
       <wt-table
         v-show="!isLoading"
         ref="wt-table"
@@ -102,6 +108,8 @@ import FilterPagination from '../modules/filters/components/filter-pagination/fi
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
+import Dummy from '../../../../../app/assets/icons/dummy/hs-dummy.svg';
+import DummyAfterSearch from '../../../../../app/assets/icons/dummy/hs-dummy-after-search.svg';
 
 export default {
   name: 'history-registry',
@@ -116,7 +124,6 @@ export default {
     MediaAction,
     SttAction,
   },
-
   watch: {
     '$route.query': {
       handler() {
@@ -124,17 +131,30 @@ export default {
       },
     },
   },
-
   mounted() {
     this.loadList();
   },
-
   computed: {
     ...mapState('registry', {
       dataList: (state) => state.dataList,
       isLoading: (state) => state.isLoading,
       isNext: (state) => state.isNext,
     }),
+    dummyValue() {
+      if (!this.dataList.length) {
+        if (Object.values(this.$route.query).some((filter) => filter.length)) {
+          return {
+            src: DummyAfterSearch,
+            locale: this.$t('dashboards.empty.description'),
+          };
+        }
+        return {
+          src: Dummy,
+          locale: this.$t('dashboards.empty.workspace'),
+        };
+      }
+      return '';
+    },
   },
 
   methods: {
@@ -156,6 +176,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.history-registry__dummy {
+  height: 50vh;
+}
+
 .table-wrapper {
   position: relative;
   display: flex;

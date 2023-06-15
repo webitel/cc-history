@@ -21,7 +21,6 @@ export default {
     Registry,
     Dashboards,
   },
-
   computed: {
     ...mapState({
       state: (state) => state.state,
