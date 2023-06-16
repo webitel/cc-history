@@ -6,8 +6,6 @@ import DoughnutChart
   from '../components/_internals/charts/doughnut-chart.vue';
 import Metric
   from '../components/_internals/charts/metric.vue';
-import EmptyDashboard
-  from '../components/dashboards/_internals/empty-dashboard/empty-dashboard.vue';
 import dashboardDataMixin from './dashboardDataMixin/dashboardDataMixin';
 import dashboardOptionsMixin from './dashboardOptionsMixin/dashboardOptionsMixin';
 
@@ -21,7 +19,6 @@ export default {
     BarChart,
     DoughnutChart,
     Metric,
-    EmptyDashboard,
   },
   props: {
     dashboard: {

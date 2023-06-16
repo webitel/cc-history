@@ -116,8 +116,7 @@ export default {
       false: 'Abandoned',
     },
     empty: {
-      title: 'No data',
-      description: 'Please check filters query',
+      resultSearch: 'Please check filters query',
       workspace: 'There aren’t calls today',
     },
     callsByPeriod: {
