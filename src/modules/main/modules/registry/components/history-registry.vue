@@ -124,16 +124,6 @@ export default {
     MediaAction,
     SttAction,
   },
-  watch: {
-    '$route.query': {
-      handler() {
-        this.loadList();
-      },
-    },
-  },
-  mounted() {
-    this.loadList();
-  },
   computed: {
     ...mapState('registry', {
       dataList: (state) => state.dataList,
@@ -142,7 +132,7 @@ export default {
     }),
     dummyValue() {
       if (!this.dataList.length) {
-        if (Object.values(this.$route.query).some((filter) => filter.length)) {
+        if (Object.values(this.$route.query).some((query) => query.length)) {
           return {
             src: DummyAfterSearch,
             locale: this.$t('dashboards.empty.resultSearch'),
@@ -170,6 +160,16 @@ export default {
     },
     showItemStt(item) {
       return item.files || item.transcripts?.length || item.filesJob;
+    },
+  },
+  mounted() {
+    this.loadList();
+  },
+  watch: {
+    '$route.query': {
+      handler() {
+        this.loadList();
+      },
     },
   },
 };
