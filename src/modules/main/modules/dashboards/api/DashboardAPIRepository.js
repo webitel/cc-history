@@ -34,7 +34,13 @@ const fetchDashboardsData = async ({
                                      hasTranscription,
                                      description,
                                      grantee,
+                                     variable,
                                    }) => {
+  const variables = variable
+    && variable.split('&').reduce((vars, currVar) => ({
+      ...vars,
+      [currVar.split('=')[0]]: currVar.split('=')[1],
+    }), {});
   try {
     const response = await callService.aggregateHistoryCall({
       aggs,
@@ -58,6 +64,7 @@ const fetchDashboardsData = async ({
       member,
       hangup_disposition: hangupDisposition,
       skip_parent: true,
+      variables,
     });
     return formatResponse(response);
   } catch (err) {
@@ -78,7 +85,6 @@ const DashboardAPIRepository = {
       ...defaultParams,
       ...argParams,
     };
-    params.q = params.search;
     return fetchDashboardsData(params);
   },
   saveDashboards,

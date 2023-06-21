@@ -16,6 +16,7 @@ import HasTranscription from '../enums/HasTranscription.enum';
 import TagOptions from '../enums/TagOptions.enum';
 import TeamAPI from '../api/TeamsAPIRepository';
 import UserAPI from '../api/UsersAPIRepository';
+import SearchMode from '../../heading/modules/filters/enums/SearchMode.enum';
 
 const state = {
   agent: new ApiFilterSchema({
@@ -55,9 +56,10 @@ const state = {
     API: QueuesAPI.getLookup,
     locale: { label: 'fields.queue' },
   }),
-  search: new BaseFilterSchema(),
-  fts: new BaseFilterSchema(),
-  description: new BaseFilterSchema(),
+  [SearchMode.SEARCH]: new BaseFilterSchema(),
+  [SearchMode.FTS]: new BaseFilterSchema(),
+  [SearchMode.DESCRIPTION]: new BaseFilterSchema(),
+  [SearchMode.VARIABLE]: new BaseFilterSchema(),
   tags: new EnumFilterSchema({
     options: TagOptions,
     locale: { label: 'fields.tags' },

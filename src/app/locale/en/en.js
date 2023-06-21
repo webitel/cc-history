@@ -214,6 +214,7 @@ export default {
       [SearchMode.SEARCH]: 'Regular search',
       [SearchMode.FTS]: 'Full text search',
       [SearchMode.DESCRIPTION]: 'Agent\'s comment',
+      [SearchMode.VARIABLE]: 'Variable',
     },
     hasFile: 'Has recording',
     hasTranscription: 'Has transcription',

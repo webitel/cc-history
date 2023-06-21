@@ -212,6 +212,7 @@ export default {
       [SearchMode.SEARCH]: 'Звичайний пошук',
       [SearchMode.FTS]: 'Повнотекстовий пошук',
       [SearchMode.DESCRIPTION]: 'Коментар оператора',
+      [SearchMode.VARIABLE]: 'Змінна',
     },
     hasFile: 'Запис розмови',
     hasTranscription: 'Транскрипція',

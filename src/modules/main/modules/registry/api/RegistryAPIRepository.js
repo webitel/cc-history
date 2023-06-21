@@ -48,56 +48,52 @@ const fetchHistory = async ({
                               grantee,
                               talkSec,
                               score,
+                              variable,
                             }) => {
   try {
-    const response = await callService.searchHistoryCall(
+    const variables = variable
+      && variable.split('&').reduce((vars, currVar) => ({
+        ...vars,
+        [currVar.split('=')[0]]: currVar.split('=')[1],
+      }), {});
+
+    const response = await callService.searchHistoryCallPost({
       page,
       size,
-      undefined,
       sort,
       fields,
-      from,
-      to,
-      user,
-      agent,
-      queue,
-      team,
-      member,
-      gateway,
-      duration?.from,
-      duration?.to,
+      createdAt: {
+        from,
+        to,
+      },
+      userId: user,
+      agentId: agent,
+      queueId: queue,
+      teamId: team,
+      memberId: member,
+      gatewayId: gateway,
+      duration,
       skipParent,
       parentId,
       cause,
       hasFile,
-      undefined,
-      `${search}`,
+      q: search,
       direction,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
       id,
-      undefined,
-      undefined,
       dependencyId,
       tags,
       amdResult,
       fts,
-      hangupDisposition,
-      hasTranscription,
-      description,
-      undefined,
-      grantee,
-      undefined,
-      talkSec?.from,
-      talkSec?.to,
+      directions: hangupDisposition,
+      hasTranscript: hasTranscription,
+      agentDescription: description,
+      granteeId: grantee,
+      talk: talkSec,
       rated,
       ratedBy,
-      score?.from,
-      score?.to,
-    );
+      scoreRequired: score,
+      variables,
+    });
     return formatResponse(response);
   } catch (err) {
     throw err;
@@ -110,7 +106,6 @@ const RegistryAPIRepository = {
       ...defaultParams,
       ...argParams,
     };
-    params.q = params.search;
     return fetchHistory(params);
   },
 };
