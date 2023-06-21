@@ -118,6 +118,7 @@ export default {
  */
 .history-search {
   position: relative;
+  z-index: 1;
 
   .wt-context-menu {
     position: absolute;

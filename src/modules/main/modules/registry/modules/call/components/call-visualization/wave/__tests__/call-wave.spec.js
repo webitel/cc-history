@@ -81,6 +81,9 @@ describe('Opened call wave', () => {
             },
           },
         },
+        stubs: {
+          WtTooltip: true,
+        },
       },
       data: () => ({ commentsMode: true, isLoading: false }),
       computed: {
@@ -100,6 +103,9 @@ describe('Opened call wave', () => {
     const wrapper = mount(callWave, {
       global: {
         plugins: [store],
+        stubs: {
+          WtTooltip: true,
+        },
       },
       props,
       data: () => ({
@@ -123,6 +129,9 @@ describe('Opened call wave', () => {
     const wrapper = mount(callWave, {
       global: {
         plugins: [store],
+        stubs: {
+          WtTooltip: true,
+        },
       },
       props,
       data: () => ({ commentsMode: true }),
@@ -147,6 +156,9 @@ describe('Opened call wave', () => {
     const wrapper = mount(callWave, {
       global: {
         plugins: [store],
+        stubs: {
+          WtTooltip: true,
+        },
       },
       props,
       data: () => ({ commentsMode: true }),
@@ -168,6 +180,9 @@ describe('Opened call wave', () => {
     const wrapper = mount(callWave, {
       global: {
         plugins: [store],
+        stubs: {
+          WtTooltip: true,
+        },
       },
       props,
       data: () => ({ commentsMode: true, selectedComment: draft }),
@@ -189,6 +204,9 @@ describe('Opened call wave', () => {
     const wrapper = mount(callWave, {
       global: {
         plugins: [store],
+        stubs: {
+          WtTooltip: true,
+        },
       },
       props,
       data: () => ({ playbackRate: 1, isPlaying: false }),
@@ -209,6 +227,9 @@ describe('Opened call wave', () => {
     const wrapper = mount(callWave, {
       global: {
         plugins: [store],
+        stubs: {
+          WtTooltip: true,
+        },
       },
       props,
       data: () => ({ zoom }),
@@ -228,6 +249,9 @@ describe('Opened call wave', () => {
     const wrapper = mount(callWave, {
       global: {
         plugins: [store],
+        stubs: {
+          WtTooltip: true,
+        },
       },
       props,
       data: () => ({
@@ -251,6 +275,9 @@ describe('Opened call wave', () => {
     const wrapper = mount(callWave, {
       global: {
         plugins: [store],
+        stubs: {
+          WtTooltip: true,
+        },
       },
       props: {
         ...props,
