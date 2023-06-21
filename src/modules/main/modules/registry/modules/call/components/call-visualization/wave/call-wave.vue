@@ -72,12 +72,12 @@
         <section class="call-wave-data-legs-actions">
           <wt-tooltip
             v-if="!leftGain.disabled"
+            :triggers="['click', 'focus', 'touch']"
             :popper-triggers="['hover']"
           >
             <template v-slot:activator>
               <wt-icon-btn
                 :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-                @click="toggleLeftGain"
               ></wt-icon-btn>
             </template>
             <wt-slider
@@ -90,12 +90,12 @@
           </wt-tooltip>
           <wt-tooltip
             v-if="!rightGain.disabled"
+            :triggers="['click', 'focus', 'touch']"
             :popper-triggers="['hover']"
           >
             <template v-slot:activator>
               <wt-icon-btn
                 :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-                @click="toggleRightGain"
               ></wt-icon-btn>
             </template>
             <wt-slider
