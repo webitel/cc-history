@@ -7,7 +7,7 @@
   <wt-dummy
     v-else
     :src="dummy"
-    :locale="$t('dashboards.empty.resultSearch')"
+    :text="$t('dashboards.empty.resultSearch')"
   ></wt-dummy>
 </template>
 
