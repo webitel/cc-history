@@ -4,7 +4,7 @@
     <wt-dummy
       v-if="dummyValue && !isLoading"
       :src="dummyValue.src"
-      :locale="dummyValue.locale"
+      :text="dummyValue.text"
       class="history-registry__dummy"
     ></wt-dummy>
     <div v-else class="table-wrapper">
@@ -135,12 +135,12 @@ export default {
         if (Object.values(this.$route.query).some((query) => query.length)) {
           return {
             src: DummyAfterSearch,
-            locale: this.$t('dashboards.empty.resultSearch'),
+            text: this.$t('dashboards.empty.resultSearch'),
           };
         }
         return {
           src: Dummy,
-          locale: this.$t('dashboards.empty.workspace'),
+          text: this.$t('dashboards.empty.workspace'),
         };
       }
       return '';
