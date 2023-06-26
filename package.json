@@ -30,7 +30,7 @@
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0",
     "wavesurfer.js": "^5.2.0",
-    "webitel-sdk": "^0.1.184"
+    "webitel-sdk": "^0.1.193"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.18.2",

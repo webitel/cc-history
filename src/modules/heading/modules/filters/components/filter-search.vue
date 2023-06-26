@@ -75,6 +75,10 @@ export default {
           value: SearchMode.DESCRIPTION,
           text: this.$t(`filters.search.${SearchMode.DESCRIPTION}`),
         },
+        {
+          value: SearchMode.VARIABLE,
+          text: this.$t(`filters.search.${SearchMode.VARIABLE}`),
+        },
       ];
     },
   },
@@ -102,6 +106,14 @@ export default {
       if (desc) {
         this.restoreValue({ value: desc, filterQuery: SearchMode.DESCRIPTION });
         this.changeMode({ value: SearchMode.DESCRIPTION });
+        return;
+      }
+
+      const variable = this.getValueFromQuery({ filterQuery: SearchMode.VARIABLE });
+      if (variable) {
+        this.restoreValue({ value: variable, filterQuery: SearchMode.VARIABLE });
+        this.changeMode({ value: SearchMode.VARIABLE });
+        return;
       }
     },
     restoreValue({ filterQuery, value }) {
@@ -127,22 +139,20 @@ export default {
     transform: translateY(-50%);
   }
 
-  ::v-deep {
-    .wt-search-bar__input {
-      padding-right: calc(
-        2 * var(--icon-md-size)
-        + 2 * var(--spacing-xs)
-        + var(--input-icon-margin)
-      );
-    }
+  & .wt-search-bar :deep(.wt-search-bar__input) {
+    padding-right: calc(
+      2 * var(--icon-md-size)
+      + 2 * var(--spacing-xs)
+      + var(--input-icon-margin)
+    );
+  }
 
-    .wt-search-bar__reset-icon-btn {
-      right: calc(
-        var(--icon-md-size)
-        + var(--spacing-xs)
-        + var(--input-icon-margin)
-      );
-    }
+  & .wt-search-bar :deep(.wt-search-bar__reset-icon-btn) {
+    right: calc(
+      var(--icon-md-size)
+      + var(--spacing-xs)
+      + var(--input-icon-margin)
+    );
   }
 }
 </style>
