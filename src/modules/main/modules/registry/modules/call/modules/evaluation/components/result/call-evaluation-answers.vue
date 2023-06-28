@@ -13,7 +13,7 @@
       </div>
       <div
         class="call-evaluation-answers-item__answer"
-        v-if="answerScore"
+        v-if="answerScore => 0"
       >
         <div class="call-evaluation-answers-item__title">
           {{ answerName }}

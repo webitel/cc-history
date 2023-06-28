@@ -29,6 +29,7 @@
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
+import { EngineAuditQuestionType } from 'webitel-sdk';
 import CallEvaluationResult from './result/call-evaluation-result.vue';
 import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
 import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
@@ -72,7 +73,31 @@ export default {
       },
     }),
     setScorecard(value) {
-      this.scorecard = value;
+      this.scorecard = {
+        ...value,
+        questions: value.questions.map((question) => {
+          if (question.type === EngineAuditQuestionType.Score) {
+            return {
+              ...question,
+              max: question.max || 1,
+              min: question.min || 0,
+              required: question.required || false,
+              question: question.question || '',
+            };
+          }
+          if (question.type === EngineAuditQuestionType.Option) {
+            return {
+              ...question,
+              options: question.options.map((option) => ({
+                ...option,
+                name: option.name || '',
+                score: option.score || 0,
+              })),
+            };
+          }
+          return question;
+        }),
+      };
     },
     closeEvaluationForm() {
       this.scorecard = {};
