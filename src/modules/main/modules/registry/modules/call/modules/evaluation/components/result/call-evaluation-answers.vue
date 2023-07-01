@@ -6,12 +6,15 @@
       class="call-evaluation-answers-item"
     >
       <div
-        :class="{'call-evaluation-answers-item__question--required': required }"
+        v-if="answerScore >= 0"
         class="call-evaluation-answers-item__question"
+        :class="{'call-evaluation-answers-item__question--required': required }"
       >
         {{ question }}
       </div>
-      <div class="call-evaluation-answers-item__answer">
+      <div
+        v-if="answerScore >= 0"
+        class="call-evaluation-answers-item__answer">
         <div class="call-evaluation-answers-item__title">
           {{ answerName }}
         </div>
@@ -46,30 +49,16 @@ export default {
   },
   computed: {
     questions() {
-      // const newQuestions = this.result.questions.map(({ question, required, options }, index) => {
-      //   return {
-      //     question,
-      //     required,
-      //     answerScore: this.result.answers[index].score,
-      //     answerName: options
-      //       ? options.find(({ score }) => score === this.result.answers[index].score)?.name || ''
-      //       : '',
-      //   };
-      // });
-      const newQuestions = this.result.questions.reduce((array, question, index) => {
-        return question.score < 0
-          ? array.slice(index)
-          : { question,
-              required,
-              answerScore: this.result.answers[index].score,
-              answerName: options
-                ? options.find(({ score }) => score === this.result.answers[index].score)?.name || ''
-                : '',
-            }
-          },
-      );
-      console.log('newQuestions:', newQuestions, 'filtred:', newQuestions.filter((question) => question.answerScore >= 0));
-      return newQuestions;
+      return this.result.questions.map(({ question, required, options }, index) => {
+        return {
+          question,
+          required,
+          answerScore: this.result.answers[index].score,
+          answerName: options
+            ? options.find(({ score }) => score === this.result.answers[index].score)?.name || ''
+            : '',
+        };
+      });
     },
   },
 };
