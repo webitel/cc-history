@@ -7,10 +7,14 @@
     />
     <wt-loader v-show="isLoading"/>
     <div v-if="!isLoading">
-      <call-no-evaluation
+      <wt-dummy
         v-if="!scorecard.questions && !result.id"
-        @rate="toggleScorecardsPopup"
-      ></call-no-evaluation>
+        :src="dummyPic"
+        :text="$t('registry.call.evaluation.noEvaluation')"
+        :button-text="$t('registry.call.evaluation.rateTheCall')"
+        show-action
+        @create="toggleScorecardsPopup"
+      ></wt-dummy>
       <call-evaluation-form
         v-if="scorecard.questions && !result.id"
         :scorecard="scorecard"
@@ -31,8 +35,8 @@ import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedS
 import { mapActions, mapState } from 'vuex';
 import CallEvaluationResult from './result/call-evaluation-result.vue';
 import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
-import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
 import CallEvaluationForm from './form/call-evaluation-form.vue';
+import dummyPic from '../assets/hs-evaluation-dummy.svg';
 
 export default {
   name: 'call-evaluation',
@@ -40,7 +44,6 @@ export default {
     CallEvaluationForm,
     CallEvaluationResult,
     SelectScorecardPopup,
-    CallNoEvaluation,
   },
   props: {
     call: {
@@ -54,6 +57,7 @@ export default {
   data: () => ({
     isScorecardSelectOpened: false,
     scorecard: {},
+    dummyPic,
   }),
   computed: {
     ...mapState({
@@ -88,4 +92,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wt-dummy {
+  margin-top: var(--spacing-sm);
+  border: 1px dashed var(--secondary-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+}
 </style>
