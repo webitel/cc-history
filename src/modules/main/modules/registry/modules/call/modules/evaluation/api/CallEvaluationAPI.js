@@ -1,4 +1,7 @@
-import { AuditFormServiceApiFactory } from 'webitel-sdk';
+import {
+  AuditFormServiceApiFactory,
+  EngineAuditQuestionType,
+} from 'webitel-sdk';
 import {
   SdkListGetterApiConsumer,
 } from 'webitel-sdk/esm2015/api-consumers';
@@ -32,7 +35,39 @@ const _getScorecardsLookup = (getList) => function ({
   return getList(params);
 };
 
-const listGetter = new SdkListGetterApiConsumer(auditService.searchAuditForm)
+const defaultListObject = (response) => {
+  console.log('response', response);
+  return {
+    ...response,
+    items: response.items.map((scorecard) => ({
+      ...scorecard,
+      questions: scorecard.questions.map((question) => {
+        if (question.type === EngineAuditQuestionType.Score) {
+          return {
+            ...question,
+            max: question.max || 1,
+            min: question.min || 0,
+            required: question.required || false,
+            question: question.question || '',
+          };
+        }
+        if (question.type === EngineAuditQuestionType.Option) {
+          return {
+            ...question,
+            options: question.options.map((option) => ({
+              ...option,
+              name: option.name || '',
+              score: option.score || 0,
+            })),
+          };
+        }
+        return question;
+      }),
+    })),
+  };
+};
+
+const listGetter = new SdkListGetterApiConsumer(auditService.searchAuditForm, { defaultListObject })
   .setGetListMethod(_getScorecardsLookup);
 
 const getAuditLookup = (params) => listGetter.getList(params);

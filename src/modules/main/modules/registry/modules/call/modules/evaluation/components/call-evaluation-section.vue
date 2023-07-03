@@ -73,31 +73,7 @@ export default {
       },
     }),
     setScorecard(value) {
-      this.scorecard = {
-        ...value,
-        questions: value.questions.map((question) => {
-          if (question.type === EngineAuditQuestionType.Score) {
-            return {
-              ...question,
-              max: question.max || 1,
-              min: question.min || 0,
-              required: question.required || false,
-              question: question.question || '',
-            };
-          }
-          if (question.type === EngineAuditQuestionType.Option) {
-            return {
-              ...question,
-              options: question.options.map((option) => ({
-                ...option,
-                name: option.name || '',
-                score: option.score || 0,
-              })),
-            };
-          }
-          return question;
-        }),
-      };
+      this.scorecard = value;
     },
     closeEvaluationForm() {
       this.scorecard = {};
