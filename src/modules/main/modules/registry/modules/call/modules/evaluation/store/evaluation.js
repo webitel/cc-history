@@ -19,6 +19,7 @@ const actions = {
   GET_EVALUATION: async (context, id) => {
     context.commit('SET_LOADING', true);
     try {
+      console.log('GET_EVALUATION id:', id);
       const result = await CallEvaluationAPI.getResult(id);
       context.commit('SET_RESULT', result);
     } finally {

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import APIRepository from '../../../../../../../../app/api/APIRepository';
+import APIRepository from '../../../../../../../../app/api/old/APIRepository';
 import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
 import SttDeleteAction from '../utils/stt-delete-action.vue';
 import SttDownloadAction from '../utils/stt-download-action.vue';
