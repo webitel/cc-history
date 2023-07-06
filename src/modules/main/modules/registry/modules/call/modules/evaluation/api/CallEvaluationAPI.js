@@ -5,43 +5,14 @@ import {
 import applyTransform, {
   camelToSnake,
   handleUnauthorized,
-  merge, mergeEach, notify, sanitize, log, snakeToCamel,
+  merge, notify, log, snakeToCamel,
   starToSearch,
 } from '@webitel/ui-sdk/src/api/transformers';
-import { AuditFormServiceApiFactory } from 'webitel-sdk';
+import { AuditFormServiceApiFactory, EngineAuditQuestionType } from 'webitel-sdk';
 import instance from '../../../../../../../../../app/api/instance';
 import configuration from '../../../../../../../../../app/api/openAPIConfig';
-import deepCopy from 'deep-copy';
 
 const auditService = new AuditFormServiceApiFactory(configuration, '', instance);
-
-// const _getScorecardsLookup = (getList) => function ({
-//     page,
-//     size,
-//     search,
-//     sort,
-//     fields,
-//     enabled,
-//     active,
-//   }) {
-//   const params = [
-//     page,
-//     size,
-//     search,
-//     sort,
-//     fields,
-//     undefined,
-//     undefined,
-//     enabled,
-//     undefined,
-//     undefined,
-//     active,
-//   ];
-//   return getList(params);
-// };
-
-// const listGetter = new SdkListGetterApiConsumer(auditService.searchAuditForm)
-//   .setGetListMethod(_getScorecardsLookup);
 
 const getScorecards = async (params) => {
   const {
@@ -52,7 +23,6 @@ const getScorecards = async (params) => {
     fields,
     enabled,
     active,
-    id,
   } = applyTransform(params, [
     merge(getDefaultGetParams()),
     starToSearch('search'),
@@ -65,7 +35,7 @@ const getScorecards = async (params) => {
       search,
       sort,
       fields,
-      id,
+      undefined,
       undefined,
       enabled,
       undefined,
@@ -75,7 +45,6 @@ const getScorecards = async (params) => {
     const { items, next } = applyTransform(response.data, [
       snakeToCamel(),
       merge(getDefaultGetListResponse()),
-      log,
     ]);
     return {
       items,
@@ -89,8 +58,7 @@ const getScorecards = async (params) => {
   }
 };
 
-// const sendAuditResult = (params) => auditService.createAuditFormRate(params);
-const sendAuditResult = async ({ itemInstance }) => {
+const sendAuditResult = async (itemInstance) => {
   const item = applyTransform(itemInstance, [
     camelToSnake(),
   ]);
@@ -107,16 +75,11 @@ const sendAuditResult = async ({ itemInstance }) => {
   }
 };
 
-// const getResult = (id) => (auditService.readAuditRate(id));
-
-const getResult = async ({ itemId: id }) => {
-  console.log('getResult id:', id);
+const getResult = async (id) => {
   try {
-    console.log('getResult id:', id);
     const response = await auditService.readAuditRate(id);
     return applyTransform(response.data, [
       snakeToCamel(),
-      log,
     ]);
   } catch (err) {
     throw applyTransform(err, [
