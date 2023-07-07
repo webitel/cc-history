@@ -5,7 +5,7 @@ import {
 import applyTransform, {
   camelToSnake,
   handleUnauthorized,
-  merge, notify, log, snakeToCamel,
+  merge, mergeEach, notify, log, snakeToCamel,
   starToSearch,
 } from '@webitel/ui-sdk/src/api/transformers';
 import { AuditFormServiceApiFactory, EngineAuditQuestionType } from 'webitel-sdk';
@@ -15,36 +15,33 @@ import configuration from '../../../../../../../../../app/api/openAPIConfig';
 const auditService = new AuditFormServiceApiFactory(configuration, '', instance);
 
 const getScorecards = async (params) => {
-  const responseHandler = (response) => {
+  const defaultObject = (item) => {
     return {
-      ...response,
-      items: response.items.map((scorecard) => ({
-        ...scorecard,
-        questions: scorecard.questions.map((question) => {
-          if (question.type === EngineAuditQuestionType.Score) {
-            return {
-              ...question,
-              max: question.max || 1,
-              min: question.min || 0,
-              required: question.required || false,
-              question: question.question || '',
-            };
-          }
-          if (question.type === EngineAuditQuestionType.Option) {
-            return {
-              ...question,
-              options: question.options.map((option) => ({
-                ...option,
-                name: option.name || '',
-                score: option.score || 0,
-              })),
-            };
-          }
-          return question;
-        }),
-      })),
-    };
-  };
+      question: item.questions.map((question) => {
+        if (question.type === EngineAuditQuestionType.Score) {
+          return {
+            ...question,
+            max: question.max || 1,
+            min: question.min || 0,
+            required: question.required || false,
+            question: question.question || '',
+          };
+        }
+        if (question.type === EngineAuditQuestionType.Option) {
+          return {
+            ...question,
+            options: question.options.map((option) => ({
+              ...option,
+              name: option.name || '',
+              score: option.score || 0,
+            })),
+          };
+        }
+        return question;
+      }),
+    }
+  }
+
   const {
     page,
     size,
@@ -75,10 +72,11 @@ const getScorecards = async (params) => {
     const { items, next } = applyTransform(response.data, [
       snakeToCamel(),
       merge(getDefaultGetListResponse()),
-      responseHandler,
     ]);
     return {
-      items,
+      items: applyTransform(items, [
+        mergeEach(defaultObject),
+      ]),
       next,
     };
   } catch (err) {
