@@ -29,7 +29,6 @@
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
-import { EngineAuditQuestionType } from 'webitel-sdk';
 import CallEvaluationResult from './result/call-evaluation-result.vue';
 import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
 import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';

@@ -15,6 +15,36 @@ import configuration from '../../../../../../../../../app/api/openAPIConfig';
 const auditService = new AuditFormServiceApiFactory(configuration, '', instance);
 
 const getScorecards = async (params) => {
+  const responseHandler = (response) => {
+    return {
+      ...response,
+      items: response.items.map((scorecard) => ({
+        ...scorecard,
+        questions: scorecard.questions.map((question) => {
+          if (question.type === EngineAuditQuestionType.Score) {
+            return {
+              ...question,
+              max: question.max || 1,
+              min: question.min || 0,
+              required: question.required || false,
+              question: question.question || '',
+            };
+          }
+          if (question.type === EngineAuditQuestionType.Option) {
+            return {
+              ...question,
+              options: question.options.map((option) => ({
+                ...option,
+                name: option.name || '',
+                score: option.score || 0,
+              })),
+            };
+          }
+          return question;
+        }),
+      })),
+    };
+  };
   const {
     page,
     size,
@@ -45,6 +75,7 @@ const getScorecards = async (params) => {
     const { items, next } = applyTransform(response.data, [
       snakeToCamel(),
       merge(getDefaultGetListResponse()),
+      responseHandler,
     ]);
     return {
       items,
