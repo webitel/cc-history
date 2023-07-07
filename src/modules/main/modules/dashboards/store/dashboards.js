@@ -1,4 +1,4 @@
-import APIRepository from '../../../../../app/api/APIRepository';
+import APIRepository from '../../../../../app/api/old/APIRepository';
 import Dashboards
   from '../components/dashboards/enums/Dashboards.enum';
 import filters from '../modules/filters/store/filters';

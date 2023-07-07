@@ -1,5 +1,5 @@
   import { sortToQueryAdapter } from '@webitel/ui-sdk/src/scripts/sortQueryAdapters';
-import APIRepository from '../../../../../app/api/APIRepository';
+import APIRepository from '../../../../../app/api/old/APIRepository';
 import historyHeaders from './headers/headers';
 import call from '../modules/call/store/call';
 
@@ -36,6 +36,13 @@ const actions = {
   LOAD_DATA: (context, payload) => context.dispatch('LOAD_DATA_LIST', payload),
 
   LOAD_DATA_LIST: async (context) => {
+    /*
+      https://my.webitel.com/browse/WTEL-3560
+      preventively disable isNext to handle case when user is clicking
+       "next" faster than actual request is made
+     */
+    context.commit('SET_NEXT_PAGE', false);
+
     context.commit('SET_LOADING', true);
     const query = context.rootGetters['filters/GET_FILTERS'];
     const params = {

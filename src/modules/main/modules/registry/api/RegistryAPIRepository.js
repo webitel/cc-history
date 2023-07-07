@@ -1,7 +1,7 @@
 import { CallServiceApiFactory } from 'webitel-sdk';
 
-import instance from '../../../../../app/api/instance';
-import configuration from '../../../../../app/api/utils/openAPIConfig';
+import instance from '../../../../../app/api/old/instance';
+import configuration from '../../../../../app/api/old/utils/openAPIConfig';
 import formatResponse from './formatRegistryResponse';
 
 const defaultParams = {
