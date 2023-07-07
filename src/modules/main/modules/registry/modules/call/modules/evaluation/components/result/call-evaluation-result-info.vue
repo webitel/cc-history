@@ -65,12 +65,15 @@ export default {
 }
 
 .call-evaluation-result-comment {
-  @extend %typo-subtitle-1;
   display: flex;
   flex-direction: column;
   padding: var(--spacing-xs) 0;
   border-bottom: 1px solid var(--secondary-color);
   gap: var(--spacing-xxs);
+
+  &__title {
+    @extend %typo-subtitle-1;
+  }
 }
 
 </style>
