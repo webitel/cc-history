@@ -48,7 +48,7 @@ export default {
         scorecard: 'Scorecard',
         comment: 'Comment',
         selectTheScorecard: 'Select the scorecard',
-        noEvaluation: 'There isn`t evaluation yet',
+        noEvaluation: 'The call is not rated yet',
         optional: 'Optional',
         mandatory: 'Mandatory',
       },
