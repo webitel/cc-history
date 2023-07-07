@@ -18,7 +18,7 @@
 
 <script>
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
-import APIRepository from '../../../../app/api/APIRepository';
+import APIRepository from '../../../../app/api/old/APIRepository';
 import generateMediaURL from '../../../main/modules/registry/mixins/media/scripts/generateMediaURL';
 import historyActionMixin from '../../mixins/historyActionMixin';
 import downloadTranscriptsMixin from '../../mixins/downloadTranscriptsMixin';

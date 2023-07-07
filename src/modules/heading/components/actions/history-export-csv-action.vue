@@ -17,7 +17,7 @@
 
 <script>
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
-import APIRepository from '../../../../app/api/APIRepository';
+import APIRepository from '../../../../app/api/old/APIRepository';
 import historyActionMixin from '../../mixins/historyActionMixin';
 import FilesCounter from './files-counter.vue';
 
