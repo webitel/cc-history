@@ -6,15 +6,15 @@
       class="call-evaluation-answers-item"
     >
       <div
-        :class="{'call-evaluation-answers-item__question--required': required }"
+        v-if="answerScore >= 0"
         class="call-evaluation-answers-item__question"
+        :class="{'call-evaluation-answers-item__question--required': required }"
       >
         {{ question }}
       </div>
       <div
-        class="call-evaluation-answers-item__answer"
-        v-if="answerScore"
-      >
+        v-if="answerScore >= 0"
+        class="call-evaluation-answers-item__answer">
         <div class="call-evaluation-answers-item__title">
           {{ answerName }}
         </div>
