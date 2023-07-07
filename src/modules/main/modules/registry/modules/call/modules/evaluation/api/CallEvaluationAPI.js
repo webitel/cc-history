@@ -15,7 +15,7 @@ import configuration from '../../../../../../../../../app/api/openAPIConfig';
 const auditService = new AuditFormServiceApiFactory(configuration, '', instance);
 
 const getScorecards = async (params) => {
-  const defaultObject = (item) => {
+  const responseHandler = (item) => {
     return {
       question: item.questions.map((question) => {
         if (question.type === EngineAuditQuestionType.Score) {
@@ -75,7 +75,7 @@ const getScorecards = async (params) => {
     ]);
     return {
       items: applyTransform(items, [
-        mergeEach(defaultObject),
+        mergeEach(responseHandler),
       ]),
       next,
     };
