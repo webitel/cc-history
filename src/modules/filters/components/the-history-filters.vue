@@ -64,8 +64,10 @@
 
 <script>
 import { mapActions } from 'vuex';
-import AbstractApiFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-api-filter.vue';
-import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-enum-filter.vue';
+// import AbstractApiFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-api-filter.vue';
+// import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-enum-filter.vue';
+import AbstractApiFilter from './api-filter.vue';
+import AbstractEnumFilter from './enum-filter.vue';
 import FilterFromTo from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-from-to.vue';
 import isEmpty from '@webitel/ui-sdk/src/scripts/isEmpty';
 import { EnginePresetQuerySection } from 'webitel-sdk';
