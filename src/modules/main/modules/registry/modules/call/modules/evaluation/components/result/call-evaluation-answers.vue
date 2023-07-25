@@ -6,7 +6,6 @@
       class="call-evaluation-answers-item"
     >
       <div
-        v-if="answerScore >= 0"
         class="call-evaluation-answers-item__question"
         :class="{'call-evaluation-answers-item__question--required': required }"
       >
