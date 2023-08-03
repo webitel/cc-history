@@ -69,7 +69,7 @@ export default {
     },
     async handleDeleteTranscription() {
       await this.deleteTranscription();
-      this.call.transcripts.splice(this.call.transcripts.indexOf(this.  transcript), 1);
+      this.call.transcripts.splice(this.call.transcripts.indexOf(this.transcript), 1);
       this.transcript = this.call.transcripts[0] || this.$emit('close');
     },
     async loadCall() {
@@ -77,7 +77,7 @@ export default {
       loading call separately is needed for transcript channels representation
        */
       const params = {
-        id: this.callId,
+        id: [this.callId],
         from: 0,
         fields: ['from', 'to', 'id', 'createdAt', 'transcripts'],
       };
