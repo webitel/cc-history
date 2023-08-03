@@ -1,5 +1,11 @@
 <template>
   <div class="content-wrapper history-registry">
+    <stt-popup
+      v-if="sttPopupCallId"
+      :call-id="sttPopupCallId"
+      @delete="handleTranscriptDelete({ callId: sttPopupCallId, transcript: $event })"
+      @close="sttPopupCallId = null"
+    ></stt-popup>
     <wt-loader v-show="isLoading" />
     <wt-dummy
       v-if="dummyValue && !isLoading"
@@ -73,7 +79,7 @@
             v-if="showItemStt(item)"
             :item="item"
             class="table-action"
-            @delete="handleTranscriptDelete({ call: item, transcript: $event })"
+            @open="sttPopupCallId = item.id"
           ></stt-action>
 
           <router-link
@@ -110,6 +116,7 @@ import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
 import Dummy from '../../../../../app/assets/dummy/hs-dummy.svg';
 import DummyAfterSearch from '../../../../../app/assets/dummy/hs-dummy-after-search.svg';
+import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 
 export default {
   name: 'history-registry',
@@ -123,7 +130,11 @@ export default {
     TableDirection,
     MediaAction,
     SttAction,
+    SttPopup,
   },
+  data: () => ({
+    sttPopupCallId: null,
+  }),
   computed: {
     ...mapState('registry', {
       dataList: (state) => state.dataList,
@@ -154,7 +165,8 @@ export default {
     ...mapActions('registry', {
       loadList: 'LOAD_DATA_LIST',
     }),
-    handleTranscriptDelete({ call, transcript }) {
+    handleTranscriptDelete({ callId, transcript }) {
+      const call = this.dataList.find(({ id }) => id === callId);
       // should find transcript instead of indexOf cause transcript source is not that call
       call.transcripts.splice(call.transcripts.findIndex(({ id }) => id === transcript.id), 1);
     },
