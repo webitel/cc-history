@@ -208,7 +208,6 @@ export default {
       },
     },
     search: {
-      settingsHint: 'Налаштування пошуку',
       [SearchMode.SEARCH]: 'Звичайний пошук',
       [SearchMode.FTS]: 'Повнотекстовий пошук',
       [SearchMode.DESCRIPTION]: 'Коментар оператора',

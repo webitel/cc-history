@@ -210,7 +210,6 @@ export default {
       },
     },
     search: {
-      settingsHint: 'Search mode',
       [SearchMode.SEARCH]: 'Regular search',
       [SearchMode.FTS]: 'Full text search',
       [SearchMode.DESCRIPTION]: 'Agent\'s comment',
