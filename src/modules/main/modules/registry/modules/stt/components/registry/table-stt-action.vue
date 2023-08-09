@@ -1,12 +1,5 @@
 <template>
   <div class="table-stt-action">
-    <stt-popup
-      v-if="isSttPopup"
-      :call-id="item.id"
-      @close="isSttPopup = false"
-      @delete="$emit('delete', $event)"
-    ></stt-popup>
-
     <wt-loader
       v-if="startSpin || currentState.value === TranscriptionState.ACTIVE"
       color="icon"
@@ -28,11 +21,9 @@
 <script>
 import CallTranscriptAPI from '../../api/CallTranscriptAPI';
 import TranscriptionState from '../../enums/TranscriptionState.enum';
-import SttPopup from './stt-popup.vue';
 
 export default {
   name: 'table-stt-action',
-  components: { SttPopup },
   props: {
     item: {
       type: Object,
@@ -43,7 +34,6 @@ export default {
     TranscriptionState,
     isErrorPopupOpened: false,
     startSpin: false,
-    isSttPopup: false,
   }),
   computed: {
     fileJob() {
@@ -100,7 +90,7 @@ export default {
   },
   methods: {
     handleDoneClick() {
-      this.isSttPopup = true;
+      this.$emit('open');
     },
     handleStartJob() {
       try {

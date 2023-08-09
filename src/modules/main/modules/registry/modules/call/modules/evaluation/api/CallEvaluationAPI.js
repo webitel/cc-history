@@ -14,34 +14,34 @@ import configuration from '../../../../../../../../../app/api/openAPIConfig';
 
 const auditService = new AuditFormServiceApiFactory(configuration, '', instance);
 
+const questionDefaultValuesHandler = (questions) => questions.map((question) => {
+    if (question.type === EngineAuditQuestionType.Score) {
+      return {
+        ...question,
+        max: question.max || 1,
+        min: question.min || 0,
+        required: question.required || false,
+        question: question.question || '',
+      };
+    }
+    if (question.type === EngineAuditQuestionType.Option) {
+      return {
+        ...question,
+        options: question.options.map((option) => ({
+          ...option,
+          name: option.name || '',
+          score: option.score || 0,
+        })),
+      };
+    }
+    return question;
+  });
+
 const getScorecards = async (params) => {
-  const listHandler = (items) => {
-    return items.map((scorecard) => ({
-      ...scorecard,
-      questions: scorecard.questions.map((question) => {
-        if (question.type === EngineAuditQuestionType.Score) {
-          return {
-            ...question,
-            max: question.max || 1,
-            min: question.min || 0,
-            required: question.required || false,
-            question: question.question || '',
-          };
-        }
-        if (question.type === EngineAuditQuestionType.Option) {
-          return {
-            ...question,
-            options: question.options.map((option) => ({
-              ...option,
-              name: option.name || '',
-              score: option.score || 0,
-            })),
-          };
-        }
-        return question;
-      }),
+  const listHandler = (items) => items.map((item) => ({
+      ...item,
+      questions: questionDefaultValuesHandler(item.questions),
     }));
-  };
 
   const {
     page,
@@ -106,10 +106,17 @@ const sendAuditResult = async (itemInstance) => {
 };
 
 const getResult = async (id) => {
+  const responseHandler = (response) => ({
+    ...response,
+    questions: questionDefaultValuesHandler(response.questions),
+  });
+
   try {
     const response = await auditService.readAuditRate(id);
     return applyTransform(response.data, [
       snakeToCamel(),
+      responseHandler,
+
     ]);
   } catch (err) {
     throw applyTransform(err, [
