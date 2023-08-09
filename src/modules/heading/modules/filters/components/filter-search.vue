@@ -29,7 +29,7 @@
               icon="filter"
             ></wt-icon-btn>
           </template>
-          {{ $t('filters.search.settingsHint') }}
+          {{ $t('webitelUI.searchBar.settingsHint') }}
         </wt-tooltip>
       </template>
       <template v-slot:option="{ value, text }">
