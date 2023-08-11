@@ -1,5 +1,7 @@
 <template>
-  <form class="history-search">
+  <form
+    @submit.prevent
+    class="history-search">
     <wt-search-bar
       :placeholder="$t('reusable.search')"
       :value="filterSchema.value"
