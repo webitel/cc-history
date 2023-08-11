@@ -1,55 +1,119 @@
+import {
+  camelToSnake, notify,
+  starToSearch, snakeToCamel,
+  merge, mergeEach,
+} from '@webitel/ui-sdk/src/api/transformers';
+import applyTransform
+  from '@webitel/ui-sdk/src/api/transformers/applyTransform';
+import { getDefaultGetListResponse } from '@webitel/ui-sdk/src/api/defaults';
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { CallServiceApiFactory } from 'webitel-sdk';
 
-import instance from '../../../../../app/api/old/instance';
-import configuration from '../../../../../app/api/old/utils/openAPIConfig';
-import formatResponse from './formatRegistryResponse';
-
-const defaultParams = {
-  page: 1,
-  size: 10,
-  search: '',
-  from: new Date().setHours(0, 0, 0),
-  to: new Date().setHours(23, 59, 59),
-  sort: '-created_at',
-};
+import instance from '../../../../../app/api/instance';
+import configuration from '../../../../../app/api/openAPIConfig';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
-const fetchHistory = async ({
-                              page,
-                              size,
-                              from,
-                              to,
-                              user,
-                              rated,
-                              ratedBy,
-                              agent,
-                              queue,
-                              team,
-                              gateway,
-                              member,
-                              duration,
-                              skipParent,
-                              parentId,
-                              cause,
-                              fields,
-                              sort,
-                              direction,
-                              search,
-                              id,
-                              dependencyId,
-                              tags,
-                              amdResult,
-                              fts,
-                              hangupDisposition,
-                              hasFile,
-                              hasTranscription,
-                              description,
-                              grantee,
-                              talkSec,
-                              score,
-                              variable,
-                            }) => {
+const computeDate = (timestamp) => {
+  if (!timestamp) return null;
+  const date = new Date(+timestamp);
+  return date.toLocaleDateString();
+};
+
+const computeTime = (timestamp) => {
+  if (!timestamp) return null;
+  const date = new Date(+timestamp);
+  return date.toLocaleTimeString();
+};
+
+const computeDateAndTime = (timestamp) => {
+  if (!timestamp) return null;
+  const date = new Date(+timestamp);
+  return date.toLocaleString('en-GB');
+};
+
+const mapDefaultComments = (item) => {
+  const defaultComment = {
+    startSec: 0,
+    endSec: 0,
+    note: '',
+  };
+
+  return item.annotations ? item.annotations.map((comment) => ({
+    ...defaultComment,
+    ...comment,
+  })) : [];
+};
+
+const transformResponseItems = (items) => {
+  const defaultObject = {
+    _isSelected: false,
+  };
+  return items.map((item) => ({
+    ...defaultObject,
+    ...item,
+    date: computeDate(item.createdAt),
+    time: computeTime(item.createdAt),
+    bridgedAt: computeTime(item.bridgedAt),
+    queueBridgedAt: computeTime(item.queueBridgedAt),
+    createdAt: computeDateAndTime(item.createdAt),
+    answeredAt: computeTime(item.answeredAt),
+    joinedAt: computeTime(item.joinedAt),
+    leavingAt: computeTime(item.leavingAt),
+    hangupAt: computeTime(item.hangupAt),
+    reportingAt: computeTime(item.reportingAt),
+    duration: convertDuration(item.duration),
+    holdSec: convertDuration(item.holdSec),
+    waitSec: convertDuration(item.waitSec),
+    billSec: convertDuration(item.billSec),
+    talkSec: convertDuration(item.talkSec),
+    reportingSec: convertDuration(item.reportingSec),
+    queueWaitSec: convertDuration(item.queueWaitSec),
+    queueDurationSec: convertDuration(item.queueDurationSec),
+    annotations: mapDefaultComments(item),
+    hangupDisposition: item.hangupDisposition ? snakeToCamel(item.hangupDisposition) : '',
+    score: item.scoreRequired ? item.scoreRequired.toFixed(2) : null,
+  }));
+};
+
+const getList = async (params) => {
+  const {
+    page,
+    size,
+    from,
+    to,
+    user,
+    rated,
+    ratedBy,
+    agent,
+    queue,
+    team,
+    gateway,
+    member,
+    duration,
+    skipParent,
+    parentId,
+    cause,
+    fields,
+    sort = '-created_at',
+    direction,
+    search,
+    id,
+    dependencyId,
+    tags,
+    amdResult,
+    fts,
+    hangupDisposition,
+    hasFile,
+    hasTranscription,
+    description,
+    grantee,
+    talkSec,
+    score,
+    variable,
+  } = applyTransform(params, [
+    starToSearch('search'),
+  ]);
   try {
     const variables = variable
       && variable.split('&').reduce((vars, currVar) => ({
@@ -62,52 +126,57 @@ const fetchHistory = async ({
       size,
       sort,
       fields,
-      createdAt: {
+      created_at: {
         from,
         to,
       },
-      userId: user,
-      agentId: agent,
-      queueId: queue,
-      teamId: team,
-      memberId: member,
-      gatewayId: gateway,
+      user_id: user,
+      agent_id: agent,
+      queue_id: queue,
+      team_id: team,
+      member_id: member,
+      gateway_id: gateway,
       duration,
-      skipParent,
-      parentId,
+      skip_parent: skipParent,
+      parent_id: parentId,
       cause,
-      hasFile,
+      has_file: hasFile,
       q: search,
       direction,
       id,
-      dependencyId,
+      dependency_id: dependencyId,
       tags,
-      amdResult,
+      amd_result: amdResult,
       fts,
       directions: hangupDisposition,
-      hasTranscript: hasTranscription,
-      agentDescription: description,
-      granteeId: grantee,
+      has_transcript: hasTranscription,
+      agent_description: description,
+      grantee_id: grantee,
       talk: talkSec,
       rated,
-      ratedBy,
-      scoreRequired: score,
+      rated_by: ratedBy,
+      score_required: score,
       variables,
     });
-    return formatResponse(response);
+    const { items, next } = applyTransform(response.data, [
+      snakeToCamel(),
+      merge(getDefaultGetListResponse()),
+    ]);
+    return {
+      items: applyTransform(items, [
+        transformResponseItems,
+      ]),
+      next,
+    };
   } catch (err) {
-    throw err;
+    throw applyTransform(err, [
+      notify,
+    ]);
   }
 };
 
 const RegistryAPIRepository = {
-  async getHistory(argParams) {
-    const params = {
-      ...defaultParams,
-      ...argParams,
-    };
-    return fetchHistory(params);
-  },
+  getHistory: getList,
 };
 
 export default RegistryAPIRepository;
