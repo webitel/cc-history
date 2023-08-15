@@ -141,7 +141,7 @@ const getList = async (params) => {
       parent_id: parentId,
       cause,
       has_file: hasFile,
-      q: search,
+      number: search,
       direction,
       id,
       dependency_id: dependencyId,
