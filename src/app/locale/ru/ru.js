@@ -180,6 +180,7 @@ export default {
     result: 'Результат',
     sipCode: 'SIP код',
     agentDescription: 'Комментарий оператора',
+    amd: 'AMD',
     amdResult: 'AMD результат',
     hangupDisposition: 'Результат завершения',
     blindTransfer: 'Слепой перевод',
@@ -188,6 +189,7 @@ export default {
     score: 'Оценка',
     memberId: 'Id абонента',
     attemptId: 'Id попытки',
+    postProcessing: 'Постобработка',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',
