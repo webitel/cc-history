@@ -1,42 +1,61 @@
 <template>
   <section class="call-info">
-    <ul
+    <wt-expansion-panel
       v-if="call.variables"
       class="call-info__wrapper"
     >
-      <li
-        v-for="(variable, key) of variables"
-        :key="key"
-        class="call-info__item"
-      >
-        <h3 class="call-info__title">{{ variable.key }}:</h3>
-        <span class="call-info__value">{{ variable.value }}</span>
-      </li>
-    </ul>
-    <div
+      <template v-slot:title>{{ $tc('vocabulary.variables', 2) }}</template>
+      <template>
+        <ul>
+          <li
+            v-for="(variable, key) of variables"
+            :key="key"
+            class="call-info__item"
+          >
+            <h3 class="call-info__title">{{ variable.key }}: </h3>
+            <span>{{ variable.value }}</span>
+          </li>
+        </ul>
+      </template>
+    </wt-expansion-panel>
+
+    <wt-expansion-panel
       v-if="isDisplayAmdLogs"
       class="call-info__wrapper"
     >
-      <div class="call-info__item">
-        <h3 class="call-info__title">{{ $t('fields.amdResult') }}:</h3>
-        <span class="call-info__value">{{ call.amdResult }}</span>
-      </div>
-      <div class="call-info__item" v-if="amdLogs">
-        <h3 class="call-info__title">{{ $tc('reusable.logs', 2) }}:</h3>
-        <span class="call-info__value">{{ amdLogs }}</span>
-      </div>
+      <template v-slot:title>{{ $t('fields.amd') }}</template>
+      <template>
+        <div class="call-info__item">
+          <h3 class="call-info__title">{{ $t('fields.amdResult') }}: </h3>
+          <span>{{ call.amdResult }}</span>
+        </div>
+        <div class="call-info__item" v-if="amdLogs">
+          <h3 class="call-info__title">{{ $tc('reusable.logs', 2) }}: </h3>
+          <span>{{ amdLogs }}</span>
+        </div>
+      </template>
+    </wt-expansion-panel>
 
-    </div>
-    <div v-if="emptyValue">
-      {{ $t('registry.call.noInfo') }}
-    </div>
-    <div
-      v-if="call.agentDescription"
-      class="call-info__item"
+    <wt-expansion-panel
+      v-if="call.formFields"
+      class="call-info__wrapper"
     >
-      <h3 class="call-info__title">{{ $t('registry.call.agentDescription') }}:</h3>
-      <span class="call-info__value">{{ call.agentDescription }}</span>
-    </div>
+      <template v-slot:title>{{ $t('fields.postProcessing') }}</template>
+      <template>
+        <ul>
+          <li
+            v-for="(variable, key) of formFields"
+            :key="key"
+            class="call-info__item"
+          >
+            <h3 class="call-info__title">{{ variable.key }}: </h3>
+            <span>{{ variable.value }}</span>
+          </li>
+        </ul>
+      </template>
+    </wt-expansion-panel>
+
+    <div v-if="emptyValue">{{ $t('registry.call.noInfo') }}</div>
   </section>
 </template>
 
@@ -61,7 +80,20 @@ export default {
       return this.call.amdResult && this.call.amdResult !== 'undefined';
     },
     emptyValue() {
-      return !this.call.variables && !this.isDisplayAmdLogs;
+      return !this.call.variables && !this.isDisplayAmdLogs && !this.call.formFields;
+    },
+    agentDescription() {
+      return this.call.agentDescription && {
+        key: this.$t('registry.call.agentDescription'),
+        value: this.call.agentDescription,
+      };
+    },
+    formFields() {
+      let arrayValues;
+      if (this.call.formFields) arrayValues = Object.keys(this.call.formFields)
+      .map((key) => ({ key, value: this.call.formFields[key] }));
+      if (this.agentDescription) arrayValues.unshift(this.agentDescription);
+      return arrayValues;
     },
   },
 };
@@ -69,8 +101,8 @@ export default {
 
 <style lang="scss" scoped>
 .call-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-sm);
 
   &__wrapper {
@@ -80,18 +112,21 @@ export default {
   }
 
   &__item {
-    display: flex;
-    align-items: center;
-    min-width: 0;
+    padding: var(--spacing-xs);
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--secondary-color);
+    }
   }
 
   &__title {
     @extend %typo-subtitle-1;
-    margin-right: var(--spacing-xs);
+    display: inline;
   }
 
-  &__value {
-    word-break: break-all;
+  @media (min-width: $viewport-sm) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }
 </style>

@@ -182,6 +182,7 @@ export default {
     result: 'Result',
     sipCode: 'SIP code',
     agentDescription: 'Agent`s comment',
+    amd: 'AMD',
     amdResult: 'AMD result',
     hangupDisposition: 'Hangup disposition',
     blindTransfer: 'Blind transfer',
@@ -190,6 +191,7 @@ export default {
     score: 'Score',
     memberId: 'Member Id',
     attemptId: 'Attempt Id',
+    postProcessing: 'Postprocessing',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',
