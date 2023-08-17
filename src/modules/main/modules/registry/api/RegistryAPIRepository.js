@@ -8,6 +8,7 @@ import applyTransform
 import { getDefaultGetListResponse } from '@webitel/ui-sdk/src/api/defaults';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { CallServiceApiFactory } from 'webitel-sdk';
+import * as converters from '@webitel/ui-sdk/src/scripts/caseConverters';
 
 import instance from '../../../../../app/api/instance';
 import configuration from '../../../../../app/api/openAPIConfig';
@@ -71,7 +72,7 @@ const transformResponseItems = (items) => {
     queueWaitSec: convertDuration(item.queueWaitSec),
     queueDurationSec: convertDuration(item.queueDurationSec),
     annotations: mapDefaultComments(item),
-    hangupDisposition: item.hangupDisposition ? snakeToCamel(item.hangupDisposition) : '',
+    hangupDisposition: item.hangupDisposition ? converters.snakeToCamel(item.hangupDisposition) : '',
     score: item.scoreRequired ? item.scoreRequired.toFixed(2) : null,
   }));
 };
