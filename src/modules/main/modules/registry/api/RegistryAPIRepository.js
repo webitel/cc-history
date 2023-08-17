@@ -113,7 +113,6 @@ const getList = async (params) => {
     score,
     variable,
   } = applyTransform(params, [
-    starToSearch('search'),
   ]);
   try {
     const variables = variable
