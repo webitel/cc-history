@@ -6,7 +6,7 @@
     @close="$emit('close')"
   >
     <template v-slot:header>
-      {{$t('registry.call.evaluation.selectTheScorecard')}}
+      {{ $t('registry.call.evaluation.selectTheScorecard') }}
     </template>
     <template v-slot:main>
       <wt-select
@@ -52,16 +52,21 @@ export default {
     cacheScorecard(scorecard) {
       localStorage.setItem(scorecardCacheKey, JSON.stringify(scorecard));
     },
-    setScorecardFromCache() {
+    async setScorecardFromCache() {
       const scorecard = localStorage.getItem(scorecardCacheKey);
-      if (scorecard) this.scorecard = JSON.parse(scorecard);
+      const parseScorecard = JSON.parse(scorecard);
+      if (scorecard) {
+        const response = await CallEvaluationAPI.get({ itemId: parseScorecard.id });
+        this.scorecard = response;
+        this.cacheScorecard(this.scorecard);
+      }
     },
     loadScorecards: (params) => CallEvaluationAPI.getLookup({
-       ...params,
-       fields: ['id', 'name', 'questions'],
-       enabled: true,
-       active: true,
-     }),
+      ...params,
+      fields: ['id', 'name', 'questions'],
+      enabled: true,
+      active: true,
+    }),
   },
   created() {
     this.setScorecardFromCache();

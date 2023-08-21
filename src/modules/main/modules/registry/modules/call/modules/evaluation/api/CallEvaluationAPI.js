@@ -88,6 +88,20 @@ const getScorecards = async (params) => {
   }
 };
 
+const getAuditForm = async ({ itemId: id }) => {
+  try {
+    const response = await auditService.readAuditForm(id);
+    return applyTransform(response.data, [
+      snakeToCamel(),
+    ]);
+  } catch (err) {
+    throw applyTransform(err, [
+      handleUnauthorized,
+      notify,
+    ]);
+  }
+};
+
 const sendAuditResult = async (itemInstance) => {
   const item = applyTransform(itemInstance, [
     camelToSnake(),
@@ -133,6 +147,7 @@ const getAuditLookup = (params) => getScorecards({
 
 const CallEvaluationAPI = {
   getLookup: getAuditLookup,
+  get: getAuditForm,
   sendAuditResult,
   getResult,
 };
