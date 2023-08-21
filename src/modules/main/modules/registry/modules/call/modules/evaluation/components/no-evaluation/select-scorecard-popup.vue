@@ -6,7 +6,7 @@
     @close="$emit('close')"
   >
     <template v-slot:header>
-      {{$t('registry.call.evaluation.selectTheScorecard')}}
+      {{ $t('registry.call.evaluation.selectTheScorecard') }}
     </template>
     <template v-slot:main>
       <wt-select
@@ -34,7 +34,7 @@
 <script>
 import CallEvaluationAPI from '../../api/CallEvaluationAPI';
 
-const scorecardCacheKey = 'history-last-used-scorecard';
+const scorecardIdCacheKey = 'history-last-used-scorecard-id';
 
 export default {
   name: 'select-scorecard-popup',
@@ -46,22 +46,25 @@ export default {
   methods: {
     selectScorecard() {
       this.$emit('change', this.scorecard);
-      this.cacheScorecard(this.scorecard);
+      this.cacheScorecardId(this.scorecard.id);
       this.$emit('close');
     },
-    cacheScorecard(scorecard) {
-      localStorage.setItem(scorecardCacheKey, JSON.stringify(scorecard));
+    cacheScorecardId(id) {
+      localStorage.setItem(scorecardIdCacheKey, id);
     },
-    setScorecardFromCache() {
-      const scorecard = localStorage.getItem(scorecardCacheKey);
-      if (scorecard) this.scorecard = JSON.parse(scorecard);
+    async setScorecardFromCache() {
+      const scorecardId = localStorage.getItem(scorecardIdCacheKey);
+      if (scorecardId) {
+        const response = await CallEvaluationAPI.get({ itemId: scorecardId });
+        this.scorecard = response;
+      }
     },
     loadScorecards: (params) => CallEvaluationAPI.getLookup({
-       ...params,
-       fields: ['id', 'name', 'questions'],
-       enabled: true,
-       active: true,
-     }),
+      ...params,
+      fields: ['id', 'name', 'questions'],
+      enabled: true,
+      active: true,
+    }),
   },
   created() {
     this.setScorecardFromCache();
