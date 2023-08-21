@@ -1,7 +1,11 @@
 <template>
   <article class="call-no-evaluation">
     <div class="call-no-evaluation__wrapper">
-      <wt-icon icon="scorecard" size="3xl"/>
+      <wt-icon
+        icon="scorecard"
+        size="3xl"
+        color="secondary"
+      />
       <p class="call-no-evaluation__text">
         {{ $t('registry.call.evaluation.noEvaluation') }}
       </p>
