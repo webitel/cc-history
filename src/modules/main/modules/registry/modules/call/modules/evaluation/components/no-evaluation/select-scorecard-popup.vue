@@ -34,7 +34,7 @@
 <script>
 import CallEvaluationAPI from '../../api/CallEvaluationAPI';
 
-const scorecardCacheKey = 'history-last-used-scorecard';
+const scorecardIdCacheKey = 'history-last-used-scorecard-id';
 
 export default {
   name: 'select-scorecard-popup',
@@ -46,19 +46,19 @@ export default {
   methods: {
     selectScorecard() {
       this.$emit('change', this.scorecard);
-      this.cacheScorecard(this.scorecard);
+      this.cacheScorecardId(this.scorecard.id);
       this.$emit('close');
     },
-    cacheScorecard(scorecard) {
-      localStorage.setItem(scorecardCacheKey, JSON.stringify(scorecard));
+    cacheScorecardId(id) {
+      localStorage.setItem(scorecardIdCacheKey, JSON.stringify(id));
     },
     async setScorecardFromCache() {
-      const scorecard = localStorage.getItem(scorecardCacheKey);
-      const parseScorecard = JSON.parse(scorecard);
-      if (scorecard) {
-        const response = await CallEvaluationAPI.get({ itemId: parseScorecard.id });
+      const scorecardId = localStorage.getItem(scorecardIdCacheKey);
+      const parseScorecardId = JSON.parse(scorecardId);
+      if (scorecardId) {
+        const response = await CallEvaluationAPI.get({ itemId: parseScorecardId });
         this.scorecard = response;
-        this.cacheScorecard(this.scorecard);
+        this.cacheScorecardId(this.scorecard.id);
       }
     },
     loadScorecards: (params) => CallEvaluationAPI.getLookup({
