@@ -50,15 +50,13 @@ export default {
       this.$emit('close');
     },
     cacheScorecardId(id) {
-      localStorage.setItem(scorecardIdCacheKey, JSON.stringify(id));
+      localStorage.setItem(scorecardIdCacheKey, id);
     },
     async setScorecardFromCache() {
       const scorecardId = localStorage.getItem(scorecardIdCacheKey);
-      const parseScorecardId = JSON.parse(scorecardId);
       if (scorecardId) {
-        const response = await CallEvaluationAPI.get({ itemId: parseScorecardId });
+        const response = await CallEvaluationAPI.get({ itemId: scorecardId });
         this.scorecard = response;
-        this.cacheScorecardId(this.scorecard.id);
       }
     },
     loadScorecards: (params) => CallEvaluationAPI.getLookup({
