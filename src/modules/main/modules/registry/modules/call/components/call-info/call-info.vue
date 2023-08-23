@@ -37,7 +37,7 @@
     </wt-expansion-panel>
 
     <wt-expansion-panel
-      v-if="call.formFields"
+      v-if="formFields.length"
       class="call-info__wrapper"
     >
       <template v-slot:title>{{ $t('fields.postProcessing') }}</template>
@@ -80,7 +80,7 @@ export default {
       return this.call.amdResult && this.call.amdResult !== 'undefined';
     },
     emptyValue() {
-      return !this.call.variables && !this.isDisplayAmdLogs && !this.call.formFields;
+      return !this.call.variables && !this.isDisplayAmdLogs && !this.formFields.length;
     },
     agentDescription() {
       return this.call.agentDescription && {
@@ -89,9 +89,16 @@ export default {
       };
     },
     formFields() {
-      let arrayValues;
+      let arrayValues = [];
       if (this.call.formFields) arrayValues = Object.keys(this.call.formFields)
-      .map((key) => ({ key, value: this.call.formFields[key] }));
+      .map((key) => {
+        const transformedObj = { key, value: this.call.formFields[key] };
+        if (key === 'filesOutcome' || key === 'filesIncome') {
+          const arrayFilenames = JSON.parse(this.call.formFields[key]).map((item) => item.name);
+          transformedObj.value = arrayFilenames.join(', ');
+        }
+        return transformedObj;
+      });
       if (this.agentDescription) arrayValues.unshift(this.agentDescription);
       return arrayValues;
     },
