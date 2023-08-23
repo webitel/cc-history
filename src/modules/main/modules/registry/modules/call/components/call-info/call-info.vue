@@ -93,6 +93,11 @@ export default {
       if (this.call.formFields) arrayValues = Object.keys(this.call.formFields)
       .map((key) => {
         const transformedObj = { key, value: this.call.formFields[key] };
+        /*
+        * https://my.webitel.com/browse/WTEL-3665
+        * For fields of type 'filesOutcome' and 'filesIncome' get full data about files.
+        * Need display only names separated by commas
+        * */
         if (key === 'filesOutcome' || key === 'filesIncome') {
           const arrayFilenames = JSON.parse(this.call.formFields[key]).map((item) => item.name);
           transformedObj.value = arrayFilenames.join(', ');
