@@ -5,7 +5,7 @@
     <wt-search-bar
       :hint="variableSearchHint"
       :placeholder="$t('reusable.search')"
-      :v="v$.filterSchema.value"
+      :v="variableSearchValidation"
       :value="filterSchema.value"
       debounce
       @input="setValue({ filter: filterQuery, value: $event })"
@@ -94,6 +94,9 @@ export default {
     },
     variableSearchHint() {
       return this.filterQuery === SearchMode.VARIABLE ? this.$t('reusable.saveAs') : null;
+    },
+    variableSearchValidation() {
+      return this.filterQuery === SearchMode.VARIABLE ? this.v$.filterSchema.value : null;
     },
   },
   methods: {

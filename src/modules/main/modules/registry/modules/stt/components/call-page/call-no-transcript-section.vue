@@ -14,7 +14,7 @@
       ></wt-icon>
       <wt-button
         @click="transcribe"
-      >{{ $t('retry') }}
+      >{{ $t('reusable.retry') }}
       </wt-button>
     </div>
 
@@ -46,7 +46,7 @@
       ></wt-icon>
       <wt-button
         @click="transcribe"
-      >{{ $t('transcribe') }}
+      >{{ $t('registry.stt.transcribe') }}
       </wt-button>
     </div>
   </article>

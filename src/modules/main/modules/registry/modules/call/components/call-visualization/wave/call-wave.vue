@@ -16,7 +16,7 @@
           class="call-wave-page__region-actions"
         >
           <wt-checkbox
-            :label="$tc('hold', 2)"
+            :label="$tc('registry.call.hold', 2)"
             :selected="showHolds"
             :value="showHolds"
             @change="toggleHolds"
@@ -25,7 +25,7 @@
             {{ holdsSize }}
           </wt-chip>
           <wt-checkbox
-            :label="$tc('comment', 2)"
+            :label="$tc('registry.call.comment', 2)"
             :selected="showComments"
             :value="showComments"
             @change="toggleComments"
