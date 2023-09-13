@@ -91,9 +91,6 @@ export default {
         },
       ];
     },
-    computeWrongSearch() {
-      return this.checkValidations();
-    },
     variableSearchHint() {
       return this.filterQuery === SearchMode.VARIABLE ? this.$t('reusable.saveAs') : null;
     },
@@ -138,16 +135,9 @@ export default {
     restoreValue({ filterQuery, value }) {
       this.setValue({ filter: filterQuery, value });
     },
-    checkValidations(validatedInstance = 'filterSchema') {
-      const v = this.v$ ? this.v$ : this.v;
-      v[validatedInstance].$touch();
-      // if its still pending or an error is returned do not submit
-      return v[validatedInstance].$pending
-        || v[validatedInstance].$error;
-    },
   },
   setup: () => ({
-    v$: useVuelidate(),
+    v$: useVuelidate({ $autoDirty: true }),
   }),
   validations() {
     if (this.filterQuery === SearchMode.VARIABLE) {
@@ -162,6 +152,9 @@ export default {
         value: {},
       },
     };
+  },
+  mounted() {
+    this.v$.$touch();
   },
 };
 </script>

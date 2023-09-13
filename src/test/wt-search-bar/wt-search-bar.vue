@@ -40,9 +40,9 @@
 </template>
 
 <script setup>
-import { reactive, toRefs } from 'vue';
+import { reactive, toRef, toRefs } from 'vue';
 import debounce from '@webitel/ui-sdk/src/scripts/debounce';
-import { useValidation } from '@webitel/ui-sdk/src/mixins/validationMixin/useValidation';
+import { useValidation } from './useValidation';
 
 const props = defineProps({
   v: {
@@ -81,7 +81,7 @@ const emit = defineEmits([
   'enter',
 ]);
 
-const { v, customValidators } = props;
+const { v, customValidators } = toRefs(props);
 
 const { invalid } = useValidation({ v, customValidators });
 
