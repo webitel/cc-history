@@ -5,7 +5,7 @@
     <wt-search-bar
       :hint="variableSearchHint"
       :placeholder="$t('reusable.search')"
-      :v="v$.filterSchema.value"
+      :v="variableSearchValidation"
       :value="filterSchema.value"
       debounce
       @input="setValue({ filter: filterQuery, value: $event })"
@@ -54,12 +54,10 @@ import { useVuelidate } from '@vuelidate/core';
 import { isVariableSearch } from '@/utils/validators';
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
 import SearchMode from '../enums/SearchMode.enum';
-import WtSearchBar from '../../../../../test/wt-search-bar/wt-search-bar.vue';
 
 export default {
   name: 'history-search',
   mixins: [baseFilterMixin],
-  components: { WtSearchBar },
   props: {
     namespace: {
       type: String,
@@ -92,7 +90,7 @@ export default {
       ];
     },
     variableSearchHint() {
-      return this.filterQuery === SearchMode.VARIABLE ? this.$t('reusable.saveAs') : null;
+      return this.filterQuery === SearchMode.VARIABLE ? this.$t('filters.filterSearchHint') : null;
     },
     variableSearchValidation() {
       return this.filterQuery === SearchMode.VARIABLE ? this.v$.filterSchema.value : null;
@@ -139,19 +137,10 @@ export default {
   setup: () => ({
     v$: useVuelidate({ $autoDirty: true }),
   }),
-  validations() {
-    if (this.filterQuery === SearchMode.VARIABLE) {
-      return {
-        filterSchema: {
-          value: { isVariableSearch },
-        },
-      };
-    }
-    return {
-      filterSchema: {
-        value: {},
-      },
-    };
+  validations: {
+    filterSchema: {
+      value: { isVariableSearch },
+    },
   },
   mounted() {
     this.v$.$touch();

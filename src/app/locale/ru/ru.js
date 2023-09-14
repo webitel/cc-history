@@ -221,6 +221,7 @@ export default {
     duration: 'Общая длительность (Sec)',
     talkSec: 'Длительность разговора (Sec)',
     score: 'Оценка (%)',
+    filterSearchHint: 'Формат запроса: "ключ=значение"',
   },
   components: {
     dtPicker: {

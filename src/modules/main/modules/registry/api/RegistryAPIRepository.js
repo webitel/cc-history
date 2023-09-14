@@ -116,17 +116,13 @@ const getList = async (params) => {
   ]);
   try {
     const variables = variable
-      && variable.split('&').reduce((vars, currVar) => ({
-        ...vars,
-        [currVar.split('=')[0]]: currVar.split('=')[1],
-      }), {});
-      // && variable.split('&').reduce((vars, currVar) => {
-      //     const [key, value] = currVar.split('=');
-      //   return {
-      //     ...vars,
-      //     [key]: value !== undefined ? value : null,
-      //   };
-      // }, {});
+      && variable.split('&').reduce((vars, currVar) => {
+          const [key, value] = currVar.split('=');
+        return {
+          ...vars,
+          [key]: value !== undefined ? value : '',
+        };
+      }, {});
 
     const response = await callService.searchHistoryCallPost({
       page,
