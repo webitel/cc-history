@@ -120,6 +120,7 @@ const getList = async (params) => {
           const [key, value] = currVar.split('=');
         return {
           ...vars,
+          // this if else statement is needed for sending '' to backend when user writes not valid variableSearch
           [key]: value !== undefined ? value : '',
         };
       }, {});

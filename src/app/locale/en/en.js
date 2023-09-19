@@ -223,7 +223,7 @@ export default {
     duration: 'Total duration (Sec)',
     talkSec: 'Talk duration (Sec)',
     score: 'Score (%)',
-    filterSearchHint: 'Query format: "key=value"',
+    variableSearchHint: 'Query format: "key=value"',
   },
   components: {
     dtPicker: {

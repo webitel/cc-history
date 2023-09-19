@@ -5,7 +5,7 @@
     <wt-search-bar
       :hint="variableSearchHint"
       :placeholder="$t('reusable.search')"
-      :v="variableSearchValidation"
+      :v="v$.filterSchema.value"
       :value="filterSchema.value"
       debounce
       @input="setValue({ filter: filterQuery, value: $event })"
@@ -21,7 +21,7 @@
           icon="stt-search"
         ></wt-icon>
       </template>
-      <template v-slot:additional-actions>
+      <template v-slot:additional-actions="options">
         <wt-context-menu
             :options="searchModeOptions"
             @click="changeMode($event.option)"
@@ -30,6 +30,7 @@
               <wt-tooltip>
                 <template v-slot:activator>
                   <wt-icon-btn
+                    :color="options.invalid ? 'danger' : null"
                     icon="filter"
                   ></wt-icon-btn>
                 </template>
@@ -51,8 +52,8 @@
 
 <script>
 import { useVuelidate } from '@vuelidate/core';
-import { isVariableSearch } from '@/utils/validators';
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
+import variableSearchValidator from '../../../../../utils/validators/variableSearchValidator';
 import SearchMode from '../enums/SearchMode.enum';
 
 export default {
@@ -90,10 +91,12 @@ export default {
       ];
     },
     variableSearchHint() {
-      return this.filterQuery === SearchMode.VARIABLE ? this.$t('filters.filterSearchHint') : null;
-    },
-    variableSearchValidation() {
-      return this.filterQuery === SearchMode.VARIABLE ? this.v$.filterSchema.value : null;
+      switch (this.filterQuery) {
+        case SearchMode.VARIABLE:
+          return this.$t('filters.variableSearchHint');
+        default:
+          return null;
+      }
     },
   },
   methods: {
@@ -137,10 +140,19 @@ export default {
   setup: () => ({
     v$: useVuelidate({ $autoDirty: true }),
   }),
-  validations: {
-    filterSchema: {
-      value: { isVariableSearch },
-    },
+  validations() {
+    if (this.filterQuery === SearchMode.VARIABLE) {
+      return {
+        filterSchema: {
+          value: { variableSearchValidator },
+        },
+      };
+    }
+    return {
+      filterSchema: {
+        value: {},
+      },
+    };
   },
   mounted() {
     this.v$.$touch();
@@ -149,20 +161,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/*
-  I added absoutely positioned filter context menu
-  and swapped its positions with search-bar reset 'X' mark
- */
-.history-search {
-  position: relative;
-  z-index: 1;
-
-
-  //is required so that the wt-context-menu icons are not red
-  .wt-search-bar--invalid:deep {
-    .wt-context-menu__menu .wt-icon__icon {
-      fill: var(--icon-color-active);
-    }
-  }
-}
 </style>
