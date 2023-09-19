@@ -3,7 +3,7 @@
     @submit.prevent
     class="history-search">
     <wt-search-bar
-      :hint="variableSearchHint"
+      :hint="searchBarHint"
       :placeholder="$t('reusable.search')"
       :v="v$.filterSchema.value"
       :value="filterSchema.value"
@@ -90,7 +90,7 @@ export default {
         },
       ];
     },
-    variableSearchHint() {
+    searchBarHint() {
       switch (this.filterQuery) {
         case SearchMode.VARIABLE:
           return this.$t('filters.variableSearchHint');
@@ -141,16 +141,9 @@ export default {
     v$: useVuelidate({ $autoDirty: true }),
   }),
   validations() {
-    if (this.filterQuery === SearchMode.VARIABLE) {
-      return {
-        filterSchema: {
-          value: { variableSearchValidator },
-        },
-      };
-    }
     return {
       filterSchema: {
-        value: {},
+        value: this.filterQuery === SearchMode.VARIABLE ? { variableSearchValidator } : {},
       },
     };
   },

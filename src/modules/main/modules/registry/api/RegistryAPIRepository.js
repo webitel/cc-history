@@ -120,7 +120,7 @@ const getList = async (params) => {
           const [key, value] = currVar.split('=');
         return {
           ...vars,
-          // This if else statement is needed for sending '' to backend when user writes not valid variableSearch, so we can display plug image.
+          // This if else statement is needed for sending '' to backend when user writes not valid variableSearch, so we can display dummy image.
           [key]: value !== undefined ? value : '',
         };
       }, {});
