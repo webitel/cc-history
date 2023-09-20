@@ -266,7 +266,7 @@ describe('Opened call wave', () => {
     await wrapper.findAllComponents({ name: 'wt-checkbox' })
     .filter((checkbox) => checkbox.props()
     .label
-    .includes('hold')).at(0).vm.$emit('change');
+    .includes('Hold')).at(0).vm.$emit('change');
     expect(player.clearRegions).toHaveBeenCalled();
   });
 
@@ -298,7 +298,7 @@ describe('Opened call wave', () => {
     await wrapper.findAllComponents({ name: 'wt-checkbox' })
     .filter((checkbox) => checkbox.props()
     .label
-    .includes('comment')).at(0).vm.$emit('change');
+    .includes('Note')).at(0).vm.$emit('change');
     expect(wrapper.vm.$data.showComments).toBe(true);
     expect(displayComments).toHaveBeenCalled();
     expect(displayComments.mock.calls[0][0]).toEqual(callMock.annotations);

@@ -1,6 +1,5 @@
 import { config } from '@vue/test-utils';
 import WebitelUi from '../../src/app/plugins/webitel-ui';
+import i18n from '../../src/app/locale/i18n';
 
-config.global.mocks.$t = (msg) => msg;
-config.global.mocks.$tc = (msg) => msg;
-config.global.plugins = [WebitelUi];
+config.global.plugins = [WebitelUi, i18n];

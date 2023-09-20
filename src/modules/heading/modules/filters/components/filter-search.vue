@@ -3,7 +3,9 @@
     @submit.prevent
     class="history-search">
     <wt-search-bar
+      :hint="searchBarHint"
       :placeholder="$t('reusable.search')"
+      :v="v$.filterSchema.value"
       :value="filterSchema.value"
       debounce
       @input="setValue({ filter: filterQuery, value: $event })"
@@ -19,34 +21,39 @@
           icon="stt-search"
         ></wt-icon>
       </template>
+      <template v-slot:additional-actions="options">
+        <wt-context-menu
+            :options="searchModeOptions"
+            @click="changeMode($event.option)"
+          >
+            <template v-slot:activator>
+              <wt-tooltip>
+                <template v-slot:activator>
+                  <wt-icon-btn
+                    :color="options.invalid ? 'danger' : null"
+                    icon="filter"
+                  ></wt-icon-btn>
+                </template>
+                {{ $t('webitelUI.searchBar.settingsHint') }}
+              </wt-tooltip>
+            </template>
+            <template v-slot:option="{ value, text }">
+              <wt-radio
+                :label="text"
+                :selected="filterQuery === value"
+                :value="true"
+              ></wt-radio>
+            </template>
+          </wt-context-menu>
+      </template>
     </wt-search-bar>
-    <wt-context-menu
-      :options="searchModeOptions"
-      @click="changeMode($event.option)"
-    >
-      <template v-slot:activator>
-        <wt-tooltip>
-          <template v-slot:activator>
-            <wt-icon-btn
-              icon="filter"
-            ></wt-icon-btn>
-          </template>
-          {{ $t('webitelUI.searchBar.settingsHint') }}
-        </wt-tooltip>
-      </template>
-      <template v-slot:option="{ value, text }">
-        <wt-radio
-          :label="text"
-          :selected="filterQuery === value"
-          :value="true"
-        ></wt-radio>
-      </template>
-    </wt-context-menu>
   </form>
 </template>
 
 <script>
+import { useVuelidate } from '@vuelidate/core';
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
+import variableSearchValidator from '../../../../../utils/validators/variableSearchValidator';
 import SearchMode from '../enums/SearchMode.enum';
 
 export default {
@@ -82,6 +89,14 @@ export default {
           text: this.$t(`filters.search.${SearchMode.VARIABLE}`),
         },
       ];
+    },
+    searchBarHint() {
+      switch (this.filterQuery) {
+        case SearchMode.VARIABLE:
+          return this.$t('filters.variableSearchHint');
+        default:
+          return null;
+      }
     },
   },
   methods: {
@@ -122,39 +137,21 @@ export default {
       this.setValue({ filter: filterQuery, value });
     },
   },
+  setup: () => ({
+    v$: useVuelidate({ $autoDirty: true }),
+  }),
+  validations() {
+    return {
+      filterSchema: {
+        value: this.filterQuery === SearchMode.VARIABLE ? { variableSearchValidator } : {},
+      },
+    };
+  },
+  mounted() {
+    this.v$.$touch();
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-/*
-  I added absoutely positioned filter context menu
-  and swapped its positions with search-bar reset 'X' mark
- */
-.history-search {
-  position: relative;
-  z-index: 1;
-
-  .wt-context-menu {
-    position: absolute;
-    top: 50%;
-    right: var(--input-icon-margin);
-    transform: translateY(-50%);
-  }
-
-  & .wt-search-bar :deep(.wt-search-bar__input) {
-    padding-right: calc(
-      2 * var(--icon-md-size)
-      + 2 * var(--spacing-xs)
-      + var(--input-icon-margin)
-    );
-  }
-
-  & .wt-search-bar :deep(.wt-search-bar__reset-icon-btn) {
-    right: calc(
-      var(--icon-md-size)
-      + var(--spacing-xs)
-      + var(--input-icon-margin)
-    );
-  }
-}
 </style>

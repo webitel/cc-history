@@ -59,7 +59,7 @@ describe('CallNoTranscriptSection', () => {
     .mockImplementationOnce(mock);
 
     const btn = wrapper.findComponent({ name: 'wt-button' });
-    expect(btn.text().includes('transcribe')).toBe(true);
+    expect(btn.text().includes('Transcribe')).toBe(true);
 
     btn.vm.$emit('click');
     expect(mock).toHaveBeenCalledWith({ callId });
@@ -85,7 +85,7 @@ describe('CallNoTranscriptSection', () => {
     .mockImplementationOnce(mock);
 
     const btn = wrapper.findComponent({ name: 'wt-button' });
-    expect(btn.text().includes('retry')).toBe(true);
+    expect(btn.text().includes('Retry')).toBe(true);
 
     btn.vm.$emit('click');
     expect(mock).toHaveBeenCalledWith({ callId });

@@ -221,6 +221,7 @@ export default {
     duration: 'Загальна тривалість (Sec)',
     talkSec: 'Тривалість розмови (Sec)',
     score: 'Оцінка (%)',
+    variableSearchHint: 'Формат запиту: "ключ=значення"',
   },
   components: {
     dtPicker: {
