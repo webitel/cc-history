@@ -112,6 +112,7 @@ const getList = async (params) => {
     talkSec,
     score,
     variable,
+    contact,
   } = applyTransform(params, [
   ]);
   try {
@@ -161,6 +162,7 @@ const getList = async (params) => {
       rated_by: ratedBy,
       score_required: score,
       variables,
+      contact_id: contact,
     });
     const { items, next } = applyTransform(response.data, [
       snakeToCamel(),

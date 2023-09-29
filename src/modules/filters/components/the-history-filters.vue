@@ -109,6 +109,7 @@ export default {
       { type: 'api', filterQuery: 'team' },
       { type: 'api', filterQuery: 'queue' },
       { type: 'api', filterQuery: 'grantee' },
+      { type: 'api', filterQuery: 'contact' },
       { type: 'enum', filterQuery: 'tags' },
       { type: 'enum', filterQuery: 'cause' },
       { type: 'enum', filterQuery: 'amdResult' },

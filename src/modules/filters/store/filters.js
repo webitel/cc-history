@@ -16,6 +16,7 @@ import HasTranscription from '../enums/HasTranscription.enum';
 import TagOptions from '../enums/TagOptions.enum';
 import TeamAPI from '../api/TeamsAPIRepository';
 import UserAPI from '../api/UsersAPIRepository';
+import ContactsAPI from '../api/ContactsAPI';
 import SearchMode from '../../heading/modules/filters/enums/SearchMode.enum';
 
 const state = {
@@ -75,6 +76,10 @@ const state = {
   grantee: new ApiFilterSchema({
     API: RolesAPI.getLookup,
     locale: { label: 'fields.grantee' },
+  }),
+  contact: new ApiFilterSchema({
+    API: ContactsAPI.getLookup,
+    locale: { label: 'fields.contact' },
   }),
   hasFile: new EnumFilterSchema({
     options: hasFile,
