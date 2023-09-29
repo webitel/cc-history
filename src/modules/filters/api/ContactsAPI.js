@@ -17,12 +17,12 @@ import instance from '../../../app/api/instance';
 const service = new ContactsApiFactory(configuration, '', instance);
 
 const getList = async (params) => {
-  const fieldsToSend = ['page', 'size', 'q', 'sort', 'fields', 'id', 'qin'];
+  const fieldsToSend = ['page', 'size', 'search', 'sort', 'fields', 'id', 'qin'];
 
   const {
     page,
     size,
-    q,
+    search,
     sort,
     fields,
     id,
@@ -30,14 +30,14 @@ const getList = async (params) => {
   } = applyTransform(params, [
     sanitize(fieldsToSend),
     merge(getDefaultGetParams()),
-    starToSearch('q'),
+    starToSearch('search'),
     camelToSnake(),
   ]);
   try {
     const response = await service.searchContacts(
       page,
       size,
-      q,
+      search,
       sort || '+name',
       fields,
       id,
