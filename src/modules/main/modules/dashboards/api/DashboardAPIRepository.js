@@ -35,6 +35,7 @@ const fetchDashboardsData = async ({
                                      description,
                                      grantee,
                                      variable,
+                                     contact,
                                    }) => {
   const variables = variable
     && variable.split('&').reduce((vars, currVar) => ({
@@ -65,6 +66,7 @@ const fetchDashboardsData = async ({
       hangup_disposition: hangupDisposition,
       skip_parent: true,
       variables,
+      contact_id: contact,
     });
     return formatResponse(response);
   } catch (err) {

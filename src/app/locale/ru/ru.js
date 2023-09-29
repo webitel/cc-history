@@ -190,6 +190,7 @@ export default {
     memberId: 'Id абонента',
     attemptId: 'Id попытки',
     postProcessing: 'Постобработка',
+    contact: 'Контакт',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',

@@ -192,6 +192,7 @@ export default {
     memberId: 'Member Id',
     attemptId: 'Attempt Id',
     postProcessing: 'Postprocessing',
+    contact: 'Contact',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',

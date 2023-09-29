@@ -257,4 +257,10 @@ export default [
     sort: null,
     field: 'attempt_id',
   },
+  {
+    value: 'contact',
+    show: false,
+    sort: null,
+    field: 'contact',
+  },
 ];
