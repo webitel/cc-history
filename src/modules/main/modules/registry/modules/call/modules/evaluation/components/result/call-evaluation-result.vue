@@ -16,7 +16,7 @@
             v-if="result.scoreOptional >= 0"
             :value="result.scoreOptional"
             :title="$t('registry.call.evaluation.optional')"
-            color="secondary"
+            color="disabled"
           />
         </div>
       </div>

@@ -22,7 +22,7 @@
         >
           <div class="call-evaluation-answers-item__score">
             <wt-icon
-              color="accent"
+              color="primary"
               icon="star--filled"
               size="md"
             />
