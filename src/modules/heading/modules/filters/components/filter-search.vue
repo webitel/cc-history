@@ -30,7 +30,7 @@
               <wt-tooltip>
                 <template v-slot:activator>
                   <wt-icon-btn
-                    :color="options.invalid ? 'danger' : null"
+                    :color="options.invalid ? 'error' : 'default'"
                     icon="filter"
                   ></wt-icon-btn>
                 </template>

@@ -21,7 +21,7 @@
       },
       callStateIconColor() {
         switch (this.callStateIcon) {
-          case 'call-inbound': return 'accent';
+          case 'call-inbound': return 'warning';
           case 'call-outbound': return 'success';
           default: return '';
         }

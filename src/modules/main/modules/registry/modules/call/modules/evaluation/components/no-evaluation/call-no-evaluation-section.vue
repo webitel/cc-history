@@ -4,7 +4,7 @@
       <wt-icon
         icon="scorecard"
         size="3xl"
-        color="secondary"
+        color="disabled"
       />
       <p class="call-no-evaluation__text">
         {{ $t('registry.call.evaluation.noEvaluation') }}

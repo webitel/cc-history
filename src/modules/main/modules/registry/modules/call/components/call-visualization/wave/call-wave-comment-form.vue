@@ -34,7 +34,7 @@
     </wt-button>
     <wt-button
       v-if="draft.id"
-      color="danger"
+      color="error"
       @click="deleteComment"
     >
       {{ $t('reusable.delete') }}

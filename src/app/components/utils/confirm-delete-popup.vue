@@ -13,7 +13,7 @@
       <template v-slot:actions>
         <wt-button
           :loading="progress"
-          color="danger"
+          color="error"
           @click="confirm"
         >{{ $t('reusable.delete') }}
         </wt-button>

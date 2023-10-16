@@ -10,7 +10,7 @@
       <wt-icon
         icon="attention"
         size="xl"
-        color="danger"
+        color="error"
       ></wt-icon>
       <wt-button
         @click="transcribe"
@@ -42,7 +42,7 @@
       <wt-icon
         icon="stt"
         size="xl"
-        color="secondary"
+        color="disabled"
       ></wt-icon>
       <wt-button
         @click="transcribe"
