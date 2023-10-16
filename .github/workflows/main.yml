@@ -1,4 +1,4 @@
-name: Workspace CI
+name: History CI
 
 on:
   push:
