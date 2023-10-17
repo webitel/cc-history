@@ -47,7 +47,7 @@ describe('Opened call comment form', () => {
       }),
     });
     expect(wrapper.findAllComponents({ name: 'wt-button' })
-      .find((btn) => btn.props().color === 'danger').isVisible()).toBe(true);
+      .find((btn) => btn.props().color === 'error').isVisible()).toBe(true);
   });
 
   it('should not render delete button if "draft" props does not contain id', () => {

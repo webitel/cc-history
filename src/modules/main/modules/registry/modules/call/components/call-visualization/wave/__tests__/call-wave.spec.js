@@ -94,7 +94,7 @@ describe('Opened call wave', () => {
     expect(wrapper.findComponent({ name: 'call-wave-comment-form' })
     .isVisible()).toBe(true);
     await wrapper.findAllComponents({ name: 'wt-icon-btn' })
-    .filter((btn) => btn.props().icon === 'note').at(0).vm.$emit('click');
+    .filter((btn) => btn.attributes().icon === 'note').at(0).vm.$emit('click');
     expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists())
     .toBe(false);
   });
@@ -120,7 +120,7 @@ describe('Opened call wave', () => {
     expect(wrapper.findComponent({ name: 'opened-call-wave-comment-form' })
     .exists()).toBe(false);
     await wrapper.findAllComponents({ name: 'wt-icon-btn' })
-    .filter((btn) => btn.props().icon === 'note').at(0).vm.$emit('click');
+    .filter((btn) => btn.attributes().icon === 'note').at(0).vm.$emit('click');
     expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists())
     .toBe(true);
   });
