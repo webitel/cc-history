@@ -71,7 +71,7 @@ export default {
     cursor: pointer;
 
     &:hover, &--selected {
-      border-color: var(--accent-color);
+      border-color: var(--primary-color);
     }
 
     &__title {
