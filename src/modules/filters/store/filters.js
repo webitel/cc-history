@@ -23,6 +23,9 @@ const state = {
   agent: new ApiFilterSchema({
     API: AgentsAPI.getLookup,
     locale: { label: 'fields.agent' },
+    access: {
+      scope: [],
+    },
   }),
   cause: new EnumFilterSchema({
     options: CauseOption,
