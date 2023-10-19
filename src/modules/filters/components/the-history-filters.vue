@@ -2,11 +2,11 @@
   <section class="history-section history-filters-section">
     <preset-form-popup
       v-if="isPresetFormPopup"
-      :name="preset.name"
       :callback="savePreset"
+      :name="preset.name"
       @close="closePresetFormPopup"
     ></preset-form-popup>
-    <form class="history-filters" :class="{'history-filters--opened': isOpened}">
+    <form :class="{'history-filters--opened': isOpened}" class="history-filters">
       <preset-filter
         ref="preset-select"
         :preset-filter-schema="{
@@ -21,21 +21,22 @@
       <filter-from class="history-filters__filter" />
       <filter-to class="history-filters__filter" />
       <component
-        class="history-filters__filter"
+        :is="`abstract-${filter.type}-filter`"
         v-for="(filter, key) of selectFilters"
         :key="key"
-        :is="`abstract-${filter.type}-filter`"
+        :disabled="filter.disabled"
         :filter-query="filter.filterQuery"
         :namespace="namespace"
+        class="history-filters__filter"
       ></component>
       <filter-from-to
-        class="history-filters__filter"
         v-for="(filter, key) of filtersFromTo"
         :key="key"
         :filter-query="filter.filterQuery"
-        :number-max="filter.numberMax"
         :label="$t(filter.label)"
         :namespace="namespace"
+        :number-max="filter.numberMax"
+        class="history-filters__filter"
       />
       <div class="history-filters__filter preset-actions">
         <wt-button-select
@@ -45,9 +46,9 @@
         >{{ $t('reusable.save') }}
         </wt-button-select>
         <wt-button
+          :disabled="!preset.id"
           :loading="isDeletePresetLoading"
           color="secondary"
-          :disabled="!preset.id"
           @click="deletePreset"
         >{{ $t('reusable.delete') }}
         </wt-button>
@@ -63,21 +64,21 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import AbstractApiFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-api-filter.vue';
 import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-enum-filter.vue';
 import FilterFromTo from '@webitel/ui-sdk/src/modules/QueryFilters/components/filter-from-to.vue';
 import isEmpty from '@webitel/ui-sdk/src/scripts/isEmpty';
+import { mapActions, mapState } from 'vuex';
 import { EnginePresetQuerySection } from 'webitel-sdk';
 import historyHeadersMixin from '../../main/modules/registry/mixins/historyHeadersMixin';
 import FilterFields
   from '../../main/modules/registry/modules/filters/components/filter-table-fields/filter-table-fields.vue';
+import PresetQueryAPI from '../api/PresetQueryAPI';
+import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
 import FilterFrom from './filters/filter-from.vue';
 import FilterTo from './filters/filter-to.vue';
-import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
-import PresetQueryAPI from '../api/PresetQueryAPI';
-import PresetFormPopup from './preset-form-popup.vue';
 import PresetFilter from './preset-filter.vue';
+import PresetFormPopup from './preset-form-popup.vue';
 
 export default {
   name: 'the-history-filters',
@@ -101,23 +102,6 @@ export default {
 
     isOpened: false,
     isFilterFieldsOpened: false,
-    selectFilters: [
-      { type: 'enum', filterQuery: 'direction' },
-      { type: 'api', filterQuery: 'user' },
-      { type: 'api', filterQuery: 'gateway' },
-      { type: 'api', filterQuery: 'agent' },
-      { type: 'api', filterQuery: 'team' },
-      { type: 'api', filterQuery: 'queue' },
-      { type: 'api', filterQuery: 'grantee' },
-      { type: 'api', filterQuery: 'contact' },
-      { type: 'enum', filterQuery: 'tags' },
-      { type: 'enum', filterQuery: 'cause' },
-      { type: 'enum', filterQuery: 'amdResult' },
-      { type: 'enum', filterQuery: 'hasFile' },
-      { type: 'enum', filterQuery: 'hasTranscription' },
-      { type: 'api', filterQuery: 'ratedBy' },
-      { type: 'enum', filterQuery: 'rated' },
-    ],
     filtersFromTo: [
       { label: 'filters.duration', filterQuery: 'duration' },
       { label: 'filters.talkSec', filterQuery: 'talkSec' },
@@ -126,6 +110,35 @@ export default {
     namespace: 'filters',
   }),
   computed: {
+    ...mapState('userinfo', {
+      scope: (state) => state.scope,
+    }),
+    scopeClasses() {
+      // initial value of scope in store is {}, sadly :(
+      // seems like bad decision
+      return Array.isArray(this.scope)
+        ? this.scope.reduce((classes, item) => ({ ...classes, [item.class]: true }), {})
+        : {};
+    },
+    selectFilters() {
+      return [
+        { type: 'enum', filterQuery: 'direction' },
+        { type: 'api', filterQuery: 'user', disabled: !this.scopeClasses['users'] },
+        { type: 'api', filterQuery: 'gateway', disabled: !this.scopeClasses['gateways'] },
+        { type: 'api', filterQuery: 'agent', disabled: !this.scopeClasses['cc_agent'] },
+        { type: 'api', filterQuery: 'team', disabled: !this.scopeClasses['cc_team'] },
+        { type: 'api', filterQuery: 'queue', disabled: !this.scopeClasses['cc_queue'] },
+        { type: 'api', filterQuery: 'grantee', disabled: !this.scopeClasses['roles'] },
+        { type: 'api', filterQuery: 'contact', disabled: !this.scopeClasses['contacts'] },
+        { type: 'enum', filterQuery: 'tags' },
+        { type: 'enum', filterQuery: 'cause' },
+        { type: 'enum', filterQuery: 'amdResult' },
+        { type: 'enum', filterQuery: 'hasFile' },
+        { type: 'enum', filterQuery: 'hasTranscription' },
+        { type: 'api', filterQuery: 'ratedBy', disabled: !this.scopeClasses['users'] },
+        { type: 'enum', filterQuery: 'rated' },
+      ];
+    },
     filters() {
       return this.$store.getters[`${this.namespace}/GET_FULL_FILTER_VALUES`];
     },
@@ -234,8 +247,8 @@ $filter-gap: 20px;
 }
 
 .history-filters {
-  flex: 1 1 auto;
   display: grid;
+  flex: 1 1 auto;
   grid-template-columns: repeat(5, 1fr);
   grid-column-gap: $filter-gap;
 
@@ -288,7 +301,7 @@ $filter-gap: 20px;
 
 .history-filters.history-filters--opened .history-filters__filter.preset-actions {
   display: flex;
-  gap: var(--spacing-sm);
   align-items: center;
+  gap: var(--spacing-sm);
 }
 </style>
