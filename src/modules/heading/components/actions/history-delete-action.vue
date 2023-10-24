@@ -1,11 +1,11 @@
 <template>
   <div>
-    <confirm-delete-popup
+    <delete-confirmation-popup
       v-if="deletedCount"
       :callback="deleteCallback"
-      :count="deletedCount"
+      :delete-count="deletedCount"
       @close="handleDeleteClose"
-    ></confirm-delete-popup>
+    />
 
     <wt-button-select
       :disabled="disableDelete"
@@ -18,7 +18,8 @@
 </template>
 
 <script>
-import ConfirmDeletePopup from '../../../../app/components/utils/confirm-delete-popup.vue';
+import DeleteConfirmationPopup
+  from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import CallRecordingsAPI from '../../../main/modules/registry/modules/recordings/api/CallRecordingsAPI';
 import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
 import historyActionMixin from '../../mixins/historyActionMixin';
@@ -27,7 +28,7 @@ export default {
   name: 'history-delete-action',
   mixins: [historyActionMixin],
   components: {
-    ConfirmDeletePopup,
+    DeleteConfirmationPopup,
   },
   data: () => ({
     deletedCount: null,
