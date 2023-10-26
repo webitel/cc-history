@@ -53,7 +53,7 @@
 <script>
 import { useVuelidate } from '@vuelidate/core';
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
-import variableSearchValidator from '../../../../../utils/validators/variableSearchValidator';
+import variableSearchValidator from '@webitel/ui-sdk/src/validators/variableSearchValidator/variableSearchValidator';
 import SearchMode from '../enums/SearchMode.enum';
 
 export default {
