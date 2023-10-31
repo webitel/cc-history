@@ -1,10 +1,10 @@
 <template>
   <div>
     <delete-confirmation-popup
-      v-if="deletedCount"
+      v-show="isDeleteConfirmationPopup"
+      :delete-count="deleteCount"
       :callback="deleteCallback"
-      :delete-count="deletedCount"
-      @close="handleDeleteClose"
+      @close="closeDelete"
     />
 
     <wt-button-select
@@ -23,6 +23,8 @@ import DeleteConfirmationPopup
 import CallRecordingsAPI from '../../../main/modules/registry/modules/recordings/api/CallRecordingsAPI';
 import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
 import historyActionMixin from '../../mixins/historyActionMixin';
+import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
+
 
 export default {
   name: 'history-delete-action',
@@ -30,10 +32,25 @@ export default {
   components: {
     DeleteConfirmationPopup,
   },
-  data: () => ({
-    deletedCount: null,
-    deleteCallback: null,
-  }),
+  setup() {
+    const {
+      isVisible: isDeleteConfirmationPopup,
+      deleteCount,
+      deleteCallback,
+
+      askDeleteConfirmation,
+      closeDelete,
+    } = useDeleteConfirmationPopup();
+
+    return {
+      isDeleteConfirmationPopup,
+      deleteCount,
+      deleteCallback,
+
+      askDeleteConfirmation,
+      closeDelete,
+    };
+  },
   computed: {
     disableDelete() {
       return !this.selected.length || this.selected
@@ -51,35 +68,35 @@ export default {
         {
           value: 'recording',
           text: this.$tc('registry.recordings.recording', 2),
-          handler: () => {
-            this.deletedCount = this.selected.length;
-            this.deleteCallback = loadListAfter(
-              this.bulkDeleteRecordings.bind(this),
-            );
-          },
+          handler: () => this.askDeleteConfirmation({
+            deleted: this.selected,
+            callback: loadListAfter(
+              this.bulkDeleteRecordings.bind(this)
+            ),
+          }),
         },
         {
           value: 'transcript',
           text: this.$tc('registry.stt.transcription', 2),
-          handler: () => {
-            this.deletedCount = this.selected.length;
-            this.deleteCallback = loadListAfter(
-              this.bulkDeleteTranscripts.bind(this),
-            );
-          },
+          handler: () => this.askDeleteConfirmation({
+            deleted: this.selected,
+            callback: loadListAfter(
+              this.bulkDeleteTranscripts.bind(this)
+            ),
+          }),
         },
         {
           value: 'both',
           text: this.$t('reusable.both'),
-          handler: () => {
-            this.deletedCount = this.selected.length;
-            this.deleteCallback = loadListAfter(
+          handler: () => this.askDeleteConfirmation({
+            deleted: this.selected,
+            callback: loadListAfter(
               async () => Promise.allSettled([
                 this.bulkDeleteRecordings.bind(this)(),
                 this.bulkDeleteTranscripts.bind(this)(),
               ]),
-            );
-          },
+            ),
+          }),
         },
       ];
     },
@@ -97,10 +114,6 @@ export default {
         [],
       );
       return CallRecordingsAPI.delete(fileIds);
-    },
-    handleDeleteClose() {
-      this.deletedCount = null;
-      this.deleteCallback = null;
     },
   },
 };
