@@ -4,8 +4,7 @@ import {
 } from '@webitel/ui-sdk/src/api/defaults';
 import applyTransform, {
   camelToSnake,
-  handleUnauthorized,
-  merge, notify, log, snakeToCamel,
+  merge, notify, snakeToCamel,
   starToSearch,
 } from '@webitel/ui-sdk/src/api/transformers';
 import { AuditFormServiceApiFactory, EngineAuditQuestionType } from 'webitel-sdk';
@@ -82,7 +81,6 @@ const getScorecards = async (params) => {
     };
   } catch (err) {
     throw applyTransform(err, [
-      handleUnauthorized,
       notify,
     ]);
   }
@@ -96,7 +94,6 @@ const getAuditForm = async ({ itemId: id }) => {
     ]);
   } catch (err) {
     throw applyTransform(err, [
-      handleUnauthorized,
       notify,
     ]);
   }
@@ -113,7 +110,6 @@ const sendAuditResult = async (itemInstance) => {
     ]);
   } catch (err) {
     throw applyTransform(err, [
-      handleUnauthorized,
       notify,
     ]);
   }
@@ -134,7 +130,6 @@ const getResult = async (id) => {
     ]);
   } catch (err) {
     throw applyTransform(err, [
-      handleUnauthorized,
       notify,
     ]);
   }
