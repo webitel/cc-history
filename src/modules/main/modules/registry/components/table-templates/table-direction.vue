@@ -15,6 +15,7 @@
     },
     computed: {
       callStateIcon() {
+        console.log('callStateIcon', this.item.direction);
         if (this.item.direction === CallDirection.Inbound) return 'call-inbound';
         if (this.item.direction === CallDirection.Outbound) return 'call-outbound';
         return '';
