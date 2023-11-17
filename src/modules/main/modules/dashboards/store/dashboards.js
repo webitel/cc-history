@@ -38,9 +38,7 @@ const actions = {
       const interval = context.rootGetters['dashboards/filters/GET_FILTER']('interval');
       const aggs = context.state.dashboards
         .map((dashboard) => dashboard.getRequestAggregations({ interval }));
-      console.log('LOAD_DASHBOARDS_DATA aggs:', aggs);
       const data = await DashboardAPI.getDashboardsData({ aggs, ...query });
-      console.log('LOAD_DASHBOARDS_DATA:', data);
       await context.commit('SET_DASHBOARDS_DATA', data);
     } catch (err) {
       await context.commit('SET_DASHBOARDS_DATA', []);

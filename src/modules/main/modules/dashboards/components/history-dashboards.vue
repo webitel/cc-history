@@ -93,9 +93,6 @@ export default {
   created() {
     this.restoreDashboards();
   },
-  mounted() {
-  console.log('dashboardsData:', this.dashboardsData);
-    },
   computed: {
     ...mapState('dashboards', {
       dashboards: (state) => state.dashboards,
