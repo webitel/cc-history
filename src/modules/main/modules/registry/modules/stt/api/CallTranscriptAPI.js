@@ -1,28 +1,82 @@
 import { FileTranscriptServiceApiFactory } from 'webitel-sdk';
-import instance from '../../../../../../../app/api/old/instance';
-import configuration from '../../../../../../../app/api/old/utils/openAPIConfig';
+import {
+  getDefaultGetListResponse,
+} from '@webitel/ui-sdk/src/api/defaults';
+import applyTransform, {
+  camelToSnake,
+  merge,
+  notify,
+  snakeToCamel,
+} from '@webitel/ui-sdk/src/api/transformers';
+import instance from '../../../../../../../app/api/instance';
+import configuration from '../../../../../../../app/api/openAPIConfig';
 
 const transcriptService = new FileTranscriptServiceApiFactory(configuration, '', instance);
 
-const createTranscript = async ({ callId }) => {
-  const uuid = Array.isArray(callId) ? callId : [callId];
-  const response = await transcriptService.createFileTranscript({ uuid });
-  return response;
-};
-
-const getTranscript = async ({ id, page = 1, size = 10000 }) => {
-  const response = await transcriptService.getFileTranscriptPhrases(id, page, size);
-  return response.items || [];
-};
-
-const deleteTranscript = ({ fileId, callId }) => {
-  let body;
-  if (fileId) {
-    body = { id: Array.isArray(fileId) ? fileId : [fileId] };
-  } else {
-    body = { uuid: Array.isArray(callId) ? callId : [callId] };
+const getTranscript = async ({
+                               id,
+                               page = 1,
+                               size = 10000,
+                             }) => {
+  try {
+    const response = await transcriptService.getFileTranscriptPhrases(id, page, size);
+    const { items } = applyTransform(response.data, [
+      snakeToCamel(),
+      merge(getDefaultGetListResponse()),
+    ]);
+    return items;
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
   }
-  return transcriptService.deleteFileTranscript(body);
+};
+
+
+const createTranscript = async ({ callId }) => {
+  const preRequestHandler = (callId) => {
+    return Array.isArray(callId) ? callId : [callId];
+  }
+
+  const uuid = applyTransform(callId, [
+    preRequestHandler,
+    camelToSnake(),
+  ]);
+
+  try {
+    const response = await transcriptService.createFileTranscript({ uuid });
+    return applyTransform(response.data, [
+      snakeToCamel(),
+    ]);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
+
+const deleteTranscript = async (item) => {
+  const preRequestHandler = ({ fileId, callId }) => {
+    if (fileId) {
+      return { id: Array.isArray(fileId) ? fileId : [fileId] };
+    } else {
+      return { uuid: Array.isArray(callId) ? callId : [callId] };
+    }
+  }
+
+  const body = applyTransform(item, [
+    preRequestHandler,
+    camelToSnake(),
+  ]);
+
+  try {
+    const response = await transcriptService.deleteFileTranscript(body);
+    return applyTransform(response.data, []);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
 };
 
 const CallTranscriptAPI = {

@@ -1,5 +1,4 @@
 import applyTransform, {
-  log,
   merge,
   starToSearch,
   camelToSnake,

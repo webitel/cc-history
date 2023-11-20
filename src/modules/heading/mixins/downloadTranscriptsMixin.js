@@ -2,7 +2,7 @@
 
 import saveAs from 'file-saver';
 import JSZip from 'jszip';
-import APIRepository from '../../../app/api/old/APIRepository';
+import APIRepository from '../../../app/api/APIRepository';
 import CallTranscriptAPI
   from '../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
 
