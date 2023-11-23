@@ -1,12 +1,22 @@
 import { FileServiceApiFactory } from 'webitel-sdk';
-import instance from '../../../../../../../app/api/old/instance';
-import configuration from '../../../../../../../app/api/old/utils/openAPIConfig';
+import applyTransform, {
+  notify,
+} from '@webitel/ui-sdk/src/api/transformers';
+import instance from '../../../../../../../app/api/instance';
+import configuration from '../../../../../../../app/api/openAPIConfig';
 
 const fileService = new FileServiceApiFactory(configuration, '', instance);
 
-const deleteRecordings = (ids) => {
-  const id = Array.isArray(ids) ? ids : [ids];
-  return fileService.deleteFiles({ id });
+const deleteRecordings = async (id) => {
+  try {
+    const idsArray = Array.isArray(id) ? id : [id];
+    const response = await fileService.deleteFiles({ idsArray });
+    return applyTransform(response.data, []);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
 };
 
 const CallRecordingsAPI = {

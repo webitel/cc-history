@@ -1,35 +1,73 @@
 import { CallServiceApiFactory } from 'webitel-sdk';
-import {
-  SdkCreatorApiConsumer,
-  SdkDeleterApiConsumer,
-  SdkUpdaterApiConsumer,
-} from 'webitel-sdk/esm2015/api-consumers';
-import instance from '../../../../../../../app/api/old/instance';
-import configuration from '../../../../../../../app/api/old/utils/openAPIConfig';
+import applyTransform, {
+  camelToSnake,
+  notify,
+  sanitize,
+  snakeToCamel,
+} from '@webitel/ui-sdk/src/api/transformers';
+import instance from '../../../../../../../app/api/instance';
+import configuration from '../../../../../../../app/api/openAPIConfig';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
 const fieldsToSend = ['note', 'startSec', 'endSec', 'callId'];
 
-const itemCreator = new SdkCreatorApiConsumer(callService.createCallAnnotation, { fieldsToSend });
-const itemUpdater = new SdkUpdaterApiConsumer(callService.updateCallAnnotation, { fieldsToSend });
-const itemDeleter = new SdkDeleterApiConsumer(callService.deleteCallAnnotation);
+const addComment = async ({ itemInstance }) => {
+  const item = applyTransform(itemInstance, [
+    sanitize(fieldsToSend),
+    camelToSnake(),
+  ]);
 
-const addComment = ({ itemInstance }) => (itemCreator.createNestedItem({
-  parentId: itemInstance.callId,
-  itemInstance,
-}));
+  try {
+    const response = await callService.createCallAnnotation(
+       itemInstance.callId,
+       item,
+     );
+    return applyTransform(response.data, [
+      snakeToCamel(),
+    ]);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
 
-const updateComment = ({ itemInstance }) => (itemUpdater.updateNestedItem({
-  parentId: itemInstance.callId,
-  itemId: itemInstance.id,
-  itemInstance,
-}));
+const updateComment = async ({ itemInstance }) => {
+  const item = applyTransform(itemInstance, [
+    sanitize(fieldsToSend),
+    camelToSnake(),
+  ]);
 
-const deleteComment = ({ itemInstance }) => (itemDeleter.deleteNestedItem({
-  parentId: itemInstance.callId,
-  id: itemInstance.id,
-}));
+  try {
+    const response = await callService.updateCallAnnotation(
+      itemInstance.callId,
+      itemInstance.id,
+      item,
+      );
+    return applyTransform(response.data, [
+      snakeToCamel(),
+    ]);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
+
+const deleteComment = async ({ itemInstance }) => {
+  try {
+    const response = await callService.deleteCallAnnotation(
+      itemInstance.callId,
+      itemInstance.id,
+    );
+    return applyTransform(response.data, []);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
 
 const CallAnnotationAPIRepository = {
   add: addComment,

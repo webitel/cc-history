@@ -2,29 +2,103 @@ import {
   PresetQueryServiceApiFactory,
 } from 'webitel-sdk';
 import {
-  SdkListGetterApiConsumer,
-  SdkCreatorApiConsumer,
-  SdkUpdaterApiConsumer,
-  SdkDeleterApiConsumer,
-} from 'webitel-sdk/esm2015/api-consumers';
-import instance from '../../../app/api/old/instance';
-import configuration from '../../../app/api/old/utils/openAPIConfig';
+  getDefaultGetListResponse,
+  getDefaultGetParams,
+} from '@webitel/ui-sdk/src/api/defaults';
+import applyTransform, {
+  camelToSnake,
+  merge,
+  notify,
+  snakeToCamel,
+  starToSearch,
+} from '@webitel/ui-sdk/src/api/transformers';
+import instance from '../../../app/api/instance';
+import configuration from '../../../app/api/openAPIConfig';
 
 const service = new PresetQueryServiceApiFactory(configuration, '', instance);
 
-const listGetter = new SdkListGetterApiConsumer(service.searchPresetQuery);
-const creator = new SdkCreatorApiConsumer(service.createPresetQuery);
-const updater = new SdkUpdaterApiConsumer(service.updatePresetQuery);
-const deleter = new SdkDeleterApiConsumer(service.deletePresetQuery);
+const getList = async (params) => {
+  const {
+    page,
+    size,
+    search,
+    sort,
+    fields,
+    id,
+  } = applyTransform(params, [
+    merge(getDefaultGetParams()),
+    starToSearch('search'),
+  ]);
 
-const getList = (params) => listGetter.getList(params);
-const addPreset = (params) => creator.createItem({ itemInstance: params });
+  try {
+    const response = await service.searchPresetQuery(
+      page,
+      size,
+      search,
+      sort,
+      fields,
+      id,
+    );
+    const { items, next } = applyTransform(response.data, [
+      snakeToCamel(),
+      merge(getDefaultGetListResponse()),
+    ]);
+    return {
+      items,
+      next,
+    };
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
 
-const updatePreset = ({ item, id }) => (
-  updater.updateItem({ itemInstance: item, itemId: id })
-);
 
-const deletePreset = (params) => deleter.deleteItem(params);
+const addPreset = async (itemInstance) => {
+  const item = applyTransform(itemInstance, [
+    camelToSnake(),
+  ]);
+  try {
+    const response = await service.createPresetQuery(item);
+    return applyTransform(response.data, [
+      snakeToCamel(),
+    ]);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
+
+
+const updatePreset = async ({ item: itemInstance, id }) => {
+  const item = applyTransform(itemInstance, [
+    camelToSnake(),
+  ]);
+  try {
+    const response = await service.updatePresetQuery(id, item);
+    return applyTransform(response.data, [
+      snakeToCamel(),
+    ]);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
+
+
+const deletePreset = async ({ id }) => {
+  try {
+    const response = await service.deletePresetQuery(id);
+    return applyTransform(response.data, []);
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
 
 const PresetQueryAPI = {
   getList,

@@ -1,13 +1,56 @@
 import { AgentServiceApiFactory } from 'webitel-sdk';
-import { SdkListGetterApiConsumer } from 'webitel-sdk/esm2015/api-consumers';
-import instance from '../../../app/api/old/instance';
-import configuration from '../../../app/api/old/utils/openAPIConfig';
+import applyTransform, {
+  merge, notify,
+  snakeToCamel,
+  starToSearch,
+} from '@webitel/ui-sdk/src/api/transformers';
+import { getDefaultGetListResponse, getDefaultGetParams } from '@webitel/ui-sdk/src/api/defaults';
+import instance from '../../../app/api/instance';
+import configuration from '../../../app/api/openAPIConfig';
 
 const agentService = new AgentServiceApiFactory(configuration, '', instance);
 
-const listGetter = new SdkListGetterApiConsumer(agentService.searchAgent);
+const getAgentList = async (params) => {
+  const {
+    page,
+    size,
+    search,
+    sort,
+    fields,
+    id,
+  } = applyTransform(params, [
+    merge(getDefaultGetParams()),
+    starToSearch('search'),
+  ]);
 
-const getAgentsLookup = (params) => listGetter.getLookup(params);
+  try {
+    const response = await agentService.searchAgent(
+      page,
+      size,
+      search,
+      sort,
+      fields,
+      id,
+    );
+    const { items, next } = applyTransform(response.data, [
+      snakeToCamel(),
+      merge(getDefaultGetListResponse()),
+    ]);
+    return {
+      items,
+      next,
+    };
+  } catch (err) {
+    throw applyTransform(err, [
+      notify,
+    ]);
+  }
+};
+
+const getAgentsLookup = (params) => getAgentList({
+   ...params,
+   fields: params.fields || ['id', 'name'],
+  });
 
 const AgentsAPIRepository = {
   getLookup: getAgentsLookup,
