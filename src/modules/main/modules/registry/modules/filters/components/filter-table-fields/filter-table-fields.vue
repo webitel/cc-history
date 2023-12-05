@@ -5,14 +5,21 @@
     :static-headers="staticHeaders"
     @change="change"
     />
+  <wt-variable-column-select
+    :headers="headers"
+    :static-headers="staticHeaders"
+    @change="change"
+  />
 </template>
 
 <script>
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
+import WtVariableColumnSelect from '../../../../../../../filters/components/wt-variable-column-select.vue';
 import historyHeadersMixin from '../../../../mixins/historyHeadersMixin';
 
 export default {
   name: 'filter-table-fields',
+  components: { WtVariableColumnSelect },
   mixins: [
     baseFilterMixin,
     historyHeadersMixin,
@@ -30,6 +37,23 @@ export default {
 
   methods: {
     change(headers) {
+      //TODO: WIP
+      const coundryObj = {
+        value: 'variables.Country',
+        show: true,
+        sort: null,
+        field: 'variables.Country',
+      };
+      const qq = {
+        value: 'amdResult',
+        show: true,
+        sort: null,
+        field: 'amd_result',
+      };
+      if (!headers.includes(coundryObj)) {
+        headers.push(coundryObj);
+        headers.push(qq);
+      }
       this.setValue(headers);
       this.close();
     },

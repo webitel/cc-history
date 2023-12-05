@@ -120,6 +120,7 @@ import MediaAction from './table-templates/table-media-action.vue';
 import Dummy from '../../../../../app/assets/dummy/hs-dummy.svg';
 import DummyAfterSearch from '../../../../../app/assets/dummy/hs-dummy-after-search.svg';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
+import WtTable from './wt-table.vue';
 
 export default {
   name: 'history-registry',
@@ -134,6 +135,7 @@ export default {
     MediaAction,
     SttAction,
     SttPopup,
+    WtTable,
   },
   data: () => ({
     sttPopupCallId: null,

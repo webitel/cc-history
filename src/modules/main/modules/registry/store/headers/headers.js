@@ -263,4 +263,12 @@ export default [
     sort: null,
     field: 'contact',
   },
+
+  // TODO: remove this after finish
+  {
+    value: 'variables.Country',
+    show: true,
+    sort: null,
+    field: 'variables.Country',
+  }
 ];
