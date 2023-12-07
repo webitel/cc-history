@@ -551,7 +551,7 @@ export default {
       }
 
       .call-wave-timeline {
-        background-color: var(--secondary-color-50);
+        background-color: var(--secondary-light-color);
       }
     }
   }

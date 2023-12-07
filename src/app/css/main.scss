@@ -11,7 +11,8 @@ body {
   height: 100vh;
   margin: 0;
   font-family: 'Montserrat', monospace;
-  background: var(--page-bg-color);
+  background: var(--wt-page-wrapper-background-color);
+  color: var(--text-main-color);
 }
 
 main {

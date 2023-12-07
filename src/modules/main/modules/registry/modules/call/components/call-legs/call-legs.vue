@@ -205,7 +205,7 @@ export default {
     background: #fff;
   }
   50% {
-    background: var(--accent-secondary-color);
+    background: var(--primary-color);
   }
   100% {
     background: #fff;

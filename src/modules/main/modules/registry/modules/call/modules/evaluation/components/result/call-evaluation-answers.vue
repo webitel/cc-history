@@ -76,7 +76,7 @@ export default {
 
     &--required::after {
       content: '*';
-      color: var(--false-color);
+      color: var(--error-color);
     }
   }
 

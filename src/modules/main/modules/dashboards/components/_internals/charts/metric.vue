@@ -148,12 +148,12 @@ export default {
 
   &--positive {
     grid-area: value-wrapper--pos;
-    color: var(--true-color);
+    color: var(--success-color);
   }
 
   &--negative {
     grid-area: value-wrapper--neg;
-    color: var(--false-color);
+    color: var(--error-color);
   }
 
   .metric__value__title {

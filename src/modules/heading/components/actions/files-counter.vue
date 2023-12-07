@@ -38,7 +38,7 @@ export default {
   margin-top: 10px;
   padding: 10px 15px;
   border-radius: var(--border-radius);
-  background: var(--main-color);
+  background: var(--content-wrapper-color);
   box-shadow: var(--box-shadow);
 
   &__line-wrapper {

@@ -89,10 +89,10 @@
             :to="`/${item.id}`"
             class="table-action"
           >
-            <wt-icon
+            <wt-icon-btn
               icon="forks"
               icon-prefix="hs"
-            ></wt-icon>
+            ></wt-icon-btn>
           </router-link>
         </template>
       </wt-table>
@@ -229,12 +229,12 @@ export default {
   .wt-table__td__actions {
     position: sticky;
     right: 0;
-    background: var(--main-color);
+    background: var(--content-wrapper-color);
   }
 
   &:nth-child(2n) {
     .wt-table__td__actions {
-      background: var(--table-secondary-color);
+      background: var(--wt-table-zebra-color);
     }
   }
 }

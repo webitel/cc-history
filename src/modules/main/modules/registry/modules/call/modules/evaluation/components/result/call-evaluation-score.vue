@@ -40,7 +40,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--contrast-color);
+  color: var(--text-main-color);
 
   &__value {
     @extend %typo-subtitle-1;
