@@ -1,6 +1,11 @@
 <template>
   <wt-app-header>
-    <wt-app-navigator :current-app="currentApp" :apps="apps"></wt-app-navigator>
+    <wt-dark-mode-switcher />
+    <wt-app-navigator
+      :current-app="currentApp"
+      :apps="apps"
+      :dark-mode="darkMode"
+    ></wt-app-navigator>
     <wt-header-actions
       :user="user"
       :build-info="buildInfo"
@@ -14,9 +19,11 @@
 import { mapState, mapGetters } from 'vuex';
 import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
 import authAPI from '@webitel/ui-sdk/src/modules/Userinfo/api/auth';
+import WtDarkModeSwitcher from '@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue';
 
 export default {
   name: 'app-header',
+  components: { WtDarkModeSwitcher },
   inject: ['$config'],
   data: () => ({
     buildInfo: {
@@ -31,6 +38,9 @@ export default {
     }),
     ...mapGetters('userinfo', {
       checkAccess: 'CHECK_APP_ACCESS',
+    }),
+    ...mapGetters('appearance', {
+      darkMode: 'DARK_MODE',
     }),
     apps() {
       const agent = {
@@ -88,4 +98,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wt-dark-mode-switcher {
+  margin-right: auto;
+}
 </style>

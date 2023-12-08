@@ -4,6 +4,7 @@ import filters from '../../modules/filters/store/filters';
 import registry from '../../modules/main/modules/registry/store/registry';
 import dashboards from '../../modules/main/modules/dashboards/store/dashboards';
 import userinfo from '../../modules/userinfo/store/userinfo';
+import appearance from '../../modules/appearance/store/appearance';
 
 const state = {
   state: StoreModules.REGISTRY,
@@ -33,5 +34,6 @@ export default createStore({
     registry,
     dashboards,
     userinfo,
+    appearance,
   },
 });

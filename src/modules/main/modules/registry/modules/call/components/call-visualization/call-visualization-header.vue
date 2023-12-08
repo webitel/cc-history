@@ -19,7 +19,7 @@ export default {
   align-items: center;
   flex-wrap: nowrap;
   padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--secondary-color-50);
+  background: var(--secondary-color);
   border-radius: var(--border-radius);
 
   .call-visualization-header__main {
