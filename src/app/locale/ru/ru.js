@@ -12,6 +12,7 @@ export default {
     download: 'Скачать',
     both: 'Все',
     logs: 'Лог | Логи',
+    display: 'Выбрать',
   },
   confirmDelete: {
     title: 'Подтверждение удаления',
@@ -191,6 +192,9 @@ export default {
     attemptId: 'Id попытки',
     postProcessing: 'Постобработка',
     contact: 'Контакт',
+  },
+  variableColumnSelect: {
+    title: 'Выбрать колонки с переменными',
   },
   hangupDisposition: {
     notAnswered: 'Не ответил',

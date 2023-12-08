@@ -12,6 +12,7 @@ export default {
     download: 'Download',
     both: 'Both',
     logs: 'Log | Logs',
+    display: 'Display',
   },
   confirmDelete: {
     title: 'Delete confirmation',
@@ -193,6 +194,9 @@ export default {
     attemptId: 'Attempt Id',
     postProcessing: 'Postprocessing',
     contact: 'Contact',
+  },
+  variableColumnSelect: {
+    title: 'Select variables columns',
   },
   hangupDisposition: {
     notAnswered: 'Not answered',

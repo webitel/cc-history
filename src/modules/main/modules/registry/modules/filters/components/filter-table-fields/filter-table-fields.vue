@@ -5,7 +5,7 @@
     :static-headers="staticHeaders"
     @change="change"
     />
-  <wt-variable-column-select
+  <variable-column-select
     :headers="headers"
     :static-headers="staticHeaders"
     @addVariablesHeaders="addVariablesHeaders"
@@ -14,12 +14,12 @@
 
 <script>
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
-import WtVariableColumnSelect from '../../../../../../../filters/components/wt-variable-column-select.vue';
+import VariableColumnSelect from '../../../../../../../filters/components/variable-column-select.vue';
 import historyHeadersMixin from '../../../../mixins/historyHeadersMixin';
 
 export default {
   name: 'filter-table-fields',
-  components: { WtVariableColumnSelect },
+  components: { VariableColumnSelect },
   mixins: [
     baseFilterMixin,
     historyHeadersMixin,

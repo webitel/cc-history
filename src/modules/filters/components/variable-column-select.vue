@@ -1,5 +1,5 @@
 <template>
-  <div class="wt-table-variable-column-select">
+  <div class="table-variable-column-select">
     <wt-tooltip>
       <template #activator>
         <wt-icon-btn
@@ -7,7 +7,7 @@
           @click="openPopup"
         />
       </template>
-      Display the variable column
+      {{ $t('variableColumnSelect.title') }}
     </wt-tooltip>
     <wt-popup
       v-if="isVariableColumnPopup"
@@ -16,21 +16,21 @@
       @close="close"
     >
       <template v-slot:title>
-        Display the variable column
+        {{ $t('variableColumnSelect.title') }}
       </template>
       <template v-slot:main>
         <div class="variable-column-popup__form">
           <wt-input
             v-model="variableKey"
-            :label="'Key'"
+            :label="$tc('vocabulary.keys', 1)"
             :v="v$.variableKey"
-            style="flex: 1"
+            class="variable-column-popup__input"
           ></wt-input>
           <wt-button
             :disabled="v$.$error"
             @click="addVariableColumn"
           >
-            Display
+            {{ $t('reusable.display') }}
           </wt-button>
         </div>
 
@@ -80,6 +80,7 @@ const variableKey = ref('');
 const isLoading = ref(false);
 
 const v$ = useVuelidate({ variableKey: { required } }, { variableKey }, { $autoDirty: false });
+
 function openPopup() {
   isVariableColumnPopup.value = true;
 }
@@ -143,7 +144,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.wt-table-variable-column-select {
+.table-variable-column-select {
   line-height: 0; // prevent 24x28 icon height :/
 }
 
@@ -154,6 +155,10 @@ onMounted(() => {
     justify-content: space-between;
     width: 100%;
     gap: 8px;
+  }
+
+  &__input {
+    flex: 1;
   }
 
   &__list {
