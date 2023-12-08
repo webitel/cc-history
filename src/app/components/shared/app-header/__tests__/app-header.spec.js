@@ -34,7 +34,7 @@ describe('App Header', () => {
         plugins: [store],
       },
     });
-    expect(wrapper.findComponent({ name: 'wt-app-header' }).exists()).toBe(true);
+    expect(wrapper.classes()).toContain('wt-app-header');
     expect(wrapper.findComponent({ name: 'wt-app-navigator' }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: 'wt-header-actions' }).exists()).toBe(true);
   });
