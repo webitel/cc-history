@@ -74,13 +74,11 @@ export default [
   {
     value: 'from',
     show: true,
-    sort: null,
     field: 'from',
   },
   {
     value: 'to',
     show: true,
-    sort: null,
     field: 'to',
   },
   {
@@ -263,12 +261,4 @@ export default [
     sort: null,
     field: 'contact',
   },
-
-  // TODO: remove this after finish
-  {
-    value: 'variables.Country',
-    show: true,
-    sort: null,
-    field: 'variables.Country',
-  }
 ];

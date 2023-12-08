@@ -66,6 +66,9 @@
             {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}
           </div>
         </template>
+        <template v-for="header in variableHeaders" v-slot:[header.field]="{ item }">
+          {{getPropertyValue(item, header.field)}}
+        </template>
 
         <template v-slot:actions="{ item }">
           <media-action
@@ -120,7 +123,6 @@ import MediaAction from './table-templates/table-media-action.vue';
 import Dummy from '../../../../../app/assets/dummy/hs-dummy.svg';
 import DummyAfterSearch from '../../../../../app/assets/dummy/hs-dummy-after-search.svg';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
-import WtTable from './wt-table.vue';
 
 export default {
   name: 'history-registry',
@@ -135,12 +137,14 @@ export default {
     MediaAction,
     SttAction,
     SttPopup,
-    WtTable,
   },
   data: () => ({
     sttPopupCallId: null,
   }),
   computed: {
+    variableHeaders() {
+      return this.headers.filter((header) => header.value.includes('variables.'));
+    },
     ...mapState('registry', {
       dataList: (state) => state.dataList,
       isLoading: (state) => state.isLoading,
@@ -164,6 +168,10 @@ export default {
   },
 
   methods: {
+    getPropertyValue(row, propertyPath) {
+      const properties = propertyPath.split('.');
+      return properties.reduce((obj, prop) => obj?.[prop], row);
+    },
     ...mapActions('filters', {
       setFilterValue: 'SET_FILTER',
     }),

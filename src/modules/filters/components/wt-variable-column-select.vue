@@ -35,10 +35,10 @@
         </div>
 
         <ul class="variable-column-popup__list">
-          <li v-for="key in keysDataList" :key="key" class="variable-column-popup__item">
+          <li v-for="key in draft" :key="key" class="variable-column-popup__item">
             <wt-checkbox
               v-model="key.show"
-              :label="key.value"
+              :label="key.label"
               @change="key.show = $event"
             ></wt-checkbox>
             <wt-icon-btn
@@ -66,23 +66,20 @@
 </template>
 
 <script setup>
-//TODO: add to webitel-ui-sdk and remove from cc-history
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
-import { onMounted, reactive, ref } from 'vue';
+import deepCopy from 'deep-copy';
+import { onMounted, reactive, ref, watch } from 'vue';
+
+const emit = defineEmits(['addVariablesHeaders']);
 
 const isVariableColumnPopup = ref(false);
-
-const keysDataList = reactive([]);
-
+const variablesKeysList = reactive([]);
+const draft = reactive([]);
 const variableKey = ref('');
-
 const isLoading = ref(false);
 
-const v$ = useVuelidate({
-  variableKey: { required },
-}, { variableKey }, { $autoDirty: false });
-
+const v$ = useVuelidate({ variableKey: { required } }, { variableKey }, { $autoDirty: false });
 function openPopup() {
   isVariableColumnPopup.value = true;
 }
@@ -91,42 +88,51 @@ function close() {
   isVariableColumnPopup.value = false;
 }
 
-function deleteKey(keyToDelete) {
-  const index = keysDataList.findIndex((key) => key === keyToDelete);
-  if (index !== -1) {
-    keysDataList.splice(index, 1);
-  }
-}
+const deleteKey = (keyToDelete) => {
+  draft.splice(draft.indexOf(keyToDelete), 1);
+};
 
 function addVariableColumn() {
+  const variableKeyText = variableKey.value.replace(/^fields\.variables\./, '');
   const variableColumn = {
-    value: variableKey.value,
+    value: `variables.${variableKey.value}`,
     show: true,
-    sort: null,
-    field: variableKey.value,
+    field: `variables.${variableKey.value}`,
+    label: variableKeyText,
   };
 
-  if (variableKey.value) {
-    keysDataList.unshift(variableColumn);
+  // NOTE: checking if the variable column is already in the list and if the key is not empty
+  if (!draft.some((key) => key.value === variableColumn.value) && variableKey.value) {
+    draft.unshift(variableColumn);
   }
   variableKey.value = '';
 }
+
 function showLocalStorageContent() {
-  const keysDataListFromLocalStorage = JSON.parse(localStorage.getItem('keysDataList'));
-  if (keysDataListFromLocalStorage) {
-    keysDataList.push(...keysDataListFromLocalStorage);
+  const localStorageHeaders = JSON.parse(localStorage.getItem('variablesKeysList'));
+  if (localStorageHeaders) {
+    // NOTE: needed to firstly clear the array and then push new values avoiding duplicates
+    variablesKeysList.splice(0, variablesKeysList.length, ...localStorageHeaders);
+    draft.splice(0, draft.length, ...localStorageHeaders);
   }
 }
 
+watch(isVariableColumnPopup, () => {
+  // NOTE: refreshing the list every time the popup is opened
+  if (isVariableColumnPopup.value) {
+    showLocalStorageContent();
+  }
+});
 
 async function save() {
   isLoading.value = true;
   try {
-    localStorage.setItem('keysDataList', JSON.stringify([...new Set(keysDataList)]));
+    variablesKeysList.splice(0, variablesKeysList.length, ...deepCopy(draft));
+    localStorage.setItem('variablesKeysList', JSON.stringify([...new Set(variablesKeysList)]));
+    emit('addVariablesHeaders', variablesKeysList);
   } finally {
     isLoading.value = false;
   }
-
   close();
 }
 
@@ -144,7 +150,7 @@ onMounted(() => {
 .variable-column-popup {
   &__form {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
     gap: 8px;

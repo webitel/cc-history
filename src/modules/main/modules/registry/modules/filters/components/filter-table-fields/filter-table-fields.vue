@@ -8,7 +8,7 @@
   <wt-variable-column-select
     :headers="headers"
     :static-headers="staticHeaders"
-    @change="change"
+    @addVariablesHeaders="addVariablesHeaders"
   />
 </template>
 
@@ -37,23 +37,14 @@ export default {
 
   methods: {
     change(headers) {
-      //TODO: WIP
-      const coundryObj = {
-        value: 'variables.Country',
-        show: true,
-        sort: null,
-        field: 'variables.Country',
-      };
-      const qq = {
-        value: 'amdResult',
-        show: true,
-        sort: null,
-        field: 'amd_result',
-      };
-      if (!headers.includes(coundryObj)) {
-        headers.push(coundryObj);
-        headers.push(qq);
-      }
+      this.setValue(headers);
+      this.close();
+    },
+
+    addVariablesHeaders(variablesHeaders) {
+      // NOTE: needed to add only unique values to headers
+      const clearHeaders = this.headers.filter((header) => !header.value.includes('variables.'));
+      const headers = [...clearHeaders, ...variablesHeaders.filter((variableHeader) => !clearHeaders.some((header) => header.value === variableHeader.value))];
       this.setValue(headers);
       this.close();
     },
