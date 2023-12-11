@@ -1,5 +1,8 @@
 <template>
   <wt-app-header>
+    <wt-logo
+      :dark-mode="darkMode"
+    />
     <wt-dark-mode-switcher />
     <wt-app-navigator
       :current-app="currentApp"

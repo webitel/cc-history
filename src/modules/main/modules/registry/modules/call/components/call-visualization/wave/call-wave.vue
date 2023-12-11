@@ -205,6 +205,7 @@ const timelineOptions = {
   notchPercentHeight: 1,
   unlabeledNotchColor: 'var(--secondary-color)',
   fontFamily: 'Montserrat, monospace',
+  primaryFontColor: '#fff',
   fontSize: 12,
   height: 16,
   labelPadding: 5,
