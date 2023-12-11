@@ -21,10 +21,11 @@
       <template v-slot:main>
         <div class="variable-column-popup__form">
           <wt-input
-            v-model="variableKey"
             :label="$tc('vocabulary.keys', 1)"
-            :v="v$.variableKey"
+            :v="v$.newVariableKey"
+            :value="newVariableKey"
             class="variable-column-popup__input"
+            @input="inputNewVariableKey"
           ></wt-input>
           <wt-button
             :disabled="v$.$error"
@@ -71,15 +72,19 @@ import { required } from '@vuelidate/validators';
 import deepCopy from 'deep-copy';
 import { onMounted, reactive, ref, watch } from 'vue';
 
-const emit = defineEmits(['addVariablesHeaders']);
+const emit = defineEmits(['add-variables-headers']);
 
 const isVariableColumnPopup = ref(false);
 const variablesKeysList = reactive([]);
 const draft = reactive([]);
-const variableKey = ref('');
+const newVariableKey = ref('');
 const isLoading = ref(false);
 
-const v$ = useVuelidate({ variableKey: { required } }, { variableKey }, { $autoDirty: false });
+const v$ = useVuelidate(
+  { newVariableKey: { required } },
+  { newVariableKey },
+  { $autoDirty: false },
+);
 
 function openPopup() {
   isVariableColumnPopup.value = true;
@@ -93,23 +98,27 @@ const deleteKey = (keyToDelete) => {
   draft.splice(draft.indexOf(keyToDelete), 1);
 };
 
+const inputNewVariableKey = (e) => {
+  newVariableKey.value = e;
+};
+
 function addVariableColumn() {
-  const variableKeyText = variableKey.value.replace(/^fields\.variables\./, '');
+  const variableKeyText = newVariableKey.value.replace(/^fields\.variables\./, '');
   const variableColumn = {
-    value: `variables.${variableKey.value}`,
+    value: `variables.${newVariableKey.value}`,
     show: true,
-    field: `variables.${variableKey.value}`,
+    field: `variables.${newVariableKey.value}`,
     label: variableKeyText,
   };
 
   // NOTE: checking if the variable column is already in the list and if the key is not empty
-  if (!draft.some((key) => key.value === variableColumn.value) && variableKey.value) {
+  if (!draft.some((key) => key.value === variableColumn.value) && newVariableKey.value) {
     draft.unshift(variableColumn);
   }
-  variableKey.value = '';
+  newVariableKey.value = '';
 }
 
-function showLocalStorageContent() {
+function showLocalStorageVariablesKeys() {
   const localStorageHeaders = JSON.parse(localStorage.getItem('variablesKeysList'));
   if (localStorageHeaders) {
     // NOTE: needed to firstly clear the array and then push new values avoiding duplicates
@@ -121,7 +130,7 @@ function showLocalStorageContent() {
 watch(isVariableColumnPopup, () => {
   // NOTE: refreshing the list every time the popup is opened
   if (isVariableColumnPopup.value) {
-    showLocalStorageContent();
+    showLocalStorageVariablesKeys();
   }
 });
 
@@ -130,7 +139,7 @@ async function save() {
   try {
     variablesKeysList.splice(0, variablesKeysList.length, ...deepCopy(draft));
     localStorage.setItem('variablesKeysList', JSON.stringify([...new Set(variablesKeysList)]));
-    emit('addVariablesHeaders', variablesKeysList);
+    emit('add-variables-headers', variablesKeysList);
   } finally {
     isLoading.value = false;
   }
@@ -139,7 +148,7 @@ async function save() {
 
 onMounted(() => {
   v$.value.$touch();
-  showLocalStorageContent();
+  showLocalStorageVariablesKeys();
 });
 </script>
 
@@ -154,7 +163,7 @@ onMounted(() => {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    gap: 8px;
+    gap: var(--spacing-xs);
   }
 
   &__input {
@@ -164,7 +173,7 @@ onMounted(() => {
   &__list {
     display: flex;
     flex-direction: column;
-    margin-top: 16px;
+    margin-top: var(--spacing-sm);
     gap: 16px;
   }
 

@@ -8,7 +8,7 @@
   <variable-column-select
     :headers="headers"
     :static-headers="staticHeaders"
-    @addVariablesHeaders="addVariablesHeaders"
+    @add-variables-headers="addVariablesHeaders"
   />
 </template>
 
@@ -44,7 +44,8 @@ export default {
     addVariablesHeaders(variablesHeaders) {
       // NOTE: needed to add only unique values to headers
       const clearHeaders = this.headers.filter((header) => !header.value.includes('variables.'));
-      const headers = [...clearHeaders, ...variablesHeaders.filter((variableHeader) => !clearHeaders.some((header) => header.value === variableHeader.value))];
+      const uniqueHeaders = new Set([...clearHeaders, ...variablesHeaders]);
+      const headers = [...uniqueHeaders];
       this.setValue(headers);
       this.close();
     },

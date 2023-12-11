@@ -67,7 +67,7 @@
           </div>
         </template>
         <template v-for="header in variableHeaders" v-slot:[header.field]="{ item }">
-          {{getPropertyValue(item, header.field)}}
+          {{get(item, header.field)}}
         </template>
 
         <template v-slot:actions="{ item }">
@@ -114,6 +114,7 @@
 <script>
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
 import { mapActions, mapState } from 'vuex';
+import get from 'lodash/get';
 import historyHeadersMixin from '../mixins/historyHeadersMixin';
 import playMediaMixin from '../mixins/media/playMediaMixin';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
@@ -168,10 +169,7 @@ export default {
   },
 
   methods: {
-    getPropertyValue(row, propertyPath) {
-      const properties = propertyPath.split('.');
-      return properties.reduce((obj, prop) => obj?.[prop], row);
-    },
+    get, // lodash get
     ...mapActions('filters', {
       setFilterValue: 'SET_FILTER',
     }),
