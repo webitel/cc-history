@@ -74,13 +74,11 @@ export default [
   {
     value: 'from',
     show: true,
-    sort: null,
     field: 'from',
   },
   {
     value: 'to',
     show: true,
-    sort: null,
     field: 'to',
   },
   {

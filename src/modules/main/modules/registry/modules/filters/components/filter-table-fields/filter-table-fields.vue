@@ -5,14 +5,21 @@
     :static-headers="staticHeaders"
     @change="change"
     />
+  <variable-column-select
+    :headers="headers"
+    :static-headers="staticHeaders"
+    @add-variables-headers="addVariablesHeaders"
+  />
 </template>
 
 <script>
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
+import VariableColumnSelect from '../../../../../../../filters/components/variable-column-select.vue';
 import historyHeadersMixin from '../../../../mixins/historyHeadersMixin';
 
 export default {
   name: 'filter-table-fields',
+  components: { VariableColumnSelect },
   mixins: [
     baseFilterMixin,
     historyHeadersMixin,
@@ -30,6 +37,15 @@ export default {
 
   methods: {
     change(headers) {
+      this.setValue(headers);
+      this.close();
+    },
+
+    addVariablesHeaders(variablesHeaders) {
+      // NOTE: needed to add only unique values to headers
+      const clearHeaders = this.headers.filter((header) => !header.value.includes('variables.'));
+      const uniqueHeaders = new Set([...clearHeaders, ...variablesHeaders]);
+      const headers = [...uniqueHeaders];
       this.setValue(headers);
       this.close();
     },

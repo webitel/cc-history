@@ -3,6 +3,15 @@ import APIRepository from '../../../../../app/api/APIRepository';
 import historyHeaders from './headers/headers';
 import call from '../modules/call/store/call';
 
+const variablesHeaders = JSON.parse(localStorage.getItem('variablesKeysList'));
+
+// NOTE: if there is any variablesHeaders in localStorage, add them to historyHeaders to show them in history table after refresh
+if (variablesHeaders) {
+  variablesHeaders.forEach((item) => {
+    historyHeaders.push(item);
+  });
+}
+
 const historyAPI = APIRepository.history;
 const REQUIRED_DATA_FIELDS = ['files', 'id', 'files_job', 'transcripts'];
 

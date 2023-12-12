@@ -12,6 +12,7 @@ export default {
     download: 'Жүктеп алу',
     both: 'Барлығы',
     logs: 'Лог | Логтар',
+    display: 'Көрсету',
   },
   confirmDelete: {
     title: 'Жоюды растау',
@@ -189,6 +190,9 @@ export default {
     score: 'Баға',
     memberId: 'Абонент Id',
     attemptId: 'Әрекет Id',
+  },
+  variableColumnSelect: {
+    title: 'Айнымалылар бағандарын таңдау',
   },
   hangupDisposition: {
     notAnswered: 'Жауап бермеді',

@@ -66,6 +66,9 @@
             {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}
           </div>
         </template>
+        <template v-for="header in variableHeaders" v-slot:[header.field]="{ item }">
+          {{get(item, header.field)}}
+        </template>
 
         <template v-slot:actions="{ item }">
           <media-action
@@ -111,6 +114,7 @@
 <script>
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
 import { mapActions, mapState } from 'vuex';
+import get from 'lodash/get';
 import historyHeadersMixin from '../mixins/historyHeadersMixin';
 import playMediaMixin from '../mixins/media/playMediaMixin';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
@@ -139,6 +143,9 @@ export default {
     sttPopupCallId: null,
   }),
   computed: {
+    variableHeaders() {
+      return this.headers.filter((header) => header.value.includes('variables.'));
+    },
     ...mapState('registry', {
       dataList: (state) => state.dataList,
       isLoading: (state) => state.isLoading,
@@ -162,6 +169,7 @@ export default {
   },
 
   methods: {
+    get, // lodash get
     ...mapActions('filters', {
       setFilterValue: 'SET_FILTER',
     }),
