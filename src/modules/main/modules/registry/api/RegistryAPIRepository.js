@@ -165,7 +165,7 @@ const getList = async (params) => {
       contact_id: contact,
     });
     const { items, next } = applyTransform(response.data, [
-      snakeToCamel(),
+      snakeToCamel(['variables']),
       merge(getDefaultGetListResponse()),
     ]);
     return {
