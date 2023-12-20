@@ -74,17 +74,17 @@ export default {
           text: this.$t('registry.call.callLegs'),
           value: 'call-legs',
         },
-        VISUALIZATION: {
-          text: this.$t('registry.call.callVisualization'),
-          value: 'call-visualization',
-        },
+        // VISUALIZATION: {
+        //   text: this.$t('registry.call.callVisualization'),
+        //   value: 'call-visualization',
+        // },
       };
     },
     tabs() {
       const tabs = [this.tabValues.INFO];
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
-      if (this.mainCall.files?.length || this.mainCall.transcripts?.length
-        || this.mainCall.filesJob?.length) tabs.push(this.tabValues.VISUALIZATION);
+      // if (this.mainCall.files?.length || this.mainCall.transcripts?.length
+        // || this.mainCall.filesJob?.length) tabs.push(this.tabValues.VISUALIZATION);
       return tabs;
     },
     callId() {
@@ -109,9 +109,9 @@ export default {
     setInitialTab() {
       let tab;
       switch (this.$route.hash) {
-        case '#transcript':
-          tab = this.tabValues.VISUALIZATION;
-          break;
+        // case '#transcript':
+          // tab = this.tabValues.VISUALIZATION;
+          // break;
         default:
           tab = this.tabValues.INFO;
       }

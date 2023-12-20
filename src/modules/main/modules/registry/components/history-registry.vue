@@ -68,22 +68,22 @@
         </template>
 
         <template v-slot:actions="{ item }">
-          <media-action
-            v-if="item.files"
-            :currently-playing="currentlyPlaying"
-            :files="item.files"
-            class="table-action"
-            @play="play"
-            @stop="closePlayer"
-          ></media-action>
+<!--          <media-action-->
+<!--            v-if="item.files"-->
+<!--            :currently-playing="currentlyPlaying"-->
+<!--            :files="item.files"-->
+<!--            class="table-action"-->
+<!--            @play="play"-->
+<!--            @stop="closePlayer"-->
+<!--          ></media-action>-->
 
           <!--          v-if transcript can be added, exists, or already in progress -->
-          <stt-action
-            v-if="showItemStt(item)"
-            :item="item"
-            class="table-action"
-            @open="sttPopupCallId = item.id"
-          ></stt-action>
+<!--          <stt-action-->
+<!--            v-if="showItemStt(item)"-->
+<!--            :item="item"-->
+<!--            class="table-action"-->
+<!--            @open="sttPopupCallId = item.id"-->
+<!--          ></stt-action>-->
 
           <router-link
             :to="`/${item.id}`"
