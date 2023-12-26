@@ -113,7 +113,7 @@
 
 <script>
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import get from 'lodash/get';
 import historyHeadersMixin from '../mixins/historyHeadersMixin';
 import playMediaMixin from '../mixins/media/playMediaMixin';
@@ -121,8 +121,10 @@ import FilterPagination from '../modules/filters/components/filter-pagination/fi
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
-import Dummy from '../../../../../app/assets/dummy/hs-dummy.svg';
-import DummyAfterSearch from '../../../../../app/assets/dummy/hs-dummy-after-search.svg';
+import DummyLight from '../../../../../app/assets/dummy/hs-dummy-light.svg';
+import DummyDark from '../../../../../app/assets/dummy/hs-dummy-dark.svg';
+import DummyAfterSearchLight from '../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
+import DummyAfterSearchDark from '../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 
 export default {
@@ -151,16 +153,19 @@ export default {
       isLoading: (state) => state.isLoading,
       isNext: (state) => state.isNext,
     }),
+    ...mapGetters('appearance', {
+      darkMode: 'DARK_MODE',
+    }),
     dummyValue() {
       if (!this.dataList.length) {
         if (Object.values(this.$route.query).some((query) => query.length)) {
           return {
-            src: DummyAfterSearch,
+            src: this.darkMode ? DummyAfterSearchDark : DummyAfterSearchLight,
             text: this.$t('dashboards.empty.resultSearch'),
           };
         }
         return {
-          src: Dummy,
+          src: this.darkMode ? DummyDark : DummyLight,
           text: this.$t('dashboards.empty.workspace'),
         };
       }
