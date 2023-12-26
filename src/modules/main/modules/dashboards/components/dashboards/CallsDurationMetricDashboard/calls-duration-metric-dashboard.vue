@@ -14,15 +14,22 @@
 <script>
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import dashboardMixin from '../../../mixins/dashboardMixin';
-import Dummy from '../../../../../../../app/assets/dummy/hs-dummy-after-search.svg';
+import DummyDark from '../../../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
+import DummyLight from '../../../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
 
 export default {
   name: 'calls-count-metric-dashboard',
+  props: {
+    darkMode: {
+      type: Boolean,
+      default: false,
+    },
+  },
   mixins: [dashboardMixin],
-  data: () => ({
-    dummy: Dummy,
-  }),
   computed: {
+    dummy() {
+      return this.darkMode ? DummyDark : DummyLight;
+    },
     options() {
       return {
         aggregation: this.dashboard.options.aggregation,

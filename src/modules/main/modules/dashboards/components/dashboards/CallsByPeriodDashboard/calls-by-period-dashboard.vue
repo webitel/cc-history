@@ -13,14 +13,23 @@
 
 <script>
 import dashboardMixin from '../../../mixins/dashboardMixin';
-import Dummy from '../../../../../../../app/assets/dummy/hs-dummy-after-search.svg';
+import DummyLight from '../../../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
+import DummyDark from '../../../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
 
 export default {
   name: 'calls-by-period-dashboard',
+  props: {
+    darkMode: {
+      type: Boolean,
+      default: false,
+    },
+  },
   mixins: [dashboardMixin],
-  data: () => ({
-    dummy: Dummy,
-  }),
+  computed: {
+    dummy() {
+      return this.darkMode ? DummyDark : DummyLight;
+    },
+  },
 };
 </script>
 

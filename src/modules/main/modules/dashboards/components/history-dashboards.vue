@@ -22,6 +22,7 @@
             :is="dashboard.getDisplayName()"
             :dashboard="dashboard"
             :data="dashboardsData[key]"
+            :dark-mode="darkMode"
           ></component>
         </div>
         <div class="dashboard-wrapper dashboard-wrapper--empty">
@@ -48,7 +49,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import DashboardsHeader from './_internals/dashboards-header/dashboards-header.vue';
 import DashboardHeader from './dashboards/_internals/dashboard-header/dashboard-header.vue';
 import DashboardSelectPopup from './_internals/dashboard-select-popup/dashboard-select-popup.vue';
@@ -99,6 +100,9 @@ export default {
       dashboardsData: (state) => state.dashboardsData,
       layout: (state) => state.layout,
       isLoading: (state) => state.isLoading,
+    }),
+    ...mapGetters('appearance', {
+      darkMode: 'DARK_MODE',
     }),
   },
   methods: {
