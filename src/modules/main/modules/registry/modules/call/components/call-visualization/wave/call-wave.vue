@@ -205,7 +205,6 @@ const timelineOptions = {
   notchPercentHeight: 1,
   unlabeledNotchColor: 'var(--secondary-color)',
   fontFamily: 'Montserrat, monospace',
-  primaryFontColor: '#fff',
   fontSize: 12,
   height: 16,
   labelPadding: 5,
@@ -448,7 +447,7 @@ export default {
             label: call.to?.name || call.to?.number || call.destination,
             color: player.params.splitChannelsOptions
               .channelColors[1].progressColor,
-            markerElement: createMarker('var(--accent-color)'),
+            markerElement: createMarker('var(--primary-color)'),
           });
         }
         const createdMarkers = document.querySelectorAll('marker');
@@ -552,7 +551,7 @@ export default {
       }
 
       .call-wave-timeline {
-        background-color: var(--secondary-light-color);
+        background-color: var(--secondary-color);
       }
     }
   }
