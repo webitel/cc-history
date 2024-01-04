@@ -5,7 +5,7 @@ import {
 import applyTransform, {
   camelToSnake,
   merge, notify, snakeToCamel,
-  starToSearch,
+  starToSearch, log,
 } from '@webitel/ui-sdk/src/api/transformers';
 import { AuditFormServiceApiFactory, EngineAuditQuestionType } from 'webitel-sdk';
 import instance from '../../../../../../../../../app/api/instance';
@@ -35,6 +35,11 @@ const questionDefaultValuesHandler = (questions) => questions.map((question) => 
     }
     return question;
   });
+
+const responseItemHandler = (response) => ({
+  ...response,
+  questions: questionDefaultValuesHandler(response.questions),
+});
 
 const getScorecards = async (params) => {
   const listHandler = (items) => items.map((item) => ({
@@ -77,6 +82,7 @@ const getScorecards = async (params) => {
       items: applyTransform(items, [
         listHandler,
       ]),
+      log,
       next,
     };
   } catch (err) {
@@ -89,8 +95,10 @@ const getScorecards = async (params) => {
 const getAuditForm = async ({ itemId: id }) => {
   try {
     const response = await auditService.readAuditForm(id);
+    console.log('getAuditForm API response:', response);
     return applyTransform(response.data, [
       snakeToCamel(),
+      responseItemHandler,
     ]);
   } catch (err) {
     throw applyTransform(err, [
@@ -116,17 +124,11 @@ const sendAuditResult = async (itemInstance) => {
 };
 
 const getResult = async (id) => {
-  const responseHandler = (response) => ({
-    ...response,
-    questions: questionDefaultValuesHandler(response.questions),
-  });
-
   try {
     const response = await auditService.readAuditRate(id);
     return applyTransform(response.data, [
       snakeToCamel(),
-      responseHandler,
-
+      responseItemHandler,
     ]);
   } catch (err) {
     throw applyTransform(err, [
