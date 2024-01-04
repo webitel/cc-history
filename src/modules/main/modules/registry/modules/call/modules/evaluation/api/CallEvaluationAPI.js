@@ -5,7 +5,7 @@ import {
 import applyTransform, {
   camelToSnake,
   merge, notify, snakeToCamel,
-  starToSearch, log,
+  starToSearch,
 } from '@webitel/ui-sdk/src/api/transformers';
 import { AuditFormServiceApiFactory, EngineAuditQuestionType } from 'webitel-sdk';
 import instance from '../../../../../../../../../app/api/instance';
@@ -82,7 +82,6 @@ const getScorecards = async (params) => {
       items: applyTransform(items, [
         listHandler,
       ]),
-      log,
       next,
     };
   } catch (err) {
@@ -95,7 +94,6 @@ const getScorecards = async (params) => {
 const getAuditForm = async ({ itemId: id }) => {
   try {
     const response = await auditService.readAuditForm(id);
-    console.log('getAuditForm API response:', response);
     return applyTransform(response.data, [
       snakeToCamel(),
       responseItemHandler,
