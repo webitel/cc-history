@@ -113,6 +113,7 @@ const sendAuditResult = async (itemInstance) => {
     const response = await auditService.createAuditFormRate(item);
     return applyTransform(response.data, [
       snakeToCamel(),
+      responseItemHandler,
     ]);
   } catch (err) {
     throw applyTransform(err, [
