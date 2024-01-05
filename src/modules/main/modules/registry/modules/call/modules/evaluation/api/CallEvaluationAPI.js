@@ -36,6 +36,11 @@ const questionDefaultValuesHandler = (questions) => questions.map((question) => 
     return question;
   });
 
+const responseItemHandler = (response) => ({
+  ...response,
+  questions: questionDefaultValuesHandler(response.questions),
+});
+
 const getScorecards = async (params) => {
   const listHandler = (items) => items.map((item) => ({
       ...item,
@@ -91,6 +96,7 @@ const getAuditForm = async ({ itemId: id }) => {
     const response = await auditService.readAuditForm(id);
     return applyTransform(response.data, [
       snakeToCamel(),
+      responseItemHandler,
     ]);
   } catch (err) {
     throw applyTransform(err, [
@@ -107,6 +113,7 @@ const sendAuditResult = async (itemInstance) => {
     const response = await auditService.createAuditFormRate(item);
     return applyTransform(response.data, [
       snakeToCamel(),
+      responseItemHandler,
     ]);
   } catch (err) {
     throw applyTransform(err, [
@@ -116,17 +123,11 @@ const sendAuditResult = async (itemInstance) => {
 };
 
 const getResult = async (id) => {
-  const responseHandler = (response) => ({
-    ...response,
-    questions: questionDefaultValuesHandler(response.questions),
-  });
-
   try {
     const response = await auditService.readAuditRate(id);
     return applyTransform(response.data, [
       snakeToCamel(),
-      responseHandler,
-
+      responseItemHandler,
     ]);
   } catch (err) {
     throw applyTransform(err, [
