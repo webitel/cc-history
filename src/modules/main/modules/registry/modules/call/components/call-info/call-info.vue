@@ -13,7 +13,7 @@
             class="call-info__item"
           >
             <h3 class="call-info__title">{{ variable.key }}: </h3>
-            <span>{{ variable.value }}</span>
+            <span class="call-info__value">{{ variable.value }}</span>
           </li>
         </ul>
       </template>
@@ -124,6 +124,8 @@ export default {
   }
 
   &__item {
+    display: flex;
+    gap: var(--spacing-xs);
     padding: var(--spacing-xs);
 
     &:not(:last-child) {
@@ -134,6 +136,11 @@ export default {
   &__title {
     @extend %typo-subtitle-1;
     display: inline;
+  }
+
+  &__value {
+    max-width: 300px;
+    word-wrap: break-word;
   }
 
   @media (min-width: $viewport-sm) {
