@@ -13,12 +13,11 @@
             class="call-info__item"
           >
             <h3 class="call-info__title">{{ variable.key }}: </h3>
-            <span>{{ variable.value }}</span>
+            <span class="call-info__value">{{ variable.value }}</span>
           </li>
         </ul>
       </template>
     </wt-expansion-panel>
-
     <wt-expansion-panel
       v-if="isDisplayAmdLogs"
       class="call-info__wrapper"
@@ -134,6 +133,10 @@ export default {
   &__title {
     @extend %typo-subtitle-1;
     display: inline;
+  }
+
+  &__value {
+    word-break: break-word;
   }
 
   @media (min-width: $viewport-sm) {
