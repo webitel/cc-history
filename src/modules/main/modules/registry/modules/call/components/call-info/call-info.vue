@@ -18,7 +18,6 @@
         </ul>
       </template>
     </wt-expansion-panel>
-
     <wt-expansion-panel
       v-if="isDisplayAmdLogs"
       class="call-info__wrapper"
@@ -124,8 +123,6 @@ export default {
   }
 
   &__item {
-    display: flex;
-    gap: var(--spacing-xs);
     padding: var(--spacing-xs);
 
     &:not(:last-child) {
@@ -139,8 +136,7 @@ export default {
   }
 
   &__value {
-    max-width: 300px;
-    word-wrap: break-word;
+    word-break: break-word;
   }
 
   @media (min-width: $viewport-sm) {
