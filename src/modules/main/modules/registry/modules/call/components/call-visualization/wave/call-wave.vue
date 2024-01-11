@@ -205,6 +205,7 @@ const timelineOptions = {
   notchPercentHeight: 1,
   unlabeledNotchColor: 'var(--secondary-color)',
   fontFamily: 'Montserrat, monospace',
+  primaryFontColor: 'hsla(225, 20%, 50%, 1)',
   fontSize: 12,
   height: 16,
   labelPadding: 5,
@@ -551,7 +552,7 @@ export default {
       }
 
       .call-wave-timeline {
-        background-color: var(--secondary-color);
+        background-color: var(--secondary-light-color);
       }
     }
   }
