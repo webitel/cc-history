@@ -24,6 +24,7 @@
         :is="`abstract-${filter.type}-filter`"
         v-for="(filter, key) of selectFilters"
         :key="key"
+        allow-custom-values
         :disabled="filter.disabled"
         :filter-query="filter.filterQuery"
         :namespace="namespace"
