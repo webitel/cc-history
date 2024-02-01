@@ -2,28 +2,16 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    es2022: true,
   },
   extends: [
-    'plugin:vue/essential',
-    '@vue/airbnb',
+    'plugin:vue/vue3-essential',
   ],
-  parserOptions: {
-    parser: '@babel/eslint-parser',
-  },
   rules: {
-    'no-console': 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-useless-catch': 'off',
-    'no-shadow': 'off',
-    'no-empty': 'off',
-    indent: 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-underscore-dangle': 'off',
-    'import/no-cycle': 'off',
-    'lines-between-class-members': [
-      'error',
-      'always',
-      { exceptAfterSingleLine: true },
-    ],
+    'import/prefer-default-export': 'off',
   },
   overrides: [
     {

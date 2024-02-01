@@ -3,12 +3,11 @@
   "version": "23.12.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build-and-run-locally": " npm run build && sudo docker run -p 80:80 -v ${PWD}/dist:/usr/share/nginx/html:rw -v ${HOME}/default.conf:/etc/nginx/conf.d/default.conf:ro -v ${PWD}/dist:/www/history:rw -v ${HOME}/Projects/web-client-auth/dist:/www/auth:ro --rm nginx",
-    "test:unit": "vue-cli-service test:unit",
-    "lint:fix": "vue-cli-service lint --fix",
-    "prepare": "husky install"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "test:unit": "vitest",
+    "lint:fix": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
     "@vue/compat": "^3.4.15",
@@ -16,7 +15,6 @@
     "@vuelidate/validators": "^2.0.0",
     "@webitel/ui-sdk": "^24.2.39",
     "axios": "^1.6.5",
-    "core-js": "^3.6.4",
     "deep-copy": "^1.4.2",
     "deep-equal": "^2.0.3",
     "file-saver": "^2.0.5",
@@ -24,6 +22,7 @@
     "jszip-utils": "^0.1.0",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "soundtouchjs": "^0.1.29",
+    "tslib": "^2.6.2",
     "vue": "^3.4.15",
     "vue-chartjs": "^4.1.2",
     "vue-i18n": "^9.2.2",
@@ -33,34 +32,17 @@
     "webitel-sdk": "^23.12.16"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.18.2",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@vue/cli-plugin-babel": "~5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.8",
-    "@vue/cli-plugin-router": "~5.0.8",
-    "@vue/cli-plugin-unit-jest": "~5.0.8",
-    "@vue/cli-plugin-vuex": "~5.0.8",
-    "@vue/cli-service": "~5.0.8",
+    "@vitejs/plugin-vue": "^5.0.3",
     "@vue/compiler-sfc": "^3.4.15",
-    "@vue/eslint-config-airbnb": "^6.0.0",
-    "@vue/test-utils": "^2.3.0",
-    "@vue/vue3-jest": "^29.2.2",
-    "babel-preset-vite": "^1.1.0",
-    "bamboo-jest-reporter": "^1.0.3",
-    "eslint": "^8.16.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-vue": "^8.7.1",
+    "@vue/test-utils": "^2.4.4",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.21.1",
+    "happy-dom": "^13.3.8",
     "husky": "^7.0.0",
-    "jest-canvas-mock": "^2.3.0",
-    "jest-environment-jsdom": "^29.4.3",
-    "jsdom": "^16.4.0",
-    "sass": "^1.52.1",
-    "sass-loader": "^8.0.2",
-    "svg-sprite-loader": "^6.0.11"
-  },
-  "overrides": {
-    "@vue/vue3-jest": "^29.2.2",
-    "babel-jest": "^29.*",
-    "jest": "^29.*"
+    "sass": "^1.70.0",
+    "vite": "^5.0.12",
+    "vite-plugin-node-polyfills": "^0.19.0",
+    "vite-plugin-svg-sprite": "^0.5.1",
+    "vitest": "^1.2.2"
   }
 }

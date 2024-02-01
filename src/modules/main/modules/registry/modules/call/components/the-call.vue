@@ -122,7 +122,7 @@ export default {
     this.setMainCall({ id: this.callId });
     this.setInitialTab();
   },
-  destroyed() {
+  unmounted() {
     this.resetMainCall();
   },
 };
