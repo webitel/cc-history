@@ -1,4 +1,4 @@
-const waveSurferMock = (jest) => ({
+const waveSurferMock = (vi) => ({
   regions: [],
   setPlaybackRate: vi.fn(),
   zoom: vi.fn(),

@@ -129,6 +129,7 @@ const saveDashboards = async (dashboards) => {
 const getDashboards = async () => {
   try {
     const response = await instance.get(SNAPSHOTS_URL);
+    console.info(response);
     return response.data || {};
   } catch (err) {
     throw applyTransform(err, [

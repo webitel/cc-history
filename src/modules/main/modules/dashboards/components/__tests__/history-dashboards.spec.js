@@ -10,6 +10,23 @@ const router = createRouter({
   routes: [],
 });
 
+vi.mock('axios', () => {
+  return {
+    default: {
+      get: vi.fn(() => Promise.resolve({ data: { snapshots: [] }})),
+      request: vi.fn(() => Promise.resolve({ data: { items: [] }})),
+      create: vi.fn().mockReturnThis(),
+      interceptors: {
+        request: {
+          use: vi.fn(), eject: vi.fn(),
+        }, response: {
+          use: vi.fn(), eject: vi.fn(),
+        },
+      },
+    },
+  };
+});
+
 const dashboard = new CallsCountDashboard();
 describe('History dashboards', () => {
   let store;

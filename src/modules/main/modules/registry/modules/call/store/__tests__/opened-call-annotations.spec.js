@@ -11,7 +11,7 @@ describe('Annotation store', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    context = getContextMock(jest);
+    context = getContextMock(vi);
   });
 
   it('ADD_ANNOTATION calls CallAnnotationApi add method', async () => {

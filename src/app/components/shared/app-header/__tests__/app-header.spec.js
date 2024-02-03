@@ -43,6 +43,11 @@ describe('App Header', () => {
     const wrapper = mount(AppHeader, {
       global: {
         plugins: [store],
+        mocks: {
+          $router: {
+            replace: vi.fn(),
+          },
+        },
       },
     });
     wrapper.findComponent({ name: 'wt-header-actions' }).vm.$emit('logout');

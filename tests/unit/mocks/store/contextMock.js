@@ -1,4 +1,4 @@
-const getContextMock = (jest) => ({
+const getContextMock = (vi) => ({
   state: {},
   getters: {},
   actions: {},

@@ -93,7 +93,8 @@ export default {
       } catch (err) {
         throw err;
       } finally {
-        this.close();
+        // WHERE IS CLOSE?
+        // this.close();
       }
     },
   },
