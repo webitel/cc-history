@@ -47,15 +47,15 @@ describe('CallNoTranscriptSection', () => {
     const callId = 'jest';
     call.id = callId;
 
-    jest.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
+    vi.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
     .mockImplementationOnce(() => {});
 
     const wrapper = mount(CallNoTranscriptSection, {
       props,
       computed,
     });
-    const mock = jest.fn();
-    jest.spyOn(CallTranscriptAPI, 'create')
+    const mock = vi.fn();
+    vi.spyOn(CallTranscriptAPI, 'create')
     .mockImplementationOnce(mock);
 
     const btn = wrapper.findComponent({ name: 'wt-button' });
@@ -72,7 +72,7 @@ describe('CallNoTranscriptSection', () => {
     file.id = 1;
     call.filesJob = [{ fileId: 1, state: HistoryFileJobHistoryFileJobState.Error }];
 
-    jest.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
+    vi.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
     .mockImplementationOnce(() => {});
 
     const wrapper = mount(CallNoTranscriptSection, {
@@ -80,8 +80,8 @@ describe('CallNoTranscriptSection', () => {
       computed,
     });
 
-    const mock = jest.fn();
-    jest.spyOn(CallTranscriptAPI, 'create')
+    const mock = vi.fn();
+    vi.spyOn(CallTranscriptAPI, 'create')
     .mockImplementationOnce(mock);
 
     const btn = wrapper.findComponent({ name: 'wt-button' });

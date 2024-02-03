@@ -5,13 +5,29 @@ import transcriptPhrasesMixin from '../../../mixins/transcriptPhrasesMixin';
 const transcripts = [];
 const props = { callId: '1' };
 
+vi.mock('axios', () => {
+  return {
+    default: {
+      request: vi.fn(() => Promise.resolve({ data: { items: [{ transcripts: [] }] }})),
+      create: vi.fn().mockReturnThis(),
+      interceptors: {
+        request: {
+          use: vi.fn(), eject: vi.fn(),
+        }, response: {
+          use: vi.fn(), eject: vi.fn(),
+        },
+      },
+    },
+  };
+});
+
 describe('SttPopup', () => {
   beforeEach(() => {
     transcripts.length = 0;
   });
 
-  jest.spyOn(transcriptPhrasesMixin.methods, 'loadCallTranscript').mockImplementation(jest.fn());
-  jest.spyOn(transcriptPhrasesMixin.methods, 'deleteTranscription').mockImplementation(jest.fn());
+  vi.spyOn(transcriptPhrasesMixin.methods, 'loadCallTranscript').mockImplementation(vi.fn());
+  vi.spyOn(transcriptPhrasesMixin.methods, 'deleteTranscription').mockImplementation(vi.fn());
 
   it('renders a component', () => {
     const wrapper = shallowMount(SttPopup, {
@@ -20,8 +36,8 @@ describe('SttPopup', () => {
     expect(wrapper.isVisible()).toBe(true);
   });
   it('fetches call with transcripts', async () => {
-    const mock = jest.fn();
-    jest.spyOn(SttPopup.methods, 'loadCall')
+    const mock = vi.fn();
+    vi.spyOn(SttPopup.methods, 'loadCall')
     .mockImplementationOnce(mock);
     const wrapper = shallowMount(SttPopup, {
       props,

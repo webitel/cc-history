@@ -10,7 +10,7 @@ const user = {
   account: 'account',
 };
 
-jest.spyOn(logoutAPI, 'logout');
+vi.spyOn(logoutAPI, 'logout');
 describe('App Header', () => {
   let store;
 
@@ -43,6 +43,11 @@ describe('App Header', () => {
     const wrapper = mount(AppHeader, {
       global: {
         plugins: [store],
+        mocks: {
+          $router: {
+            replace: vi.fn(),
+          },
+        },
       },
     });
     wrapper.findComponent({ name: 'wt-header-actions' }).vm.$emit('logout');
@@ -50,7 +55,7 @@ describe('App Header', () => {
   });
 
   it('opens settings at user settings action', () => {
-    const open = jest.fn();
+    const open = vi.fn();
     Object.defineProperty(window, 'open', {
       configurable: true, get() { return open; },
     });

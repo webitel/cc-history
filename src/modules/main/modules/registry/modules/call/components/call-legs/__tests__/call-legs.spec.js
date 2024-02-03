@@ -11,7 +11,7 @@ const legsData = [
   { id: '3', transferFrom: '2' },
 ];
 
-jest.mock('../../../../../api/RegistryAPIRepository');
+vi.mock('../../../../../api/RegistryAPIRepository');
 RegistryAPIRepository.getHistory.mockImplementation(() => Promise.resolve({ items: legsData }));
 
 const props = {

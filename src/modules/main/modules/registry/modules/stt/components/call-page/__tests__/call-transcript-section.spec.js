@@ -29,7 +29,7 @@ describe('CallTranscriptSection', () => {
     call.transcripts = [file];
     props = { call };
     computed.file = () => file;
-    CallTranscriptAPI.delete = jest.fn();
+    CallTranscriptAPI.delete = vi.fn();
     const wrapper = shallowMount(CallTranscriptSection, { props, computed });
     await wrapper.vm.deleteTranscript(file);
     expect(call.transcripts.length).toBe(0);

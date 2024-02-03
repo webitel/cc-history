@@ -3,7 +3,7 @@ import CallsCountDashboard
   from '../../components/dashboards/CallsCountDashboard/CallsCountDashboard';
 import dashboards from '../dashboards';
 
-jest.mock('../../api/DashboardAPIRepository');
+vi.mock('../../api/DashboardAPIRepository');
 
 let newDashboard;
 let existingDashboard;
@@ -18,10 +18,10 @@ DashboardsAPIRepository.getDashboards
 describe('dashboards store actions', () => {
   const context = {
     state: dashboards.state,
-    commit: jest.fn(),
-    dispatch: jest.fn(),
+    commit: vi.fn(),
+    dispatch: vi.fn(),
     rootGetters: {
-      'dashboards/filters/GET_FILTER': jest.fn(),
+      'dashboards/filters/GET_FILTER': vi.fn(),
     },
   };
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('dashboards store actions', () => {
   });
 
   it('ADD_DASHBOARD updates new dashboard id, if there is any dashboards in state', async () => {
-    newDashboard.setId = jest.fn();
+    newDashboard.setId = vi.fn();
     await dashboards.actions.ADD_DASHBOARD(context, { dashboard: newDashboard });
     expect(newDashboard.setId).toHaveBeenCalledWith(existingDashboard.id + 1);
   });
@@ -60,7 +60,7 @@ describe('dashboards store actions', () => {
     const query = { filter: 'jest' };
     const aggs = { agg: 'jest' };
     context.rootGetters['filters/GET_FILTERS'] = query;
-    existingDashboard.getRequestAggregations = jest.fn(() => aggs);
+    existingDashboard.getRequestAggregations = vi.fn(() => aggs);
     await dashboards.actions.LOAD_DASHBOARDS_DATA(context);
     expect(DashboardsAPIRepository.getDashboardsData)
       .toHaveBeenCalledWith({ aggs: [aggs], ...query });

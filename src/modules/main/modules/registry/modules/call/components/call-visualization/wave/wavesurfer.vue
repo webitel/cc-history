@@ -18,7 +18,7 @@ export default {
     this.waveSurfer = new WaveSurfer.create(wsOptions);
     this.waveSurfer.load(this.src);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.waveSurfer.destroy();
   },
 };

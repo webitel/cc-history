@@ -29,7 +29,7 @@ export default {
 
   methods: {
     goToApplicationHub() {
-      const adminUrl = process.env.VUE_APP_APPLICATION_HUB_URL;
+      const adminUrl = import.meta.env.VITE_APPLICATION_HUB_URL;
       window.location.href = adminUrl;
     },
   },

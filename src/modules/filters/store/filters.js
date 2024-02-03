@@ -32,7 +32,7 @@ const state = {
     locale: { label: 'fields.cause' },
   }),
   amdResult: new EnumFilterSchema({
-    options: AmdResultOptions,
+    options: [...AmdResultOptions],
     locale: { label: 'fields.amdResult' },
   }),
   direction: new EnumFilterSchema({

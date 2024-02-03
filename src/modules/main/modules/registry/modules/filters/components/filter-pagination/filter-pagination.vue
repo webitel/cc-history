@@ -49,7 +49,7 @@ export default {
   mounted() {
     this.subscribeFilterChange();
   },
-  destroyed() {
+  unmounted() {
     this.unsubscribeFilterChange();
   },
 };

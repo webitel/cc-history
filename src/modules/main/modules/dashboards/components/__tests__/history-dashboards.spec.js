@@ -10,14 +10,31 @@ const router = createRouter({
   routes: [],
 });
 
+vi.mock('axios', () => {
+  return {
+    default: {
+      get: vi.fn(() => Promise.resolve({ data: { snapshots: [] }})),
+      request: vi.fn(() => Promise.resolve({ data: { items: [] }})),
+      create: vi.fn().mockReturnThis(),
+      interceptors: {
+        request: {
+          use: vi.fn(), eject: vi.fn(),
+        }, response: {
+          use: vi.fn(), eject: vi.fn(),
+        },
+      },
+    },
+  };
+});
+
 const dashboard = new CallsCountDashboard();
 describe('History dashboards', () => {
   let store;
   const actions = {
     ...dashboards.actions,
-    ADD_DASHBOARD: jest.fn(),
-    DELETE_DASHBOARD: jest.fn(),
-    CHANGE_LAYOUT: jest.fn(),
+    ADD_DASHBOARD: vi.fn(),
+    DELETE_DASHBOARD: vi.fn(),
+    CHANGE_LAYOUT: vi.fn(),
   };
 
   beforeEach(() => {
@@ -67,7 +84,7 @@ describe('History dashboards', () => {
 
   it('at dashboard header edit event, sets configuredDashboard', async () => {
     const dashboards = () => [dashboard];
-    const openDashboardConfig = jest.fn();
+    const openDashboardConfig = vi.fn();
     const wrapper = mount(HistoryDashboards, {
       global: {
         plugins: [store, router],
@@ -82,7 +99,7 @@ describe('History dashboards', () => {
 
   it('at dashboard header delete event, calls DELETE_DASHBOARD', async () => {
     const dashboards = () => [dashboard];
-    const openDashboardConfig = jest.fn();
+    const openDashboardConfig = vi.fn();
     const wrapper = mount(HistoryDashboards, {
       global: {
         plugins: [store, router],

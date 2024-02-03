@@ -1,9 +1,9 @@
-const waveSurferMock = (jest) => ({
+const waveSurferMock = (vi) => ({
   regions: [],
-  setPlaybackRate: jest.fn(),
-  zoom: jest.fn(),
-  clearRegions: jest.fn(),
-  addRegion: jest.fn((params) => params),
+  setPlaybackRate: vi.fn(),
+  zoom: vi.fn(),
+  clearRegions: vi.fn(),
+  addRegion: vi.fn((params) => params),
   backend: {
     buffer: [],
     ac: { sampleRate: 1 },
