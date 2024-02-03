@@ -8,13 +8,13 @@ import createSvgSpritePlugin from 'vite-plugin-svg-sprite';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
-  // const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, process.cwd(), '');
 
   return defineConfig({
     base: '/history',
     define: {
-      // 'process.env': JSON.parse(JSON.stringify(env)
-      // .replaceAll('VITE_', 'VUE_APP_')),
+      'process.env': JSON.parse(JSON.stringify(env)
+      .replaceAll('VITE_', 'VUE_APP_')),
     },
     server: {
       host: true,
@@ -28,8 +28,10 @@ export default ({ mode }) => {
       },
     },
     resolve: {
+      // dedupe: ['vue', '@vue/compat'],
       alias: {
         vue: '@vue/compat',
+        // '@webitel/ui-sdk': '/Users/admin/Projects/webitel-ui-sdk',
       },
     },
     plugins: [
@@ -59,6 +61,13 @@ export default ({ mode }) => {
       coverage: {
         enabled: true,
         reporter: 'json',
+      },
+      alias: {
+        /**
+         * override the default alias vue -> vue/compat for dev and prod,
+         * which is creating 2 vue instances while running tests :(
+         */
+        'vue': 'vue',
       },
       environment: 'happy-dom',
       setupFiles: ['./tests/config/config.js'],

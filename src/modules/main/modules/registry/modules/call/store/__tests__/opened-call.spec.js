@@ -10,7 +10,7 @@ const router = createRouter({
   routes: [],
 });
 
-jest.mock('../../../../api/RegistryAPIRepository');
+vi.mock('../../../../api/RegistryAPIRepository');
 
 const mainCall = { id: '12' };
 const legsData = [{ id: '1' }, { id: '2' }];

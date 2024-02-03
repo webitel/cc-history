@@ -15,9 +15,9 @@ describe('History dashboards', () => {
   let store;
   const actions = {
     ...dashboards.actions,
-    ADD_DASHBOARD: jest.fn(),
-    DELETE_DASHBOARD: jest.fn(),
-    CHANGE_LAYOUT: jest.fn(),
+    ADD_DASHBOARD: vi.fn(),
+    DELETE_DASHBOARD: vi.fn(),
+    CHANGE_LAYOUT: vi.fn(),
   };
 
   beforeEach(() => {
@@ -67,7 +67,7 @@ describe('History dashboards', () => {
 
   it('at dashboard header edit event, sets configuredDashboard', async () => {
     const dashboards = () => [dashboard];
-    const openDashboardConfig = jest.fn();
+    const openDashboardConfig = vi.fn();
     const wrapper = mount(HistoryDashboards, {
       global: {
         plugins: [store, router],
@@ -82,7 +82,7 @@ describe('History dashboards', () => {
 
   it('at dashboard header delete event, calls DELETE_DASHBOARD', async () => {
     const dashboards = () => [dashboard];
-    const openDashboardConfig = jest.fn();
+    const openDashboardConfig = vi.fn();
     const wrapper = mount(HistoryDashboards, {
       global: {
         plugins: [store, router],

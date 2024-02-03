@@ -9,7 +9,7 @@ const router = createRouter({
   routes: [],
 });
 
-jest.mock('../../api/RegistryAPIRepository');
+vi.mock('../../api/RegistryAPIRepository');
 
 const items = [{ id: '1' }, { id: '2' }];
 const next = true;

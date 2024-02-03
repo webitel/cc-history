@@ -4,8 +4,8 @@ import TheCall
 
 describe('Opened call', () => {
   it('renders a component', () => {
-    jest.spyOn(TheCall.methods, 'setMainCall')
-    .mockImplementationOnce(jest.fn());
+    vi.spyOn(TheCall.methods, 'setMainCall')
+    .mockImplementationOnce(vi.fn());
     const wrapper = shallowMount(TheCall, {
       global: {
         mocks: {

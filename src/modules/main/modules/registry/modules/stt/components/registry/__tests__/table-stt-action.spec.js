@@ -48,8 +48,8 @@ describe('TableSttAction', () => {
     /**
      * Don't know why, but I can't catch handleStartJob itself :(
      */
-    const mock = jest.fn();
-    // jest.spyOn(TableSttAction.methods, 'handleStartJob')
+    const mock = vi.fn();
+    // vi.spyOn(TableSttAction.methods, 'handleStartJob')
     // .mockImplementationOnce(mock);
     wrapper.vm.currentState.handler = mock;
 

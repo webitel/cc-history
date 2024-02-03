@@ -13,8 +13,8 @@ const router = createRouter({
 describe('History table', () => {
   let store;
 
-  const SET_OPENED_CALL = jest.fn();
-  const RESET_OPENED_CALL = jest.fn();
+  const SET_OPENED_CALL = vi.fn();
+  const RESET_OPENED_CALL = vi.fn();
   openedHistoryCall.actions.SET_OPENED_CALL = SET_OPENED_CALL;
   openedHistoryCall.actions.RESET_OPENED_CALL = RESET_OPENED_CALL;
 

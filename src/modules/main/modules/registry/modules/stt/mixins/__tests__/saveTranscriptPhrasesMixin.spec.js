@@ -7,7 +7,7 @@ const Component = {
   render() {},
 };
 
-jest.mock('file-saver');
+vi.mock('file-saver');
 
 describe('SaveTranscriptPhrasesMixin', () => {
   it('renders a component', () => {

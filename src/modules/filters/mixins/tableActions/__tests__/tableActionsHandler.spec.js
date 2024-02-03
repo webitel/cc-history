@@ -2,11 +2,11 @@ import { shallowMount } from '@vue/test-utils';
 import router from '../../../../../app/router';
 import tableActionsHandlerMixin from '../tableActionsHandlerMixin';
 
-jest.mock('../../../../main/modules/registry/api/RegistryAPIRepository');
+vi.mock('../../../../main/modules/registry/api/RegistryAPIRepository');
 
 describe('Table actions handler', () => {
-  const loadData = jest.fn();
-  const resetFilters = jest.fn();
+  const loadData = vi.fn();
+  const resetFilters = vi.fn();
   let wrapper;
   beforeEach(() => {
     const Component = {

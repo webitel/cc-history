@@ -23,7 +23,7 @@ describe('Play media mixin', () => {
   });
 
   it('closes player at empty play()', () => {
-    wrapper.vm.closePlayer = jest.fn();
+    wrapper.vm.closePlayer = vi.fn();
     wrapper.vm.play();
     expect(wrapper.vm.closePlayer).toHaveBeenCalled();
   });

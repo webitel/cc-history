@@ -29,9 +29,9 @@ describe('Opened call wave', () => {
   };
 
   const actionMocks = {
-    ADD_ANNOTATION: jest.fn(),
-    EDIT_ANNOTATION: jest.fn(),
-    DELETE_ANNOTATION: jest.fn(),
+    ADD_ANNOTATION: vi.fn(),
+    EDIT_ANNOTATION: vi.fn(),
+    DELETE_ANNOTATION: vi.fn(),
   };
 
   const volumeData = {
@@ -44,7 +44,7 @@ describe('Opened call wave', () => {
 
   const player = playerMock(jest);
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     store = createStore({
       modules: {
         registry: {
@@ -77,7 +77,7 @@ describe('Opened call wave', () => {
         mocks: {
           v$: {
             draft: {
-              $touch: jest.fn(),
+              $touch: vi.fn(),
             },
           },
         },
@@ -293,7 +293,7 @@ describe('Opened call wave', () => {
         commentsSize: () => 10,
       },
     });
-    const displayComments = jest.fn();
+    const displayComments = vi.fn();
     wrapper.vm.displayComments = displayComments;
     await wrapper.findAllComponents({ name: 'wt-checkbox' })
     .filter((checkbox) => checkbox.props()

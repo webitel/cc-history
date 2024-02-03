@@ -11,8 +11,8 @@ let getterMock;
 
 describe('TranscriptPhrasesMixin', () => {
   beforeEach(() => {
-    getterMock = jest.fn();
-    jest.spyOn(CallTranscriptAPI, 'get').mockImplementation(getterMock);
+    getterMock = vi.fn();
+    vi.spyOn(CallTranscriptAPI, 'get').mockImplementation(getterMock);
   });
 
   it('renders a component', () => {
@@ -77,8 +77,8 @@ describe('TranscriptPhrasesMixin', () => {
       }),
     });
 
-    const mock = jest.fn();
-    jest.spyOn(CallTranscriptAPI, 'delete').mockImplementationOnce(mock);
+    const mock = vi.fn();
+    vi.spyOn(CallTranscriptAPI, 'delete').mockImplementationOnce(mock);
 
     wrapper.vm.deleteTranscription();
     expect(mock).toHaveBeenCalledWith({ fileId: 'jest' });

@@ -18,7 +18,7 @@ describe('HistoryExportCsvAction', () => {
   });
 
   it('calls exportCSV mixin method at "export" button click', async () => {
-    const exportCSVMock = jest.fn();
+    const exportCSVMock = vi.fn();
     const wrapper = shallowMount(HistoryExportCsvAction, { props });
     wrapper.vm.exportCSV = exportCSVMock;
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
@@ -28,7 +28,7 @@ describe('HistoryExportCsvAction', () => {
   it('cleanups fields before exportCSC', async () => {
     const fields = ['id', 'files_job', 'agent', 'transcripts', 'jest'];
     const output = ['id', 'agent', 'jest'];
-    const exportCSVMock = jest.fn();
+    const exportCSVMock = vi.fn();
     const wrapper = shallowMount(HistoryExportCsvAction, { props: { ...props, fields } });
     wrapper.vm.exportCSV = exportCSVMock;
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
