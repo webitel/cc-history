@@ -10,6 +10,7 @@
         {{ $t('registry.call.evaluation.noEvaluation') }}
       </p>
       <wt-button
+        v-if="hasLicenseOnAudit"
         class="call-no-evaluation__button"
         @click="$emit('rate')"
       >
@@ -21,8 +22,18 @@
 
 <script>
 
+import { mapState } from 'vuex';
+
 export default {
   name: 'call-no-evaluation',
+  computed: {
+    ...mapState('userinfo', {
+      scope: (state) => state.scope,
+    }),
+    hasLicenseOnAudit() {
+      return this.scope.some((item) => item.class === 'cc_audit_form');
+    },
+  },
 };
 </script>
 
