@@ -20,6 +20,18 @@ const AmdResultOptions = Object.freeze([
     name: 'CANCEL',
     value: 'CANCEL',
   },
+  {
+    name: 'SILENCE',
+    value: 'SILENCE',
+  },
+  {
+    name: 'VOICEMAIL',
+    value: 'VOICEMAIL',
+  },
+  {
+    name: 'RINGING',
+    value: 'RINGING',
+  },
 ]);
 
 export default AmdResultOptions;

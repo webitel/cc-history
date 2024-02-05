@@ -24,6 +24,7 @@
         :is="`abstract-${filter.type}-filter`"
         v-for="(filter, key) of selectFilters"
         :key="key"
+        :allow-custom-values="filter.allowCustomValues"
         :disabled="filter.disabled"
         :filter-query="filter.filterQuery"
         :namespace="namespace"
@@ -132,7 +133,7 @@ export default {
         { type: 'api', filterQuery: 'contact', disabled: !this.scopeClasses['contacts'] },
         { type: 'enum', filterQuery: 'tags' },
         { type: 'enum', filterQuery: 'cause' },
-        { type: 'enum', filterQuery: 'amdResult' },
+        { type: 'enum', filterQuery: 'amdResult', allowCustomValues: true },
         { type: 'enum', filterQuery: 'hasFile' },
         { type: 'enum', filterQuery: 'hasTranscription' },
         { type: 'api', filterQuery: 'ratedBy', disabled: !this.scopeClasses['users'] },
