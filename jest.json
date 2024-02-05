@@ -1,0 +1,968 @@
+{
+  "stats": {
+    "duration": 61601,
+    "start": "2023-11-24T10:37:44.867Z",
+    "end": "2023-11-24T10:38:46.468Z",
+    "passes": 159,
+    "failures": 0,
+    "tests": 159
+  },
+  "failures": [],
+  "passes": [
+    {
+      "title": "renders a component",
+      "fullTitle": "CallNoTranscriptSection renders a component",
+      "duration": 38048,
+      "errorCount": 0
+    },
+    {
+      "title": "falsy fileJob computed, if call has no filesJob",
+      "fullTitle": "CallNoTranscriptSection falsy fileJob computed, if call has no filesJob",
+      "duration": 38048,
+      "errorCount": 0
+    },
+    {
+      "title": "correctly computes fileJob from call.filesJob",
+      "fullTitle": "CallNoTranscriptSection correctly computes fileJob from call.filesJob",
+      "duration": 38048,
+      "errorCount": 0
+    },
+    {
+      "title": "\"transcribe\" btn click calls \"create\" api method with call id",
+      "fullTitle": "CallNoTranscriptSection \"transcribe\" btn click calls \"create\" api method with call id",
+      "duration": 38048,
+      "errorCount": 0
+    },
+    {
+      "title": "error state retry calls \"create\" api method",
+      "fullTitle": "CallNoTranscriptSection error state retry calls \"create\" api method",
+      "duration": 38048,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component with mixin",
+      "fullTitle": "Dashboard data mixin renders a component with mixin",
+      "duration": 38163,
+      "errorCount": 0
+    },
+    {
+      "title": "Line data",
+      "fullTitle": "Dashboard data mixin Line data",
+      "duration": 38163,
+      "errorCount": 0
+    },
+    {
+      "title": "Doughnut data",
+      "fullTitle": "Dashboard data mixin Doughnut data",
+      "duration": 38163,
+      "errorCount": 0
+    },
+    {
+      "title": "Bar data",
+      "fullTitle": "Dashboard data mixin Bar data",
+      "duration": 38163,
+      "errorCount": 0
+    },
+    {
+      "title": "Metric data",
+      "fullTitle": "Dashboard data mixin Metric data",
+      "duration": 38163,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "TranscriptPhrasesMixin renders a component",
+      "duration": 2437,
+      "errorCount": 0
+    },
+    {
+      "title": "calls getTranscript api if there is a transcript",
+      "fullTitle": "TranscriptPhrasesMixin calls getTranscript api if there is a transcript",
+      "duration": 2437,
+      "errorCount": 0
+    },
+    {
+      "title": "correctly computes phrases from data",
+      "fullTitle": "TranscriptPhrasesMixin correctly computes phrases from data",
+      "duration": 2437,
+      "errorCount": 0
+    },
+    {
+      "title": "reset phrases if call transcript is removed",
+      "fullTitle": "TranscriptPhrasesMixin reset phrases if call transcript is removed",
+      "duration": 2437,
+      "errorCount": 0
+    },
+    {
+      "title": "calls api delete method at deleteTranscription call",
+      "fullTitle": "TranscriptPhrasesMixin calls api delete method at deleteTranscription call",
+      "duration": 2437,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a metric",
+      "fullTitle": "Charts: Metric renders a metric",
+      "duration": 3157,
+      "errorCount": 0
+    },
+    {
+      "title": "calculates count aggregation and percents",
+      "fullTitle": "Charts: Metric calculates count aggregation and percents",
+      "duration": 3157,
+      "errorCount": 0
+    },
+    {
+      "title": "calculates sum aggregation and percents",
+      "fullTitle": "Charts: Metric calculates sum aggregation and percents",
+      "duration": 3157,
+      "errorCount": 0
+    },
+    {
+      "title": "calculates min aggregation and percents",
+      "fullTitle": "Charts: Metric calculates min aggregation and percents",
+      "duration": 3157,
+      "errorCount": 0
+    },
+    {
+      "title": "calculates max aggregation and percents",
+      "fullTitle": "Charts: Metric calculates max aggregation and percents",
+      "duration": 3157,
+      "errorCount": 0
+    },
+    {
+      "title": "calculates avg aggregation and percents",
+      "fullTitle": "Charts: Metric calculates avg aggregation and percents",
+      "duration": 3157,
+      "errorCount": 0
+    },
+    {
+      "title": "ADD_DASHBOARD commits ADD_DASHBOARD mutation with this dashboard",
+      "fullTitle": "dashboards store actions ADD_DASHBOARD commits ADD_DASHBOARD mutation with this dashboard",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "ADD_DASHBOARD dispatches SAVE_DASHBOARDS",
+      "fullTitle": "dashboards store actions ADD_DASHBOARD dispatches SAVE_DASHBOARDS",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "ADD_DASHBOARD updates new dashboard id, if there is any dashboards in state",
+      "fullTitle": "dashboards store actions ADD_DASHBOARD updates new dashboard id, if there is any dashboards in state",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "LOAD_DATA calls LOAD_DASHBOARDS_DATA",
+      "fullTitle": "dashboards store actions LOAD_DATA calls LOAD_DASHBOARDS_DATA",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "LOAD_DASHBOARDS_DATA commits SET_DASHBOARDS_DATA, if request data is returned",
+      "fullTitle": "dashboards store actions LOAD_DASHBOARDS_DATA commits SET_DASHBOARDS_DATA, if request data is returned",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "LOAD_DASHBOARDS_DATA correctly collects params from filter storage and dashboard aggs",
+      "fullTitle": "dashboards store actions LOAD_DASHBOARDS_DATA correctly collects params from filter storage and dashboard aggs",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "DELETE_DASHBOARD commits REMOVE_DASHBOARD",
+      "fullTitle": "dashboards store actions DELETE_DASHBOARD commits REMOVE_DASHBOARD",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "DELETE_DASHBOARD dispatches SAVE_DASHBOARDS",
+      "fullTitle": "dashboards store actions DELETE_DASHBOARD dispatches SAVE_DASHBOARDS",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "SAVE_DASHBOARDS calls API method to send dashboard snapshots",
+      "fullTitle": "dashboards store actions SAVE_DASHBOARDS calls API method to send dashboard snapshots",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "RESTORE_DASHBOARDS calls API method to get dashboard snapshots",
+      "fullTitle": "dashboards store actions RESTORE_DASHBOARDS calls API method to get dashboard snapshots",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "RESTORE_DASHBOARDS commits SET_DASHBOARDS with restored dashboard class objects",
+      "fullTitle": "dashboards store actions RESTORE_DASHBOARDS commits SET_DASHBOARDS with restored dashboard class objects",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "CHANGE_LAYOUT dispatches SAVE_DASHBOARDS",
+      "fullTitle": "dashboards store actions CHANGE_LAYOUT dispatches SAVE_DASHBOARDS",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "CHANGE_LAYOUT commits SET_LAYOUT",
+      "fullTitle": "dashboards store actions CHANGE_LAYOUT commits SET_LAYOUT",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "SET_LAYOUT commits SET_LAYOUT",
+      "fullTitle": "dashboards store actions SET_LAYOUT commits SET_LAYOUT",
+      "duration": 41423,
+      "errorCount": 0
+    },
+    {
+      "title": "renders CallsByPeriod Dashboard",
+      "fullTitle": "Dashboard components renders CallsByPeriod Dashboard",
+      "duration": 42070,
+      "errorCount": 0
+    },
+    {
+      "title": "renders CallsCount Dashboard",
+      "fullTitle": "Dashboard components renders CallsCount Dashboard",
+      "duration": 42070,
+      "errorCount": 0
+    },
+    {
+      "title": "renders CallsCountMetric Dashboard",
+      "fullTitle": "Dashboard components renders CallsCountMetric Dashboard",
+      "duration": 42070,
+      "errorCount": 0
+    },
+    {
+      "title": "renders CallsCountVariable Dashboard",
+      "fullTitle": "Dashboard components renders CallsCountVariable Dashboard",
+      "duration": 42070,
+      "errorCount": 0
+    },
+    {
+      "title": "renders CallsDuration Dashboard",
+      "fullTitle": "Dashboard components renders CallsDuration Dashboard",
+      "duration": 42070,
+      "errorCount": 0
+    },
+    {
+      "title": "renders CallsDurationMetric Dashboard",
+      "fullTitle": "Dashboard components renders CallsDurationMetric Dashboard",
+      "duration": 42070,
+      "errorCount": 0
+    },
+    {
+      "title": "sets call to open",
+      "fullTitle": "Opened call history store sets call to open",
+      "duration": 42903,
+      "errorCount": 0
+    },
+    {
+      "title": "loads main call from API",
+      "fullTitle": "Opened call history store loads main call from API",
+      "duration": 42903,
+      "errorCount": 0
+    },
+    {
+      "title": "loads call legs data from API",
+      "fullTitle": "Opened call history store loads call legs data from API",
+      "duration": 42903,
+      "errorCount": 0
+    },
+    {
+      "title": "correctly resets opened call state",
+      "fullTitle": "Opened call history store correctly resets opened call state",
+      "duration": 42903,
+      "errorCount": 0
+    },
+    {
+      "title": "loads annotations from API",
+      "fullTitle": "Opened call history store loads annotations from API",
+      "duration": 42903,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "TableSttAction renders a component",
+      "duration": 3784,
+      "errorCount": 0
+    },
+    {
+      "title": "correctly computed fileJob from item.filesJob",
+      "fullTitle": "TableSttAction correctly computed fileJob from item.filesJob",
+      "duration": 3784,
+      "errorCount": 0
+    },
+    {
+      "title": "currentState for IDLE fileJob is IDLE",
+      "fullTitle": "TableSttAction currentState for IDLE fileJob is IDLE",
+      "duration": 3784,
+      "errorCount": 0
+    },
+    {
+      "title": "currentState for ERROR fileJob is ERROR",
+      "fullTitle": "TableSttAction currentState for ERROR fileJob is ERROR",
+      "duration": 3784,
+      "errorCount": 0
+    },
+    {
+      "title": "currentState for existing transcripts is DONE",
+      "fullTitle": "TableSttAction currentState for existing transcripts is DONE",
+      "duration": 3784,
+      "errorCount": 0
+    },
+    {
+      "title": "currentState for no fileJob or transcripts is NONE",
+      "fullTitle": "TableSttAction currentState for no fileJob or transcripts is NONE",
+      "duration": 3784,
+      "errorCount": 0
+    },
+    {
+      "title": "activator icon-btn for NONE state triggers handleJobStart method",
+      "fullTitle": "TableSttAction activator icon-btn for NONE state triggers handleJobStart method",
+      "duration": 3784,
+      "errorCount": 0
+    },
+    {
+      "title": "should render a component",
+      "fullTitle": "Opened call comment form should render a component",
+      "duration": 2667,
+      "errorCount": 0
+    },
+    {
+      "title": "should emit save event",
+      "fullTitle": "Opened call comment form should emit save event",
+      "duration": 2667,
+      "errorCount": 0
+    },
+    {
+      "title": "should emit draft data on save",
+      "fullTitle": "Opened call comment form should emit draft data on save",
+      "duration": 2667,
+      "errorCount": 0
+    },
+    {
+      "title": "should render delete button if \"draft\" props contains id field",
+      "fullTitle": "Opened call comment form should render delete button if \"draft\" props contains id field",
+      "duration": 2667,
+      "errorCount": 0
+    },
+    {
+      "title": "should not render delete button if \"draft\" props does not contain id",
+      "fullTitle": "Opened call comment form should not render delete button if \"draft\" props does not contain id",
+      "duration": 2667,
+      "errorCount": 0
+    },
+    {
+      "title": "renders an app header with all nested functional components",
+      "fullTitle": "App Header renders an app header with all nested functional components",
+      "duration": 3909,
+      "errorCount": 0
+    },
+    {
+      "title": "calls API logout at user logout action",
+      "fullTitle": "App Header calls API logout at user logout action",
+      "duration": 3909,
+      "errorCount": 0
+    },
+    {
+      "title": "opens settings at user settings action",
+      "fullTitle": "App Header opens settings at user settings action",
+      "duration": 3909,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "History dashboards renders a component",
+      "duration": 45335,
+      "errorCount": 0
+    },
+    {
+      "title": "at dashboards header reflow event, calls CHANGE_LAYOUT",
+      "fullTitle": "History dashboards at dashboards header reflow event, calls CHANGE_LAYOUT",
+      "duration": 45335,
+      "errorCount": 0
+    },
+    {
+      "title": "at dashboard config input event, calls ADD_DASHBOARD",
+      "fullTitle": "History dashboards at dashboard config input event, calls ADD_DASHBOARD",
+      "duration": 45335,
+      "errorCount": 0
+    },
+    {
+      "title": "at dashboard header edit event, sets configuredDashboard",
+      "fullTitle": "History dashboards at dashboard header edit event, sets configuredDashboard",
+      "duration": 45335,
+      "errorCount": 0
+    },
+    {
+      "title": "at dashboard header delete event, calls DELETE_DASHBOARD",
+      "fullTitle": "History dashboards at dashboard header delete event, calls DELETE_DASHBOARD",
+      "duration": 45335,
+      "errorCount": 0
+    },
+    {
+      "title": "at dashboard select input event, sets configuredDashboard",
+      "fullTitle": "History dashboards at dashboard select input event, sets configuredDashboard",
+      "duration": 45335,
+      "errorCount": 0
+    },
+    {
+      "title": "correctly filters selected data items",
+      "fullTitle": "registry store correctly filters selected data items",
+      "duration": 2398,
+      "errorCount": 0
+    },
+    {
+      "title": "loads data from API",
+      "fullTitle": "registry store loads data from API",
+      "duration": 2398,
+      "errorCount": 0
+    },
+    {
+      "title": "sets passed headers to state",
+      "fullTitle": "registry store sets passed headers to state",
+      "duration": 2398,
+      "errorCount": 0
+    },
+    {
+      "title": "normalizeDashboardData",
+      "fullTitle": " normalizeDashboardData",
+      "duration": 1520,
+      "errorCount": 0
+    },
+    {
+      "title": "calcRelativeData",
+      "fullTitle": " calcRelativeData",
+      "duration": 1520,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "HistoryExportCsvAction renders a component",
+      "duration": 2581,
+      "errorCount": 0
+    },
+    {
+      "title": "creates csv export module instance",
+      "fullTitle": "HistoryExportCsvAction creates csv export module instance",
+      "duration": 2581,
+      "errorCount": 0
+    },
+    {
+      "title": "calls exportCSV mixin method at \"export\" button click",
+      "fullTitle": "HistoryExportCsvAction calls exportCSV mixin method at \"export\" button click",
+      "duration": 2581,
+      "errorCount": 0
+    },
+    {
+      "title": "cleanups fields before exportCSC",
+      "fullTitle": "HistoryExportCsvAction cleanups fields before exportCSC",
+      "duration": 2581,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "HistoryDeleteAction renders a component",
+      "duration": 1869,
+      "errorCount": 0
+    },
+    {
+      "title": "delete action is enabled is there`s some selected",
+      "fullTitle": "HistoryDeleteAction delete action is enabled is there`s some selected",
+      "duration": 1869,
+      "errorCount": 0
+    },
+    {
+      "title": "delete action is disabled for no-selected",
+      "fullTitle": "HistoryDeleteAction delete action is disabled for no-selected",
+      "duration": 1869,
+      "errorCount": 0
+    },
+    {
+      "title": "delete action is disabled for selected with no files or transcripts",
+      "fullTitle": "HistoryDeleteAction delete action is disabled for selected with no files or transcripts",
+      "duration": 1869,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Opened call legs tab renders a component",
+      "duration": 2926,
+      "errorCount": 0
+    },
+    {
+      "title": "fills table with data from API",
+      "fullTitle": "Opened call legs tab fills table with data from API",
+      "duration": 2926,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "History filters section renders a component",
+      "duration": 2852,
+      "errorCount": 0
+    },
+    {
+      "title": "expands filters panel",
+      "fullTitle": "History filters section expands filters panel",
+      "duration": 2852,
+      "errorCount": 0
+    },
+    {
+      "title": "renders webitel-ui filters",
+      "fullTitle": "History filters section renders webitel-ui filters",
+      "duration": 2852,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Opened call wave renders a component",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "closes comment form on commentsMode changed to false",
+      "fullTitle": "Opened call wave closes comment form on commentsMode changed to false",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "opens comment form on commentsMode change to true",
+      "fullTitle": "Opened call wave opens comment form on commentsMode change to true",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "emits save event with comment draft object and calls the add annotation action if no id passed",
+      "fullTitle": "Opened call wave emits save event with comment draft object and calls the add annotation action if no id passed",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "emits save event with comment draft object on save and calls the edit annotation method",
+      "fullTitle": "Opened call wave emits save event with comment draft object on save and calls the edit annotation method",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "emits delete event and calls a delete method",
+      "fullTitle": "Opened call wave emits delete event and calls a delete method",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "changes playbackRate on button click",
+      "fullTitle": "Opened call wave changes playbackRate on button click",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "changes zoom on zoom button click",
+      "fullTitle": "Opened call wave changes zoom on zoom button click",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "\"holds\" checkbox calls regions-related methods",
+      "fullTitle": "Opened call wave \"holds\" checkbox calls regions-related methods",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "\"notes\" checkbox calls regions-related methods",
+      "fullTitle": "Opened call wave \"notes\" checkbox calls regions-related methods",
+      "duration": 48910,
+      "errorCount": 0
+    },
+    {
+      "title": "ADD_ANNOTATION calls CallAnnotationApi add method",
+      "fullTitle": "Annotation store ADD_ANNOTATION calls CallAnnotationApi add method",
+      "duration": 2159,
+      "errorCount": 0
+    },
+    {
+      "title": "EDIT_ANNOTATION calls CallAnnotationApi update method",
+      "fullTitle": "Annotation store EDIT_ANNOTATION calls CallAnnotationApi update method",
+      "duration": 2159,
+      "errorCount": 0
+    },
+    {
+      "title": "DELETE_ANNOTATION calls CallAnnotationApi delete method",
+      "fullTitle": "Annotation store DELETE_ANNOTATION calls CallAnnotationApi delete method",
+      "duration": 2159,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "HistoryTranscribeAction renders a component",
+      "duration": 1641,
+      "errorCount": 0
+    },
+    {
+      "title": "transcribe action is enabled is there`s some selected",
+      "fullTitle": "HistoryTranscribeAction transcribe action is enabled is there`s some selected",
+      "duration": 1641,
+      "errorCount": 0
+    },
+    {
+      "title": "transcribe action is disabled for noed",
+      "fullTitle": "HistoryTranscribeAction transcribe action is disabled for noed",
+      "duration": 1641,
+      "errorCount": 0
+    },
+    {
+      "title": "transcribe action is disabled for selected with no files or transcripts",
+      "fullTitle": "HistoryTranscribeAction transcribe action is disabled for selected with no files or transcripts",
+      "duration": 1641,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "SttPopup renders a component",
+      "duration": 1590,
+      "errorCount": 0
+    },
+    {
+      "title": "fetches call with transcripts",
+      "fullTitle": "SttPopup fetches call with transcripts",
+      "duration": 1590,
+      "errorCount": 0
+    },
+    {
+      "title": "closes popup if no transcripts after delete",
+      "fullTitle": "SttPopup closes popup if no transcripts after delete",
+      "duration": 1590,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component with mixin",
+      "fullTitle": "Play media mixin renders a component with mixin",
+      "duration": 1517,
+      "errorCount": 0
+    },
+    {
+      "title": "sets audioURL and currentlyPlaying id at play()",
+      "fullTitle": "Play media mixin sets audioURL and currentlyPlaying id at play()",
+      "duration": 1517,
+      "errorCount": 0
+    },
+    {
+      "title": "closes player at empty play()",
+      "fullTitle": "Play media mixin closes player at empty play()",
+      "duration": 1517,
+      "errorCount": 0
+    },
+    {
+      "title": "resets audio data at closePlayer()",
+      "fullTitle": "Play media mixin resets audio data at closePlayer()",
+      "duration": 1517,
+      "errorCount": 0
+    },
+    {
+      "title": "Refresh action",
+      "fullTitle": "Table actions handler Refresh action",
+      "duration": 5942,
+      "errorCount": 0
+    },
+    {
+      "title": "Column select action",
+      "fullTitle": "Table actions handler Column select action",
+      "duration": 5942,
+      "errorCount": 0
+    },
+    {
+      "title": "Filter reset action",
+      "fullTitle": "Table actions handler Filter reset action",
+      "duration": 5942,
+      "errorCount": 0
+    },
+    {
+      "title": "settings (expand filters) action",
+      "fullTitle": "Table actions handler settings (expand filters) action",
+      "duration": 5942,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Filter table fields renders a component",
+      "duration": 11221,
+      "errorCount": 0
+    },
+    {
+      "title": "filter correctly stores headers in localStorage",
+      "fullTitle": "Filter table fields filter correctly stores headers in localStorage",
+      "duration": 11221,
+      "errorCount": 0
+    },
+    {
+      "title": "filter correctly retrieves headers from localStorage",
+      "fullTitle": "Filter table fields filter correctly retrieves headers from localStorage",
+      "duration": 11221,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Opened call info tab renders a component",
+      "duration": 1644,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component with call variables",
+      "fullTitle": "Opened call info tab renders a component with call variables",
+      "duration": 1644,
+      "errorCount": 0
+    },
+    {
+      "title": "renders variables value",
+      "fullTitle": "Opened call info tab renders variables value",
+      "duration": 1644,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component with call AMD result",
+      "fullTitle": "Opened call info tab renders a component with call AMD result",
+      "duration": 1644,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Dashboard header renders a component",
+      "duration": 1673,
+      "errorCount": 0
+    },
+    {
+      "title": "renders passed name prop",
+      "fullTitle": "Dashboard header renders passed name prop",
+      "duration": 1673,
+      "errorCount": 0
+    },
+    {
+      "title": "emits edit event at icon btn click",
+      "fullTitle": "Dashboard header emits edit event at icon btn click",
+      "duration": 1673,
+      "errorCount": 0
+    },
+    {
+      "title": "emits delete event at icon btn click",
+      "fullTitle": "Dashboard header emits delete event at icon btn click",
+      "duration": 1673,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "CallTranscriptSection renders a component",
+      "duration": 1863,
+      "errorCount": 0
+    },
+    {
+      "title": "deleteTranscript removes file from call transcripts list",
+      "fullTitle": "CallTranscriptSection deleteTranscript removes file from call transcripts list",
+      "duration": 1863,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "History table renders a component",
+      "duration": 2149,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "History heading section renders a component",
+      "duration": 2359,
+      "errorCount": 0
+    },
+    {
+      "title": "renders search filter",
+      "fullTitle": "History heading section renders search filter",
+      "duration": 2359,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component with outbound value",
+      "fullTitle": "Queues table Direction renders a component with outbound value",
+      "duration": 1516,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component with inbound value",
+      "fullTitle": "Queues table Direction renders a component with inbound value",
+      "duration": 1516,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component with incorrect value without failure",
+      "fullTitle": "Queues table Direction renders a component with incorrect value without failure",
+      "duration": 1516,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "The History renders a component",
+      "duration": 1896,
+      "errorCount": 0
+    },
+    {
+      "title": "error page is shown, if there is no access to workspace",
+      "fullTitle": "The History error page is shown, if there is no access to workspace",
+      "duration": 1896,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a line chart",
+      "fullTitle": "Charts renders a line chart",
+      "duration": 1420,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a doughnut chart",
+      "fullTitle": "Charts renders a doughnut chart",
+      "duration": 1420,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a bar chart",
+      "fullTitle": "Charts renders a bar chart",
+      "duration": 1420,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Dashboard config popup renders a component",
+      "duration": 1769,
+      "errorCount": 0
+    },
+    {
+      "title": "passes dashboard config options with default values",
+      "fullTitle": "Dashboard config popup passes dashboard config options with default values",
+      "duration": 1769,
+      "errorCount": 0
+    },
+    {
+      "title": "renders from filter component",
+      "fullTitle": "Filter components renders from filter component",
+      "duration": 2037,
+      "errorCount": 0
+    },
+    {
+      "title": "renders to filter component",
+      "fullTitle": "Filter components renders to filter component",
+      "duration": 2037,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "SaveTranscriptPhrasesMixin renders a component",
+      "duration": 1580,
+      "errorCount": 0
+    },
+    {
+      "title": "calls saveAs at downloadTxt method",
+      "fullTitle": "SaveTranscriptPhrasesMixin calls saveAs at downloadTxt method",
+      "duration": 1580,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "History main renders a component",
+      "duration": 1879,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Dashboard select popup renders a component",
+      "duration": 1629,
+      "errorCount": 0
+    },
+    {
+      "title": "selects a dashboard to create",
+      "fullTitle": "Dashboard select popup selects a dashboard to create",
+      "duration": 1629,
+      "errorCount": 0
+    },
+    {
+      "title": "renders pagination filter component",
+      "fullTitle": "Registry: Filter components renders pagination filter component",
+      "duration": 1792,
+      "errorCount": 0
+    },
+    {
+      "title": "renders interval filter component",
+      "fullTitle": "Dashboards: filter components renders interval filter component",
+      "duration": 2030,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Dashboards header renders a component",
+      "duration": 1760,
+      "errorCount": 0
+    },
+    {
+      "title": "emits reflow event at icon btn click",
+      "fullTitle": "Dashboards header emits reflow event at icon btn click",
+      "duration": 1760,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "FilterSearch renders a component",
+      "duration": 2012,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "Opened call renders a component",
+      "duration": 2465,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "HistoryDownloadAction renders a component",
+      "duration": 2116,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "CallVisualization renders a component",
+      "duration": 2453,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "CallVisualizationHeader renders a component",
+      "duration": 1985,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "SttDownloadAction renders a component",
+      "duration": 1861,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "SttDeleteAction renders a component",
+      "duration": 1879,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "FilesCounter renders a component",
+      "duration": 1170,
+      "errorCount": 0
+    },
+    {
+      "title": "renders a component",
+      "fullTitle": "HistoryMainPage renders a component",
+      "duration": 1953,
+      "errorCount": 0
+    }
+  ],
+  "skipped": []
+}
