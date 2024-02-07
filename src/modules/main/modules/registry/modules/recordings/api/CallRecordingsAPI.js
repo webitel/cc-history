@@ -10,7 +10,7 @@ const fileService = new FileServiceApiFactory(configuration, '', instance);
 const deleteRecordings = async (id) => {
   try {
     const idsArray = Array.isArray(id) ? id : [id];
-    const response = await fileService.deleteFiles({ idsArray });
+    const response = await fileService.deleteFiles({ id: idsArray });
     return applyTransform(response.data, []);
   } catch (err) {
     throw applyTransform(err, [
