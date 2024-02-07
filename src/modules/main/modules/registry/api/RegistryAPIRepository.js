@@ -145,7 +145,7 @@ const getList = async (params) => {
       skip_parent: skipParent,
       parent_id: parentId,
       cause,
-      has_file: hasFile,
+      has_file: hasFile === undefined ? hasFile : hasFile === 'true', // str -> bool
       number: search,
       direction,
       id,
