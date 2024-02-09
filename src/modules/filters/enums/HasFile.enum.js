@@ -1,11 +1,11 @@
 const hasFile = Object.freeze([
   {
     locale: 'vocabulary.yes',
-    value: 'true',
+    value: true,
   },
   {
     locale: 'vocabulary.no',
-    value: 'false',
+    value: false,
   },
 ]);
 

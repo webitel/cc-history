@@ -89,7 +89,7 @@ const getDashboardsData = async (params) => {
         fts,
         tags,
         amd_result: amdResult,
-        has_file: hasFile === undefined ? hasFile : hasFile === 'true', // str -> bool
+        has_file: hasFile,
         has_transcript: hasTranscription,
         description,
         member,
