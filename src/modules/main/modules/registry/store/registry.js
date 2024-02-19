@@ -5,7 +5,9 @@ import call from '../modules/call/store/call';
 
 const variablesHeaders = JSON.parse(localStorage.getItem('variablesKeysList'));
 
-// NOTE: if there is any variablesHeaders in localStorage, add them to historyHeaders to show them in history table after refresh
+/* NOTE: if there is any variablesHeaders in localStorage,
+ add them to historyHeaders to show them in history table after refresh
+ */
 if (variablesHeaders) {
   variablesHeaders.forEach((item) => {
     historyHeaders.push(item);

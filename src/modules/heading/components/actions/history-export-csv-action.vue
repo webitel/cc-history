@@ -45,7 +45,12 @@ export default {
       // remove service fields
       const fields = this.fields.filter((field) => !['files', 'files_job', 'transcripts'].includes(field));
       try {
-        const params = { ...this.filters, fields, skipParent: true };
+        // https://webitel.atlassian.net/browse/DEV-3797
+        const params = {
+          ...this.filters,
+          skipParent: true,
+          _columns: fields,
+        };
         return this.exportCSV(params);
       } catch (err) {
         throw err;
@@ -53,7 +58,7 @@ export default {
     },
   },
   created() {
-    this.initCSVExport(APIRepository.history.getHistory, { filename: 'history' });
+    this.initCSVExport(APIRepository.history.exportHistoryToCsv, { filename: 'history' });
   },
 };
 </script>

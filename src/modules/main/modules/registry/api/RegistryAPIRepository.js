@@ -72,12 +72,22 @@ const transformResponseItems = (items) => {
     queueWaitSec: convertDuration(item.queueWaitSec),
     queueDurationSec: convertDuration(item.queueDurationSec),
     annotations: mapDefaultComments(item),
-    hangupDisposition: item.hangupDisposition ? converters.snakeToCamel(item.hangupDisposition) : '',
+    hangupDisposition: item.hangupDisposition
+      ? converters.snakeToCamel(item.hangupDisposition)
+      : '',
     score: item.scoreRequired ? item.scoreRequired.toFixed(2) : null,
   }));
 };
 
-const getList = async (params) => {
+/*
+pass custom transformers to use "abstract" getList function in both UI and CSV export cases:
+ same params, different transformers
+ */
+const getList = ({
+                   paramsTransformers = [],
+                   responseTransformers = [],
+                   responseItemsTransformers = [],
+                 }) => async (params) => {
   const {
     page,
     size,
@@ -113,15 +123,18 @@ const getList = async (params) => {
     score,
     variable,
     contact,
-  } = applyTransform(params, [
-  ]);
+  } = applyTransform(params, paramsTransformers);
   try {
     const variables = variable
-      && variable.split('&').reduce((vars, currVar) => {
-          const [key, value] = currVar.split('=');
+      && variable.split('&')
+      .reduce((vars, currVar) => {
+        const [key, value] = currVar.split('=');
         return {
           ...vars,
-          // This if else statement is needed for sending '' to backend when user writes not valid variableSearch, so we can display dummy image.
+          /*
+           This if else statement is needed for sending ''
+            to backend when user writes not valid variableSearch, so we can display dummy image.
+           */
           [key]: value !== undefined ? value : '',
         };
       }, {});
@@ -164,14 +177,12 @@ const getList = async (params) => {
       variables,
       contact_id: contact,
     });
-    const { items, next } = applyTransform(response.data, [
-      snakeToCamel(['variables']),
-      merge(getDefaultGetListResponse()),
-    ]);
+    const {
+      items,
+      next,
+    } = applyTransform(response.data, responseTransformers);
     return {
-      items: applyTransform(items, [
-        transformResponseItems,
-      ]),
+      items: applyTransform(items, responseItemsTransformers),
       next,
     };
   } catch (err) {
@@ -181,8 +192,26 @@ const getList = async (params) => {
   }
 };
 
+const getHistory = getList({
+  paramsTransformers: [],
+  responseTransformers: [
+    snakeToCamel(['variables']),
+    merge(getDefaultGetListResponse()),
+  ],
+  responseItemsTransformers: [
+    transformResponseItems,
+  ],
+});
+
+const exportHistoryToCsv = getList({
+  responseTransformers: [
+    merge(getDefaultGetListResponse()),
+  ],
+});
+
 const RegistryAPIRepository = {
-  getHistory: getList,
+  getHistory,
+  exportHistoryToCsv,
 };
 
 export default RegistryAPIRepository;
