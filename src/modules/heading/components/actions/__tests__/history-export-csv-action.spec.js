@@ -32,6 +32,6 @@ describe('HistoryExportCsvAction', () => {
     const wrapper = shallowMount(HistoryExportCsvAction, { props: { ...props, fields } });
     wrapper.vm.exportCSV = exportCSVMock;
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
-    expect(exportCSVMock.mock.calls[0][0].fields).toEqual(output);
+    expect(exportCSVMock.mock.calls[0][0]._columns).toEqual(output);
   });
 });
