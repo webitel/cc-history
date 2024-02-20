@@ -74,6 +74,10 @@ export default {
   &__title {
     @extend %typo-subtitle-1;
   }
+
+  &__text {
+    white-space: pre;
+  }
 }
 
 </style>
