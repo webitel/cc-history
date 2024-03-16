@@ -145,7 +145,8 @@ const getList = async (params) => {
       skip_parent: skipParent,
       parent_id: parentId,
       cause,
-      has_file: hasFile,
+      // https://webitel.atlassian.net/browse/DEV-3924, only for 23.09
+      has_file: hasFile === 'true' ? true : hasFile === 'false' ? false : undefined,
       number: search,
       direction,
       id,
@@ -154,7 +155,8 @@ const getList = async (params) => {
       amd_result: amdResult,
       fts,
       directions: hangupDisposition,
-      has_transcript: hasTranscription,
+      // https://webitel.atlassian.net/browse/DEV-3924, only for 23.09
+      has_transcript: hasTranscription === 'true' ? true : hasTranscription === 'false' ? false : undefined,
       agent_description: description,
       grantee_id: grantee,
       talk: talkSec,
