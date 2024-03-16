@@ -160,7 +160,8 @@ const getList = async (params) => {
       agent_description: description,
       grantee_id: grantee,
       talk: talkSec,
-      rated,
+      // https://webitel.atlassian.net/browse/DEV-3924, only for 23.09
+      rated: rated === 'true' ? true : rated === 'false' ? false : undefined,
       rated_by: ratedBy,
       score_required: score,
       variables,
