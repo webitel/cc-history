@@ -9,7 +9,7 @@
           :placeholder="$t('vocabulary.file')"
           :options="fileOptions"
           track-by="id"
-          @change="setFile"
+          @input="setFile"
         ></wt-select>
         <div
           v-if="!isLoading"
