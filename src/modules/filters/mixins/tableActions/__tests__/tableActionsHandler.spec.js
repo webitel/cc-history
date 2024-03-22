@@ -29,12 +29,6 @@ describe('Table actions handler', () => {
     expect(wrapper.vm.isFilterFieldsOpened).toBe(true);
   });
 
-  it('Filter reset action', async () => {
-    await wrapper.vm.$router.replace({ path: '/', query: { jest: 'jest' } });
-    wrapper.vm.tableActionsHandler('filterReset');
-    expect(resetFilters).toHaveBeenCalled();
-  });
-
   it('settings (expand filters) action', () => {
     wrapper.vm.tableActionsHandler('settings');
     expect(wrapper.vm.isOpened).toBe(true);

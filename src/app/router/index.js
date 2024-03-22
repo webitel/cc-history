@@ -1,15 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Auth from '@webitel/ui-sdk/src/modules/Userinfo/components/the-auth.vue';
 import History from '../components/the-history.vue';
 import HistoryMainPage from '../components/history-main-page.vue';
 import Call from '../../modules/main/modules/registry/modules/call/components/the-call.vue';
 
 const routes = [
-  {
-    path: '/auth',
-    name: 'auth',
-    component: Auth,
-  },
   {
     path: '/',
     component: History,
@@ -43,13 +37,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('access-token');
-  if (!(to.fullPath === '/auth')) {
-    if (!token) {
-      next('/auth');
-    }
+  if (!localStorage.getItem('access-token') && !to.query.accessToken) {
+    const desiredUrl = encodeURIComponent(window.location.href);
+    const authUrl = import.meta.env.VITE_AUTH_URL;
+    window.location.href = `${authUrl}?redirectTo=${desiredUrl}`;
+  } else if (to.query.accessToken) {
+    // assume that access token was set from query before app initialization in main.js
+    const newQuery = { ...to.query };
+    delete newQuery.accessToken;
+    next({ ...to, query: newQuery });
+  } else {
+    next();
   }
-  next();
 });
 
 export default router;

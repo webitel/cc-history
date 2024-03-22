@@ -21,9 +21,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
-import authAPI from '@webitel/ui-sdk/src/modules/Userinfo/api/auth';
 import WtDarkModeSwitcher from '@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue';
 
 export default {
@@ -86,21 +85,16 @@ export default {
   },
 
   methods: {
+    ...mapActions('userinfo', {
+      logout: 'LOGOUT',
+    }),
     settings() {
       const settingsUrl = import.meta.env.VITE_SETTINGS_URL;
       window.open(settingsUrl);
     },
 
     async logoutUser() {
-      try {
-        await authAPI.logout();
-        await this.$router.replace('/auth');
-      } catch (err) {
-        throw err;
-      } finally {
-        // WHERE IS CLOSE?
-        // this.close();
-      }
+      return this.logout();
     },
   },
 };
