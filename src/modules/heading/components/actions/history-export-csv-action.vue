@@ -48,6 +48,7 @@ export default {
         // https://webitel.atlassian.net/browse/DEV-3797
         const params = {
           ...this.filters,
+          fields,
           skipParent: true,
           _columns: fields,
         };

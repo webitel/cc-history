@@ -207,6 +207,29 @@ const exportHistoryToCsv = getList({
   responseTransformers: [
     merge(getDefaultGetListResponse()),
   ],
+  responseItemsTransformers: [
+    (items) => items.map((item) => ({
+    ...item,
+      date: computeDate(item.created_at),
+      time: computeTime(item.created_at),
+      bridged_at: computeTime(item.bridged_at),
+      queue_bridged_at: computeTime(item.queue_bridged_at),
+      created_at: computeDateAndTime(item.created_at),
+      answered_at: computeTime(item.answered_at),
+      joined_at: computeTime(item.joined_at),
+      leaving_at: computeTime(item.leaving_at),
+      hangup_at: computeTime(item.hangup_at),
+      reporting_at: computeTime(item.reporting_at),
+      duration: convertDuration(item.duration),
+      hold_sec: convertDuration(item.hold_sec),
+      wait_sec: convertDuration(item.wait_sec),
+      bill_sec: convertDuration(item.bill_sec),
+      talk_sec: convertDuration(item.talk_sec),
+      reporting_sec: convertDuration(item.reporting_sec),
+      queue_wait_sec: convertDuration(item.queue_wait_sec),
+      queue_duration_sec: convertDuration(item.queue_duration_sec),
+    })),
+  ],
 });
 
 const RegistryAPIRepository = {
