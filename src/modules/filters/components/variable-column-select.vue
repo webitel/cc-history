@@ -70,7 +70,14 @@
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import deepCopy from 'deep-copy';
+import deepEqual from 'deep-equal';
 import { onMounted, reactive, ref, watch } from 'vue';
+
+const props = defineProps({
+  headers: {
+    type: Array,
+  }
+});
 
 const emit = defineEmits(['add-variables-headers']);
 
@@ -120,7 +127,16 @@ function addVariableColumn() {
 
 function showLocalStorageVariablesKeys() {
   const localStorageHeaders = JSON.parse(localStorage.getItem('variablesKeysList'));
+  const variables = props.headers.filter((header) => header.field.includes('variables.'));
+  const isChangedVariables = !deepEqual(localStorageHeaders, variables);
+
   if (localStorageHeaders) {
+    if(isChangedVariables) {
+      localStorage.setItem('variablesKeysList', JSON.stringify([...new Set(variables)]));
+      variablesKeysList.splice(0, variablesKeysList.length, ...variables);
+      draft.splice(0, draft.length, ...variables);
+      return;
+    }
     // NOTE: needed to firstly clear the array and then push new values avoiding duplicates
     variablesKeysList.splice(0, variablesKeysList.length, ...localStorageHeaders);
     draft.splice(0, draft.length, ...localStorageHeaders);
