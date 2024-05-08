@@ -69,7 +69,6 @@
 <script setup>
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
-import deepCopy from 'deep-copy';
 import deepEqual from 'deep-equal';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 
@@ -82,7 +81,6 @@ const props = defineProps({
 const emit = defineEmits(['add-variables-headers']);
 
 const isVariableColumnPopup = ref(false);
-const variablesKeysList = reactive([]);
 const draft = reactive([]);
 const newVariableKey = ref('');
 const isLoading = ref(false);
@@ -111,15 +109,12 @@ const inputNewVariableKey = (e) => {
   newVariableKey.value = e;
 };
 
-function clearVariablesKeysList(list) {
-  variablesKeysList.splice(0, variablesKeysList.length, ...list);
-}
-
-function clearDraft(list) {
+function updateDraft(list) {
+  // NOTE: needed to firstly clear the array and then push new values avoiding duplicates
   draft.splice(0, draft.length, ...list);
 }
 
-function setHeadersInLocalStorage(list) {
+function setToLocalStorage(list) {
   localStorage.setItem('variablesKeysList', JSON.stringify([...new Set(list)]));
 }
 
@@ -144,12 +139,10 @@ function showLocalStorageVariablesKeys() {
   const isChangedVariables = !deepEqual(localStorageHeaders, variablesFromHeaders.value);
   const newValue = isChangedVariables ? variablesFromHeaders.value : localStorageHeaders;
 
-  if (isChangedVariables) setHeadersInLocalStorage(newValue);
+  if (isChangedVariables) setToLocalStorage(newValue);
 
   if (localStorageHeaders) {
-    // NOTE: needed to firstly clear the array and then push new values avoiding duplicates
-    clearVariablesKeysList(newValue);
-    clearDraft(newValue);
+    updateDraft(newValue);
   }
 }
 
@@ -163,9 +156,8 @@ watch(isVariableColumnPopup, () => {
 async function save() {
   isLoading.value = true;
   try {
-    clearVariablesKeysList(deepCopy(draft))
-    setHeadersInLocalStorage(variablesKeysList)
-    emit('add-variables-headers', variablesKeysList);
+    setToLocalStorage(draft)
+    emit('add-variables-headers', draft);
   } finally {
     isLoading.value = false;
   }
