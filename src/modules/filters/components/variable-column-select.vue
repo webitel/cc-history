@@ -71,7 +71,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import deepCopy from 'deep-copy';
 import deepEqual from 'deep-equal';
-import { onMounted, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 
 const props = defineProps({
   headers: {
@@ -86,6 +86,8 @@ const variablesKeysList = reactive([]);
 const draft = reactive([]);
 const newVariableKey = ref('');
 const isLoading = ref(false);
+
+const variablesFromHeaders = computed(() => props.headers.filter((header) => header.field.includes('variables.')))
 
 const v$ = useVuelidate(
   { newVariableKey: { required } },
@@ -109,6 +111,18 @@ const inputNewVariableKey = (e) => {
   newVariableKey.value = e;
 };
 
+function clearVariablesKeysList(list) {
+  variablesKeysList.splice(0, variablesKeysList.length, ...list);
+}
+
+function clearDraft(list) {
+  draft.splice(0, draft.length, ...list);
+}
+
+function setHeadersInLocalStorage(list) {
+  localStorage.setItem('variablesKeysList', JSON.stringify([...new Set(list)]));
+}
+
 function addVariableColumn() {
   const variableKeyText = newVariableKey.value.replace(/^fields\.variables\./, '');
   const variableColumn = {
@@ -127,19 +141,15 @@ function addVariableColumn() {
 
 function showLocalStorageVariablesKeys() {
   const localStorageHeaders = JSON.parse(localStorage.getItem('variablesKeysList'));
-  const variables = props.headers.filter((header) => header.field.includes('variables.'));
-  const isChangedVariables = !deepEqual(localStorageHeaders, variables);
+  const isChangedVariables = !deepEqual(localStorageHeaders, variablesFromHeaders.value);
+  const newValue = isChangedVariables ? variablesFromHeaders.value : localStorageHeaders;
+
+  if (isChangedVariables) setHeadersInLocalStorage(newValue);
 
   if (localStorageHeaders) {
-    if(isChangedVariables) {
-      localStorage.setItem('variablesKeysList', JSON.stringify([...new Set(variables)]));
-      variablesKeysList.splice(0, variablesKeysList.length, ...variables);
-      draft.splice(0, draft.length, ...variables);
-      return;
-    }
     // NOTE: needed to firstly clear the array and then push new values avoiding duplicates
-    variablesKeysList.splice(0, variablesKeysList.length, ...localStorageHeaders);
-    draft.splice(0, draft.length, ...localStorageHeaders);
+    clearVariablesKeysList(newValue);
+    clearDraft(newValue);
   }
 }
 
@@ -153,8 +163,8 @@ watch(isVariableColumnPopup, () => {
 async function save() {
   isLoading.value = true;
   try {
-    variablesKeysList.splice(0, variablesKeysList.length, ...deepCopy(draft));
-    localStorage.setItem('variablesKeysList', JSON.stringify([...new Set(variablesKeysList)]));
+    clearVariablesKeysList(deepCopy(draft))
+    setHeadersInLocalStorage(variablesKeysList)
     emit('add-variables-headers', variablesKeysList);
   } finally {
     isLoading.value = false;
