@@ -54,6 +54,12 @@ export default [
     field: 'hangup_at',
   },
   {
+    value: 'hangupPhrase',
+    show: true,
+    sort: null,
+    field: 'hangup_phrase',
+  },
+  {
     value: 'reportingAt',
     show: false,
     sort: null,
