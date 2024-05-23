@@ -166,6 +166,7 @@ export default {
     joinedAt: 'Joined at',
     leavingAt: 'Leaving at',
     hangupAt: 'Hangup at',
+    hangupPhrase: 'Hangup description',
     reportingAt: 'Reporting at',
     extension: 'Extension',
     destination: 'Destination',

@@ -164,6 +164,7 @@ export default {
     joinedAt: 'Время соединения в очереди',
     leavingAt: 'Время выхода из очереди',
     hangupAt: 'Время завершения',
+    hangupPhrase: 'Описание завершения',
     reportingAt: 'Время постобработки',
     extension: 'Номер сотрудника',
     destination: 'Назначение',
