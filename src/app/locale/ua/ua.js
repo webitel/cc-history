@@ -164,6 +164,7 @@ export default {
     joinedAt: 'Час входу в чергу',
     leavingAt: 'Час виходу з черги',
     hangupAt: 'Час закінчення',
+    hangupPhrase: 'Опис завершення',
     reportingAt: 'Час постобробки',
     extension: 'Внутрішній номер',
     destination: 'Призначення',
