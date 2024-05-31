@@ -10,7 +10,7 @@
         <template v-slot:actions>
           <wt-button
             color="secondary"
-            @click="$router.back()"
+            @click="closeTab"
           >{{ $t('reusable.close') }}
           </wt-button>
         </template>
@@ -116,6 +116,13 @@ export default {
           tab = this.tabValues.INFO;
       }
       this.currentTab = tab;
+    },
+    closeTab() {
+      // Need to close the tab if you moved from another application
+      // https://webitel.atlassian.net/browse/WTEL-4552
+
+      if(window.history.length === 1) window.close();
+      this.$router.back();
     },
   },
   created() {
