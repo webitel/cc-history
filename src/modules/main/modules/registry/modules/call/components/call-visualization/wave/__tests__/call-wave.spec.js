@@ -5,22 +5,10 @@ import callWave
 import registry from '../../../../../../store/registry';
 import playerMock
   from '../../../../../../../../../../../tests/unit/mocks/waveSurferMock';
+import axiosMock from '@webitel/ui-sdk/src/tests/mocks/axiosMock.js';
 
-vi.mock('axios', () => {
-  return {
-    default: {
-      request: vi.fn(() => Promise.resolve({ data: { items: [{ annotations: [] }] }})),
-      create: vi.fn().mockReturnThis(),
-      interceptors: {
-        request: {
-          use: vi.fn(), eject: vi.fn(),
-        }, response: {
-          use: vi.fn(), eject: vi.fn(),
-        },
-      },
-    },
-  };
-});
+
+vi.doMock('../../src/app/api/instance', axiosMock());
 
 describe('Opened call wave', () => {
   const callMock = {
