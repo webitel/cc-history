@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 
-import saveAs from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import JSZip from 'jszip';
 import APIRepository from '../../../app/api/APIRepository';
 import CallTranscriptAPI

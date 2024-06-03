@@ -1,27 +1,8 @@
 import { config } from '@vue/test-utils';
+import axiosMock from '@webitel/ui-sdk/src/tests/mocks/axiosMock.js'; // import instance from '../../src/app/api/instance.js';
 import WebitelUi from '../../src/app/plugins/webitel-ui';
 import i18n from '../../src/app/locale/i18n';
-
 config.global.plugins = [WebitelUi, i18n];
 
-vi.mock('axios', () => {
-  return {
-    default: {
-      post: vi.fn(() => Promise.resolve({ data: {}})),
-      get: vi.fn(() => Promise.resolve({ data: {}})),
-      delete: vi.fn(() => Promise.resolve({ data: {}})),
-      put: vi.fn(() => Promise.resolve({ data: {}})),
-      patch: vi.fn(() => Promise.resolve({ data: {}})),
-      request: vi.fn(() => Promise.resolve({ data: {}})),
-      create: vi.fn().mockReturnThis(),
-      interceptors: {
-        request: {
-          use: vi.fn(), eject: vi.fn(),
-        }, response: {
-          use: vi.fn(), eject: vi.fn(),
-        },
-      },
-    },
-  };
-});
+vi.doMock('../../src/app/api/instance', axiosMock());
 
