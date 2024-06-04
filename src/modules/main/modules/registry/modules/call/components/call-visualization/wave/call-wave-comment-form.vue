@@ -5,26 +5,26 @@
       :v="v$.draft.startSec"
       :custom-validators="customValidation(0)"
       :label="$t('reusable.from')"
-    ></wt-timepicker>
+    />
     <wt-timepicker
       v-model="draft.endSec"
       :v="v$.draft.endSec"
       :custom-validators="customValidation(minimalEndCommentValue)"
       :label="$t('reusable.to')"
-    ></wt-timepicker>
+    />
     <div class="comment-form-textarea">
       <wt-textarea
+        v-model="draft.note"
         class="comment-form-textarea__textarea"
         :class="{'comment-form-textarea--expanded': isTextareaExpanded}"
-        v-model="draft.note"
         :label="$tc('registry.call.comment', 1)"
-      ></wt-textarea>
+      />
       <wt-icon-btn
         class="comment-form-textarea__expand-btn"
         icon="expand"
         size="sm"
         @click="expandTextarea"
-      ></wt-icon-btn>
+      />
     </div>
     <wt-button
       :disabled="disableSaving"
@@ -50,15 +50,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, minValue, maxValue } from '@vuelidate/validators';
 
 export default {
-  name: 'call-wave-comment-form',
-  data: () => ({
-    draft: {
-      note: '',
-      startSec: 0,
-      endSec: 0,
-    },
-    isTextareaExpanded: false,
-  }),
+  name: 'CallWaveCommentForm',
 
   props: {
     callId: {
@@ -73,6 +65,17 @@ export default {
       type: Object,
     },
   },
+  setup: () => ({
+    v$: useVuelidate(),
+  }),
+  data: () => ({
+    draft: {
+      note: '',
+      startSec: 0,
+      endSec: 0,
+    },
+    isTextareaExpanded: false,
+  }),
 
   computed: {
     customValidation() {
@@ -94,9 +97,6 @@ export default {
       return this.v$.draft.$pending || this.v$.draft.$error;
     },
   },
-  setup: () => ({
-    v$: useVuelidate(),
-  }),
   validations() {
     const draft = {
       startSec: {

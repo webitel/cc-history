@@ -5,20 +5,20 @@
       icon-prefix="hs"
       icon="dashboard-grid-1"
       @click="$emit('reflow', '1')"
-    ></wt-icon-btn>
+    />
     <wt-icon-btn
       :color="layout === '2' ? 'active': 'default'"
       icon-prefix="hs"
       icon="dashboard-grid-2"
       @click="$emit('reflow', '2')"
-    ></wt-icon-btn>
+    />
     <wt-icon-btn
       :color="layout === '3' ? 'active': 'default'"
       icon-prefix="hs"
       icon="dashboard-grid-3"
       @click="$emit('reflow', '3')"
-    ></wt-icon-btn>
-    <filter-interval class="dashboards-header__filter"/>
+    />
+    <filter-interval class="dashboards-header__filter" />
   </header>
 </template>
 
@@ -26,16 +26,16 @@
 import FilterInterval from '../../../modules/filters/components/interval/filter-interval.vue';
 
 export default {
-  name: 'dashboards-header',
+  name: 'DashboardsHeader',
   components: { FilterInterval },
+  model: {
+    prop: 'layout',
+    event: 'reflow',
+  },
   props: {
     layout: {
       type: String,
     },
-  },
-  model: {
-    prop: 'layout',
-    event: 'reflow',
   },
 };
 </script>

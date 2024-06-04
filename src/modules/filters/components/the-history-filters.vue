@@ -5,8 +5,11 @@
       :callback="savePreset"
       :name="preset.name"
       @close="closePresetFormPopup"
-    ></preset-form-popup>
-    <form :class="{'history-filters--opened': isOpened}" class="history-filters">
+    />
+    <form
+      :class="{'history-filters--opened': isOpened}"
+      class="history-filters"
+    >
       <preset-filter
         ref="preset-select"
         :preset-filter-schema="{
@@ -17,7 +20,7 @@
           locale: { label: ['filters.preset.preset', 1] },
         }"
         @input="setPreset"
-      ></preset-filter>
+      />
       <filter-from class="history-filters__filter" />
       <filter-to class="history-filters__filter" />
       <component
@@ -29,7 +32,7 @@
         :filter-query="filter.filterQuery"
         :namespace="namespace"
         class="history-filters__filter"
-      ></component>
+      />
       <filter-from-to
         v-for="(filter, key) of filtersFromTo"
         :key="key"
@@ -44,14 +47,16 @@
           :options="presetSaveOptions"
           @click="openPresetFormPopup"
           @click:option="$event.handler()"
-        >{{ $t('reusable.save') }}
+        >
+          {{ $t('reusable.save') }}
         </wt-button-select>
         <wt-button
           :disabled="!preset.id"
           :loading="isDeletePresetLoading"
           color="secondary"
           @click="deletePreset"
-        >{{ $t('reusable.delete') }}
+        >
+          {{ $t('reusable.delete') }}
         </wt-button>
       </div>
     </form>
@@ -82,8 +87,7 @@ import PresetFilter from './preset-filter.vue';
 import PresetFormPopup from './preset-form-popup.vue';
 
 export default {
-  name: 'the-history-filters',
-  mixins: [tableActionsHandlerMixin, historyHeadersMixin],
+  name: 'TheHistoryFilters',
   components: {
     AbstractApiFilter,
     AbstractEnumFilter,
@@ -94,6 +98,7 @@ export default {
     PresetFormPopup,
     PresetFilter,
   },
+  mixins: [tableActionsHandlerMixin, historyHeadersMixin],
 
   data: () => ({
     preset: {},

@@ -15,10 +15,10 @@
       width="480"
       @close="close"
     >
-      <template v-slot:title>
+      <template #title>
         {{ $t('variableColumnSelect.title') }}
       </template>
-      <template v-slot:main>
+      <template #main>
         <div class="variable-column-popup__form">
           <wt-input
             :label="$tc('vocabulary.keys', 1)"
@@ -26,7 +26,7 @@
             :value="newVariableKey"
             class="variable-column-popup__input"
             @input="inputNewVariableKey"
-          ></wt-input>
+          />
           <wt-button
             :disabled="v$.$error"
             @click="addVariableColumn"
@@ -36,30 +36,35 @@
         </div>
 
         <ul class="variable-column-popup__list">
-          <li v-for="key in draft" :key="key" class="variable-column-popup__item">
+          <li
+            v-for="key in draft"
+            :key="key"
+            class="variable-column-popup__item"
+          >
             <wt-checkbox
               v-model="key.show"
               :label="key.label"
               @change="key.show = $event"
-            ></wt-checkbox>
+            />
             <wt-icon-btn
               icon="bucket"
               @click="deleteKey(key)"
-            ></wt-icon-btn>
+            />
           </li>
         </ul>
-
       </template>
-      <template v-slot:actions>
+      <template #actions>
         <wt-button
           :loading="isLoading"
           @click="save"
-        >{{ $t('reusable.add') }}
+        >
+          {{ $t('reusable.add') }}
         </wt-button>
         <wt-button
           color="secondary"
           @click="close"
-        >{{ $t('reusable.cancel') }}
+        >
+          {{ $t('reusable.cancel') }}
         </wt-button>
       </template>
     </wt-popup>

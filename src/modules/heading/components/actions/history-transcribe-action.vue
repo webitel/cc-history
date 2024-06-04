@@ -4,7 +4,8 @@
     :loading="isTranscribing"
     color="secondary"
     @click="bulkTranscribe"
-  >{{ $t('registry.stt.transcribe') }}
+  >
+    {{ $t('registry.stt.transcribe') }}
   </wt-button>
 </template>
 
@@ -13,7 +14,7 @@ import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/Ca
 import historyActionMixin from '../../mixins/historyActionMixin';
 
 export default {
-  name: 'history-transcribe-action',
+  name: 'HistoryTranscribeAction',
   mixins: [historyActionMixin],
   data: () => ({
     isTranscribing: false,

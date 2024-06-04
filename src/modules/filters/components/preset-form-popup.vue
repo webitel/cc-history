@@ -3,27 +3,29 @@
     width="480"
     @close="emit('close')"
   >
-    <template v-slot:title>
+    <template #title>
       {{ $t('filters.preset.presetName') }}
     </template>
-    <template v-slot:main>
+    <template #main>
       <wt-input
         v-model="newName"
         :v="v$.newName"
         :label="$t('reusable.name')"
-      ></wt-input>
+      />
     </template>
-    <template v-slot:actions>
+    <template #actions>
       <wt-button
         :loading="isLoading"
         :disabled="v$.$error"
         @click="save"
-      >{{ $t('reusable.save') }}
+      >
+        {{ $t('reusable.save') }}
       </wt-button>
       <wt-button
         color="secondary"
         @click="emit('close')"
-      >{{ $t('reusable.cancel') }}
+      >
+        {{ $t('reusable.cancel') }}
       </wt-button>
     </template>
   </wt-popup>

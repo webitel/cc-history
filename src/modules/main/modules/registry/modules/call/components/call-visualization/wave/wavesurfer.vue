@@ -1,5 +1,5 @@
 <template>
-  <div id="wavesurfer"></div>
+  <div id="wavesurfer" />
 </template>
 
 <script>

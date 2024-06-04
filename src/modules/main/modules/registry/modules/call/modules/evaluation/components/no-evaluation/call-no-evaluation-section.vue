@@ -25,7 +25,7 @@
 import { mapState } from 'vuex';
 
 export default {
-  name: 'call-no-evaluation',
+  name: 'CallNoEvaluation',
   computed: {
     ...mapState('userinfo', {
       scope: (state) => state.scope,

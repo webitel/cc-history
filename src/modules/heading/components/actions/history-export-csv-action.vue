@@ -6,12 +6,13 @@
       class="history-action"
       color="secondary"
       @click="callExportCSV"
-    >{{ $t('headerSection.exportCSV') }}
+    >
+      {{ $t('headerSection.exportCSV') }}
     </wt-button>
     <files-counter
       v-show="isCSVLoading"
       :download-progress="CSVDownloadProgress"
-    ></files-counter>
+    />
   </div>
 </template>
 
@@ -22,12 +23,12 @@ import historyActionMixin from '../../mixins/historyActionMixin';
 import FilesCounter from './files-counter.vue';
 
 export default {
-  name: 'history-export-csv-action',
+  name: 'HistoryExportCsvAction',
+  components: { FilesCounter },
   mixins: [
     historyActionMixin,
     exportCSVMixin,
   ],
-  components: { FilesCounter },
   props: {
     dataList: {
       type: Array,
@@ -39,6 +40,9 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  created() {
+    this.initCSVExport(APIRepository.history.exportHistoryToCsv, { filename: 'history' });
   },
   methods: {
     async callExportCSV() {
@@ -57,9 +61,6 @@ export default {
         throw err;
       }
     },
-  },
-  created() {
-    this.initCSVExport(APIRepository.history.exportHistoryToCsv, { filename: 'history' });
   },
 };
 </script>

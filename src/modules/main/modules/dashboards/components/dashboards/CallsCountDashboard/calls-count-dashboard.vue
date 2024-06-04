@@ -1,15 +1,15 @@
 <template>
   <component
-    v-if="!emptyData"
     :is="dashboard.options.visualization"
+    v-if="!emptyData"
     :chart-data="chartData"
     :options="options"
-  ></component>
+  />
   <wt-dummy
     v-else
     :src="dummy"
     :text="$t('dashboards.empty.resultSearch')"
-  ></wt-dummy>
+  />
 </template>
 
 <script>
@@ -18,14 +18,14 @@ import DummyLight from '../../../../../../../app/assets/dummy/hs-dummy-after-sea
 import DummyDark from '../../../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
 
 export default {
-  name: 'calls-count-dashboard',
+  name: 'CallsCountDashboard',
+  mixins: [dashboardMixin],
   props: {
     darkMode: {
       type: Boolean,
       default: false,
     },
   },
-  mixins: [dashboardMixin],
   computed: {
     dummy() {
       return this.darkMode ? DummyDark : DummyLight;

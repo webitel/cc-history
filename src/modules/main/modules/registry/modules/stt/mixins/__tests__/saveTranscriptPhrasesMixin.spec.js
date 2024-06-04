@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import saveAs from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import SaveTranscriptPhrasesMixin from '../saveTranscriptPhrasesMixin';
 
 const Component = {
@@ -7,7 +7,7 @@ const Component = {
   render() {},
 };
 
-vi.mock('file-saver');
+vi.mock('file-saver-es');
 
 describe('SaveTranscriptPhrasesMixin', () => {
   it('renders a component', () => {

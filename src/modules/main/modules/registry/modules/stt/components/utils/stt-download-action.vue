@@ -1,10 +1,10 @@
 <template>
   <wt-tooltip>
-    <template v-slot:activator>
+    <template #activator>
       <wt-icon-btn
         icon="stt-download"
         @click="$emit('click')"
-      ></wt-icon-btn>
+      />
     </template>
     {{ $t('registry.stt.downloadTxt') }}
   </wt-tooltip>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'stt-download-action',
+  name: 'SttDownloadAction',
 };
 </script>
 

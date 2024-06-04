@@ -29,7 +29,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  // eslint-disable-next-line no-unused-vars
+   
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 };
   },
