@@ -1,12 +1,16 @@
 import { shallowMount } from '@vue/test-utils';
+import axiosMock from '@webitel/ui-sdk/src/tests/mocks/axiosMock.js';
 import SttPopup from '../stt-popup.vue';
 import transcriptPhrasesMixin from '../../../mixins/transcriptPhrasesMixin';
-import axiosMock from '@webitel/ui-sdk/src/tests/mocks/axiosMock.js';
 
 const transcripts = [];
 const props = { callId: '1' };
 
-vi.doMock('../../src/app/api/instance', axiosMock());
+const instanceMock = axiosMock()().default;
+
+vi.doMock('../../src/app/api/instance', () => ({
+  default: () => instanceMock,
+}));
 
 describe('SttPopup', () => {
   beforeEach(() => {
