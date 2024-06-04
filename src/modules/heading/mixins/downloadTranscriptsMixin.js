@@ -1,4 +1,4 @@
-/* eslint-disable no-await-in-loop */
+ 
 
 import { saveAs } from 'file-saver-es';
 import JSZip from 'jszip';
@@ -50,7 +50,7 @@ export default {
       };
 
       const ids = collectTranscriptIds(items);
-      // eslint-disable-next-line no-restricted-syntax
+       
       for (const id of ids) {
         const phrases = await fetchPhrases(id);
         const txt = generateTxt(phrases, {

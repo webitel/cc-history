@@ -4,7 +4,7 @@
     :headers="headers"
     :static-headers="staticHeaders"
     @change="change"
-    />
+  />
   <variable-column-select
     :headers="headers"
     :static-headers="staticHeaders"
@@ -18,7 +18,7 @@ import VariableColumnSelect from '../../../../../../../filters/components/variab
 import historyHeadersMixin from '../../../../mixins/historyHeadersMixin';
 
 export default {
-  name: 'filter-table-fields',
+  name: 'FilterTableFields',
   components: { VariableColumnSelect },
   mixins: [
     baseFilterMixin,

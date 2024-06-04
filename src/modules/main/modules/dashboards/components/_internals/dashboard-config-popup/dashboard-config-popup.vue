@@ -1,14 +1,17 @@
 <template>
-  <wt-popup class="dashboard-config" @close="$emit('close')">
-    <template v-slot:title>
+  <wt-popup
+    class="dashboard-config"
+    @close="$emit('close')"
+  >
+    <template #title>
       {{ $t('dashboards.dashboardSelect') }}
     </template>
-    <template v-slot:main>
+    <template #main>
       <form class="dashboard-config-form">
         <wt-input
           v-model="options.name"
           :label="$t('dashboards.dashboardConfigForm.name')"
-        ></wt-input>
+        />
         <wt-select
           v-model="visualization"
           :label="$t('dashboards.dashboardConfigForm.visualization')"
@@ -16,7 +19,7 @@
           :options="visualizationOptions"
           track-by="value"
           :clearable="false"
-        ></wt-select>
+        />
         <wt-select
           v-if="aggregationOptions.length"
           v-model="aggregation"
@@ -24,7 +27,7 @@
           :options="aggregationOptions"
           track-by="value"
           :clearable="false"
-        ></wt-select>
+        />
         <wt-select
           v-if="paramOptions.length"
           v-model="param"
@@ -32,12 +35,12 @@
           :options="paramOptions"
           track-by="value"
           :clearable="false"
-        ></wt-select>
+        />
         <wt-input
           v-if="dashboard.options.param === VisualizationParams.VARIABLES"
           v-model="options.variable"
           :label="$t('dashboards.dashboardConfigForm.variable')"
-        ></wt-input>
+        />
         <wt-select
           v-if="isLimit"
           v-model="limit"
@@ -45,22 +48,26 @@
           :options="limitOptions"
           track-by="value"
           :clearable="false"
-        ></wt-select>
+        />
         <wt-checkbox
           v-if="isRelative"
           v-model="options.relative"
           :label="$t('dashboards.dashboardConfigForm.relative')"
-        ></wt-checkbox>
+        />
       </form>
     </template>
-    <template v-slot:actions>
+    <template #actions>
       <wt-button
         @click="save"
-      >{{ $t('reusable.save') }}</wt-button>
+      >
+        {{ $t('reusable.save') }}
+      </wt-button>
       <wt-button
         color="secondary"
         @click="$emit('close')"
-      >{{ $t('reusable.close') }}</wt-button>
+      >
+        {{ $t('reusable.close') }}
+      </wt-button>
     </template>
   </wt-popup>
 </template>
@@ -69,7 +76,7 @@
 import { VisualizationParams } from '../../../api/params/DashboardParams.enum';
 
 export default {
-  name: 'dashboard-config-popup',
+  name: 'DashboardConfigPopup',
   props: {
     dashboard: {
       type: Object,
@@ -80,10 +87,6 @@ export default {
     VisualizationParams,
     options: {},
   }),
-
-  created() {
-    this.options = { ...this.dashboard.options };
-  },
 
   computed: {
     visualization: {
@@ -164,6 +167,10 @@ export default {
     isRelative() {
       return this.dashboard.isRelative();
     },
+  },
+
+  created() {
+    this.options = { ...this.dashboard.options };
   },
 
   methods: {

@@ -1,24 +1,26 @@
 <template>
   <header class="dashboard-header">
-    <h4 class="dashboard-header__heading">{{ name }}</h4>
+    <h4 class="dashboard-header__heading">
+      {{ name }}
+    </h4>
     <div class="dashboard-header__actions-wrapper">
       <wt-icon-btn
         class="dashboard-header__actions-wrapper__action"
         icon="edit"
         @click="$emit('edit')"
-      ></wt-icon-btn>
+      />
       <wt-icon-btn
         class="dashboard-header__actions-wrapper__action"
         icon="bucket"
         @click="$emit('delete')"
-      ></wt-icon-btn>
+      />
     </div>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'dashboard-header',
+  name: 'DashboardHeader',
   props: {
     name: {
       type: String,

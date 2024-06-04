@@ -1,10 +1,10 @@
 <template>
   <wt-tooltip>
-    <template v-slot:activator>
+    <template #activator>
       <wt-icon-btn
         icon="bucket"
         @click="$emit('click')"
-      ></wt-icon-btn>
+      />
     </template>
     {{ $t('reusable.delete') }}
   </wt-tooltip>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'stt-delete-action',
+  name: 'SttDeleteAction',
 };
 </script>
 

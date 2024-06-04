@@ -1,12 +1,15 @@
 <template>
-  <wt-icon :icon="callStateIcon" :color="callStateIconColor"></wt-icon>
+  <wt-icon
+    :icon="callStateIcon"
+    :color="callStateIconColor"
+  />
 </template>
 
 <script>
   import { CallDirection } from 'webitel-sdk';
 
   export default {
-    name: 'table-direction',
+    name: 'TableDirection',
     props: {
       item: {
         type: Object,

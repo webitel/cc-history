@@ -1,25 +1,25 @@
 <template>
   <section class="call-evaluation-result">
-      <div class="call-evaluation-result__scorecard-info">
-        <call-evaluation-result-info
-          :info="scorecardInfo"
-          :comment="result.comment"
-        ></call-evaluation-result-info>
-        <div class="call-evaluation-result__scorecard-info-rating">
-          <call-evaluation-score
-            v-if="result.scoreRequired >= 0"
-            :value="result.scoreRequired"
-            :title="$t('registry.call.evaluation.mandatory')"
-            color="success"
-          />
-          <call-evaluation-score
-            v-if="result.scoreOptional >= 0"
-            :value="result.scoreOptional"
-            :title="$t('registry.call.evaluation.optional')"
-            color="disabled"
-          />
-        </div>
+    <div class="call-evaluation-result__scorecard-info">
+      <call-evaluation-result-info
+        :info="scorecardInfo"
+        :comment="result.comment"
+      />
+      <div class="call-evaluation-result__scorecard-info-rating">
+        <call-evaluation-score
+          v-if="result.scoreRequired >= 0"
+          :value="result.scoreRequired"
+          :title="$t('registry.call.evaluation.mandatory')"
+          color="success"
+        />
+        <call-evaluation-score
+          v-if="result.scoreOptional >= 0"
+          :value="result.scoreOptional"
+          :title="$t('registry.call.evaluation.optional')"
+          color="disabled"
+        />
       </div>
+    </div>
     <call-evaluation-answers :result="result" />
   </section>
 </template>
@@ -31,7 +31,7 @@ import CallEvaluationScore from './call-evaluation-score.vue';
 import CallEvaluationResultInfo from './call-evaluation-result-info.vue';
 
 export default {
-  name: 'call-evaluation-result',
+  name: 'CallEvaluationResult',
   components: {
     CallEvaluationResultInfo,
     CallEvaluationAnswers,

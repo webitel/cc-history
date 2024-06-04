@@ -1,18 +1,21 @@
-import { shallowMount, mount } from '@vue/test-utils';
-import { createStore } from 'vuex';
+import { mount, shallowMount } from '@vue/test-utils';
 import { createRouter, createWebHistory } from 'vue-router';
-import HistoryDashboards from '../history-dashboards.vue';
+import { createStore } from 'vuex';
 import dashboards from '../../store/dashboards';
-import CallsCountDashboard from '../dashboards/CallsCountDashboard/CallsCountDashboard';
+import CallsCountDashboard
+  from '../dashboards/CallsCountDashboard/CallsCountDashboard';
+import HistoryDashboards from '../history-dashboards.vue';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [],
 });
 
-import axiosMock from '@webitel/ui-sdk/src/tests/mocks/axiosMock.js';
-
-vi.doMock('../../src/app/api/instance', axiosMock());
+vi.mock('../../../../../../app/api/instance.js', () => ({
+  default: {
+    get: () => Promise.resolve({ data: { snapshots: [] } }),
+  },
+}));
 
 const dashboard = new CallsCountDashboard();
 describe('History dashboards', () => {
@@ -50,7 +53,9 @@ describe('History dashboards', () => {
         plugins: [store, router],
       },
     });
-    wrapper.findComponent({ name: 'dashboards-header' }).vm.$emit('reflow', newLayout);
+    wrapper.findComponent({ name: 'dashboards-header' })
+    .vm
+    .$emit('reflow', newLayout);
     expect(actions.CHANGE_LAYOUT.mock.calls.pop()).toContain(newLayout);
   });
 
@@ -64,9 +69,9 @@ describe('History dashboards', () => {
       data: () => ({ isDashboardConfig: true, configuredDashboard }),
     });
     wrapper.findComponent({ name: 'dashboard-config-popup' })
-      .vm.$emit('input', options);
+    .vm.$emit('input', options);
     expect(actions.ADD_DASHBOARD.mock.calls.pop())
-      .toContainEqual({ dashboard: configuredDashboard, options });
+    .toContainEqual({ dashboard: configuredDashboard, options });
   });
 
   it('at dashboard header edit event, sets configuredDashboard', async () => {
@@ -80,7 +85,7 @@ describe('History dashboards', () => {
     });
     wrapper.vm.openDashboardConfig = openDashboardConfig;
     wrapper.findComponent({ name: 'dashboard-header' })
-      .vm.$emit('edit', dashboard);
+    .vm.$emit('edit', dashboard);
     expect(openDashboardConfig).toHaveBeenCalled();
   });
 
@@ -95,9 +100,9 @@ describe('History dashboards', () => {
     });
     wrapper.vm.openDashboardConfig = openDashboardConfig;
     wrapper.findComponent({ name: 'dashboard-header' })
-      .vm.$emit('delete', dashboard);
+    .vm.$emit('delete', dashboard);
     expect(actions.DELETE_DASHBOARD.mock.calls.pop())
-      .toContainEqual(dashboard);
+    .toContainEqual(dashboard);
   });
 
   it('at dashboard select input event, sets configuredDashboard', async () => {
@@ -107,7 +112,9 @@ describe('History dashboards', () => {
       },
       data: () => ({ isDashboardSelect: true }),
     });
-    wrapper.findComponent({ name: 'dashboard-select-popup' }).vm.$emit('input', dashboard);
+    wrapper.findComponent({ name: 'dashboard-select-popup' })
+    .vm
+    .$emit('input', dashboard);
     expect(wrapper.vm.configuredDashboard).toEqual(dashboard);
   });
 });

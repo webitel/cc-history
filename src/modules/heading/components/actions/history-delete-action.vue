@@ -12,7 +12,8 @@
       :options="deleteOptions"
       color="secondary"
       @click:option="$event.handler()"
-    >{{ $t('reusable.delete') }}...
+    >
+      {{ $t('reusable.delete') }}...
     </wt-button-select>
   </div>
 </template>
@@ -27,11 +28,11 @@ import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteCo
 
 
 export default {
-  name: 'history-delete-action',
-  mixins: [historyActionMixin],
+  name: 'HistoryDeleteAction',
   components: {
     DeleteConfirmationPopup,
   },
+  mixins: [historyActionMixin],
   setup() {
     const {
       isVisible: isDeleteConfirmationPopup,

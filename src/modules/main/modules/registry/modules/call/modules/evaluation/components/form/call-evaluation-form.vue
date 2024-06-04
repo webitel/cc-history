@@ -22,7 +22,8 @@
       <wt-button
         color="secondary"
         @click="$emit('close')"
-      >{{ $t('reusable.cancel') }}
+      >
+        {{ $t('reusable.cancel') }}
       </wt-button>
     </div>
   </div>
@@ -34,7 +35,7 @@ import { mapActions } from 'vuex';
 import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-form.vue';
 
 export default {
-  name: 'call-evaluation-form',
+  name: 'CallEvaluationForm',
   components: {
     AuditForm,
   },

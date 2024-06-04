@@ -79,11 +79,11 @@ export default {
           }
           // eslint-disable-next-line no-param-reassign
           position += data.seekingDiff;
-          // eslint-disable-next-line no-plusplus
+           
           for (let i = 0; i < numFrames; i++) {
-            // eslint-disable-next-line no-param-reassign
+             
             target[i * 2] = leftChan[i + position];
-            // eslint-disable-next-line no-param-reassign
+             
             target[i * 2 + 1] = rightChan[i + position];
           }
           return Math.min(numFrames, data.length - position);

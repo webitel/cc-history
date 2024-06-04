@@ -8,7 +8,7 @@
     @prev="prev"
     @input="setSize"
     @change="sizeChange"
-  ></wt-pagination>
+  />
 </template>
 
 <script>
@@ -16,7 +16,7 @@ import { mapState, mapActions } from 'vuex';
 import paginationFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/paginationFilterMixin';
 
 export default {
-  name: 'filter-pagination',
+  name: 'FilterPagination',
   mixins: [paginationFilterMixin],
   data: () => ({
     unsubscribeFilterChangeCallback: null,
