@@ -6,11 +6,14 @@ import APIRepository from '../../../app/api/APIRepository';
 import CallTranscriptAPI
   from '../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
 
-const collectTranscriptIds = (historyItems) => historyItems.reduce((
-  ids,
-  { transcripts },
-) => ids.concat(transcripts.map(({ id }) => id)), []);
-
+const collectTranscriptIds = (historyItems) => {
+  return historyItems.reduce((ids, { transcripts }) => {
+    if (!transcripts) {
+      throw new Error('There are no transcript to download');
+    }
+    return ids.concat(transcripts.map(({ id }) => id));
+  }, []);
+};
 const generateTxt = (phrases, { from, to }) => {
   const text = phrases.map(({
                               phrase, channel, startSec, endSec,
