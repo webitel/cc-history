@@ -1,7 +1,8 @@
 <template>
   <form
+    class="history-search"
     @submit.prevent
-    class="history-search">
+  >
     <wt-search-bar
       :hint="searchBarHint"
       :placeholder="$t('reusable.search')"
@@ -11,40 +12,46 @@
       @input="setValue({ filter: filterQuery, value: $event })"
       @search="setValueToQuery({ filterQuery, value: $event })"
     >
-      <template v-slot:search-icon v-if="filterQuery === SearchMode.FTS">
+      <template
+        v-if="filterQuery === SearchMode.FTS"
+        #search-icon
+      >
         <wt-icon
           icon="stt-search"
-        ></wt-icon>
+        />
       </template>
-      <template v-slot:search-icon v-else-if="filterQuery === SearchMode.DESCRIPTION">
+      <template
+        v-else-if="filterQuery === SearchMode.DESCRIPTION"
+        #search-icon
+      >
         <wt-icon
           icon="stt-search"
-        ></wt-icon>
+        />
       </template>
-      <template v-slot:additional-actions="options">
+      <template #additional-actions="options">
         <wt-context-menu
-            :options="searchModeOptions"
-            @click="changeMode($event.option)"
-          >
-            <template v-slot:activator>
-              <wt-tooltip>
-                <template v-slot:activator>
-                  <wt-icon-btn
-                    :color="options.invalid ? 'error' : 'default'"
-                    icon="filter"
-                  ></wt-icon-btn>
-                </template>
-                {{ $t('webitelUI.searchBar.settingsHint') }}
-              </wt-tooltip>
-            </template>
-            <template v-slot:option="{ value, text }">
-              <wt-radio
-                :label="text"
-                :selected="filterQuery === value"
-                :value="true"
-              ></wt-radio>
-            </template>
-          </wt-context-menu>
+          :options="searchModeOptions"
+          @click="changeMode($event.option)"
+        >
+          <template #activator>
+            <wt-tooltip>
+              <template #activator>
+                <wt-icon-btn
+                  :color="options.invalid ? 'error' : 'default'"
+                  icon="filter"
+                />
+              </template>
+              {{ $t('webitelUI.searchBar.settingsHint') }}
+            </wt-tooltip>
+          </template>
+          <template #option="{ value, text }">
+            <wt-radio
+              :label="text"
+              :selected="filterQuery === value"
+              :value="true"
+            />
+          </template>
+        </wt-context-menu>
       </template>
     </wt-search-bar>
   </form>
@@ -57,7 +64,7 @@ import variableSearchValidator from '@webitel/ui-sdk/src/validators/variableSear
 import SearchMode from '../enums/SearchMode.enum';
 
 export default {
-  name: 'history-search',
+  name: 'HistorySearch',
   mixins: [baseFilterMixin],
   props: {
     namespace: {
@@ -65,6 +72,9 @@ export default {
       required: true,
     },
   },
+  setup: () => ({
+    v$: useVuelidate({ $autoDirty: true }),
+  }),
   data: () => ({
     SearchMode,
     filterQuery: SearchMode.SEARCH,
@@ -98,6 +108,9 @@ export default {
           return null;
       }
     },
+  },
+  mounted() {
+    this.v$.$touch();
   },
   methods: {
     changeMode({ value }) {
@@ -137,18 +150,12 @@ export default {
       this.setValue({ filter: filterQuery, value });
     },
   },
-  setup: () => ({
-    v$: useVuelidate({ $autoDirty: true }),
-  }),
   validations() {
     return {
       filterSchema: {
         value: this.filterQuery === SearchMode.VARIABLE ? { variableSearchValidator } : {},
       },
     };
-  },
-  mounted() {
-    this.v$.$touch();
   },
 };
 </script>

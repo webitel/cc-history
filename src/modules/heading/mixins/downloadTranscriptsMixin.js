@@ -1,6 +1,6 @@
-/* eslint-disable no-await-in-loop */
+ 
 
-import saveAs from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import JSZip from 'jszip';
 import APIRepository from '../../../app/api/APIRepository';
 import CallTranscriptAPI
@@ -50,7 +50,7 @@ export default {
       };
 
       const ids = collectTranscriptIds(items);
-      // eslint-disable-next-line no-restricted-syntax
+       
       for (const id of ids) {
         const phrases = await fetchPhrases(id);
         const txt = generateTxt(phrases, {

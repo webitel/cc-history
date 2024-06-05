@@ -1,34 +1,38 @@
 <template>
   <wt-page-wrapper :actions-panel="false">
-    <template v-slot:header>
+    <template #header>
       <wt-headline>
-        <template v-slot:title>
+        <template #title>
           <wt-headline-nav
             :path="path"
-          ></wt-headline-nav>
+          />
         </template>
-        <template v-slot:actions>
+        <template #actions>
           <wt-button
             color="secondary"
-            @click="$router.back()"
-          >{{ $t('reusable.close') }}
+            @click="closeTab"
+          >
+            {{ $t('reusable.close') }}
           </wt-button>
         </template>
       </wt-headline>
     </template>
 
-    <template v-slot:main>
+    <template #main>
       <wt-loader v-if="isLoading" />
-      <div v-else class="history-tabs-wrapper">
+      <div
+        v-else
+        class="history-tabs-wrapper"
+      >
         <wt-tabs
           v-model="currentTab"
           :tabs="tabs"
-        ></wt-tabs>
+        />
         <component
           :is="currentTab.value"
           :call="mainCall"
           :namespace="namespace"
-        ></component>
+        />
       </div>
     </template>
   </wt-page-wrapper>
@@ -42,7 +46,7 @@ import CallLegs from './call-legs/call-legs.vue';
 import CallVisualization from './call-visualization/call-visualization.vue';
 
 export default {
-  name: 'the-call',
+  name: 'TheCall',
   components: {
     CallInfo,
     CallLegs,
@@ -116,6 +120,13 @@ export default {
           tab = this.tabValues.INFO;
       }
       this.currentTab = tab;
+    },
+    closeTab() {
+      // Need to close the tab if you moved from another application
+      // https://webitel.atlassian.net/browse/WTEL-4552
+
+      if(window.history.length === 1) window.close();
+      this.$router.back();
     },
   },
   created() {

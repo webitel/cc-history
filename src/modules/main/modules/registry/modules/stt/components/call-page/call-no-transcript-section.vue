@@ -1,8 +1,8 @@
 <template>
   <article class="call-no-transcript">
     <div
-      class="call-no-transcript__wrapper"
       v-if="fileJob && fileJob.state === JobState.Error"
+      class="call-no-transcript__wrapper"
     >
       <p class="call-no-transcript__text">
         {{ $t('registry.stt.error') }}
@@ -11,10 +11,11 @@
         icon="attention"
         size="xl"
         color="error"
-      ></wt-icon>
+      />
       <wt-button
         @click="transcribe"
-      >{{ $t('reusable.retry') }}
+      >
+        {{ $t('reusable.retry') }}
       </wt-button>
     </div>
 
@@ -25,16 +26,17 @@
       <p class="call-no-transcript__text">
         {{ $t('registry.call.stt.transcribingInProgress') }}
       </p>
-      <wt-loader></wt-loader>
+      <wt-loader />
       <wt-button
         @click="refreshCall"
-      >{{ $t('reusable.refresh') }}
+      >
+        {{ $t('reusable.refresh') }}
       </wt-button>
     </div>
 
     <div
-      class="call-no-transcript__wrapper"
       v-else
+      class="call-no-transcript__wrapper"
     >
       <p class="call-no-transcript__text">
         {{ $t('registry.call.stt.noTranscript') }}
@@ -43,10 +45,11 @@
         icon="stt"
         size="xl"
         color="disabled"
-      ></wt-icon>
+      />
       <wt-button
         @click="transcribe"
-      >{{ $t('registry.stt.transcribe') }}
+      >
+        {{ $t('registry.stt.transcribe') }}
       </wt-button>
     </div>
   </article>
@@ -59,7 +62,7 @@ import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
 import CallTranscriptAPI from '../../api/CallTranscriptAPI';
 
 export default {
-  name: 'call-no-transcript',
+  name: 'CallNoTranscript',
   props: {
     call: {
       type: Object,

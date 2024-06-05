@@ -5,16 +5,16 @@
     max-width="400px"
     @click="handleOptionSelect"
   >
-    <template v-slot:activator>
+    <template #activator>
       <wt-icon-btn
-        :icon="isAnyFilesPlaying ? 'stop': 'play'">
-      </wt-icon-btn>
+        :icon="isAnyFilesPlaying ? 'stop': 'play'"
+      />
     </template>
-    <template v-slot:option="{ text, id }">
+    <template #option="{ text, id }">
       <div class="table-media-action__option">
         <wt-icon
           :icon="id === currentlyPlaying ? 'stop' : 'play'"
-        ></wt-icon>
+        />
         {{ text }}
       </div>
     </template>
@@ -24,7 +24,7 @@
 <script>
 
 export default {
-  name: 'table-media-action',
+  name: 'TableMediaAction',
   props: {
     files: {
       type: Array,

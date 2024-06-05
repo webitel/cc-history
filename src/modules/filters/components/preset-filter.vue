@@ -11,7 +11,7 @@
     v-bind="$attrs"
     @input="setValue({ filter: filterQuery, value: $event })"
     @reset="resetValue({ value: $event, filterQuery, storedProp: filterSchema.storedProp })"
-  ></wt-select>
+  />
 </template>
 
 <script>
@@ -19,7 +19,7 @@ import apiFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/apiF
 import PresetQueryAPI from '../api/PresetQueryAPI';
 
 export default {
-  name: 'preset-filter',
+  name: 'PresetFilter',
   mixins: [apiFilterMixin],
   props: {
     presetFilterSchema: {

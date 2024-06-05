@@ -29,7 +29,7 @@
 <script>
 
 export default {
-  name: 'call-evaluation-result-info',
+  name: 'CallEvaluationResultInfo',
   props: {
     info: {
       type: Array,

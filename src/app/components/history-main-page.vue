@@ -1,13 +1,13 @@
 <template>
   <wt-page-wrapper>
-    <template v-slot:header>
-      <history-heading/>
+    <template #header>
+      <history-heading />
     </template>
-    <template v-slot:actions-panel>
-      <history-filters/>
+    <template #actions-panel>
+      <history-filters />
     </template>
-    <template v-slot:main>
-      <history-main/>
+    <template #main>
+      <history-main />
     </template>
   </wt-page-wrapper>
 </template>
@@ -18,7 +18,7 @@ import HistoryHeading from '../../modules/heading/components/the-history-heading
 import HistoryMain from '../../modules/main/components/the-history-main.vue';
 
 export default {
-  name: 'history-main-page',
+  name: 'HistoryMainPage',
   components: {
     HistoryHeading,
     HistoryFilters,

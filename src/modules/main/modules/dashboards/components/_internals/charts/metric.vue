@@ -1,18 +1,34 @@
 <template>
   <article class="metric">
     <div class="metric__aggregation-wrapper">
-      <h3 class="metric__aggregation__title">{{ aggregationTitle }}</h3>
-      <div class="metric__aggregation__value">{{ aggregationValue }}</div>
+      <h3 class="metric__aggregation__title">
+        {{ aggregationTitle }}
+      </h3>
+      <div class="metric__aggregation__value">
+        {{ aggregationValue }}
+      </div>
     </div>
     <div class="metric__value-wrapper metric__value-wrapper--positive">
-      <h3 class="metric__value__title">{{ truthyLabel }}</h3>
-      <div class="metric__value__value">{{ truthyValue }}</div>
-      <div class="metric__value__percent">{{ truePercent }}%</div>
+      <h3 class="metric__value__title">
+        {{ truthyLabel }}
+      </h3>
+      <div class="metric__value__value">
+        {{ truthyValue }}
+      </div>
+      <div class="metric__value__percent">
+        {{ truePercent }}%
+      </div>
     </div>
     <div class="metric__value-wrapper metric__value-wrapper--negative">
-      <h3 class="metric__value__title">{{ falsyLabel }}</h3>
-      <div class="metric__value__value">{{ falsyValue }}</div>
-      <div class="metric__value__percent">{{ falsePercent }}%</div>
+      <h3 class="metric__value__title">
+        {{ falsyLabel }}
+      </h3>
+      <div class="metric__value__value">
+        {{ falsyValue }}
+      </div>
+      <div class="metric__value__percent">
+        {{ falsePercent }}%
+      </div>
     </div>
   </article>
 </template>
@@ -26,7 +42,7 @@ const aggMax = (list) => Math.max(...list);
 const aggMin = (list) => Math.min(...list);
 
 export default {
-  name: 'metric',
+  name: 'Metric',
   props: {
     chartData: {
       type: Object,

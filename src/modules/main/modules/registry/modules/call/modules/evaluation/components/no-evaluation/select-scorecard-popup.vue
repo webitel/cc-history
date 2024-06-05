@@ -5,10 +5,10 @@
     overflow
     @close="$emit('close')"
   >
-    <template v-slot:header>
+    <template #header>
       {{ $t('registry.call.evaluation.selectTheScorecard') }}
     </template>
-    <template v-slot:main>
+    <template #main>
       <wt-select
         v-model="scorecard"
         :label="$t('registry.call.evaluation.scorecard')"
@@ -16,16 +16,18 @@
         :clearable="false"
       />
     </template>
-    <template v-slot:actions>
+    <template #actions>
       <wt-button
         :disabled="!scorecard"
         @click="selectScorecard"
-      >{{ $t('reusable.start') }}
+      >
+        {{ $t('reusable.start') }}
       </wt-button>
       <wt-button
         color="secondary"
         @click="$emit('close')"
-      >{{ $t('reusable.cancel') }}
+      >
+        {{ $t('reusable.cancel') }}
       </wt-button>
     </template>
   </wt-popup>
@@ -37,11 +39,14 @@ import CallEvaluationAPI from '../../api/CallEvaluationAPI';
 const scorecardIdCacheKey = 'history-last-used-scorecard-id';
 
 export default {
-  name: 'select-scorecard-popup',
+  name: 'SelectScorecardPopup',
 
   data: () => ({
     scorecard: null,
   }),
+  created() {
+    this.setScorecardFromCache();
+  },
 
   methods: {
     selectScorecard() {
@@ -65,9 +70,6 @@ export default {
       enabled: true,
       active: true,
     }),
-  },
-  created() {
-    this.setScorecardFromCache();
   },
 };
 </script>
