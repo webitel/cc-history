@@ -4,8 +4,8 @@
       :current="currentTab"
       :tabs="tabs"
       @change="changeTab($event.value)"
-    ></wt-tabs>
-    <component :is="currentTab.value"></component>
+    />
+    <component :is="currentTab.value" />
   </section>
 </template>
 
@@ -16,7 +16,7 @@ import Registry from '../modules/registry/components/history-registry.vue';
 import Dashboards from '../modules/dashboards/components/history-dashboards.vue';
 
 export default {
-  name: 'the-history-main',
+  name: 'TheHistoryMain',
   components: {
     Registry,
     Dashboards,

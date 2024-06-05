@@ -1,31 +1,42 @@
 <template>
-  <wt-popup class="dashboard-select" @close="$emit('close')">
-    <template v-slot:title>
+  <wt-popup
+    class="dashboard-select"
+    @close="$emit('close')"
+  >
+    <template #title>
       {{ $t('dashboards.dashboardSelect') }}
     </template>
-    <template v-slot:main>
+    <template #main>
       <ul class="dashboard-select__options-list">
         <li
-          class="dashboard-select__option"
-          :class="{ 'dashboard-select__option--selected': dashboard.type === selected }"
           v-for="(dashboard, key) of dashboards"
           :key="key"
+          class="dashboard-select__option"
+          :class="{ 'dashboard-select__option--selected': dashboard.type === selected }"
           @click="selected = dashboard.type"
         >
-          <h4 class="dashboard-select__option__title">{{dashboard.title}}</h4>
-          <p class="dashboard-select__option__description">{{dashboard.description}}</p>
+          <h4 class="dashboard-select__option__title">
+            {{ dashboard.title }}
+          </h4>
+          <p class="dashboard-select__option__description">
+            {{ dashboard.description }}
+          </p>
         </li>
       </ul>
     </template>
-    <template v-slot:actions>
+    <template #actions>
       <wt-button
         :disabled="!selected"
         @click="selectDashboard"
-      >{{ $t('reusable.ok') }}</wt-button>
+      >
+        {{ $t('reusable.ok') }}
+      </wt-button>
       <wt-button
         color="secondary"
         @click="$emit('close')"
-      >{{ $t('reusable.cancel') }}</wt-button>
+      >
+        {{ $t('reusable.cancel') }}
+      </wt-button>
     </template>
   </wt-popup>
 </template>
@@ -34,7 +45,7 @@
 import Dashboards from '../../dashboards/enums/Dashboards.enum';
 
 export default {
-  name: 'dashboard-select-popup',
+  name: 'DashboardSelectPopup',
   data: () => ({
     selected: null,
   }),

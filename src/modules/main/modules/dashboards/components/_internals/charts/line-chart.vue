@@ -1,7 +1,7 @@
 <template>
   <Line
     :chart-data="chartData"
-  ></Line>
+  />
 </template>
 
 <script>

@@ -31,7 +31,6 @@ export default ({ mode }) => {
       // dedupe: ['vue', '@vue/compat'],
       alias: {
         vue: '@vue/compat',
-        // '@webitel/ui-sdk': '/Users/admin/Projects/webitel-ui-sdk',
       },
     },
     plugins: [
@@ -61,6 +60,13 @@ export default ({ mode }) => {
       coverage: {
         enabled: true,
         reporter: 'json',
+      },
+      server: {
+        deps: {
+          inline: [
+            '@webitel/ui-sdk/src',
+          ],
+        },
       },
       alias: {
         /**

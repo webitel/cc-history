@@ -5,23 +5,23 @@
       @change="setScorecard"
       @close="toggleScorecardsPopup"
     />
-    <wt-loader v-show="isLoading"/>
+    <wt-loader v-show="isLoading" />
     <div v-if="!isLoading">
       <call-no-evaluation
         v-if="!scorecard.questions && !result.id"
         @rate="toggleScorecardsPopup"
-      ></call-no-evaluation>
+      />
       <call-evaluation-form
         v-if="scorecard.questions && !result.id"
         :scorecard="scorecard"
         :call-id="call.id"
         :namespace="namespace"
         @close="closeEvaluationForm"
-      ></call-evaluation-form>
+      />
       <call-evaluation-result
         v-if="result.id"
         :result="result"
-      ></call-evaluation-result>
+      />
     </div>
   </section>
 </template>
@@ -35,7 +35,7 @@ import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
 import CallEvaluationForm from './form/call-evaluation-form.vue';
 
 export default {
-  name: 'call-evaluation',
+  name: 'CallEvaluation',
   components: {
     CallEvaluationForm,
     CallEvaluationResult,

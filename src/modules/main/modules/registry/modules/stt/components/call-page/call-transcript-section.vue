@@ -1,35 +1,35 @@
 <template>
   <section class="call-transcript">
     <call-visualization-header v-if="transcript">
-      <template v-slot:main>
+      <template #main>
         <wt-checkbox
           v-for="(channel) of channels"
           :key="channel.value"
           v-model="channel.show"
           :label="channel.value"
-        ></wt-checkbox>
+        />
       </template>
-      <template v-slot:actions>
+      <template #actions>
         <stt-download-action
           @click="downloadTxt(filteredData)"
-        ></stt-download-action>
+        />
         <stt-delete-action
           @click="deleteTranscript"
-        ></stt-delete-action>
+        />
       </template>
     </call-visualization-header>
     <article
       v-if="transcript"
       class="call-transcript"
     >
-      <wt-loader v-show="isLoading"></wt-loader>
+      <wt-loader v-show="isLoading" />
       <div class="call-transcript__table-wrapper">
         <wt-table
           v-show="!isLoading"
           :data="filteredData"
           :headers="headers"
           :selectable="false"
-        ></wt-table>
+        />
       </div>
     </article>
     <call-no-transcript
@@ -37,7 +37,7 @@
       :call="call"
       :file="file"
       :namespace="namespace"
-    ></call-no-transcript>
+    />
   </section>
 </template>
 
@@ -52,14 +52,14 @@ import CallNoTranscript from './call-no-transcript-section.vue';
 import CallTranscriptAPI from '../../api/CallTranscriptAPI';
 
 export default {
-  name: 'call-transcript',
-  mixins: [transcriptPhrasesMixin],
+  name: 'CallTranscript',
   components: {
     SttDeleteAction,
     SttDownloadAction,
     CallVisualizationHeader,
     CallNoTranscript,
   },
+  mixins: [transcriptPhrasesMixin],
   props: {
     call: {
       type: Object,
@@ -86,6 +86,11 @@ export default {
       .find(({ fileId, id }) => this.file.id === fileId || this.file.id === id);
     },
   },
+  watch: {
+    data() {
+      this.initChannels();
+    },
+  },
   methods: {
     initChannels() {
       this.channels = [
@@ -106,11 +111,6 @@ export default {
        */
       // eslint-disable-next-line vue/no-mutating-props
       this.call.transcripts.splice(index, 1);
-    },
-  },
-  watch: {
-    data() {
-      this.initChannels();
     },
   },
 };

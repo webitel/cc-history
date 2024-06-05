@@ -1,13 +1,17 @@
 <template>
   <header class="call-visualization-header">
-    <h3 class="call-visualization-header__main"><slot name="main"></slot></h3>
-    <div class="call-visualization-header__actions"><slot name="actions"></slot></div>
+    <h3 class="call-visualization-header__main">
+      <slot name="main" />
+    </h3>
+    <div class="call-visualization-header__actions">
+      <slot name="actions" />
+    </div>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'call-visualization-header',
+  name: 'CallVisualizationHeader',
 };
 </script>
 

@@ -4,14 +4,14 @@
       v-if="startSpin || currentState.value === TranscriptionState.ACTIVE"
       color="icon"
       size="sm"
-    ></wt-loader>
+    />
     <wt-tooltip v-else>
-      <template v-slot:activator>
+      <template #activator>
         <wt-icon-btn
           :color="currentState.color"
           :icon="currentState.icon"
           @click="currentState.handler()"
-        ></wt-icon-btn>
+        />
       </template>
       {{ currentState.tooltip }}
     </wt-tooltip>
@@ -23,7 +23,7 @@ import CallTranscriptAPI from '../../api/CallTranscriptAPI';
 import TranscriptionState from '../../enums/TranscriptionState.enum';
 
 export default {
-  name: 'table-stt-action',
+  name: 'TableSttAction',
   props: {
     item: {
       type: Object,
@@ -88,6 +88,11 @@ export default {
       };
     },
   },
+  watch: {
+    item() {
+      this.startSpin = false;
+    },
+  },
   methods: {
     handleDoneClick() {
       this.$emit('open');
@@ -98,11 +103,6 @@ export default {
         this.startSpin = true;
       } finally {
       }
-    },
-  },
-  watch: {
-    item() {
-      this.startSpin = false;
     },
   },
 };

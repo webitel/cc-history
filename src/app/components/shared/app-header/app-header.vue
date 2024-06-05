@@ -10,7 +10,7 @@
       :current-app="currentApp"
       :apps="apps"
       :dark-mode="darkMode"
-    ></wt-app-navigator>
+    />
     <wt-header-actions
       :user="user"
       :build-info="buildInfo"
@@ -26,7 +26,7 @@ import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/W
 import WtDarkModeSwitcher from '@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue';
 
 export default {
-  name: 'app-header',
+  name: 'AppHeader',
   components: { WtDarkModeSwitcher },
   inject: ['$config'],
   data: () => ({

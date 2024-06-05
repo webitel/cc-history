@@ -4,7 +4,7 @@
     :label="$t('components.dtPicker.to')"
     mode="datetime"
     @input="handleChange"
-  ></wt-datepicker>
+  />
 </template>
 
 <script>
@@ -12,7 +12,7 @@ import { mapState, mapActions } from 'vuex';
 import baseFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/baseFilterMixin/baseFilterMixin';
 
 export default {
-  name: 'filter-to',
+  name: 'FilterTo',
   mixins: [baseFilterMixin],
 
   data: () => ({

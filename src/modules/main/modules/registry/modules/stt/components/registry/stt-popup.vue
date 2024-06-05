@@ -4,10 +4,10 @@
     :min-width="720"
     @close="$emit('close')"
   >
-    <template v-slot:title>
+    <template #title>
       {{ $tc('registry.stt.transcription', 1) }}
     </template>
-    <template v-slot:main>
+    <template #main>
       <div class="stt-popup-toolbar">
         <wt-select
           v-model="transcript"
@@ -16,17 +16,17 @@
           :options="call.transcripts"
           option-label="id"
           track-by="id"
-        ></wt-select>
+        />
         <div class="stt-popup-toolbar__actions">
           <stt-download-action
             @click="downloadTxt(data)"
-          ></stt-download-action>
+          />
           <stt-delete-action
             @click="handleDeleteTranscription"
-          ></stt-delete-action>
+          />
         </div>
       </div>
-      <wt-loader v-show="isLoading"></wt-loader>
+      <wt-loader v-show="isLoading" />
       <div class="stt-popup__table-wrapper">
         <wt-table
           v-show="!isLoading"
@@ -34,7 +34,7 @@
           :headers="headers"
           :selectable="false"
           :grid-actions="false"
-        ></wt-table>
+        />
       </div>
     </template>
   </wt-popup>
@@ -47,12 +47,12 @@ import SttDeleteAction from '../utils/stt-delete-action.vue';
 import SttDownloadAction from '../utils/stt-download-action.vue';
 
 export default {
-  name: 'stt-popup',
-  mixins: [transcriptPhrasesMixin],
+  name: 'SttPopup',
   components: {
     SttDeleteAction,
     SttDownloadAction,
   },
+  mixins: [transcriptPhrasesMixin],
   props: {
     callId: {
       type: String,
@@ -63,6 +63,9 @@ export default {
     call: { transcripts: [] },
     transcript: null,
   }),
+  created() {
+    this.initialize();
+  },
   methods: {
     initCurrentTranscript() {
       [this.transcript] = this.call.transcripts;
@@ -88,9 +91,6 @@ export default {
       await this.loadCall();
       this.initCurrentTranscript();
     },
-  },
-  created() {
-    this.initialize();
   },
 };
 </script>

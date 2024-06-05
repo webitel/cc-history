@@ -3,17 +3,17 @@
     <call-wave
       v-if="call.files"
       :call="call"
-    ></call-wave>
+    />
     <div class="history-tabs-wrapper">
       <wt-tabs
         v-model="currentTab"
         :tabs="tabs"
-      ></wt-tabs>
+      />
       <component
         :is="currentTab.value"
         :call="call"
         :namespace="currentTab.namespace"
-      ></component>
+      />
     </div>
   </section>
 </template>
@@ -24,7 +24,7 @@ import CallEvaluation from '../../modules/evaluation/components/call-evaluation-
 import CallWave from './wave/call-wave.vue';
 
 export default {
-  name: 'call-visualization',
+  name: 'CallVisualization',
   components: {
     CallWave,
     CallTranscript,
