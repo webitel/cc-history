@@ -9,13 +9,13 @@
       {{ $t('headerSection.exportCSV') }}
     </wt-button>
     <files-counter
-      v-show="isCSVLoading"
-      :download-progress="CSVDownloadProgress"
+      v-show="isCSVLoading || !!XLSDownloadProgress"
+      :download-progress="CSVDownloadProgress || XLSDownloadProgress"
     />
     <wt-popup
       v-if="exportPopup"
       width="480"
-      @close="exportPopup = false"
+      @close="closePopup"
     >
       <template #title>
         {{ $t('headerSection.exportCSV') }}
@@ -30,7 +30,7 @@
           @input="selectHandler"
         />
         <wt-input
-          v-if="isExportSettingsFormatXls"
+          v-if="isExportSettingsFormatCSV"
           :label="$t('objects.CSV.separator')"
           :value="exportSettings.separator"
           required
@@ -84,7 +84,6 @@ export default {
   data: () => ({
     exportPopup: false,
     isLoading: false,
-    exportSettingsValue: {},
     TypesExportedSettings: {
       CSV: 'csv',
       XLS: 'xls',
@@ -103,8 +102,8 @@ export default {
         id: this.TypesExportedSettings[key],
       }));
     },
-    isExportSettingsFormatXls() {
-      return this.exportSettings?.format?.value === this.TypesExportedSettings.XLS;
+    isExportSettingsFormatCSV() {
+      return this.exportSettings?.format?.value === this.TypesExportedSettings.CSV;
     },
   },
   created() {
@@ -113,50 +112,67 @@ export default {
   },
   methods: {
     async checkExportSettings() {
-      const ConfigurationAPIResponse = await ConfigurationAPI.getList({ name: 'export_settings' });
-      console.log(ConfigurationAPIResponse);
-      this.exportSettingsValue = ConfigurationAPIResponse.items[0].value;
+      const response = await ConfigurationAPI.getList({ name: 'export_settings' });
+      const exportSettingsValue  = response.items[3]?.value;
+
+      if (exportSettingsValue) {
+        this.exportSettings = {
+          format: exportSettingsValue.format,
+          separator: exportSettingsValue.separator,
+        };
+      }
     },
     exportFile(format) {
       const fields = this.fields.filter((field) => !['files', 'files_job', 'transcripts'].includes(field));
       const delimiter = this.exportSettings.separator;
+      // https://webitel.atlassian.net/browse/DEV-3797
+      const params = {
+        ...this.filters,
+        fields,
+        skipParent: true,
+        _columns: fields,
+      };
       try {
-        // https://webitel.atlassian.net/browse/DEV-3797
-        const params = {
-          ...this.filters,
-          fields,
-          skipParent: true,
-          _columns: fields,
-        };
-        return format === 'csv' ? this.exportCSV({ ...params, delimiter }) : this.exportXLS(params);
+        if (format === this.TypesExportedSettings.CSV) {
+          return this.exportCSV({ ...params, delimiter });
+        } else if (format === this.TypesExportedSettings.XLS) {
+          return this.exportXLS(params);
+        }
       } catch (err) {
         throw err;
       }
     },
     handleExport() {
-      this.checkExportSettings();
-      if (!this.exportSettingsValue) {
+      if (!this.exportSettings.format?.length) {
         this.exportPopup = true;
       } else {
-        this.exportFile('csv');
+        this.exportFile(this.exportSettings.format);
       }
     },
     save() {
-      this.exportFile('csv');
+      this.isLoading = true;
+      try {
+        this.exportFile(this.exportSettings.format);
+      } finally {
+        this.isLoading = false;
+        this.exportPopup = false;
+      }
     },
     selectHandler(selectedValue) {
-      this.exportSettings.format = selectedValue;
-      if (!this.isExportSettingsFormatXls) {
+      this.exportSettings.format = selectedValue.value;
+      if (!this.isExportSettingsFormatCSV) {
         delete this.exportSettings.separator;
       }
     },
     inputHandler(inputValue) {
       this.exportSettings.separator = inputValue;
     },
+    closePopup() {
+      this.exportPopup = false;
+    },
   },
-  async mounted() {
-    let a = await ConfigurationAPI.getList({ name: 'export_settings' });
-    console.log(a);
+  mounted() {
+    this.checkExportSettings();
   },
 };
 </script>
