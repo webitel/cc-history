@@ -203,7 +203,7 @@ const getHistory = getList({
   ],
 });
 
-const exportHistoryToCsv = getList({
+const exportHistoryToFile = getList({
   responseTransformers: [
     merge(getDefaultGetListResponse()),
   ],
@@ -234,7 +234,7 @@ const exportHistoryToCsv = getList({
 
 const RegistryAPIRepository = {
   getHistory,
-  exportHistoryToCsv,
+  exportHistoryToFile,
 };
 
 export default RegistryAPIRepository;

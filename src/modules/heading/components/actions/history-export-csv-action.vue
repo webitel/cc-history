@@ -9,10 +9,11 @@
       {{ $t('headerSection.exportCSV') }}
     </wt-button>
     <files-counter
-      v-show="isCSVLoading || !!XLSDownloadProgress"
+      v-show="isCSVLoading || isXLSLoading"
       :download-progress="CSVDownloadProgress || XLSDownloadProgress"
     />
     <wt-popup
+      overflow
       v-if="exportPopup"
       width="480"
       @close="closePopup"
@@ -25,6 +26,7 @@
           :clearable="false"
           :label="$t('vocabulary.format')"
           :options="exportSettingOptions"
+          :v="v$.exportSettings.format"
           :value="exportSettings.format"
           required
           @input="selectHandler"
@@ -32,6 +34,7 @@
         <wt-input
           v-if="isExportSettingsFormatCSV"
           :label="$t('objects.CSV.separator')"
+          :v="v$.exportSettings.separator"
           :value="exportSettings.separator"
           required
           @input="inputHandler"
@@ -39,6 +42,7 @@
       </template>
       <template #actions>
         <wt-button
+          :disabled="v$.$error"
           :loading="isLoading"
           @click="save"
         >
@@ -46,7 +50,7 @@
         </wt-button>
         <wt-button
           color="secondary"
-          @click="exportPopup = false"
+          @click="close"
         >
           {{ $t('reusable.cancel') }}
         </wt-button>
@@ -56,7 +60,10 @@
 </template>
 
 <script>
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
+import exportXLSMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportXLSMixin';
 import APIRepository from '../../../../app/api/APIRepository';
 import ConfigurationAPI from '../../api/configuration.js';
 import historyActionMixin from '../../mixins/historyActionMixin';
@@ -68,6 +75,7 @@ export default {
   mixins: [
     historyActionMixin,
     exportCSVMixin,
+    exportXLSMixin,
   ],
   props: {
     dataList: {
@@ -81,6 +89,27 @@ export default {
       required: true,
     },
   },
+  validations() {
+    let exportSettings;
+    exportSettings = {
+      exportSettings: {
+        format: { required },
+      },
+      a: {required}
+    };
+    if (this.isExportSettingsFormatCSV) {
+      exportSettings = {
+        exportSettings: {
+          format: { required },
+          separator: { required },
+        },
+      };
+    }
+    return { exportSettings };
+  },
+  setup: () => ({
+    v$: useVuelidate(),
+  }),
   data: () => ({
     exportPopup: false,
     isLoading: false,
@@ -103,17 +132,17 @@ export default {
       }));
     },
     isExportSettingsFormatCSV() {
-      return this.exportSettings?.format?.value === this.TypesExportedSettings.CSV;
+      return this.exportSettings?.format === this.TypesExportedSettings.CSV;
     },
   },
   created() {
-    this.initCSVExport(APIRepository.history.exportHistoryToCsv, { filename: 'history' });
-    this.initXLSExport(APIRepository.history.exportHistoryToCsv, { filename: 'history' });
+    this.initCSVExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
+    this.initXLSExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
   },
   methods: {
     async checkExportSettings() {
       const response = await ConfigurationAPI.getList({ name: 'export_settings' });
-      const exportSettingsValue  = response.items[3]?.value;
+      const exportSettingsValue = response.items[3]?.value;
 
       if (exportSettingsValue) {
         this.exportSettings = {
