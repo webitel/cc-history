@@ -72,7 +72,7 @@ import FilesCounter from './files-counter.vue';
 import TypesExportedSettingsEnum from '@webitel/ui-sdk/src/enums/TypesExportedSettings/TypesExportedSettings.enum.js';
 
 export default {
-  name: 'HistoryExportCsvAction',
+  name: 'HistoryExportAction',
   components: { FilesCounter },
   mixins: [
     historyActionMixin,
