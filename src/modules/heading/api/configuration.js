@@ -34,13 +34,12 @@ const getList = async (params) => {
       search,
       sort,
       fields,
-      'export_settings',
+      name,
     );
     const { items, next } = applyTransform(response.data, [
       snakeToCamel(),
       merge(getDefaultGetListResponse()),
     ]);
-    console.log(response.data);
     return {
       items,
       next,

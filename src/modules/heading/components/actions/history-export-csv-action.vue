@@ -6,20 +6,20 @@
       color="secondary"
       @click="handleExport"
     >
-      {{ $t('headerSection.exportCSV') }}
+      {{ $t('headerSection.exportPopup.export') }}
     </wt-button>
     <files-counter
       v-show="isCSVLoading || isXLSLoading"
       :download-progress="CSVDownloadProgress || XLSDownloadProgress"
     />
     <wt-popup
-      overflow
       v-if="exportPopup"
+      overflow
       width="480"
       @close="closePopup"
     >
       <template #title>
-        {{ $t('headerSection.exportCSV') }}
+        {{ $t('headerSection.exportPopup.export') }}
       </template>
       <template #main>
         <wt-select
@@ -33,7 +33,7 @@
         />
         <wt-input
           v-if="isExportSettingsFormatCSV"
-          :label="$t('objects.CSV.separator')"
+          :label="$t('headerSection.exportPopup.separator')"
           :v="v$.exportSettings.separator"
           :value="exportSettings.separator"
           required
@@ -42,15 +42,15 @@
       </template>
       <template #actions>
         <wt-button
-          :disabled="v$.$error"
+          :disabled="disableSaving"
           :loading="isLoading"
           @click="save"
         >
-          {{ $t('reusable.add') }}
+          {{ $t('headerSection.exportPopup.export') }}
         </wt-button>
         <wt-button
           color="secondary"
-          @click="close"
+          @click="closePopup"
         >
           {{ $t('reusable.cancel') }}
         </wt-button>
@@ -64,10 +64,12 @@ import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportXLSMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportXLSMixin';
+import { EngineSystemSettingName } from 'webitel-sdk';
 import APIRepository from '../../../../app/api/APIRepository';
 import ConfigurationAPI from '../../api/configuration.js';
 import historyActionMixin from '../../mixins/historyActionMixin';
 import FilesCounter from './files-counter.vue';
+import TypesExportedSettingsEnum from '@webitel/ui-sdk/src/enums/TypesExportedSettings/TypesExportedSettings.enum.js';
 
 export default {
   name: 'HistoryExportCsvAction',
@@ -95,7 +97,6 @@ export default {
       exportSettings: {
         format: { required },
       },
-      a: {required}
     };
     if (this.isExportSettingsFormatCSV) {
       exportSettings = {
@@ -105,7 +106,7 @@ export default {
         },
       };
     }
-    return { exportSettings };
+    return exportSettings;
   },
   setup: () => ({
     v$: useVuelidate(),
@@ -113,10 +114,6 @@ export default {
   data: () => ({
     exportPopup: false,
     isLoading: false,
-    TypesExportedSettings: {
-      CSV: 'csv',
-      XLS: 'xls',
-    },
     exportSettings: {
       format: {},
       separator: '',
@@ -124,15 +121,19 @@ export default {
   }),
   computed: {
     exportSettingOptions() {
-      return Object.keys(this.TypesExportedSettings)
+      return Object.keys(TypesExportedSettingsEnum)
       .map(key => ({
-        name: this.TypesExportedSettings[key],
-        value: this.TypesExportedSettings[key],
-        id: this.TypesExportedSettings[key],
+        name: TypesExportedSettingsEnum[key],
+        value: TypesExportedSettingsEnum[key],
+        id: TypesExportedSettingsEnum[key],
       }));
     },
     isExportSettingsFormatCSV() {
-      return this.exportSettings?.format === this.TypesExportedSettings.CSV;
+      return this.exportSettings?.format === TypesExportedSettingsEnum.CSV;
+    },
+    disableSaving() {
+      this.v$.exportSettings.$touch();
+      return this.v$.exportSettings.$pending || this.v$.exportSettings.$error;
     },
   },
   created() {
@@ -141,8 +142,8 @@ export default {
   },
   methods: {
     async checkExportSettings() {
-      const response = await ConfigurationAPI.getList({ name: 'export_settings' });
-      const exportSettingsValue = response.items[3]?.value;
+      const response = await ConfigurationAPI.getList({ name: EngineSystemSettingName.ExportSettings });
+      const exportSettingsValue = response.items[0]?.value;
 
       if (exportSettingsValue) {
         this.exportSettings = {
@@ -162,9 +163,9 @@ export default {
         _columns: fields,
       };
       try {
-        if (format === this.TypesExportedSettings.CSV) {
+        if (format === TypesExportedSettingsEnum.CSV) {
           return this.exportCSV({ ...params, delimiter });
-        } else if (format === this.TypesExportedSettings.XLS) {
+        } else if (format === TypesExportedSettingsEnum.XLS) {
           return this.exportXLS(params);
         }
       } catch (err) {
@@ -186,6 +187,11 @@ export default {
         this.isLoading = false;
         this.exportPopup = false;
       }
+      //NOTE: This code is required to clear exportSettings and re-execute checkExportSettings
+      this.exportSettings = {
+        format: {},
+        separator: '',
+      };
     },
     selectHandler(selectedValue) {
       this.exportSettings.format = selectedValue.value;

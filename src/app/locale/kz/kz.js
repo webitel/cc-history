@@ -21,7 +21,10 @@ export default {
   headerSection: {
     filesLoaded: 'Жүктеп алынған файл:',
     zippingProgress: 'Мұрағаттау прогресі',
-    exportCSV: 'CSV экспорттау',
+    exportPopup: {
+      export: 'Экспорт',
+      separator: 'Бөлікшелер',
+    },
   },
   registry: {
     registry: 'Тарих',
