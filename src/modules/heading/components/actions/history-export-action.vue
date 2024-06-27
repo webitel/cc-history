@@ -5,7 +5,7 @@
       color="secondary"
       @click="handleExport"
     >
-      {{ $t('vocabulary.reusable.export') }}
+      {{ $t('reusable.export') }}
     </wt-button>
     <files-counter
       v-show="isCSVLoading || isXLSLoading"
@@ -18,7 +18,7 @@
       @close="closePopup"
     >
       <template #title>
-        {{ $t('headerSection.exportPopup.export') }}
+        {{ $t('reusable.export') }}
       </template>
       <template #main>
         <wt-select
@@ -45,7 +45,7 @@
           :loading="isLoading"
           @click="save"
         >
-          {{ $t('headerSection.exportPopup.export') }}
+          {{ $t('reusable.export') }}
         </wt-button>
         <wt-button
           color="secondary"
@@ -127,15 +127,25 @@ export default {
     },
   },
   methods: {
+    updateDraft(value) {
+      if (!value) {
+        this.draft = {
+          format: {},
+          separator: '',
+        };
+        return;
+      }
+      this.draft = {
+        format: value.format,
+        separator: value.separator,
+      };
+    },
     async checkExportSettings() {
       const response = await ConfigurationAPI.getList({ name: EngineSystemSettingName.ExportSettings });
       const exportSettingsValue = response.items[0]?.value;
 
       if (exportSettingsValue) {
-        this.draft = {
-          format: exportSettingsValue.format,
-          separator: exportSettingsValue.separator,
-        };
+        this.updateDraft(exportSettingsValue);
       }
     },
     exportFile(format) {
@@ -168,12 +178,6 @@ export default {
         this.exportFile(this.draft.format);
       }
     },
-    resetDraft() {
-      this.draft = {
-        format: {},
-        separator: '',
-      };
-    },
     save() {
       this.isLoading = true;
       try {
@@ -183,7 +187,7 @@ export default {
         this.closePopup();
       }
       //NOTE: This code is required to clear draft and re-execute checkExportSettings
-      this.resetDraft();
+      this.updateDraft();
     },
     selectHandler(selectedValue) {
       this.draft.format = selectedValue.value;
