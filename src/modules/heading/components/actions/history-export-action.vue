@@ -127,17 +127,10 @@ export default {
     },
   },
   methods: {
-    updateDraft(value) {
-      if (!value) {
-        this.draft = {
-          format: {},
-          separator: '',
-        };
-        return;
-      }
+    updateDraft({format, separator} = {}) {
       this.draft = {
-        format: value.format,
-        separator: value.separator,
+        format: format || '',
+        separator: separator || '',
       };
     },
     async checkExportSettings() {
