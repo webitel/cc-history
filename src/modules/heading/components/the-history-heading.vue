@@ -14,7 +14,7 @@
         @refresh="loadDataList"
       />
 
-      <history-export-csv-action
+      <history-export-action
         class="history-action"
         :data-list="dataList"
         :filters="getFilters"
@@ -42,7 +42,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import FilterSearch from '../modules/filters/components/filter-search.vue';
 import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
-import HistoryExportCsvAction from './actions/history-export-csv-action.vue';
+import HistoryExportAction from './actions/history-export-action.vue';
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 
 export default {
@@ -51,7 +51,7 @@ export default {
     FilterSearch,
     HistoryTranscribeAction,
     HistoryDownloadAction,
-    HistoryExportCsvAction,
+    HistoryExportAction,
     HistoryDeleteAction,
   },
   computed: {
