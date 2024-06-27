@@ -1,12 +1,11 @@
 <template>
-  <div class="history-export-csv-action">
+  <div class="history-export-action">
     <wt-button
       :disabled="!dataList.length"
-      class="history-action"
       color="secondary"
       @click="handleExport"
     >
-      {{ $t('headerSection.exportPopup.export') }}
+      {{ $t('vocabulary.reusable.export') }}
     </wt-button>
     <files-counter
       v-show="isCSVLoading || isXLSLoading"
@@ -26,16 +25,16 @@
           :clearable="false"
           :label="$t('vocabulary.format')"
           :options="exportSettingOptions"
-          :v="v$.exportSettings.format"
-          :value="exportSettings.format"
+          :v="v$.draft.format"
+          :value="draft.format"
           required
           @input="selectHandler"
         />
         <wt-input
           v-if="isExportSettingsFormatCSV"
           :label="$t('headerSection.exportPopup.separator')"
-          :v="v$.exportSettings.separator"
-          :value="exportSettings.separator"
+          :v="v$.draft.separator"
+          :value="draft.separator"
           required
           @input="inputHandler"
         />
@@ -61,7 +60,7 @@
 
 <script>
 import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { required, requiredIf } from '@vuelidate/validators';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportXLSMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportXLSMixin';
 import { EngineSystemSettingName } from 'webitel-sdk';
@@ -92,21 +91,12 @@ export default {
     },
   },
   validations() {
-    let exportSettings;
-    exportSettings = {
-      exportSettings: {
+    return {
+      draft: {
         format: { required },
+        separator: { requiredIfRef: requiredIf(this.isExportSettingsFormatCSV) },
       },
     };
-    if (this.isExportSettingsFormatCSV) {
-      exportSettings = {
-        exportSettings: {
-          format: { required },
-          separator: { required },
-        },
-      };
-    }
-    return exportSettings;
   },
   setup: () => ({
     v$: useVuelidate(),
@@ -114,7 +104,7 @@ export default {
   data: () => ({
     exportPopup: false,
     isLoading: false,
-    exportSettings: {
+    draft: {
       format: {},
       separator: '',
     },
@@ -129,16 +119,12 @@ export default {
       }));
     },
     isExportSettingsFormatCSV() {
-      return this.exportSettings?.format === TypesExportedSettingsEnum.CSV;
+      return this.draft?.format === TypesExportedSettingsEnum.CSV;
     },
     disableSaving() {
-      this.v$.exportSettings.$touch();
-      return this.v$.exportSettings.$pending || this.v$.exportSettings.$error;
+      this.v$.draft.$touch();
+      return this.v$.draft.$pending || this.v$.draft.$error;
     },
-  },
-  created() {
-    this.initCSVExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
-    this.initXLSExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
   },
   methods: {
     async checkExportSettings() {
@@ -146,7 +132,7 @@ export default {
       const exportSettingsValue = response.items[0]?.value;
 
       if (exportSettingsValue) {
-        this.exportSettings = {
+        this.draft = {
           format: exportSettingsValue.format,
           separator: exportSettingsValue.separator,
         };
@@ -154,7 +140,7 @@ export default {
     },
     exportFile(format) {
       const fields = this.fields.filter((field) => !['files', 'files_job', 'transcripts'].includes(field));
-      const delimiter = this.exportSettings.separator;
+      const delimiter = this.draft.separator;
       // https://webitel.atlassian.net/browse/DEV-3797
       const params = {
         ...this.filters,
@@ -163,44 +149,50 @@ export default {
         _columns: fields,
       };
       try {
-        if (format === TypesExportedSettingsEnum.CSV) {
-          return this.exportCSV({ ...params, delimiter });
-        } else if (format === TypesExportedSettingsEnum.XLS) {
-          return this.exportXLS(params);
+        switch (format) {
+          case TypesExportedSettingsEnum.CSV:
+            return this.exportCSV({ ...params, delimiter });
+          case TypesExportedSettingsEnum.XLS:
+            return this.exportXLS(params);
+          default:
+            console.error(`Unsupported format: ${format}`);
         }
       } catch (err) {
         throw err;
       }
     },
     handleExport() {
-      if (!this.exportSettings.format?.length) {
+      if (!this.draft.format?.length) {
         this.exportPopup = true;
       } else {
-        this.exportFile(this.exportSettings.format);
+        this.exportFile(this.draft.format);
       }
     },
-    save() {
-      this.isLoading = true;
-      try {
-        this.exportFile(this.exportSettings.format);
-      } finally {
-        this.isLoading = false;
-        this.exportPopup = false;
-      }
-      //NOTE: This code is required to clear exportSettings and re-execute checkExportSettings
-      this.exportSettings = {
+    resetDraft() {
+      this.draft = {
         format: {},
         separator: '',
       };
     },
+    save() {
+      this.isLoading = true;
+      try {
+        this.exportFile(this.draft.format);
+      } finally {
+        this.isLoading = false;
+        this.closePopup();
+      }
+      //NOTE: This code is required to clear draft and re-execute checkExportSettings
+      this.resetDraft();
+    },
     selectHandler(selectedValue) {
-      this.exportSettings.format = selectedValue.value;
+      this.draft.format = selectedValue.value;
       if (!this.isExportSettingsFormatCSV) {
-        delete this.exportSettings.separator;
+        delete this.draft.separator;
       }
     },
     inputHandler(inputValue) {
-      this.exportSettings.separator = inputValue;
+      this.draft.separator = inputValue;
     },
     closePopup() {
       this.exportPopup = false;
@@ -209,11 +201,15 @@ export default {
   mounted() {
     this.checkExportSettings();
   },
+  created() {
+    this.initCSVExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
+    this.initXLSExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.history-export-csv-action {
+.history-export-action {
   position: relative;
 }
 </style>

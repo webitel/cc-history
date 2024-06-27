@@ -22,7 +22,6 @@ export default {
     filesLoaded: 'Files loaded: ',
     zippingProgress: 'Zipping progress: ',
     exportPopup: {
-      export: 'Export',
       separator: 'Separator',
     },
   },

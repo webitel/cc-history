@@ -22,7 +22,6 @@ export default {
     filesLoaded: 'Файлів завантажено: ',
     zippingProgress: 'Прогрес архівації: ',
     exportPopup: {
-      export: 'Експорт',
       separator: 'Розділювач',
     },
   },

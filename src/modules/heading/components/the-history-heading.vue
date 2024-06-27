@@ -14,7 +14,7 @@
         @refresh="loadDataList"
       />
 
-      <history-export-csv-action
+      <history-export-action
         class="history-action"
         :data-list="dataList"
         :filters="getFilters"
