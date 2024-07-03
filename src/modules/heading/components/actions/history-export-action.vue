@@ -14,7 +14,7 @@
     <wt-popup
       v-if="exportPopup"
       overflow
-      width="480"
+      size="sm"
       @close="closePopup"
     >
       <template #title>
@@ -193,6 +193,9 @@ export default {
     },
     closePopup() {
       this.exportPopup = false;
+
+      //NOTE: This code is required to clear draft and re-execute checkExportSettings
+      this.updateDraft();
     },
   },
   mounted() {
