@@ -14,16 +14,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import StateModules from '../enums/StoreModules.enum';
+import { mapState } from 'vuex';
+//import StateModules from '../enums/StoreModules.enum';
 import Registry from '../modules/registry/components/history-registry.vue';
-import Dashboards from '../modules/dashboards/components/history-dashboards.vue';
+// import Dashboards from '../modules/dashboards/components/history-dashboards.vue';
 
 export default {
   name: 'TheHistoryMain',
   components: {
     Registry,
-    Dashboards,
+   // Dashboards,
   },
   computed: {
     ...mapState({
@@ -32,17 +32,17 @@ export default {
     currentTab() {
       return { value: this.state };
     },
-    tabs() {
-      return Object.values(StateModules).map((state) => ({
-        text: this.$t(`${state}.${state}`),
-        value: state,
-      }));
-    },
+    // tabs() {
+    //   return Object.values(StateModules).map((state) => ({
+    //     text: this.$t(`${state}.${state}`),
+    //     value: state,
+    //   }));
+    // },
   },
   methods: {
-    ...mapActions({
-      changeTab: 'SET_APP_STATE',
-    }),
+    // ...mapActions({
+    //   changeTab: 'SET_APP_STATE',
+    // }),
   },
 };
 </script>
