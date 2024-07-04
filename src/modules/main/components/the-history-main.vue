@@ -1,10 +1,14 @@
 <template>
   <section class="history-section history-main">
-    <wt-tabs
-      :current="currentTab"
-      :tabs="tabs"
-      @change="changeTab($event.value)"
-    />
+
+<!--   https://webitel.atlassian.net/browse/WTEL-4709-->
+<!--   dashboard does not work correctly, so the tabs had to be hidden -->
+
+<!--    <wt-tabs-->
+<!--      :current="currentTab"-->
+<!--      :tabs="tabs"-->
+<!--      @change="changeTab($event.value)"-->
+<!--    />-->
     <component :is="currentTab.value" />
   </section>
 </template>
