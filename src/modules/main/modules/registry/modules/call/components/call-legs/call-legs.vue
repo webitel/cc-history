@@ -149,12 +149,16 @@
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
+import historyHeadersMixin from '../../../../mixins/historyHeadersMixin.js';
 
 export default {
   name: 'CallLegs',
   components: {
     TableDirection,
   },
+  mixins: [
+    historyHeadersMixin,
+  ],
   props: {
     call: {
       type: Object,
@@ -174,9 +178,6 @@ export default {
         return getNamespacedState(state, this.namespace).isLegsDataLoading;
       },
     }),
-    headers() {
-      return this.$store.getters[`${this.namespace}/HEADERS`];
-    },
 
     tableData() {
       return [

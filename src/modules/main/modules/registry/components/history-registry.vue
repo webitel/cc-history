@@ -210,6 +210,7 @@ export default {
     }),
     ...mapActions('registry', {
       loadList: 'LOAD_DATA_LIST',
+      setHeaders: 'SET_HEADERS',
     }),
     handleTranscriptDelete({ callId, transcript }) {
       const call = this.dataList.find(({ id }) => id === callId);
@@ -229,6 +230,7 @@ export default {
   },
   mounted() {
     this.loadList();
+    this.setHeaders(this.headers);
   },
 };
 </script>
