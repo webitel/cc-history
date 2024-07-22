@@ -128,6 +128,7 @@ const saveDashboards = async (dashboards) => {
 
 const getDashboards = async () => {
   try {
+    console.info(instance);
     const response = await instance.get(SNAPSHOTS_URL);
     console.info(response);
     return response.data || {};

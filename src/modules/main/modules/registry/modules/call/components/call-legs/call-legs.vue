@@ -1,7 +1,10 @@
 <template>
   <section>
     <wt-loader v-show="isLoading" />
-    <div v-show="!isLoading" class="table-wrapper">
+    <div
+      v-show="!isLoading"
+      class="table-wrapper"
+    >
       <wt-table
         ref="call-legs-table"
         :data="tableData"
@@ -9,73 +12,97 @@
         :headers="headers"
         :selectable="false"
       >
-        <template v-slot:direction="{ item }">
+        <template #direction="{ item }">
           <table-direction :item="item" />
         </template>
-        <template v-slot:from="{ item }">
-          <div v-if="item.from">{{ item.from.number }}</div>
+        <template #from="{ item }">
+          <div v-if="item.from">
+            {{ item.from.number }}
+          </div>
         </template>
-        <template v-slot:to="{ item }">
-          <div v-if="item.to">{{ item.to.number }}</div>
+        <template #to="{ item }">
+          <div v-if="item.to">
+            {{ item.to.number }}
+          </div>
         </template>
-        <template v-slot:user="{ item }">
-          <div v-if="item.user">{{ item.user.name }}</div>
+        <template #user="{ item }">
+          <div v-if="item.user">
+            {{ item.user.name }}
+          </div>
         </template>
-        <template v-slot:gateway="{ item }">
-          <div v-if="item.gateway">{{ item.gateway.name }}</div>
+        <template #gateway="{ item }">
+          <div v-if="item.gateway">
+            {{ item.gateway.name }}
+          </div>
         </template>
-        <template v-slot:agent="{ item }">
-          <div v-if="item.agent">{{ item.agent.name }}</div>
+        <template #agent="{ item }">
+          <div v-if="item.agent">
+            {{ item.agent.name }}
+          </div>
         </template>
-        <template v-slot:team="{ item }">
-          <div v-if="item.team">{{ item.team.name }}</div>
+        <template #team="{ item }">
+          <div v-if="item.team">
+            {{ item.team.name }}
+          </div>
         </template>
-        <template v-slot:queue="{ item }">
-          <div v-if="item.queue">{{ item.queue.name }}</div>
+        <template #queue="{ item }">
+          <div v-if="item.queue">
+            {{ item.queue.name }}
+          </div>
         </template>
-        <template v-slot:grantee="{ item }">
-          <div v-if="item.grantee">{{ item.grantee.name }}</div>
+        <template #grantee="{ item }">
+          <div v-if="item.grantee">
+            {{ item.grantee.name }}
+          </div>
         </template>
-        <template v-slot:member="{ item }">
-          <div v-if="item.member">{{ item.member.name }}</div>
+        <template #member="{ item }">
+          <div v-if="item.member">
+            {{ item.member.name }}
+          </div>
         </template>
-        <template v-slot:ratedBy="{ item }">
-          <div v-if="item.ratedBy">{{ item.ratedBy.name }}</div>
+        <template #ratedBy="{ item }">
+          <div v-if="item.ratedBy">
+            {{ item.ratedBy.name }}
+          </div>
         </template>
-        <template v-slot:memberId="{ item }">
-          <div v-if="item.member">{{ item.member.id }}</div>
+        <template #memberId="{ item }">
+          <div v-if="item.member">
+            {{ item.member.id }}
+          </div>
         </template>
-        <template v-slot:contact="{ item }">
-          <div v-if="item.contact">{{ item.contact.name }}</div>
+        <template #contact="{ item }">
+          <div v-if="item.contact">
+            {{ item.contact.name }}
+          </div>
         </template>
-        <template v-slot:hangupDisposition="{ item }">
+        <template #hangupDisposition="{ item }">
           <div v-if="item.hangupDisposition">
             {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}
           </div>
         </template>
-        <template v-slot:legMarker="{ item }">
+        <template #legMarker="{ item }">
           <wt-icon
             v-if="!item.parentId"
             class="icon__leg-marker"
             icon="leg-a-marker"
             icon-prefix="hs"
             size="sm"
-          ></wt-icon>
+          />
         </template>
-        <template v-slot:transfers="{ item }">
+        <template #transfers="{ item }">
           <div class="transfers-wrap">
             <wt-tooltip
               :class="{'hidden': !item.transferFrom}"
               class="transfer-icon"
             >
-              <template v-slot:activator>
+              <template #activator>
                 <wt-icon
                   class="table-action"
                   icon="transfer-from"
                   icon-prefix="hs"
                   @mouseenter.native="highlightRow([item.transferFrom])"
                   @mouseleave.native="highlightRow([item.transferFrom])"
-                ></wt-icon>
+                />
               </template>
               {{ $t('registry.call.transferFrom') }}
             </wt-tooltip>
@@ -84,14 +111,14 @@
               :class="{'hidden': !item.transferFrom || !item.transferTo}"
               class="transfer-icon"
             >
-              <template v-slot:activator>
+              <template #activator>
                 <wt-icon
                   class="table-action"
                   icon="transfer-merge"
                   icon-prefix="hs"
                   @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
                   @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
-                ></wt-icon>
+                />
               </template>
               {{ $t('registry.call.transferMerge') }}
             </wt-tooltip>
@@ -100,14 +127,14 @@
               :class="{'hidden': !item.transferTo}"
               class="transfer-icon"
             >
-              <template v-slot:activator>
+              <template #activator>
                 <wt-icon
                   class="table-action"
                   icon="transfer-to"
                   icon-prefix="hs"
                   @mouseenter.native="highlightRow([item.transferTo])"
                   @mouseleave.native="highlightRow([item.transferTo])"
-                ></wt-icon>
+                />
               </template>
               {{ $t('registry.call.transferTo') }}
             </wt-tooltip>
@@ -122,12 +149,16 @@
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
+import historyHeadersMixin from '../../../../mixins/historyHeadersMixin.js';
 
 export default {
-  name: 'call-legs',
+  name: 'CallLegs',
   components: {
     TableDirection,
   },
+  mixins: [
+    historyHeadersMixin,
+  ],
   props: {
     call: {
       type: Object,
@@ -147,9 +178,6 @@ export default {
         return getNamespacedState(state, this.namespace).isLegsDataLoading;
       },
     }),
-    headers() {
-      return this.$store.getters[`${this.namespace}/HEADERS`];
-    },
 
     tableData() {
       return [

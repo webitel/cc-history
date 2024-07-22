@@ -5,15 +5,18 @@
       :call-id="sttPopupCallId"
       @delete="handleTranscriptDelete({ callId: sttPopupCallId, transcript: $event })"
       @close="sttPopupCallId = null"
-    ></stt-popup>
+    />
     <wt-loader v-show="isLoading" />
     <wt-dummy
       v-if="dummyValue && !isLoading"
       :src="dummyValue.src"
       :text="dummyValue.text"
       class="history-registry__dummy"
-    ></wt-dummy>
-    <div v-else class="table-wrapper">
+    />
+    <div
+      v-else
+      class="table-wrapper"
+    >
       <wt-table
         v-show="!isLoading"
         ref="wt-table"
@@ -22,55 +25,82 @@
         sortable
         @sort="sort"
       >
-        <template v-slot:direction="{ item }">
+        <template #direction="{ item }">
           <table-direction :item="item" />
         </template>
-        <template v-slot:from="{ item }">
-          <div v-if="item.from">{{ item.from.number }}</div>
+        <template #from="{ item }">
+          <div v-if="item.from">
+            {{ item.from.number }}
+          </div>
         </template>
-        <template v-slot:to="{ item }">
-          <div v-if="item.to">{{ item.to.number }}</div>
+        <template #to="{ item }">
+          <div v-if="item.to">
+            {{ item.to.number }}
+          </div>
         </template>
-        <template v-slot:user="{ item }">
-          <div v-if="item.user">{{ item.user.name }}</div>
+        <template #user="{ item }">
+          <div v-if="item.user">
+            {{ item.user.name }}
+          </div>
         </template>
-        <template v-slot:gateway="{ item }">
-          <div v-if="item.gateway">{{ item.gateway.name }}</div>
+        <template #gateway="{ item }">
+          <div v-if="item.gateway">
+            {{ item.gateway.name }}
+          </div>
         </template>
-        <template v-slot:agent="{ item }">
-          <div v-if="item.agent">{{ item.agent.name }}</div>
+        <template #agent="{ item }">
+          <div v-if="item.agent">
+            {{ item.agent.name }}
+          </div>
         </template>
-        <template v-slot:team="{ item }">
-          <div v-if="item.team">{{ item.team.name }}</div>
+        <template #team="{ item }">
+          <div v-if="item.team">
+            {{ item.team.name }}
+          </div>
         </template>
-        <template v-slot:queue="{ item }">
-          <div v-if="item.queue">{{ item.queue.name }}</div>
+        <template #queue="{ item }">
+          <div v-if="item.queue">
+            {{ item.queue.name }}
+          </div>
         </template>
-        <template v-slot:member="{ item }">
-          <div v-if="item.member">{{ item.member.name }}</div>
+        <template #member="{ item }">
+          <div v-if="item.member">
+            {{ item.member.name }}
+          </div>
         </template>
-        <template v-slot:grantee="{ item }">
-          <div v-if="item.grantee">{{ item.grantee.name }}</div>
+        <template #grantee="{ item }">
+          <div v-if="item.grantee">
+            {{ item.grantee.name }}
+          </div>
         </template>
-        <template v-slot:ratedBy="{ item }">
-          <div v-if="item.ratedBy">{{ item.ratedBy.name }}</div>
+        <template #ratedBy="{ item }">
+          <div v-if="item.ratedBy">
+            {{ item.ratedBy.name }}
+          </div>
         </template>
-        <template v-slot:memberId="{ item }">
-          <div v-if="item.member">{{ item.member.id }}</div>
+        <template #memberId="{ item }">
+          <div v-if="item.member">
+            {{ item.member.id }}
+          </div>
         </template>
-        <template v-slot:contact="{ item }">
-          <div v-if="item.contact">{{ item.contact.name }}</div>
+        <template #contact="{ item }">
+          <div v-if="item.contact">
+            {{ item.contact.name }}
+          </div>
         </template>
-        <template v-slot:hangupDisposition="{ item }">
+        <template #hangupDisposition="{ item }">
           <div v-if="item.hangupDisposition">
             {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}
           </div>
         </template>
-        <template v-for="header in variableHeaders" v-slot:[header.field]="{ item }">
-          {{get(item, header.field)}}
+        <template
+          v-for="header in variableHeaders"
+          #[header.field]="{ item }"
+        >
+          {{ get(item, header.field) }}
         </template>
 
-        <template v-slot:actions="{ item }">
+        <template #actions="{ item }">
           <media-action
             v-if="item.files"
             :currently-playing="currentlyPlaying"
@@ -78,7 +108,7 @@
             class="table-action"
             @play="play"
             @stop="closePlayer"
-          ></media-action>
+          />
 
           <!--          v-if transcript can be added, exists, or already in progress -->
           <stt-action
@@ -86,7 +116,7 @@
             :item="item"
             class="table-action"
             @open="sttPopupCallId = item.id"
-          ></stt-action>
+          />
 
           <router-link
             :to="`/${item.id}`"
@@ -95,7 +125,7 @@
             <wt-icon-btn
               icon="forks"
               icon-prefix="hs"
-            ></wt-icon-btn>
+            />
           </router-link>
         </template>
       </wt-table>
@@ -106,7 +136,7 @@
         :src="audioURL"
         @close="closePlayer"
         @play="isPlayingNow = true"
-      ></wt-player>
+      />
     </div>
   </div>
 </template>
@@ -128,12 +158,7 @@ import DummyAfterSearchDark from '../../../../../app/assets/dummy/hs-dummy-after
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 
 export default {
-  name: 'history-registry',
-  mixins: [
-    historyHeadersMixin,
-    sortFilterMixin,
-    playMediaMixin,
-  ],
+  name: 'HistoryRegistry',
   components: {
     FilterPagination,
     TableDirection,
@@ -141,6 +166,11 @@ export default {
     SttAction,
     SttPopup,
   },
+  mixins: [
+    historyHeadersMixin,
+    sortFilterMixin,
+    playMediaMixin,
+  ],
   data: () => ({
     sttPopupCallId: null,
   }),
@@ -180,6 +210,7 @@ export default {
     }),
     ...mapActions('registry', {
       loadList: 'LOAD_DATA_LIST',
+      setHeaders: 'SET_HEADERS',
     }),
     handleTranscriptDelete({ callId, transcript }) {
       const call = this.dataList.find(({ id }) => id === callId);
@@ -190,15 +221,16 @@ export default {
       return item.files || item.transcripts?.length || item.filesJob;
     },
   },
-  mounted() {
-    this.loadList();
-  },
   watch: {
     '$route.query': {
       handler() {
         this.loadList();
       },
     },
+  },
+  mounted() {
+    this.loadList();
+    this.setHeaders(this.headers);
   },
 };
 </script>

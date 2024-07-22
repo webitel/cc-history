@@ -6,13 +6,14 @@
       class="history-action"
       color="secondary"
       @click:option="$event.handler()"
-    >{{ $t('reusable.download') }}...
+    >
+      {{ $t('reusable.download') }}...
     </wt-button-select>
     <files-counter
       v-show="isLoading"
       :download-progress="downloadProgress"
       :zipping-progress="zippingProgress"
-    ></files-counter>
+    />
   </div>
 </template>
 
@@ -25,13 +26,13 @@ import downloadTranscriptsMixin from '../../mixins/downloadTranscriptsMixin';
 import FilesCounter from './files-counter.vue';
 
 export default {
-  name: 'history-download-action',
+  name: 'HistoryDownloadAction',
+  components: { FilesCounter },
   mixins: [
     historyActionMixin,
     exportFilesMixin,
     downloadTranscriptsMixin,
   ],
-  components: { FilesCounter },
   props: {
     dataList: {
       type: Array,
@@ -66,6 +67,13 @@ export default {
       ];
     },
   },
+  created() {
+    this.initFilesExport({
+      fetchMethod: APIRepository.history.getHistory,
+      filename: 'history-records',
+      filesURL: generateMediaURL,
+    });
+  },
   methods: {
     callExportFiles() {
       if (this.isLoading) return;
@@ -76,13 +84,6 @@ export default {
         throw err;
       }
     },
-  },
-  created() {
-    this.initFilesExport({
-      fetchMethod: APIRepository.history.getHistory,
-      filename: 'history-records',
-      filesURL: generateMediaURL,
-    });
   },
 };
 </script>

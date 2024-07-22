@@ -1,10 +1,17 @@
 <template>
-  <main v-if="hasAccess" class="the-history">
-    <app-header/>
-    <wt-notifications-bar/>
-    <router-view></router-view>
+  <main
+    v-if="hasAccess"
+    class="the-history"
+  >
+    <app-header />
+    <wt-notifications-bar />
+    <router-view />
   </main>
-  <wt-error-page v-else type="403" @back="goToApplicationHub"></wt-error-page>
+  <wt-error-page
+    v-else
+    type="403"
+    @back="goToApplicationHub"
+  />
 </template>
 
 <script>
@@ -13,7 +20,7 @@ import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/W
 import AppHeader from './shared/app-header/app-header.vue';
 
 export default {
-  name: 'the-history',
+  name: 'TheHistory',
   components: {
     AppHeader,
   },

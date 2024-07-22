@@ -6,7 +6,10 @@
         {{ downloadProgress }}
       </span>
     </div>
-    <div class="files-counter__line-wrapper" v-show="zippingProgress">
+    <div
+      v-show="zippingProgress"
+      class="files-counter__line-wrapper"
+    >
       {{ $t('headerSection.zippingProgress') }}
       <span class="files-counter__count">
         {{ zippingProgress }}%
@@ -17,7 +20,7 @@
 
 <script>
 export default {
-  name: 'files-counter',
+  name: 'FilesCounter',
   props: {
     downloadProgress: {
       type: Number,

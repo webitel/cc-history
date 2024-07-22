@@ -5,21 +5,11 @@ import transcriptPhrasesMixin from '../../../mixins/transcriptPhrasesMixin';
 const transcripts = [];
 const props = { callId: '1' };
 
-vi.mock('axios', () => {
-  return {
-    default: {
-      request: vi.fn(() => Promise.resolve({ data: { items: [{ transcripts: [] }] }})),
-      create: vi.fn().mockReturnThis(),
-      interceptors: {
-        request: {
-          use: vi.fn(), eject: vi.fn(),
-        }, response: {
-          use: vi.fn(), eject: vi.fn(),
-        },
-      },
-    },
-  };
-});
+vi.mock('../../../../../../../../../app/api/instance.js', () => ({
+  default: {
+    request: () => Promise.resolve({ data: { items: [{ transcripts: [] }] } }),
+  },
+}));
 
 describe('SttPopup', () => {
   beforeEach(() => {

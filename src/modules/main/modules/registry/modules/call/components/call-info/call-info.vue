@@ -4,7 +4,9 @@
       v-if="call.variables"
       class="call-info__wrapper"
     >
-      <template v-slot:title>{{ $tc('vocabulary.variables', 2) }}</template>
+      <template #title>
+        {{ $tc('vocabulary.variables', 2) }}
+      </template>
       <template>
         <ul>
           <li
@@ -12,7 +14,9 @@
             :key="key"
             class="call-info__item"
           >
-            <h3 class="call-info__title">{{ variable.key }}: </h3>
+            <h3 class="call-info__title">
+              {{ variable.key }}:
+            </h3>
             <span class="call-info__value">{{ variable.value }}</span>
           </li>
         </ul>
@@ -22,14 +26,23 @@
       v-if="isDisplayAmdLogs"
       class="call-info__wrapper"
     >
-      <template v-slot:title>{{ $t('fields.amd') }}</template>
+      <template #title>
+        {{ $t('fields.amd') }}
+      </template>
       <template>
         <div class="call-info__item">
-          <h3 class="call-info__title">{{ $t('fields.amdResult') }}: </h3>
+          <h3 class="call-info__title">
+            {{ $t('fields.amdResult') }}:
+          </h3>
           <span>{{ call.amdResult }}</span>
         </div>
-        <div class="call-info__item" v-if="amdLogs">
-          <h3 class="call-info__title">{{ $tc('reusable.logs', 2) }}: </h3>
+        <div
+          v-if="amdLogs"
+          class="call-info__item"
+        >
+          <h3 class="call-info__title">
+            {{ $tc('reusable.logs', 2) }}:
+          </h3>
           <span>{{ amdLogs }}</span>
         </div>
       </template>
@@ -39,7 +52,9 @@
       v-if="formFields.length"
       class="call-info__wrapper"
     >
-      <template v-slot:title>{{ $t('fields.postProcessing') }}</template>
+      <template #title>
+        {{ $t('fields.postProcessing') }}
+      </template>
       <template>
         <ul>
           <li
@@ -47,20 +62,24 @@
             :key="key"
             class="call-info__item"
           >
-            <h3 class="call-info__title">{{ variable.key }}: </h3>
+            <h3 class="call-info__title">
+              {{ variable.key }}:
+            </h3>
             <span>{{ variable.value }}</span>
           </li>
         </ul>
       </template>
     </wt-expansion-panel>
 
-    <div v-if="emptyValue">{{ $t('registry.call.noInfo') }}</div>
+    <div v-if="emptyValue">
+      {{ $t('registry.call.noInfo') }}
+    </div>
   </section>
 </template>
 
 <script>
 export default {
-  name: 'call-info',
+  name: 'CallInfo',
   props: {
     call: {
       type: Object,

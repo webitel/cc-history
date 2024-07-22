@@ -1,39 +1,38 @@
 <template>
   <wt-headline class="the-history-heading">
-    <template v-slot:title>
+    <template #title>
       {{ $t('reusable.history') }}
     </template>
-    <template v-slot:actions>
-
+    <template #actions>
       <filter-search
         namespace="filters"
-      ></filter-search>
+      />
 
       <history-transcribe-action
         class="history-action"
         :selected="selectedItems"
         @refresh="loadDataList"
-      ></history-transcribe-action>
+      />
 
-      <history-export-csv-action
+      <history-export-action
         class="history-action"
         :data-list="dataList"
         :filters="getFilters"
         :fields="fields"
-      ></history-export-csv-action>
+      />
 
       <history-download-action
         class="history-action"
         :data-list="dataList"
         :filters="getFilters"
         :selected="selectedItems"
-      ></history-download-action>
+      />
 
       <history-delete-action
         class="history-action"
         :selected="selectedItems"
         @refresh="loadDataList"
-      ></history-delete-action>
+      />
     </template>
   </wt-headline>
 </template>
@@ -43,16 +42,16 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import FilterSearch from '../modules/filters/components/filter-search.vue';
 import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
-import HistoryExportCsvAction from './actions/history-export-csv-action.vue';
+import HistoryExportAction from './actions/history-export-action.vue';
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 
 export default {
-  name: 'the-history-heading',
+  name: 'TheHistoryHeading',
   components: {
     FilterSearch,
     HistoryTranscribeAction,
     HistoryDownloadAction,
-    HistoryExportCsvAction,
+    HistoryExportAction,
     HistoryDeleteAction,
   },
   computed: {

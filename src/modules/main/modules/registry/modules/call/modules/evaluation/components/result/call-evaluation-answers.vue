@@ -13,7 +13,8 @@
       </div>
       <div
         v-if="answerScore >= 0"
-        class="call-evaluation-answers-item__answer">
+        class="call-evaluation-answers-item__answer"
+      >
         <div class="call-evaluation-answers-item__title">
           {{ answerName }}
         </div>
@@ -39,7 +40,7 @@
 <script>
 
 export default {
-  name: 'call-evaluation-answers',
+  name: 'CallEvaluationAnswers',
   props: {
     result: {
       type: Object,

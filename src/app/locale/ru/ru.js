@@ -21,7 +21,9 @@ export default {
   headerSection: {
     filesLoaded: 'Файлов скачано: ',
     zippingProgress: 'Прогресс архивации: ',
-    exportCSV: 'Экспортировать CSV',
+    exportPopup: {
+      separator: 'Разделитель',
+    },
   },
   registry: {
     registry: 'История',

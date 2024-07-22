@@ -1,7 +1,7 @@
 <template>
   <Doughnut
     :chart-data="chartData"
-  ></Doughnut>
+  />
 </template>
 
 <script>

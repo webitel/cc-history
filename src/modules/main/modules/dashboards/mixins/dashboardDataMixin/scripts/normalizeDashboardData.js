@@ -1,6 +1,6 @@
 const calcCumulativeSum = (dataSources) => {
   dataSources.datasets.forEach((dataset) => {
-    // eslint-disable-next-line no-param-reassign
+     
     dataset.sum = dataset.data.reduce((sum, value) => sum + value);
   });
 };
@@ -48,7 +48,7 @@ const normalizeDashboardData = ({
   // fill with 0's
   dataSources.datasets.forEach((dataset) => {
     if (dataset.data.length < dataSources.dates.size) {
-      // eslint-disable-next-line no-param-reassign
+       
       dataset.data = dataset.data
         .concat(new Array(dataSources.dates.size - dataset.data.length).fill(defaultValue));
     }

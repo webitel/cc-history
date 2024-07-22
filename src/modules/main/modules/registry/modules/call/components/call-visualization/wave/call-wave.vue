@@ -1,7 +1,7 @@
 <template>
   <section class="call-wave-page">
     <call-visualization-header>
-      <template v-slot:main>
+      <template #main>
         <wt-select
           class="call-wave-page__file-select"
           :value="file"
@@ -10,7 +10,7 @@
           :options="fileOptions"
           track-by="id"
           @input="setFile"
-        ></wt-select>
+        />
         <div
           v-if="!isLoading"
           class="call-wave-page__region-actions"
@@ -20,7 +20,7 @@
             :selected="showHolds"
             :value="showHolds"
             @change="toggleHolds"
-          ></wt-checkbox>
+          />
           <wt-chip>
             {{ holdsSize }}
           </wt-chip>
@@ -29,31 +29,34 @@
             :selected="showComments"
             :value="showComments"
             @change="toggleComments"
-          ></wt-checkbox>
+          />
           <wt-chip>
             {{ commentsSize }}
           </wt-chip>
         </div>
       </template>
-      <template v-if="!isLoading" v-slot:actions>
+      <template
+        v-if="!isLoading"
+        #actions
+      >
         <wt-icon-btn
           icon="note"
           icon-prefix="hs"
           @click="toggleCommentMode"
-        ></wt-icon-btn>
+        />
         <wt-icon-btn
           icon="download-record"
           icon-prefix="hs"
           @click="downloadFile"
-        ></wt-icon-btn>
+        />
       </template>
     </call-visualization-header>
 
     <wt-progress-bar
       v-show="isLoading"
-      :max="100" :value="loadProgress"
-    >
-    </wt-progress-bar>
+      :max="100"
+      :value="loadProgress"
+    />
     <section
       v-show="!isLoading"
       :class="{'call-wave-page-main--hidden': isLoading}"
@@ -75,10 +78,10 @@
             :triggers="['click', 'focus', 'touch']"
             :popper-triggers="['hover']"
           >
-            <template v-slot:activator>
+            <template #activator>
               <wt-icon-btn
                 :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-              ></wt-icon-btn>
+              />
             </template>
             <wt-slider
               :max="2"
@@ -86,17 +89,17 @@
               :step="0.01"
               :value="volumeLeftGain"
               @input="volumeLeftChangeHandler"
-            ></wt-slider>
+            />
           </wt-tooltip>
           <wt-tooltip
             v-if="!rightGain.disabled"
             :triggers="['click', 'focus', 'touch']"
             :popper-triggers="['hover']"
           >
-            <template v-slot:activator>
+            <template #activator>
               <wt-icon-btn
                 :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-              ></wt-icon-btn>
+              />
             </template>
             <wt-slider
               :max="2"
@@ -104,41 +107,51 @@
               :step="0.01"
               :value="volumeRightGain"
               @input="volumeRightChangeHandler"
-            ></wt-slider>
+            />
           </wt-tooltip>
         </section>
 
-        <section v-if="fileUrl" class="call-wave-data-plugin">
+        <section
+          v-if="fileUrl"
+          class="call-wave-data-plugin"
+        >
           <wavesurfer
             ref="surf"
             :options="waveOptions"
             :src="fileUrl"
-          ></wavesurfer>
-          <div id="wave-timeline" class="call-wave-timeline"></div>
+          />
+          <div
+            id="wave-timeline"
+            class="call-wave-timeline"
+          />
         </section>
 
-        <div></div> <!-- an empty div in order to position in the correct grid column -->
+        <div /> <!-- an empty div in order to position in the correct grid column -->
         <section class="call-wave-actions">
           <section class="call-wave-actions-buttons">
             <wt-button
               :color="speedButtonColor(2)"
               @click="toggleRate(2)"
-            >x2
+            >
+              x2
             </wt-button>
             <wt-button
               :color="speedButtonColor(1.5)"
               @click="toggleRate(1.5)"
-            >x1.5
+            >
+              x1.5
             </wt-button>
             <wt-button
               :color="speedButtonColor(0.75)"
               @click="toggleRate(0.75)"
-            >x0.75
+            >
+              x0.75
             </wt-button>
             <wt-button
               :color="speedButtonColor(0.5)"
               @click="toggleRate(0.5)"
-            >x0.5
+            >
+              x0.5
             </wt-button>
             <wt-button
               :color="isPlaying ? 'primary': 'secondary'"
@@ -147,7 +160,7 @@
             >
               <wt-icon
                 :icon="!isPlaying ? 'play' : 'pause'"
-              ></wt-icon>
+              />
             </wt-button>
           </section>
           <section class="call-wave-actions-buttons">
@@ -227,7 +240,7 @@ const createMarker = (color) => {
 };
 
 export default {
-  name: 'call-wave',
+  name: 'CallWave',
   components: {
     CallVisualizationHeader,
     CallCommentForm,
@@ -454,7 +467,7 @@ export default {
         const createdMarkers = document.querySelectorAll('marker');
         // seting our font for marker title:
         createdMarkers.forEach((marker) => {
-          // eslint-disable-next-line no-param-reassign
+           
           marker.children[1].children[1].style.fontFamily = '"Montserrat", monospace';
         });
       } catch (err) {

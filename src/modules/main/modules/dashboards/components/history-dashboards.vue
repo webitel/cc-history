@@ -1,32 +1,42 @@
 <template>
   <div class="content-wrapper">
-    <dashboards-header :layout="layout" @reflow="reflow"/>
-    <wt-loader v-show="isLoading || isReflow"/>
-    <div class="history-dashboards" v-if="!isReflow" v-show="!isLoading">
+    <dashboards-header
+      :layout="layout"
+      @reflow="reflow"
+    />
+    <wt-loader v-show="isLoading || isReflow" />
+    <div
+      v-if="!isReflow"
+      v-show="!isLoading"
+      class="history-dashboards"
+    >
       <div
         class="dashboards-wrapper"
         :class="`dashboards-wrapper--${layout}-col`"
       >
         <div
-          class="dashboard-wrapper"
           v-for="(dashboard, key) of dashboards"
           :key="key"
+          class="dashboard-wrapper"
         >
           <dashboard-header
             :name="dashboard.options.name"
             @edit="editDashboard(dashboard)"
             @delete="deleteDashboard(dashboard)"
-          ></dashboard-header>
+          />
           <component
-            class="chart"
             :is="dashboard.getDisplayName()"
+            class="chart"
             :dashboard="dashboard"
             :data="dashboardsData[key]"
             :dark-mode="darkMode"
-          ></component>
+          />
         </div>
         <div class="dashboard-wrapper dashboard-wrapper--empty">
-          <wt-button color="secondary" @click="openDashboardSelect">
+          <wt-button
+            color="secondary"
+            @click="openDashboardSelect"
+          >
             {{ $t('dashboards.newBtn') }}
           </wt-button>
         </div>
@@ -36,14 +46,14 @@
         v-if="isDashboardSelect"
         @close="closeDashboardSelect"
         @input="selectDashboard"
-      ></dashboard-select-popup>
+      />
 
       <dashboard-config-popup
         v-if="isDashboardConfig"
         :dashboard="configuredDashboard"
         @close="closeDashboardConfig"
         @input="handleDashboardConfig"
-      ></dashboard-config-popup>
+      />
     </div>
   </div>
 </template>
@@ -62,7 +72,7 @@ import CallsDurationDashboard from './dashboards/CallsDurationDashboard/calls-du
 import CallsDurationMetricDashboard from './dashboards/CallsDurationMetricDashboard/calls-duration-metric-dashboard.vue';
 
 export default {
-  name: 'history-dashboards',
+  name: 'HistoryDashboards',
   components: {
     DashboardsHeader,
     DashboardHeader,

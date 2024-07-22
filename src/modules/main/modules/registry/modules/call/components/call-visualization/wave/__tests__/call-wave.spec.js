@@ -6,21 +6,12 @@ import registry from '../../../../../../store/registry';
 import playerMock
   from '../../../../../../../../../../../tests/unit/mocks/waveSurferMock';
 
-vi.mock('axios', () => {
-  return {
-    default: {
-      request: vi.fn(() => Promise.resolve({ data: { items: [{ annotations: [] }] }})),
-      create: vi.fn().mockReturnThis(),
-      interceptors: {
-        request: {
-          use: vi.fn(), eject: vi.fn(),
-        }, response: {
-          use: vi.fn(), eject: vi.fn(),
-        },
-      },
-    },
-  };
-});
+
+vi.mock('../../../../../../../../../../app/api/instance.js', () => ({
+  default: {
+    request: () => Promise.resolve({ data: { items: [{ annotations: [] }] } }),
+  },
+}));
 
 describe('Opened call wave', () => {
   const callMock = {

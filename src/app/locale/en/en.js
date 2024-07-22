@@ -21,7 +21,9 @@ export default {
   headerSection: {
     filesLoaded: 'Files loaded: ',
     zippingProgress: 'Zipping progress: ',
-    exportCSV: 'Export CSV',
+    exportPopup: {
+      separator: 'Separator',
+    },
   },
   registry: {
     registry: 'History',
