@@ -4,7 +4,9 @@ export default {
       sessionStorage.setItem('historyRegistryQueries', JSON.stringify(queries));
     },
     getHistoryRegistryQueriesFromSessionStorage() {
-      return sessionStorage.getItem('historyRegistryQueries');
+      const historyRegistryQueries = sessionStorage.getItem('historyRegistryQueries');
+      if (!historyRegistryQueries) return;
+      return JSON.parse(historyRegistryQueries);
     },
   },
 };

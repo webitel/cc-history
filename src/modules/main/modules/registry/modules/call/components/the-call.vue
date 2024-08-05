@@ -143,8 +143,7 @@ export default {
       // https://webitel.atlassian.net/browse/WTEL-4552
 
       if(window.history.length === 1) window.close();
-      const historyRegistryQueries = this.getHistoryRegistryQueriesFromSessionStorage();
-      this.$router.push({name: 'history', query: JSON.parse(historyRegistryQueries)});
+      this.$router.push({name: 'history'});
     },
   },
 };

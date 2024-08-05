@@ -205,7 +205,17 @@ export default {
       return '';
     },
   },
-
+  watch: {
+    '$route.query': {
+      handler() {
+        this.loadList();
+      },
+    },
+  },
+  mounted() {
+    this.initTableData();
+    this.setHeaders(this.headers);
+  },
   methods: {
     get, // lodash get
     ...mapActions('filters', {
@@ -226,17 +236,10 @@ export default {
     saveQueries() {
       this.setHistoryRegistryQueriesToSessionStorage(this.$route.query);
     },
-  },
-  watch: {
-    '$route.query': {
-      handler() {
-        this.loadList();
-      },
-    },
-  },
-  mounted() {
-    this.loadList();
-    this.setHeaders(this.headers);
+    initTableData() {
+      this.$router.push({ query: this.getHistoryRegistryQueriesFromSessionStorage() });
+      this.loadList();
+    }
   },
 };
 </script>
