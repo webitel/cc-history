@@ -1,7 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import CallTabsPathNames from "./_internals/CallTabsPathNames.enum.js";
 import History from '../components/the-history.vue';
 import HistoryMainPage from '../components/history-main-page.vue';
 import Call from '../../modules/main/modules/registry/modules/call/components/the-call.vue';
+const CallInfo  = import('../../modules/main/modules/registry/modules/call/components/call-info/call-info.vue');
+const CallLegs = import('../../modules/main/modules/registry/modules/call/components/call-legs/call-legs.vue');
+const CallVisualization = import('../../modules/main/modules/registry/modules/call/components/call-visualization/call-visualization.vue');
 
 const routes = [
   {
@@ -16,7 +20,23 @@ const routes = [
       {
         path: '/:pathMatch(.*)',
         name: 'call',
+        redirect: { name: CallTabsPathNames.CALL_INFO },
         component: Call,
+        children: [
+          {
+            path: 'call-info',
+            name: CallTabsPathNames.CALL_INFO,
+            component: CallInfo,
+          },{
+            path: 'legs-a-b',
+            name: CallTabsPathNames.LEGS_A_B,
+            component: CallLegs,
+          },{
+            path: 'call-visualization',
+            name: CallTabsPathNames.CALL_VISUALIZATION,
+            component: CallVisualization,
+          }
+        ],
       },
     ],
   },
@@ -29,7 +49,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-   
+
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 };
   },

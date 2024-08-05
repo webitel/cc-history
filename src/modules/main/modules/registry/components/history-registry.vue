@@ -1,7 +1,7 @@
 <template>
   <div class="content-wrapper history-registry">
     <stt-popup
-      v-if="sttPopupCallId"
+      :shown="sttPopupCallId"
       :call-id="sttPopupCallId"
       @delete="handleTranscriptDelete({ callId: sttPopupCallId, transcript: $event })"
       @close="sttPopupCallId = null"
@@ -121,6 +121,7 @@
           <router-link
             :to="`/${item.id}`"
             class="table-action"
+            @click="saveQueries"
           >
             <wt-icon-btn
               icon="forks"
@@ -147,6 +148,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import get from 'lodash/get';
 import historyHeadersMixin from '../mixins/historyHeadersMixin';
 import playMediaMixin from '../mixins/media/playMediaMixin';
+import historyRegistryQueriesMixin from "../mixins/historyRegistryQueries.mixin.js";
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
@@ -170,6 +172,7 @@ export default {
     historyHeadersMixin,
     sortFilterMixin,
     playMediaMixin,
+    historyRegistryQueriesMixin,
   ],
   data: () => ({
     sttPopupCallId: null,
@@ -219,6 +222,9 @@ export default {
     },
     showItemStt(item) {
       return item.files || item.transcripts?.length || item.filesJob;
+    },
+    saveQueries() {
+      this.setHistoryRegistryQueriesToSessionStorage(this.$route.query);
     },
   },
   watch: {

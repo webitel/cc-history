@@ -1,5 +1,6 @@
 <template>
   <wt-popup
+    v-bind="$attrs"
     class="stt-popup"
     :min-width="720"
     @close="$emit('close')"
@@ -63,8 +64,10 @@ export default {
     call: { transcripts: [] },
     transcript: null,
   }),
-  created() {
-    this.initialize();
+  watch: {
+    callId(id) {
+      if (id)  this.initialize();
+    },
   },
   methods: {
     initCurrentTranscript() {
