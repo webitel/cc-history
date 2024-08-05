@@ -1,7 +1,7 @@
 <template>
   <section class="history-section history-filters-section">
     <preset-form-popup
-      v-if="isPresetFormPopup"
+      :shown="isPresetFormPopup"
       :callback="savePreset"
       :name="preset.name"
       @close="closePresetFormPopup"

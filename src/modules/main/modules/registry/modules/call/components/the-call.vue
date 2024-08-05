@@ -25,8 +25,9 @@
         class="history-tabs-wrapper"
       >
         <wt-tabs
-          v-model="currentTab"
+          :current="currentTab"
           :tabs="tabs"
+          @change="changeTab"
         />
         <component
           :is="currentTab.value"
@@ -40,6 +41,8 @@
 
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import CallTabsPathNames from "../../../../../../../app/router/_internals/CallTabsPathNames.enum.js";
+import historyRegistryQueriesMixin from "../../../mixins/historyRegistryQueries.mixin.js";
 import { mapActions, mapState } from 'vuex';
 import CallInfo from './call-info/call-info.vue';
 import CallLegs from './call-legs/call-legs.vue';
@@ -52,12 +55,9 @@ export default {
     CallLegs,
     CallVisualization,
   },
-
+  mixins: [historyRegistryQueriesMixin],
   data: () => ({
     namespace: 'registry/call',
-    currentTab: {
-      value: 'call-info',
-    },
   }),
   computed: {
     ...mapState({
@@ -73,14 +73,17 @@ export default {
         INFO: {
           text: this.$t('registry.call.callInfo'),
           value: 'call-info',
+          pathName: CallTabsPathNames.CALL_INFO,
         },
         LEGS: {
           text: this.$t('registry.call.callLegs'),
           value: 'call-legs',
+          pathName: CallTabsPathNames.LEGS_A_B,
         },
         VISUALIZATION: {
           text: this.$t('registry.call.callVisualization'),
           value: 'call-visualization',
+          pathName: CallTabsPathNames.CALL_VISUALIZATION,
         },
       };
     },
@@ -92,7 +95,7 @@ export default {
       return tabs;
     },
     callId() {
-      return this.$route.path.split('/').pop();
+      return this.$route.params.pathMatch;
     },
     path() {
       return [
@@ -100,6 +103,16 @@ export default {
         { name: `${this.$t('registry.call.callInfo')} (${this.callId})` },
       ];
     },
+    currentTab() {
+      return this.tabs.find(({pathName}) => this.$route.name === pathName) || this.tabs[0];
+    },
+  },
+  created() {
+    this.setMainCall({ id: this.callId });
+    this.setInitialTab();
+  },
+  unmounted() {
+    this.resetMainCall();
   },
   methods: {
     ...mapActions({
@@ -109,7 +122,11 @@ export default {
       resetMainCall(dispatch, payload) {
         return dispatch(`${this.namespace}/RESET_OPENED_CALL`, payload);
       },
+
     }),
+    changeTab(tab) {
+      this.$router.push({ ...this.$route, name: tab.pathName });
+    },
     setInitialTab() {
       let tab;
       switch (this.$route.hash) {
@@ -119,22 +136,15 @@ export default {
         default:
           tab = this.tabValues.INFO;
       }
-      this.currentTab = tab;
+      this.changeTab(tab);
     },
     closeTab() {
       // Need to close the tab if you moved from another application
       // https://webitel.atlassian.net/browse/WTEL-4552
 
       if(window.history.length === 1) window.close();
-      this.$router.back();
+      this.$router.push({name: 'history'});
     },
-  },
-  created() {
-    this.setMainCall({ id: this.callId });
-    this.setInitialTab();
-  },
-  unmounted() {
-    this.resetMainCall();
   },
 };
 </script>

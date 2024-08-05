@@ -10,7 +10,7 @@
       {{ $t('variableColumnSelect.title') }}
     </wt-tooltip>
     <wt-popup
-      v-if="isVariableColumnPopup"
+      :shown="isVariableColumnPopup"
       class="variable-column-popup"
       width="480"
       @close="close"
