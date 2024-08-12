@@ -1,10 +1,10 @@
 <template>
   <div class="content-wrapper history-registry">
     <stt-popup
-      :shown="sttPopupCallId"
       :call-id="sttPopupCallId"
-      @delete="handleTranscriptDelete({ callId: sttPopupCallId, transcript: $event })"
+      :shown="sttPopupCallId"
       @close="sttPopupCallId = null"
+      @delete="handleTranscriptDelete({ callId: sttPopupCallId, transcript: $event })"
     />
     <wt-loader v-show="isLoading" />
     <wt-dummy
@@ -97,7 +97,7 @@
           v-for="header in variableHeaders"
           #[header.field]="{ item }"
         >
-          {{ get(item, header.field) }}
+          {{ getVariableValue(item, header.field) }}
         </template>
 
         <template #actions="{ item }">
@@ -148,7 +148,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import get from 'lodash/get';
 import historyHeadersMixin from '../mixins/historyHeadersMixin';
 import playMediaMixin from '../mixins/media/playMediaMixin';
-import historyRegistryQueriesMixin from "../mixins/historyRegistryQueries.mixin.js";
+import historyRegistryQueriesMixin from '../mixins/historyRegistryQueries.mixin.js';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
@@ -189,6 +189,11 @@ export default {
     ...mapGetters('appearance', {
       darkMode: 'DARK_MODE',
     }),
+    getVariableValue() {
+      return (item, field) => {
+        return get(item, ['variables', field.replace('variables.', '')]);
+      };
+    },
     dummyValue() {
       if (!this.dataList.length) {
         if (Object.values(this.$route.query).some((query) => query.length)) {
@@ -239,7 +244,7 @@ export default {
     initTableData() {
       this.$router.push({ query: this.getHistoryRegistryQueriesFromSessionStorage() });
       this.loadList();
-    }
+    },
   },
 };
 </script>
