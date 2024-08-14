@@ -1,7 +1,7 @@
 import { shallowMount, mount } from '@vue/test-utils';
 import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
 import CallNoTranscriptSection from '../call-no-transcript-section.vue';
-import CallTranscriptAPI from '../../../api/CallTranscriptAPI';
+import CallTranscript from '../../../api/callTranscript.js';
 
 let call;
 let file;
@@ -55,7 +55,7 @@ describe('CallNoTranscriptSection', () => {
       computed,
     });
     const mock = vi.fn();
-    vi.spyOn(CallTranscriptAPI, 'create')
+    vi.spyOn(CallTranscript, 'create')
     .mockImplementationOnce(mock);
 
     const btn = wrapper.findComponent({ name: 'wt-button' });
@@ -81,7 +81,7 @@ describe('CallNoTranscriptSection', () => {
     });
 
     const mock = vi.fn();
-    vi.spyOn(CallTranscriptAPI, 'create')
+    vi.spyOn(CallTranscript, 'create')
     .mockImplementationOnce(mock);
 
     const btn = wrapper.findComponent({ name: 'wt-button' });

@@ -1,10 +1,9 @@
- 
+
 
 import { saveAs } from 'file-saver-es';
 import JSZip from 'jszip';
 import APIRepository from '../../../app/api/APIRepository';
-import CallTranscriptAPI
-  from '../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
+import CallTranscriptAPI from '../../../modules/main/modules/registry/modules/stt/api/callTranscript.js';
 
 const collectTranscriptIds = (historyItems) => {
   return historyItems.reduce((ids, { transcripts }) => {
@@ -53,7 +52,7 @@ export default {
       };
 
       const ids = collectTranscriptIds(items);
-       
+
       for (const id of ids) {
         const phrases = await fetchPhrases(id);
         const txt = generateTxt(phrases, {

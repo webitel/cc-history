@@ -2,10 +2,10 @@ import {
   camelToSnake, notify,
   starToSearch, snakeToCamel,
   merge, mergeEach,
-} from '@webitel/ui-sdk/src/api/transformers';
+} from '@webitel/ui-sdk/src/api/transformers/index.js';
 import applyTransform
   from '@webitel/ui-sdk/src/api/transformers/applyTransform';
-import { getDefaultGetListResponse } from '@webitel/ui-sdk/src/api/defaults';
+import { getDefaultGetListResponse } from '@webitel/ui-sdk/src/api/defaults/index.js';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { CallServiceApiFactory } from 'webitel-sdk';
 import * as converters from '@webitel/ui-sdk/src/scripts/caseConverters';

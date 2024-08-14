@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import CallTranscriptAPI from '../../api/CallTranscriptAPI';
+import CallTranscriptAPI from '../../api/callTranscript.js';
 import TranscriptionState from '../../enums/TranscriptionState.enum';
 
 export default {

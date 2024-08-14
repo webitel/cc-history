@@ -6,7 +6,7 @@ import applyTransform, {
   merge,
   notify,
   snakeToCamel,
-} from '@webitel/ui-sdk/src/api/transformers';
+} from '@webitel/ui-sdk/src/api/transformers/index.js';
 
 
 const SNAPSHOTS_URL = '/user/settings/dashboards';

@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import CallTranscriptAPI from '../../api/CallTranscriptAPI';
+import CallTranscriptAPI from '../../api/callTranscript.js';
 import TranscriptPhrasesMixin from '../transcriptPhrasesMixin';
 
 const Component = {

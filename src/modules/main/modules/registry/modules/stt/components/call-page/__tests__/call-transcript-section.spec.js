@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import CallTranscriptSection from '../call-transcript-section.vue';
-import CallTranscriptAPI from '../../../api/CallTranscriptAPI';
+import CallTranscript from '../../../api/callTranscript.js';
 
 let call;
 let file;
@@ -29,7 +29,7 @@ describe('CallTranscriptSection', () => {
     call.transcripts = [file];
     props = { call };
     computed.file = () => file;
-    CallTranscriptAPI.delete = vi.fn();
+    CallTranscript.delete = vi.fn();
     const wrapper = shallowMount(CallTranscriptSection, { props, computed });
     await wrapper.vm.deleteTranscript(file);
     expect(call.transcripts.length).toBe(0);

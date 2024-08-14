@@ -49,7 +49,7 @@ import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
 import SttDeleteAction from '../utils/stt-delete-action.vue';
 import SttDownloadAction from '../utils/stt-download-action.vue';
 import CallNoTranscript from './call-no-transcript-section.vue';
-import CallTranscriptAPI from '../../api/CallTranscriptAPI';
+import CallTranscriptAPI from '../../api/callTranscript.js';
 
 export default {
   name: 'CallTranscript',

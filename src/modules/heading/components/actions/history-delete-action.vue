@@ -22,7 +22,7 @@
 import DeleteConfirmationPopup
   from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import CallRecordingsAPI from '../../../main/modules/registry/modules/recordings/api/CallRecordingsAPI';
-import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
+import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/callTranscript.js';
 import historyActionMixin from '../../mixins/historyActionMixin';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 
