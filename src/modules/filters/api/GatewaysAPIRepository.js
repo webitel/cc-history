@@ -5,11 +5,11 @@ import applyTransform, {
   snakeToCamel,
   notify,
   sanitize, generateUrl,
-} from '@webitel/ui-sdk/src/api/transformers';
+} from '@webitel/ui-sdk/src/api/transformers/index.js';
 import {
   getDefaultGetListResponse,
   getDefaultGetParams,
-} from '@webitel/ui-sdk/src/api/defaults';
+} from '@webitel/ui-sdk/src/api/defaults/index.js';
 import instance from '../../../app/api/instance';
 
 const baseUrl = '/sip/gateways';

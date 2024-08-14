@@ -1,4 +1,4 @@
-import CallTranscriptAPI from '../api/CallTranscriptAPI';
+import CallTranscriptAPI from '../api/callTranscript.js';
 import saveTranscriptPhrasesMixin from './saveTranscriptPhrasesMixin';
 
 export default {

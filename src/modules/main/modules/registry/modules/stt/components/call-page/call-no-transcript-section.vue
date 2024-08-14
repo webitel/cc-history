@@ -59,7 +59,7 @@
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
 import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
-import CallTranscriptAPI from '../../api/CallTranscriptAPI';
+import CallTranscriptAPI from '../../api/callTranscript.js';
 
 export default {
   name: 'CallNoTranscript',

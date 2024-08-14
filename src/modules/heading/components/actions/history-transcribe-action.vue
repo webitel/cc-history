@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/CallTranscriptAPI';
+import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/callTranscript.js';
 import historyActionMixin from '../../mixins/historyActionMixin';
 
 export default {
