@@ -46,6 +46,13 @@ const mapDefaultComments = (item) => {
   })) : [];
 };
 
+const mapTranscripts = (item) => {
+  return item.transcripts ? item.transcripts.map((transcript) => ({
+    ...transcript,
+    name: transcript.file.name,
+  })) : [];
+};
+
 const transformResponseItems = (items) => {
   const defaultObject = {
     _isSelected: false,
@@ -76,6 +83,7 @@ const transformResponseItems = (items) => {
       ? converters.snakeToCamel(item.hangupDisposition)
       : '',
     score: item.scoreRequired ? item.scoreRequired.toFixed(2) : null,
+    transcripts: mapTranscripts(item),
   }));
 };
 

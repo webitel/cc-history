@@ -11,12 +11,13 @@
     <template #main>
       <div class="stt-popup-toolbar">
         <wt-select
-          v-model="transcript"
+          :value="transcript"
           :clearable="false"
           :label="$t('vocabulary.file')"
           :options="call.transcripts"
-          option-label="id"
-          track-by="id"
+          option-label="name"
+          track-by="fileId"
+          @input="transcript = $event"
         />
         <div class="stt-popup-toolbar__actions">
           <stt-download-action
@@ -101,14 +102,10 @@ export default {
 <style lang="scss" scoped>
 .stt-popup-toolbar {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
-
-  .wt-select {
-    width: 220px;
-  }
 
   .stt-popup-toolbar__actions {
     display: flex;
