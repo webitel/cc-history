@@ -109,7 +109,6 @@ export default {
   },
   created() {
     this.setMainCall({ id: this.callId });
-    this.setInitialTab();
   },
   unmounted() {
     this.resetMainCall();
@@ -126,17 +125,6 @@ export default {
     }),
     changeTab(tab) {
       this.$router.push({ ...this.$route, name: tab.pathName });
-    },
-    setInitialTab() {
-      let tab;
-      switch (this.$route.hash) {
-        case '#transcript':
-          tab = this.tabValues.VISUALIZATION;
-          break;
-        default:
-          tab = this.tabValues.INFO;
-      }
-      this.changeTab(tab);
     },
     closeTab() {
       // Need to close the tab if you moved from another application
