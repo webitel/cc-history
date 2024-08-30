@@ -13,7 +13,7 @@ export default {
         {
           value: 'time',
           text: this.$t('vocabulary.time'),
-            width: '120px',
+          width: '120px',
         },
         {
           value: 'channel',
@@ -42,7 +42,9 @@ export default {
     async loadCallTranscript() {
       try {
         this.isLoading = true;
-        this.phrases = await CallTranscriptAPI.get({ id: this.transcript.id });
+        if (this.transcript.id) {
+          this.phrases = await CallTranscriptAPI.get({ id: this.transcript.id });
+        }
       } finally {
         this.isLoading = false;
       }
