@@ -1,13 +1,18 @@
 import { shallowMount } from '@vue/test-utils';
-import { createStore } from 'vuex';
 import { createRouter, createWebHistory } from 'vue-router';
-import HistoryRegistry from '../history-registry.vue';
-import registry from '../../store/registry';
+import { createStore } from 'vuex';
 import openedHistoryCall from '../../modules/call/store/call';
+import registry from '../../store/registry';
+import HistoryRegistry from '../history-registry.vue';
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [],
+  routes: [
+    {
+      path: '/',
+      name: 'vi',
+    },
+  ],
 });
 
 describe('History table', () => {

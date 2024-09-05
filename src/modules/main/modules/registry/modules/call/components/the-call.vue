@@ -41,9 +41,9 @@
 
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
-import CallTabsPathNames from "../../../../../../../app/router/_internals/CallTabsPathNames.enum.js";
-import historyRegistryQueriesMixin from "../../../mixins/historyRegistryQueries.mixin.js";
 import { mapActions, mapState } from 'vuex';
+import CallTabsPathNames from '../../../../../../../app/router/_internals/CallTabsPathNames.enum.js';
+import historyRegistryQueriesMixin from '../../../mixins/historyRegistryQueries.mixin.js';
 import CallInfo from './call-info/call-info.vue';
 import CallLegs from './call-legs/call-legs.vue';
 import CallVisualization from './call-visualization/call-visualization.vue';
@@ -95,7 +95,7 @@ export default {
       return tabs;
     },
     callId() {
-      return this.$route.params.pathMatch;
+      return this.$route.params?.pathMatch;
     },
     path() {
       return [

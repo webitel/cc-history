@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
-import SttPopup from '../stt-popup.vue';
 import transcriptPhrasesMixin from '../../../mixins/transcriptPhrasesMixin';
+import SttPopup from '../stt-popup.vue';
 
 const transcripts = [];
 const props = { callId: '1' };
@@ -32,6 +32,7 @@ describe('SttPopup', () => {
     const wrapper = shallowMount(SttPopup, {
       props,
     });
+    await wrapper.vm.initialize();
     await wrapper.vm.$nextTick();
     expect(mock).toHaveBeenCalled();
   });
