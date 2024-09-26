@@ -93,6 +93,11 @@
             {{ $t(`hangupDisposition.${item.hangupDisposition}`) }}
           </div>
         </template>
+        <template #tags="{ item }">
+          <div v-if="item.tags">
+            {{ item.tags.join(', ') }}
+          </div>
+        </template>
         <template
           v-for="header in variableHeaders"
           #[header.field]="{ item }"
