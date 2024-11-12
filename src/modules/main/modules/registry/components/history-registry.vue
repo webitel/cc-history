@@ -247,7 +247,8 @@ export default {
       this.setHistoryRegistryQueriesToSessionStorage(this.$route.query);
     },
     initTableData() {
-      this.$router.push({ query: this.getHistoryRegistryQueriesFromSessionStorage() });
+      const prevQuery = this.getHistoryRegistryQueriesFromSessionStorage();
+      if (prevQuery) this.$router.push({ query: prevQuery });
       this.loadList();
     },
   },

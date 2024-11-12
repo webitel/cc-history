@@ -1,3 +1,5 @@
+import { isEmpty } from '@webitel/ui-sdk/scripts';
+
 export default {
   methods: {
     setHistoryRegistryQueriesToSessionStorage(queries) {
@@ -5,8 +7,8 @@ export default {
     },
     getHistoryRegistryQueriesFromSessionStorage() {
       const historyRegistryQueries = sessionStorage.getItem('historyRegistryQueries');
-      if (!historyRegistryQueries) return;
-      return JSON.parse(historyRegistryQueries);
+      const parsed = JSON.parse(historyRegistryQueries);
+      return isEmpty(parsed) ? false : parsed;
     },
   },
 };
