@@ -2,6 +2,9 @@ import vue from '@vitejs/plugin-vue';
 import { defineConfig, loadEnv } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import createSvgSpritePlugin from 'vite-plugin-svg-sprite';
+import vueDevTools from 'vite-plugin-vue-devtools';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+import path from 'path';
 
 // TODO
 // import.meta.env.VUE_APP_PACKAGE_VERSION = require('./package.json').version;
@@ -53,6 +56,17 @@ export default ({ mode }) => {
       }),
       createSvgSpritePlugin({
         include: '**/sprite/*.svg',
+      }),
+      viteStaticCopy({
+        targets: [
+          {
+            src: path.resolve(__dirname, 'node_modules/@webitel/ui-sdk/src/assets/icons/plyr.svg'),
+            dest: 'img',
+          },
+        ],
+      }),
+      vueDevTools({
+        launchEditor: 'webstorm',
       }),
     ],
     test: {
