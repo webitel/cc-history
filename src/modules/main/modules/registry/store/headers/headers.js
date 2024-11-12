@@ -1,4 +1,4 @@
-export default [
+const headers = [
   {
     value: 'date',
     show: true,
@@ -267,4 +267,9 @@ export default [
     sort: null,
     field: 'contact',
   },
-];
+].map((header) => ({
+  locale: `fields.${header.value}`,
+  ...header,
+}));
+
+export default headers;

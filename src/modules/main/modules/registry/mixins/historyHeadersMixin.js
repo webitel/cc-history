@@ -8,15 +8,19 @@ export default {
 
     headers: {
       get() {
-
         return this.headersValue
-          .map((header) => ({
+        .map(({ text, ...header }) => {
+          let modifiedText = text;
+
+          if (header.value.includes('variables')) {
+            modifiedText = header.value.replace(/^variables\./, '');
+          }
+
+          return {
             ...header,
-            // NOTE: This condition is necessary for the normal display of variable headers
-            text: header.value.includes('variables') ?
-              header.value.replace(/^variables\./, '') :
-              this.$t(`fields.${header.value}`),
-          }));
+            text: modifiedText,
+          };
+        });
       },
       set(value) {
         this.setHeaders(value);

@@ -179,6 +179,10 @@ export default {
       },
     }),
 
+    headersValue() {
+      return this.$store.getters[`${this.namespace}/HEADERS`];
+    },
+
     tableData() {
       return [
         this.call,
