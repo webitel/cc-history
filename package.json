@@ -45,5 +45,8 @@
     "vite-plugin-svg-sprite": "^0.5.2",
     "vite-plugin-vue-devtools": "^7.6.4",
     "vitest": "^2.0.5"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }
