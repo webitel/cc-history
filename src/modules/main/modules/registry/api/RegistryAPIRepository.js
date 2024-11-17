@@ -1,14 +1,16 @@
 import {
-  camelToSnake, notify,
-  starToSearch, snakeToCamel,
-  merge, mergeEach,
-} from '@webitel/ui-sdk/src/api/transformers/index.js';
+  getDefaultGetListResponse,
+} from '@webitel/ui-sdk/src/api/defaults/index.js';
 import applyTransform
   from '@webitel/ui-sdk/src/api/transformers/applyTransform';
-import { getDefaultGetListResponse } from '@webitel/ui-sdk/src/api/defaults/index.js';
+import {
+  merge,
+  notify,
+  snakeToCamel,
+} from '@webitel/ui-sdk/src/api/transformers/index.js';
+import * as converters from '@webitel/ui-sdk/src/scripts/caseConverters';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { CallServiceApiFactory } from 'webitel-sdk';
-import * as converters from '@webitel/ui-sdk/src/scripts/caseConverters';
 
 import instance from '../../../../../app/api/instance';
 import configuration from '../../../../../app/api/openAPIConfig';
@@ -166,7 +168,9 @@ const getList = ({
       skip_parent: skipParent,
       parent_id: parentId,
       cause,
-      has_file: hasFile === 'true' ? true : hasFile === 'false' ? false : undefined,
+      has_file: hasFile === 'true' ? true : hasFile === 'false'
+        ? false
+        : undefined,
       number: search,
       direction,
       id,
@@ -175,7 +179,8 @@ const getList = ({
       amd_result: amdResult,
       fts,
       directions: hangupDisposition,
-      has_transcript: hasTranscription === 'true' ? true : hasTranscription === 'false' ? false : undefined,
+      has_transcript: hasTranscription === 'true' ? true : hasTranscription ===
+      'false' ? false : undefined,
       agent_description: description,
       grantee_id: grantee,
       talk: talkSec,
@@ -216,27 +221,77 @@ const exportHistoryToFile = getList({
     merge(getDefaultGetListResponse()),
   ],
   responseItemsTransformers: [
-    (items) => items.map((item) => ({
-    ...item,
-      date: computeDate(item.created_at),
-      time: computeTime(item.created_at),
-      bridged_at: computeTime(item.bridged_at),
-      queue_bridged_at: computeTime(item.queue_bridged_at),
-      created_at: computeDateAndTime(item.created_at),
-      answered_at: computeTime(item.answered_at),
-      joined_at: computeTime(item.joined_at),
-      leaving_at: computeTime(item.leaving_at),
-      hangup_at: computeTime(item.hangup_at),
-      reporting_at: computeTime(item.reporting_at),
-      duration: convertDuration(item.duration),
-      hold_sec: convertDuration(item.hold_sec),
-      wait_sec: convertDuration(item.wait_sec),
-      bill_sec: convertDuration(item.bill_sec),
-      talk_sec: convertDuration(item.talk_sec),
-      reporting_sec: convertDuration(item.reporting_sec),
-      queue_wait_sec: convertDuration(item.queue_wait_sec),
-      queue_duration_sec: convertDuration(item.queue_duration_sec),
-    })),
+    (items) => items.map((item) => {
+      const convertedItem = { ...item };
+
+      if (item.created_at) {
+        // convertedItem.date = computeDate(item.created_at);
+        // convertedItem.time = computeTime(item.created_at);
+        convertedItem.created_at = computeDateAndTime(item.created_at);
+      }
+
+      if (item.bridged_at) {
+        convertedItem.bridged_at = computeTime(item.bridged_at);
+      }
+
+      if (item.queue_bridged_at) {
+        convertedItem.queue_bridged_at = computeTime(item.queue_bridged_at);
+      }
+
+      if (item.answered_at) {
+        convertedItem.answered_at = computeTime(item.answered_at);
+      }
+
+      if (item.joined_at) {
+        convertedItem.joined_at = computeTime(item.joined_at);
+      }
+
+      if (item.leaving_at) {
+        convertedItem.leaving_at = computeTime(item.leaving_at);
+      }
+
+      if (item.hangup_at) {
+        convertedItem.hangup_at = computeTime(item.hangup_at);
+      }
+
+      if (item.reporting_at) {
+        convertedItem.reporting_at = computeTime(item.reporting_at);
+      }
+
+      if (item.duration) {
+        convertedItem.duration = convertDuration(item.duration);
+      }
+
+      if (item.hold_sec) {
+        convertedItem.hold_sec = convertDuration(item.hold_sec);
+      }
+
+      if (item.wait_sec) {
+        convertedItem.wait_sec = convertDuration(item.wait_sec);
+      }
+
+      if (item.bill_sec) {
+        convertedItem.bill_sec = convertDuration(item.bill_sec);
+      }
+
+      if (item.talk_sec) {
+        convertedItem.talk_sec = convertDuration(item.talk_sec);
+      }
+
+      if (item.reporting_sec) {
+        convertedItem.reporting_sec = convertDuration(item.reporting_sec);
+      }
+
+      if (item.queue_wait_sec) {
+        convertedItem.queue_wait_sec = convertDuration(item.queue_wait_sec);
+      }
+
+      if (item.queue_duration_sec) {
+        convertedItem.queue_duration_sec = convertDuration(item.queue_duration_sec);
+      }
+
+      return convertedItem;
+    }),
   ],
 });
 

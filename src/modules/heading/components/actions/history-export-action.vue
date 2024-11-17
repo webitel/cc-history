@@ -61,6 +61,7 @@
 <script>
 import { useVuelidate } from '@vuelidate/core';
 import { required, requiredIf } from '@vuelidate/validators';
+import TypesExportedSettingsEnum from '@webitel/ui-sdk/src/enums/TypesExportedSettings/TypesExportedSettings.enum.js';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportXLSMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportXLSMixin';
 import { EngineSystemSettingName } from 'webitel-sdk';
@@ -68,7 +69,6 @@ import APIRepository from '../../../../app/api/APIRepository';
 import ConfigurationAPI from '../../api/configuration.js';
 import historyActionMixin from '../../mixins/historyActionMixin';
 import FilesCounter from './files-counter.vue';
-import TypesExportedSettingsEnum from '@webitel/ui-sdk/src/enums/TypesExportedSettings/TypesExportedSettings.enum.js';
 
 export default {
   name: 'HistoryExportAction',
@@ -127,7 +127,7 @@ export default {
     },
   },
   methods: {
-    updateDraft({format, separator} = {}) {
+    updateDraft({ format, separator } = {}) {
       this.draft = {
         format: format || '',
         separator: separator || '',
@@ -142,7 +142,7 @@ export default {
       }
     },
     exportFile(format) {
-      const fields = this.fields.filter((field) => !['files', 'files_job', 'transcripts'].includes(field));
+      const fields = this.fields;
       const delimiter = this.draft.separator;
       // https://webitel.atlassian.net/browse/DEV-3797
       const params = {
@@ -151,17 +151,13 @@ export default {
         skipParent: true,
         _columns: fields,
       };
-      try {
-        switch (format) {
-          case TypesExportedSettingsEnum.CSV:
-            return this.exportCSV({ ...params, delimiter });
-          case TypesExportedSettingsEnum.XLS:
-            return this.exportXLS(params);
-          default:
-            console.error(`Unsupported format: ${format}`);
-        }
-      } catch (err) {
-        throw err;
+      switch (format) {
+        case TypesExportedSettingsEnum.CSV:
+          return this.exportCSV({ ...params, delimiter });
+        case TypesExportedSettingsEnum.XLS:
+          return this.exportXLS(params);
+        default:
+          console.error(`Unsupported format: ${format}`);
       }
     },
     handleExport() {
