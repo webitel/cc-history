@@ -120,7 +120,8 @@ function updateDraft(list) {
 }
 
 function setToLocalStorage(list) {
-  localStorage.setItem('variablesKeysList', JSON.stringify([...new Set(list)]));
+  const storedValue = JSON.stringify([...new Set(list)]);
+  localStorage.setItem('variablesKeysList', storedValue);
 }
 
 function addVariableColumn() {
@@ -136,6 +137,7 @@ function addVariableColumn() {
   if (!draft.some((key) => key.value === variableColumn.value) && newVariableKey.value) {
     draft.unshift(variableColumn);
   }
+
   newVariableKey.value = '';
 }
 
@@ -161,7 +163,7 @@ watch(isVariableColumnPopup, () => {
 async function save() {
   isLoading.value = true;
   try {
-    setToLocalStorage(draft)
+    setToLocalStorage(draft);
     emit('add-variables-headers', draft);
   } finally {
     isLoading.value = false;
