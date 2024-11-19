@@ -57,6 +57,7 @@ export default {
   computed: {
     ...mapState('registry', {
       dataList: (state) => state.dataList,
+      headers: (state) => state.headers,
     }),
 
     ...mapGetters('filters', {
@@ -64,9 +65,12 @@ export default {
     }),
 
     ...mapGetters('registry', {
-      fields: 'DATA_FIELDS',
       selectedItems: 'SELECTED_DATA_ITEMS',
     }),
+
+    fields() {
+      return ['id', ...this.headers.filter((header) => header.show).map((header) => header.field)];
+    },
   },
 
   methods: {
