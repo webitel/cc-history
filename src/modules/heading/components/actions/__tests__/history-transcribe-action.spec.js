@@ -10,7 +10,7 @@ describe('HistoryTranscribeAction', () => {
     expect(wrapper.isVisible()).toBe(true);
   });
   it('transcribe action is enabled is there`s some selected', () => {
-    selected = [{ files: {} }];
+    selected = [{ files: { id: 12 } }];
     const wrapper = shallowMount(HistoryTranscribeAction, { props: { selected } });
     const btn = wrapper.findComponent({ name: 'wt-button' });
     expect(btn.vm.disabled).toBe(false);

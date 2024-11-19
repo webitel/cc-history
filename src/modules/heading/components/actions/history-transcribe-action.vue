@@ -1,6 +1,6 @@
 <template>
   <wt-button
-    :disabled="disableTranscribe"
+    :disabled="!allowTranscribe"
     :loading="isTranscribing"
     color="secondary"
     @click="bulkTranscribe"
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { isEmpty } from '@webitel/ui-sdk/scripts';
 import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/callTranscript.js';
 import historyActionMixin from '../../mixins/historyActionMixin';
 
@@ -20,13 +21,16 @@ export default {
     isTranscribing: false,
   }),
   computed: {
-    disableTranscribe() {
-      /*
-      Trascribe only if selected has file, but has no transcripts
-      can't filter by filesJob cause if transcript is triggered, but no refresh, there's no filesJob
-       */
-      return !this.selected.length || this.selected
-        .every(({ files, transcripts }) => !files || transcripts);
+    allowTranscribe() {
+      const hasSelected = (selected) => selected.length;
+      const eachHasFile = (selected) => selected.every(({ files }) => !isEmpty(files));
+      const eachHasNoTranscript = (selected) => selected.every(({ transcripts }) => isEmpty(transcripts));
+
+      return [
+        hasSelected,
+        eachHasFile,
+        eachHasNoTranscript,
+      ].every((rule) => rule(this.selected));
     },
   },
   methods: {
