@@ -20,7 +20,7 @@ export default ({ mode }) => {
     },
     server: {
       host: true,
-      port: 8081,
+      port: 8080,
     },
     css: {
       preprocessorOptions: {
