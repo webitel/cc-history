@@ -1,5 +1,5 @@
-@import '@webitel/ui-sdk/src/css/main';
-@import 'utils/helper-classes';
+@use '@webitel/ui-sdk/src/css/main' as *;
+@use 'utils/helper-classes';
 
 html {
   height: 100%;
