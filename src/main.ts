@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createPinia } from "pinia";
 import instance from './app/api/instance';
 
 import App from './the-app.vue';
@@ -36,7 +37,12 @@ const fetchConfig = async () => {
 const initSession = async () => store.dispatch('userinfo/OPEN_SESSION', { instance });
 
 const createVueInstance = () => {
+  const pinia = createPinia();
+
+  console.info(pinia)
+
   const app = createApp(App)
+      .use(pinia)
   .use(router)
   .use(store)
   .use(i18n)

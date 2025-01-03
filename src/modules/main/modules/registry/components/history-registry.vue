@@ -23,7 +23,7 @@
         :data="dataList"
         :headers="headers"
         sortable
-        @sort="sort"
+        @sort="updateSort"
       >
         <template #direction="{ item }">
           <table-direction :item="item" />
@@ -135,7 +135,17 @@
           </router-link>
         </template>
       </wt-table>
-      <filter-pagination :is-next="isNext" />
+
+      <wt-pagination
+        :size="size"
+        :next="next"
+        :prev="page > 1"
+        debounce
+        @next="updatePage(page+1)"
+        @prev="updatePage(page-1)"
+        @change="updateSize"
+      />
+<!--      <filter-pagination :is-next="isNext" />-->
 
       <wt-player
         v-show="audioURL"
@@ -147,7 +157,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import get from 'lodash/get';
@@ -163,6 +173,11 @@ import DummyDark from '../../../../../app/assets/dummy/hs-dummy-dark.svg';
 import DummyAfterSearchLight from '../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
 import DummyAfterSearchDark from '../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
+import {useTableStore} from "../stores/registry.table.store.ts";
+import {usePaginationStore} from "../stores/registry.pagination.store.ts";
+import {useHeadersStore} from "../stores/registry.headers.store.ts";
+import {storeToRefs} from "pinia";
+import {computed, watch} from "vue";
 
 export default {
   name: 'HistoryRegistry',
@@ -174,11 +189,79 @@ export default {
     SttPopup,
   },
   mixins: [
-    historyHeadersMixin,
+    // historyHeadersMixin,
     sortFilterMixin,
     playMediaMixin,
     historyRegistryQueriesMixin,
   ],
+  setup: () => {
+    const tableStore = useTableStore();
+    const paginationStore = usePaginationStore();
+    const headersStore = useHeadersStore();
+
+    const {
+      dataList,
+      isLoading,
+    } = storeToRefs(tableStore);
+
+    const {
+      loadDataList,
+    } = tableStore;
+
+    loadDataList();
+
+    const {
+      page,
+      size,
+      next,
+    } = storeToRefs(paginationStore);
+
+    const {
+      updatePage,
+      updateSize,
+    } = paginationStore;
+
+    const {
+      headers,
+      sort,
+    } = storeToRefs(headersStore);
+
+    const {
+      updateSort,
+    } = headersStore;
+
+    const prettifiedHeaders = computed(() => {
+      return headers.value.map(({ text, ...header }) => {
+          let modifiedText = text;
+
+          if (header.value.includes('variables')) {
+            modifiedText = header.value.replace(/^variables\./, '');
+          }
+
+          return {
+            ...header,
+            text: modifiedText,
+          };
+        });
+    });
+
+    watch([page, size, sort], () => {
+      loadDataList();
+    });
+
+    return {
+      dataList,
+      isLoading,
+      page,
+      size,
+      next,
+      headers: prettifiedHeaders,
+
+      updateSize,
+      updatePage,
+      updateSort,
+    };
+  },
   data: () => ({
     sttPopupCallId: null,
   }),
@@ -186,11 +269,11 @@ export default {
     variableHeaders() {
       return this.headers.filter((header) => header.value.includes('variables.'));
     },
-    ...mapState('registry', {
-      dataList: (state) => state.dataList,
-      isLoading: (state) => state.isLoading,
-      isNext: (state) => state.isNext,
-    }),
+    // ...mapState('registry', {
+    //   dataList: (state) => state.dataList,
+    //   isLoading: (state) => state.isLoading,
+    //   isNext: (state) => state.isNext,
+    // }),
     ...mapGetters('appearance', {
       darkMode: 'DARK_MODE',
     }),
@@ -216,15 +299,15 @@ export default {
     },
   },
   watch: {
-    '$route.query': {
-      handler() {
-        this.loadList();
-      },
-    },
+    // '$route.query': {
+    //   handler() {
+    //     this.loadList();
+    //   },
+    // },
   },
   mounted() {
-    this.initTableData();
-    this.setHeaders(this.headers);
+    // this.initTableData();
+    // this.setHeaders(this.headers);
   },
   methods: {
     get, // lodash get
