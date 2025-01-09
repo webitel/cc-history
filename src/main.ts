@@ -39,8 +39,6 @@ const initSession = async () => store.dispatch('userinfo/OPEN_SESSION', { instan
 const createVueInstance = () => {
   const pinia = createPinia();
 
-  console.info(pinia)
-
   const app = createApp(App)
       .use(pinia)
   .use(router)

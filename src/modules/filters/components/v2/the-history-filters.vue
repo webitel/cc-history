@@ -52,29 +52,28 @@ import DynamicFilterPreview
   from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/preview/dynamic-filter-preview.vue";
 import DynamicFilterAddAction
   from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/dynamic-filter-add-action.vue";
-import {FilterName} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/classes/Filter.class.ts";
+import {FilterName} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.types.ts";
 import DynamicFilterConfigForm
   from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/config/dynamic-filter-config-form.vue";
-import {useTableFiltersStore} from "../../../main/modules/registry/stores/registry.filters.store.ts";
+import { useTableStore} from '../../../main/modules/registry/store/new/registry.store.ts';
 import DirectionFilter from './direction-filter.vue';
 
 // const props = defineProps({});
 
 const emit = defineEmits([]);
 
-const filtersStore = useTableFiltersStore();
-const {filtersManager} = storeToRefs(filtersStore);
+const tableStore = useTableStore();
+const {filtersManager} = storeToRefs(tableStore);
 window.fmanager = filtersManager;
 
 const {
   addFilter: applyFilter,
   updateFilter: updateAppliedFilter,
   deleteFilter: deleteAppliedFilter,
-} = filtersStore;
+} = tableStore;
 
 const appliedFilters = computed(() => {
-  console.info('filtersManager.value.filters', filtersManager.value.getFiltersList());
-  return filtersManager.value.getFiltersList();
+  return filtersManager.value.filters.values(); // todo use getter
 });
 
 const unappliedFilters: Ref<Array<{ name: string, value: FilterName}>> = computed(() => {

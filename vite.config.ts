@@ -31,11 +31,12 @@ export default ({ mode }) => {
       },
     },
     resolve: {
-      // dedupe: ['vue', '@vue/compat'],
+      dedupe: ['vue', '@vue/compat'],
       alias: {
         vue: '@vue/compat',
         '@': resolve(__dirname, 'src'),
       },
+      // preserveSymlinks: false,
     },
     plugins: [
       vue({

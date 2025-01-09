@@ -173,9 +173,7 @@ import DummyDark from '../../../../../app/assets/dummy/hs-dummy-dark.svg';
 import DummyAfterSearchLight from '../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
 import DummyAfterSearchDark from '../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
-import {useTableStore} from "../stores/registry.table.store.ts";
-import {usePaginationStore} from "../stores/registry.pagination.store.ts";
-import {useHeadersStore} from "../stores/registry.headers.store.ts";
+import {useTableStore} from "../store/new/registry.store.ts";
 import {storeToRefs} from "pinia";
 import {computed, watch} from "vue";
 
@@ -196,39 +194,29 @@ export default {
   ],
   setup: () => {
     const tableStore = useTableStore();
-    const paginationStore = usePaginationStore();
-    const headersStore = useHeadersStore();
 
     const {
       dataList,
       isLoading,
-    } = storeToRefs(tableStore);
-
-    const {
-      loadDataList,
-    } = tableStore;
-
-    loadDataList();
-
-    const {
       page,
       size,
       next,
-    } = storeToRefs(paginationStore);
-
-    const {
-      updatePage,
-      updateSize,
-    } = paginationStore;
-
-    const {
       headers,
       sort,
-    } = storeToRefs(headersStore);
+    } = storeToRefs(tableStore);
 
     const {
+      initialize,
+      loadDataList,
+      updatePage,
+      updateSize,
       updateSort,
-    } = headersStore;
+    } = tableStore;
+
+    (async () => {
+      await initialize();
+      await loadDataList();
+    })();
 
     const prettifiedHeaders = computed(() => {
       return headers.value.map(({ text, ...header }) => {
