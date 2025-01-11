@@ -1,5 +1,20 @@
 <template>
-  <div class="content-wrapper history-registry">
+  <div class="table-section history-registry">
+    <header class="table-title">
+      <wt-action-bar
+        :include="[IconAction.FILTERS, IconAction.REFRESH, IconAction.COLUMNS]"
+        mode="table"
+      >
+        <template #filters="{ action }">
+          <div style="position: relative;">
+            <wt-badge />
+            <wt-icon-action
+              :action="action"
+            />
+          </div>
+        </template>
+      </wt-action-bar>
+    </header>
     <stt-popup
       :call-id="sttPopupCallId"
       :shown="sttPopupCallId"
@@ -15,7 +30,7 @@
     />
     <div
       v-else
-      class="table-wrapper"
+      class="table-section__table-wrapper"
     >
       <wt-table
         v-show="!isLoading"
@@ -137,15 +152,15 @@
       </wt-table>
 
       <wt-pagination
-        :size="size"
         :next="next"
         :prev="page > 1"
+        :size="size"
         debounce
+        @change="updateSize"
         @next="updatePage(page+1)"
         @prev="updatePage(page-1)"
-        @change="updateSize"
       />
-<!--      <filter-pagination :is-next="isNext" />-->
+      <!--      <filter-pagination :is-next="isNext" />-->
 
       <wt-player
         v-show="audioURL"
@@ -159,9 +174,9 @@
 
 <script lang="ts">
 import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import get from 'lodash/get';
-import historyHeadersMixin from '../mixins/historyHeadersMixin';
+import { IconAction } from '@webitel/ui-sdk/enums';
 import playMediaMixin from '../mixins/media/playMediaMixin';
 import historyRegistryQueriesMixin from '../mixins/historyRegistryQueries.mixin.js';
 import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
@@ -173,9 +188,9 @@ import DummyDark from '../../../../../app/assets/dummy/hs-dummy-dark.svg';
 import DummyAfterSearchLight from '../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
 import DummyAfterSearchDark from '../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
-import {useTableStore} from "../store/new/registry.store.ts";
-import {storeToRefs} from "pinia";
-import {computed, watch} from "vue";
+import { useTableStore } from '../store/new/registry.store.ts';
+import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
 
 export default {
   name: 'HistoryRegistry',
@@ -220,17 +235,17 @@ export default {
 
     const prettifiedHeaders = computed(() => {
       return headers.value.map(({ text, ...header }) => {
-          let modifiedText = text;
+        let modifiedText = text;
 
-          if (header.value.includes('variables')) {
-            modifiedText = header.value.replace(/^variables\./, '');
-          }
+        if (header.value.includes('variables')) {
+          modifiedText = header.value.replace(/^variables\./, '');
+        }
 
-          return {
-            ...header,
-            text: modifiedText,
-          };
-        });
+        return {
+          ...header,
+          text: modifiedText,
+        };
+      });
     });
 
     watch([page, size, sort], () => {
@@ -238,6 +253,8 @@ export default {
     });
 
     return {
+      IconAction,
+
       dataList,
       isLoading,
       page,
@@ -327,6 +344,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@webitel/ui-sdk/src/css/pages/table-page.scss' as *;
+
 .history-registry__dummy {
   height: 50vh;
 }

@@ -7,7 +7,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "test:unit": "vitest",
-    "lint:fix": "eslint --fix src"
+    "lint:fix": "eslint --fix src",
+    "link:webitel-ui": "npm link @webitel/ui-sdk --save --bin-links=false"
   },
   "type": "module",
   "dependencies": {

@@ -42,28 +42,34 @@
         </dynamic-filter-config-form>
       </template>
     </dynamic-filter-preview>
+    <wt-icon-action
+      action="edit"
+      @click="emit('hide')"
+    />
   </section>
 </template>
 
 <script lang="ts" setup>
-import {computed, type Ref} from "vue";
-import {storeToRefs} from "pinia";
+import { computed, type Ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import DynamicFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/preview/dynamic-filter-preview.vue";
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/preview/dynamic-filter-preview.vue';
 import DynamicFilterAddAction
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/dynamic-filter-add-action.vue";
-import {FilterName} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.types.ts";
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/dynamic-filter-add-action.vue';
+import { FilterName } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.types.ts';
 import DynamicFilterConfigForm
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/config/dynamic-filter-config-form.vue";
-import { useTableStore} from '../../../main/modules/registry/store/new/registry.store.ts';
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/config/dynamic-filter-config-form.vue';
+import { useTableStore } from '../../../main/modules/registry/store/new/registry.store.ts';
 import DirectionFilter from './direction-filter.vue';
 
 // const props = defineProps({});
 
-const emit = defineEmits([]);
+const emit = defineEmits<{
+  hide: [],
+}>();
 
 const tableStore = useTableStore();
-const {filtersManager} = storeToRefs(tableStore);
+const { filtersManager } = storeToRefs(tableStore);
 window.fmanager = filtersManager;
 
 const {
@@ -76,7 +82,7 @@ const appliedFilters = computed(() => {
   return filtersManager.value.filters.values(); // todo use getter
 });
 
-const unappliedFilters: Ref<Array<{ name: string, value: FilterName}>> = computed(() => {
+const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = computed(() => {
 
   const filterOptions = [
     {
