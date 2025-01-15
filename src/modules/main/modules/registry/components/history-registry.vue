@@ -4,14 +4,18 @@
       <wt-action-bar
         :include="[IconAction.FILTERS, IconAction.REFRESH, IconAction.COLUMNS]"
         mode="table"
+        @click:refresh="loadDataList"
+        @click:filters="$emit('toggle:filters-panel')"
       >
-        <template #filters="{ action }">
-          <div style="position: relative;">
-            <wt-badge />
+        <template #filters="{ action, onClick }">
+          <wt-badge
+            :hidden="!anyFilters"
+          >
             <wt-icon-action
               :action="action"
+              @click="onClick"
             />
-          </div>
+          </wt-badge>
         </template>
       </wt-action-bar>
     </header>
@@ -233,6 +237,10 @@ export default {
       await loadDataList();
     })();
 
+    const anyFilters = computed(() => {
+      return false; // TODO: how to include only filters from filters panel?
+    });
+
     const prettifiedHeaders = computed(() => {
       return headers.value.map(({ text, ...header }) => {
         let modifiedText = text;
@@ -261,12 +269,17 @@ export default {
       size,
       next,
       headers: prettifiedHeaders,
+      anyFilters,
 
+      loadDataList,
       updateSize,
       updatePage,
       updateSort,
     };
   },
+  events: [
+    'toggle:filters-panel',
+  ],
   data: () => ({
     sttPopupCallId: null,
   }),
@@ -345,6 +358,10 @@ export default {
 
 <style lang="scss" scoped>
 @use '@webitel/ui-sdk/src/css/pages/table-page.scss' as *;
+
+.wt-action-bar {
+  margin-left: auto;
+}
 
 .history-registry__dummy {
   height: 50vh;

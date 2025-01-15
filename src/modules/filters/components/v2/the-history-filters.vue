@@ -42,6 +42,9 @@
         </dynamic-filter-config-form>
       </template>
     </dynamic-filter-preview>
+    <table-filters-panel>
+      111
+    </table-filters-panel>
     <wt-icon-action
       action="edit"
       @click="emit('hide')"
@@ -52,6 +55,7 @@
 <script lang="ts" setup>
 import { computed, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import TableFiltersPanel from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/table-filters-panel.vue';
 import DynamicFilterPreview
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/preview/dynamic-filter-preview.vue';
 import DynamicFilterAddAction
