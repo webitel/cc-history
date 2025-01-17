@@ -14,13 +14,7 @@
 import DirectionOptions from '../../enums/DirectionOptions.enum.js';
 
 const model = defineModel<string>();
-
-// const props = defineProps({});
-
-// const emit = defineEmits([]);
-
 </script>
 
 <style lang="scss" scoped>
-//.direction-filter {}
 </style>

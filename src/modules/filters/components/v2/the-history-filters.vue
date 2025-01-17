@@ -65,6 +65,7 @@ import DynamicFilterConfigForm
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/config/dynamic-filter-config-form.vue';
 import { useTableStore } from '../../../main/modules/registry/store/new/registry.store.ts';
 import DirectionFilter from './direction-filter.vue';
+import CreatedAtFromFilter from './created-at-from-filter.vue';
 
 // const props = defineProps({});
 
@@ -90,7 +91,7 @@ const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = comput
 
   const filterOptions = [
     {
-      value: 'direction',
+      id: 'direction',
       name: 'Direction title',
     },
     // {
@@ -101,10 +102,10 @@ const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = comput
     //   value: 'user',
     //   name: 'User title',
     // },
-    // {
-    //   value: 'createdAtFrom',
-    //   name: 'Created At From title',
-    // },
+    {
+      id: 'createdAtFrom',
+      name: 'Created At From title',
+    },
   ];
 
   return filterOptions;
@@ -114,6 +115,8 @@ const getFilterValueComponent = (filterName: FilterName) => {
   switch (filterName) {
     case 'direction':
       return DirectionFilter;
+    case 'createdAtFrom':
+      return CreatedAtFromFilter;
     default:
   }
 };
