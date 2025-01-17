@@ -12,7 +12,7 @@
               :key="filterName"
               :model-value="filterValue"
               @update:model-value="onValueChange"
-              @undate:invalid="onValueInvalidChange"
+              @update:invalid="onValueInvalidChange"
             />
           </template>
         </dynamic-filter-config-form>
@@ -36,7 +36,7 @@
               :key="filterName"
               :model-value="filterValue"
               @update:model-value="onValueChange"
-              @undate:invalid="onValueInvalidChange"
+              @update:invalid="onValueInvalidChange"
             />
           </template>
         </dynamic-filter-config-form>
@@ -66,6 +66,9 @@ import DynamicFilterConfigForm
 import { useTableStore } from '../../../main/modules/registry/store/new/registry.store.ts';
 import DirectionFilter from './direction-filter.vue';
 import CreatedAtFromFilter from './created-at-from-filter.vue';
+import VariablesFilter from './variables-filter.vue';
+import DurationFilter from './duration-filter.vue';
+import UserFilter from './user-filter.vue';
 
 // const props = defineProps({});
 
@@ -94,17 +97,21 @@ const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = comput
       id: 'direction',
       name: 'Direction title',
     },
-    // {
-    //   value: 'durationFrom',
-    //   name: 'Duration From title',
-    // },
-    // {
-    //   value: 'user',
-    //   name: 'User title',
-    // },
+    {
+      id: 'duration',
+      name: 'Duration title',
+    },
+    {
+      id: 'user',
+      name: 'User title',
+    },
     {
       id: 'createdAtFrom',
       name: 'Created At From title',
+    },
+    {
+      id: 'variables',
+      name: 'Vars title',
     },
   ];
 
@@ -117,6 +124,12 @@ const getFilterValueComponent = (filterName: FilterName) => {
       return DirectionFilter;
     case 'createdAtFrom':
       return CreatedAtFromFilter;
+    case 'variables':
+      return VariablesFilter;
+    case 'duration':
+      return DurationFilter;
+    case 'user':
+      return UserFilter;
     default:
   }
 };
