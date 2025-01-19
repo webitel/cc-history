@@ -194,7 +194,7 @@ import DummyAfterSearchDark from '../../../../../app/assets/dummy/hs-dummy-after
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import { useTableStore } from '../store/new/registry.store.ts';
 import { storeToRefs } from 'pinia';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 
 export default {
   name: 'HistoryRegistry',
@@ -232,11 +232,6 @@ export default {
       updateSort,
     } = tableStore;
 
-    (async () => {
-      await initialize();
-      await loadDataList();
-    })();
-
     const anyFilters = computed(() => {
       return false; // TODO: how to include only filters from filters panel?
     });
@@ -256,9 +251,7 @@ export default {
       });
     });
 
-    watch([page, size, sort], () => {
-      loadDataList();
-    });
+    initialize();
 
     return {
       IconAction,
