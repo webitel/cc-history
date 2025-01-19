@@ -9,7 +9,7 @@
       >
         <template #filters="{ action, onClick }">
           <wt-badge
-            :hidden="!anyFilters"
+            :hidden="!anyFiltersOnFiltersPanel"
           >
             <wt-icon-action
               :action="action"
@@ -195,6 +195,7 @@ import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import { useTableStore } from '../store/new/registry.store.ts';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
+import { SearchMode } from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
 
 export default {
   name: 'HistoryRegistry',
@@ -222,6 +223,8 @@ export default {
       next,
       headers,
       sort,
+
+      filtersManager,
     } = storeToRefs(tableStore);
 
     const {
@@ -232,8 +235,16 @@ export default {
       updateSort,
     } = tableStore;
 
-    const anyFilters = computed(() => {
-      return false; // TODO: how to include only filters from filters panel?
+    /*
+    * show "toggle filters panel" badge if any filters are applied...
+    * */
+    const anyFiltersOnFiltersPanel = computed(() => {
+      /*
+      * ...excluding search filters, which shown in other panel
+      * */
+      return filtersManager.value.getAllKeys().some((filterName) => {
+        return !Object.values(SearchMode).some((mode) => mode === filterName);
+      });
     });
 
     const prettifiedHeaders = computed(() => {
@@ -262,7 +273,7 @@ export default {
       size,
       next,
       headers: prettifiedHeaders,
-      anyFilters,
+      anyFiltersOnFiltersPanel,
 
       loadDataList,
       updateSize,
@@ -390,7 +401,7 @@ export default {
 }
 
 // make action icons fixed to right
-.wt-table ::v-deep .wt-table__tr {
+.wt-table :deep(.wt-table__tr) {
   .wt-table__td__actions {
     position: sticky;
     right: 0;
