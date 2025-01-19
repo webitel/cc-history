@@ -69,6 +69,7 @@ import CreatedAtFromFilter from './created-at-from-filter.vue';
 import VariablesFilter from './variables-filter.vue';
 import DurationFilter from './duration-filter.vue';
 import UserFilter from './user-filter.vue';
+import { SearchMode } from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
 
 // const props = defineProps({});
 
@@ -87,7 +88,8 @@ const {
 } = tableStore;
 
 const appliedFilters = computed(() => {
-  return filtersManager.value.filters.values(); // todo use getter
+  const exclude = Object.values(SearchMode);
+  return filtersManager.value.getFiltersList({ exclude });
 });
 
 const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = computed(() => {

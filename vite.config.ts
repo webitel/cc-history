@@ -3,10 +3,7 @@ import { defineConfig, loadEnv } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import createSvgSpritePlugin from 'vite-plugin-svg-sprite';
 import vueDevTools from 'vite-plugin-vue-devtools';
-import {resolve} from 'path';
-
-// TODO
-// import.meta.env.VUE_APP_PACKAGE_VERSION = require('./package.json').version;
+import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -16,7 +13,7 @@ export default ({ mode }) => {
     base: '/history',
     define: {
       'process.env': JSON.parse(JSON.stringify(env)
-      .replaceAll('VITE_', 'VUE_APP_')),
+        .replaceAll('VITE_', 'VUE_APP_')),
     },
     server: {
       host: true,

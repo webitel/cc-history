@@ -4,33 +4,33 @@
       {{ $t('reusable.history') }}
     </template>
     <template #actions>
-      <filter-search
+      <search-filter
         namespace="filters"
       />
 
       <history-transcribe-action
-        class="history-action"
         :selected="selectedItems"
+        class="history-action"
         @refresh="loadDataList"
       />
 
       <history-export-action
-        class="history-action"
         :data-list="dataList"
-        :filters="getFilters"
         :fields="fields"
+        :filters="getFilters"
+        class="history-action"
       />
 
       <history-download-action
-        class="history-action"
         :data-list="dataList"
         :filters="getFilters"
         :selected="selectedItems"
+        class="history-action"
       />
 
       <history-delete-action
-        class="history-action"
         :selected="selectedItems"
+        class="history-action"
         @refresh="loadDataList"
       />
     </template>
@@ -39,16 +39,16 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import FilterSearch from '../modules/filters/components/filter-search.vue';
-import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
+import SearchFilter from '../../filters/components/v2/search-filter.vue';
+import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
 import HistoryExportAction from './actions/history-export-action.vue';
-import HistoryDeleteAction from './actions/history-delete-action.vue';
+import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
 
 export default {
   name: 'TheHistoryHeading',
   components: {
-    FilterSearch,
+    SearchFilter,
     HistoryTranscribeAction,
     HistoryDownloadAction,
     HistoryExportAction,
