@@ -64,11 +64,11 @@ import { FilterName } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types
 import DynamicFilterConfigForm
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/config/dynamic-filter-config-form.vue';
 import { useTableStore } from '../../../main/modules/registry/store/new/registry.store.ts';
-import DirectionFilter from './direction-filter.vue';
-import CreatedAtFromFilter from './created-at-from-filter.vue';
-import VariablesFilter from './variables-filter.vue';
-import DurationFilter from './duration-filter.vue';
-import UserFilter from './user-filter.vue';
+import DirectionFilter from './filter-value-components/direction-filter.vue';
+import CreatedAtFromFilter from './filter-value-components/created-at-from-filter.vue';
+import VariablesFilter from './filter-value-components/variables-filter.vue';
+import DurationFilter from './filter-value-components/duration-filter.vue';
+import UserFilter from './filter-value-components/user-filter.vue';
 import { SearchMode } from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
 
 // const props = defineProps({});

@@ -24,8 +24,8 @@ import { computed, ref, watch, WatchHandle } from 'vue';
 import WtSearchBar from '@webitel/ui-sdk/src/components/wt-search-bar/wt-search-bar.vue';
 import { useI18n } from 'vue-i18n';
 
-import { useTableStore } from '../../../main/modules/registry/store/new/registry.store.ts';
-import { SearchMode } from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
+import { useTableStore } from '../../../../main/modules/registry/store/new/registry.store.ts';
+import { SearchMode } from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
 
 const { t } = useI18n();
 const tableStore = useTableStore();

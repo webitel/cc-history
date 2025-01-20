@@ -1,10 +1,5 @@
-import {
-  PresetQueryServiceApiFactory,
-} from 'webitel-sdk';
-import {
-  getDefaultGetListResponse,
-  getDefaultGetParams,
-} from '@webitel/ui-sdk/src/api/defaults/index.js';
+import { EngineCreatePresetQueryRequest, EnginePresetQuery, PresetQueryServiceApiFactory } from 'webitel-sdk';
+import { getDefaultGetListResponse, getDefaultGetParams } from '@webitel/ui-sdk/src/api/defaults/index.js';
 import applyTransform, {
   camelToSnake,
   merge,
@@ -15,9 +10,9 @@ import applyTransform, {
 import instance from '../../../app/api/instance';
 import configuration from '../../../app/api/openAPIConfig';
 
-const service = new PresetQueryServiceApiFactory(configuration, '', instance);
+const service = PresetQueryServiceApiFactory(configuration, '', instance);
 
-const getList = async (params) => {
+const getPresetList = async (params) => {
   const {
     page,
     size,
@@ -54,9 +49,8 @@ const getList = async (params) => {
   }
 };
 
-
-const addPreset = async (itemInstance) => {
-  const item = applyTransform(itemInstance, [
+const addPreset = async ({ name, preset }: EngineCreatePresetQueryRequest): Promise<EnginePresetQuery> => {
+  const item = applyTransform({ name, preset }, [
     camelToSnake(),
   ]);
   try {
@@ -70,7 +64,6 @@ const addPreset = async (itemInstance) => {
     ]);
   }
 };
-
 
 const updatePreset = async ({ item: itemInstance, id }) => {
   const item = applyTransform(itemInstance, [
@@ -88,7 +81,6 @@ const updatePreset = async ({ item: itemInstance, id }) => {
   }
 };
 
-
 const deletePreset = async ({ id }) => {
   try {
     const response = await service.deletePresetQuery(id);
@@ -101,10 +93,17 @@ const deletePreset = async ({ id }) => {
 };
 
 const PresetQueryAPI = {
-  getList,
+  getList: getPresetList,
   add: addPreset,
   update: updatePreset,
   delete: deletePreset,
+};
+
+export {
+  getPresetList,
+  addPreset,
+  updatePreset,
+  deletePreset,
 };
 
 export default PresetQueryAPI;

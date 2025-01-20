@@ -212,6 +212,9 @@ export default {
     playMediaMixin,
     historyRegistryQueriesMixin,
   ],
+  emits: [
+    'toggle:filters-panel',
+  ],
   setup: () => {
     const tableStore = useTableStore();
 
@@ -281,9 +284,6 @@ export default {
       updateSort,
     };
   },
-  events: [
-    'toggle:filters-panel',
-  ],
   data: () => ({
     sttPopupCallId: null,
   }),

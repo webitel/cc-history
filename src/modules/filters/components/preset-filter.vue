@@ -2,12 +2,12 @@
   <!-- copy-pasted abstract-api-filter.vue template -->
   <wt-select
     ref="preset-filter"
-    :value="filterSchema.value"
+    :close-on-select="filterSchema.closeOnSelect"
     :label="label"
-    :track-by="filterSchema.storedProp"
     :multiple="filterSchema.multiple"
     :search-method="search"
-    :close-on-select="filterSchema.closeOnSelect"
+    :track-by="filterSchema.storedProp"
+    :value="filterSchema.value"
     v-bind="$attrs"
     @input="setValue({ filter: filterQuery, value: $event })"
     @reset="resetValue({ value: $event, filterQuery, storedProp: filterSchema.storedProp })"
@@ -16,7 +16,7 @@
 
 <script>
 import apiFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/apiFilterMixin';
-import PresetQueryAPI from '../api/PresetQueryAPI';
+import PresetQueryAPI from '../api/PresetQuery.api.js';
 
 export default {
   name: 'PresetFilter',

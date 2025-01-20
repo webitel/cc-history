@@ -39,7 +39,7 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import SearchFilter from '../../filters/components/v2/search-filter.vue';
+import SearchFilter from '../../filters/components/v2/filter-value-components/search-filter.vue';
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
 import HistoryExportAction from './actions/history-export-action.vue';

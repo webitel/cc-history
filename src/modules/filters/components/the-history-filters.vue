@@ -1,9 +1,9 @@
 <template>
   <section class="history-section history-filters-section">
     <preset-form-popup
-      :shown="isPresetFormPopup"
       :callback="savePreset"
       :name="preset.name"
+      :shown="isPresetFormPopup"
       @close="closePresetFormPopup"
     />
     <form
@@ -79,7 +79,7 @@ import { EnginePresetQuerySection } from 'webitel-sdk';
 import historyHeadersMixin from '../../main/modules/registry/mixins/historyHeadersMixin';
 import FilterFields
   from '../../main/modules/registry/modules/filters/components/filter-table-fields/filter-table-fields.vue';
-import PresetQueryAPI from '../api/PresetQueryAPI';
+import PresetQueryAPI from '../api/PresetQuery.api.js';
 import tableActionsHandlerMixin from '../mixins/tableActions/tableActionsHandlerMixin';
 import FilterFrom from './filters/filter-from.vue';
 import FilterTo from './filters/filter-to.vue';

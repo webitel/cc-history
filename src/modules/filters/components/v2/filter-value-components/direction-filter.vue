@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import DirectionOptions from '../../enums/DirectionOptions.enum.js';
+import DirectionOptions from '../../../enums/DirectionOptions.enum.js';
 
 const model = defineModel<string>();
 </script>
