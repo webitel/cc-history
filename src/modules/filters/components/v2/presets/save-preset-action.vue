@@ -2,7 +2,7 @@
   <div class="save-preset-action">
     <wt-icon-btn
       :disabled="disableAction"
-      icon="agent"
+      icon="save"
       @click="showSaveForm = true"
     />
     <wt-popup

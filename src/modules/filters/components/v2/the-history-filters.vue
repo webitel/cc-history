@@ -45,6 +45,7 @@
     <table-filters-panel>
       111
     </table-filters-panel>
+    <save-preset-action />
     <wt-icon-action
       action="edit"
       @click="emit('hide')"
@@ -70,6 +71,7 @@ import VariablesFilter from './filter-value-components/variables-filter.vue';
 import DurationFilter from './filter-value-components/duration-filter.vue';
 import UserFilter from './filter-value-components/user-filter.vue';
 import { SearchMode } from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
+import SavePresetAction from "./presets/save-preset-action.vue";
 
 // const props = defineProps({});
 
