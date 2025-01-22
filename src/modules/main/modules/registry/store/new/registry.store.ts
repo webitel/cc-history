@@ -1,10 +1,11 @@
 import { createTableStore } from '@webitel/ui-sdk/src/modules/Filters/v2/table/createTableStore.store.ts';
+import { EngineHistoryCall } from "webitel-sdk";
+
 import { namespace } from '../../namespace.ts';
 import RegistryApi from '../../api/RegistryAPIRepository.js';
-import headers from '../headers/headers.js';
-import { HistoryRecord } from '../../types/HistoryRecord.type.ts';
+import {headers} from '../headers/headers.ts';
 
-export const useTableStore = createTableStore<HistoryRecord>(namespace, {
+export const useTableStore = createTableStore<EngineHistoryCall>(namespace, {
   apiModule: {
     getList: RegistryApi.getHistory,
   },

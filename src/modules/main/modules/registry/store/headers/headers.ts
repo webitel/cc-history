@@ -1,4 +1,6 @@
-const headers = [
+import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.type.js';
+
+export const headers: WtTableHeader[] = [
   {
     value: 'date',
     show: true,
@@ -271,5 +273,3 @@ const headers = [
   locale: `fields.${header.value}`,
   ...header,
 }));
-
-export default headers;
