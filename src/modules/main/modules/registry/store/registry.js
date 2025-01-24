@@ -10,7 +10,7 @@ const variablesHeaders = JSON.parse(localStorage.getItem('variablesKeysList'));
  */
 if (variablesHeaders) {
   variablesHeaders.forEach((item) => {
-    historyHeaders.push(item);
+    // historyHeaders.push(item);
   });
 }
 
@@ -19,7 +19,7 @@ const REQUIRED_DATA_FIELDS = ['files', 'id', 'files_job', 'transcripts'];
 
 const state = {
   dataList: [],
-  headers: historyHeaders,
+  headers: [],
   isLoading: false,
   page: 1,
   size: 10,

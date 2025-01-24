@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import playMediaMixin from '../playMediaMixin';
+import playMediaMixin from '../../../composables/usePlayMedia.composable.ts';
 
 describe('Play media mixin', () => {
   let wrapper;

@@ -2,23 +2,20 @@
   <router-view />
 </template>
 
-<script>
-  import { mapActions } from 'vuex';
+<script lang="ts" setup>
+import { provide, computed } from 'vue';
+import { useStore } from 'vuex';
 
-  export default {
-    name: 'TheApp',
+const store = useStore();
+const darkMode = computed(() => store.getters['appearance/DARK_MODE']);
+provide('darkMode', darkMode);
 
-    created() {
-      this.setLanguage();
-    },
+const setLanguage = () => {
+  const lang = localStorage.getItem('lang');
+  if (lang) this.$i18n.locale = lang;
+};
 
-    methods: {
-      setLanguage() {
-        const lang = localStorage.getItem('lang');
-        if (lang) this.$i18n.locale = lang;
-      },
-    },
-  };
+setLanguage();
 </script>
 
 <style lang="scss">
