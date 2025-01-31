@@ -4,7 +4,7 @@
     :search-mode="searchMode"
     :search-mode-options="searchModeOptions"
     :value="localValue"
-    debounce
+    :v="v$"
     @input="localValue = $event"
     @search="handleSearch"
     @update:search-mode="searchMode = $event.value"
@@ -26,6 +26,15 @@ import { useI18n } from 'vue-i18n';
 
 import { useTableStore } from '../../../../main/modules/registry/store/new/registry.store.ts';
 import { SearchMode } from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
+import { useVuelidate } from "@vuelidate/core";
+import { maxLength } from "@vuelidate/validators";
+
+interface Props {
+  maxSearchLength?: number
+}
+const props = withDefaults(defineProps<Props>(), {
+  maxSearchLength: 50,
+})
 
 const { t } = useI18n();
 const tableStore = useTableStore();
@@ -45,6 +54,15 @@ const {
 const searchMode = ref(SearchMode.Search);
 const localValue = ref('');
 
+const v$ = useVuelidate(
+  computed(() => ({
+    localValue: {
+      maxLength: maxLength(props.maxSearchLength),
+    },
+  })),
+  { localValue },
+  { $autoDirty: true },
+)
 
 let unwatchSearchMode: WatchHandle;
 
@@ -83,7 +101,11 @@ const showTextSearchIcon = computed(() => {
   return textSearchModes.includes(searchMode.value);
 });
 
-const handleSearch = () => {
+const handleSearch = (searchValue: string) => {
+  if (searchValue.length > props.maxSearchLength) {
+    return
+  }
+
   const filter = {
     name: searchMode.value,
     value: localValue.value,
