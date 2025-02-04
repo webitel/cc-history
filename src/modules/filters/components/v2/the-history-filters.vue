@@ -47,7 +47,7 @@
     </table-filters-panel>
     <save-preset-action />
     <wt-icon-action
-      action="edit"
+      action="close"
       @click="emit('hide')"
     />
   </section>
