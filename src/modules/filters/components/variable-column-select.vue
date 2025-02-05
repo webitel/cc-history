@@ -1,16 +1,7 @@
 <template>
   <div class="table-variable-column-select">
-    <wt-tooltip>
-      <template #activator>
-        <wt-icon-btn
-          icon="variable-select"
-          @click="openPopup"
-        />
-      </template>
-      {{ $t('variableColumnSelect.title') }}
-    </wt-tooltip>
     <wt-popup
-      :shown="isVariableColumnPopup"
+      v-bind="attrs"
       class="variable-column-popup"
       width="480"
       @close="close"
@@ -76,6 +67,8 @@ import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import deepEqual from 'deep-equal';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useAttrs } from 'vue';
 
 const props = defineProps({
   headers: {
@@ -89,6 +82,9 @@ const isVariableColumnPopup = ref(false);
 const draft = reactive([]);
 const newVariableKey = ref('');
 const isLoading = ref(false);
+
+const t = useI18n();
+const attrs = useAttrs();
 
 const variablesFromHeaders = computed(() => props.headers.filter((header) => header.field.includes('variables.')))
 
@@ -174,6 +170,7 @@ async function save() {
 onMounted(() => {
   v$.value.$touch();
   showLocalStorageVariablesKeys();
+  isVariableColumnPopup.value = true;
 });
 </script>
 

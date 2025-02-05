@@ -1,11 +1,13 @@
 <template>
   <div class="table-section history-registry">
-    <header class="table-title">
+    <header>
       <wt-action-bar
-        :include="[IconAction.FILTERS, IconAction.REFRESH, IconAction.COLUMNS]"
+        :include="[IconAction.FILTERS, IconAction.REFRESH, IconAction.COLUMNS, IconAction.VARIABLES]"
         mode="table"
         @click:refresh="loadDataList"
         @click:filters="emit('toggle:filters-panel')"
+        @click:columns="openedColumnsSelect"
+        @click:variables="isVariableColumnPopup = true"
       >
         <template #filters="{ action, onClick }">
           <wt-badge
@@ -19,6 +21,16 @@
         </template>
       </wt-action-bar>
     </header>
+    <wt-table-column-select
+      :shown="isOpenedTableColumnSelect"
+      hidden-activator
+      :headers="headers"
+      @change="updateHeaders" />
+    <variable-column-select
+      :shown="isVariableColumnPopup"
+      :headers="headers"
+      @close="isVariableColumnPopup = false"
+      @add-variables-headers="updateHeaders" />
     <stt-popup
       :call-id="sttPopupCallId"
       :shown="sttPopupCallId"
@@ -203,6 +215,7 @@ import {computed, ref} from 'vue';
 import {SearchMode} from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
 import {useTableEmpty} from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js";
 import {EngineHistoryCall} from "webitel-sdk";
+import VariableColumnSelect from "../../../../filters/components/variable-column-select.vue";
 
 const emit = defineEmits<{
   'toggle:filters-panel': [];
@@ -228,6 +241,7 @@ const {
   updatePage,
   updateSize,
   updateSort,
+  updateShownHeaders,
 } = tableStore;
 
 /*
@@ -302,6 +316,19 @@ const handleTranscriptDelete = ({callId, transcript}: { callId: string, transcri
   // should find transcript instead of indexOf cause transcript source is not that call
   call.transcripts.splice(call.transcripts.findIndex(({id}) => id === transcript.id), 1);
 };
+
+const isOpenedTableColumnSelect = ref(false);
+const openedColumnsSelect = () => {
+  isOpenedTableColumnSelect.value = true;
+};
+
+const updateHeaders = (headers) => {
+  updateShownHeaders(headers);
+  isOpenedTableColumnSelect.value = false;
+};
+
+const isVariableColumnPopup = ref(false);
+
 </script>
 
 <style lang="scss" scoped>
