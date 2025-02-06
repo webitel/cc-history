@@ -2,7 +2,7 @@
   <div class="table-section history-registry">
     <header class="table-title">
       <wt-action-bar
-        :include="[IconAction.FILTERS, IconAction.REFRESH, IconAction.COLUMNS]"
+        :include="[IconAction.FILTERS, IconAction.REFRESH, IconAction.COLUMNS, IconAction.VARIABLES]"
         mode="table"
         @click:refresh="loadDataList"
         @click:filters="emit('toggle:filters-panel')"
@@ -16,6 +16,18 @@
               @click="onClick"
             />
           </wt-badge>
+        </template>
+        <template #columns>
+          <wt-table-column-select
+            :headers="headers"
+            @change="updateShownHeaders"
+          />
+        </template>
+        <template #variables>
+          <variable-column-select
+            :headers="headers"
+            @add-variables-headers="addVariablesHeaders"
+          />
         </template>
       </wt-action-bar>
     </header>
@@ -203,6 +215,7 @@ import {computed, ref} from 'vue';
 import {SearchMode} from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
 import {useTableEmpty} from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js";
 import {EngineHistoryCall} from "webitel-sdk";
+import VariableColumnSelect from "../../../../filters/components/variable-column-select.vue";
 
 const emit = defineEmits<{
   'toggle:filters-panel': [];
@@ -228,6 +241,7 @@ const {
   updatePage,
   updateSize,
   updateSort,
+  updateShownHeaders,
 } = tableStore;
 
 /*
@@ -301,6 +315,12 @@ const handleTranscriptDelete = ({callId, transcript}: { callId: string, transcri
   const call = dataList.value.find(({id}) => id === callId);
   // should find transcript instead of indexOf cause transcript source is not that call
   call.transcripts.splice(call.transcripts.findIndex(({id}) => id === transcript.id), 1);
+};
+
+const addVariablesHeaders = (variables) => {
+  const clearHeaders = headers?.value.filter((header) => !header.value.includes('variables.'));
+  const uniqueHeaders = new Set([...clearHeaders, ...variables]);
+  updateShownHeaders([...uniqueHeaders]);
 };
 </script>
 
