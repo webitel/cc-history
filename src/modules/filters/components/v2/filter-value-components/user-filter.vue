@@ -18,13 +18,11 @@ import { required } from '@vuelidate/validators';
 import {computed, watch} from "vue";
 
 type ModelValue = number[];
-
-interface Emits {
-  (e: 'update:invalid', val: boolean);
-}
-const emit = defineEmits<Emits>();
-
 const model = defineModel<ModelValue>();
+
+const emit = defineEmits<{
+  'update:invalid': [boolean]
+}>();
 
 const v$ = useVuelidate(
   computed(() => ({
@@ -35,14 +33,7 @@ const v$ = useVuelidate(
   { model },
   { $autoDirty: true },
 );
-
 v$.value.$touch()
-
-setTimeout(() => {
-
-  v$.value.$touch()
-  console.log('TOUCH')
-}, 4000)
 
 watch(() => v$.value.$invalid, (invalid) => {
   emit('update:invalid', invalid);

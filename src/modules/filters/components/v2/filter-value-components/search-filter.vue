@@ -27,14 +27,7 @@ import { useI18n } from 'vue-i18n';
 import { useTableStore } from '../../../../main/modules/registry/store/new/registry.store.ts';
 import { SearchMode } from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
 import { useVuelidate } from "@vuelidate/core";
-import { maxLength } from "@vuelidate/validators";
-
-interface Props {
-  maxSearchLength?: number
-}
-const props = withDefaults(defineProps<Props>(), {
-  maxSearchLength: 50,
-})
+import { required } from "@vuelidate/validators";
 
 const { t } = useI18n();
 const tableStore = useTableStore();
@@ -57,7 +50,7 @@ const localValue = ref('');
 const v$ = useVuelidate(
   computed(() => ({
     localValue: {
-      maxLength: maxLength(props.maxSearchLength),
+      required,
     },
   })),
   { localValue },
