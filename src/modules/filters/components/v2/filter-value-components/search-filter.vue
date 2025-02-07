@@ -94,11 +94,7 @@ const showTextSearchIcon = computed(() => {
   return textSearchModes.includes(searchMode.value);
 });
 
-const handleSearch = (searchValue: string) => {
-  if (searchValue.length > props.maxSearchLength) {
-    return
-  }
-
+const handleSearch = () => {
   const filter = {
     name: searchMode.value,
     value: localValue.value,
