@@ -60,7 +60,7 @@ import TableFiltersPanel from '@webitel/ui-sdk/src/modules/Filters/v2/filters/co
 import DynamicFilterPreview
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/preview/dynamic-filter-preview.vue';
 import DynamicFilterAddAction
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/dynamic-filter-add-action.vue';
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-add-action.vue';
 import { FilterName } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.types.ts';
 import DynamicFilterConfigForm
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/config/dynamic-filter-config-form.vue';
