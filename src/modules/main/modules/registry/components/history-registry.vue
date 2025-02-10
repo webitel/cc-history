@@ -318,9 +318,8 @@ const handleTranscriptDelete = ({callId, transcript}: { callId: string, transcri
 };
 
 const addVariablesHeaders = (variables) => {
-  const clearHeaders = headers?.value.filter((header) => !header.value.includes('variables.'));
-  const uniqueHeaders = new Set([...clearHeaders, ...variables]);
-  updateShownHeaders([...uniqueHeaders]);
+  const mainHeaders = headers?.value.filter((header) => !header.value.includes('variables.'));
+  updateShownHeaders([...mainHeaders, ...variables]);
 };
 </script>
 
