@@ -4,7 +4,7 @@
     :search-mode="searchMode"
     :search-mode-options="searchModeOptions"
     :value="localValue"
-    debounce
+    :v="v$"
     @input="localValue = $event"
     @search="handleSearch"
     @update:search-mode="searchMode = $event.value"
@@ -26,6 +26,8 @@ import { useI18n } from 'vue-i18n';
 
 import { useTableStore } from '../../../../main/modules/registry/store/new/registry.store.ts';
 import { SearchMode } from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 const { t } = useI18n();
 const tableStore = useTableStore();
@@ -45,6 +47,15 @@ const {
 const searchMode = ref(SearchMode.Search);
 const localValue = ref('');
 
+const v$ = useVuelidate(
+  computed(() => ({
+    localValue: {
+      required,
+    },
+  })),
+  { localValue },
+  { $autoDirty: true },
+)
 
 let unwatchSearchMode: WatchHandle;
 
