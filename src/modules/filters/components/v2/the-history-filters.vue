@@ -41,6 +41,13 @@
           </template>
         </dynamic-filter-config-form>
       </template>
+
+      <template #info>
+         <component
+           :is="getPreviewComponent(filter.name)"
+           :value="filter.value">
+         </component>
+      </template>
     </dynamic-filter-preview>
     <table-filters-panel>
       111
@@ -58,12 +65,12 @@ import { computed, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import TableFiltersPanel from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/table-filters-panel.vue';
 import DynamicFilterPreview
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/preview/dynamic-filter-preview.vue';
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue';
 import DynamicFilterAddAction
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/dynamic-filter-add-action.vue';
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-add-action.vue';
 import { FilterName } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts';
 import DynamicFilterConfigForm
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic/config/dynamic-filter-config-form.vue';
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/config/dynamic-filter-config-form.vue';
 import { useTableStore } from '../../../main/modules/registry/store/new/registry.store.ts';
 import DirectionFilter from './filter-value-components/direction-filter.vue';
 import CreatedAtFromFilter from './filter-value-components/created-at-from-filter.vue';
@@ -72,6 +79,7 @@ import DurationFilter from './filter-value-components/duration-filter.vue';
 import UserFilter from './filter-value-components/user-filter.vue';
 import { SearchMode } from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
 import SavePresetAction from "./presets/save-preset-action.vue";
+import UserFilterPreview from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/users/user-filter-value-preview.vue";
 
 // const props = defineProps({});
 
@@ -134,6 +142,14 @@ const getFilterValueComponent = (filterName: FilterName) => {
       return DurationFilter;
     case 'user':
       return UserFilter;
+    default:
+  }
+};
+
+const getPreviewComponent = (filterName: FilterName) => {
+  switch (filterName) {
+    case 'user':
+      return UserFilterPreview;
     default:
   }
 };
