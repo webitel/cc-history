@@ -74,60 +74,50 @@ import DynamicFilterConfigForm
 import {SearchMode} from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
 import SavePresetAction from "./presets/save-preset-action.vue";
 import {useTableStore} from '../../../main/modules/registry/store/new/registry.store.ts';
-
-import AgentFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/agent/agent-filter-value-field.vue';
-import AgentFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/agent/agent-filter-value-preview.vue';
-import AmdResultFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/amd-result/amd-result-filter-value-field.vue';
-import AmdResultFilterPreview
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/amd-result/amd-result-filter-value-preview.vue';
-import ContactFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/contact/contact-filter-value-field.vue';
-import ContactFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/contact/contact-filter-value-preview.vue';
-import CreatedAtFromFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/created-at-from/created-at-from-filter-value-field.vue';
-import CreatedAtFromFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/created-at-from/created-at-from-filter-value-preview.vue";
-import CreatedAtToFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/created-at-to/created-at-to-filter-value-field.vue';
-import CreatedAtToFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/created-at-to/created-at-to-filter-value-preview.vue";
-import DirectionFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/direction/direction-filter-value-field.vue';
-import DirectionFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/direction/direction-filter-value-preview.vue";
-import EvaluationFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/evaluation/evaluation-filter-value-field.vue';
-import EvaluationFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/evaluation/evaluation-filter-value-preview.vue";
-import GatewayFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/gateway/gateway-filter-value-field.vue';
-import GatewayFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/gateway/gateway-filter-value-preview.vue';
-import GranteeFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/grantee/grantee-filter-value-field.vue';
-import GranteeFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/grantee/grantee-filter-value-preview.vue';
-import HangupCauseFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/hangup-cause/hangup-cause-filter-value-field.vue';
-import HangupCauseFilterPreview
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/hangup-cause/hangup-cause-filter-value-preview.vue';
-import QueueFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/queue/queue-filter-value-field.vue';
-import QueueFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/queue/queue-filter-value-preview.vue';
-import RatedByFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/rated-by/rated-by-filter-value-field.vue';
-import RatedByFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/rated-by/rated-by-filter-value-preview.vue';
-import RecordingFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/recording/recording-filter-value-field.vue';
-import RecordingFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/recording/recording-filter-value-preview.vue';
-import ScoreFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/score/score-from-to-filter-value-field.vue';
-import ScoreFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/score/score-from-to-filter-value-preview.vue';
-import TagFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/tag/tag-filter-value-field.vue';
-import TagFilterPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/tag/tag-filter-value-preview.vue';
-import TalkDuration from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/talk-duration/talk-duration-filter-value-field.vue';
-import TalkDurationPreview from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/talk-duration/talk-duration-filter-value-preview.vue';
-import TeamFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/team/team-filter-value-field.vue';
-import TeamFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/team/team-filter-value-preview.vue";
-import TotalDurationFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/total-duration/total-duration-filter-value-field.vue';
-import TotalDurationFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/total-duration/total-duration-filter-value-preview.vue";
-import TranscriptionFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/transcription/transcription-filter-value-field.vue';
-import TranscriptionFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/transcription/transcription-filter-value-preview.vue";
-import UserFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/user/user-filter-value-field.vue';
-import UserFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/user/user-filter-value-preview.vue";
-import VariableFilter from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/variable/variable-filter-value-field.vue';
-import VariableFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/variable/variable-filter-value-preview.vue";
+import {
+  AgentFilter,
+  AgentFilterPreview,
+  AmdResultFilter,
+  AmdResultFilterPreview,
+  ContactFilter,
+  ContactFilterPreview,
+  CreatedAtFromFilter,
+  CreatedAtFromFilterPreview,
+  CreatedAtToFilter,
+  CreatedAtToFilterPreview,
+  DirectionFilter,
+  DirectionFilterPreview,
+  EvaluationFilter,
+  EvaluationFilterPreview,
+  GatewayFilter,
+  GatewayFilterPreview,
+  GranteeFilter,
+  GranteeFilterPreview,
+  HangupCauseFilter,
+  HangupCauseFilterPreview,
+  QueueFilter,
+  QueueFilterPreview,
+  RatedByFilter,
+  RatedByFilterPreview,
+  RecordingFilter,
+  RecordingFilterPreview,
+  ScoreFilter,
+  ScoreFilterPreview,
+  TagFilter,
+  TagFilterPreview,
+  TalkDuration,
+  TalkDurationPreview,
+  TeamFilter,
+  TeamFilterPreview,
+  TotalDurationFilter,
+  TotalDurationFilterPreview,
+  TranscriptionFilter,
+  TranscriptionFilterPreview,
+  UserFilter,
+  UserFilterPreview,
+  VariableFilter,
+  VariableFilterPreview,
+} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/index.js';
 
 const emit = defineEmits<{
   hide: [],
