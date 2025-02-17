@@ -1,130 +1,98 @@
 <template>
   <section class="the-history-filters">
-    <dynamic-filter-add-action>
-      <template #form>
-        <dynamic-filter-config-form
-          :options="unappliedFilters"
-          @submit="applyFilter"
-        >
-          <template #value-input="{ filterName, filterValue, onValueChange, onValueInvalidChange }">
-            <component
-              :is="getFilterValueComponent(filterName)"
-              :key="filterName"
-              :model-value="filterValue"
-              @update:model-value="onValueChange"
-              @update:invalid="onValueInvalidChange"
-            />
-          </template>
-        </dynamic-filter-config-form>
-      </template>
-    </dynamic-filter-add-action>
-
-    <dynamic-filter-preview
-      v-for="(filter) of appliedFilters"
-      :key="filter.name"
-      :filter="filter"
-      @delete:filter="deleteAppliedFilter($event.name)"
-    >
-      <template #form>
-        <dynamic-filter-config-form
+    <dynamic-filter-panel-wrapper>
+      <template #filters>
+        <dynamic-filter-preview
+          v-for="(filter) of appliedFilters"
+          :key="filter.name"
           :filter="filter"
-          @submit="updateAppliedFilter"
+          @delete:filter="deleteAppliedFilter($event.name)"
         >
-          <template #value-input="{ filterName, filterValue, onValueChange, onValueInvalidChange }">
-            <component
-              :is="getFilterValueComponent(filterName)"
-              :key="filterName"
-              :model-value="filterValue"
-              @update:model-value="onValueChange"
-              @update:invalid="onValueInvalidChange"
-            />
+          <template #form>
+            <dynamic-filter-config-form
+              :filter="filter"
+              @submit="updateAppliedFilter"
+            >
+              <template #value-input="{ filterName, filterValue, onValueChange, onValueInvalidChange }">
+                <component
+                  :is="getFilterFieldComponent(filterName, 'valueField')"
+                  :key="filterName"
+                  :model-value="filterValue"
+                  @update:model-value="onValueChange"
+                  @update:invalid="onValueInvalidChange"
+                />
+              </template>
+            </dynamic-filter-config-form>
           </template>
-        </dynamic-filter-config-form>
+
+          <template #info>
+            <component
+              :is="getFilterFieldComponent(filter.name, 'previewField')"
+              :value="filter.value">
+            </component>
+          </template>
+        </dynamic-filter-preview>
+
+        <dynamic-filter-add-action>
+          <template #form="{ hide }">
+            <dynamic-filter-config-form
+              :options="unappliedFilters"
+              @submit="(data) => applyFilterWrapper(data, hide)"
+              @cancel="() => hide()"
+            >
+              <template #value-input="{ filterName, filterValue, onValueChange, onValueInvalidChange }">
+                <component
+                  :is="getFilterFieldComponent(filterName, 'valueField')"
+                  :key="filterName"
+                  :model-value="filterValue"
+                  @update:model-value="onValueChange"
+                  @update:invalid="onValueInvalidChange"
+                />
+              </template>
+            </dynamic-filter-config-form>
+          </template>
+        </dynamic-filter-add-action>
       </template>
 
-      <template #info>
-        <component
-          :is="getPreviewComponent(filter.name)"
-          :value="filter.value">
-        </component>
+      <template #actions>
+        <save-preset-action />
+
+        <wt-icon-action
+          action="close"
+          @click="emit('hide')"
+        />
       </template>
-    </dynamic-filter-preview>
-    <table-filters-panel>
-      111
-    </table-filters-panel>
-    <save-preset-action />
-    <wt-icon-action
-      action="close"
-      @click="emit('hide')"
-    />
+    </dynamic-filter-panel-wrapper>
   </section>
 </template>
 
 <script lang="ts" setup>
 import {computed, type Ref} from 'vue';
-import {storeToRefs} from 'pinia';
-import TableFiltersPanel from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/table-filters-panel.vue';
+import { storeToRefs } from 'pinia';
+import {useI18n} from "vue-i18n";
 import DynamicFilterPreview
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue';
 import DynamicFilterAddAction
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-add-action.vue';
-import {FilterName} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts';
+import { FilterName } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter';
 import DynamicFilterConfigForm
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/config/dynamic-filter-config-form.vue';
+import DynamicFilterPanelWrapper
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
+import { useTableStore } from '../../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
 import SavePresetAction from "./presets/save-preset-action.vue";
-import {useTableStore} from '../../../main/modules/registry/store/new/registry.store.ts';
-import {
-  AgentFilter,
-  AgentFilterPreview,
-  AmdResultFilter,
-  AmdResultFilterPreview,
-  ContactFilter,
-  ContactFilterPreview,
-  CreatedAtFromFilter,
-  CreatedAtFromFilterPreview,
-  CreatedAtToFilter,
-  CreatedAtToFilterPreview,
-  DirectionFilter,
-  DirectionFilterPreview,
-  EvaluationFilter,
-  EvaluationFilterPreview,
-  GatewayFilter,
-  GatewayFilterPreview,
-  GranteeFilter,
-  GranteeFilterPreview,
-  HangupCauseFilter,
-  HangupCauseFilterPreview,
-  QueueFilter,
-  QueueFilterPreview,
-  RatedByFilter,
-  RatedByFilterPreview,
-  RecordingFilter,
-  RecordingFilterPreview,
-  ScoreFilter,
-  ScoreFilterPreview,
-  TagFilter,
-  TagFilterPreview,
-  TalkDuration,
-  TalkDurationPreview,
-  TeamFilter,
-  TeamFilterPreview,
-  TotalDurationFilter,
-  TotalDurationFilterPreview,
-  TranscriptionFilter,
-  TranscriptionFilterPreview,
-  UserFilter,
-  UserFilterPreview,
-  VariableFilter,
-  VariableFilterPreview,
-} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/index.js';
+import FILTER_OPTIONS_COMPONENTS_CONFIG from "./filters-config/_index";
+
+// const props = defineProps({});
 
 const emit = defineEmits<{
   hide: [],
 }>();
 
+const { t } = useI18n();
 const tableStore = useTableStore();
-const {filtersManager} = storeToRefs(tableStore);
+const { filtersManager } = storeToRefs(tableStore);
 window.fmanager = filtersManager;
 
 const {
@@ -133,9 +101,14 @@ const {
   deleteFilter: deleteAppliedFilter,
 } = tableStore;
 
+function applyFilterWrapper(data, closeCb) {
+  applyFilter(data)
+  closeCb()
+}
+
 const appliedFilters = computed(() => {
   const exclude = Object.values(SearchMode);
-  return filtersManager.value.getFiltersList({exclude});
+  return filtersManager.value.getFiltersList({ exclude });
 });
 
 const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = computed(() => {
@@ -143,188 +116,97 @@ const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = comput
   const filterOptions = [
     {
       id: 'agent',
-      name: 'Agent title',
+      name: t('webitelUI.filters.agent'),
     },
     {
       id: 'amdResult',
-      name: 'Amd Result title',
+      name: t('webitelUI.filters.amdResult'),
     },
     {
       id: 'contact',
-      name: 'contacts title',
+      name: t('webitelUI.filters.contact'),
     },
     {
       id: 'createdAtFrom',
-      name: 'Created At From title',
+      name: t('webitelUI.filters.createdAtFrom'),
     },
     {
       id: 'createdAtTo',
-      name: 'Created At To title',
+      name: t('webitelUI.filters.createdAtTo'),
     },
     {
       id: 'direction',
-      name: 'Direction title',
+      name: t('webitelUI.filters.direction'),
     },
     {
       id: 'evaluation',
-      name: 'Evaluation title',
+      name: t('webitelUI.filters.evaluation'),
     },
     {
       id: 'gateway',
-      name: 'Gateway title',
+      name: t('webitelUI.filters.gateway', 1),
     },
     {
       id: 'grantee',
-      name: 'Grantee title',
+      name: t('webitelUI.filters.grantee'),
     },
     {
       id: 'hangupCause',
-      name: 'hangupCause',
+      name: t('webitelUI.filters.hangupCause'),
     },
     {
       id: 'queue',
-      name: 'Queue title',
+      name: t('webitelUI.filters.queue'),
     },
     {
       id: 'ratedBy',
-      name: 'ratedBy title',
+      name: t('webitelUI.filters.ratedBy'),
     },
     {
       id: 'recording',
-      name: 'Recording title',
+      name: t('webitelUI.filters.recording'),
     },
     {
       id: 'score',
-      name: 'Score',
+      name: t('webitelUI.filters.score'),
     },
     {
       id: 'tag',
-      name: 'tag',
+      name: t('webitelUI.filters.tag'),
     },
     {
       id: 'talkDuration',
-      name: 'talkDuration title',
+      name: t('webitelUI.filters.talkDuration'),
     },
     {
       id: 'team',
-      name: 'Team',
+      name: t('webitelUI.filters.team'),
     },
     {
       id: 'totalDuration',
-      name: 'totalDuration title',
+      name: t('webitelUI.filters.totalDuration'),
     },
     {
       id: 'transcription',
-      name: 'transcription title',
+      name: t('webitelUI.filters.transcription'),
     },
     {
       id: 'user',
-      name: 'User title',
+      name: t('webitelUI.filters.user'),
     },
-
     {
       id: 'variable',
-      name: 'Vars title',
+      name: t('webitelUI.filters.variable'),
     },
   ];
 
   return filterOptions;
 });
+console.log(unappliedFilters , ' unappliedFilters')
 
-const getFilterValueComponent = (filterName: FilterName) => {
-  switch (filterName) {
-    case 'agent':
-      return AgentFilter;
-    case 'amdResult':
-      return AmdResultFilter;
-    case 'contact':
-      return ContactFilter;
-    case 'createdAtFrom':
-      return CreatedAtFromFilter;
-    case 'createdAtTo':
-      return CreatedAtToFilter;
-    case 'direction':
-      return DirectionFilter;
-    case 'evaluation':
-      return EvaluationFilter;
-    case 'gateway':
-      return GatewayFilter;
-    case 'grantee':
-      return GranteeFilter;
-    case 'hangupCause':
-      return HangupCauseFilter;
-    case 'queue':
-      return QueueFilter;
-    case 'ratedBy':
-      return RatedByFilter;
-    case 'recording':
-      return RecordingFilter;
-    case 'score':
-      return ScoreFilter;
-    case 'tag':
-      return TagFilter;
-    case 'talkDuration':
-      return TalkDuration;
-    case 'team':
-      return TeamFilter;
-    case 'totalDuration':
-      return TotalDurationFilter;
-    case 'transcription':
-      return TranscriptionFilter;
-    case 'user':
-      return UserFilter;
-    case 'variable':
-      return VariableFilter;
-    default:
-  }
-};
-
-const getPreviewComponent = (filterName: FilterName) => {
-  switch (filterName) {
-    case 'agent':
-      return AgentFilterPreview;
-    case 'amdResult':
-      return AmdResultFilterPreview;
-    case 'contact':
-      return ContactFilterPreview;
-    case 'createdAtFrom':
-      return CreatedAtFromFilterPreview;
-    case 'createdAtTo':
-      return CreatedAtToFilterPreview;
-    case 'direction':
-      return DirectionFilterPreview;
-    case 'evaluation':
-      return EvaluationFilterPreview;
-    case 'gateway':
-      return GatewayFilterPreview;
-    case 'grantee':
-      return GranteeFilterPreview;
-    case 'hangupCause':
-      return HangupCauseFilterPreview;
-    case 'queue':
-      return QueueFilterPreview;
-    case 'ratedBy':
-      return RatedByFilterPreview;
-    case 'recording':
-      return RecordingFilterPreview;
-    case 'score':
-      return ScoreFilterPreview;
-    case 'tag':
-      return TagFilterPreview;
-    case 'talkDuration':
-      return TalkDurationPreview;
-    case 'team':
-      return TeamFilterPreview;
-    case 'totalDuration':
-      return TotalDurationFilterPreview;
-    case 'transcription':
-      return TranscriptionFilterPreview;
-    case 'user':
-      return UserFilterPreview;
-    case 'variable':
-      return VariableFilterPreview;
-    default:
-  }
+const getFilterFieldComponent = (filterName: FilterName, filterField: 'valueField' | 'previewField') => {
+  const filter = FILTER_OPTIONS_COMPONENTS_CONFIG[filterName]
+  return !filter ? '' : filter[filterField] || ''
 };
 
 </script>
