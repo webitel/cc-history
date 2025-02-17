@@ -11,7 +11,7 @@
           />
         </wt-badge>
       </template>
-      {{ t('variableHeaderSelect.title') }}
+      {{ t('variableColumnSelect.title') }}
     </wt-tooltip>
     <wt-popup
       :shown="shownPopup"
@@ -20,7 +20,7 @@
       @close="close"
     >
       <template #title>
-        {{ t('variableHeaderSelect.title') }}
+        {{ t('variableColumnSelect.title') }}
       </template>
       <template #main>
         <div class="variable-column-popup__form">
@@ -34,7 +34,7 @@
             :disabled="v$.$error"
             @click="addVariableHeader(newVariableKey)"
           >
-            {{ t('reusable.display') }}
+            {{ t('reusable.add') }}
           </wt-button>
         </div>
 
