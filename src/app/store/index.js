@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import StoreModules from '../../modules/main/enums/StoreModules.enum';
-import filters from '../../modules/filters/store/filters';
+// import filters from '../../modules/filters/store/filters';
 import registry from '../../modules/main/modules/registry/store/registry';
 import dashboards from '../../modules/main/modules/dashboards/store/dashboards';
 import userinfo from '../../modules/userinfo/store/userinfo';
@@ -30,7 +30,7 @@ export default createStore({
   actions,
   mutations,
   modules: {
-    filters,
+    // filters,
     registry,
     dashboards,
     userinfo,

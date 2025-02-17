@@ -23,7 +23,7 @@
 import { ref } from 'vue';
 
 // import HistoryFilters from '../../modules/filters/components/the-history-filters.vue';
-import HistoryFilters from '../../modules/filters/components/v2/the-history-filters.vue';
+import HistoryFilters from '../../modules/filters/components/the-history-filters.vue';
 import HistoryHeading from '../../modules/heading/components/the-history-heading.vue';
 import HistoryRegistry from '../../modules/main/modules/registry/components/history-registry.vue';
 

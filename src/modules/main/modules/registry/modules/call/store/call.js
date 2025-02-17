@@ -1,6 +1,7 @@
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
 import evaluation from '../modules/evaluation/store/evaluation';
 import APIRepository from '../../../../../../../app/api/APIRepository';
+import { headers } from '../../../store/headers/headers';
 
 const historyAPI = APIRepository.history;
 const annotationsAPI = APIRepository.annotations;
@@ -27,8 +28,8 @@ const state = {
 };
 
 const getters = {
-  HEADERS: (state, getters, rootState) => (
-    [...rootState.registry.headers, transfersHeader, transfersLegMarkerHeader]
+  HEADERS: () => (
+    [...headers, transfersHeader, transfersLegMarkerHeader]
   ),
 
   GET_REQUEST_PARAMS: (state, getters) => ({
@@ -48,8 +49,8 @@ const getters = {
     ...params,
   }),
 
-  DATA_FIELDS: (state, getters, rootState) => {
-    let fields = rootState.registry.headers
+  DATA_FIELDS: () => {
+    let fields = headers
       .filter((header) => header.show)
       .map((header) => header.field);
     fields = [...new Set([...REQUIRED_DATA_FIELDS, ...fields])];

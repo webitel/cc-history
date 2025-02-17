@@ -41,7 +41,7 @@ import {
   UserFilterPreview,
   VariableFilter,
   VariableFilterPreview,
-} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/index.js';
+} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/index';
 import {Component} from "vue";
 
 

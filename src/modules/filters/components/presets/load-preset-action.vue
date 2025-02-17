@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import {WtIconBtn, WtPopup, WtButton } from "@webitel/ui-sdk/src/components/index.js";
+import {WtIconBtn, WtPopup, WtButton } from "@webitel/ui-sdk/src/components";
 import {ref} from "vue";
 import {useI18n} from "vue-i18n";
 

@@ -194,7 +194,7 @@
 <script lang="ts" setup>
 import get from 'lodash/get';
 import {IconAction} from '@webitel/ui-sdk/enums';
-import {usePlayMedia} from '../composables/usePlayMedia.composable.ts';
+import {usePlayMedia} from '../composables/usePlayMedia.ts';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
@@ -241,6 +241,7 @@ const {
 const {
   initialize,
   loadDataList,
+  updateSelected,
   updatePage,
   updateSize,
   updateSort,
