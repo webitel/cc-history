@@ -168,7 +168,7 @@ const getList = ({
       skip_parent: skipParent,
       parent_id: parentId,
       cause,
-      has_file: true || hasFile === 'true' ? true : hasFile === 'false'
+      has_file:  hasFile === 'true' ? true : hasFile === 'false'
         ? false
         : undefined,
       number: search,

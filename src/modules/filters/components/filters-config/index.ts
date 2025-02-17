@@ -51,16 +51,7 @@ interface FilterOptionsComponentsConfig {
     previewField: Component
   }
 }
-
- const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
-  transcription: {
-    valueField: TranscriptionFilter,
-    previewField: TranscriptionFilterPreview,
-  },
-  talkDuration: {
-    valueField: TalkDuration,
-    previewField: TalkDurationPreview,
-  },
+const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
   agent: {
     valueField: AgentFilter,
     previewField: AgentFilterPreview,
@@ -121,6 +112,10 @@ interface FilterOptionsComponentsConfig {
     valueField: TagFilter,
     previewField: TagFilterPreview,
   },
+  talkDuration: {
+    valueField: TalkDuration,
+    previewField: TalkDurationPreview,
+  },
   team: {
     valueField: TeamFilter,
     previewField: TeamFilterPreview,
@@ -128,6 +123,10 @@ interface FilterOptionsComponentsConfig {
   totalDuration: {
     valueField: TotalDurationFilter,
     previewField: TotalDurationFilterPreview,
+  },
+  transcription: {
+    valueField: TranscriptionFilter,
+    previewField: TranscriptionFilterPreview,
   },
   user: {
     valueField: UserFilter,
@@ -138,5 +137,4 @@ interface FilterOptionsComponentsConfig {
     previewField: VariableFilterPreview,
   },
 }
-
 export default FILTER_OPTIONS_COMPONENTS_CONFIG

@@ -113,92 +113,10 @@ const appliedFilters = computed(() => {
 
 const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = computed(() => {
 
-  const filterOptions = [
-    {
-      id: 'agent',
-      name: t('webitelUI.filters.agent'),
-    },
-    {
-      id: 'amdResult',
-      name: t('webitelUI.filters.amdResult'),
-    },
-    {
-      id: 'contact',
-      name: t('webitelUI.filters.contact'),
-    },
-    {
-      id: 'createdAtFrom',
-      name: t('webitelUI.filters.createdAtFrom'),
-    },
-    {
-      id: 'createdAtTo',
-      name: t('webitelUI.filters.createdAtTo'),
-    },
-    {
-      id: 'direction',
-      name: t('webitelUI.filters.direction'),
-    },
-    {
-      id: 'evaluation',
-      name: t('webitelUI.filters.evaluation'),
-    },
-    {
-      id: 'gateway',
-      name: t('webitelUI.filters.gateway', 1),
-    },
-    {
-      id: 'grantee',
-      name: t('webitelUI.filters.grantee'),
-    },
-    {
-      id: 'hangupCause',
-      name: t('webitelUI.filters.hangupCause'),
-    },
-    {
-      id: 'queue',
-      name: t('webitelUI.filters.queue'),
-    },
-    {
-      id: 'ratedBy',
-      name: t('webitelUI.filters.ratedBy'),
-    },
-    {
-      id: 'recording',
-      name: t('webitelUI.filters.recording'),
-    },
-    {
-      id: 'score',
-      name: t('webitelUI.filters.score'),
-    },
-    {
-      id: 'tag',
-      name: t('webitelUI.filters.tag'),
-    },
-    {
-      id: 'talkDuration',
-      name: t('webitelUI.filters.talkDuration'),
-    },
-    {
-      id: 'team',
-      name: t('webitelUI.filters.team'),
-    },
-    {
-      id: 'totalDuration',
-      name: t('webitelUI.filters.totalDuration'),
-    },
-    {
-      id: 'transcription',
-      name: t('webitelUI.filters.transcription'),
-    },
-    {
-      id: 'user',
-      name: t('webitelUI.filters.user'),
-    },
-    {
-      id: 'variable',
-      name: t('webitelUI.filters.variable'),
-    },
-  ];
+  const filterOptions = Object.keys(FILTER_OPTIONS_COMPONENTS_CONFIG).map(((key) => ({
+    name: t(`webitelUI.filters.${key}`),
+    value: key,
+  })));
 
   return filterOptions;
 });
