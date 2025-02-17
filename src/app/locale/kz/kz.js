@@ -1,5 +1,5 @@
-import SearchMode
-  from '../../../modules/heading/modules/filters/enums/SearchMode.enum';
+import { SearchMode }
+  from '../../../modules/filters/enums/SearchMode';
 
 export default {
   reusable: {
@@ -214,10 +214,9 @@ export default {
     },
     search: {
       settingsHint: 'Іздеу баптауы',
-      [SearchMode.SEARCH]: 'Қарапайым іздеу',
-      [SearchMode.FTS]: 'Толықмәтінді іздеу',
-      [SearchMode.DESCRIPTION]: 'Оператордың түсініктемесі',
-      [SearchMode.VARIABLE]: 'Ауыспалы',
+      [SearchMode.Search]: 'Қарапайым іздеу',
+      [SearchMode.Fts]: 'Толықмәтінді іздеу',
+      [SearchMode.Description]: 'Оператордың түсініктемесі',
     },
     hasFile: 'Әңгімені жазу',
     hasTranscription: 'Транскрипция',

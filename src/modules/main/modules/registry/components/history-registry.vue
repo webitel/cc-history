@@ -213,7 +213,7 @@ import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import {useRegistryStore} from '../store/new/registry.store.ts';
 import {storeToRefs} from 'pinia';
 import {computed, ref} from 'vue';
-import {SearchMode} from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
+import {SearchMode} from '../../../../filters/enums/SearchMode.ts';
 import {useTableEmpty} from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js";
 import {EngineHistoryCall} from "webitel-sdk";
 import VariableColumnSelect from "../../../../filters/components/variable-column-select.vue";

@@ -25,7 +25,7 @@ import WtSearchBar from '@webitel/ui-sdk/src/components/wt-search-bar/wt-search-
 import {useI18n} from 'vue-i18n';
 
 import {useRegistryStore} from '../../../main/modules/registry/store/new/registry.store.ts';
-import {SearchMode} from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
+import {SearchMode} from '../../enums/SearchMode.ts';
 import {useVuelidate} from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 

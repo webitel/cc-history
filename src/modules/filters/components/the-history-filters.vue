@@ -81,7 +81,7 @@ import DynamicFilterConfigForm
 import DynamicFilterPanelWrapper
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
-import {SearchMode} from '../../heading/modules/filters/enums/SearchMode.enum.ts';
+import {SearchMode} from '../enums/SearchMode.ts';
 // import SavePresetAction from "./presets/save-preset-action.vue";
 import FILTER_OPTIONS_COMPONENTS_CONFIG from "./filters-config";
 

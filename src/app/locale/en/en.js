@@ -1,5 +1,5 @@
-import SearchMode
-  from '../../../modules/heading/modules/filters/enums/SearchMode.enum';
+import { SearchMode }
+  from '../../../modules/filters/enums/SearchMode';
 
 export default {
   reusable: {
@@ -220,10 +220,9 @@ export default {
       },
     },
     search: {
-      [SearchMode.SEARCH]: 'Regular search',
-      [SearchMode.FTS]: 'Full text search',
-      [SearchMode.DESCRIPTION]: 'Agent\'s comment',
-      [SearchMode.VARIABLE]: 'Variable',
+      [SearchMode.Search]: 'Regular search',
+      [SearchMode.Fts]: 'Full text search',
+      [SearchMode.Description]: 'Agent\'s comment',
     },
     hasFile: 'Has recording',
     hasTranscription: 'Has transcription',
