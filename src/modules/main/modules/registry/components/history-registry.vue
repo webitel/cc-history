@@ -56,8 +56,10 @@
         ref="wt-table"
         :data="dataList"
         :headers="shownHeaders"
+        :selected="selected"
         sortable
         @sort="updateSort"
+        @update:selected="updateSelected"
       >
         <template #direction="{ item }">
           <table-direction :item="item" />
@@ -208,7 +210,7 @@ import {
   WtIconBtn,
 } from '@webitel/ui-sdk/src/components/index.js';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
-import {useTableStore} from '../store/new/registry.store.ts';
+import {useRegistryStore} from '../store/new/registry.store.ts';
 import {storeToRefs} from 'pinia';
 import {computed, ref} from 'vue';
 import {SearchMode} from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
@@ -220,10 +222,11 @@ const emit = defineEmits<{
   'toggle:filters-panel': [];
 }>();
 
-const tableStore = useTableStore();
+const tableStore = useRegistryStore();
 
 const {
   dataList,
+  selected,
   error,
   isLoading,
   page,

@@ -19,18 +19,18 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia';
-import { computed, ref, watch, WatchHandle } from 'vue';
+import {storeToRefs} from 'pinia';
+import {computed, ref, watch, WatchHandle} from 'vue';
 import WtSearchBar from '@webitel/ui-sdk/src/components/wt-search-bar/wt-search-bar.vue';
-import { useI18n } from 'vue-i18n';
+import {useI18n} from 'vue-i18n';
 
-import { useTableStore } from '../../../../main/modules/registry/store/new/registry.store.ts';
-import { SearchMode } from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
-import { useVuelidate } from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import {useRegistryStore} from '../../../../main/modules/registry/store/new/registry.store.ts';
+import {SearchMode} from '../../../../heading/modules/filters/enums/SearchMode.enum.ts';
+import {useVuelidate} from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
 
-const { t } = useI18n();
-const tableStore = useTableStore();
+const {t} = useI18n();
+const tableStore = useRegistryStore();
 
 const {
   filtersManager,
@@ -53,8 +53,8 @@ const v$ = useVuelidate(
       required,
     },
   })),
-  { localValue },
-  { $autoDirty: true },
+  {localValue},
+  {$autoDirty: true},
 )
 
 let unwatchSearchMode: WatchHandle;
@@ -83,7 +83,7 @@ watch(isFiltersRestoring, (next) => {
     deleteFilter(prev);
     localValue.value = '';
   });
-}, { immediate: true });
+}, {immediate: true});
 
 const showTextSearchIcon = computed(() => {
   const textSearchModes = [

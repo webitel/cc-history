@@ -28,7 +28,8 @@
           <template #info>
             <component
               :is="getFilterFieldComponent(filter.name, 'previewField')"
-              :value="filter.value">
+              :value="filter.value"
+            >
             </component>
           </template>
         </dynamic-filter-preview>
@@ -55,7 +56,7 @@
       </template>
 
       <template #actions>
-        <save-preset-action />
+        <!--        TODO: <save-preset-action />-->
 
         <wt-icon-action
           action="close"
@@ -68,20 +69,20 @@
 
 <script lang="ts" setup>
 import {computed, type Ref} from 'vue';
-import { storeToRefs } from 'pinia';
+import {storeToRefs} from 'pinia';
 import {useI18n} from "vue-i18n";
 import DynamicFilterPreview
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue';
 import DynamicFilterAddAction
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-add-action.vue';
-import { FilterName } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter';
+import {FilterName} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter';
 import DynamicFilterConfigForm
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/config/dynamic-filter-config-form.vue';
 import DynamicFilterPanelWrapper
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
-import { useTableStore } from '../../../main/modules/registry/store/new/registry.store.ts';
+import {useRegistryStore} from '../../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../../../heading/modules/filters/enums/SearchMode.enum.ts';
-import SavePresetAction from "./presets/save-preset-action.vue";
+// import SavePresetAction from "./presets/save-preset-action.vue";
 import FILTER_OPTIONS_COMPONENTS_CONFIG from "./filters-config/_index";
 
 // const props = defineProps({});
@@ -90,10 +91,9 @@ const emit = defineEmits<{
   hide: [],
 }>();
 
-const { t } = useI18n();
-const tableStore = useTableStore();
-const { filtersManager } = storeToRefs(tableStore);
-window.fmanager = filtersManager;
+const {t} = useI18n();
+const tableStore = useRegistryStore();
+const {filtersManager} = storeToRefs(tableStore);
 
 const {
   addFilter: applyFilter,
@@ -108,7 +108,7 @@ function applyFilterWrapper(data, closeCb) {
 
 const appliedFilters = computed(() => {
   const exclude = Object.values(SearchMode);
-  return filtersManager.value.getFiltersList({ exclude });
+  return filtersManager.value.getFiltersList({exclude});
 });
 
 const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = computed(() => {
@@ -202,7 +202,6 @@ const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = comput
 
   return filterOptions;
 });
-console.log(unappliedFilters , ' unappliedFilters')
 
 const getFilterFieldComponent = (filterName: FilterName, filterField: 'valueField' | 'previewField') => {
   const filter = FILTER_OPTIONS_COMPONENTS_CONFIG[filterName]

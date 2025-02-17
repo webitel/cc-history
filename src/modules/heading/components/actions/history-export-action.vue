@@ -110,6 +110,9 @@ export default {
     },
   }),
   computed: {
+    selectedIds() {
+      return this.selected.map(({ id }) => id);
+    },
     exportSettingOptions() {
       return Object.keys(TypesExportedSettingsEnum)
       .map(key => ({

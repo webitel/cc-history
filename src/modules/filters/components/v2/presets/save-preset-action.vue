@@ -41,25 +41,25 @@
 
 <script lang="ts" setup>
 
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import {computed, ref} from 'vue';
+import {useI18n} from 'vue-i18n';
+import {useVuelidate} from '@vuelidate/core';
+import {required} from '@vuelidate/validators';
 import WtPopup from '@webitel/ui-sdk/src/components/wt-popup/wt-popup.vue';
 import WtIconBtn from '@webitel/ui-sdk/src/components/wt-icon-btn/wt-icon-btn.vue';
 import WtInput from '@webitel/ui-sdk/src/components/wt-input/wt-input.vue';
-import { addPreset } from '../../../api/PresetQuery.api.ts';
-import { useTableStore as useRegistryTableStore } from '../../../../main/modules/registry/store/new/registry.store.ts';
-import { storeToRefs } from 'pinia';
+import {addPreset} from '../../../api/PresetQuery.api.ts';
+import {useRegistryStore as useRegistryTableStore} from '../../../../main/modules/registry/store/new/registry.store.ts';
+import {storeToRefs} from 'pinia';
 
 const props = defineProps({});
 
 const emit = defineEmits([]);
 
-const { t } = useI18n();
+const {t} = useI18n();
 
 const tableStore = useRegistryTableStore();
-const { filtersManager } = storeToRefs(tableStore);
+const {filtersManager} = storeToRefs(tableStore);
 
 const disableAction = computed(() => {
   return !filtersManager.value.getAllKeys().length;
@@ -71,9 +71,9 @@ const isSaving = ref(false);
 
 const v$ = useVuelidate(computed(() => {
   return {
-    presetName: { required },
+    presetName: {required},
   };
-}), { presetName }, { $autoDirty: true });
+}), {presetName}, {$autoDirty: true});
 
 const savePreset = async () => {
   isSaving.value = true;
