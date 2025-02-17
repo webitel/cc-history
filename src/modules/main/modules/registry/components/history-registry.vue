@@ -25,8 +25,8 @@
         </template>
         <template #variables>
           <variable-column-select
-            :headers="headers"
-            @add-variables-headers="addVariablesHeaders"
+            :variable-headers="variableHeaders"
+            @update:variable-headers="updateVariablesHeaders"
           />
         </template>
       </wt-action-bar>
@@ -55,7 +55,7 @@
         v-show="!isLoading"
         ref="wt-table"
         :data="dataList"
-        :headers="headers"
+        :headers="shownHeaders"
         sortable
         @sort="updateSort"
       >
@@ -160,7 +160,6 @@
           <router-link
             :to="`/${item.id}`"
             class="table-action"
-            @click="saveQueries"
           >
             <wt-icon-btn
               icon="forks"
@@ -231,6 +230,7 @@ const {
   size,
   next,
   headers,
+  shownHeaders,
 
   filtersManager,
 } = storeToRefs(tableStore);
@@ -256,23 +256,8 @@ const anyFiltersOnFiltersPanel = computed(() => {
   });
 });
 
-const prettifiedHeaders = computed(() => {
-  return headers.value.map(({text, ...header}) => {
-    let modifiedText = text;
-
-    if (header.value.includes('variables')) {
-      modifiedText = header.value.replace(/^variables\./, '');
-    }
-
-    return {
-      ...header,
-      text: modifiedText,
-    };
-  });
-});
-
 const variableHeaders = computed(() => {
-  return prettifiedHeaders.value.filter((header) => header.value.includes('variables.'));
+  return shownHeaders.value.filter((header) => header.value.includes('variables.'));
 });
 
 const {
@@ -317,7 +302,7 @@ const handleTranscriptDelete = ({callId, transcript}: { callId: string, transcri
   call.transcripts.splice(call.transcripts.findIndex(({id}) => id === transcript.id), 1);
 };
 
-const addVariablesHeaders = (variables) => {
+const updateVariablesHeaders = (variables) => {
   const mainHeaders = headers?.value.filter((header) => !header.value.includes('variables.'));
   updateShownHeaders([...mainHeaders, ...variables]);
 };
