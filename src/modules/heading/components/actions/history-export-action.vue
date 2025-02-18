@@ -110,6 +110,9 @@ export default {
     },
   }),
   computed: {
+    selectedIds() {
+      return this.selected.map(({ id }) => id);
+    },
     exportSettingOptions() {
       return Object.keys(TypesExportedSettingsEnum)
       .map(key => ({
@@ -125,6 +128,13 @@ export default {
       this.v$.draft.$touch();
       return this.v$.draft.$pending || this.v$.draft.$error;
     },
+  },
+  mounted() {
+    this.checkExportSettings();
+  },
+  created() {
+    this.initCSVExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
+    this.initXLSExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
   },
   methods: {
     updateDraft({ format, separator } = {}) {
@@ -193,13 +203,6 @@ export default {
       //NOTE: This code is required to clear draft and re-execute checkExportSettings
       this.updateDraft();
     },
-  },
-  mounted() {
-    this.checkExportSettings();
-  },
-  created() {
-    this.initCSVExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
-    this.initXLSExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
   },
 };
 </script>
