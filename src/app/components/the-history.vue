@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
+import { mapGetters } from 'vuex';
 import AppHeader from './shared/app-header/app-header.vue';
 
 export default {
@@ -45,8 +45,10 @@ export default {
 
 <style lang="scss" scoped>
 .the-history {
-  min-height: 100vh;
   display: flex;
+  flex: 1;
   flex-direction: column;
+  height: 100%;
+  min-height: 0;
 }
 </style>

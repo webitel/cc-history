@@ -1,5 +1,5 @@
-import SearchMode
-  from '../../../modules/heading/modules/filters/enums/SearchMode.enum';
+import { SearchMode }
+  from '../../../modules/filters/enums/SearchMode';
 
 export default {
   reusable: {
@@ -218,10 +218,9 @@ export default {
       },
     },
     search: {
-      [SearchMode.SEARCH]: 'Звичайний пошук',
-      [SearchMode.FTS]: 'Повнотекстовий пошук',
-      [SearchMode.DESCRIPTION]: 'Коментар оператора',
-      [SearchMode.VARIABLE]: 'Змінна',
+      [SearchMode.Search]: 'Звичайний пошук',
+      [SearchMode.Fts]: 'Повнотекстовий пошук',
+      [SearchMode.Description]: 'Коментар оператора',
     },
     hasFile: 'Запис розмови',
     hasTranscription: 'Транскрипція',

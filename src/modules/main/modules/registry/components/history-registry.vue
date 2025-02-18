@@ -1,5 +1,36 @@
 <template>
-  <div class="content-wrapper history-registry">
+  <div class="table-section history-registry">
+    <header class="table-title">
+      <wt-action-bar
+        :include="[IconAction.FILTERS, IconAction.REFRESH, IconAction.COLUMNS, IconAction.VARIABLES]"
+        mode="table"
+        @click:refresh="loadDataList"
+        @click:filters="emit('toggle:filters-panel')"
+      >
+        <template #filters="{ action, onClick }">
+          <wt-badge
+            :hidden="!anyFiltersOnFiltersPanel"
+          >
+            <wt-icon-action
+              :action="action"
+              @click="onClick"
+            />
+          </wt-badge>
+        </template>
+        <template #columns>
+          <wt-table-column-select
+            :headers="headers"
+            @change="updateShownHeaders"
+          />
+        </template>
+        <template #variables>
+          <variable-column-select
+            :variable-headers="variableHeaders"
+            @update:variable-headers="updateVariablesHeaders"
+          />
+        </template>
+      </wt-action-bar>
+    </header>
     <stt-popup
       :call-id="sttPopupCallId"
       :shown="sttPopupCallId"
@@ -7,23 +38,28 @@
       @delete="handleTranscriptDelete({ callId: sttPopupCallId, transcript: $event })"
     />
     <wt-loader v-show="isLoading" />
-    <wt-dummy
-      v-if="dummyValue && !isLoading"
-      :src="dummyValue.src"
-      :text="dummyValue.text"
-      class="history-registry__dummy"
+    <wt-empty
+      v-if="showEmpty"
+      :image="emptyImage"
+      :headline="emptyHeadline"
+      :title="emptyTitle"
+      :text="emptyText"
+      :primary-action-text="emptyPrimaryActionText"
+      :secondary-action-text="emptySecondaryActionText"
     />
     <div
       v-else
-      class="table-wrapper"
+      class="table-section__table-wrapper"
     >
       <wt-table
         v-show="!isLoading"
         ref="wt-table"
         :data="dataList"
-        :headers="headers"
+        :headers="shownHeaders"
+        :selected="selected"
         sortable
-        @sort="sort"
+        @sort="updateSort"
+        @update:selected="updateSelected"
       >
         <template #direction="{ item }">
           <table-direction :item="item" />
@@ -126,7 +162,6 @@
           <router-link
             :to="`/${item.id}`"
             class="table-action"
-            @click="saveQueries"
           >
             <wt-icon-btn
               icon="forks"
@@ -135,7 +170,16 @@
           </router-link>
         </template>
       </wt-table>
-      <filter-pagination :is-next="isNext" />
+
+      <wt-pagination
+        :next="next"
+        :prev="page > 1"
+        :size="size"
+        debounce
+        @change="updateSize"
+        @next="updatePage(page+1)"
+        @prev="updatePage(page-1)"
+      />
 
       <wt-player
         v-show="audioURL"
@@ -147,117 +191,132 @@
   </div>
 </template>
 
-<script>
-import sortFilterMixin from '@webitel/ui-sdk/src/modules/QueryFilters/mixins/sortFilterMixin';
-import { mapActions, mapGetters, mapState } from 'vuex';
+<script lang="ts" setup>
 import get from 'lodash/get';
-import historyHeadersMixin from '../mixins/historyHeadersMixin';
-import playMediaMixin from '../mixins/media/playMediaMixin';
-import historyRegistryQueriesMixin from '../mixins/historyRegistryQueries.mixin.js';
-import FilterPagination from '../modules/filters/components/filter-pagination/filter-pagination.vue';
+import {IconAction} from '@webitel/ui-sdk/enums';
+import {usePlayMedia} from '../composables/usePlayMedia.ts';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
-import DummyLight from '../../../../../app/assets/dummy/hs-dummy-light.svg';
-import DummyDark from '../../../../../app/assets/dummy/hs-dummy-dark.svg';
-import DummyAfterSearchLight from '../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
-import DummyAfterSearchDark from '../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
+import {
+  WtEmpty,
+  WtLoader,
+  WtPagination,
+  WtPlayer,
+  WtTable,
+  WtActionBar,
+  WtIconAction,
+  WtBadge,
+  WtIconBtn,
+} from '@webitel/ui-sdk/src/components/index.js';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
+import {useRegistryStore} from '../store/new/registry.store.ts';
+import {storeToRefs} from 'pinia';
+import {computed, ref} from 'vue';
+import {SearchMode} from '../../../../filters/enums/SearchMode.ts';
+import {useTableEmpty} from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js";
+import {EngineHistoryCall} from "webitel-sdk";
+import VariableColumnSelect from "../../../../filters/components/variable-column-select.vue";
 
-export default {
-  name: 'HistoryRegistry',
-  components: {
-    FilterPagination,
-    TableDirection,
-    MediaAction,
-    SttAction,
-    SttPopup,
-  },
-  mixins: [
-    historyHeadersMixin,
-    sortFilterMixin,
-    playMediaMixin,
-    historyRegistryQueriesMixin,
-  ],
-  data: () => ({
-    sttPopupCallId: null,
-  }),
-  computed: {
-    variableHeaders() {
-      return this.headers.filter((header) => header.value.includes('variables.'));
-    },
-    ...mapState('registry', {
-      dataList: (state) => state.dataList,
-      isLoading: (state) => state.isLoading,
-      isNext: (state) => state.isNext,
-    }),
-    ...mapGetters('appearance', {
-      darkMode: 'DARK_MODE',
-    }),
-    getVariableValue() {
-      return (item, field) => {
-        return get(item, ['variables', field.replace('variables.', '')]);
-      };
-    },
-    dummyValue() {
-      if (!this.dataList.length) {
-        if (Object.values(this.$route.query).some((query) => query.length)) {
-          return {
-            src: this.darkMode ? DummyAfterSearchDark : DummyAfterSearchLight,
-            text: this.$t('dashboards.empty.resultSearch'),
-          };
-        }
-        return {
-          src: this.darkMode ? DummyDark : DummyLight,
-          text: this.$t('dashboards.empty.workspace'),
-        };
-      }
-      return '';
-    },
-  },
-  watch: {
-    '$route.query': {
-      handler() {
-        this.loadList();
-      },
-    },
-  },
-  mounted() {
-    this.initTableData();
-    this.setHeaders(this.headers);
-  },
-  methods: {
-    get, // lodash get
-    ...mapActions('filters', {
-      setFilterValue: 'SET_FILTER',
-    }),
-    ...mapActions('registry', {
-      loadList: 'LOAD_DATA_LIST',
-      setHeaders: 'SET_HEADERS',
-    }),
-    handleTranscriptDelete({ callId, transcript }) {
-      const call = this.dataList.find(({ id }) => id === callId);
-      // should find transcript instead of indexOf cause transcript source is not that call
-      call.transcripts.splice(call.transcripts.findIndex(({ id }) => id === transcript.id), 1);
-    },
-    showItemStt(item) {
-      return item.files || item.transcripts?.length || item.filesJob;
-    },
-    saveQueries() {
-      this.setHistoryRegistryQueriesToSessionStorage(this.$route.query);
-    },
-    initTableData() {
-      const prevQuery = this.getHistoryRegistryQueriesFromSessionStorage();
-      if (prevQuery) this.$router.push({ query: prevQuery });
-      this.loadList();
-    },
-  },
+const emit = defineEmits<{
+  'toggle:filters-panel': [];
+}>();
+
+const tableStore = useRegistryStore();
+
+const {
+  dataList,
+  selected,
+  error,
+  isLoading,
+  page,
+  size,
+  next,
+  headers,
+  shownHeaders,
+
+  filtersManager,
+} = storeToRefs(tableStore);
+
+const {
+  initialize,
+  loadDataList,
+  updateSelected,
+  updatePage,
+  updateSize,
+  updateSort,
+  updateShownHeaders,
+} = tableStore;
+
+/*
+* show "toggle filters panel" badge if any filters are applied...
+* */
+const anyFiltersOnFiltersPanel = computed(() => {
+  /*
+  * ...excluding search filters, which shown in other panel
+  * */
+  return filtersManager.value.getAllKeys().some((filterName) => {
+    return !Object.values(SearchMode).some((mode) => mode === filterName);
+  });
+});
+
+const variableHeaders = computed(() => {
+  return shownHeaders.value.filter((header) => header.value.includes('variables.'));
+});
+
+const {
+  showEmpty,
+  image: emptyImage,
+  headline: emptyHeadline,
+  title: emptyTitle,
+  text: emptyText,
+  primaryActionText: emptyPrimaryActionText,
+  secondaryActionText: emptySecondaryActionText,
+} = useTableEmpty({
+  dataList,
+  error,
+  filters: computed(() => filtersManager.value.getAllValues()),
+  isLoading,
+});
+
+initialize();
+
+const {
+  audioURL,
+  currentlyPlaying,
+  isPlayingNow,
+
+  play,
+  closePlayer,
+} = usePlayMedia();
+
+const sttPopupCallId = ref<string | null>(null);
+
+const getVariableValue = (item: EngineHistoryCall, field: string) => {
+  return get(item, ['variables', field.replace('variables.', '')]);
+};
+
+const showItemStt = (item: EngineHistoryCall) => {
+  return item.files || item.transcripts?.length || item.filesJob;
+};
+
+const handleTranscriptDelete = ({callId, transcript}: { callId: string, transcript }) => {
+  const call = dataList.value.find(({id}) => id === callId);
+  // should find transcript instead of indexOf cause transcript source is not that call
+  call.transcripts.splice(call.transcripts.findIndex(({id}) => id === transcript.id), 1);
+};
+
+const updateVariablesHeaders = (variables) => {
+  const mainHeaders = headers?.value.filter((header) => !header.value.includes('variables.'));
+  updateShownHeaders([...mainHeaders, ...variables]);
 };
 </script>
 
 <style lang="scss" scoped>
-.history-registry__dummy {
-  height: 50vh;
+@use '@webitel/ui-sdk/src/css/pages/table-page.scss' as *;
+
+.wt-action-bar {
+  margin-left: auto;
 }
 
 .table-wrapper {
@@ -290,7 +349,7 @@ export default {
 }
 
 // make action icons fixed to right
-.wt-table ::v-deep .wt-table__tr {
+.wt-table :deep(.wt-table__tr) {
   .wt-table__td__actions {
     position: sticky;
     right: 0;

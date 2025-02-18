@@ -101,8 +101,8 @@ const getList = ({
   const {
     page,
     size,
-    from,
-    to,
+    createdAtFrom,
+    createdAtTo,
     user,
     rated,
     ratedBy,
@@ -135,6 +135,7 @@ const getList = ({
     contact,
   } = applyTransform(params, paramsTransformers);
   try {
+    console.log(params, ' here');
     const variables = variable
       && variable.split('&')
       .reduce((vars, currVar) => {
@@ -153,10 +154,10 @@ const getList = ({
       page,
       size,
       sort,
-      fields,
+      fields: [ 'id', 'files', 'files_job', 'transcripts', ...fields ],
       created_at: {
-        from,
-        to,
+        from: createdAtFrom,
+        to: createdAtTo,
       },
       user_id: user,
       agent_id: agent,
@@ -168,9 +169,7 @@ const getList = ({
       skip_parent: skipParent,
       parent_id: parentId,
       cause,
-      has_file: hasFile === 'true' ? true : hasFile === 'false'
-        ? false
-        : undefined,
+      has_file: hasFile !== undefined ? hasFile : undefined,
       number: search,
       direction,
       id,
@@ -179,12 +178,11 @@ const getList = ({
       amd_result: amdResult,
       fts,
       directions: hangupDisposition,
-      has_transcript: hasTranscription === 'true' ? true : hasTranscription ===
-      'false' ? false : undefined,
+      has_transcript: hasTranscription !== undefined ? hasTranscription : undefined,
       agent_description: description,
       grantee_id: grantee,
       talk: talkSec,
-      rated: rated === 'true' ? true : rated === 'false' ? false : undefined,
+      rated: rated !== undefined ? rated : undefined,
       rated_by: ratedBy,
       score_required: score,
       variables,

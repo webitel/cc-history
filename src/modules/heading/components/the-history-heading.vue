@@ -4,87 +4,71 @@
       {{ $t('reusable.history') }}
     </template>
     <template #actions>
-      <filter-search
-        namespace="filters"
-      />
+      <div class="the-history-heading-actions">
+        <search-filter />
 
-      <history-transcribe-action
-        class="history-action"
-        :selected="selectedItems"
-        @refresh="loadDataList"
-      />
+        <history-transcribe-action
+          :selected="selected"
+          class="history-action"
+          @refresh="loadDataList"
+        />
 
-      <history-export-action
-        class="history-action"
-        :data-list="dataList"
-        :filters="getFilters"
-        :fields="fields"
-      />
+        <history-export-action
+          :data-list="dataList"
+          :fields="fields"
+          :filters="filters"
+          :selected="selected"
+          class="history-action"
+        />
 
-      <history-download-action
-        class="history-action"
-        :data-list="dataList"
-        :filters="getFilters"
-        :selected="selectedItems"
-      />
+        <history-download-action
+          :data-list="dataList"
+          :filters="filters"
+          :selected="selected"
+          class="history-action"
+        />
 
-      <history-delete-action
-        class="history-action"
-        :selected="selectedItems"
-        @refresh="loadDataList"
-      />
+        <history-delete-action
+          :selected="selected"
+          class="history-action"
+          @refresh="loadDataList"
+        />
+      </div>
     </template>
   </wt-headline>
 </template>
 
-<script>
-import { mapActions, mapGetters, mapState } from 'vuex';
-import FilterSearch from '../modules/filters/components/filter-search.vue';
-import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
+<script lang="ts" setup>
+import {useRegistryStore} from "../../main/modules/registry/store/new/registry.store.ts";
+import SearchFilter from '../../filters/components/filter-value-components/search-filter.vue';
+import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
 import HistoryExportAction from './actions/history-export-action.vue';
-import HistoryDeleteAction from './actions/history-delete-action.vue';
+import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
+import {storeToRefs} from "pinia";
+import {computed} from "vue";
 
-export default {
-  name: 'TheHistoryHeading',
-  components: {
-    FilterSearch,
-    HistoryTranscribeAction,
-    HistoryDownloadAction,
-    HistoryExportAction,
-    HistoryDeleteAction,
-  },
-  computed: {
-    ...mapState('registry', {
-      dataList: (state) => state.dataList,
-      headers: (state) => state.headers,
-    }),
+const registryStore = useRegistryStore();
 
-    ...mapGetters('filters', {
-      getFilters: 'GET_FILTERS',
-    }),
+const {
+  dataList,
+  selected,
+  fields,
+  filtersManager,
+} = storeToRefs(registryStore);
 
-    ...mapGetters('registry', {
-      selectedItems: 'SELECTED_DATA_ITEMS',
-    }),
+const {
+  loadDataList,
+} = registryStore;
 
-    fields() {
-      return ['id', ...this.headers.filter((header) => header.show).map((header) => header.field)];
-    },
-  },
+const filters = computed(() => Object.fromEntries(filtersManager.value.filters.entries()));
 
-  methods: {
-    ...mapActions('registry', {
-      loadDataList: 'LOAD_DATA_LIST',
-    }),
-  },
-};
 </script>
 
 <style lang="scss" scoped>
-.the-history-heading {
-  .history-action {
-    margin-left: 20px;
-  }
+.the-history-heading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 </style>
