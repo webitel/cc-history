@@ -76,7 +76,7 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     valueField: DirectionFilter,
     previewField: DirectionFilterPreview,
   },
-  evaluation: {
+  rated: {
     valueField: EvaluationFilter,
     previewField: EvaluationFilterPreview,
   },
@@ -88,7 +88,7 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     valueField: GranteeFilter,
     previewField: GranteeFilterPreview,
   },
-  hangupCause: {
+  cause: {
     valueField: HangupCauseFilter,
     previewField: HangupCauseFilterPreview,
   },
@@ -100,7 +100,7 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     valueField: RatedByFilter,
     previewField: RatedByFilterPreview,
   },
-  recording: {
+  hasFile: {
     valueField: RecordingFilter,
     previewField: RecordingFilterPreview,
   },
@@ -108,11 +108,11 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     valueField: ScoreFilter,
     previewField: ScoreFilterPreview,
   },
-  tag: {
+  tags: {
     valueField: TagFilter,
     previewField: TagFilterPreview,
   },
-  talkDuration: {
+  talkSec: {
     valueField: TalkDuration,
     previewField: TalkDurationPreview,
   },
@@ -120,11 +120,11 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     valueField: TeamFilter,
     previewField: TeamFilterPreview,
   },
-  totalDuration: {
+  duration: {
     valueField: TotalDurationFilter,
     previewField: TotalDurationFilterPreview,
   },
-  transcription: {
+  hasTranscription: {
     valueField: TranscriptionFilter,
     previewField: TranscriptionFilterPreview,
   },
