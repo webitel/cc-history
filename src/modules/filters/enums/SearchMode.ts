@@ -1,9 +1,9 @@
 export type SearchModeType = 'search' | 'fts' | 'description'
-interface SearchModeI {
+interface SearchMode {
   [key: string]: SearchModeType
 }
 
-export const SearchMode: SearchModeI = {
+export const SearchMode: SearchMode = {
   Search: 'search',
   Fts: 'fts',
   Description: 'description',
