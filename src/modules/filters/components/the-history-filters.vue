@@ -75,7 +75,7 @@ import DynamicFilterPreview
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue';
 import DynamicFilterAddAction
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-add-action.vue';
-import {FilterName} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter';
+import {FilterName} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts';
 import DynamicFilterConfigForm
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/config/dynamic-filter-config-form.vue';
 import DynamicFilterPanelWrapper

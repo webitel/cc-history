@@ -29,8 +29,8 @@ import {
   ScoreFilterPreview,
   TagFilter,
   TagFilterPreview,
-  TalkDuration,
-  TalkDurationPreview,
+  TalkDurationFilter,
+  TalkDurationFilterPreview,
   TeamFilter,
   TeamFilterPreview,
   TotalDurationFilter,
@@ -113,8 +113,8 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     previewField: TagFilterPreview,
   },
   talkSec: {
-    valueField: TalkDuration,
-    previewField: TalkDurationPreview,
+    valueField: TalkDurationFilter,
+    previewField: TalkDurationFilterPreview,
   },
   team: {
     valueField: TeamFilter,

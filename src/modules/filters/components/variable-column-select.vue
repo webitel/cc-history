@@ -78,7 +78,7 @@
 import {useVuelidate} from '@vuelidate/core';
 import {required} from '@vuelidate/validators';
 import {computed, reactive, ref} from 'vue';
-import {WtTableHeader} from "@webitel/ui-sdk/src/components/wt-table/types/WtTable";
+import {WtTableHeader} from "@webitel/ui-sdk/src/components/wt-table/types/WtTable.d.ts";
 import {useI18n} from "vue-i18n";
 import {WtBadge, WtButton, WtPopup, WtTooltip, WtInput, WtIconBtn, WtCheckbox} from "@webitel/ui-sdk/components";
 import { isEmpty } from '@webitel/ui-sdk/scripts';
