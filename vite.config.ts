@@ -9,6 +9,8 @@ import { resolve } from 'path';
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
+  if (mode === 'development') {}
+
   return defineConfig({
     base: '/history',
     define: {
