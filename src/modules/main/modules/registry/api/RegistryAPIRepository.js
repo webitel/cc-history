@@ -51,7 +51,7 @@ const mapDefaultComments = (item) => {
 const mapTranscripts = (item) => {
   return item.transcripts ? item.transcripts.map((transcript) => ({
     ...transcript,
-    name: transcript.file.name,
+    name: transcript.file?.name,
   })) : [];
 };
 
@@ -111,7 +111,8 @@ const getList = ({
     team,
     gateway,
     member,
-    duration,
+    totalDuration,
+    talkDuration,
     skipParent,
     parentId,
     cause,
@@ -135,7 +136,6 @@ const getList = ({
     contact,
   } = applyTransform(params, paramsTransformers);
   try {
-    console.log(params, ' here');
     const variables = variable
       && variable.split('&')
       .reduce((vars, currVar) => {
@@ -165,7 +165,8 @@ const getList = ({
       team_id: team,
       member_id: member,
       gateway_id: gateway,
-      duration,
+      duration: totalDuration,
+      talk: talkDuration,
       skip_parent: skipParent,
       parent_id: parentId,
       cause,
@@ -181,7 +182,6 @@ const getList = ({
       has_transcript: hasTranscription !== undefined ? hasTranscription : undefined,
       agent_description: description,
       grantee_id: grantee,
-      talk: talkSec,
       rated: rated !== undefined ? rated : undefined,
       rated_by: ratedBy,
       score_required: score,

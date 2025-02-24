@@ -83,7 +83,7 @@ import DynamicFilterConfigForm
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/config/dynamic-filter-config-form.vue';
 import DynamicFilterPanelWrapper
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
-import {FilterInitParams, IFilter} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter";
+import {FilterInitParams, IFilter} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
 // import SavePresetAction from "./presets/save-preset-action.vue";
