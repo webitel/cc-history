@@ -108,11 +108,11 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     valueField: ScoreFilter,
     previewField: ScoreFilterPreview,
   },
-  tags: {
+  tag: {
     valueField: TagFilter,
     previewField: TagFilterPreview,
   },
-  talkSec: {
+  talkDuration: {
     valueField: TalkDurationFilter,
     previewField: TalkDurationFilterPreview,
   },
@@ -120,7 +120,7 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     valueField: TeamFilter,
     previewField: TeamFilterPreview,
   },
-  duration: {
+  totalDuration: {
     valueField: TotalDurationFilter,
     previewField: TotalDurationFilterPreview,
   },
