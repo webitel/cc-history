@@ -11,8 +11,8 @@ import {
   CreatedAtToFilterPreview,
   DirectionFilter,
   DirectionFilterPreview,
-  RatedFilter,
-  RatedFilterPreview,
+  HasRatingFilterValueField,
+  HasRatingFilterValuePreview,
   GatewayFilter,
   GatewayFilterPreview,
   GranteeFilter,
@@ -77,8 +77,8 @@ const filterOptionsComponentsConfig: FilterOptionsComponentsConfig = {
     previewField: DirectionFilterPreview,
   },
   rated: {
-    valueField: RatedFilter,
-    previewField: RatedFilterPreview,
+    valueField: HasRatingFilterValueField,
+    previewField: HasRatingFilterValuePreview,
   },
   gateway: {
     valueField: GatewayFilter,
