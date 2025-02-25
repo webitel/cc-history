@@ -77,12 +77,8 @@ export default {
   methods: {
     callExportFiles() {
       if (this.isLoading) return;
-      try {
-        const params = { ...this.filters, hasFile: 'true' };
-        return this.exportFiles(null, params);
-      } catch (err) {
-        throw err;
-      }
+      const params = { ...this.filters, hasFile: true };
+      return this.exportFiles(null, params);
     },
   },
 };
