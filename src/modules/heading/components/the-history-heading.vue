@@ -61,7 +61,7 @@ const {
   loadDataList,
 } = registryStore;
 
-const filters = computed(() => Object.fromEntries(filtersManager.value.filters.entries()));
+const filters = computed(() => filtersManager.value.getAllValues());
 
 </script>
 
