@@ -62,6 +62,11 @@
         <!--        TODO: <save-preset-action />-->
 
         <wt-icon-action
+          action="clear"
+          @click="resetFilters"
+        />
+
+        <wt-icon-action
           action="close"
           @click="emit('hide')"
         />
@@ -104,6 +109,12 @@ const {
   updateFilter: updateAppliedFilter,
   deleteFilter: deleteAppliedFilter,
 } = tableStore;
+
+const resetFilters = () => {
+  filtersManager.value.reset({
+    include: [],
+  })
+}
 
 function setFilterWrapperAction(
   data: FilterInitParams,
