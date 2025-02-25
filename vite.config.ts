@@ -37,8 +37,8 @@ export default ({ mode }) => {
       alias: {
         vue: '@vue/compat',
         '@': resolve(__dirname, 'src'),
-        'lodash/fp': 'lodash-es',
-        'lodash': 'lodash-es',
+        // 'lodash/fp': 'lodash-es',
+        // 'lodash': 'lodash-es',
       },
       // preserveSymlinks: false,
     },
