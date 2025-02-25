@@ -10,6 +10,7 @@ import {
 } from '@webitel/ui-sdk/src/api/transformers/index.js';
 import * as converters from '@webitel/ui-sdk/src/scripts/caseConverters';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import { startOfToday } from 'date-fns';
 import { CallServiceApiFactory } from 'webitel-sdk';
 
 import instance from '../../../../../app/api/instance';
@@ -156,7 +157,7 @@ const getList = ({
       sort,
       fields: [ 'id', 'files', 'files_job', 'transcripts', ...fields ],
       created_at: {
-        from: createdAtFrom,
+        from: createdAtFrom || startOfToday().getTime(),
         to: createdAtTo,
       },
       user_id: user,

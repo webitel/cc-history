@@ -214,6 +214,11 @@ export default {
       preset: 'Preset | Presets',
       presetName: 'Preset name',
     },
+    predefinedLabels: {
+      createdAt: {
+        startOfToday: 'From the start of today',
+      },
+    },
     tag: {
       options: {
         vm: 'Voice mail',

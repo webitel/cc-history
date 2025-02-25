@@ -3,6 +3,19 @@
     <dynamic-filter-panel-wrapper>
       <template #filters>
         <dynamic-filter-preview
+          v-if="!hasCreatedAtFromFilter"
+          :filter="defaultCreatedAtFromFilterDataPreview"
+          dummy
+        >
+          <template #info>
+            <component
+              :is="filterOptionsComponentsConfig['createdAtFrom'].previewField"
+              :value="defaultCreatedAtFromFilterDataPreview.value"
+            />
+          </template>
+        </dynamic-filter-preview>
+
+        <dynamic-filter-preview
           v-for="(filter) of appliedFilters"
           :key="filter.name"
           :filter="filter"
@@ -11,8 +24,8 @@
           <template #form="{ hide }">
             <dynamic-filter-config-form
               :filter="filter"
-              @submit="(data) => setFilterWrapperAction(data, updateAppliedFilter, hide)"
               @cancel="() => hide()"
+              @submit="(data) => setFilterWrapperAction(data, updateAppliedFilter, hide)"
             >
               <template #value-input="{ filterName, filterValue, onValueChange, onValueInvalidChange }">
                 <component
@@ -41,8 +54,8 @@
           <template #form="{ hide }">
             <dynamic-filter-config-form
               :options="unappliedFilters"
-              @submit="(data) => setFilterWrapperAction(data, applyFilter, hide)"
               @cancel="() => hide()"
+              @submit="(data) => setFilterWrapperAction(data, applyFilter, hide)"
             >
               <template #value-input="{ filterName, filterValue, onValueChange, onValueInvalidChange }">
                 <component
@@ -83,18 +96,20 @@ import DynamicFilterPreview
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue';
 import DynamicFilterAddAction
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-add-action.vue';
-import {FilterName} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts';
+import {
+  FilterInitParams,
+  FilterName,
+  IFilter
+} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts';
 import DynamicFilterConfigForm
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/config/dynamic-filter-config-form.vue';
 import DynamicFilterPanelWrapper
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
-import {FilterInitParams, IFilter} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts";
+import {startOfToday} from "date-fns";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
 // import SavePresetAction from "./presets/save-preset-action.vue";
-import FILTER_OPTIONS_COMPONENTS_CONFIG from "./filters-config";
-
-// const props = defineProps({});
+import filterOptionsComponentsConfig from "./filters-config";
 
 const emit = defineEmits<{
   hide: [],
@@ -110,11 +125,11 @@ const {
   deleteFilter: deleteAppliedFilter,
 } = tableStore;
 
-const resetFilters = () => {
-  filtersManager.value.reset({
-    include: [],
-  })
-}
+const defaultCreatedAtFromFilterDataPreview = computed(() => ({
+  name: 'createdAtFrom',
+  value: startOfToday().getTime(),
+  label: t('filters.predefinedLabels.createdAt.startOfToday'),
+}));
 
 function setFilterWrapperAction(
   data: FilterInitParams,
@@ -130,10 +145,14 @@ const appliedFilters = computed(() => {
   return filtersManager.value.getFiltersList({exclude});
 });
 
+const hasCreatedAtFromFilter = computed(() => {
+  return !!filtersManager.value.getAllValues().createdAtFrom;
+});
+
 const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = computed(() => {
   const excludeNames = new Set(filtersManager.value.getFiltersList().map((item) => item.name));
 
-  return Object.keys(FILTER_OPTIONS_COMPONENTS_CONFIG)
+  return Object.keys(filterOptionsComponentsConfig)
     .filter(key => !excludeNames.has(key))
     .map(key => ({
       name: t(`webitelUI.filters.${key}`),
@@ -141,13 +160,15 @@ const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = comput
     }));
 });
 
-const getFilterFieldComponent = (filterName: FilterName, filterField: 'valueField' | 'previewField') => {
-  const filter = FILTER_OPTIONS_COMPONENTS_CONFIG[filterName]
-  return !filter ? '' : filter[filterField] || ''
+const resetFilters = () => {
+  filtersManager.value.reset();
 };
 
+const getFilterFieldComponent = (filterName: FilterName, filterField: 'valueField' | 'previewField') => {
+  const filter = filterOptionsComponentsConfig[filterName];
+  return !filter ? '' : filter[filterField] || '';
+};
 </script>
 
 <style lang="scss" scoped>
-//.the-history-filters {}
 </style>

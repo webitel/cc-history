@@ -51,7 +51,7 @@ interface FilterOptionsComponentsConfig {
     previewField: Component
   }
 }
-const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
+const filterOptionsComponentsConfig: FilterOptionsComponentsConfig = {
   agent: {
     valueField: AgentFilter,
     previewField: AgentFilterPreview,
@@ -137,4 +137,4 @@ const FILTER_OPTIONS_COMPONENTS_CONFIG: FilterOptionsComponentsConfig = {
     previewField: VariableFilterPreview,
   },
 }
-export default FILTER_OPTIONS_COMPONENTS_CONFIG
+export default filterOptionsComponentsConfig
