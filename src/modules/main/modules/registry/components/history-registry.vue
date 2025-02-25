@@ -44,8 +44,6 @@
       :headline="emptyHeadline"
       :title="emptyTitle"
       :text="emptyText"
-      :primary-action-text="emptyPrimaryActionText"
-      :secondary-action-text="emptySecondaryActionText"
     />
     <div
       v-else
