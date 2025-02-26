@@ -20,6 +20,7 @@
           v-for="(filter) of appliedFilters"
           :key="filter.name"
           :filter="filter"
+          disable-click-away
           @delete:filter="deleteAppliedFilter($event.name)"
         >
           <template #form="{ hide }">
