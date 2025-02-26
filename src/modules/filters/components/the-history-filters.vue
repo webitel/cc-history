@@ -24,6 +24,7 @@
         >
           <template #form="{ hide }">
             <dynamic-filter-config-form
+              :options="getAppliedFiltersOptions(filter)"
               :filter="filter"
               @cancel="() => hide()"
               @submit="(data) => setFilterWrapperAction(data, updateAppliedFilter, hide)"
@@ -161,6 +162,14 @@ const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = comput
       value: key,
     }));
 });
+
+const getAppliedFiltersOptions = (filter: IFilter) => {
+  const filterData = {
+    name: t(`webitelUI.filters.${filter.name}`),
+    value: filter.name,
+  }
+  return [...unappliedFilters.value, filterData]
+}
 
 const resetFilters = () => {
   filtersManager.value.reset();
