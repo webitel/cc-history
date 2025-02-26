@@ -82,7 +82,6 @@ const actions = {
     context.commit('SET_LOADING', true);
     const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS();
     try {
-      console.log(params)
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
