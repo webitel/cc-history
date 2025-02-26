@@ -212,11 +212,6 @@ export default {
       preset: 'Пресет | Пресети',
       presetName: 'Ім\'я пресета',
     },
-    predefinedLabels: {
-      createdAt: {
-        startOfToday: 'Від початку дня',
-      },
-    },
     tag: {
       options: {
         vm: 'Голосова пошта',

@@ -7,7 +7,7 @@ import {
   merge,
   notify,
   snakeToCamel,
-} from '@webitel/ui-sdk/src/api/transformers/index.js';
+} from '@webitel/ui-sdk/src/api/transformers/index';
 import * as converters from '@webitel/ui-sdk/src/scripts/caseConverters';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { startOfToday } from 'date-fns';
@@ -157,8 +157,7 @@ const getList = ({
       sort,
       fields: [ 'id', 'files', 'files_job', 'transcripts', ...fields ],
       created_at: {
-        // from: createdAtFrom || startOfToday().getTime(),
-        from: createdAtFrom != null ? createdAtFrom : startOfToday().getTime(),
+        from: createdAtFrom != null ? createdAtFrom : startOfToday().getTime(),  /* https://webitel.atlassian.net/browse/WTEL-6308?focusedCommentId=657415 */
         to: createdAtTo,
       },
       user_id: user,

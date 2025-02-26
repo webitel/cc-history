@@ -2,6 +2,7 @@
   <section class="the-history-filters">
     <dynamic-filter-panel-wrapper>
       <template #filters>
+<!--        WTF? -  /* https://webitel.atlassian.net/browse/WTEL-6308?focusedCommentId=657415 */ -->
         <dynamic-filter-preview
           v-if="!hasCreatedAtFromFilter"
           :filter="defaultCreatedAtFromFilterDataPreview"
@@ -125,10 +126,11 @@ const {
   deleteFilter: deleteAppliedFilter,
 } = tableStore;
 
+/* WTF? - https://webitel.atlassian.net/browse/WTEL-6308?focusedCommentId=657415 */
 const defaultCreatedAtFromFilterDataPreview = computed(() => ({
   name: 'createdAtFrom',
   value: startOfToday().getTime(),
-  label: t('filters.predefinedLabels.createdAt.startOfToday'),
+  label: t('webitelUI.filters.predefinedLabels.createdAt.startOfToday'),
 }));
 
 function setFilterWrapperAction(
