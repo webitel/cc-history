@@ -43,6 +43,7 @@ const getters = {
 
   GET_MAIN_CALL_REQUEST_PARAMS: (state, getters) => (params = {}) => ({
     fields: [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
+    createdAtFrom: 0, // https://webitel.atlassian.net/browse/WTEL-6386
     from: 0, // get All
     to: Date.now(),
     id: [state.mainCallId],
