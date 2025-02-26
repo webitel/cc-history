@@ -16,7 +16,7 @@
           class="call-wave-page__region-actions"
         >
           <wt-checkbox
-            :label="$tc('registry.call.hold', 2)"
+            :label="$t('registry.call.hold', 2)"
             :selected="showHolds"
             :value="showHolds"
             @change="toggleHolds"
@@ -25,7 +25,7 @@
             {{ holdsSize }}
           </wt-chip>
           <wt-checkbox
-            :label="$tc('registry.call.comment', 2)"
+            :label="$t('registry.call.comment', 2)"
             :selected="showComments"
             :value="showComments"
             @change="toggleComments"
@@ -467,7 +467,7 @@ export default {
         const createdMarkers = document.querySelectorAll('marker');
         // seting our font for marker title:
         createdMarkers.forEach((marker) => {
-           
+
           marker.children[1].children[1].style.fontFamily = '"Montserrat", monospace';
         });
       } catch (err) {

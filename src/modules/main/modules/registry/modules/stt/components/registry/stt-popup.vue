@@ -6,7 +6,7 @@
     @close="$emit('close')"
   >
     <template #title>
-      {{ $tc('registry.stt.transcription', 1) }}
+      {{ $t('registry.stt.transcription', 1) }}
     </template>
     <template #main>
       <div class="stt-popup-toolbar">

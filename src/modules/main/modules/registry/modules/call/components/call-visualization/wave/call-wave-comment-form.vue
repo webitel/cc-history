@@ -17,7 +17,7 @@
         v-model="draft.note"
         class="comment-form-textarea__textarea"
         :class="{'comment-form-textarea--expanded': isTextareaExpanded}"
-        :label="$tc('registry.call.comment', 1)"
+        :label="$t('registry.call.comment', 1)"
       />
       <wt-icon-btn
         class="comment-form-textarea__expand-btn"

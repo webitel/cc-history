@@ -68,7 +68,7 @@ export default {
       return [
         {
           value: 'recording',
-          text: this.$tc('registry.recordings.recording', 2),
+          text: this.$t('registry.recordings.recording', 2),
           handler: () => this.askDeleteConfirmation({
             deleted: this.selected,
             callback: loadListAfter(
@@ -78,7 +78,7 @@ export default {
         },
         {
           value: 'transcript',
-          text: this.$tc('registry.stt.transcription', 2),
+          text: this.$t('registry.stt.transcription', 2),
           handler: () => this.askDeleteConfirmation({
             deleted: this.selected,
             callback: loadListAfter(

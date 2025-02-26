@@ -5,7 +5,7 @@
       class="call-info__wrapper"
     >
       <template #title>
-        {{ $tc('vocabulary.variables', 2) }}
+        {{ $t('vocabulary.variables', 2) }}
       </template>
       <template>
         <ul>
@@ -41,7 +41,7 @@
           class="call-info__item"
         >
           <h3 class="call-info__title">
-            {{ $tc('reusable.logs', 2) }}:
+            {{ $t('reusable.logs', 2) }}:
           </h3>
           <span>{{ amdLogs }}</span>
         </div>

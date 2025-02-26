@@ -70,7 +70,7 @@ export default {
           value: TranscriptionState.DONE,
           icon: 'docs',
           color: 'success',
-          tooltip: this.$tc('registry.stt.transcription', 1),
+          tooltip: this.$t('registry.stt.transcription', 1),
           handler: this.handleDoneClick,
         },
         [TranscriptionState.ERROR]: {

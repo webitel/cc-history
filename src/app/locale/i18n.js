@@ -12,7 +12,7 @@ const messages = {
 };
 
 export default createI18n({
-  allowComposition: true,
+  legacy: false,
   locale: 'en',
   fallbackLocale: 'en',
   messages,
