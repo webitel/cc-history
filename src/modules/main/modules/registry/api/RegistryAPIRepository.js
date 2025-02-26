@@ -168,7 +168,7 @@ const getList = ({
       gateway_id: gateway,
       duration: totalDuration,
       talk: talkDuration,
-      skip_parent: skipParent,
+      skip_parent: skipParent ?? true,
       parent_id: parentId,
       cause,
       has_file: hasFile !== undefined ? hasFile : undefined,
