@@ -157,7 +157,8 @@ const getList = ({
       sort,
       fields: [ 'id', 'files', 'files_job', 'transcripts', ...fields ],
       created_at: {
-        from: createdAtFrom || startOfToday().getTime(),
+        // from: createdAtFrom || startOfToday().getTime(),
+        from: createdAtFrom != null ? createdAtFrom : startOfToday().getTime(),
         to: createdAtTo,
       },
       user_id: user,

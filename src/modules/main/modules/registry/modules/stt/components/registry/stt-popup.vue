@@ -85,7 +85,9 @@ export default {
        */
       const params = {
         id: [this.callId],
-        from: 0,
+        createdAtFrom: 0,
+        page: 1,
+        size: 1,
         fields: ['from', 'to', 'id', 'createdAt', 'transcripts'],
       };
       const res = await APIRepository.history.getHistory(params);
