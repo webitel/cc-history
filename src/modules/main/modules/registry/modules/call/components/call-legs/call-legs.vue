@@ -9,7 +9,7 @@
         ref="call-legs-table"
         :data="tableData"
         :grid-actions="false"
-        :headers="headers"
+        :headers="shownHeaders"
         :selectable="false"
       >
         <template #direction="{ item }">
@@ -147,9 +147,11 @@
 
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { storeToRefs } from 'pinia';
 import { mapActions, mapState } from 'vuex';
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
 import historyHeadersMixin from '../../../../mixins/historyHeadersMixin.js';
+import { useRegistryStore } from '../../../../store/new/registry.store.js';
 
 export default {
   name: 'CallLegs',
@@ -167,6 +169,18 @@ export default {
     namespace: {
       type: String,
     },
+  },
+
+  setup: () => {
+    const tableStore = useRegistryStore();
+
+    const {
+      shownHeaders,
+    } = storeToRefs(tableStore);
+
+    return {
+      shownHeaders,
+    }
   },
 
   computed: {
