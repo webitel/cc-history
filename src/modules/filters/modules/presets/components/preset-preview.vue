@@ -1,46 +1,181 @@
 <template>
   <article class="preset-preview">
-    <header class="preset-preview-header">
-      {{ preset.name }}
-      <wt-icon-action
-        action="delete"
-        @click="emit('delete:preset', preset)"
-      />
-    </header>
-    <section
-      class="preset-filters-preview"
-    ></section>
+    <wt-expansion-panel
+      :collapsed="collapsed"
+      @closed="clearEdit"
+    >
+      <template #title>
+        <header class="preset-preview-title-wrapper">
+          <!--
+                    this <div> is used only for @click.stop to be set, so that expansion panel toggle won't trigger.
+                    it would be great to use @click.stop to wt-ratio,
+                    but with @vue/compat build and direct input it won't be working like that :(
+        -->
+          <div @click.stop>
+            <wt-radio
+              :selected="isSelected"
+              :value="true"
+              @input="emit('preset:select', preset)"
+            />
+          </div>
+          <p
+            :title="preset.name"
+            class="preset-preview-name"
+          >
+            {{ preset.name }}
+          </p>
+        </header>
+      </template>
+      <template #actions="{ open }">
+        <wt-icon-action
+          v-if="!editMode"
+          action="edit"
+          @click="startEdit({ open })"
+        />
+
+        <wt-icon-action
+          v-if="editMode"
+          action="delete"
+          @click="emit('preset:delete', preset)"
+        />
+
+        <wt-icon-btn
+          v-if="editMode"
+          :disabled="v$.$invalid"
+          icon="save"
+          @click="submitEdit"
+        />
+      </template>
+      <template #default>
+        <div class="preset-preview-content">
+          <preset-name-field
+            v-if="editMode"
+            v-model="editDraft.name"
+            :v="v$.draft.name"
+          />
+
+          <preset-filters-preview
+            :filters="presetFilters"
+          />
+
+          <preset-description-field
+            v-if="editDraft.description"
+            v-model="editDraft.description"
+            :preview-mode="!editMode"
+          />
+        </div>
+      </template>
+    </wt-expansion-panel>
   </article>
 </template>
 
-<script setup lang="ts">
-import { EnginePresetQuery } from "webitel-sdk";
-import { createFiltersManager } from "@webitel/ui-sdk/src/modules/Filters/v2/filters/classes/FiltersManager.class.ts";
-import {computed} from "vue";
+<script lang="ts" setup>
+import {EnginePresetQuery} from "webitel-sdk";
+import {WtExpansionPanel, WtIconAction, WtRadio} from "@webitel/ui-sdk/src/components/index";
+import {createFiltersManager} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/classes/FiltersManager";
+import {computed, ref, watch} from "vue";
+import WtIconBtn from "@webitel/ui-sdk/src/components/wt-icon-btn/wt-icon-btn.vue";
+import {useVuelidate} from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
+import PresetFiltersPreview from "./preset-filters-preview.vue";
+import PresetNameField from "./input-fields/preset-name-field.vue";
+import PresetDescriptionField from "./input-fields/preset-description-field.vue";
 
-type Props = EnginePresetQuery;
+type Props = {
+  preset: EnginePresetQuery;
+  isSelected: boolean;
+  collapsed: boolean;
+}
 
 const props = defineProps<Props>();
 
-/*
- * define special variable for preset
- * to prevent logic breaking if props interface has changed
- */
-const preset: EnginePresetQuery = props;
-
 const emit = defineEmits<{
-  'rename:preset': [string, EnginePresetQuery];
-  'delete:preset': [EnginePresetQuery];
+  'preset:select': [EnginePresetQuery];
+  'preset:update': [{ preset: EnginePresetQuery, onSuccess: () => void, onFailure: () => void }];
+  'preset:delete': [EnginePresetQuery];
 }>();
 
 const presetFilters = computed(() => {
+  const snapshot = props.preset?.preset?.['filtersManager.toString'];
+  if (!snapshot) return [];
+
   const filtersManager = createFiltersManager();
-  filtersManager.fromString(JSON.stringify(preset.preset));
+  filtersManager.fromString(snapshot);
 
   return filtersManager.getFiltersList();
 });
+
+const editMode = ref(false);
+
+/**
+ *  updating request in progress flag
+ *  */
+const editing = ref(false);
+
+const editDraft = ref({
+  name: '',
+  description: '',
+});
+
+watch(props.preset, () => {
+  if (editMode.value) {
+    editDraft.value = {
+      name: props.preset.name,
+      description: props.preset.description,
+    };
+  }
+}, {immediate: true});
+
+const v$ = useVuelidate(computed(() => {
+  return {
+    draft: {
+      name: {required},
+    },
+  };
+}), {draft: editDraft}, {$autoDirty: true});
+
+const startEdit = ({open: openExpansion}) => {
+  openExpansion();
+  editMode.value = true;
+};
+
+const clearEdit = () => {
+  editing.value = false;
+  editMode.value = false;
+};
+
+const submitEdit = () => {
+  const preset: EnginePresetQuery = {
+    ...props.preset,
+    ...editDraft.value,
+  };
+  const onFailure = () => {
+    editing.value = false;
+  };
+
+  emit('preset:update', {
+    preset,
+    onSuccess: clearEdit,
+    onFailure,
+  });
+};
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
+.preset-preview-title-wrapper {
+  display: flex;
+  min-width: 0;
+  gap: var(--spacing-xs);
+}
 
+.preset-preview-name {
+  overflow: hidden;
+  flex: 1 1 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.preset-preview-content {
+  padding: var(--spacing-xs);
+}
 </style>

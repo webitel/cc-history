@@ -75,7 +75,7 @@
       </template>
 
       <template #actions>
-        <load-preset-action />
+        <use-preset-action />
 
         <save-preset-action />
 
@@ -114,7 +114,7 @@ import {startOfToday} from "date-fns";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
 import SavePresetAction from "../modules/presets/components/save-preset-action.vue";
-import LoadPresetAction from "../modules/presets/components/load-preset-action.vue";
+import UsePresetAction from "../modules/presets/components/use-preset-action.vue";
 import filterOptionsComponentsConfig, { getFilterFieldComponent } from "./filters-config";
 
 const emit = defineEmits<{

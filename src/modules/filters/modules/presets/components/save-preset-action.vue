@@ -19,43 +19,19 @@
           class="save-preset-form"
           @submit.prevent="() => !v$.$invalid && savePreset()"
         >
-          <wt-input
+          <preset-name-field
             v-model="presetForm.name"
             :v="v$.name"
-            :label="t('reusable.name')"
-            required
           />
 
-          <wt-textarea
-            :value="presetForm.description"
-            :label="t('reusable.description')"
-            @input="presetForm.description = $event"
+          <preset-description-field
+            v-model="presetForm.description"
           />
         </form>
 
-          <div class="save-preset-filters-preview-wrapper">
-            <wt-label>
-              {{ t('webitelUI.filters.filterName') }}
-            </wt-label>
-            <dynamic-filter-panel-wrapper>
-              <template #filters>
-                <dynamic-filter-preview
-                  v-for="(filter) of appliedFilters"
-                  :key="filter.name"
-                  :filter="filter"
-                  dummy
-                >
-                  <template #info>
-                    <component
-                      :is="getFilterFieldComponent(filter.name, 'previewField')"
-                      :value="filter.value"
-                    >
-                    </component>
-                  </template>
-                </dynamic-filter-preview>
-              </template>
-            </dynamic-filter-panel-wrapper>
-          </div>
+        <preset-filters-preview
+          :filters="appliedFilters"
+        />
       </template>
 
       <template #actions>
@@ -81,19 +57,16 @@
 
 import {computed, reactive, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
+import {storeToRefs} from 'pinia';
 import {useVuelidate} from '@vuelidate/core';
 import {required} from '@vuelidate/validators';
 import WtPopup from '@webitel/ui-sdk/src/components/wt-popup/wt-popup.vue';
 import WtIconBtn from '@webitel/ui-sdk/src/components/wt-icon-btn/wt-icon-btn.vue';
-import WtInput from '@webitel/ui-sdk/src/components/wt-input/wt-input.vue';
-import DynamicFilterPanelWrapper
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
 import {addPreset} from '../api/PresetQuery.api.ts';
 import {useRegistryStore as useRegistryTableStore} from '../../../../main/modules/registry/store/new/registry.store.ts';
-import {storeToRefs} from 'pinia';
-import DynamicFilterPreview
-  from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue";
-import {getFilterFieldComponent} from "../../../components/filters-config";
+import PresetNameField from "./input-fields/preset-name-field.vue";
+import PresetDescriptionField from "./input-fields/preset-description-field.vue";
+import PresetFiltersPreview from "./preset-filters-preview.vue";
 
 const props = defineProps({});
 
@@ -134,7 +107,9 @@ const savePreset = async () => {
 
   const preset = {
     ...presetForm,
-    preset: {stringified: filtersManager.value.toString()},
+    preset: {
+      'filtersManager.toString': filtersManager.value.toString(),
+    },
   };
 
   try {
