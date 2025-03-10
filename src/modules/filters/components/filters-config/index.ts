@@ -43,6 +43,7 @@ import {
   VariableFilterPreview,
 } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/index';
 import {Component} from "vue";
+import {FilterName} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter";
 
 
 interface FilterOptionsComponentsConfig {
@@ -137,4 +138,10 @@ const filterOptionsComponentsConfig: FilterOptionsComponentsConfig = {
     previewField: VariableFilterPreview,
   },
 }
-export default filterOptionsComponentsConfig
+
+export const getFilterFieldComponent = (filterName: FilterName, filterField: 'valueField' | 'previewField') => {
+  const filter = filterOptionsComponentsConfig[filterName];
+  return !filter ? '' : filter[filterField] || '';
+};
+
+export default filterOptionsComponentsConfig;
