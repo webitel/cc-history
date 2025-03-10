@@ -75,7 +75,9 @@
       </template>
 
       <template #actions>
-        <!--        TODO: <save-preset-action />-->
+        <load-preset-action />
+
+        <save-preset-action />
 
         <wt-icon-action
           action="clear"
@@ -111,8 +113,9 @@ import DynamicFilterPanelWrapper
 import {startOfToday} from "date-fns";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
-// import SavePresetAction from "./presets/save-preset-action.vue";
-import filterOptionsComponentsConfig from "./filters-config";
+import SavePresetAction from "../modules/presets/components/save-preset-action.vue";
+import LoadPresetAction from "../modules/presets/components/load-preset-action.vue";
+import filterOptionsComponentsConfig, { getFilterFieldComponent } from "./filters-config";
 
 const emit = defineEmits<{
   hide: [],
@@ -174,11 +177,6 @@ const getAppliedFiltersOptions = (filter: IFilter) => {
 
 const resetFilters = () => {
   filtersManager.value.reset();
-};
-
-const getFilterFieldComponent = (filterName: FilterName, filterField: 'valueField' | 'previewField') => {
-  const filter = filterOptionsComponentsConfig[filterName];
-  return !filter ? '' : filter[filterField] || '';
 };
 </script>
 
