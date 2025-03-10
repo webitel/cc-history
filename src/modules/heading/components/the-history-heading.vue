@@ -5,7 +5,7 @@
     </template>
     <template #actions>
       <div class="the-history-heading-actions">
-        <search-filter />
+        <dynamic-filter-search-wrapper />
 
         <history-transcribe-action
           :selected="selected"
@@ -40,11 +40,12 @@
 
 <script lang="ts" setup>
 import {useRegistryStore} from "../../main/modules/registry/store/new/registry.store.ts";
-import SearchFilter from '../../filters/components/filter-value-components/search-filter.vue';
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
 import HistoryExportAction from './actions/history-export-action.vue';
 import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
+import DynamicFilterSearchWrapper
+  from "../../filters/components/filter-value-components/dynamic-filter-search-wrapper.vue";
 import {storeToRefs} from "pinia";
 import {computed} from "vue";
 
