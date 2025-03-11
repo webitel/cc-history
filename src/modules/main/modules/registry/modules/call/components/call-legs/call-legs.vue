@@ -179,9 +179,13 @@ export default {
       fields,
     } = storeToRefs(tableStore);
 
+    const { initialize } = tableStore;
+
     return {
       shownHeaders,
       fields,
+
+      initialize,
     }
   },
 
@@ -230,6 +234,7 @@ export default {
     },
   },
   created() {
+    this.initialize();
     this.loadList(this.fields);
   },
 };
