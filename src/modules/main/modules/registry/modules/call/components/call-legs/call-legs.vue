@@ -176,10 +176,12 @@ export default {
 
     const {
       shownHeaders,
+      fields,
     } = storeToRefs(tableStore);
 
     return {
       shownHeaders,
+      fields,
     }
   },
 
@@ -228,7 +230,7 @@ export default {
     },
   },
   created() {
-    this.loadList();
+    this.loadList(this.fields);
   },
 };
 </script>
