@@ -64,7 +64,7 @@ const getters = {
 };
 
 const actions = {
-  LOAD_LEGS_DATA_LIST: async (context, fields) => {
+  LOAD_LEGS_DATA_LIST: async (context, { fields }) => {
     context.commit('SET_LEGS_DATA_LOADING', true);
     const params = await context.getters.GET_REQUEST_PARAMS;
     try {
