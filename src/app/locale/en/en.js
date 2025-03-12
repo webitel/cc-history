@@ -210,10 +210,6 @@ export default {
     ended: 'Ended by system',
   },
   filters: {
-    preset: {
-      preset: 'Preset | Presets',
-      presetName: 'Preset name',
-    },
     tag: {
       options: {
         vm: 'Voice mail',

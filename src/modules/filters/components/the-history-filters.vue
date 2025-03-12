@@ -10,7 +10,7 @@
         >
           <template #info>
             <component
-              :is="filterOptionsComponentsConfig['createdAtFrom'].previewField"
+              :is="FilterOptionToPreviewComponentMap[FilterOption.CreatedAtFrom]"
               :value="defaultCreatedAtFromFilterDataPreview.value"
             />
           </template>
@@ -32,7 +32,7 @@
             >
               <template #value-input="{ filterName, filterValue, onValueChange, onValueInvalidChange }">
                 <component
-                  :is="getFilterFieldComponent(filterName, 'valueField')"
+                  :is="FilterOptionToValueComponentMap[filterName]"
                   :key="filterName"
                   :model-value="filterValue"
                   @update:model-value="onValueChange"
@@ -44,7 +44,7 @@
 
           <template #info>
             <component
-              :is="getFilterFieldComponent(filter.name, 'previewField')"
+              :is="FilterOptionToPreviewComponentMap[filter.name]"
               :value="filter.value"
             >
             </component>
@@ -62,7 +62,7 @@
             >
               <template #value-input="{ filterName, filterValue, onValueChange, onValueInvalidChange }">
                 <component
-                  :is="getFilterFieldComponent(filterName, 'valueField')"
+                  :is="FilterOptionToValueComponentMap[filterName]"
                   :key="filterName"
                   :model-value="filterValue"
                   @update:model-value="onValueChange"
@@ -120,13 +120,15 @@ import DynamicFilterPanelWrapper
 import {startOfToday} from "date-fns";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
-import filterOptionsComponentsConfig, { getFilterFieldComponent } from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/filterComponentsMap.ts";
+import { filtersOptions } from "./filters-options";
+import {FilterOptionToPreviewComponentMap, FilterOptionToValueComponentMap } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/filter-options/index';
 import { namespace } from "../../main/modules/registry/namespace.ts";
 import {
   SavePresetAction,
   ApplyPresetAction,
   createFilterPresetsStore,
 } from '@webitel/ui-sdk/src/modules/Filters/v2/filter-presets/index';
+import {FilterOption} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/enums/FilterOption.ts";
 
 const emit = defineEmits<{
   hide: [],
@@ -144,7 +146,7 @@ const {
 
 /* WTF? - https://webitel.atlassian.net/browse/WTEL-6308?focusedCommentId=657415 */
 const defaultCreatedAtFromFilterDataPreview = computed(() => ({
-  name: 'createdAtFrom',
+  name: FilterOption.CreatedAtFrom,
   value: startOfToday().getTime(),
   label: t('webitelUI.filters.predefinedLabels.createdAt.startOfToday'),
 }));
@@ -170,7 +172,7 @@ const hasCreatedAtFromFilter = computed(() => {
 const unappliedFilters: Ref<Array<{ name: string, value: FilterName }>> = computed(() => {
   const excludeNames = new Set(filtersManager.value.getFiltersList().map((item) => item.name));
 
-  return Object.keys(filterOptionsComponentsConfig)
+  return filtersOptions
     .filter(key => !excludeNames.has(key))
     .map(key => ({
       name: t(`webitelUI.filters.${key}`),
