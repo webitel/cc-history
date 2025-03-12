@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import {Validation} from '@vuelidate/core';
-import {WtInput} from "@webitel/ui-sdk/src/components";
+import {WtInput} from "@webitel/ui-sdk/src/components/index";
 import {useI18n} from "vue-i18n";
 
 type ModelValue = string;

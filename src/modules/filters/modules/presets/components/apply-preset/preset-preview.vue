@@ -77,7 +77,7 @@
 
 <script lang="ts" setup>
 import {EnginePresetQuery} from "webitel-sdk";
-import {WtExpansionPanel, WtIconAction, WtRadio} from "@webitel/ui-sdk/src/components";
+import {WtExpansionPanel, WtIconAction, WtRadio} from "@webitel/ui-sdk/src/components/index";
 import {createFiltersManager} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/classes/FiltersManager.ts";
 import {computed, ref} from "vue";
 import {useVuelidate} from "@vuelidate/core";

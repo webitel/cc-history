@@ -91,7 +91,7 @@ const v$ = useVuelidate(computed(() => {
 v$.value.$touch();
 
 const appliedFilters = computed(() => {
-  return props.filtersManager.value.getFiltersList();
+  return props.filtersManager.getFiltersList();
 });
 
 const save = () => {
@@ -100,11 +100,11 @@ const save = () => {
   const preset: EnginePresetQuery = {
     ...presetForm,
     preset: {
-      'filtersManager.toString': props.filtersManager.value.toString(),
+      'filtersManager.toString': props.filtersManager.toString(),
     },
   };
 
-  emit('save', preset, {
+  emit('submit', preset, {
     onCompleted: () => {
       isSaving.value = false;
     },
