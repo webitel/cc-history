@@ -10,7 +10,7 @@
       v-if="showSaveForm /* v-if is used to re-mount component on each open/close so that each time component data re-inits*/"
       v-show="!presetToOverwriteWith /* on 'overwrite preset' popup hide this popup, but don't reset it*/"
       :shown="true /* coz visibility is controlled by v-if*/"
-      :filters-manager="filtersManager"
+      :filters-manager="props.filtersManager"
       @submit="handlePresetSubmit"
       @close="showSaveForm = false"
     />
@@ -26,23 +26,26 @@
 
 <script lang="ts" setup>
 import {computed, ref, type Ref} from 'vue';
-import {storeToRefs} from 'pinia';
 import {EnginePresetQuery} from "webitel-sdk";
 import WtIconBtn from '@webitel/ui-sdk/src/components/wt-icon-btn/wt-icon-btn.vue';
 import {addPreset, getPresetList, updatePreset} from '../../api/PresetQuery.api.ts';
-import {useRegistryStore as useRegistryTableStore} from '../../../../../main/modules/registry/store/new/registry.store.ts';
 import SavePresetPopup, {SubmitConfig} from "./save-preset-popup.vue";
 import OverwritePresetPopup from "./overwrite-preset-popup.vue";
+import {IFiltersManager} from "@webitel/ui-sdk/src/modules/Filters/v2/filters";
 
-
-const tableStore = useRegistryTableStore();
-const {filtersManager} = storeToRefs(tableStore);
+const props = defineProps<{
+  /**
+   * presets "section" namespace
+   */
+  namespace: string;
+  filtersManager: IFiltersManager;
+}>();
 
 /**
  * disable "save" btn if there's nothing to save
  * */
 const disableAction = computed(() => {
-  return !filtersManager.value.getAllKeys().length;
+  return !props.filtersManager.getAllKeys().length;
 });
 
 /**
@@ -57,7 +60,8 @@ const presetToOverwriteWith: Ref<EnginePresetQuery | null> = ref(null);
 
 const handlePresetSubmit = async (preset: EnginePresetQuery, { onCompleted }: SubmitConfig) => {
   try {
-    await addPreset(preset);
+    await addPreset({ preset, namespace: props.namespace });
+    showSaveForm.value = false;
   } catch (err) {
     if (err?.status === 409) {
       presetToOverwriteWith.value = preset;
@@ -72,6 +76,7 @@ const handlePresetOverwriteConfirmation = async ({ onCompleted }: SubmitConfig) 
   try {
     const {items} = await getPresetList({
       search: presetToOverwriteWith.value.name,
+      presetNamespace: props.namespace,
     }, {
       transformers: {useStarToSearch: false},
     });
@@ -79,10 +84,7 @@ const handlePresetOverwriteConfirmation = async ({ onCompleted }: SubmitConfig) 
     await updatePreset({
       id: existingPresetId,
       item: {
-        ...presetToOverwriteWith,
-        preset: {
-          'filtersManager.toString': filtersManager.value.toString(),
-        },
+        ...presetToOverwriteWith.value,
       },
     });
 

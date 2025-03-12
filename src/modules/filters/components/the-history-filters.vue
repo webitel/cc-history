@@ -76,10 +76,15 @@
 
       <template #actions>
         <apply-preset-action
+          :namespace="namespace"
+          :use-presets-store="createFilterPresetsStore(namespace)"
           @apply="applyPreset"
         />
 
-        <save-preset-action />
+        <save-preset-action
+          :namespace="namespace"
+          :filters-manager="filtersManager"
+        />
 
         <wt-icon-action
           action="clear"
@@ -115,10 +120,13 @@ import DynamicFilterPanelWrapper
 import {startOfToday} from "date-fns";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
-import SavePresetAction from "../modules/presets/components/save-preset/save-preset-action.vue";
-import ApplyPresetAction from "../modules/presets/components/apply-preset/apply-preset-action.vue";
 import filterOptionsComponentsConfig, { getFilterFieldComponent } from "./filters-config";
-import {EnginePresetQuery} from "webitel-sdk";
+import { namespace } from "../../main/modules/registry/namespace.ts";
+import {
+  SavePresetAction,
+  ApplyPresetAction,
+  createFilterPresetsStore,
+} from '../modules/presets/index';
 
 const emit = defineEmits<{
   hide: [],

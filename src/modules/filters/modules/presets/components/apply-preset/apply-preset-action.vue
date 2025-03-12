@@ -66,14 +66,21 @@
 </template>
 
 <script lang="ts" setup>
-import {WtButton, WtIconBtn, WtPopup, WtSearchBar, WtEmpty} from "@webitel/ui-sdk/src/components";
+import {WtButton, WtIconBtn, WtPopup, WtSearchBar, WtEmpty} from "@webitel/ui-sdk/src/components/index";
 import {computed, ref, watch} from "vue";
 import {useI18n} from "vue-i18n";
-import {storeToRefs} from "pinia";
+import {type StoreDefinition, storeToRefs } from "pinia";
 import {useTableEmpty} from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty";
 import PresetQueryAPI from '../../api/PresetQuery.api.ts';
-import {useFiltersPresetStore} from "../../stores/useFiltersPresetStore.ts";
 import PresetPreview from "./preset-preview.vue";
+
+const props = defineProps<{
+  /**
+   * presets "section" namespace
+   */
+  namespace: string;
+  usePresetsStore: StoreDefinition;
+}>();
 
 const emit = defineEmits<{
   apply: [string];
@@ -83,7 +90,7 @@ const {t} = useI18n();
 
 const showPresetsList = ref(false);
 
-const presetsStore = useFiltersPresetStore();
+const presetsStore = props.usePresetsStore();
 const {
   dataList,
   error,
@@ -111,6 +118,8 @@ const {
   error,
   filters: computed(() => filtersManager.value.getAllValues()),
 });
+
+filtersManager.value.addFilter({name: 'presetNamespace', value: props.namespace});
 
 watch(showPresetsList, () => {
   initialize();
@@ -143,7 +152,10 @@ const applySelectedPreset = () => {
 
 const updatePreset = async ({preset, onSuccess, onFailure}) => {
   try {
-    await PresetQueryAPI.update({item: preset, id: preset.id});
+    await PresetQueryAPI.update({
+      item: { ...preset, section: props.namespace },
+      id: preset.id,
+    });
     onSuccess();
     return loadDataList();
   } catch (err) {
@@ -151,8 +163,6 @@ const updatePreset = async ({preset, onSuccess, onFailure}) => {
     throw err;
   }
 };
-
-showPresetsList.value = true; // for dev purposes only
 </script>
 
 <style lang="scss" scoped>
