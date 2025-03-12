@@ -7,4 +7,5 @@ import { headers } from "./headers/headers.ts";
 export const useFiltersPresetStore = createTableStore<EnginePresetQuery>(namespace, {
     apiModule: PresetQueryAPI,
     headers,
+    disablePersistence: true,
 });
