@@ -75,7 +75,16 @@
       </template>
 
       <template #actions>
-        <!--        TODO: <save-preset-action />-->
+        <apply-preset-action
+          :namespace="namespace"
+          :use-presets-store="createFilterPresetsStore(namespace)"
+          @apply="applyPreset"
+        />
+
+        <save-preset-action
+          :namespace="namespace"
+          :filters-manager="filtersManager"
+        />
 
         <wt-icon-action
           action="clear"
@@ -111,8 +120,13 @@ import DynamicFilterPanelWrapper
 import {startOfToday} from "date-fns";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
-// import SavePresetAction from "./presets/save-preset-action.vue";
-import filterOptionsComponentsConfig from "./filters-config";
+import filterOptionsComponentsConfig, { getFilterFieldComponent } from "./filters-config";
+import { namespace } from "../../main/modules/registry/namespace.ts";
+import {
+  SavePresetAction,
+  ApplyPresetAction,
+  createFilterPresetsStore,
+} from '../modules/presets/index';
 
 const emit = defineEmits<{
   hide: [],
@@ -176,9 +190,9 @@ const resetFilters = () => {
   filtersManager.value.reset();
 };
 
-const getFilterFieldComponent = (filterName: FilterName, filterField: 'valueField' | 'previewField') => {
-  const filter = filterOptionsComponentsConfig[filterName];
-  return !filter ? '' : filter[filterField] || '';
+const applyPreset = (snapshot) => {
+  filtersManager.value.reset();
+  filtersManager.value.fromString(snapshot);
 };
 </script>
 
