@@ -120,13 +120,13 @@ import DynamicFilterPanelWrapper
 import {startOfToday} from "date-fns";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
-import filterOptionsComponentsConfig, { getFilterFieldComponent } from "./filters-config";
+import filterOptionsComponentsConfig, { getFilterFieldComponent } from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/values/filterComponentsMap.ts";
 import { namespace } from "../../main/modules/registry/namespace.ts";
 import {
   SavePresetAction,
   ApplyPresetAction,
   createFilterPresetsStore,
-} from '../modules/presets/index';
+} from '@webitel/ui-sdk/src/modules/Filters/v2/filter-presets/index';
 
 const emit = defineEmits<{
   hide: [],
