@@ -41,9 +41,11 @@
 
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { storeToRefs } from 'pinia';
 import { mapActions, mapState } from 'vuex';
 import CallTabsPathNames from '../../../../../../../app/router/_internals/CallTabsPathNames.enum.js';
 import historyRegistryQueriesMixin from '../../../mixins/historyRegistryQueries.mixin.js';
+import { useRegistryStore } from '../../../store/new/registry.store.js';
 import CallInfo from './call-info/call-info.vue';
 import CallLegs from './call-legs/call-legs.vue';
 import CallVisualization from './call-visualization/call-visualization.vue';
@@ -56,6 +58,21 @@ export default {
     CallVisualization,
   },
   mixins: [historyRegistryQueriesMixin],
+  setup: () => {
+    const tableStore = useRegistryStore();
+
+    const {
+      fields,
+    } = storeToRefs(tableStore);
+
+    const { initialize } = tableStore;
+
+    return {
+      fields,
+
+      initialize,
+    }
+  },
   data: () => ({
     namespace: 'registry/call',
   }),
@@ -107,8 +124,9 @@ export default {
       return this.tabs.find(({pathName}) => this.$route.name === pathName) || this.tabs[0];
     },
   },
-  created() {
-    this.setMainCall({ id: this.callId });
+  async created() {
+    await this.initialize();
+    this.setMainCall({ id: this.callId, fields: this.fields });
   },
   unmounted() {
     this.resetMainCall();
