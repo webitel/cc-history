@@ -30,28 +30,35 @@
         <wt-icon-action
           v-if="!editMode"
           action="edit"
-          @click="startEdit({ open })"
+          @click.stop="startEdit({ open })"
         />
 
         <wt-icon-action
           v-if="editMode"
           action="delete"
-          @click="emit('preset:delete', preset)"
+          @click.stop="emit('preset:delete', preset)"
         />
 
-        <wt-icon-btn
+        <wt-icon-action
           v-if="editMode"
           :disabled="v$.$invalid"
-          icon="save"
-          @click="submitEdit"
+          action="save"
+          @click.stop="submitEdit"
+        />
+
+        <wt-icon-action
+          v-if="editMode"
+          action="cancel"
+          @click.stop="clearEdit"
         />
       </template>
       <template #default>
         <div class="preset-preview-content">
           <preset-name-field
             v-if="editMode"
-            v-model="editDraft.name"
-            :v="v$.draft.name"
+            v-model:model-value="editDraft.name"
+            :v="v$.name"
+            @update:model-value="nameAlreadyExistsError = false"
           />
 
           <preset-filters-preview
@@ -59,8 +66,7 @@
           />
 
           <preset-description-field
-            v-if="editDraft.description"
-            v-model="editDraft.description"
+            v-model:model-value="editDraft.description"
             :preview-mode="!editMode"
           />
         </div>
@@ -71,15 +77,15 @@
 
 <script lang="ts" setup>
 import {EnginePresetQuery} from "webitel-sdk";
-import {WtExpansionPanel, WtIconAction, WtRadio} from "@webitel/ui-sdk/src/components/index";
-import {createFiltersManager} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/classes/FiltersManager";
-import {computed, ref, watch} from "vue";
-import WtIconBtn from "@webitel/ui-sdk/src/components/wt-icon-btn/wt-icon-btn.vue";
+import {WtExpansionPanel, WtIconAction, WtRadio} from "@webitel/ui-sdk/src/components";
+import {createFiltersManager} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/classes/FiltersManager.ts";
+import {computed, ref} from "vue";
 import {useVuelidate} from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
-import PresetFiltersPreview from "./preset-filters-preview.vue";
-import PresetNameField from "./input-fields/preset-name-field.vue";
-import PresetDescriptionField from "./input-fields/preset-description-field.vue";
+import {AxiosError} from "axios";
+import PresetFiltersPreview from "../_shared/preset-filters-preview.vue";
+import PresetNameField from "../_shared/input-fields/preset-name-field.vue";
+import PresetDescriptionField from "../_shared/input-fields/preset-description-field.vue";
 
 type Props = {
   preset: EnginePresetQuery;
@@ -91,7 +97,7 @@ const props = defineProps<Props>();
 
 const emit = defineEmits<{
   'preset:select': [EnginePresetQuery];
-  'preset:update': [{ preset: EnginePresetQuery, onSuccess: () => void, onFailure: () => void }];
+  'preset:update': [{ preset: EnginePresetQuery, onSuccess: () => void, onFailure: (err: AxiosError) => void }];
   'preset:delete': [EnginePresetQuery];
 }>();
 
@@ -112,27 +118,31 @@ const editMode = ref(false);
  *  */
 const editing = ref(false);
 
+const nameAlreadyExistsError = ref(false);
+
 const editDraft = ref({
   name: '',
   description: '',
 });
 
-watch(props.preset, () => {
-  if (editMode.value) {
-    editDraft.value = {
-      name: props.preset.name,
-      description: props.preset.description,
-    };
-  }
-}, {immediate: true});
+const fillDraft = () => {
+  editDraft.value = {
+    name: props.preset.name,
+    description: props.preset.description,
+  };
+};
+
+fillDraft();
 
 const v$ = useVuelidate(computed(() => {
   return {
-    draft: {
-      name: {required},
+    name: {
+      required,
+      alreadyExists: () => !nameAlreadyExistsError.value,
     },
   };
-}), {draft: editDraft}, {$autoDirty: true});
+}), editDraft, {$autoDirty: true});
+v$.value.$touch();
 
 const startEdit = ({open: openExpansion}) => {
   openExpansion();
@@ -149,7 +159,10 @@ const submitEdit = () => {
     ...props.preset,
     ...editDraft.value,
   };
-  const onFailure = () => {
+  const onFailure = (err: AxiosError) => {
+    if (err.status === 409) {
+      nameAlreadyExistsError.value = true;
+    }
     editing.value = false;
   };
 
@@ -176,6 +189,9 @@ const submitEdit = () => {
 }
 
 .preset-preview-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
   padding: var(--spacing-xs);
 }
 </style>

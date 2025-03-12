@@ -8,7 +8,7 @@
     "serve": "vite preview",
     "test:unit": "vitest",
     "lint:fix": "eslint --fix src",
-    "link:webitel-ui": "npm link @webitel/ui-sdk --save=false --bin-links=false",
+    "link:webitel-ui": "npm link @webitel/ui-sdk --save=false --bin-links=true",
     "i": "npm i"
   },
   "type": "module",

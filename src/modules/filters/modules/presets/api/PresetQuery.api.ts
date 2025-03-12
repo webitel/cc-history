@@ -10,10 +10,27 @@ import applyTransform, {
 import i18n from '../../../../../app/locale/i18n';
 import instance from '../../../../../app/api/instance';
 import configuration from '../../../../../app/api/openAPIConfig';
+import {AxiosError} from "axios";
 
 const service = PresetQueryServiceApiFactory(configuration, '', instance);
 
-const getPresetList = async (params) => {
+const skipConflictErrorNotifyTransformer = (err: AxiosError) => {
+    if (err.status === 409) { // HTTP Status 409 Conflict - duplicate name
+        return err; // skip error notification and handle error in the component
+    }
+    return notify(err);
+}
+
+type GetPresetListRequestConfig = {
+    transformers: {
+        useStarToSearch?: boolean,
+    },
+};
+
+const getPresetList = async (params, config: GetPresetListRequestConfig) => {
+
+  const useStarToSearch = config.transformers.useStarToSearch ?? true;
+
   const {
     page,
     size,
@@ -23,7 +40,7 @@ const getPresetList = async (params) => {
     id,
   } = applyTransform(params, [
     merge(getDefaultGetParams()),
-    starToSearch('search'),
+      (...args) => useStarToSearch ? starToSearch('search')(...args) : args,
   ]);
 
   try {
@@ -32,7 +49,7 @@ const getPresetList = async (params) => {
       size,
       search,
       sort,
-      fields,
+      fields || ['id', 'name', 'preset', 'description'],
       id,
     );
     const { items, next } = applyTransform(response.data, [
@@ -67,7 +84,7 @@ const addPreset = async (preset: EngineCreatePresetQueryRequest): Promise<Engine
     ]);
   } catch (err) {
     throw applyTransform(err, [
-      notify,
+      skipConflictErrorNotifyTransformer,
     ]);
   }
 };
@@ -89,7 +106,7 @@ const updatePreset = async ({ item: itemInstance, id }) => {
     ]);
   } catch (err) {
     throw applyTransform(err, [
-      notify,
+      skipConflictErrorNotifyTransformer,
     ]);
   }
 };

@@ -21,21 +21,15 @@
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
 
-type ModelValue = string;
+const model = defineModel<string>();
 
-const model = defineModel<ModelValue>();
-
-type Props = {
-  previewMode: boolean;
-};
-
-const props = defineProps<Props>();
+const props = defineProps<{
+  previewMode?: boolean;
+}>();
 
 const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">
-.preset-description-field {
 
-}
 </style>

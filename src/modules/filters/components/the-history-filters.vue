@@ -75,7 +75,9 @@
       </template>
 
       <template #actions>
-        <use-preset-action />
+        <apply-preset-action
+          @apply="applyPreset"
+        />
 
         <save-preset-action />
 
@@ -113,9 +115,10 @@ import DynamicFilterPanelWrapper
 import {startOfToday} from "date-fns";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
-import SavePresetAction from "../modules/presets/components/save-preset-action.vue";
-import UsePresetAction from "../modules/presets/components/use-preset-action.vue";
+import SavePresetAction from "../modules/presets/components/save-preset/save-preset-action.vue";
+import ApplyPresetAction from "../modules/presets/components/apply-preset/apply-preset-action.vue";
 import filterOptionsComponentsConfig, { getFilterFieldComponent } from "./filters-config";
+import {EnginePresetQuery} from "webitel-sdk";
 
 const emit = defineEmits<{
   hide: [],
@@ -177,6 +180,11 @@ const getAppliedFiltersOptions = (filter: IFilter) => {
 
 const resetFilters = () => {
   filtersManager.value.reset();
+};
+
+const applyPreset = (snapshot) => {
+  filtersManager.value.reset();
+  filtersManager.value.fromString(snapshot);
 };
 </script>
 

@@ -33,7 +33,7 @@ import DynamicFilterPanelWrapper
   from "@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue";
 import type {IFilter} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts";
 import {useI18n} from "vue-i18n";
-import {getFilterFieldComponent} from "../../../components/filters-config";
+import {getFilterFieldComponent} from "../../../../components/filters-config";
 
 type Props = {
   filters: IFilter[];
