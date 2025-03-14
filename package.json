@@ -8,7 +8,7 @@
     "serve": "vite preview",
     "test:unit": "vitest",
     "lint:fix": "eslint --fix src",
-    "link:webitel-ui": "npm link @webitel/ui-sdk --save=false --bin-links=false",
+    "link:webitel-ui": "npm link @webitel/ui-sdk --save=false --bin-links=true",
     "i": "npm i"
   },
   "type": "module",
@@ -17,7 +17,7 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@webitel/styleguide": "^24.12.20",
-    "@webitel/ui-sdk": "^24.12.170",
+    "@webitel/ui-sdk": "^24.12.172",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "deep-copy": "^1.4.2",

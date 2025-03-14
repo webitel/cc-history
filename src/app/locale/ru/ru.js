@@ -208,10 +208,6 @@ export default {
     ended: 'Завершено системой',
   },
   filters: {
-    preset: {
-      preset: 'Пресет | Пресеты',
-      presetName: 'Имя пресета',
-    },
     tag: {
       options: {
         vm: 'Голосовая почта',

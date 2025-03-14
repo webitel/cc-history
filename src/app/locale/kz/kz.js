@@ -203,10 +203,6 @@ export default {
     ended: 'Жүйе аяқтады',
   },
   filters: {
-    preset: {
-      preset: 'Пресет | Пресеттер',
-      presetName: 'Пресет атауы',
-    },
     tag: {
       options: {
         vm: 'Дыбыстық пошта',
