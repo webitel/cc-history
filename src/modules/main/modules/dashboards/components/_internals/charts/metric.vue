@@ -135,6 +135,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@webitel/ui-sdk/src/css/main' as *;
+
 .metric {
   display: grid;
   grid-template-areas:
