@@ -43,6 +43,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@webitel/ui-sdk/src/css/main' as *;
+
 .call-evaluation-result {
   display: flex;
   flex-direction: column;

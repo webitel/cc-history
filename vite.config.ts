@@ -22,8 +22,7 @@ export default ({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          api: 'modern',
-          additionalData: `@use "@/app/css/main.scss" as *;`,
+          api: 'modern-compiler', // "modern", "modern-compiler", "legacy",
         },
       },
     },

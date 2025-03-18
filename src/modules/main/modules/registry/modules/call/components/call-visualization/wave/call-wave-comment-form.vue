@@ -142,6 +142,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@webitel/ui-sdk/src/css/main' as *;
+
 .comment-form {
   display: flex;
   align-items: flex-start;

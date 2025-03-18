@@ -102,6 +102,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@webitel/ui-sdk/src/css/main' as *;
+
 .stt-popup-toolbar {
   display: flex;
   align-items: center;

@@ -10,6 +10,7 @@ import i18n from './app/locale/i18n';
 import WebitelUi from './app/plugins/webitel-ui';
 
 import './app/assets/icons/sprite';
+import './app/css/main.scss';
 
 const setTokenFromUrl = () => {
   try {
