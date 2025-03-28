@@ -1,13 +1,12 @@
 import { shallowMount } from '@vue/test-utils';
-import dashboardDataMixin
-  from '../dashboardDataMixin';
+
+import dashboardDataMixin from '../dashboardDataMixin';
 
 describe('Dashboard data mixin', () => {
   let wrapper;
   beforeEach(() => {
     const Component = {
-      render() {
-      },
+      render() {},
       mixins: [dashboardDataMixin],
       data: () => ({
         colors: ['1', '2'],
@@ -39,7 +38,8 @@ describe('Dashboard data mixin', () => {
           borderColor: '1',
           data: [10],
           label: 'inbound',
-        }, {
+        },
+        {
           backgroundColor: '2',
           borderColor: '2',
           data: [5],
@@ -83,7 +83,8 @@ describe('Dashboard data mixin', () => {
           borderColor: '1',
           data: [10],
           label: 'inbound',
-        }, {
+        },
+        {
           backgroundColor: '2',
           borderColor: '2',
           data: [5],
@@ -97,7 +98,10 @@ describe('Dashboard data mixin', () => {
   });
   it('Metric data', () => {
     const dataSource = {
-      datasets: new Map([[true, { data: [10] }], [false, { data: [5] }]]),
+      datasets: new Map([
+        [true, { data: [10] }],
+        [false, { data: [5] }],
+      ]),
     };
     wrapper.vm.normalizeData = () => dataSource;
     const data = {

@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
 import { createStore } from 'vuex';
-import AppHeader
-  from '../app-header.vue';
+
 import userInfoStore from '../../../../../modules/userinfo/store/userinfo';
+import AppHeader from '../app-header.vue';
 
 const user = {
   username: 'username',
@@ -33,12 +33,18 @@ describe('App Header', () => {
       },
     });
     expect(wrapper.classes()).toContain('wt-app-header');
-    expect(wrapper.findComponent({ name: 'wt-app-navigator' }).exists()).toBe(true);
-    expect(wrapper.findComponent({ name: 'wt-header-actions' }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: 'wt-app-navigator' }).exists()).toBe(
+      true,
+    );
+    expect(wrapper.findComponent({ name: 'wt-header-actions' }).exists()).toBe(
+      true,
+    );
   });
 
   it('calls API logout at user logout action', () => {
-    const mock = vi.spyOn(AppHeader.methods, 'logout').mockImplementationOnce(vi.fn());
+    const mock = vi
+      .spyOn(AppHeader.methods, 'logout')
+      .mockImplementationOnce(vi.fn());
     const wrapper = mount(AppHeader, {
       global: {
         plugins: [store],
@@ -51,7 +57,10 @@ describe('App Header', () => {
   it('opens settings at user settings action', () => {
     const open = vi.fn();
     Object.defineProperty(window, 'open', {
-      configurable: true, get() { return open; },
+      configurable: true,
+      get() {
+        return open;
+      },
     });
     const wrapper = mount(AppHeader, {
       global: {

@@ -1,11 +1,10 @@
 import { shallowMount } from '@vue/test-utils';
-import TheCall
-  from '../the-call.vue';
+
+import TheCall from '../the-call.vue';
 
 describe('Opened call', () => {
   it('renders a component', () => {
-    vi.spyOn(TheCall.methods, 'setMainCall')
-    .mockImplementationOnce(vi.fn());
+    vi.spyOn(TheCall.methods, 'setMainCall').mockImplementationOnce(vi.fn());
     const wrapper = shallowMount(TheCall, {
       global: {
         mocks: {
@@ -15,7 +14,6 @@ describe('Opened call', () => {
         },
       },
     });
-    expect(wrapper.exists())
-    .toBe(true);
+    expect(wrapper.exists()).toBe(true);
   });
 });

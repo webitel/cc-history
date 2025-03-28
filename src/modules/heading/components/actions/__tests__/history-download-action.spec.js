@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import HistoryDownloadAction from '../history-download-action.vue';
 
 const dataList = [];

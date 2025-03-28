@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
 import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
 import WtDarkModeSwitcher from '@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue';
+import { mapActions,mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'AppHeader',

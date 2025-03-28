@@ -1,10 +1,11 @@
-import { CallServiceApiFactory } from 'webitel-sdk';
 import applyTransform, {
   camelToSnake,
   notify,
   sanitize,
   snakeToCamel,
 } from '@webitel/ui-sdk/src/api/transformers/index.js';
+import { CallServiceApiFactory } from 'webitel-sdk';
+
 import instance from '../../../../../../../app/api/instance';
 import configuration from '../../../../../../../app/api/openAPIConfig';
 
@@ -20,16 +21,12 @@ const addComment = async ({ itemInstance }) => {
 
   try {
     const response = await callService.createCallAnnotation(
-       itemInstance.callId,
-       item,
-     );
-    return applyTransform(response.data, [
-      snakeToCamel(),
-    ]);
+      itemInstance.callId,
+      item,
+    );
+    return applyTransform(response.data, [snakeToCamel()]);
   } catch (err) {
-    throw applyTransform(err, [
-      notify,
-    ]);
+    throw applyTransform(err, [notify]);
   }
 };
 
@@ -44,14 +41,10 @@ const updateComment = async ({ itemInstance }) => {
       itemInstance.callId,
       itemInstance.id,
       item,
-      );
-    return applyTransform(response.data, [
-      snakeToCamel(),
-    ]);
+    );
+    return applyTransform(response.data, [snakeToCamel()]);
   } catch (err) {
-    throw applyTransform(err, [
-      notify,
-    ]);
+    throw applyTransform(err, [notify]);
   }
 };
 
@@ -63,9 +56,7 @@ const deleteComment = async ({ itemInstance }) => {
     );
     return applyTransform(response.data, []);
   } catch (err) {
-    throw applyTransform(err, [
-      notify,
-    ]);
+    throw applyTransform(err, [notify]);
   }
 };
 

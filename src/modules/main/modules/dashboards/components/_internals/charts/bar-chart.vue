@@ -1,11 +1,12 @@
 <template>
-  <Bar
+  <bar
     :chart-data="chartData"
   />
 </template>
 
 <script>
 import 'chart.js/auto';
+
 import { Bar } from 'vue-chartjs';
 
 export default {

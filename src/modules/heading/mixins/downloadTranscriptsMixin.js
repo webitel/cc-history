@@ -1,7 +1,6 @@
-
-
 import { saveAs } from 'file-saver-es';
 import JSZip from 'jszip';
+
 import APIRepository from '../../../app/api/APIRepository';
 import CallTranscriptAPI from '../../../modules/main/modules/registry/modules/stt/api/callTranscript.js';
 
@@ -14,13 +13,16 @@ const collectTranscriptIds = (historyItems) => {
   }, []);
 };
 const generateTxt = (phrases, { from, to }) => {
-  const text = phrases.map(({
-                              phrase, channel, startSec, endSec,
-                            }) => (
-    `${startSec}-${endSec} [${channel
-      ? to?.name || to?.number || to?.destination || channel
-      : from?.name || from?.number || from?.destination || channel}] ${phrase || ''}`
-  )).join('\n');
+  const text = phrases
+    .map(
+      ({ phrase, channel, startSec, endSec }) =>
+        `${startSec}-${endSec} [${
+          channel
+            ? to?.name || to?.number || to?.destination || channel
+            : from?.name || from?.number || from?.destination || channel
+        }] ${phrase || ''}`,
+    )
+    .join('\n');
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
   return blob;
 };
@@ -46,8 +48,9 @@ export default {
   methods: {
     async _downloadSelectedTranscripts(items, zip) {
       const findTranscript = (transcriptId) => {
-        const item = items.find(({ transcripts }) => transcripts
-        .some(({ id }) => id === transcriptId));
+        const item = items.find(({ transcripts }) =>
+          transcripts.some(({ id }) => id === transcriptId),
+        );
         return item;
       };
 
@@ -59,9 +62,10 @@ export default {
           from: findTranscript(id).from,
           to: findTranscript(id).to,
         });
-        const fileName = `${id} at ${findTranscript(id)
-        .createdAt
-        .replaceAll('/', '.')}`;
+        const fileName = `${id} at ${findTranscript(id).createdAt.replaceAll(
+          '/',
+          '.',
+        )}`;
         zip.file(`${fileName}.txt`, txt);
         this.transcriptDownloadProgress += 1;
       }
@@ -83,23 +87,28 @@ export default {
         const zip = new JSZip();
 
         if (this.selected.length) {
-          const selectedIdsWithTranscript = this.selected
-          .reduce((ids, { id, transcripts }) => (transcripts?.length
-            ? ids.concat(id)
-            : ids), []);
+          const selectedIdsWithTranscript = this.selected.reduce(
+            (ids, { id, transcripts }) =>
+              transcripts?.length ? ids.concat(id) : ids,
+            [],
+          );
 
           await this._downloadAllTranscripts(zip, {
             filters: {
-              ...this.filters, id: selectedIdsWithTranscript,
+              ...this.filters,
+              id: selectedIdsWithTranscript,
             },
           });
         } else {
           await this._downloadAllTranscripts(zip, { filters: this.filters });
         }
 
-        const file = await zip.generateAsync({ type: 'blob' }, ({ percent }) => {
-          this.transcriptZippingProgress = percent;
-        });
+        const file = await zip.generateAsync(
+          { type: 'blob' },
+          ({ percent }) => {
+            this.transcriptZippingProgress = percent;
+          },
+        );
         saveAs(file, 'transcripts.zip');
       } catch (err) {
         throw err;

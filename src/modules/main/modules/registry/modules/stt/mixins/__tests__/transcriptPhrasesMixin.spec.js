@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import CallTranscriptAPI from '../../api/callTranscript.js';
 import TranscriptPhrasesMixin from '../transcriptPhrasesMixin';
 
@@ -34,18 +35,28 @@ describe('TranscriptPhrasesMixin', () => {
     const call = { from: { name: 'jest1' }, to: { name: 'jest2' } };
     const phrases = [
       {
-        startSec: 1, endSec: 2, phrase: 'lorem', channel: 0,
+        startSec: 1,
+        endSec: 2,
+        phrase: 'lorem',
+        channel: 0,
       },
       {
-        startSec: 2, endSec: 3, phrase: 'ipsum', channel: 1,
+        startSec: 2,
+        endSec: 3,
+        phrase: 'ipsum',
+        channel: 1,
       },
     ];
     const data = [
       {
-        time: '1 - 2', phrase: 'lorem', channel: 'jest1',
+        time: '1 - 2',
+        phrase: 'lorem',
+        channel: 'jest1',
       },
       {
-        time: '2 - 3', phrase: 'ipsum', channel: 'jest2',
+        time: '2 - 3',
+        phrase: 'ipsum',
+        channel: 'jest2',
       },
     ];
     const wrapper = shallowMount(Component, {

@@ -27,8 +27,8 @@
 <script>
 
 import CallEvaluationAnswers from './call-evaluation-answers.vue';
-import CallEvaluationScore from './call-evaluation-score.vue';
 import CallEvaluationResultInfo from './call-evaluation-result-info.vue';
+import CallEvaluationScore from './call-evaluation-score.vue';
 
 export default {
   name: 'CallEvaluationResult',

@@ -1,11 +1,12 @@
 <template>
-  <Line
+  <line
     :chart-data="chartData"
   />
 </template>
 
 <script>
 import 'chart.js/auto';
+
 import { Line } from 'vue-chartjs';
 
 export default {

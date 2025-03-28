@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import transcriptPhrasesMixin from '../../../mixins/transcriptPhrasesMixin';
 import SttPopup from '../stt-popup.vue';
 
@@ -16,8 +17,14 @@ describe('SttPopup', () => {
     transcripts.length = 0;
   });
 
-  vi.spyOn(transcriptPhrasesMixin.methods, 'loadCallTranscript').mockImplementation(vi.fn());
-  vi.spyOn(transcriptPhrasesMixin.methods, 'deleteTranscription').mockImplementation(vi.fn());
+  vi.spyOn(
+    transcriptPhrasesMixin.methods,
+    'loadCallTranscript',
+  ).mockImplementation(vi.fn());
+  vi.spyOn(
+    transcriptPhrasesMixin.methods,
+    'deleteTranscription',
+  ).mockImplementation(vi.fn());
 
   it('renders a component', () => {
     const wrapper = shallowMount(SttPopup, {
@@ -27,8 +34,7 @@ describe('SttPopup', () => {
   });
   it('fetches call with transcripts', async () => {
     const mock = vi.fn();
-    vi.spyOn(SttPopup.methods, 'loadCall')
-    .mockImplementationOnce(mock);
+    vi.spyOn(SttPopup.methods, 'loadCall').mockImplementationOnce(mock);
     const wrapper = shallowMount(SttPopup, {
       props,
     });

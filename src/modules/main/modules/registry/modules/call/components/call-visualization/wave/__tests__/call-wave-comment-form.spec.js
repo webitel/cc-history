@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
-import CommentForm
-  from '../call-wave-comment-form.vue';
+
+import CommentForm from '../call-wave-comment-form.vue';
 
 const props = {
   callId: 'id',
@@ -36,7 +36,7 @@ describe('Opened call comment form', () => {
       data: () => ({ draft }),
     });
     wrapper.findComponent({ name: 'wt-button' }).vm.$emit('click');
-    expect(wrapper.emitted().save[0][0]).toEqual(draft)
+    expect(wrapper.emitted().save[0][0]).toEqual(draft);
   });
 
   it('should render delete button if "draft" props contains id field', () => {
@@ -46,8 +46,12 @@ describe('Opened call comment form', () => {
         draft: { ...draft, id: '1' },
       }),
     });
-    expect(wrapper.findAllComponents({ name: 'wt-button' })
-      .find((btn) => btn.props().color === 'error').isVisible()).toBe(true);
+    expect(
+      wrapper
+        .findAllComponents({ name: 'wt-button' })
+        .find((btn) => btn.props().color === 'error')
+        .isVisible(),
+    ).toBe(true);
   });
 
   it('should not render delete button if "draft" props does not contain id', () => {
@@ -55,7 +59,10 @@ describe('Opened call comment form', () => {
       props,
       data: () => ({ draft }),
     });
-    expect(wrapper.findAllComponents({ name: 'wt-button' })
-      .find((btn) => btn.props().color === 'danger')).toBeFalsy();
+    expect(
+      wrapper
+        .findAllComponents({ name: 'wt-button' })
+        .find((btn) => btn.props().color === 'danger'),
+    ).toBeFalsy();
   });
 });

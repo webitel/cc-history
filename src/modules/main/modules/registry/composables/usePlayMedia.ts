@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+
 import generateMediaURL from '../mixins/media/scripts/generateMediaURL';
 
 export const usePlayMedia = () => {
@@ -29,4 +30,4 @@ export const usePlayMedia = () => {
     play,
     closePlayer,
   };
-}
+};

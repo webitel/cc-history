@@ -190,31 +190,32 @@
 </template>
 
 <script lang="ts" setup>
-import get from 'lodash/get';
 import {IconAction} from '@webitel/ui-sdk/enums';
-import {usePlayMedia} from '../composables/usePlayMedia.ts';
-import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
-import TableDirection from './table-templates/table-direction.vue';
-import MediaAction from './table-templates/table-media-action.vue';
 import {
+  WtActionBar,
+  WtBadge,
   WtEmpty,
+  WtIconAction,
+  WtIconBtn,
   WtLoader,
   WtPagination,
   WtPlayer,
   WtTable,
-  WtActionBar,
-  WtIconAction,
-  WtBadge,
-  WtIconBtn,
 } from '@webitel/ui-sdk/src/components/index.js';
-import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
-import {useRegistryStore} from '../store/new/registry.store.ts';
+import {useTableEmpty} from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js";
+import get from 'lodash/get';
 import {storeToRefs} from 'pinia';
 import {computed, ref} from 'vue';
-import {SearchMode} from '../../../../filters/enums/SearchMode.ts';
-import {useTableEmpty} from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js";
 import {EngineHistoryCall} from "webitel-sdk";
+
 import VariableColumnSelect from "../../../../filters/components/variable-column-select.vue";
+import {SearchMode} from '../../../../filters/enums/SearchMode.ts';
+import {usePlayMedia} from '../composables/usePlayMedia.ts';
+import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
+import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
+import {useRegistryStore} from '../store/new/registry.store.ts';
+import TableDirection from './table-templates/table-direction.vue';
+import MediaAction from './table-templates/table-media-action.vue';
 
 const emit = defineEmits<{
   'toggle:filters-panel': [];

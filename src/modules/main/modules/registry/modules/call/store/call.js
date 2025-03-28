@@ -1,18 +1,48 @@
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
-import evaluation from '../modules/evaluation/store/evaluation';
+
 import APIRepository from '../../../../../../../app/api/APIRepository';
 import { headers } from '../../../store/headers/headers';
+import evaluation from '../modules/evaluation/store/evaluation';
 
 const historyAPI = APIRepository.history;
 const annotationsAPI = APIRepository.annotations;
-const REQUIRED_MAIN_CALL_FIELDS = ['variables', 'has_children', 'agent_description', 'files', 'files_job', 'transcripts', 'direction', 'from', 'to', 'destination', 'hold', 'amd_ai_logs', 'amd_result', 'rate_id', 'allow_evaluation', 'form_fields'];
-const REQUIRED_DATA_FIELDS = ['id', 'parent_id', 'transfer_from', 'transfer_to'];
+const REQUIRED_MAIN_CALL_FIELDS = [
+  'variables',
+  'has_children',
+  'agent_description',
+  'files',
+  'files_job',
+  'transcripts',
+  'direction',
+  'from',
+  'to',
+  'destination',
+  'hold',
+  'amd_ai_logs',
+  'amd_result',
+  'rate_id',
+  'allow_evaluation',
+  'form_fields',
+];
+const REQUIRED_DATA_FIELDS = [
+  'id',
+  'parent_id',
+  'transfer_from',
+  'transfer_to',
+];
 
 const transfersHeader = {
-  value: 'transfers', show: true, sort: null, field: 'transfer_from, transfer_to',
+  value: 'transfers',
+  show: true,
+  sort: null,
+  field: 'transfer_from, transfer_to',
 };
 const transfersLegMarkerHeader = {
-  value: 'legMarker', show: true, sort: null, field: '', width: '0',
+  value: 'legMarker',
+  show: true,
+  sort: null,
+  field: '',
+  width: '0',
 };
 
 const state = {
@@ -28,9 +58,7 @@ const state = {
 };
 
 const getters = {
-  HEADERS: () => (
-    [...headers, transfersHeader, transfersLegMarkerHeader]
-  ),
+  HEADERS: () => [...headers, transfersHeader, transfersLegMarkerHeader],
 
   GET_REQUEST_PARAMS: (state, getters) => ({
     fields: getters.DATA_FIELDS,
@@ -41,14 +69,16 @@ const getters = {
     skipParent: false,
   }),
 
-  GET_MAIN_CALL_REQUEST_PARAMS: (state, getters) => (params = {}) => ({
-    fields: [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
-    createdAtFrom: 0, // https://webitel.atlassian.net/browse/WTEL-6386
-    from: 0, // get All
-    to: Date.now(),
-    id: [state.mainCallId],
-    ...params,
-  }),
+  GET_MAIN_CALL_REQUEST_PARAMS:
+    (state, getters) =>
+    (params = {}) => ({
+      fields: [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
+      createdAtFrom: 0, // https://webitel.atlassian.net/browse/WTEL-6386
+      from: 0, // get All
+      to: Date.now(),
+      id: [state.mainCallId],
+      ...params,
+    }),
 
   DATA_FIELDS: () => {
     let fields = headers
@@ -58,9 +88,11 @@ const getters = {
     return fields;
   },
 
-  RECORDING_FILE_SELECT_OPTIONS: (state) => state.mainCall.files
-      || (state.mainCall.transcripts || state.mainCall.filesJob) || []
-        .map(({ id }) => ({ id, name: id })),
+  RECORDING_FILE_SELECT_OPTIONS: (state) =>
+    state.mainCall.files ||
+    state.mainCall.transcripts ||
+    state.mainCall.filesJob ||
+    [].map(({ id }) => ({ id, name: id })),
 };
 
 const actions = {
@@ -68,7 +100,7 @@ const actions = {
     context.commit('SET_LEGS_DATA_LOADING', true);
     const params = await context.getters.GET_REQUEST_PARAMS;
     try {
-      const { items } = await historyAPI.getHistory({...params, fields});
+      const { items } = await historyAPI.getHistory({ ...params, fields });
       context.commit('SET_LEGS_DATA_LIST', items);
     } catch (err) {
       context.commit('SET_LEGS_DATA_LIST', []);
@@ -132,18 +164,20 @@ const actions = {
     await context.dispatch('evaluation/RESET_EVALUATION_RESULT');
   },
 
-  ADD_ANNOTATION: async (context, annotation) => (
-    annotationsAPI.add({ itemInstance: annotation })
-  ),
-  EDIT_ANNOTATION: async (context, annotation) => (
-    annotationsAPI.update({ itemInstance: annotation })
-  ),
-  DELETE_ANNOTATION: async (context, annotation) => (
-    annotationsAPI.delete({ itemInstance: annotation })
-  ),
+  ADD_ANNOTATION: async (context, annotation) =>
+    annotationsAPI.add({ itemInstance: annotation }),
+  EDIT_ANNOTATION: async (context, annotation) =>
+    annotationsAPI.update({ itemInstance: annotation }),
+  DELETE_ANNOTATION: async (context, annotation) =>
+    annotationsAPI.delete({ itemInstance: annotation }),
 
-  INITIALIZE_RECORDING_FILE: (context) => context.dispatch('SET_RECORDING_FILE', context.getters.RECORDING_FILE_SELECT_OPTIONS[0]),
-  SET_RECORDING_FILE: (context, file) => context.commit('SET_RECORDING_FILE', file),
+  INITIALIZE_RECORDING_FILE: (context) =>
+    context.dispatch(
+      'SET_RECORDING_FILE',
+      context.getters.RECORDING_FILE_SELECT_OPTIONS[0],
+    ),
+  SET_RECORDING_FILE: (context, file) =>
+    context.commit('SET_RECORDING_FILE', file),
 };
 
 const mutations = {
@@ -194,10 +228,11 @@ const mutations = {
   },
 };
 
-const call = new BaseStoreModule()
-  .setChildModules({ evaluation })
-  .getModule({
- state, getters, actions, mutations,
+const call = new BaseStoreModule().setChildModules({ evaluation }).getModule({
+  state,
+  getters,
+  actions,
+  mutations,
 });
 
 export default call;

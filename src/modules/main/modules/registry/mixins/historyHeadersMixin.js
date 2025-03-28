@@ -1,4 +1,4 @@
-import { mapState, mapActions } from 'vuex';
+import { mapActions,mapState } from 'vuex';
 
 export default {
   computed: {
@@ -8,8 +8,7 @@ export default {
 
     headers: {
       get() {
-        return this.headersValue
-        .map(({ text, ...header }) => {
+        return this.headersValue.map(({ text, ...header }) => {
           let modifiedText = text;
 
           if (header.value.includes('variables')) {

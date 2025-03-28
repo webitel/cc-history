@@ -1,5 +1,4 @@
-import { SearchMode }
-  from '../../../modules/filters/enums/SearchMode';
+import { SearchMode } from '../../../modules/filters/enums/SearchMode';
 
 export default {
   reusable: {
@@ -16,7 +15,8 @@ export default {
   },
   confirmDelete: {
     title: 'Delete confirmation',
-    askConfirmation: 'Are you sure you want to delete {count} item? | Are you sure you want to delete {count} items?',
+    askConfirmation:
+      'Are you sure you want to delete {count} item? | Are you sure you want to delete {count} items?',
   },
   headerSection: {
     filesLoaded: 'Files loaded: ',
@@ -29,7 +29,7 @@ export default {
     registry: 'History',
     call: {
       callInfo: 'Call info',
-      agentDescription: 'Agent\'s comment',
+      agentDescription: "Agent's comment",
       callLegs: 'Legs A-B',
       transferFrom: 'Transfer From',
       transferMerge: 'Call Merge',
@@ -43,7 +43,8 @@ export default {
       },
       stt: {
         noTranscript: 'There is no transcription for this file',
-        transcribingInProgress: 'Transcription is in progress now. Please, refresh page in a minute.',
+        transcribingInProgress:
+          'Transcription is in progress now. Please, refresh page in a minute.',
       },
       evaluation: {
         rateTheCall: 'Rate the call',
@@ -124,27 +125,33 @@ export default {
     },
     callsByPeriod: {
       title: 'Calls by period',
-      description: 'Represents the number of calls based on the selected filters and period',
+      description:
+        'Represents the number of calls based on the selected filters and period',
     },
     callsCount: {
       title: 'Calls count',
-      description: 'Groups calls count on doughnut diagram based on the selected filters',
+      description:
+        'Groups calls count on doughnut diagram based on the selected filters',
     },
     callsCountMetric: {
       title: 'Calls count (metrics)',
-      description: 'Represents number of calls based on the selected filters and period',
+      description:
+        'Represents number of calls based on the selected filters and period',
     },
     callsCountVariable: {
       title: 'Calls count (variables)',
-      description: 'Represents number of calls based where variable option was selected, on the selected filters and period',
+      description:
+        'Represents number of calls based where variable option was selected, on the selected filters and period',
     },
     callsDuration: {
       title: 'Calls duration',
-      description: 'Groups overall calls duration based on the selected filters',
+      description:
+        'Groups overall calls duration based on the selected filters',
     },
     callsDurationMetric: {
       title: 'Calls duration (metrics)',
-      description: 'Represents numeric duration of calls based on the selected filters and period',
+      description:
+        'Represents numeric duration of calls based on the selected filters and period',
     },
   },
   fields: {
@@ -218,7 +225,7 @@ export default {
     search: {
       [SearchMode.Search]: 'Regular search',
       [SearchMode.Fts]: 'Full text search',
-      [SearchMode.Description]: 'Agent\'s comment',
+      [SearchMode.Description]: "Agent's comment",
     },
     hasFile: 'Has recording',
     hasTranscription: 'Has transcription',

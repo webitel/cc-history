@@ -1,6 +1,7 @@
 import { camelToSnake } from '@webitel/ui-sdk/src/scripts/caseConverters';
-import Visualizations from '../enums/Visualizations.enum';
+
 import { VisualizationParams } from '../../../api/params/DashboardParams.enum';
+import Visualizations from '../enums/Visualizations.enum';
 
 export default class AbstractDashboard {
   isLimit() {
@@ -12,8 +13,10 @@ export default class AbstractDashboard {
   }
 
   _isTimeMetric() {
-    return this.options.visualization === Visualizations.BAR_CHART
-      || this.options.visualization === Visualizations.LINE_CHART;
+    return (
+      this.options.visualization === Visualizations.BAR_CHART ||
+      this.options.visualization === Visualizations.LINE_CHART
+    );
   }
 
   setId(id) {
@@ -25,9 +28,11 @@ export default class AbstractDashboard {
   }
 
   getValueProperty() {
-    return this.options.aggregation
-      + this.aggParam.charAt(0).toUpperCase()
-      + this.aggParam.slice(1);
+    return (
+      this.options.aggregation +
+      this.aggParam.charAt(0).toUpperCase() +
+      this.aggParam.slice(1)
+    );
   }
 
   getResponseParam() {
@@ -41,8 +46,8 @@ export default class AbstractDashboard {
       sort: [],
     };
     if (this._isTimeMetric()) {
-        aggs.group.push({ id: 'created_at', interval });
-        aggs.sort.push('+created_at');
+      aggs.group.push({ id: 'created_at', interval });
+      aggs.sort.push('+created_at');
     }
 
     const { aggregation } = this.options;
@@ -51,7 +56,8 @@ export default class AbstractDashboard {
 
     if (this.options.param) {
       const param = { id: this.options.param, desc: true };
-      if (this.options.param === VisualizationParams.VARIABLES) param.id += `.${this.options.variable}`;
+      if (this.options.param === VisualizationParams.VARIABLES)
+        param.id += `.${this.options.variable}`;
       if (this.isLimit()) {
         param.aggregate = 'count';
         param.top = this.options.limit;

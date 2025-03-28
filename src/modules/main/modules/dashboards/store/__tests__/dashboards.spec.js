@@ -1,6 +1,5 @@
 import DashboardsAPIRepository from '../../api/DashboardAPIRepository';
-import CallsCountDashboard
-  from '../../components/dashboards/CallsCountDashboard/CallsCountDashboard';
+import CallsCountDashboard from '../../components/dashboards/CallsCountDashboard/CallsCountDashboard';
 import dashboards from '../dashboards';
 
 vi.mock('../../api/DashboardAPIRepository');
@@ -8,12 +7,15 @@ vi.mock('../../api/DashboardAPIRepository');
 let newDashboard;
 let existingDashboard;
 const dashboardsData = [{ someData: 'jest' }];
-DashboardsAPIRepository.getDashboardsData
-  .mockImplementation(() => Promise.resolve(dashboardsData));
-DashboardsAPIRepository.saveDashboards
-  .mockImplementation(() => Promise.resolve());
-DashboardsAPIRepository.getDashboards
-  .mockImplementation(() => Promise.resolve({ layout: '2', snapshots: [] }));
+DashboardsAPIRepository.getDashboardsData.mockImplementation(() =>
+  Promise.resolve(dashboardsData),
+);
+DashboardsAPIRepository.saveDashboards.mockImplementation(() =>
+  Promise.resolve(),
+);
+DashboardsAPIRepository.getDashboards.mockImplementation(() =>
+  Promise.resolve({ layout: '2', snapshots: [] }),
+);
 
 describe('dashboards store actions', () => {
   const context = {
@@ -25,35 +27,49 @@ describe('dashboards store actions', () => {
     },
   };
   beforeEach(() => {
-   newDashboard = new CallsCountDashboard();
-   existingDashboard = new CallsCountDashboard();
-   context.state.dashboards = [existingDashboard];
+    newDashboard = new CallsCountDashboard();
+    existingDashboard = new CallsCountDashboard();
+    context.state.dashboards = [existingDashboard];
   });
   it('ADD_DASHBOARD commits ADD_DASHBOARD mutation with this dashboard', async () => {
-    await dashboards.actions.ADD_DASHBOARD(context, { dashboard: newDashboard });
-    expect(context.commit).toHaveBeenCalledWith('ADD_DASHBOARD', { dashboard: newDashboard });
+    await dashboards.actions.ADD_DASHBOARD(context, {
+      dashboard: newDashboard,
+    });
+    expect(context.commit).toHaveBeenCalledWith('ADD_DASHBOARD', {
+      dashboard: newDashboard,
+    });
   });
 
   it('ADD_DASHBOARD dispatches SAVE_DASHBOARDS', async () => {
-    await dashboards.actions.ADD_DASHBOARD(context, { dashboard: newDashboard });
+    await dashboards.actions.ADD_DASHBOARD(context, {
+      dashboard: newDashboard,
+    });
     expect(context.dispatch).toHaveBeenCalledWith('SAVE_DASHBOARDS');
   });
 
   it('ADD_DASHBOARD updates new dashboard id, if there is any dashboards in state', async () => {
     newDashboard.setId = vi.fn();
-    await dashboards.actions.ADD_DASHBOARD(context, { dashboard: newDashboard });
+    await dashboards.actions.ADD_DASHBOARD(context, {
+      dashboard: newDashboard,
+    });
     expect(newDashboard.setId).toHaveBeenCalledWith(existingDashboard.id + 1);
   });
 
   it('LOAD_DATA calls LOAD_DASHBOARDS_DATA', async () => {
     const payload = 'any payload';
     await dashboards.actions.LOAD_DATA(context, payload);
-    expect(context.dispatch).toHaveBeenCalledWith('LOAD_DASHBOARDS_DATA', payload);
+    expect(context.dispatch).toHaveBeenCalledWith(
+      'LOAD_DASHBOARDS_DATA',
+      payload,
+    );
   });
 
   it('LOAD_DASHBOARDS_DATA commits SET_DASHBOARDS_DATA, if request data is returned', async () => {
     await dashboards.actions.LOAD_DASHBOARDS_DATA(context);
-    expect(context.commit).toHaveBeenCalledWith('SET_DASHBOARDS_DATA', dashboardsData);
+    expect(context.commit).toHaveBeenCalledWith(
+      'SET_DASHBOARDS_DATA',
+      dashboardsData,
+    );
   });
 
   it('LOAD_DASHBOARDS_DATA correctly collects params from filter storage and dashboard aggs', async () => {
@@ -62,8 +78,10 @@ describe('dashboards store actions', () => {
     context.rootGetters['filters/GET_FILTERS'] = query;
     existingDashboard.getRequestAggregations = vi.fn(() => aggs);
     await dashboards.actions.LOAD_DASHBOARDS_DATA(context);
-    expect(DashboardsAPIRepository.getDashboardsData)
-      .toHaveBeenCalledWith({ aggs: [aggs], ...query });
+    expect(DashboardsAPIRepository.getDashboardsData).toHaveBeenCalledWith({
+      aggs: [aggs],
+      ...query,
+    });
   });
 
   it('DELETE_DASHBOARD commits REMOVE_DASHBOARD', async () => {
@@ -83,7 +101,9 @@ describe('dashboards store actions', () => {
       layout: context.state.layout,
       snapshots: [existingDashboard.getSnapshot()],
     };
-    expect(DashboardsAPIRepository.saveDashboards).toHaveBeenCalledWith(dashboardSnapshots);
+    expect(DashboardsAPIRepository.saveDashboards).toHaveBeenCalledWith(
+      dashboardSnapshots,
+    );
   });
 
   it('RESTORE_DASHBOARDS calls API method to get dashboard snapshots', async () => {
@@ -95,12 +115,14 @@ describe('dashboards store actions', () => {
     const dashboardSnapshots = {
       snapshots: [existingDashboard.getSnapshot()],
     };
-    DashboardsAPIRepository.getDashboards
-      .mockImplementationOnce(() => Promise.resolve(dashboardSnapshots));
+    DashboardsAPIRepository.getDashboards.mockImplementationOnce(() =>
+      Promise.resolve(dashboardSnapshots),
+    );
     await dashboards.actions.RESTORE_DASHBOARDS(context);
     // https://github.com/facebook/jest/issues/8475
-    expect(JSON.stringify(context.commit.mock.calls.pop()))
-      .toEqual(JSON.stringify(['SET_DASHBOARDS', [existingDashboard]]));
+    expect(JSON.stringify(context.commit.mock.calls.pop())).toEqual(
+      JSON.stringify(['SET_DASHBOARDS', [existingDashboard]]),
+    );
   });
 
   it('CHANGE_LAYOUT dispatches SAVE_DASHBOARDS', async () => {

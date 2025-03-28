@@ -1,9 +1,9 @@
-import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
-import Visualizations from '../enums/Visualizations.enum';
 import {
   AggregationParams,
   VisualizationParams,
 } from '../../../api/params/DashboardParams.enum';
+import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
+import Visualizations from '../enums/Visualizations.enum';
 
 export default class CallsByPeriodDashboard extends AbstractDashboard {
   static type = 'callsByPeriod';
@@ -18,8 +18,9 @@ export default class CallsByPeriodDashboard extends AbstractDashboard {
     limit: 10,
   };
 
-  paramOptions = Object.values(VisualizationParams)
-    .filter((param) => param !== VisualizationParams.VARIABLES);
+  paramOptions = Object.values(VisualizationParams).filter(
+    (param) => param !== VisualizationParams.VARIABLES,
+  );
 
   constructor(snapshot) {
     super();

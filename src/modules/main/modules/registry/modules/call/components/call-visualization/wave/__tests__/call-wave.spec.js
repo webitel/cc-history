@@ -1,11 +1,9 @@
-import { shallowMount, mount } from '@vue/test-utils';
+import { mount,shallowMount } from '@vue/test-utils';
 import { createStore } from 'vuex';
-import callWave
-  from '../call-wave.vue';
-import registry from '../../../../../../store/registry';
-import playerMock
-  from '../../../../../../../../../../../tests/unit/mocks/waveSurferMock';
 
+import playerMock from '../../../../../../../../../../../tests/unit/mocks/waveSurferMock';
+import registry from '../../../../../../store/registry';
+import callWave from '../call-wave.vue';
 
 vi.mock('../../../../../../../../../../app/api/instance.js', () => ({
   default: {
@@ -98,12 +96,17 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' })
-    .isVisible()).toBe(true);
-    await wrapper.findAllComponents({ name: 'wt-icon-btn' })
-    .filter((btn) => btn.attributes().icon === 'note').at(0).vm.$emit('click');
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists())
-    .toBe(false);
+    expect(
+      wrapper.findComponent({ name: 'call-wave-comment-form' }).isVisible(),
+    ).toBe(true);
+    await wrapper
+      .findAllComponents({ name: 'wt-icon-btn' })
+      .filter((btn) => btn.attributes().icon === 'note')
+      .at(0)
+      .vm.$emit('click');
+    expect(
+      wrapper.findComponent({ name: 'call-wave-comment-form' }).exists(),
+    ).toBe(false);
   });
 
   it('opens comment form on commentsMode change to true', async () => {
@@ -124,12 +127,17 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    expect(wrapper.findComponent({ name: 'opened-call-wave-comment-form' })
-    .exists()).toBe(false);
-    await wrapper.findAllComponents({ name: 'wt-icon-btn' })
-    .filter((btn) => btn.attributes().icon === 'note').at(0).vm.$emit('click');
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' }).exists())
-    .toBe(true);
+    expect(
+      wrapper.findComponent({ name: 'opened-call-wave-comment-form' }).exists(),
+    ).toBe(false);
+    await wrapper
+      .findAllComponents({ name: 'wt-icon-btn' })
+      .filter((btn) => btn.attributes().icon === 'note')
+      .at(0)
+      .vm.$emit('click');
+    expect(
+      wrapper.findComponent({ name: 'call-wave-comment-form' }).exists(),
+    ).toBe(true);
   });
 
   it('emits save event with comment draft object and calls the add annotation action if no id passed', async () => {
@@ -150,13 +158,17 @@ describe('Opened call wave', () => {
     wrapper.vm.addAnnotation = actionMocks.ADD_ANNOTATION;
     const draftWithNoId = { ...draft };
     delete draftWithNoId.id;
-    await wrapper.findComponent({ name: 'call-wave-comment-form' })
-    .vm
-    .$emit('save', draftWithNoId);
-    expect(actionMocks.ADD_ANNOTATION)
-    .toHaveBeenCalledWith(expect.objectContaining({
-      endSec: 2, note: 'draft', startSec: 1, callId: 'id',
-    }));
+    await wrapper
+      .findComponent({ name: 'call-wave-comment-form' })
+      .vm.$emit('save', draftWithNoId);
+    expect(actionMocks.ADD_ANNOTATION).toHaveBeenCalledWith(
+      expect.objectContaining({
+        endSec: 2,
+        note: 'draft',
+        startSec: 1,
+        callId: 'id',
+      }),
+    );
   });
 
   it('emits save event with comment draft object on save and calls the edit annotation method', async () => {
@@ -175,11 +187,13 @@ describe('Opened call wave', () => {
       },
     });
     wrapper.vm.updateAnnotation = actionMocks.EDIT_ANNOTATION;
-    await wrapper.findComponent({ name: 'call-wave-comment-form' })
-    .vm
-    .$emit('save', draft);
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' })
-    .emitted().save[0][0]).toBe(draft);
+    await wrapper
+      .findComponent({ name: 'call-wave-comment-form' })
+      .vm.$emit('save', draft);
+    expect(
+      wrapper.findComponent({ name: 'call-wave-comment-form' }).emitted()
+        .save[0][0],
+    ).toBe(draft);
     expect(actionMocks.EDIT_ANNOTATION).toHaveBeenCalled();
   });
 
@@ -199,11 +213,13 @@ describe('Opened call wave', () => {
       },
     });
     wrapper.vm.deleteAnnotation = actionMocks.DELETE_ANNOTATION;
-    await wrapper.findComponent({ name: 'call-wave-comment-form' })
-    .vm
-    .$emit('delete', draft);
-    expect(wrapper.findComponent({ name: 'call-wave-comment-form' })
-    .emitted().delete.length).toBe(1);
+    await wrapper
+      .findComponent({ name: 'call-wave-comment-form' })
+      .vm.$emit('delete', draft);
+    expect(
+      wrapper.findComponent({ name: 'call-wave-comment-form' }).emitted().delete
+        .length,
+    ).toBe(1);
     expect(actionMocks.DELETE_ANNOTATION).toHaveBeenCalled();
   });
 
@@ -222,8 +238,11 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    await wrapper.findAllComponents({ name: 'wt-button' })
-    .filter((btn) => btn.text() === 'x2').at(0).vm.$emit('click');
+    await wrapper
+      .findAllComponents({ name: 'wt-button' })
+      .filter((btn) => btn.text() === 'x2')
+      .at(0)
+      .vm.$emit('click');
     expect(wrapper.vm.$data.playbackRate).toBe(2);
     expect(player.setPlaybackRate).toBeCalled();
     expect(player.setPlaybackRate.mock.calls[0][0]).toBe(2);
@@ -245,9 +264,11 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    await wrapper.findAllComponents({ name: 'wt-button' })
-    .filter((btn) => btn.html()
-    .includes('zoom-in')).at(0).vm.$emit('click');
+    await wrapper
+      .findAllComponents({ name: 'wt-button' })
+      .filter((btn) => btn.html().includes('zoom-in'))
+      .at(0)
+      .vm.$emit('click');
     expect(player.zoom).toHaveBeenCalled();
     expect(player.zoom.mock.calls[0][0]).toBe(zoom * 2);
   });
@@ -270,10 +291,11 @@ describe('Opened call wave', () => {
         player: () => player,
       },
     });
-    await wrapper.findAllComponents({ name: 'wt-checkbox' })
-    .filter((checkbox) => checkbox.props()
-    .label
-    .includes('Hold')).at(0).vm.$emit('change');
+    await wrapper
+      .findAllComponents({ name: 'wt-checkbox' })
+      .filter((checkbox) => checkbox.props().label.includes('Hold'))
+      .at(0)
+      .vm.$emit('change');
     expect(player.clearRegions).toHaveBeenCalled();
   });
 
@@ -302,10 +324,11 @@ describe('Opened call wave', () => {
     });
     const displayComments = vi.fn();
     wrapper.vm.displayComments = displayComments;
-    await wrapper.findAllComponents({ name: 'wt-checkbox' })
-    .filter((checkbox) => checkbox.props()
-    .label
-    .includes('Note')).at(0).vm.$emit('change');
+    await wrapper
+      .findAllComponents({ name: 'wt-checkbox' })
+      .filter((checkbox) => checkbox.props().label.includes('Note'))
+      .at(0)
+      .vm.$emit('change');
     expect(wrapper.vm.$data.showComments).toBe(true);
     expect(displayComments).toHaveBeenCalled();
     expect(displayComments.mock.calls[0][0]).toEqual(callMock.annotations);

@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import CallVisualizationHeader from '../call-visualization-header.vue';
 
 describe('CallVisualizationHeader', () => {

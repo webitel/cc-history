@@ -1,9 +1,10 @@
 import { shallowMount } from '@vue/test-utils';
-import { createStore } from 'vuex';
 import { createRouter, createWebHistory } from 'vue-router';
+import { createStore } from 'vuex';
+
+import RegistryAPIRepository from '../../../../api/RegistryAPIRepository';
 import registry from '../../../../store/registry';
 import call from '../call';
-import RegistryAPIRepository from '../../../../api/RegistryAPIRepository';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,12 +15,16 @@ vi.mock('../../../../api/RegistryAPIRepository');
 
 const mainCall = { id: '12' };
 const legsData = [{ id: '1' }, { id: '2' }];
-RegistryAPIRepository.getHistory.mockImplementation(() => Promise.resolve({ items: legsData }));
+RegistryAPIRepository.getHistory.mockImplementation(() =>
+  Promise.resolve({ items: legsData }),
+);
 
 describe('Opened call history store', () => {
   let store;
   beforeEach(() => {
-    store = createStore({ modules: { registry: { ...registry, modules: { call } } } });
+    store = createStore({
+      modules: { registry: { ...registry, modules: { call } } },
+    });
     const Component = { render() {} };
     shallowMount(Component, {
       global: {
@@ -29,9 +34,9 @@ describe('Opened call history store', () => {
   });
 
   it('sets call to open', async () => {
-    RegistryAPIRepository.getHistory.mockImplementationOnce(() => (
-      Promise.resolve({ items: [mainCall] })
-    ));
+    RegistryAPIRepository.getHistory.mockImplementationOnce(() =>
+      Promise.resolve({ items: [mainCall] }),
+    );
     await store.dispatch('registry/call/SET_OPENED_CALL', mainCall);
     expect(RegistryAPIRepository.getHistory).toHaveBeenCalled();
     expect(store.state.registry.call.mainCall).toEqual(mainCall);
@@ -39,9 +44,9 @@ describe('Opened call history store', () => {
   });
 
   it('loads main call from API', async () => {
-    RegistryAPIRepository.getHistory.mockImplementationOnce(() => (
-      Promise.resolve({ items: [mainCall] })
-    ));
+    RegistryAPIRepository.getHistory.mockImplementationOnce(() =>
+      Promise.resolve({ items: [mainCall] }),
+    );
     await store.dispatch('registry/call/LOAD_MAIN_CALL');
     expect(RegistryAPIRepository.getHistory).toHaveBeenCalled();
     expect(store.state.registry.call.mainCall).toEqual(mainCall);
@@ -61,9 +66,9 @@ describe('Opened call history store', () => {
   });
   it('loads annotations from API', async () => {
     const annotations = [];
-    RegistryAPIRepository.getHistory.mockImplementationOnce(() => (
-      Promise.resolve({ items: [{ annotations }] })
-    ));
+    RegistryAPIRepository.getHistory.mockImplementationOnce(() =>
+      Promise.resolve({ items: [{ annotations }] }),
+    );
     await store.dispatch('registry/call/LOAD_MAIN_CALL_ANNOTATIONS');
     expect(RegistryAPIRepository.getHistory).toHaveBeenCalled();
     expect(store.state.registry.call.mainCallAnnotations).toEqual(annotations);

@@ -44,12 +44,13 @@
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapState } from 'vuex';
+
 import CallVisualizationHeader from '../../../call/components/call-visualization/call-visualization-header.vue';
+import CallTranscriptAPI from '../../api/callTranscript.js';
 import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
 import SttDeleteAction from '../utils/stt-delete-action.vue';
 import SttDownloadAction from '../utils/stt-download-action.vue';
 import CallNoTranscript from './call-no-transcript-section.vue';
-import CallTranscriptAPI from '../../api/callTranscript.js';
 
 export default {
   name: 'CallTranscript',

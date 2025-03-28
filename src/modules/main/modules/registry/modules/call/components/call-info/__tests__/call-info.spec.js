@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+
 import callInfo from '../call-info.vue';
 
 const variables = { hello: 'there', hello1: 'there' };
@@ -16,7 +17,9 @@ describe('Opened call info tab', () => {
 
   it('renders a component with call variables', () => {
     const wrapper = mount(callInfo, { props });
-    expect(wrapper.findAll('li.call-info__item').length).toBe(Object.keys(variables).length);
+    expect(wrapper.findAll('li.call-info__item').length).toBe(
+      Object.keys(variables).length,
+    );
   });
 
   it('renders variables value', () => {

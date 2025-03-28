@@ -101,34 +101,35 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, type Ref} from 'vue';
-import {storeToRefs} from 'pinia';
-import {useI18n} from "vue-i18n";
-import DynamicFilterPreview
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue';
+import {
+  ApplyPresetAction,
+  createFilterPresetsStore,
+  SavePresetAction,
+} from '@webitel/ui-sdk/src/modules/Filters/v2/filter-presets/index';
+import DynamicFilterConfigForm
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/config/dynamic-filter-config-form.vue';
 import DynamicFilterAddAction
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-add-action.vue';
+import DynamicFilterPanelWrapper
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
+import {FilterOptionToPreviewComponentMap, FilterOptionToValueComponentMap } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/filter-options/index';
+import DynamicFilterPreview
+  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue';
+import {FilterOption} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/enums/FilterOption.ts";
 import {
   FilterInitParams,
   FilterName,
   IFilter
 } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/types/Filter.d.ts';
-import DynamicFilterConfigForm
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/config/dynamic-filter-config-form.vue';
-import DynamicFilterPanelWrapper
-  from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
 import {startOfToday} from "date-fns";
+import {storeToRefs} from 'pinia';
+import {computed, type Ref} from 'vue';
+import {useI18n} from "vue-i18n";
+
+import { namespace } from "../../main/modules/registry/namespace.ts";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
 import { filtersOptions } from "./filters-options";
-import {FilterOptionToPreviewComponentMap, FilterOptionToValueComponentMap } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/filter-options/index';
-import { namespace } from "../../main/modules/registry/namespace.ts";
-import {
-  SavePresetAction,
-  ApplyPresetAction,
-  createFilterPresetsStore,
-} from '@webitel/ui-sdk/src/modules/Filters/v2/filter-presets/index';
-import {FilterOption} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/enums/FilterOption.ts";
 
 const emit = defineEmits<{
   hide: [],

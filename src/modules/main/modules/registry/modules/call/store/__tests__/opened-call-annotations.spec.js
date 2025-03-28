@@ -1,7 +1,6 @@
-import CallAnnotationAPIRepository
-  from '../../api/CallAnnotationAPIRepository';
-import call from '../call';
 import getContextMock from '../../../../../../../../../tests/unit/mocks/store/contextMock';
+import CallAnnotationAPIRepository from '../../api/CallAnnotationAPIRepository';
+import call from '../call';
 
 vi.mock('../../api/CallAnnotationAPIRepository');
 

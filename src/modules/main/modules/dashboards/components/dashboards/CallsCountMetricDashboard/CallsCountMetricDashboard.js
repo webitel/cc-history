@@ -1,6 +1,9 @@
+import {
+  AggregationParams,
+  MetricParams,
+} from '../../../api/params/DashboardParams.enum';
 import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
-import { AggregationParams, MetricParams } from '../../../api/params/DashboardParams.enum';
 
 export default class CallsCountMetricDashboard extends AbstractDashboard {
   static type = 'callsCountMetric';

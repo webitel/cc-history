@@ -44,10 +44,10 @@
 
 <script>
 
+import { useVuelidate } from '@vuelidate/core';
+import { maxValue,minValue, required } from '@vuelidate/validators';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import deepCopy from 'deep-copy';
-import { useVuelidate } from '@vuelidate/core';
-import { required, minValue, maxValue } from '@vuelidate/validators';
 
 export default {
   name: 'CallWaveCommentForm',

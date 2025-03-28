@@ -1,5 +1,5 @@
-import normalizeDashboardData from '../normalizeDashboardData';
 import calcRelativeData from '../calcRelativeData';
+import normalizeDashboardData from '../normalizeDashboardData';
 
 const input = [
   { count: null, createdAt: '01.07', direction: null },
@@ -17,7 +17,11 @@ test('normalizeDashboardData', () => {
     outbound: { data: [0, 3, 4, 0, 6], sum: 13 },
     sum: [0, 5, 4, 0, 11],
   };
-  const res = normalizeDashboardData({ aggValue: 'count', param: 'direction', data: input });
+  const res = normalizeDashboardData({
+    aggValue: 'count',
+    param: 'direction',
+    data: input,
+  });
   expect(res.datasets.get('inbound')).toEqual(output.inbound);
   expect(res.datasets.get('outbound')).toEqual(output.outbound);
   // console.info(res);
@@ -25,7 +29,11 @@ test('normalizeDashboardData', () => {
 });
 
 test('calcRelativeData', () => {
-  const res = normalizeDashboardData({ aggValue: 'count', param: 'direction', data: input });
+  const res = normalizeDashboardData({
+    aggValue: 'count',
+    param: 'direction',
+    data: input,
+  });
   const rel = calcRelativeData(res.datasets, res.dates);
   expect(rel.datasets.get('inbound')).toEqual({ data: [0, 40, 0, 0, 45] });
   expect(rel.datasets.get('outbound')).toEqual({ data: [0, 60, 100, 0, 55] });

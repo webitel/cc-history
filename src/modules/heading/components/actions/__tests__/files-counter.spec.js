@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import FilesCounter from '../files-counter.vue';
 
 describe('FilesCounter', () => {

@@ -4,16 +4,27 @@ import {
 } from '@webitel/ui-sdk/src/api/defaults/index.js';
 import applyTransform, {
   camelToSnake,
-  merge, notify, snakeToCamel,
+  merge,
+  notify,
+  snakeToCamel,
   starToSearch,
 } from '@webitel/ui-sdk/src/api/transformers/index.js';
-import { AuditFormServiceApiFactory, EngineAuditQuestionType } from 'webitel-sdk';
+import {
+  AuditFormServiceApiFactory,
+  EngineAuditQuestionType,
+} from 'webitel-sdk';
+
 import instance from '../../../../../../../../../app/api/instance';
 import configuration from '../../../../../../../../../app/api/openAPIConfig';
 
-const auditService = new AuditFormServiceApiFactory(configuration, '', instance);
+const auditService = new AuditFormServiceApiFactory(
+  configuration,
+  '',
+  instance,
+);
 
-const questionDefaultValuesHandler = (questions) => questions.map((question) => {
+const questionDefaultValuesHandler = (questions) =>
+  questions.map((question) => {
     if (question.type === EngineAuditQuestionType.Score) {
       return {
         ...question,
@@ -42,23 +53,16 @@ const responseItemHandler = (response) => ({
 });
 
 const getScorecards = async (params) => {
-  const listHandler = (items) => items.map((item) => ({
+  const listHandler = (items) =>
+    items.map((item) => ({
       ...item,
       questions: questionDefaultValuesHandler(item.questions),
     }));
 
-  const {
-    page,
-    size,
-    search,
-    sort,
-    fields,
-    enabled,
-    active,
-  } = applyTransform(params, [
-    merge(getDefaultGetParams()),
-    starToSearch('search'),
-  ]);
+  const { page, size, search, sort, fields, enabled, active } = applyTransform(
+    params,
+    [merge(getDefaultGetParams()), starToSearch('search')],
+  );
 
   try {
     const response = await auditService.searchAuditForm(
@@ -79,67 +83,47 @@ const getScorecards = async (params) => {
       merge(getDefaultGetListResponse()),
     ]);
     return {
-      items: applyTransform(items, [
-        listHandler,
-      ]),
+      items: applyTransform(items, [listHandler]),
       next,
     };
   } catch (err) {
-    throw applyTransform(err, [
-      notify,
-    ]);
+    throw applyTransform(err, [notify]);
   }
 };
 
 const getAuditForm = async ({ itemId: id }) => {
   try {
     const response = await auditService.readAuditForm(id);
-    return applyTransform(response.data, [
-      snakeToCamel(),
-      responseItemHandler,
-    ]);
+    return applyTransform(response.data, [snakeToCamel(), responseItemHandler]);
   } catch (err) {
-    throw applyTransform(err, [
-      notify,
-    ]);
+    throw applyTransform(err, [notify]);
   }
 };
 
 const sendAuditResult = async (itemInstance) => {
-  const item = applyTransform(itemInstance, [
-    camelToSnake(),
-  ]);
+  const item = applyTransform(itemInstance, [camelToSnake()]);
   try {
     const response = await auditService.createAuditFormRate(item);
-    return applyTransform(response.data, [
-      snakeToCamel(),
-      responseItemHandler,
-    ]);
+    return applyTransform(response.data, [snakeToCamel(), responseItemHandler]);
   } catch (err) {
-    throw applyTransform(err, [
-      notify,
-    ]);
+    throw applyTransform(err, [notify]);
   }
 };
 
 const getResult = async (id) => {
   try {
     const response = await auditService.readAuditRate(id);
-    return applyTransform(response.data, [
-      snakeToCamel(),
-      responseItemHandler,
-    ]);
+    return applyTransform(response.data, [snakeToCamel(), responseItemHandler]);
   } catch (err) {
-    throw applyTransform(err, [
-      notify,
-    ]);
+    throw applyTransform(err, [notify]);
   }
 };
 
-const getAuditLookup = (params) => getScorecards({
- ...params,
- fields: params.fields || ['id', 'name'],
-});
+const getAuditLookup = (params) =>
+  getScorecards({
+    ...params,
+    fields: params.fields || ['id', 'name'],
+  });
 
 const CallEvaluationAPI = {
   getLookup: getAuditLookup,

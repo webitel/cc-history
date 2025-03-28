@@ -1,9 +1,10 @@
-import { shallowMount, mount } from '@vue/test-utils';
-import { createStore } from 'vuex';
+import { mount,shallowMount } from '@vue/test-utils';
 import { createRouter, createWebHistory } from 'vue-router';
-import HistoryHeading from '../the-history-heading.vue';
+import { createStore } from 'vuex';
+
 import filters from '../../../filters/store/filters';
 import registry from '../../../main/modules/registry/store/registry';
+import HistoryHeading from '../the-history-heading.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +31,8 @@ describe('History heading section', () => {
         plugins: [router, store],
       },
     });
-    expect(wrapper.findComponent({ name: 'history-search' }).isVisible()).toBe(true);
+    expect(wrapper.findComponent({ name: 'history-search' }).isVisible()).toBe(
+      true,
+    );
   });
 });

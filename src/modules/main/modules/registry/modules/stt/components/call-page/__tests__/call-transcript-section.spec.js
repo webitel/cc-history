@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
-import CallTranscriptSection from '../call-transcript-section.vue';
+
 import CallTranscript from '../../../api/callTranscript.js';
+import CallTranscriptSection from '../call-transcript-section.vue';
 
 let call;
 let file;

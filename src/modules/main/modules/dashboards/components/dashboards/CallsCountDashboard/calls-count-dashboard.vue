@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import dashboardMixin from '../../../mixins/dashboardMixin';
-import DummyLight from '../../../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
 import DummyDark from '../../../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
+import DummyLight from '../../../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
+import dashboardMixin from '../../../mixins/dashboardMixin';
 
 export default {
   name: 'CallsCountDashboard',

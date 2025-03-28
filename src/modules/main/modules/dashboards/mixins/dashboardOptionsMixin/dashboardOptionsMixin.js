@@ -1,14 +1,16 @@
 import Visualizations from '../../components/dashboards/enums/Visualizations.enum';
 
-const trimLabel = (label, length = 30) => (
-  label.length <= length ? label : `${label.slice(0, length - 3)}...`
-);
+const trimLabel = (label, length = 30) =>
+  label.length <= length ? label : `${label.slice(0, length - 3)}...`;
 
-const ticks = (relative) => (relative ? {
-  min: 0,
-  max: 100,
-  callback: (value) => `${value}%`,
-} : {});
+const ticks = (relative) =>
+  relative
+    ? {
+        min: 0,
+        max: 100,
+        callback: (value) => `${value}%`,
+      }
+    : {};
 const legend = {
   labels: { fontFamily: "'Montserrat Medium', 'monospace'" },
   position: 'bottom',
@@ -48,22 +50,21 @@ export default {
               const name = trimLabel(data.labels[tooltipItem.index]);
               const value = data.datasets[0].data[tooltipItem.index];
               const label = `${name}: ${value}`;
-              return this.dashboard.options.relative
-                ? `${label}%` : label;
+              return this.dashboard.options.relative ? `${label}%` : label;
             },
           },
         },
         legend: {
           ...legend,
-        //   labels: {
-            // ...legend.labels,
-            // generateLabels: (chart) => (
-            //   chart.data.labels.map((label, index) => ({
-            //     text: !label || trimLabel(label),
-            //     fillStyle: this.colors[index],
-            //     index,
-            //   }))
-            // ),
+          //   labels: {
+          // ...legend.labels,
+          // generateLabels: (chart) => (
+          //   chart.data.labels.map((label, index) => ({
+          //     text: !label || trimLabel(label),
+          //     fillStyle: this.colors[index],
+          //     index,
+          //   }))
+          // ),
           // },
         },
       };
@@ -71,25 +72,31 @@ export default {
     barOptions() {
       return {
         scales: {
-          xAxes: [{
-            stacked: true,
-            gridLines: {
-              display: false,
+          xAxes: [
+            {
+              stacked: true,
+              gridLines: {
+                display: false,
+              },
             },
-          }],
-          yAxes: [{
-            stacked: true,
-            ticks: ticks(this.dashboard.options.relative),
-          }],
+          ],
+          yAxes: [
+            {
+              stacked: true,
+              ticks: ticks(this.dashboard.options.relative),
+            },
+          ],
         },
         tooltips: {
           callbacks: {
             label: (tooltipItem, data) => {
-              const name = trimLabel(data.datasets[tooltipItem.datasetIndex].label);
-              const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+              const name = trimLabel(
+                data.datasets[tooltipItem.datasetIndex].label,
+              );
+              const value =
+                data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
               const label = `${name}: ${value}`;
-              return this.dashboard.options.relative
-                ? `${label}%` : label;
+              return this.dashboard.options.relative ? `${label}%` : label;
             },
           },
         },

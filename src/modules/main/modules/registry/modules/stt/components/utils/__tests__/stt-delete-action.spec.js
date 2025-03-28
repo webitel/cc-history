@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import SttDeleteAction from '../stt-delete-action.vue';
 
 describe('SttDeleteAction', () => {

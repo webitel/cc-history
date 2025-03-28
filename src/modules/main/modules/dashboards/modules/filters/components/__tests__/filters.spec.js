@@ -1,7 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
 import { createRouter, createWebHistory } from 'vue-router';
-import FilterInterval from '../interval/filter-interval.vue';
+
 import store from '../../../../../../../../app/store';
+import FilterInterval from '../interval/filter-interval.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,6 +16,8 @@ describe('Dashboards: filter components', () => {
         plugins: [store, router],
       },
     });
-    expect(wrapper.findComponent({ name: 'abstract-enum-filter' }).exists()).toBe(true);
+    expect(
+      wrapper.findComponent({ name: 'abstract-enum-filter' }).exists(),
+    ).toBe(true);
   });
 });

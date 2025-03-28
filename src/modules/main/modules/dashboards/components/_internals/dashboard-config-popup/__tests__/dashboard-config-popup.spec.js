@@ -1,11 +1,14 @@
-import { shallowMount, mount } from '@vue/test-utils';
-import DashboardConfigPopup from '../dashboard-config-popup.vue';
+import { mount,shallowMount } from '@vue/test-utils';
+
 import Dashboards from '../../../dashboards/enums/Dashboards.enum';
+import DashboardConfigPopup from '../dashboard-config-popup.vue';
 
 const dashboard = new Dashboards[0]();
 describe('Dashboard config popup', () => {
   it('renders a component', () => {
-    const wrapper = shallowMount(DashboardConfigPopup, { props: { dashboard } });
+    const wrapper = shallowMount(DashboardConfigPopup, {
+      props: { dashboard },
+    });
     expect(wrapper.classes('dashboard-config')).toBe(true);
   });
 

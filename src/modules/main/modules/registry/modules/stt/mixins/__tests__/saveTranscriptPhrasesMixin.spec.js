@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import { saveAs } from 'file-saver-es';
+
 import SaveTranscriptPhrasesMixin from '../saveTranscriptPhrasesMixin';
 
 const Component = {

@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import CallVisualization from '../call-visualization.vue';
 
 let call;

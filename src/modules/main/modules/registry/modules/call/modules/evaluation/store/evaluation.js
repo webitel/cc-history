@@ -1,4 +1,5 @@
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
+
 import CallEvaluationAPI from '../api/CallEvaluationAPI';
 
 const state = {
@@ -10,8 +11,8 @@ const actions = {
   SEND_EVALUATION: async (context, evaluation) => {
     context.commit('SET_LOADING', true);
     try {
-    const result = await CallEvaluationAPI.sendAuditResult(evaluation);
-    context.commit('SET_RESULT', result);
+      const result = await CallEvaluationAPI.sendAuditResult(evaluation);
+      context.commit('SET_RESULT', result);
     } finally {
       context.commit('SET_LOADING', false);
     }
@@ -25,7 +26,8 @@ const actions = {
       context.commit('SET_LOADING', false);
     }
   },
-  RESET_EVALUATION_RESULT: (context, payload) => context.commit('RESET_EVALUATION_RESULT', payload),
+  RESET_EVALUATION_RESULT: (context, payload) =>
+    context.commit('RESET_EVALUATION_RESULT', payload),
 };
 
 const mutations = {
@@ -41,7 +43,9 @@ const mutations = {
 };
 
 const evaluation = new BaseStoreModule().getModule({
-  state, actions, mutations,
-                                                   });
+  state,
+  actions,
+  mutations,
+});
 
 export default evaluation;

@@ -17,6 +17,7 @@
 <script>
 import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
 import { mapGetters } from 'vuex';
+
 import AppHeader from './shared/app-header/app-header.vue';
 
 export default {

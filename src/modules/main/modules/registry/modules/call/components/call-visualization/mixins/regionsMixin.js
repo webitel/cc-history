@@ -23,13 +23,14 @@ const holdStyle = {
   width: '4px',
 };
 
-const formatCommentDate = (dateString) => new Date(+dateString).toLocaleString('uk-UA', {
-  day: 'numeric',
-  month: 'numeric',
-  year: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-});
+const formatCommentDate = (dateString) =>
+  new Date(+dateString).toLocaleString('uk-UA', {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
 
 const createHeaderBlock = (changedBy) => {
   const commentAuthorEl = document.createElement('p');
@@ -50,7 +51,8 @@ const createCommentHeader = (comment) => {
   if (comment.updatedAt !== comment.createdAt) {
     const updatedAt = formatCommentDate(comment.updatedAt);
     const updatedBy = comment.updatedBy.name || comment.updatedBy.id;
-    const { creationDateEl, commentAuthorEl, hr } = createHeaderBlock(updatedBy);
+    const { creationDateEl, commentAuthorEl, hr } =
+      createHeaderBlock(updatedBy);
     creationDateEl.innerText = `Updated: ${updatedAt}`;
     commentHeader.appendChild(commentAuthorEl);
     commentHeader.appendChild(creationDateEl);
@@ -92,9 +94,13 @@ export default {
     },
 
     displayHoldIcons(region, hold) {
-      const { wrapperEl, iconEl, tooltipEl } = this.createIcon(region, this.player);
+      const { wrapperEl, iconEl, tooltipEl } = this.createIcon(
+        region,
+        this.player,
+      );
       tooltipEl.innerText = hold.sec ? convertDuration(hold.sec) : '00:00:00';
-      iconEl.innerHTML = '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
+      iconEl.innerHTML =
+        '<svg width="24" height="24" fill="var(--hold-color)"><use xlink:href="#pause"</svg>';
       region.element.appendChild(wrapperEl);
     },
 
@@ -114,13 +120,18 @@ export default {
     },
 
     displayCommentIcons(region, comment) {
-      const { wrapperEl, iconEl, tooltipEl } = this.createIcon(region, this.player);
+      const { wrapperEl, iconEl, tooltipEl } = this.createIcon(
+        region,
+        this.player,
+      );
       const noteEl = document.createElement('p');
       noteEl.innerText = `"${comment.note}"`;
-      iconEl.innerHTML = '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
+      iconEl.innerHTML =
+        '<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
       const commentHeader = createCommentHeader(comment);
       tooltipEl.style.width = '300px';
-      const difference = region.element.offsetLeft + 300 - this.player.drawer.getWidth();
+      const difference =
+        region.element.offsetLeft + 300 - this.player.drawer.getWidth();
       if (difference > 0) {
         tooltipEl.style.left = `-${difference}px`;
       }
@@ -164,7 +175,8 @@ export default {
       wrapperEl.style.position = 'absolute';
       wrapperEl.style.cursor = 'pointer';
       wrapperEl.style.zIndex = '9';
-      wrapperEl.style.left = region.element.offsetLeft < 30 ? 'var(--spacing-sm)' : '-26px';
+      wrapperEl.style.left =
+        region.element.offsetLeft < 30 ? 'var(--spacing-sm)' : '-26px';
       wrapperEl.onmouseenter = () => {
         player.cursor.hideCursor();
         tooltipEl.style.pointerEvents = 'auto';
@@ -180,13 +192,12 @@ export default {
       return { wrapperEl, tooltipEl, iconEl };
     },
     blockRegionResize(player) {
-      Object.keys(player.regions.list)
-        .forEach((region) => {
-          player.regions.list[region].update({
-            resize: false,
-            drag: false,
-          });
+      Object.keys(player.regions.list).forEach((region) => {
+        player.regions.list[region].update({
+          resize: false,
+          drag: false,
         });
+      });
     },
   },
 };

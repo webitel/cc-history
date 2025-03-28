@@ -27,13 +27,17 @@ export default {
       ];
     },
     data() {
-      return this.phrases.map(({
-                                 startSec, endSec, phrase, channel,
-                               }) => ({
+      return this.phrases.map(({ startSec, endSec, phrase, channel }) => ({
         time: `${startSec} - ${endSec}`,
         channel: channel
-          ? (this.call.to?.name || this.call.to?.number || this.call.to?.destination || 1)
-          : (this.call.from?.name || this.call.from?.number || this.call.from?.destination || 0),
+          ? this.call.to?.name ||
+            this.call.to?.number ||
+            this.call.to?.destination ||
+            1
+          : this.call.from?.name ||
+            this.call.from?.number ||
+            this.call.from?.destination ||
+            0,
         phrase,
       }));
     },
@@ -43,7 +47,9 @@ export default {
       try {
         this.isLoading = true;
         if (this.transcript.id) {
-          this.phrases = await CallTranscriptAPI.get({ id: this.transcript.id });
+          this.phrases = await CallTranscriptAPI.get({
+            id: this.transcript.id,
+          });
         }
       } finally {
         this.isLoading = false;

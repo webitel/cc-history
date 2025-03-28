@@ -3,9 +3,9 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, computed, onMounted } from 'vue';
-import { useStore } from 'vuex';
+import { computed, onMounted,provide } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
 
 const store = useStore();
 const darkMode = computed(() => store.getters['appearance/DARK_MODE']);

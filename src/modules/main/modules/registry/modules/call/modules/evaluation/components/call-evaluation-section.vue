@@ -29,10 +29,11 @@
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
-import CallEvaluationResult from './result/call-evaluation-result.vue';
-import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
-import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
+
 import CallEvaluationForm from './form/call-evaluation-form.vue';
+import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
+import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
+import CallEvaluationResult from './result/call-evaluation-result.vue';
 
 export default {
   name: 'CallEvaluation',

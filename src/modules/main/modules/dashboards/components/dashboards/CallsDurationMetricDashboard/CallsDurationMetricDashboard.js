@@ -1,6 +1,9 @@
+import {
+  AggregationParams,
+  MetricParams,
+} from '../../../api/params/DashboardParams.enum';
 import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
-import { MetricParams, AggregationParams } from '../../../api/params/DashboardParams.enum';
 
 export default class CallsDurationMetricDashboard extends AbstractDashboard {
   static type = 'callsDurationMetric';
@@ -13,8 +16,9 @@ export default class CallsDurationMetricDashboard extends AbstractDashboard {
     param: MetricParams.BRIDGED,
   };
 
-  aggregationOptions = Object.values(AggregationParams)
-    .filter((agg) => agg !== AggregationParams.COUNT);
+  aggregationOptions = Object.values(AggregationParams).filter(
+    (agg) => agg !== AggregationParams.COUNT,
+  );
 
   constructor(snapshot) {
     super();

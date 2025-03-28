@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import DashboardsHeader from '../dashboards-header.vue';
 
 describe('Dashboards header', () => {

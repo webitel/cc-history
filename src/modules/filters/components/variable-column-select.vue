@@ -77,11 +77,11 @@
 <script lang="ts" setup>
 import {useVuelidate} from '@vuelidate/core';
 import {required} from '@vuelidate/validators';
-import {computed, reactive, ref} from 'vue';
-import {WtTableHeader} from "@webitel/ui-sdk/src/components/wt-table/types/WtTable.d.ts";
-import {useI18n} from "vue-i18n";
-import {WtBadge, WtButton, WtPopup, WtTooltip, WtInput, WtIconBtn, WtCheckbox} from "@webitel/ui-sdk/components";
+import {WtBadge, WtButton, WtCheckbox,WtIconBtn, WtInput, WtPopup, WtTooltip} from "@webitel/ui-sdk/components";
 import { isEmpty } from '@webitel/ui-sdk/scripts';
+import {WtTableHeader} from "@webitel/ui-sdk/src/components/wt-table/types/WtTable.d.ts";
+import {computed, reactive, ref} from 'vue';
+import {useI18n} from "vue-i18n";
 
 /*
 do we even need them?

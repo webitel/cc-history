@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from 'vuex';
+
 import TheHistory from '../the-history.vue';
 
 const store = createStore({
@@ -21,7 +22,9 @@ describe('The History', () => {
         plugins: [store],
       },
       computed: {
-        hasAccess() { return appAccess; },
+        hasAccess() {
+          return appAccess;
+        },
       },
     });
     expect(wrapper.find('.the-history').exists()).toBe(true);
@@ -34,9 +37,13 @@ describe('The History', () => {
         plugins: [store],
       },
       computed: {
-        hasAccess() { return appAccess; },
+        hasAccess() {
+          return appAccess;
+        },
       },
     });
-    expect(wrapper.findComponent({ name: 'wt-error-page' }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: 'wt-error-page' }).exists()).toBe(
+      true,
+    );
   });
 });

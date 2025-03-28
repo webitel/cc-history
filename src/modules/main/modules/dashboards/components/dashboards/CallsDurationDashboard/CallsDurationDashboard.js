@@ -1,6 +1,9 @@
+import {
+  AggregationParams,
+  VisualizationParams,
+} from '../../../api/params/DashboardParams.enum';
 import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
 import Visualizations from '../enums/Visualizations.enum';
-import { VisualizationParams, AggregationParams } from '../../../api/params/DashboardParams.enum';
 
 export default class CallsDurationDashboard extends AbstractDashboard {
   static type = 'callsDuration';
@@ -15,12 +18,17 @@ export default class CallsDurationDashboard extends AbstractDashboard {
     limit: 10,
   };
 
-  visualizationOptions = [Visualizations.DOUGHNUT_CHART, Visualizations.BAR_CHART];
-  aggregationOptions = Object.values(AggregationParams)
-    .filter((agg) => agg !== AggregationParams.COUNT && agg !== AggregationParams.MIN);
+  visualizationOptions = [
+    Visualizations.DOUGHNUT_CHART,
+    Visualizations.BAR_CHART,
+  ];
+  aggregationOptions = Object.values(AggregationParams).filter(
+    (agg) => agg !== AggregationParams.COUNT && agg !== AggregationParams.MIN,
+  );
 
-  paramOptions = Object.values(VisualizationParams)
-    .filter((param) => param !== VisualizationParams.VARIABLES);
+  paramOptions = Object.values(VisualizationParams).filter(
+    (param) => param !== VisualizationParams.VARIABLES,
+  );
 
   constructor(snapshot) {
     super();

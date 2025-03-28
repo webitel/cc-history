@@ -1,5 +1,6 @@
-import { shallowMount, mount } from '@vue/test-utils';
+import { mount,shallowMount } from '@vue/test-utils';
 import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
+
 import TranscriptionState from '../../../enums/TranscriptionState.enum';
 import TableSttAction from '../table-stt-action.vue';
 

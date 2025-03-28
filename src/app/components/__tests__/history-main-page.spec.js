@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import HistoryMainPage from '../history-main-page.vue';
 
 describe('HistoryMainPage', () => {

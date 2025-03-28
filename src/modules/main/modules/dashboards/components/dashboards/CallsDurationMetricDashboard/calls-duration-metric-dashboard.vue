@@ -13,9 +13,10 @@
 
 <script>
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import dashboardMixin from '../../../mixins/dashboardMixin';
+
 import DummyDark from '../../../../../../../app/assets/dummy/hs-dummy-after-search-dark.svg';
 import DummyLight from '../../../../../../../app/assets/dummy/hs-dummy-after-search-light.svg';
+import dashboardMixin from '../../../mixins/dashboardMixin';
 
 export default {
   name: 'CallsCountMetricDashboard',

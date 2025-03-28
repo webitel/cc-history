@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
-import Metric from '../metric.vue';
+
 import { AggregationParams } from '../../../../api/params/DashboardParams.enum';
+import Metric from '../metric.vue';
 
 let chartData = {};
 const options = { aggregation: null };

@@ -1,12 +1,13 @@
-import normalizeDashboardData from './scripts/normalizeDashboardData';
-import calcRelativeData from './scripts/calcRelativeData';
-import Visualizations
-  from '../../components/dashboards/enums/Visualizations.enum';
+import Visualizations from '../../components/dashboards/enums/Visualizations.enum';
 import IntervalOptions from '../../modules/filters/enums/IntervalOptions.enum';
+import calcRelativeData from './scripts/calcRelativeData';
+import normalizeDashboardData from './scripts/normalizeDashboardData';
 
 const prettifyDate = (date, interval) => {
   if (interval) {
-    const Interval = IntervalOptions.find((Interval) => Interval.value === interval);
+    const Interval = IntervalOptions.find(
+      (Interval) => Interval.value === interval,
+    );
     return Interval.prettify(date);
   }
   return new Date(date).toLocaleString();
@@ -16,11 +17,16 @@ export default {
   computed: {
     chartData() {
       switch (this.dashboard.options.visualization) {
-        case Visualizations.LINE_CHART: return this.lineData();
-        case Visualizations.DOUGHNUT_CHART: return this.doughnutData();
-        case Visualizations.BAR_CHART: return this.barData();
-        case Visualizations.METRIC: return this.metricData();
-        default: return {};
+        case Visualizations.LINE_CHART:
+          return this.lineData();
+        case Visualizations.DOUGHNUT_CHART:
+          return this.doughnutData();
+        case Visualizations.BAR_CHART:
+          return this.barData();
+        case Visualizations.METRIC:
+          return this.metricData();
+        default:
+          return {};
       }
     },
   },
@@ -48,18 +54,21 @@ export default {
         });
       });
       return {
-        labels: Array.from(dataSource.dates.keys())
-          .map((date) => prettifyDate(date, this.$route.query.interval)),
+        labels: Array.from(dataSource.dates.keys()).map((date) =>
+          prettifyDate(date, this.$route.query.interval),
+        ),
         datasets,
       };
     },
     doughnutData() {
       const dataSource = this.normalizeData();
       const sourceDatasets = Array.from(dataSource.datasets);
-      const datasets = [{
-        backgroundColor: this.colors,
-        data: sourceDatasets.map((dataset) => dataset[1].data).flat(),
-      }];
+      const datasets = [
+        {
+          backgroundColor: this.colors,
+          data: sourceDatasets.map((dataset) => dataset[1].data).flat(),
+        },
+      ];
       return {
         labels: sourceDatasets.map((dataset) => dataset[0]),
         datasets,
@@ -77,8 +86,9 @@ export default {
         });
       });
       return {
-        labels: Array.from(dataSource.dates.keys())
-          .map((date) => prettifyDate(date, this.$route.query.interval)),
+        labels: Array.from(dataSource.dates.keys()).map((date) =>
+          prettifyDate(date, this.$route.query.interval),
+        ),
         datasets,
       };
     },

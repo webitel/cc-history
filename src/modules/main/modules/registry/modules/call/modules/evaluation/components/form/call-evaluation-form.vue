@@ -31,8 +31,8 @@
 
 <script>
 
-import { mapActions } from 'vuex';
 import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-form.vue';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'CallEvaluationForm',

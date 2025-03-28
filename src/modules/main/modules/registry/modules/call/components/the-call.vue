@@ -43,6 +43,7 @@
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { storeToRefs } from 'pinia';
 import { mapActions, mapState } from 'vuex';
+
 import CallTabsPathNames from '../../../../../../../app/router/_internals/CallTabsPathNames.enum.js';
 import historyRegistryQueriesMixin from '../../../mixins/historyRegistryQueries.mixin.js';
 import { useRegistryStore } from '../../../store/new/registry.store.js';

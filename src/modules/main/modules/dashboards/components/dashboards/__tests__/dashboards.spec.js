@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import CallsByPeriodDashboard from '../CallsByPeriodDashboard/calls-by-period-dashboard.vue';
 import CallsByPeriodDashboardClass from '../CallsByPeriodDashboard/CallsByPeriodDashboard';
 import CallsCountDashboard from '../CallsCountDashboard/calls-count-dashboard.vue';
@@ -15,7 +16,9 @@ import CallsDurationMetricDashboardClass from '../CallsDurationMetricDashboard/C
 describe('Dashboard components', () => {
   it('renders CallsByPeriod Dashboard', () => {
     const dashboard = new CallsByPeriodDashboardClass();
-    const wrapper = shallowMount(CallsByPeriodDashboard, { props: { dashboard } });
+    const wrapper = shallowMount(CallsByPeriodDashboard, {
+      props: { dashboard },
+    });
     expect(wrapper.exists()).toBe(true);
   });
   it('renders CallsCount Dashboard', () => {
@@ -25,22 +28,30 @@ describe('Dashboard components', () => {
   });
   it('renders CallsCountMetric Dashboard', () => {
     const dashboard = new CallsCountMetricDashboardClass();
-    const wrapper = shallowMount(CallsCountMetricDashboard, { props: { dashboard } });
+    const wrapper = shallowMount(CallsCountMetricDashboard, {
+      props: { dashboard },
+    });
     expect(wrapper.exists()).toBe(true);
   });
   it('renders CallsCountVariable Dashboard', () => {
     const dashboard = new CallsCountVariableDashboardClass();
-    const wrapper = shallowMount(CallsCountVariableDashboard, { props: { dashboard } });
+    const wrapper = shallowMount(CallsCountVariableDashboard, {
+      props: { dashboard },
+    });
     expect(wrapper.exists()).toBe(true);
   });
   it('renders CallsDuration Dashboard', () => {
     const dashboard = new CallsDurationDashboardClass();
-    const wrapper = shallowMount(CallsDurationDashboard, { props: { dashboard } });
+    const wrapper = shallowMount(CallsDurationDashboard, {
+      props: { dashboard },
+    });
     expect(wrapper.exists()).toBe(true);
   });
   it('renders CallsDurationMetric Dashboard', () => {
     const dashboard = new CallsDurationMetricDashboardClass();
-    const wrapper = shallowMount(CallsDurationMetricDashboard, { props: { dashboard } });
+    const wrapper = shallowMount(CallsDurationMetricDashboard, {
+      props: { dashboard },
+    });
     expect(wrapper.exists()).toBe(true);
   });
 });

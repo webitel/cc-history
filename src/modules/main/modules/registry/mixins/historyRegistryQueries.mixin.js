@@ -6,7 +6,9 @@ export default {
       sessionStorage.setItem('historyRegistryQueries', JSON.stringify(queries));
     },
     getHistoryRegistryQueriesFromSessionStorage() {
-      const historyRegistryQueries = sessionStorage.getItem('historyRegistryQueries');
+      const historyRegistryQueries = sessionStorage.getItem(
+        'historyRegistryQueries',
+      );
       const parsed = JSON.parse(historyRegistryQueries);
       return isEmpty(parsed) ? false : parsed;
     },

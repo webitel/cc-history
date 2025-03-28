@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import { createRouter, createWebHistory } from 'vue-router';
 import { createStore } from 'vuex';
+
 import openedHistoryCall from '../../modules/call/store/call';
 import registry from '../../store/registry';
 import HistoryRegistry from '../history-registry.vue';

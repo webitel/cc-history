@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import SttDownloadAction from '../stt-download-action.vue';
 
 describe('SttDownloadAction', () => {

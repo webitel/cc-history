@@ -1,10 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
-import BarChart
-  from '../bar-chart.vue';
-import DoughnutChart
-  from '../doughnut-chart.vue';
-import LineChart
-  from '../line-chart.vue';
+
+import BarChart from '../bar-chart.vue';
+import DoughnutChart from '../doughnut-chart.vue';
+import LineChart from '../line-chart.vue';
 
 const chartData = { datasets: [], labels: [] };
 describe('Charts', () => {

@@ -1,10 +1,11 @@
 import { snakeToCamel } from '@webitel/ui-sdk/src/scripts/caseConverters';
-import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
-import Visualizations from '../enums/Visualizations.enum';
+
 import {
   AggregationParams,
   VisualizationParams,
 } from '../../../api/params/DashboardParams.enum';
+import AbstractDashboard from '../AbstractDashboard/AbstractDashboard';
+import Visualizations from '../enums/Visualizations.enum';
 
 export default class CallsCountVariableDashboard extends AbstractDashboard {
   static type = 'callsCountVariable';
@@ -20,7 +21,10 @@ export default class CallsCountVariableDashboard extends AbstractDashboard {
     variable: '',
   };
 
-  visualizationOptions = [Visualizations.DOUGHNUT_CHART, Visualizations.BAR_CHART];
+  visualizationOptions = [
+    Visualizations.DOUGHNUT_CHART,
+    Visualizations.BAR_CHART,
+  ];
 
   constructor(snapshot) {
     super();

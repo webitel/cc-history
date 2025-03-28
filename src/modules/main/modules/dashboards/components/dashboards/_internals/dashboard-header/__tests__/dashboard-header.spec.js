@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import DashboardHeader from '../dashboard-header.vue';
 
 describe('Dashboard header', () => {
@@ -15,15 +16,19 @@ describe('Dashboard header', () => {
 
   it('emits edit event at icon btn click', () => {
     const wrapper = shallowMount(DashboardHeader);
-    wrapper.findAllComponents('.dashboard-header__actions-wrapper__action')
-    .at(0).vm.$emit('click');
+    wrapper
+      .findAllComponents('.dashboard-header__actions-wrapper__action')
+      .at(0)
+      .vm.$emit('click');
     expect(wrapper.emitted().edit.pop()).toBeTruthy();
   });
 
   it('emits delete event at icon btn click', () => {
     const wrapper = shallowMount(DashboardHeader);
-    wrapper.findAllComponents('.dashboard-header__actions-wrapper__action')
-    .at(1).vm.$emit('click');
+    wrapper
+      .findAllComponents('.dashboard-header__actions-wrapper__action')
+      .at(1)
+      .vm.$emit('click');
     expect(wrapper.emitted().delete.pop()).toBeTruthy();
   });
 });

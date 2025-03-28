@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+
 import HistoryDeleteAction from '../history-delete-action.vue';
 
 let selected = [];

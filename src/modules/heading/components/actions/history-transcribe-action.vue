@@ -11,6 +11,7 @@
 
 <script>
 import { isEmpty } from '@webitel/ui-sdk/scripts';
+
 import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/callTranscript.js';
 import historyActionMixin from '../../mixins/historyActionMixin';
 

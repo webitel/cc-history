@@ -1,11 +1,12 @@
 <template>
-  <Doughnut
+  <doughnut
     :chart-data="chartData"
   />
 </template>
 
 <script>
 import 'chart.js/auto';
+
 import { Doughnut } from 'vue-chartjs';
 
 export default {

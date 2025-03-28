@@ -39,15 +39,16 @@
 </template>
 
 <script lang="ts" setup>
+import {storeToRefs} from "pinia";
+import {computed} from "vue";
+
+import DynamicFilterSearchWrapper
+  from "../../filters/components/filter-value-components/dynamic-filter-search-wrapper.vue";
 import {useRegistryStore} from "../../main/modules/registry/store/new/registry.store.ts";
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
 import HistoryExportAction from './actions/history-export-action.vue';
 import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
-import DynamicFilterSearchWrapper
-  from "../../filters/components/filter-value-components/dynamic-filter-search-wrapper.vue";
-import {storeToRefs} from "pinia";
-import {computed} from "vue";
 
 const registryStore = useRegistryStore();
 

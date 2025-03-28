@@ -195,12 +195,13 @@ import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
-import Wavesurfer from './wavesurfer.vue';
+
 import generateMediaURL from '../../../../../mixins/media/scripts/generateMediaURL';
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import regionsMixin from '../mixins/regionsMixin';
 import soundFiltersMixin from '../mixins/soundFiltersMixin';
 import CallCommentForm from './call-wave-comment-form.vue';
+import Wavesurfer from './wavesurfer.vue';
 
 const cursorOptions = {
   showTime: true,

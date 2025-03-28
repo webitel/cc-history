@@ -13,8 +13,8 @@ import DynamicFilterSearch from '@webitel/ui-sdk/src/modules/Filters/v2/filters/
 import { storeToRefs } from 'pinia';
 import { ref, watch, WatchHandle } from 'vue';
 
-import { SearchMode, SearchModeType } from '../../enums/SearchMode.ts';
 import {useRegistryStore} from "../../../main/modules/registry/store/new/registry.store.ts";
+import { SearchMode, SearchModeType } from '../../enums/SearchMode.ts';
 
 const tableStore = useRegistryStore();
 

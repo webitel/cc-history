@@ -1,7 +1,8 @@
-import { shallowMount, mount } from '@vue/test-utils';
+import { mount,shallowMount } from '@vue/test-utils';
 import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
-import CallNoTranscriptSection from '../call-no-transcript-section.vue';
+
 import CallTranscript from '../../../api/callTranscript.js';
+import CallNoTranscriptSection from '../call-no-transcript-section.vue';
 
 let call;
 let file;
@@ -47,16 +48,17 @@ describe('CallNoTranscriptSection', () => {
     const callId = 'jest';
     call.id = callId;
 
-    vi.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
-    .mockImplementationOnce(() => {});
+    vi.spyOn(
+      CallNoTranscriptSection.methods,
+      'refreshCall',
+    ).mockImplementationOnce(() => {});
 
     const wrapper = mount(CallNoTranscriptSection, {
       props,
       computed,
     });
     const mock = vi.fn();
-    vi.spyOn(CallTranscript, 'create')
-    .mockImplementationOnce(mock);
+    vi.spyOn(CallTranscript, 'create').mockImplementationOnce(mock);
 
     const btn = wrapper.findComponent({ name: 'wt-button' });
     expect(btn.text().includes('Transcribe')).toBe(true);
@@ -70,10 +72,14 @@ describe('CallNoTranscriptSection', () => {
     call.id = callId;
 
     file.id = 1;
-    call.filesJob = [{ fileId: 1, state: HistoryFileJobHistoryFileJobState.Error }];
+    call.filesJob = [
+      { fileId: 1, state: HistoryFileJobHistoryFileJobState.Error },
+    ];
 
-    vi.spyOn(CallNoTranscriptSection.methods, 'refreshCall')
-    .mockImplementationOnce(() => {});
+    vi.spyOn(
+      CallNoTranscriptSection.methods,
+      'refreshCall',
+    ).mockImplementationOnce(() => {});
 
     const wrapper = mount(CallNoTranscriptSection, {
       props,
@@ -81,8 +87,7 @@ describe('CallNoTranscriptSection', () => {
     });
 
     const mock = vi.fn();
-    vi.spyOn(CallTranscript, 'create')
-    .mockImplementationOnce(mock);
+    vi.spyOn(CallTranscript, 'create').mockImplementationOnce(mock);
 
     const btn = wrapper.findComponent({ name: 'wt-button' });
     expect(btn.text().includes('Retry')).toBe(true);

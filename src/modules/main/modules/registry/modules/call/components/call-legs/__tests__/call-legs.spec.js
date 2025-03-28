@@ -1,9 +1,10 @@
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from 'vuex';
-import callLegs from '../call-legs.vue';
+
+import RegistryAPIRepository from '../../../../../api/RegistryAPIRepository';
 import registry from '../../../../../store/registry';
 import call from '../../../store/call';
-import RegistryAPIRepository from '../../../../../api/RegistryAPIRepository';
+import callLegs from '../call-legs.vue';
 
 const mainCall = { id: '1', transferTo: '2' };
 const legsData = [
@@ -12,7 +13,9 @@ const legsData = [
 ];
 
 vi.mock('../../../../../api/RegistryAPIRepository');
-RegistryAPIRepository.getHistory.mockImplementation(() => Promise.resolve({ items: legsData }));
+RegistryAPIRepository.getHistory.mockImplementation(() =>
+  Promise.resolve({ items: legsData }),
+);
 
 const props = {
   call: mainCall,
