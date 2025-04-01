@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts" setup>
-import { TableFiltersPanelComponent as TableFiltersPanel } from '@webitel/ui-datalist/filters';
+import {TableFiltersPanelComponent as TableFiltersPanel} from '@webitel/ui-datalist/filters';
 import {
   ApplyPresetAction,
   createFilterPresetsStore,
@@ -16,7 +16,10 @@ import DynamicFilterAddAction
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-add-action.vue';
 import DynamicFilterPanelWrapper
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-panel-wrapper.vue';
-import {FilterOptionToPreviewComponentMap, FilterOptionToValueComponentMap } from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/filter-options/index';
+import {
+  FilterOptionToPreviewComponentMap,
+  FilterOptionToValueComponentMap
+} from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/filter-options/index';
 import DynamicFilterPreview
   from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/preview/dynamic-filter-preview.vue';
 import {FilterOption} from "@webitel/ui-sdk/src/modules/Filters/v2/filters/enums/FilterOption.ts";
@@ -30,10 +33,10 @@ import {storeToRefs} from 'pinia';
 import {computed, type Ref} from 'vue';
 import {useI18n} from "vue-i18n";
 
-import { namespace } from "../../main/modules/registry/namespace.ts";
+import {namespace} from "../../main/modules/registry/namespace.ts";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
 import {SearchMode} from '../enums/SearchMode.ts';
-import { filtersOptions } from "./filters-options";
+import {filtersOptions} from "./filters-options";
 
 const emit = defineEmits<{
   hide: [],
