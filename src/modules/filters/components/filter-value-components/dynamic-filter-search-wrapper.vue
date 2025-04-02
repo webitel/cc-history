@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import DynamicFilterSearch from '@webitel/ui-sdk/src/modules/Filters/v2/filters/components/dynamic-filter-search.vue';
+import {DynamicFilterSearchComponent as DynamicFilterSearch} from '@webitel/ui-datalist/filters';
 import { storeToRefs } from 'pinia';
 import { ref, watch, WatchHandle } from 'vue';
 
