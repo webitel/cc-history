@@ -1,12 +1,11 @@
-import { getDefaultGetListResponse } from '@webitel/ui-sdk/src/api/defaults/index.js';
-import applyTransform from '@webitel/ui-sdk/src/api/transformers/applyTransform';
-import {
+import { getDefaultGetListResponse } from '@webitel/ui-sdk/api/defaults/index';
+import applyTransform, {
   merge,
   notify,
   snakeToCamel,
-} from '@webitel/ui-sdk/src/api/transformers/index';
-import * as converters from '@webitel/ui-sdk/src/scripts/caseConverters';
-import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+} from '@webitel/ui-sdk/api/transformers/index';
+import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
+import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
 import { startOfToday } from 'date-fns';
 import { CallServiceApiFactory } from 'webitel-sdk';
 
@@ -105,8 +104,7 @@ const getList =
     const {
       page,
       size,
-      createdAtFrom,
-      createdAtTo,
+      createdAt,
       user,
       rated,
       ratedBy,
@@ -154,18 +152,29 @@ const getList =
           };
         }, {});
 
+      const setupCreatedAt = (createdAt) => {
+        if (typeof createdAt === 'string') {
+          return {
+            from: normalizeToTimestamp(createdAt, { round: 'start' }),
+            to: normalizeToTimestamp(createdAt, { round: 'end' }),
+          };
+        }
+
+        if (!createdAt) {
+          return {
+            from: normalizeToTimestamp(startOfToday().getTime()),
+          };
+        }
+
+        return createdAt;
+      };
+
       const response = await callService.searchHistoryCallPost({
         page,
         size,
         sort,
         fields: ['id', 'files', 'files_job', 'transcripts', ...fields],
-        created_at: {
-          from:
-            createdAtFrom != null
-              ? createdAtFrom
-              : startOfToday().getTime() /* https://webitel.atlassian.net/browse/WTEL-6308?focusedCommentId=657415 */,
-          to: createdAtTo,
-        },
+        created_at: setupCreatedAt(createdAt),
         user_id: user,
         agent_id: agent,
         queue_id: queue,
