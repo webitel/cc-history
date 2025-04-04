@@ -1,11 +1,13 @@
 import { FilterOption } from '@webitel/ui-datalist/filters';
 
 export const filtersOptions: FilterOption[] = [
+  {
+    value: FilterOption.CreatedAt,
+    notDeletable: true,
+  },
   FilterOption.Agent,
   FilterOption.AmdResult,
   FilterOption.Contact,
-  FilterOption.CreatedAtFrom,
-  FilterOption.CreatedAtTo,
   FilterOption.Direction,
   FilterOption.Rated,
   FilterOption.Gateway,

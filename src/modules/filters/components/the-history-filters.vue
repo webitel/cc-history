@@ -14,12 +14,15 @@
 </template>
 
 <script lang="ts" setup>
-import {TableFiltersPanelComponent as TableFiltersPanel} from '@webitel/ui-datalist/filters';
+import {FilterOption,TableFiltersPanelComponent as TableFiltersPanel} from '@webitel/ui-datalist/filters';
+import {RelativeDatetimeValue} from "@webitel/ui-sdk/enums";
 import {storeToRefs} from 'pinia';
 
 import {namespace} from "../../main/modules/registry/namespace.ts";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
-import {useRegistryFilterPresetsStore} from "../modules/presets/store/useRegistryFilterPresetsStore.ts";
+import {
+  useRegistryFilterPresetsStore
+} from "../modules/presets/store/useRegistryFilterPresetsStore.ts";
 import {filtersOptions} from "./filters-options";
 
 const emit = defineEmits<{
@@ -35,12 +38,34 @@ const {
   deleteFilter,
 } = tableStore;
 
+const initializeDefaultCreatedAtFilter = () => {
+  if (filtersManager.value.hasFilter(FilterOption.CreatedAt)) return;
+
+  addFilter({
+    name: FilterOption.CreatedAt,
+    value: RelativeDatetimeValue.Today,
+  });
+};
+
+initializeDefaultCreatedAtFilter();
+
 const resetFilters = () => {
-  filtersManager.value.reset();
+  filtersManager.value.reset({
+    exclude: filtersOptions.reduce((excludes, opt) => {
+      if (opt?.notDeletable) {
+        return [
+          ...excludes,
+          opt.value,
+        ];
+      }
+
+      return excludes;
+    }),
+  }, []);
 };
 
 const applyPreset = (snapshot: string) => {
-  filtersManager.value.reset();
+  resetFilters();
   filtersManager.value.fromString(snapshot);
 };
 </script>
