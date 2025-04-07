@@ -5,7 +5,11 @@
     </template>
     <template #actions>
       <div class="the-history-heading-actions">
-        <dynamic-filter-search-wrapper />
+        <filter-search
+          :filters-manager="filtersManager"
+          :is-filters-restoring="isFiltersRestoring"
+          :search-mode-options=""
+        />
 
         <history-transcribe-action
           :selected="selected"
@@ -39,11 +43,10 @@
 </template>
 
 <script lang="ts" setup>
+import {DynamicFilterSearchComponent as FilterSearch} from '@webitel/ui-datalist/filters';
 import {storeToRefs} from "pinia";
 import {computed} from "vue";
 
-import DynamicFilterSearchWrapper
-  from "../../filters/components/filter-value-components/dynamic-filter-search-wrapper.vue";
 import {useRegistryStore} from "../../main/modules/registry/store/new/registry.store.ts";
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
@@ -57,6 +60,7 @@ const {
   selected,
   fields,
   filtersManager,
+  isFiltersRestoring,
 } = storeToRefs(registryStore);
 
 const {
