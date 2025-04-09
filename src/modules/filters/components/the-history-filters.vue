@@ -60,8 +60,8 @@ const resetFilters = () => {
       }
 
       return excludes;
-    }),
-  }, []);
+    }, []),
+  });
 };
 
 const applyPreset = (snapshot: string) => {
