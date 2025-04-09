@@ -20,10 +20,10 @@ import {storeToRefs} from 'pinia';
 
 import {namespace} from "../../main/modules/registry/namespace.ts";
 import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
+import {filtersOptions} from "../configs/filtersOptions.ts";
 import {
   useRegistryFilterPresetsStore
 } from "../modules/presets/store/useRegistryFilterPresetsStore.ts";
-import {filtersOptions} from "./filters-options";
 
 const emit = defineEmits<{
   hide: [],
