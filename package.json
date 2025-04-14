@@ -10,10 +10,6 @@
     "test:unit": "vitest",
     "utils:i": "npm install"
   },
-  "workspaces": [
-    "../webitel-ui-sdk",
-    "../webitel-ui-sdk/packages/ui-datalist"
-  ],
   "type": "module",
   "dependencies": {
     "@vue/compat": "^3.5.1",
