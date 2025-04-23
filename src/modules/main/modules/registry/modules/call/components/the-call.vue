@@ -31,6 +31,7 @@
         />
         <component
           :is="currentTab.value"
+          v-if="mainCall"
           :call="mainCall"
           :namespace="namespace"
         />

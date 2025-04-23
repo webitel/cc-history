@@ -237,7 +237,6 @@ export default {
   async created() {
     // [https://webitel.atlassian.net/browse/WTEL-6468]
     // Initialize field value to pass a new value to the loadList method, saved from the main table history
-    await this.initialize();
     this.loadList({ fields: this.fields });
   },
 };

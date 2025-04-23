@@ -63,8 +63,9 @@ const getters = {
   GET_REQUEST_PARAMS: (state, getters) => ({
     fields: getters.DATA_FIELDS,
     dependencyId: state.mainCallId,
-    from: 0, // get All
-    to: 0,
+    createdAt: {
+      from: 0, // get all
+    },
     size: 100,
     skipParent: false,
   }),
@@ -73,9 +74,10 @@ const getters = {
     (state, getters) =>
     (params = {}) => ({
       fields: [...REQUIRED_MAIN_CALL_FIELDS, ...getters.DATA_FIELDS],
-      createdAtFrom: 0, // https://webitel.atlassian.net/browse/WTEL-6386
-      from: 0, // get All
-      to: Date.now(),
+      createdAt: {
+        // https://webitel.atlassian.net/browse/WTEL-6386
+        from: 0, // get all
+      },
       id: [state.mainCallId],
       ...params,
     }),
@@ -126,8 +128,6 @@ const actions = {
         // so that player would initialize correctly
         await context.dispatch('INITIALIZE_RECORDING_FILE');
       }
-    } catch (err) {
-      throw err;
     } finally {
       context.commit('SET_LOADING', false);
     }
