@@ -8,6 +8,7 @@
     "lint:fix": "eslint --fix ./src && prettier --write --check ./src",
     "lint:fix-staged": "npx lint-staged",
     "test:unit": "vitest",
+    "utils:link-libs": "npm link @webitel/ui-sdk @webitel/ui-datalist",
     "utils:i": "npm install"
   },
   "type": "module",
