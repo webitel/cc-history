@@ -1,10 +1,14 @@
-import { FilterOption } from '@webitel/ui-datalist/filters';
+import {
+  createFilterConfig,
+  FilterConfigDefinition,
+  FilterOption,
+} from '@webitel/ui-datalist/filters';
 
-export const filtersOptions: FilterOption[] = [
-  {
-    value: FilterOption.CreatedAt,
+export const filtersOptions: FilterConfigDefinition[] = [
+  createFilterConfig({
+    name: FilterOption.CreatedAt,
     notDeletable: true,
-  },
+  }),
   FilterOption.Agent,
   FilterOption.AmdResult,
   FilterOption.Contact,
