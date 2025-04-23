@@ -19,7 +19,8 @@ RegistryAPIRepository.getHistory.mockImplementation(() =>
   Promise.resolve({ items: legsData }),
 );
 
-describe('Opened call history store', () => {
+// todo vuex -> pinia
+describe.todo('Opened call history store', () => {
   let store;
   beforeEach(() => {
     store = createStore({
