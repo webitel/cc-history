@@ -119,6 +119,25 @@ const getResult = async (id) => {
   }
 };
 
+const deleteResult = async (id) => {
+  try {
+    const response = await auditService.deleteAuditRate(id);
+    return applyTransform(response.data, [snakeToCamel(), responseItemHandler]);
+  } catch (err) {
+    throw applyTransform(err, [notify]);
+  }
+};
+
+const updateResult = async (id, itemInstance) => {
+  const body = applyTransform(itemInstance, [camelToSnake()]);
+  try {
+    const response = await auditService.updateAuditRate(id, body);
+    return applyTransform(response.data, [snakeToCamel(), responseItemHandler]);
+  } catch (err) {
+    throw applyTransform(err, [notify]);
+  }
+}
+
 const getAuditLookup = (params) =>
   getScorecards({
     ...params,
@@ -130,6 +149,8 @@ const CallEvaluationAPI = {
   get: getAuditForm,
   sendAuditResult,
   getResult,
+  deleteResult,
+  updateResult
 };
 
 export default CallEvaluationAPI;

@@ -1,4 +1,5 @@
-import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
+import BaseStoreModule
+  from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
 
 import CallEvaluationAPI from '../api/CallEvaluationAPI';
 
@@ -21,6 +22,15 @@ const actions = {
     context.commit('SET_LOADING', true);
     try {
       const result = await CallEvaluationAPI.getResult(id);
+      context.commit('SET_RESULT', result);
+    } finally {
+      context.commit('SET_LOADING', false);
+    }
+  },
+  UPDATE_EVALUATION: async (context, { id, evaluation }) => {
+    context.commit('SET_LOADING', true);
+    try {
+      const result = await CallEvaluationAPI.updateResult(id, evaluation);
       context.commit('SET_RESULT', result);
     } finally {
       context.commit('SET_LOADING', false);

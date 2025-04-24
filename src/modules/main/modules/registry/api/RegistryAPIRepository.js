@@ -162,7 +162,7 @@ const getList =
 
         if (!createdAt) {
           return {
-            from: normalizeToTimestamp(startOfToday().getTime()),
+            from: 0,
           };
         }
 

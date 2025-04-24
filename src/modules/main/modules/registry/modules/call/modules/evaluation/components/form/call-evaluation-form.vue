@@ -4,6 +4,7 @@
       v-model:result="auditResult"
       class="call-evaluation-form__audit-form"
       mode="fill"
+      :show-question-comment="editEvaluationMode"
       :questions="scorecard.questions"
       @update:validation="invalid = $event.invalid"
     />
@@ -52,20 +53,48 @@ export default {
       type: String,
       required: true,
     },
+    editEvaluationMode: {
+      type: Boolean,
+      default: false,
+    },
+    result: {
+      type: Object,
+      default: () => ({}),
+    },
   },
-  data: () => ({
-    auditResult: [],
-    comment: '',
-    invalid: true,
-  }),
+  emits: ['update-evaluation', 'close'],
+  data() {
+    return {
+      auditResult: this.result?.answers?.length
+        ? [...this.result.answers]         // → preload answers
+        : [],
+      comment: this.result?.comment || '', // → preload overall comment
+      invalid: true,
+    };
+  },
+
+  watch: {
+    result: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        if (val?.answers?.length) this.auditResult = [...val.answers];
+        this.comment = val?.comment || '';
+      },
+    },
+  },
+
   methods: {
     ...mapActions({
       sendEvaluation(dispatch, payload) {
         return dispatch(`${this.namespace}/SEND_EVALUATION`, payload);
       },
+      updateEvaluation(dispatch, payload) {
+        return dispatch(`${this.namespace}/UPDATE_EVALUATION`, payload);
+      },
     }),
-    saveEvaluation() {
-      const result = {
+    async saveEvaluation() {
+      const evaluation = {
         answers: this.auditResult,
         callId: this.callId,
         comment: this.comment,
@@ -74,7 +103,20 @@ export default {
           name: this.scorecard.name,
         },
       };
-      this.sendEvaluation(result);
+
+      if (this.result.id) {
+        // NOTE: this order of emit is important to properly change editEvaluationMode variable in call evaluation section
+        this.$emit('update-evaluation');
+        await this.updateEvaluation({
+          id: this.result.id,
+          evaluation: {
+            answers: this.auditResult,
+            comment: this.comment,
+          }
+        });
+      } else {
+        await this.sendEvaluation(evaluation);
+      }
     },
   },
 };

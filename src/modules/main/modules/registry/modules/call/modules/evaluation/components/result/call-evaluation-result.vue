@@ -19,6 +19,23 @@
           color="disabled"
         />
       </div>
+      <div class="call-evaluation-result__rating-editing">
+        <wt-button
+          icon="edit"
+          color="secondary"
+          @click="editCallEvaluationResult"
+        >
+          {{ $t('reusable.edit') }}
+        </wt-button>
+        <wt-button
+          icon="edit"
+          color="error"
+          @click="deleteCallEvaluationResult"
+        >
+          {{ $t('reusable.delete') }}
+        </wt-button>
+      </div>
+
     </div>
     <call-evaluation-answers :result="result" />
   </section>
@@ -43,6 +60,7 @@ export default {
       required: true,
     },
   },
+  emits: ['editCallEvaluationResult', 'deleteCallEvaluationResult'],
   computed: {
     scorecardInfo() {
       return [
@@ -51,6 +69,14 @@ export default {
         { title: this.$t('fields.date'), value: new Date(+this.result.createdAt).toLocaleDateString() },
         { title: this.$t('registry.call.evaluation.scorecard'), value: this.result.form.name },
       ];
+    },
+  },
+  methods: {
+    editCallEvaluationResult() {
+      this.$emit('editCallEvaluationResult');
+    },
+    deleteCallEvaluationResult() {
+      this.$emit('deleteCallEvaluationResult');
     },
   },
 };
