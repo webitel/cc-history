@@ -73,24 +73,20 @@ export default {
       },
     }),
     resultWithAnswerNames() {
-      // Safeguard against a missing or still-loading result
       if (!this.result || !Array.isArray(this.result.questions)) return this.result;
 
       const answersWithNames = this.result.answers.map((answer, idx) => {
         const question = this.result.questions[idx];
 
-        // Fallbacks in case data are out of sync
         if (!question || !Array.isArray(question.options)) {
           return { ...answer, name: null };
         }
 
-        // Match by score first; if scores are not unique, fall back to index
         const matchedOption =
           question.options.find((o) => o.score === answer.score) ??
           question.options[idx];
 
         return {
-          // keep anything else you still need (updatedAt, updatedBy, …)
           score: answer.score,
           name: matchedOption ? matchedOption.name : null,
         };

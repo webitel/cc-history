@@ -66,9 +66,9 @@ export default {
   data() {
     return {
       auditResult: this.result?.answers?.length
-        ? [...this.result.answers]         // → preload answers
+        ? [...this.result.answers]
         : [],
-      comment: this.result?.comment || '', // → preload overall comment
+      comment: this.result?.comment || '',
       invalid: true,
     };
   },
