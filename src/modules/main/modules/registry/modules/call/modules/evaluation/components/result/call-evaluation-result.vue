@@ -47,7 +47,7 @@ export default {
     scorecardInfo() {
       return [
         { title: this.$t('fields.ratedBy'), value: this.result.createdBy.name },
-        { title: this.$t('fields.agent'), value: this.result.ratedUser.name },
+        { title: this.$t('fields.agent'), value: this.result.ratedUser?.name },
         { title: this.$t('fields.date'), value: new Date(+this.result.createdAt).toLocaleDateString() },
         { title: this.$t('registry.call.evaluation.scorecard'), value: this.result.form.name },
       ];
