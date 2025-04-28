@@ -8,8 +8,8 @@
     "lint:fix": "eslint --fix ./src && prettier --write --check ./src",
     "lint:fix-staged": "npx lint-staged",
     "test:unit": "vitest",
-    "utils:link-libs": "npm link @webitel/ui-sdk @webitel/ui-datalist",
-    "utils:i": "npm install"
+    "utils:i": "npm install --install-links",
+    "utils:link-libs": "npm link @webitel/ui-sdk @webitel/ui-datalist"
   },
   "type": "module",
   "dependencies": {
@@ -17,8 +17,8 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@webitel/styleguide": "^24.12.20",
-    "@webitel/ui-datalist": "^1.0.17",
-    "@webitel/ui-sdk": "^25.4.71",
+    "@webitel/ui-datalist": "^1.0.25",
+    "@webitel/ui-sdk": "^25.4.77",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "deep-copy": "^1.4.2",
