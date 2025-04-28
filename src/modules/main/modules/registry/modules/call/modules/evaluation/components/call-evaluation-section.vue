@@ -12,7 +12,7 @@
         @rate="toggleScorecardsPopup"
       />
       <call-evaluation-form
-        v-if="scorecard.questions && !result.id"
+        v-if="scorecard.questions"
         :scorecard="scorecard"
         :call-id="call.id"
         :namespace="namespace"
@@ -30,6 +30,7 @@
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
 
+import CallEvaluationAPI from '../api/CallEvaluationAPI';
 import CallEvaluationForm from './form/call-evaluation-form.vue';
 import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
 import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
@@ -82,8 +83,14 @@ export default {
       this.isScorecardSelectOpened = !this.isScorecardSelectOpened;
     },
   },
-  mounted() {
-    if (this.call.rateId) this.loadResult(this.call.rateId);
+  async mounted() {
+    if (this.call.rateId) {
+      await this.loadResult(this.call.rateId);
+      const scorecard = await CallEvaluationAPI.get({
+        itemId: this.result.form.id,
+      });
+      this.scorecard = scorecard;
+    }
   },
 };
 </script>

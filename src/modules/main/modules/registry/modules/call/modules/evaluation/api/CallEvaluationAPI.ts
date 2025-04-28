@@ -17,11 +17,7 @@ import {
 import instance from '../../../../../../../../../app/api/instance';
 import configuration from '../../../../../../../../../app/api/openAPIConfig';
 
-const auditService = new AuditFormServiceApiFactory(
-  configuration,
-  '',
-  instance,
-);
+const auditService = AuditFormServiceApiFactory(configuration, '', instance);
 
 const questionDefaultValuesHandler = (questions) =>
   questions.map((question) => {
