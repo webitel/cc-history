@@ -5,151 +5,94 @@
       @change="setScorecard"
       @close="toggleScorecardsPopup"
     />
-
     <wt-loader v-show="isLoading" />
-
-    <template v-if="!isLoading">
+    <div v-if="!isLoading">
       <call-no-evaluation
-        v-if="hasNoEvaluation"
-        :has-audit-form-read-access="hasAuditFormReadAccess"
-        :has-rating-create-access="hasRatingCreateAccess"
+        v-if="!scorecard.questions && !result.id"
         @rate="toggleScorecardsPopup"
       />
       <call-evaluation-form
-        v-if="showEvaluationForm"
+        v-if="scorecard.questions"
         :scorecard="scorecard"
         :call-id="call.id"
         :namespace="namespace"
-        @result:save="saveEvaluationResult"
         @close="closeEvaluationForm"
       />
       <call-evaluation-result
-        v-if="showEvaluationResult"
+        v-if="result.id"
         :result="result"
-        @result:edit="startEditingEvaluationResult"
-        @result:delete="deleteEvaluationResult"
       />
-    </template>
+    </div>
   </section>
 </template>
 
-<script lang="ts" setup>
-import { WtObject } from '@webitel/ui-sdk/enums';
+<script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
-import { computed, onMounted, ref } from 'vue';
-import { useStore } from 'vuex';
-import {EngineAuditRate} from "webitel-sdk";
+import { mapActions, mapState } from 'vuex';
 
-import { useUserAccessControl } from '../../../../../../../../../app/composables/useUserAccessControl';
-import AuditFormAPI from '../api/AuditFormAPI.ts';
+import CallEvaluationAPI from '../api/CallEvaluationAPI';
 import CallEvaluationForm from './form/call-evaluation-form.vue';
 import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
 import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
 import CallEvaluationResult from './result/call-evaluation-result.vue';
 
-const props = defineProps({
-  call: {
-    type: Object,
-    required: true,
+export default {
+  name: 'CallEvaluation',
+  components: {
+    CallEvaluationForm,
+    CallEvaluationResult,
+    SelectScorecardPopup,
+    CallNoEvaluation,
   },
-  namespace: {
-    type: String,
+  props: {
+    call: {
+      type: Object,
+      required: true,
+    },
+    namespace: {
+      type: String,
+    },
   },
-});
-
-const isScorecardSelectOpened = ref(false);
-const scorecard = ref({});
-
-const isEditingEvaluationResult = ref(false);
-
-const {
-  disableUserInput: disableRating,
-  hasCreateAccess: hasRatingCreateAccess,
-} = useUserAccessControl(WtObject.AuditRating);
-
-const {
-  hasReadAccess: hasAuditFormReadAccess,
-} = useUserAccessControl(WtObject.AuditForm);
-
-const store = useStore();
-
-const isLoading = computed(() => {
-  return getNamespacedState(store.state, props.namespace).isEvaluationLoading;
-});
-
-const result = computed(() => {
-  return getNamespacedState(store.state, props.namespace).result;
-});
-
-const hasNoEvaluation = computed(() => {
-  return !result.value.id && !scorecard.value.questions;
-});
-
-const showEvaluationResult = computed(() => {
-  return result.value.id && !isEditingEvaluationResult.value;
-});
-
-const showEvaluationForm = computed(() => {
-  // nema ruchok – nema pechen'ki
-  if (!scorecard.value.questions || disableRating.value) {
-    return false;
-  }
-
-  return isEditingEvaluationResult.value /* update */ || !result.value.id /* create */;
-});
-
-const loadEvaluationResult = async (payload) => {
-  await store.dispatch(`${props.namespace}/GET_EVALUATION`, payload);
+  data: () => ({
+    isScorecardSelectOpened: false,
+    scorecard: {},
+  }),
+  computed: {
+    ...mapState({
+        isLoading(state) {
+          return getNamespacedState(state, this.namespace).isEvaluationLoading;
+        },
+        result(state) {
+          return getNamespacedState(state, this.namespace).result;
+        },
+      }),
+  },
+  methods: {
+    ...mapActions({
+      loadResult(dispatch, payload) {
+        return dispatch(`${this.namespace}/GET_EVALUATION`, payload);
+      },
+    }),
+    setScorecard(value) {
+      this.scorecard = value;
+    },
+    closeEvaluationForm() {
+      this.scorecard = {};
+    },
+    toggleScorecardsPopup() {
+      this.isScorecardSelectOpened = !this.isScorecardSelectOpened;
+    },
+  },
+  async mounted() {
+    if (this.call.rateId) {
+      await this.loadResult(this.call.rateId);
+      const scorecard = await CallEvaluationAPI.get({
+        itemId: this.result.form.id,
+      });
+      this.scorecard = scorecard;
+    }
+  },
 };
-
-const addEvaluationResult = async (evaluationResult: EngineAuditRate) => {
-  await store.dispatch(`${props.namespace}/ADD_EVALUATION`, evaluationResult);
-};
-
-const updateEvaluationResult = async (evaluationResult: EngineAuditRate) => {
-  await store.dispatch(`${props.namespace}/UPDATE_EVALUATION`, evaluationResult);
-};
-
-const deleteEvaluationResult = async () => {
-  await store.dispatch(`${props.namespace}/DELETE_EVALUATION`, props.call.rateId);
-  closeEvaluationForm(); // reset scorecard
-};
-
-const saveEvaluationResult = async (evaluationResult: EngineAuditRate) => {
-  if (result.value.id) {
-    await updateEvaluationResult(evaluationResult);
-    isEditingEvaluationResult.value = false;
-  } else {
-    await addEvaluationResult(evaluationResult);
-  }
-};
-
-const setScorecard = (value) => {
-  scorecard.value = value;
-};
-
-const closeEvaluationForm = () => {
-  isEditingEvaluationResult.value = false;
-  scorecard.value = {};
-};
-
-const toggleScorecardsPopup = () => {
-  isScorecardSelectOpened.value = !isScorecardSelectOpened.value;
-};
-
-const startEditingEvaluationResult = () => {
-  isEditingEvaluationResult.value = true;
-};
-
-onMounted(async () => {
-  if (props.call.rateId) {
-    await loadEvaluationResult(props.call.rateId);
-    const fetchedScorecard = await AuditFormAPI.get({
-      itemId: result.value.form.id,
-    });
-    scorecard.value = fetchedScorecard;
-  }
-});
 </script>
 
 <style lang="scss" scoped>

@@ -2,12 +2,17 @@
   <div class="call-evaluation-form">
     <audit-form
       v-model:answers="localAnswers"
-      v-model:result-comment="comment"
       class="call-evaluation-form__audit-form"
       mode="fill"
       :questions="questions"
-      @save:evaluation="saveEvaluation"
-      @cancel:evaluation="cancelEvaluation"
+      :evaluation-result="result"
+      @save="saveEvaluation"
+      @cancel="cancelEvaluation"
+    />
+    <wt-textarea
+      v-model="comment"
+      class="call-evaluation-form__comment"
+      :label="$t('registry.call.evaluation.comment')"
     />
   </div>
 </template>
@@ -18,7 +23,6 @@ import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedS
 import deepCopy from "deep-copy";
 import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { EngineAuditRate } from 'webitel-sdk';
 
 const props = defineProps({
   scorecard: {
@@ -36,8 +40,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  close: [];
-  'result:save': [EngineAuditRate];
+  close: [],
 }>();
 
 const store = useStore();
@@ -57,6 +60,10 @@ const cancelEvaluation = () => {
   emit('close');
 };
 
+const sendEvaluation = (payload) => {
+  store.dispatch(`${props.namespace}/SEND_EVALUATION`, payload);
+};
+
 const saveEvaluation = () => {
   const evaluationResult = {
     answers: localAnswers.value,
@@ -67,8 +74,7 @@ const saveEvaluation = () => {
       name: props.scorecard.name,
     },
   };
-
-  emit('result:save', evaluationResult);
+  sendEvaluation(evaluationResult);
 };
 
 watch(
