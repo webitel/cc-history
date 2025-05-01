@@ -148,10 +148,10 @@
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import { mapActions, mapState } from 'vuex';
 
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
-import historyHeadersMixin from '../../../../mixins/historyHeadersMixin.js';
 import { useRegistryStore } from '../../../../store/new/registry.store.js';
 
 export default {
@@ -159,9 +159,6 @@ export default {
   components: {
     TableDirection,
   },
-  mixins: [
-    historyHeadersMixin,
-  ],
   props: {
     call: {
       type: Object,
@@ -176,11 +173,48 @@ export default {
     const tableStore = useRegistryStore();
 
     const {
-      shownHeaders,
-      fields,
+      shownHeaders: registryTableShownHeaders,
+      fields: registryTableFields,
     } = storeToRefs(tableStore);
 
     const { initialize } = tableStore;
+
+    const legsTableSpecificFields = [
+      'id',
+      'parent_id',
+      'transfer_from',
+      'transfer_to',
+    ];
+
+    const legsTableSpecificShownHeaders = [
+      {
+        value: 'transfers',
+        show: true,
+        sort: null,
+        field: 'transfer_from, transfer_to',
+      },
+      {
+        value: 'legMarker',
+        show: true,
+        sort: null,
+        field: '',
+        width: '0',
+      },
+    ];
+
+    const shownHeaders = computed(() => {
+      return [
+        ...registryTableShownHeaders.value,
+        ...legsTableSpecificShownHeaders,
+      ];
+    });
+
+    const fields = computed(() => {
+      return [
+        ...registryTableFields.value,
+        ...legsTableSpecificFields,
+      ];
+    });
 
     return {
       shownHeaders,
@@ -199,10 +233,6 @@ export default {
         return getNamespacedState(state, this.namespace).isLegsDataLoading;
       },
     }),
-
-    headersValue() {
-      return this.$store.getters[`${this.namespace}/HEADERS`];
-    },
 
     tableData() {
       return [
