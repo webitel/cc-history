@@ -5,7 +5,7 @@ import StoreModules from '../../modules/main/enums/StoreModules.enum';
 import dashboards from '../../modules/main/modules/dashboards/store/dashboards';
 // import filters from '../../modules/filters/store/filters';
 import registry from '../../modules/main/modules/registry/store/registry';
-import userinfo from '../../modules/userinfo/store/userinfo';
+import userinfo from '../../modules/userinfo/store/deprecated/userinfo.js';
 
 const state = {
   state: StoreModules.REGISTRY,

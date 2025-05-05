@@ -5,10 +5,12 @@ import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 
 import instance from './app/api/instance';
+import { createUserAccessControl } from './app/composables/useUserAccessControl';
 import i18n from './app/locale/i18n';
 import WebitelUi from './app/plugins/webitel-ui';
 import router from './app/router';
 import store from './app/store';
+import { useUserinfoStore } from './modules/userinfo/store/userinfoStore';
 import App from './the-app.vue';
 
 const setTokenFromUrl = () => {
@@ -38,15 +40,26 @@ const fetchConfig = async () => {
 const initSession = async () =>
   store.dispatch('userinfo/OPEN_SESSION', { instance });
 
-const createVueInstance = () => {
-  const pinia = createPinia();
+const pinia = createPinia();
 
+const initApp = async () => {
   const app = createApp(App)
-    .use(pinia)
-    .use(router)
     .use(store)
     .use(i18n)
+    .use(pinia)
     .use(...WebitelUi);
+
+  const { initialize, routeAccessGuard } = useUserinfoStore();
+  try {
+    await initialize();
+    createUserAccessControl(useUserinfoStore);
+    router.beforeEach(routeAccessGuard);
+  } catch (err) {
+    console.error('Error initializing app', err);
+  }
+
+  app.use(router);
+
   return app;
 };
 
@@ -60,7 +73,7 @@ const createVueInstance = () => {
   } catch (err) {
     console.error('before app mount error:', err);
   } finally {
-    const app = createVueInstance();
+    const app = await initApp();
     app.provide('$config', config);
     app.mount('#app');
   }
