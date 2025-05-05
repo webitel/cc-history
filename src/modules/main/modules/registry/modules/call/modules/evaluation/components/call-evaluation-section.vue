@@ -26,10 +26,11 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
 
+import { useUserAccessControl } from '../../../../../../../../../app/composables/useUserAccessControl';
 import CallEvaluationAPI from '../api/CallEvaluationAPI';
 import CallEvaluationForm from './form/call-evaluation-form.vue';
 import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
@@ -52,6 +53,27 @@ export default {
     namespace: {
       type: String,
     },
+  },
+  setup() {
+    const {
+      // dont forget to rm unused
+    hasReadAccess,
+    hasCreateAccess,
+    hasUpdateAccess,
+    hasDeleteAccess,
+
+    hasSaveActionAccess,
+    disableUserInput,
+    } = useUserAccessControl('rating');
+
+    return {
+      hasReadAccess,
+      hasCreateAccess,
+      hasUpdateAccess,
+      hasDeleteAccess,
+      hasSaveActionAccess,
+      disableUserInput,
+    };
   },
   data: () => ({
     isScorecardSelectOpened: false,
