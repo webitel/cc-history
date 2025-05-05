@@ -31,20 +31,6 @@ const REQUIRED_DATA_FIELDS = [
   'transfer_to',
 ];
 
-const transfersHeader = {
-  value: 'transfers',
-  show: true,
-  sort: null,
-  field: 'transfer_from, transfer_to',
-};
-const transfersLegMarkerHeader = {
-  value: 'legMarker',
-  show: true,
-  sort: null,
-  field: '',
-  width: '0',
-};
-
 const state = {
   mainCallId: null,
   mainCall: {},
@@ -58,8 +44,6 @@ const state = {
 };
 
 const getters = {
-  HEADERS: () => [...headers, transfersHeader, transfersLegMarkerHeader],
-
   GET_REQUEST_PARAMS: (state, getters) => ({
     fields: getters.DATA_FIELDS,
     dependencyId: state.mainCallId,
@@ -101,8 +85,12 @@ const actions = {
   LOAD_LEGS_DATA_LIST: async (context, { fields }) => {
     context.commit('SET_LEGS_DATA_LOADING', true);
     const params = await context.getters.GET_REQUEST_PARAMS;
+
     try {
-      const { items } = await historyAPI.getHistory({ ...params, fields });
+      const { items } = await historyAPI.getHistory({
+        ...params,
+        fields,
+      });
       context.commit('SET_LEGS_DATA_LIST', items);
     } catch (err) {
       context.commit('SET_LEGS_DATA_LIST', []);
@@ -136,13 +124,9 @@ const actions = {
   LOAD_MAIN_CALL_ANNOTATIONS: async (context, query = {}) => {
     const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS(query);
     params.fields = ['annotations'];
-    try {
-      const { items } = await historyAPI.getHistory(params);
-      const { annotations } = items[0];
-      context.commit('SET_MAIN_CALL_ANNOTATIONS', annotations);
-    } catch (err) {
-      throw err;
-    }
+    const { items } = await historyAPI.getHistory(params);
+    const { annotations } = items[0];
+    context.commit('SET_MAIN_CALL_ANNOTATIONS', annotations);
   },
 
   SET_FILE_ID: (context, fileId) => {

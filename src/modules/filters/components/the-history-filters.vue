@@ -55,7 +55,7 @@ const resetFilters = () => {
       if (opt?.notDeletable) {
         return [
           ...excludes,
-          opt.value,
+          opt.name,
         ];
       }
 

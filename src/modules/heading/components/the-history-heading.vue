@@ -64,7 +64,7 @@ const registryStore = useRegistryStore();
 const {
   dataList,
   selected,
-  fields,
+  fields: tableFields,
   filtersManager,
   isFiltersRestoring,
 } = storeToRefs(registryStore);
@@ -75,6 +75,11 @@ const {
   updateFilter,
   deleteFilter,
 } = registryStore;
+
+// [WTEL-6378](https://webitel.atlassian.net/browse/WTEL-6378?focusedCommentId=669091)
+const fields = computed(() => {
+  return ['id'].concat(tableFields.value);
+});
 
 const filters = computed(() => filtersManager.value.getAllValues());
 
