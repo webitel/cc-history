@@ -28,7 +28,6 @@
       </div>
       <div class="call-evaluation-result__actions">
         <wt-button
-          color="secondary"
           @click="emit('result:edit')"
         >{{ t('reusable.edit') }}
         </wt-button>

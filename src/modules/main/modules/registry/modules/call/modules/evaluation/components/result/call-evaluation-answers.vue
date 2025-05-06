@@ -36,7 +36,6 @@
       <audit-form-answer-editing-info
         v-if="thisAnswer?.updatedAt"
         :answer="thisAnswer"
-        collapsible
       />
     </li>
   </ul>
