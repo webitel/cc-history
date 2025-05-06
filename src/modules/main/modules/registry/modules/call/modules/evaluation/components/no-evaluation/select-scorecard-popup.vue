@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import CallEvaluationAPI from '../../api/CallEvaluationAPI';
+import AuditFormAPI from '../../api/AuditFormAPI.js';
 
 const scorecardIdCacheKey = 'history-last-used-scorecard-id';
 
@@ -60,11 +60,11 @@ export default {
     async setScorecardFromCache() {
       const scorecardId = localStorage.getItem(scorecardIdCacheKey);
       if (scorecardId) {
-        const response = await CallEvaluationAPI.get({ itemId: scorecardId });
+        const response = await AuditFormAPI.get({ itemId: scorecardId });
         this.scorecard = response;
       }
     },
-    loadScorecards: (params) => CallEvaluationAPI.getLookup({
+    loadScorecards: (params) => AuditFormAPI.getLookup({
       ...params,
       fields: ['id', 'name', 'questions'],
       enabled: true,

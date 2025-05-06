@@ -2,7 +2,7 @@ import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStor
 
 import APIRepository from '../../../../../../../app/api/APIRepository';
 import { headers } from '../../../store/headers/headers';
-import evaluation from '../modules/evaluation/store/evaluation';
+import evaluation from '../modules/evaluation/store/evaluation.js';
 
 const historyAPI = APIRepository.history;
 const annotationsAPI = APIRepository.annotations;

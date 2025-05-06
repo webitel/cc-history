@@ -5,36 +5,42 @@
       @change="setScorecard"
       @close="toggleScorecardsPopup"
     />
+
     <wt-loader v-show="isLoading" />
-    <div v-if="!isLoading">
+
+    <template v-if="!isLoading">
       <call-no-evaluation
-        v-if="!scorecard.questions && !result.id"
+        v-if="hasNoEvaluation"
         :has-audit-form-read-access="hasAuditFormReadAccess"
         :has-rating-create-access="hasRatingCreateAccess"
         @rate="toggleScorecardsPopup"
       />
       <call-evaluation-form
-        v-if="scorecard.questions && !disableRating"
+        v-if="showEvaluationForm"
         :scorecard="scorecard"
         :call-id="call.id"
         :namespace="namespace"
+        @result:save="saveEvaluationResult"
         @close="closeEvaluationForm"
       />
       <call-evaluation-result
-        v-if="result.id"
+        v-if="showEvaluationResult"
         :result="result"
+        @result:edit="startEditingEvaluationResult"
+        @result:delete="deleteEvaluationResult"
       />
-    </div>
+    </template>
   </section>
 </template>
 
 <script lang="ts" setup>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
-import { computed, onMounted,ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
+import {EngineAuditRate} from "webitel-sdk";
 
 import { useUserAccessControl } from '../../../../../../../../../app/composables/useUserAccessControl';
-import CallEvaluationAPI from '../api/CallEvaluationAPI';
+import AuditFormAPI from '../api/AuditFormAPI.ts';
 import CallEvaluationForm from './form/call-evaluation-form.vue';
 import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
 import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
@@ -50,18 +56,21 @@ const props = defineProps({
   },
 });
 
-const store = useStore();
 const isScorecardSelectOpened = ref(false);
 const scorecard = ref({});
+
+const isEditingEvaluationResult = ref(false);
 
 const {
   disableUserInput: disableRating,
   hasCreateAccess: hasRatingCreateAccess,
-} = useUserAccessControl('rating');
+} = useUserAccessControl('rating'); // TODO: use WtObject enum
 
 const {
   hasReadAccess: hasAuditFormReadAccess,
-} = useUserAccessControl('cc_audit_form');
+} = useUserAccessControl('cc_audit_form'); // TODO: use WtObject enum
+
+const store = useStore();
 
 const isLoading = computed(() => {
   return getNamespacedState(store.state, props.namespace).isEvaluationLoading;
@@ -71,8 +80,47 @@ const result = computed(() => {
   return getNamespacedState(store.state, props.namespace).result;
 });
 
-const loadResult = async (payload) => {
+const hasNoEvaluation = computed(() => {
+  return !result.value.id && !scorecard.value.questions;
+});
+
+const showEvaluationResult = computed(() => {
+  return result.value.id && !isEditingEvaluationResult.value;
+});
+
+const showEvaluationForm = computed(() => {
+  // nema ruchok – nema pechen'ki
+  if (!scorecard.value.questions || disableRating.value) {
+    return false;
+  }
+
+  return isEditingEvaluationResult.value /* update */ || !result.value.id /* create */;
+});
+
+const loadEvaluationResult = async (payload) => {
   await store.dispatch(`${props.namespace}/GET_EVALUATION`, payload);
+};
+
+const addEvaluationResult = async (evaluationResult: EngineAuditRate) => {
+  await store.dispatch(`${props.namespace}/ADD_EVALUATION`, evaluationResult);
+};
+
+const updateEvaluationResult = async (evaluationResult: EngineAuditRate) => {
+  await store.dispatch(`${props.namespace}/UPDATE_EVALUATION`, evaluationResult);
+};
+
+const deleteEvaluationResult = async () => {
+  await store.dispatch(`${props.namespace}/DELETE_EVALUATION`, props.call.rateId);
+  closeEvaluationForm(); // reset scorecard
+};
+
+const saveEvaluationResult = async (evaluationResult: EngineAuditRate) => {
+  if (result.value.id) {
+    await updateEvaluationResult(evaluationResult);
+    isEditingEvaluationResult.value = false;
+  } else {
+    await addEvaluationResult(evaluationResult);
+  }
 };
 
 const setScorecard = (value) => {
@@ -80,6 +128,7 @@ const setScorecard = (value) => {
 };
 
 const closeEvaluationForm = () => {
+  isEditingEvaluationResult.value = false;
   scorecard.value = {};
 };
 
@@ -87,10 +136,14 @@ const toggleScorecardsPopup = () => {
   isScorecardSelectOpened.value = !isScorecardSelectOpened.value;
 };
 
+const startEditingEvaluationResult = () => {
+  isEditingEvaluationResult.value = true;
+};
+
 onMounted(async () => {
   if (props.call.rateId) {
-    await loadResult(props.call.rateId);
-    const fetchedScorecard = await CallEvaluationAPI.get({
+    await loadEvaluationResult(props.call.rateId);
+    const fetchedScorecard = await AuditFormAPI.get({
       itemId: result.value.form.id,
     });
     scorecard.value = fetchedScorecard;
