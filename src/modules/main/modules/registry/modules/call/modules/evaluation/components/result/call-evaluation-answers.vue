@@ -1,15 +1,15 @@
 <template>
   <ul class="call-evaluation-answers">
     <li
-      v-for="({ question, required, answerScore, answerName }) in questions"
-      :key="question"
+      v-for="({ questionText, questionRequired, answerScore, answerName, thisAnswer }, index) in composedResultData"
+      :key="questionText+index"
       class="call-evaluation-answers-item"
     >
       <div
         class="call-evaluation-answers-item__question"
-        :class="{'call-evaluation-answers-item__question--required': required }"
+        :class="{'call-evaluation-answers-item__question--required': questionRequired }"
       >
-        {{ question }}
+        {{ questionText }}
       </div>
       <div
         v-if="answerScore >= 0"
@@ -33,35 +33,45 @@
           </div>
         </div>
       </div>
+      <audit-form-answer-editing-info
+        v-if="thisAnswer?.updatedAt"
+        :answer="thisAnswer"
+      />
     </li>
   </ul>
 </template>
 
-<script>
+<script lang="ts" setup>
+import AuditFormAnswerEditingInfo from '@webitel/ui-sdk/src/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
+import { computed, defineProps } from 'vue';
+import {EngineAuditRate} from "webitel-sdk";
 
-export default {
-  name: 'CallEvaluationAnswers',
-  props: {
-    result: {
-      type: Object,
-      required: true,
-    },
-  },
-  computed: {
-    questions() {
-      return this.result.questions.map(({ question, required, options }, index) => {
-        return {
-          question,
-          required,
-          answerScore: this.result.answers[index].score,
-          answerName: options
-            ? options.find(({ score }) => score === this.result.answers[index].score)?.name || ''
-            : '',
-        };
-      });
-    },
-  },
-};
+const props = defineProps<{
+  result: EngineAuditRate;
+}>();
+
+const composedResultData = computed(() =>
+  props.result.questions.map((thisQuestion, index) => {
+    const thisAnswer = props.result.answers[index];
+
+    const hasQuestionOptions = thisQuestion.options && thisQuestion.options.length > 0;
+
+    const composedQuestionData = {
+      questionText: thisQuestion.question,
+      questionRequired: thisQuestion.required,
+      answerScore: thisAnswer.score,
+      thisQuestion,
+      thisAnswer,
+    };
+
+    if (hasQuestionOptions) {
+      const answeredOption = thisQuestion.options.find(({ score }) => score === thisAnswer.score);
+      composedQuestionData.answerName = answeredOption?.name || '';
+    }
+
+    return composedQuestionData;
+  })
+);
 </script>
 
 <style lang="scss" scoped>

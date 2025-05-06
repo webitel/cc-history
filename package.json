@@ -35,7 +35,7 @@
     "vue-router": "^4.3.2",
     "vuex": "^4.1.0",
     "wavesurfer.js": "^5.2.0",
-    "webitel-sdk": "^24.10.7"
+    "webitel-sdk": "^25.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
