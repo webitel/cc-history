@@ -51,7 +51,6 @@ import {
 } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {useStore} from "vuex";
 import { EngineAuditRate } from 'webitel-sdk';
 
 import CallEvaluationAnswers from './call-evaluation-answers.vue';
@@ -98,11 +97,13 @@ const deleteEvaluationResult = () => {
 
   &__scorecard-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
   }
 
   &__scorecard-info-rating {
     width: 100%;
-    margin: var(--spacing-xs) 0;
     display: flex;
     justify-content: center;
     gap: var(--spacing-sm);
@@ -111,5 +112,13 @@ const deleteEvaluationResult = () => {
 
 .call-evaluation-answers {
   flex: 1;
+}
+
+.call-evaluation-result__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
 }
 </style>
