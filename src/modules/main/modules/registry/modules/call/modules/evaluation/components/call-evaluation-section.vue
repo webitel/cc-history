@@ -40,7 +40,7 @@ import { useStore } from 'vuex';
 import {EngineAuditRate} from "webitel-sdk";
 
 import { useUserAccessControl } from '../../../../../../../../../app/composables/useUserAccessControl';
-import AuditFormAPI from '../api/AuditFormAPI.ts';
+import AuditFormAPI from '../api/AuditFormAPI';
 import CallEvaluationForm from './form/call-evaluation-form.vue';
 import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
 import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
