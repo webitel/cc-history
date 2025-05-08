@@ -11,10 +11,22 @@ import { responseItemHandler } from './_shared/utils';
 
 const auditService = AuditFormServiceApiFactory(configuration, '', instance);
 
+const fillAnswersCreatedAtFromRate = (rate: EngineAuditRate) => ({
+  ...rate,
+  answers: rate.answers.map((answer) => ({
+    ...answer,
+    createdAt: rate.createdAt,
+  })),
+});
+
 const getAuditFormRate = async (rateId: EngineAuditRate['id']) => {
   try {
     const response = await auditService.readAuditRate(rateId);
-    return applyTransform(response.data, [snakeToCamel(), responseItemHandler]);
+    return applyTransform(response.data, [
+      snakeToCamel(),
+      responseItemHandler,
+      fillAnswersCreatedAtFromRate,
+    ]);
   } catch (err) {
     throw applyTransform(err, [notify]);
   }
@@ -24,7 +36,11 @@ const addAuditFormRate = async (itemInstance: EngineAuditRate) => {
   const item = applyTransform(itemInstance, [camelToSnake()]);
   try {
     const response = await auditService.createAuditFormRate(item);
-    return applyTransform(response.data, [snakeToCamel(), responseItemHandler]);
+    return applyTransform(response.data, [
+      snakeToCamel(),
+      responseItemHandler,
+      fillAnswersCreatedAtFromRate,
+    ]);
   } catch (err) {
     throw applyTransform(err, [notify]);
   }
@@ -40,7 +56,11 @@ const updateAuditFormRate = async ({
   const item = applyTransform(itemInstance, [camelToSnake()]);
   try {
     const response = await auditService.updateAuditRate(itemId, item);
-    return applyTransform(response.data, [snakeToCamel(), responseItemHandler]);
+    return applyTransform(response.data, [
+      snakeToCamel(),
+      responseItemHandler,
+      fillAnswersCreatedAtFromRate,
+    ]);
   } catch (err) {
     throw applyTransform(err, [notify]);
   }

@@ -20,7 +20,7 @@
 
 <script>
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
-import CallEvaluation from '../../modules/evaluation/components/call-evaluation-section.vue';
+import CallAuditSection from '../../modules/call-audit/components/call-audit-section.vue';
 import CallWave from './wave/call-wave.vue';
 
 export default {
