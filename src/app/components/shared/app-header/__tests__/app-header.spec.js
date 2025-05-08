@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createStore } from 'vuex';
 
-import userInfoStore from '../../../../../modules/userinfo/store/userinfo';
+import userInfoStore from '../../../../../modules/userinfo/store/deprecated/userinfo.js';
 import AppHeader from '../app-header.vue';
 
 const user = {

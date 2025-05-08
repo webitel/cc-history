@@ -10,7 +10,8 @@
         {{ $t('registry.call.evaluation.noEvaluation') }}
       </p>
       <wt-button
-        v-if="hasLicenseOnAudit"
+        v-if="hasAuditFormReadAccess"
+        :disabled="!hasRatingCreateAccess"
         class="call-no-evaluation__button"
         @click="$emit('rate')"
       >
@@ -20,21 +21,12 @@
   </article>
 </template>
 
-<script>
+<script lang="ts" setup>
 
-import { mapState } from 'vuex';
-
-export default {
-  name: 'CallNoEvaluation',
-  computed: {
-    ...mapState('userinfo', {
-      scope: (state) => state.scope,
-    }),
-    hasLicenseOnAudit() {
-      return this.scope.some((item) => item.class === 'cc_audit_form');
-    },
-  },
-};
+const props = defineProps<{
+  hasRatingCreateAccess: boolean;
+  hasAuditFormReadAccess: boolean;
+}>();
 </script>
 
 <style lang="scss" scoped>
