@@ -5,19 +5,20 @@
       :key="questionText+index"
       class="call-evaluation-answers-item"
     >
-      <div
+      <h4
         class="call-evaluation-answers-item__question"
         :class="{'call-evaluation-answers-item__question--required': questionRequired }"
       >
         {{ questionText }}
-      </div>
+      </h4>
+
       <div
-        v-if="answerScore >= 0"
+        v-if="answerScore >= 0 /* can be null, if not answered */"
         class="call-evaluation-answers-item__answer"
       >
-        <div class="call-evaluation-answers-item__title">
+        <p class="call-evaluation-answers-item__title">
           {{ answerName }}
-        </div>
+        </p>
         <div
           class="call-evaluation-answers-item__score-wrap"
         >
@@ -33,6 +34,7 @@
           </div>
         </div>
       </div>
+
       <audit-form-answer-editing-info
         v-if="thisAnswer?.updatedAt"
         :answer="thisAnswer"
@@ -43,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import AuditFormAnswerEditingInfo from '@webitel/ui-sdk/src/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
+import AuditFormAnswerEditingInfo from '@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
 import { computed, defineProps } from 'vue';
 import {EngineAuditRate} from "webitel-sdk";
 
@@ -76,7 +78,7 @@ const composedResultData = computed(() =>
 </script>
 
 <style lang="scss" scoped>
-@use '@webitel/ui-sdk/src/css/main' as *;
+@use '@webitel/styleguide/typography' as *;
 
 .call-evaluation-answers-item {
   display: flex;
