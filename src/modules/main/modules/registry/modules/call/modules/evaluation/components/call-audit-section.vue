@@ -34,6 +34,7 @@
 </template>
 
 <script lang="ts" setup>
+import { WtObject } from '@webitel/ui-sdk/enums';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
@@ -64,11 +65,11 @@ const isEditingEvaluationResult = ref(false);
 const {
   disableUserInput: disableRating,
   hasCreateAccess: hasRatingCreateAccess,
-} = useUserAccessControl('rating'); // TODO: use WtObject enum
+} = useUserAccessControl(WtObject.AuditRating);
 
 const {
   hasReadAccess: hasAuditFormReadAccess,
-} = useUserAccessControl('cc_audit_form'); // TODO: use WtObject enum
+} = useUserAccessControl(WtObject.AuditForm);
 
 const store = useStore();
 
