@@ -21,7 +21,7 @@
 <script>
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
-import CallAuditSection from '../../modules/evaluation/components/call-audit-section.vue';
+import CallAuditSection from '../../modules/call-audit/components/call-audit-section.vue';
 import CallWave from './wave/call-wave.vue';
 
 export default {
