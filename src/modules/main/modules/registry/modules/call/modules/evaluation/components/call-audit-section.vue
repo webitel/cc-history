@@ -25,9 +25,9 @@
       />
       <audit-rate-result
         v-if="showEvaluationResult"
-        :result="result"
-        @result:edit="startEditingEvaluationResult"
-        @result:delete="deleteEvaluationResult"
+        :rate="result"
+        @rate:edit="startEditingEvaluationResult"
+        @rate:delete="deleteEvaluationResult"
       />
     </template>
   </section>

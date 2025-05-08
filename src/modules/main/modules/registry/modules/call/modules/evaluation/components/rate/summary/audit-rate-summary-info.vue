@@ -13,7 +13,8 @@
       </span>
     </li>
 
-    <article
+
+    <li
       v-if="rate.comment"
       class="audit-rate-summary-row audit-rate-summary-row--comment"
     >
@@ -23,7 +24,7 @@
       <p class="audit-rate-summary-row__value">
         {{ rate.comment }}
       </p>
-    </article>
+    </li>
   </ul>
 </template>
 
