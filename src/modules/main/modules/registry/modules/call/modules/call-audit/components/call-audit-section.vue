@@ -63,8 +63,8 @@ const scorecard = ref({});
 const isEditingEvaluationResult = ref(false);
 
 const {
-  disableUserInput: disableRating,
   hasCreateAccess: hasRatingCreateAccess,
+  hasUpdateAccess: hasRatingUpdateAccess,
 } = useUserAccessControl(WtObject.AuditRating);
 
 const {
@@ -90,12 +90,20 @@ const showEvaluationResult = computed(() => {
 });
 
 const showEvaluationForm = computed(() => {
-  // nema ruchok – nema pechen'ki
-  if (!scorecard.value.questions || disableRating.value) {
+  const alreadyRated = !!result.value.id;
+
+  // Check if the scorecard has questions; if not, the evaluation form cannot be shown
+  if (!scorecard.value.questions) {
+    return false;
+    // not rated, BUT user cant rate it anyway
+  } else if (!alreadyRated && !hasRatingCreateAccess.value) {
+    return false;
+    // rated, BUT user cant update it anyway OR user isnt editing this rate
+  } else if (alreadyRated && (!isEditingEvaluationResult.value || !hasRatingUpdateAccess.value)) {
     return false;
   }
 
-  return isEditingEvaluationResult.value /* update */ || !result.value.id /* create */;
+  return true;
 });
 
 const loadEvaluationResult = async (payload) => {

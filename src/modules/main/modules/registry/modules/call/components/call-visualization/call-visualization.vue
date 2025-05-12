@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import { WtObject } from '@webitel/ui-sdk/enums';
+
+import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallAuditSection from '../../modules/call-audit/components/call-audit-section.vue';
 import CallWave from './wave/call-wave.vue';
@@ -28,7 +31,7 @@ export default {
   components: {
     CallWave,
     CallTranscript,
-    CallEvaluation,
+    CallEvaluation: CallAuditSection,
   },
   props: {
     call: {
@@ -38,6 +41,15 @@ export default {
     namespace: {
       type: String,
     },
+  },
+  setup() {
+    const {
+      hasReadAccess,
+    } = useUserAccessControl(WtObject.AuditRating);
+
+    return {
+      hasEvaluationReadAccess: hasReadAccess,
+    };
   },
   data: () => ({
     currentTab: {},
@@ -58,7 +70,7 @@ export default {
       };
     },
     tabs() {
-      return this.call.allowEvaluation
+      return (this.call.allowEvaluation && this.hasEvaluationReadAccess)
         ? [this.tabValues.TRANSCRIPT, this.tabValues.EVALUATION]
         : [this.tabValues.TRANSCRIPT];
     },

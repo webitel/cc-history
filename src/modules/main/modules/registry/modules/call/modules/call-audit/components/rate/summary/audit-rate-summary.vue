@@ -11,11 +11,13 @@
 
     <footer class="audit-rate-actions">
       <wt-button
+        :disabled="!hasUpdateAccess"
         color="secondary"
         @click="emit('rate:edit')"
       >{{ t('reusable.edit') }}
       </wt-button>
       <wt-button
+        :disabled="!hasDeleteAccess"
         color="error"
         @click="emit('rate:delete')"
       >{{ t('reusable.delete') }}
@@ -26,9 +28,11 @@
 
 <script lang="ts" setup>
 import { WtButton } from '@webitel/ui-sdk/components';
+import { WtObject } from "@webitel/ui-sdk/enums";
 import { useI18n } from 'vue-i18n';
 import { EngineAuditRate } from 'webitel-sdk';
 
+import {useUserAccessControl} from "../../../../../../../../../../../app/composables/useUserAccessControl.ts";
 import AuditRateSummaryInfo from './audit-rate-summary-info.vue';
 import AuditRateSummaryScores from './audit-rate-summary-scores.vue';
 
@@ -42,6 +46,10 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const {
+  hasUpdateAccess,
+  hasDeleteAccess,
+} = useUserAccessControl(WtObject.AuditRating);
 </script>
 
 <style lang="scss" scoped>
