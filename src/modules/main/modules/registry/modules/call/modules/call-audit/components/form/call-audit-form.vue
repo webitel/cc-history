@@ -2,7 +2,7 @@
   <div class="call-evaluation-form">
     <audit-form
       v-model:answers="localAnswers"
-      v-model:result-comment="comment"
+      v-model:result-comment="localComment"
       class="call-evaluation-form__audit-form"
       mode="fill"
       :questions="questions"
@@ -43,7 +43,7 @@ const emit = defineEmits<{
 const store = useStore();
 
 const localAnswers = ref([]);
-const comment = ref('');
+const localComment = ref('');
 
 const result = computed(() => {
   return getNamespacedState(store.state, props.namespace).result;
@@ -61,7 +61,7 @@ const saveEvaluation = () => {
   const evaluationResult = {
     answers: localAnswers.value,
     callId: props.callId,
-    comment: comment.value,
+    comment: localComment.value,
     form: {
       id: props.scorecard.id,
       name: props.scorecard.name,
@@ -76,6 +76,7 @@ watch(
   (value) => {
     if (value?.answers) {
       localAnswers.value = deepCopy(value.answers);
+      localComment.value = value.comment;
     }
   },
   { immediate: true }
