@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { WtObject } from '@webitel/ui-sdk/enums';
+
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallAuditSection from '../../modules/call-audit/components/call-audit-section.vue';
@@ -42,9 +44,8 @@ export default {
   },
   setup() {
     const {
-      // dont forget to rm unused
       hasReadAccess,
-    } = useUserAccessControl('rating');
+    } = useUserAccessControl(WtObject.AuditRating);
 
     return {
       hasEvaluationReadAccess: hasReadAccess,
