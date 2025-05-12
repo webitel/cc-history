@@ -112,7 +112,7 @@ const updateEvaluationResult = async (evaluationResult: EngineAuditRate) => {
 
 const deleteEvaluationResult = async () => {
   await store.dispatch(`${props.namespace}/DELETE_EVALUATION`, props.call.rateId);
-  closeEvaluationForm(); // reset scorecard
+  scorecard.value = {}; // reset scorecard
 };
 
 const saveEvaluationResult = async (evaluationResult: EngineAuditRate) => {
@@ -130,7 +130,6 @@ const setScorecard = (value) => {
 
 const closeEvaluationForm = () => {
   isEditingEvaluationResult.value = false;
-  scorecard.value = {};
 };
 
 const toggleScorecardsPopup = () => {
