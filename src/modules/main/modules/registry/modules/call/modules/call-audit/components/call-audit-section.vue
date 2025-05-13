@@ -9,13 +9,13 @@
     <wt-loader v-show="isLoading" />
 
     <template v-if="!isLoading">
-      <call-no-evaluation
+      <empty-audit-rate
         v-if="hasNoEvaluation"
         :has-audit-form-read-access="hasAuditFormReadAccess"
         :has-rating-create-access="hasRatingCreateAccess"
         @rate="toggleScorecardsPopup"
       />
-      <call-evaluation-form
+      <call-audit-form
         v-if="showEvaluationForm"
         :scorecard="scorecard"
         :call-id="call.id"
@@ -23,11 +23,11 @@
         @result:save="saveEvaluationResult"
         @close="closeEvaluationForm"
       />
-      <call-evaluation-result
+      <audit-rate-result
         v-if="showEvaluationResult"
-        :result="result"
-        @result:edit="startEditingEvaluationResult"
-        @result:delete="deleteEvaluationResult"
+        :rate="result"
+        @rate:edit="startEditingEvaluationResult"
+        @rate:delete="deleteEvaluationResult"
       />
     </template>
   </section>
@@ -41,11 +41,11 @@ import { useStore } from 'vuex';
 import {EngineAuditRate} from "webitel-sdk";
 
 import { useUserAccessControl } from '../../../../../../../../../app/composables/useUserAccessControl';
-import AuditFormAPI from '../api/AuditFormAPI.ts';
-import CallEvaluationForm from './form/call-evaluation-form.vue';
-import CallNoEvaluation from './no-evaluation/call-no-evaluation-section.vue';
-import SelectScorecardPopup from './no-evaluation/select-scorecard-popup.vue';
-import CallEvaluationResult from './result/call-evaluation-result.vue';
+import AuditFormAPI from '../api/AuditFormAPI';
+import EmptyAuditRate from './empty-audit-rate/empty-audit-rate.vue';
+import SelectScorecardPopup from './empty-audit-rate/select-scorecard-popup.vue';
+import CallAuditForm from './form/call-audit-form.vue';
+import AuditRateResult from './rate/audit-rate-result.vue';
 
 const props = defineProps({
   call: {
@@ -120,7 +120,7 @@ const updateEvaluationResult = async (evaluationResult: EngineAuditRate) => {
 
 const deleteEvaluationResult = async () => {
   await store.dispatch(`${props.namespace}/DELETE_EVALUATION`, props.call.rateId);
-  scorecard.value = {}; // reset scorecard
+  clearScorecard();
 };
 
 const saveEvaluationResult = async (evaluationResult: EngineAuditRate) => {
@@ -137,7 +137,15 @@ const setScorecard = (value) => {
 };
 
 const closeEvaluationForm = () => {
-  isEditingEvaluationResult.value = false;
+  if (isEditingEvaluationResult.value) {
+    isEditingEvaluationResult.value = false;
+  } else {
+    clearScorecard();
+  }
+};
+
+const clearScorecard = () => {
+  scorecard.value = {};
 };
 
 const toggleScorecardsPopup = () => {
