@@ -58,7 +58,7 @@
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
-import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
+import { EngineHistoryFileJobHistoryFileJobState } from '@webitel/api-services/gen/models';
 
 import CallTranscriptAPI from '../../api/callTranscript.js';
 
@@ -74,7 +74,7 @@ export default {
     },
   },
   data: () => ({
-    JobState: HistoryFileJobHistoryFileJobState,
+    JobState: EngineHistoryFileJobHistoryFileJobState,
   }),
   computed: {
     ...mapState({
