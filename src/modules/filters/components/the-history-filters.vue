@@ -50,17 +50,19 @@ const initializeDefaultCreatedAtFilter = () => {
 initializeDefaultCreatedAtFilter();
 
 const resetFilters = () => {
-  filtersManager.value.reset({
-    exclude: filtersOptions.reduce((excludes, opt) => {
-      if (opt?.notDeletable) {
-        return [
-          ...excludes,
-          opt.name,
-        ];
-      }
+  const excludeNotDeletableFilters = filtersOptions.reduce((excludes, opt) => {
+    if (opt?.notDeletable) {
+      return [
+        ...excludes,
+        opt.name,
+      ];
+    }
 
-      return excludes;
-    }, []),
+    return excludes;
+  }, []);
+
+  filtersManager.value.reset({
+    exclude: [...excludeNotDeletableFilters, 'search'],
   });
 };
 

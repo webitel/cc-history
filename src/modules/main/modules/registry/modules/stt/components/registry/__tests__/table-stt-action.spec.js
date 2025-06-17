@@ -1,5 +1,5 @@
 import { mount,shallowMount } from '@vue/test-utils';
-import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
+import { EngineHistoryFileJobHistoryFileJobState } from '@webitel/api-services/gen/models';
 
 import TranscriptionState from '../../../enums/TranscriptionState.enum';
 import TableSttAction from '../table-stt-action.vue';
@@ -24,12 +24,12 @@ describe('TableSttAction', () => {
     expect(wrapper.vm.fileJob).toStrictEqual(job);
   });
   it('currentState for IDLE fileJob is IDLE', () => {
-    item.filesJob = [{ state: HistoryFileJobHistoryFileJobState.Idle }];
+    item.filesJob = [{ state: EngineHistoryFileJobHistoryFileJobState.Idle }];
     const wrapper = shallowMount(TableSttAction, { props });
     expect(wrapper.vm.currentState.value).toBe(TranscriptionState.IDLE);
   });
   it('currentState for ERROR fileJob is ERROR', () => {
-    item.filesJob = [{ state: HistoryFileJobHistoryFileJobState.Error }];
+    item.filesJob = [{ state: EngineHistoryFileJobHistoryFileJobState.Error }];
     const wrapper = shallowMount(TableSttAction, { props });
     expect(wrapper.vm.currentState.value).toBe(TranscriptionState.ERROR);
   });
