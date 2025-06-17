@@ -66,6 +66,7 @@ const answerName = computed(() => {
 
 .audit-rate-answer-item-question-text {
   @extend %typo-subtitle-1;
+  overflow-wrap: anywhere; // break words in text with no spaces, but preserve words if text has spaces
   padding: var(--spacing-2xs) 0 var(--spacing-3xs);
 
   &--required::after {

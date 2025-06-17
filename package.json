@@ -9,7 +9,8 @@
     "lint:fix-staged": "npx lint-staged",
     "test:unit": "vitest",
     "utils:i": "npm install --install-links",
-    "utils:link-libs": "npm link @webitel/ui-sdk @webitel/ui-datalist"
+    "utils:link-libs": "npm link @webitel/ui-sdk @webitel/ui-datalist",
+    "utils:upd-lib": "npm up @webitel/ui-sdk && npm ls @webitel/ui-sdk"
   },
   "type": "module",
   "dependencies": {
@@ -19,7 +20,7 @@
     "@webitel/api-services": "^0.0.22",
     "@webitel/styleguide": "^24.12.20",
     "@webitel/ui-datalist": "^1.0.47",
-    "@webitel/ui-sdk": "^25.6.11",
+    "@webitel/ui-sdk": "~25.8",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "deep-copy": "^1.4.2",
