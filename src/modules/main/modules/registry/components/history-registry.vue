@@ -144,7 +144,6 @@
             v-if="item.files"
             :currently-playing="currentlyPlaying"
             :files="item.files"
-            class="table-action"
             @play="play"
             @stop="closePlayer"
           />
@@ -153,13 +152,11 @@
           <stt-action
             v-if="showItemStt(item)"
             :item="item"
-            class="table-action"
             @open="sttPopupCallId = item.id"
           />
 
           <router-link
             :to="`/${item.id}`"
-            class="table-action"
           >
             <wt-icon-btn
               icon="forks"
