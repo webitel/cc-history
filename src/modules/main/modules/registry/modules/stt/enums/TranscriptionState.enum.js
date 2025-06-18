@@ -1,12 +1,12 @@
-import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
+import { EngineHistoryFileJobHistoryFileJobState } from 'webitel-sdk';
 
 const TranscriptionState = Object.freeze({
   NONE: 'none',
   DONE: 'done',
-  ERROR: HistoryFileJobHistoryFileJobState.Error,
-  IDLE: HistoryFileJobHistoryFileJobState.Idle,
-  ACTIVE: HistoryFileJobHistoryFileJobState.Active,
-  FINISHED: HistoryFileJobHistoryFileJobState.Finished,
+  ERROR: EngineHistoryFileJobHistoryFileJobState.Error,
+  IDLE: EngineHistoryFileJobHistoryFileJobState.Idle,
+  ACTIVE: EngineHistoryFileJobHistoryFileJobState.Active,
+  FINISHED: EngineHistoryFileJobHistoryFileJobState.Finished,
 });
 
 export default TranscriptionState;

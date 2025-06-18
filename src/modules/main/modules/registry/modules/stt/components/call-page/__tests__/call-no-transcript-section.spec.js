@@ -1,5 +1,5 @@
 import { mount,shallowMount } from '@vue/test-utils';
-import { HistoryFileJobHistoryFileJobState } from 'webitel-sdk';
+import { EngineHistoryFileJobHistoryFileJobState } from 'webitel-sdk';
 
 import CallTranscript from '../../../api/callTranscript.js';
 import CallNoTranscriptSection from '../call-no-transcript-section.vue';
@@ -73,7 +73,7 @@ describe('CallNoTranscriptSection', () => {
 
     file.id = 1;
     call.filesJob = [
-      { fileId: 1, state: HistoryFileJobHistoryFileJobState.Error },
+      { fileId: 1, state: EngineHistoryFileJobHistoryFileJobState.Error },
     ];
 
     vi.spyOn(
