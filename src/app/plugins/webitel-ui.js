@@ -5,6 +5,7 @@ import WebitelUIEn from '@webitel/ui-sdk/src/locale/en/en';
 import WebitelUIKz from '@webitel/ui-sdk/src/locale/kz/kz';
 import WebitelUIRu from '@webitel/ui-sdk/src/locale/ru/ru';
 import WebitelUIUk from '@webitel/ui-sdk/src/locale/uk/uk';
+import { eventBus } from '@webitel/ui-sdk/scripts';
 
 import i18n from '../locale/i18n';
 

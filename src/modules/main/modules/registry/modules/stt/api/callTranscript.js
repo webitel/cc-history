@@ -1,3 +1,3 @@
-import { callTranscript } from '@webitel/ui-sdk/src/api/history/index.js';
+import { CallTranscriptAPI } from '@webitel/api-services/api';
 
-export default callTranscript;
+export default CallTranscriptAPI;
