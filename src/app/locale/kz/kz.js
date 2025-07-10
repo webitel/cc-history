@@ -21,13 +21,16 @@ export default {
   headerSection: {
     filesLoaded: 'Жүктеп алынған файл:',
     zippingProgress: 'Мұрағаттау прогресі',
-    exportCSV: 'CSV экспорттау',
+    exportPopup: {
+      separator: 'Бөлгіш',
+    },
   },
   registry: {
     registry: 'Тарих',
     call: {
       callInfo: 'Ақпарат',
       agentDescription: 'Оператордың түсініктемесі',
+      callLegs: 'Аяқтар A-B',
       transferFrom: '.....ауыстыру',
       transferMerge: 'Қоңырауларды біріктіру',
       transferTo: '.... ауыстыру',
@@ -189,6 +192,7 @@ export default {
     result: 'Нәтиже',
     sipCode: 'SIP код',
     agentDescription: 'Оператордың түсініктемесі',
+    amd: 'AMD',
     amdResult: 'AMD нәтижесі',
     hangupDisposition: 'Аяқтау нәтижесі',
     blindTransfer: 'Бірден ауыстыру',
@@ -197,6 +201,8 @@ export default {
     score: 'Баға',
     memberId: 'Абонент Id',
     attemptId: 'Әрекет Id',
+    postProcessing: 'Өңдеуден кейін',
+    contact: 'Байланыс',
   },
   variableColumnSelect: {
     title: 'Айнымалылар бағандарын таңдау',
@@ -227,6 +233,7 @@ export default {
     duration: 'Жалпы ұзақтығы (сек)',
     talkSec: 'Әңгіменің ұзақтығы (сек)',
     score: 'Баға (%)',
+    variableSearchHint: 'Сұрау пішімі: "кілт=мән"',
   },
   components: {
     dtPicker: {
