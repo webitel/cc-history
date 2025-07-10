@@ -29,7 +29,7 @@ export default {
     registry: 'Historial',
     call: {
       callInfo: 'Información de llamada',
-      agentDescription: "Comentario del agente",
+      agentDescription: 'Comentario del agente',
       callLegs: 'Tramos A-B',
       transferFrom: 'Transferir desde',
       transferMerge: 'Fusionar llamada',
@@ -225,7 +225,7 @@ export default {
     search: {
       [SearchMode.Search]: 'Búsqueda regular',
       [SearchMode.Fts]: 'Búsqueda de texto completo',
-      [SearchMode.Description]: "Comentario del agente",
+      [SearchMode.Description]: 'Comentario del agente',
     },
     hasFile: 'Tiene grabación',
     hasTranscription: 'Tiene transcripción',

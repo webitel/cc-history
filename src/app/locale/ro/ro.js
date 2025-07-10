@@ -29,7 +29,7 @@ export default {
     registry: 'Istoric',
     call: {
       callInfo: 'Informații apel',
-      agentDescription: "Comentariul agentului",
+      agentDescription: 'Comentariul agentului',
       callLegs: 'Segmente A-B',
       transferFrom: 'Transfer de la',
       transferMerge: 'Îmbinare apel',
@@ -225,7 +225,7 @@ export default {
     search: {
       [SearchMode.Search]: 'Căutare regulată',
       [SearchMode.Fts]: 'Căutare text complet',
-      [SearchMode.Description]: "Comentariul agentului",
+      [SearchMode.Description]: 'Comentariul agentului',
     },
     hasFile: 'Are înregistrare',
     hasTranscription: 'Are transcriere',
