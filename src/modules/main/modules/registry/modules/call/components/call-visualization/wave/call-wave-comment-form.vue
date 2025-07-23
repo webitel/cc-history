@@ -82,7 +82,7 @@ export default {
       return (value) => [
         {
           name: 'minValue',
-          text: this.$t('validation.minValue').concat(` ${convertDuration(value)}`),
+          text: this.$t('validation.minValue', { min: convertDuration(value) }),
         }, {
           name: 'maxValue',
           text: this.$t('validation.maxValue').concat(` ${convertDuration(this.callDuration)}`),
