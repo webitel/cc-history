@@ -73,16 +73,17 @@
 
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
-          <wt-tooltip
+          <wt-popover
             v-if="!leftGain.disabled"
-            :triggers="['click', 'focus', 'touch']"
-            :popper-triggers="['hover']"
           >
-            <template #activator>
-              <wt-icon-btn
-                :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-              />
+            <template #activator="{ toggle }">
+              <div @click="toggle">
+                <wt-icon-btn
+                  :icon="leftGain.muted ? 'sound-off': 'sound-on'"
+                />
+              </div>
             </template>
+
             <wt-slider
               :max="2"
               :min="0"
@@ -90,17 +91,19 @@
               :value="volumeLeftGain"
               @input="volumeLeftChangeHandler"
             />
-          </wt-tooltip>
-          <wt-tooltip
+          </wt-popover>
+
+          <wt-popover
             v-if="!rightGain.disabled"
-            :triggers="['click', 'focus', 'touch']"
-            :popper-triggers="['hover']"
           >
-            <template #activator>
-              <wt-icon-btn
-                :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-              />
+            <template #activator="{ toggle }">
+              <div @click="toggle">
+                <wt-icon-btn
+                  :icon="rightGain.muted ? 'sound-off': 'sound-on'"
+                />
+              </div>
             </template>
+
             <wt-slider
               :max="2"
               :min="0"
@@ -108,7 +111,7 @@
               :value="volumeRightGain"
               @input="volumeRightChangeHandler"
             />
-          </wt-tooltip>
+          </wt-popover>
         </section>
 
         <section
@@ -188,6 +191,7 @@
 </template>
 
 <script>
+import { WtPopover } from '@webitel/ui-sdk/components';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { mapActions, mapGetters, mapState } from 'vuex';

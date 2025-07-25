@@ -5,16 +5,14 @@
       color="icon"
       size="sm"
     />
-    <wt-tooltip v-else>
-      <template #activator>
-        <wt-icon-btn
-          :color="currentState.color"
-          :icon="currentState.icon"
-          @click="currentState.handler()"
-        />
-      </template>
-      {{ currentState.tooltip }}
-    </wt-tooltip>
+
+    <wt-icon-btn
+      v-else
+      v-tooltip="currentState.tooltip"
+      :color="currentState.color"
+      :icon="currentState.icon"
+      @click="currentState.handler()"
+    />
   </div>
 </template>
 

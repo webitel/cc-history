@@ -1,18 +1,15 @@
 <template>
   <div class="table-variable-column-select">
-    <wt-tooltip>
-      <template #activator>
-        <wt-badge
-          :hidden="!draft.length"
-        >
-          <wt-icon-btn
-            icon="variable-select"
-            @click="open"
-          />
-        </wt-badge>
-      </template>
-      {{ t('variableColumnSelect.title') }}
-    </wt-tooltip>
+    <wt-badge
+      v-tooltip="t('variableColumnSelect.title')"
+      :hidden="!draft.length"
+    >
+      <wt-icon-btn
+        icon="variable-select"
+        @click="open"
+      />
+    </wt-badge>
+
     <wt-popup
       :shown="shownPopup"
       class="variable-column-popup"

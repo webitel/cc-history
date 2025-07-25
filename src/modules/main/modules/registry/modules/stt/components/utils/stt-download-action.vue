@@ -1,13 +1,9 @@
 <template>
-  <wt-tooltip>
-    <template #activator>
-      <wt-icon-btn
-        icon="stt-download"
-        @click="$emit('click')"
-      />
-    </template>
-    {{ $t('registry.stt.downloadTxt') }}
-  </wt-tooltip>
+  <wt-icon-btn
+    v-tooltip="$t('registry.stt.downloadTxt')"
+    icon="stt-download"
+    @click="$emit('click')"
+  />
 </template>
 
 <script>
