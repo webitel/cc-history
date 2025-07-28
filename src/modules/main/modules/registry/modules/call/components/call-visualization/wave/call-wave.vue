@@ -19,7 +19,7 @@
             :label="$t('registry.call.hold', 2)"
             :selected="showHolds"
             :value="showHolds"
-            @change="toggleHolds"
+            @update:selected="toggleHolds"
           />
           <wt-chip>
             {{ holdsSize }}
@@ -28,7 +28,7 @@
             :label="$t('registry.call.comment', 2)"
             :selected="showComments"
             :value="showComments"
-            @change="toggleComments"
+            @update:selected="toggleComments"
           />
           <wt-chip>
             {{ commentsSize }}
