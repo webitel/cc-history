@@ -76,8 +76,11 @@
           <wt-popover
             v-if="!leftGain.disabled"
           >
-            <template #activator="{ toggle }">
-              <div @click="toggle">
+            <template #activator="{ show, hide }">
+              <div
+                @pointerenter="show"
+                @pointerleave="hide"
+              >
                 <wt-icon-btn
                   :icon="leftGain.muted ? 'sound-off': 'sound-on'"
                 />
@@ -96,8 +99,11 @@
           <wt-popover
             v-if="!rightGain.disabled"
           >
-            <template #activator="{ toggle }">
-              <div @click="toggle">
+            <template #activator="{ show, hide }">
+              <div
+                @pointerenter="show"
+                @pointerleave="hide"
+              >
                 <wt-icon-btn
                   :icon="rightGain.muted ? 'sound-off': 'sound-on'"
                 />
@@ -191,7 +197,6 @@
 </template>
 
 <script>
-import { WtPopover } from '@webitel/ui-sdk/components';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { mapActions, mapGetters, mapState } from 'vuex';
