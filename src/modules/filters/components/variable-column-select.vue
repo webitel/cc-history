@@ -47,7 +47,7 @@
             <wt-checkbox
               :selected="key.show"
               :label="key.text"
-              @change="key.show = $event"
+              @update:selected="key.show = $event"
             />
             <wt-icon-btn
               icon="bucket"
