@@ -1,13 +1,9 @@
 <template>
-  <wt-tooltip>
-    <template #activator>
-      <wt-icon-btn
-        icon="bucket"
-        @click="$emit('click')"
-      />
-    </template>
-    {{ $t('reusable.delete') }}
-  </wt-tooltip>
+  <wt-icon-btn
+    v-tooltip="$t('reusable.delete')"
+    icon="bucket"
+    @click="$emit('click')"
+  />
 </template>
 
 <script>

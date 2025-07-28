@@ -91,53 +91,35 @@
         </template>
         <template #transfers="{ item }">
           <div class="transfers-wrap">
-            <wt-tooltip
-              :class="{'hidden': !item.transferFrom}"
-              class="transfer-icon"
-            >
-              <template #activator>
-                <wt-icon
-                  class="table-action"
-                  icon="transfer-from"
-                  icon-prefix="hs"
-                  @mouseenter.native="highlightRow([item.transferFrom])"
-                  @mouseleave.native="highlightRow([item.transferFrom])"
-                />
-              </template>
-              {{ $t('registry.call.transferFrom') }}
-            </wt-tooltip>
+            <wt-icon
+              v-if="item.transferFrom"
+              v-tooltip="$t('registry.call.transferFrom')"
+              class="table-action"
+              icon="transfer-from"
+              icon-prefix="hs"
+              @mouseenter.native="highlightRow([item.transferFrom])"
+              @mouseleave.native="highlightRow([item.transferFrom])"
+            />
 
-            <wt-tooltip
-              :class="{'hidden': !item.transferFrom || !item.transferTo}"
-              class="transfer-icon"
-            >
-              <template #activator>
-                <wt-icon
-                  class="table-action"
-                  icon="transfer-merge"
-                  icon-prefix="hs"
-                  @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
-                  @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
-                />
-              </template>
-              {{ $t('registry.call.transferMerge') }}
-            </wt-tooltip>
+            <wt-icon
+              v-if="item.transferFrom && item.transferTo"
+              v-tooltip="$t('registry.call.transferMerge')"
+              class="table-action"
+              icon="transfer-merge"
+              icon-prefix="hs"
+              @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
+              @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
+            />
 
-            <wt-tooltip
-              :class="{'hidden': !item.transferTo}"
-              class="transfer-icon"
-            >
-              <template #activator>
-                <wt-icon
-                  class="table-action"
-                  icon="transfer-to"
-                  icon-prefix="hs"
-                  @mouseenter.native="highlightRow([item.transferTo])"
-                  @mouseleave.native="highlightRow([item.transferTo])"
-                />
-              </template>
-              {{ $t('registry.call.transferTo') }}
-            </wt-tooltip>
+            <wt-icon
+              v-if="item.transferTo"
+              v-tooltip="$t('registry.call.transferTo')"
+              class="table-action"
+              icon="transfer-to"
+              icon-prefix="hs"
+              @mouseenter.native="highlightRow([item.transferTo])"
+              @mouseleave.native="highlightRow([item.transferTo])"
+            />
           </div>
         </template>
       </wt-table>

@@ -73,16 +73,20 @@
 
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
-          <wt-tooltip
+          <wt-popover
             v-if="!leftGain.disabled"
-            :triggers="['click', 'focus', 'touch']"
-            :popper-triggers="['hover']"
           >
-            <template #activator>
-              <wt-icon-btn
-                :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-              />
+            <template #activator="{ show, hide }">
+              <div
+                @pointerenter="show"
+                @pointerleave="hide"
+              >
+                <wt-icon-btn
+                  :icon="leftGain.muted ? 'sound-off': 'sound-on'"
+                />
+              </div>
             </template>
+
             <wt-slider
               :max="2"
               :min="0"
@@ -90,17 +94,22 @@
               :value="volumeLeftGain"
               @input="volumeLeftChangeHandler"
             />
-          </wt-tooltip>
-          <wt-tooltip
+          </wt-popover>
+
+          <wt-popover
             v-if="!rightGain.disabled"
-            :triggers="['click', 'focus', 'touch']"
-            :popper-triggers="['hover']"
           >
-            <template #activator>
-              <wt-icon-btn
-                :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-              />
+            <template #activator="{ show, hide }">
+              <div
+                @pointerenter="show"
+                @pointerleave="hide"
+              >
+                <wt-icon-btn
+                  :icon="rightGain.muted ? 'sound-off': 'sound-on'"
+                />
+              </div>
             </template>
+
             <wt-slider
               :max="2"
               :min="0"
@@ -108,7 +117,7 @@
               :value="volumeRightGain"
               @input="volumeRightChangeHandler"
             />
-          </wt-tooltip>
+          </wt-popover>
         </section>
 
         <section
