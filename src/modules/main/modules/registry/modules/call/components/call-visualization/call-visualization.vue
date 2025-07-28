@@ -10,7 +10,7 @@
         :tabs="tabs"
       />
       <component
-        :is="'call-transcript'"
+        :is="currentTab.value"
         :call="call"
         :namespace="currentTab.namespace"
       />
