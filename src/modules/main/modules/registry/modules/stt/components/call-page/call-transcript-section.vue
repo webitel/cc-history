@@ -5,9 +5,8 @@
         <wt-checkbox
           v-for="(channel) of channels"
           :key="channel.value"
-          :selected="channel.show"
+          v-model:selected="channel.show"
           :label="channel.value"
-          @update:selected="channel.show = $event"
         />
       </template>
       <template #actions>

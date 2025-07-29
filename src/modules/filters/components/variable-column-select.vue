@@ -45,9 +45,8 @@
             class="variable-column-popup__item"
           >
             <wt-checkbox
-              :selected="key.show"
+              v-model:selected="key.show"
               :label="key.text"
-              @update:selected="key.show = $event"
             />
             <wt-icon-btn
               icon="bucket"
