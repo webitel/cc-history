@@ -5,7 +5,7 @@
         <wt-checkbox
           v-for="(channel) of channels"
           :key="channel.value"
-          v-model="channel.show"
+          v-model:selected="channel.show"
           :label="channel.value"
         />
       </template>
