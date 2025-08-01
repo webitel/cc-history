@@ -69,7 +69,7 @@ const auditFormInfo = computed(() => [
     flex-direction: column;
 
     .audit-rate-summary-row__value {
-      white-space: pre;
+      white-space: pre-wrap;
     }
   }
 }
