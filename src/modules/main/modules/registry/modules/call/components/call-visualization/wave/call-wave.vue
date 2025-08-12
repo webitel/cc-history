@@ -91,8 +91,8 @@
               :max="2"
               :min="0"
               :step="0.01"
-              :value="volumeLeftGain"
-              @input="volumeLeftChangeHandler"
+              :model-value="volumeLeftGain"
+              @update:model-value="volumeLeftChangeHandler"
             />
           </wt-popover>
 
@@ -114,8 +114,8 @@
               :max="2"
               :min="0"
               :step="0.01"
-              :value="volumeRightGain"
-              @input="volumeRightChangeHandler"
+              :model-value="volumeRightGain"
+              @update:model-value="volumeRightChangeHandler"
             />
           </wt-popover>
         </section>
