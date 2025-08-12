@@ -1,5 +1,5 @@
 <template>
-  <opened-call is-view-mode/>
+  <opened-call view-mode/>
 </template>
 
 <script setup lang="ts">

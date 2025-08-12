@@ -61,7 +61,7 @@ export default {
   },
   mixins: [historyRegistryQueriesMixin],
   props: {
-    isViewMode: {
+    viewMode: {
       type: Boolean,
       default: false,
     },
@@ -95,7 +95,7 @@ export default {
     }),
     tabValues() {
       // Use different route names for view mode vs regular mode
-      const prefix = this.isViewMode ? 'call_view-' : '';
+      const prefix = this.viewMode && 'call_view-';
 
       return {
         INFO: {
