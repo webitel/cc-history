@@ -4,6 +4,7 @@ import Call from '../../modules/main/modules/registry/modules/call/components/th
 import HistoryMainPage from '../components/history-main-page.vue';
 import History from '../components/the-history.vue';
 import CallTabsPathNames from './_internals/CallTabsPathNames.enum.js';
+import callViewRoute from './call-view.ts';
 const CallInfo = import(
   '../../modules/main/modules/registry/modules/call/components/call-info/call-info.vue'
 );
@@ -49,6 +50,7 @@ const routes = [
       },
     ],
   },
+  ...callViewRoute,
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
