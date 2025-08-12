@@ -3,7 +3,7 @@
     <template #header>
       <wt-headline>
         <template #title>
-          <wt-headline-nav
+          <wt-breadcrumb
             :path="path"
           />
         </template>
