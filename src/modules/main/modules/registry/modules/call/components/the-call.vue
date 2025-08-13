@@ -95,7 +95,7 @@ export default {
     }),
     tabValues() {
       // Use different route names for view mode vs regular mode
-      const prefix = this.viewMode && 'call_view-';
+      const prefix = this.viewMode ? 'call_view-' : '';
 
       return {
         INFO: {
