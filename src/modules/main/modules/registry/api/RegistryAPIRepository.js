@@ -145,9 +145,9 @@ const getList =
           return {
             ...vars,
             /*
-           This if else statement is needed for sending ''
-            to backend when user writes not valid variableSearch, so we can display dummy image.
-           */
+             This if else statement is needed for sending ''
+              to backend when user writes not valid variableSearch, so we can display dummy image.
+             */
             [key]: value !== undefined ? value : '',
           };
         }, {});
@@ -221,7 +221,7 @@ const getList =
 const getHistory = getList({
   paramsTransformers: [],
   responseTransformers: [
-    snakeToCamel(['variables']),
+    snakeToCamel(['variables', 'form_fields']),
     merge(getDefaultGetListResponse()),
   ],
   responseItemsTransformers: [transformResponseItems],
