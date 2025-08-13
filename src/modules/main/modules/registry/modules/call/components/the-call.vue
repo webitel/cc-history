@@ -60,6 +60,12 @@ export default {
     CallVisualization,
   },
   mixins: [historyRegistryQueriesMixin],
+  props: {
+    viewMode: {
+      type: Boolean,
+      default: false,
+    },
+  },
   setup: () => {
     const tableStore = useRegistryStore();
 
@@ -88,21 +94,24 @@ export default {
       },
     }),
     tabValues() {
+      // Use different route names for view mode vs regular mode
+      const prefix = this.viewMode && 'call_view-';
+
       return {
         INFO: {
           text: this.$t('registry.call.callInfo'),
           value: 'call-info',
-          pathName: CallTabsPathNames.CALL_INFO,
+          pathName: `${prefix}${CallTabsPathNames.CALL_INFO}`,
         },
         LEGS: {
           text: this.$t('registry.call.callLegs'),
           value: 'call-legs',
-          pathName: CallTabsPathNames.LEGS_A_B,
+          pathName: `${prefix}${CallTabsPathNames.LEGS_A_B}`,
         },
         VISUALIZATION: {
           text: this.$t('registry.call.callVisualization'),
           value: 'call-visualization',
-          pathName: CallTabsPathNames.CALL_VISUALIZATION,
+          pathName: `${prefix}${CallTabsPathNames.CALL_VISUALIZATION}`,
         },
       };
     },
