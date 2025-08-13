@@ -76,10 +76,9 @@
           <wt-popover
             v-if="!leftGain.disabled"
           >
-            <template #activator="{ show, hide }">
+            <template #activator="{ toggle }">
               <div
-                @pointerenter="show"
-                @pointerleave="hide"
+                @click="toggle"
               >
                 <wt-icon-btn
                   :icon="leftGain.muted ? 'sound-off': 'sound-on'"
@@ -99,10 +98,9 @@
           <wt-popover
             v-if="!rightGain.disabled"
           >
-            <template #activator="{ show, hide }">
+            <template #activator="{ toggle }">
               <div
-                @pointerenter="show"
-                @pointerleave="hide"
+                @click="toggle"
               >
                 <wt-icon-btn
                   :icon="rightGain.muted ? 'sound-off': 'sound-on'"
