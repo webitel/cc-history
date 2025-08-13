@@ -1,9 +1,9 @@
 import { type RouteRecordRaw } from 'vue-router';
 
-import CallInfo from "../components/call-info/call-info.vue";
-import CallLegs from "../components/call-legs/call-legs.vue";
-import CallVisualization from "../components/call-visualization/call-visualization.vue";
-import TheCallView from '../components/the-call-view.vue';
+const TheCallView = () => import('../components/the-call-view.vue');
+const CallInfo = () => import('../components/call-info/call-info.vue');
+const CallLegs = () => import('../components/call-legs/call-legs.vue');
+const CallVisualization = () => import('../components/call-visualization/call-visualization.vue');
 
 const CALL_VIEW_NAME = 'call_view';
 
