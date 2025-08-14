@@ -90,6 +90,7 @@
               :max="2"
               :min="0"
               :step="0.01"
+              :width="130"
               :model-value="volumeLeftGain"
               @update:model-value="volumeLeftChangeHandler"
             />
@@ -112,6 +113,7 @@
               :max="2"
               :min="0"
               :step="0.01"
+              :width="130"
               :model-value="volumeRightGain"
               @update:model-value="volumeRightChangeHandler"
             />
