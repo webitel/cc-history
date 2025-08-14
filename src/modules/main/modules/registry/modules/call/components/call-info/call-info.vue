@@ -65,7 +65,7 @@
             <h3 class="call-info__title">
               {{ variable.key }}:
             </h3>
-            <span>{{ variable.value }}</span>
+            <span class="call-info__value">{{ variable.value }}</span>
           </li>
         </ul>
       </template>
