@@ -59,18 +59,23 @@
 </template>
 
 <script>
-import { mapActions, mapGetters,mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 import DashboardConfigPopup from './_internals/dashboard-config-popup/dashboard-config-popup.vue';
 import DashboardSelectPopup from './_internals/dashboard-select-popup/dashboard-select-popup.vue';
 import DashboardsHeader from './_internals/dashboards-header/dashboards-header.vue';
 import DashboardHeader from './dashboards/_internals/dashboard-header/dashboard-header.vue';
-import CallsByPeriodDashboard from './dashboards/CallsByPeriodDashboard/calls-by-period-dashboard.vue';
+import CallsByPeriodDashboard
+  from './dashboards/CallsByPeriodDashboard/calls-by-period-dashboard.vue';
 import CallsCountDashboard from './dashboards/CallsCountDashboard/calls-count-dashboard.vue';
-import CallsCountMetricDashboard from './dashboards/CallsCountMetricDashboard/calls-count-metric-dashboard.vue';
-import CallsCountVariableDashboard from './dashboards/CallsCountVariableDashboard/calls-count-variable-dashboard.vue';
-import CallsDurationDashboard from './dashboards/CallsDurationDashboard/calls-duration-dashboard.vue';
-import CallsDurationMetricDashboard from './dashboards/CallsDurationMetricDashboard/calls-duration-metric-dashboard.vue';
+import CallsCountMetricDashboard
+  from './dashboards/CallsCountMetricDashboard/calls-count-metric-dashboard.vue';
+import CallsCountVariableDashboard
+  from './dashboards/CallsCountVariableDashboard/calls-count-variable-dashboard.vue';
+import CallsDurationDashboard
+  from './dashboards/CallsDurationDashboard/calls-duration-dashboard.vue';
+import CallsDurationMetricDashboard
+  from './dashboards/CallsDurationMetricDashboard/calls-duration-metric-dashboard.vue';
 
 export default {
   name: 'HistoryDashboards',
