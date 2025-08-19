@@ -132,6 +132,15 @@
             {{ item.tags.join(', ') }}
           </div>
         </template>
+        <template #screencast="{ item }">
+          <video-action
+            v-if="item.files"
+            :currently-playing="currentlyPlaying"
+            :files="item.files"
+            @play="play"
+            @stop="closePlayer"
+          />
+        </template>
         <template
           v-for="header in variableHeaders"
           #[header.field]="{ item }"
@@ -215,6 +224,7 @@ import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
+import VideoAction from './table-templates/table-video-action.vue';
 
 const emit = defineEmits<{
   'toggle:filters-panel': [];

@@ -11,13 +11,12 @@
         @click="toggle"
       />
     </template>
-    <template #option="{ text, id, mimeType }">
+    <template #option="{ text, id }">
       <div class="table-media-action__option">
         <wt-icon
           :icon="id === currentlyPlaying ? 'stop' : 'play'"
         />
         {{ text }}
-        {{ getRecordingType(mimeType) }}
       </div>
     </template>
   </wt-context-menu>
@@ -26,8 +25,8 @@
 <script setup lang="ts">
 import { computed, defineProps, withDefaults } from 'vue';
 
-import { MediaType } from './types/mediaAction';
-import generateMediaURL from './utils/generateMediaURL';
+import { MediaType } from './types/mediaAction.ts';
+import { getRecordingType } from './utils/getRecordingType.ts';
 
 interface Props {
   files: unknown[],
@@ -38,32 +37,24 @@ const props = withDefaults(defineProps<Props>(), {
   currentlyPlaying: '',
 });
 
+const emit = defineEmits<{
+  (e: 'play', fileId: string): void;
+  (e: 'stop'): void;
+}>();
+
 const isAnyFilesPlaying = computed(() => props.files.some((file) => file.id === props.currentlyPlaying));
 const contextOptions = computed(() => props.files.map(({ name, id, mimeType }) => ({
   text: name,
   id,
   mimeType,
-})));
+})).filter((option) => getRecordingType(option.mimeType) !== MediaType.Video));
 
 const handleOptionSelect = ({ option }) => {
-  if (option.id && getRecordingType(option.mimeType) === MediaType.VIDEO) {
-    window.open(generateMediaURL(option.id), '_blank');
-    return;
-  }
-
   if (props.currentlyPlaying === option.id) {
     emit('stop');
   } else {
     emit('play', option.id);
   }
-};
-const getRecordingType = (mimeType: string): MediaType => {
-  if (mimeType.startsWith('audio/')) {
-    return MediaType.AUDIO;
-  } else if (mimeType.startsWith('video/')) {
-    return MediaType.VIDEO;
-  }
-  return MediaType.UNKNOWN;
 };
 </script>
 
