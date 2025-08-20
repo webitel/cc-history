@@ -138,6 +138,13 @@ export const headers: WtTableHeader[] = [
     field: 'duration',
   },
   {
+    value: 'screencast',
+    show: false,
+    sort: null,
+    field: 'screencast',
+    locale: 'vocabulary.screencast',
+  },
+  {
     value: 'tags',
     show: false,
     sort: null,

@@ -132,6 +132,15 @@
             {{ item.tags.join(', ') }}
           </div>
         </template>
+        <template #screencast="{ item }">
+          <video-action
+            v-if="item.files"
+            :currently-playing="currentlyPlaying"
+            :files="item.files"
+            @play="play"
+            @stop="closePlayer"
+          />
+        </template>
         <template
           v-for="header in variableHeaders"
           #[header.field]="{ item }"
@@ -187,7 +196,7 @@
 </template>
 
 <script lang="ts" setup>
-import {IconAction} from '@webitel/ui-sdk/enums';
+import { IconAction } from '@webitel/ui-sdk/enums';
 import {
   WtActionBar,
   WtBadge,
@@ -199,20 +208,23 @@ import {
   WtPlayer,
   WtTable,
 } from '@webitel/ui-sdk/src/components/index.js';
-import {useTableEmpty} from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js";
+import {
+  useTableEmpty,
+} from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js';
 import get from 'lodash/get';
-import {storeToRefs} from 'pinia';
-import {computed, ref} from 'vue';
-import {EngineHistoryCall} from "webitel-sdk";
+import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+import { EngineHistoryCall } from 'webitel-sdk';
 
-import VariableColumnSelect from "../../../../filters/components/variable-column-select.vue";
-import {SearchMode} from '../../../../filters/enums/SearchMode.ts';
-import {usePlayMedia} from '../composables/usePlayMedia.ts';
+import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
+import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
+import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
-import {useRegistryStore} from '../store/new/registry.store.ts';
+import { useRegistryStore } from '../store/new/registry.store.ts';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
+import VideoAction from './table-templates/table-video-action.vue';
 
 const emit = defineEmits<{
   'toggle:filters-panel': [];
@@ -296,10 +308,10 @@ const showItemStt = (item: EngineHistoryCall) => {
   return item.files || item.transcripts?.length || item.filesJob;
 };
 
-const handleTranscriptDelete = ({callId, transcript}: { callId: string, transcript }) => {
-  const call = dataList.value.find(({id}) => id === callId);
+const handleTranscriptDelete = ({ callId, transcript }: { callId: string, transcript }) => {
+  const call = dataList.value.find(({ id }) => id === callId);
   // should find transcript instead of indexOf cause transcript source is not that call
-  call.transcripts.splice(call.transcripts.findIndex(({id}) => id === transcript.id), 1);
+  call.transcripts.splice(call.transcripts.findIndex(({ id }) => id === transcript.id), 1);
 };
 
 const updateVariablesHeaders = (variables) => {

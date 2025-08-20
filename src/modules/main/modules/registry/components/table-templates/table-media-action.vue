@@ -5,9 +5,10 @@
     max-width="400px"
     @click="handleOptionSelect"
   >
-    <template #activator>
+    <template #activator="{ toggle }">
       <wt-icon-btn
         :icon="isAnyFilesPlaying ? 'stop': 'play'"
+        @click="toggle"
       />
     </template>
     <template #option="{ text, id }">
@@ -21,36 +22,39 @@
   </wt-context-menu>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed, defineProps, withDefaults } from 'vue';
 
-export default {
-  name: 'TableMediaAction',
-  props: {
-    files: {
-      type: Array,
-      required: true,
-    },
-    currentlyPlaying: {
-      type: String,
-    },
-  },
-  computed: {
-    isAnyFilesPlaying() {
-      return this.files.some((file) => file.id === this.currentlyPlaying);
-    },
-    contextOptions() {
-      return this.files.map(({ name, id }) => ({ text: name, id }));
-    },
-  },
-  methods: {
-    handleOptionSelect({ option }) {
-      if (this.currentlyPlaying === option.id) {
-        this.$emit('stop');
-      } else {
-        this.$emit('play', option.id);
-      }
-    },
-  },
+import { MediaType } from './types/mediaAction.ts';
+import { getRecordingType } from './utils/getRecordingType.ts';
+
+interface Props {
+  files: unknown[],
+  currentlyPlaying?: string,
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  currentlyPlaying: '',
+});
+
+const emit = defineEmits<{
+  (e: 'play', fileId: string): void;
+  (e: 'stop'): void;
+}>();
+
+const isAnyFilesPlaying = computed(() => props.files.some((file) => file.id === props.currentlyPlaying));
+const contextOptions = computed(() => props.files.map(({ name, id, mimeType }) => ({
+  text: name,
+  id,
+  mimeType,
+})).filter((option) => getRecordingType(option.mimeType) !== MediaType.Video));
+
+const handleOptionSelect = ({ option }) => {
+  if (props.currentlyPlaying === option.id) {
+    emit('stop');
+  } else {
+    emit('play', option.id);
+  }
 };
 </script>
 
