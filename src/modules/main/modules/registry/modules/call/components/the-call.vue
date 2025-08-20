@@ -1,21 +1,12 @@
 <template>
   <wt-page-wrapper :actions-panel="false">
     <template #header>
-      <wt-headline>
-        <template #title>
-          <wt-breadcrumb
-            :path="path"
-          />
-        </template>
-        <template #actions>
-          <wt-button
-            color="secondary"
-            @click="closeTab"
-          >
-            {{ $t('reusable.close') }}
-          </wt-button>
-        </template>
-      </wt-headline>
+      <wt-page-header
+        hide-primary
+        :secondary-action="closeTab"
+      >
+        <wt-breadcrumb :path="path" />
+      </wt-page-header>
     </template>
 
     <template #main>
