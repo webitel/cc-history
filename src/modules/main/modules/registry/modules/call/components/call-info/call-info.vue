@@ -126,13 +126,18 @@ export default {
       };
     },
     formFields() {
-      const finalArray = [];
+      const postProcessingData = [];
       if (this.call.forms) {
         this.call.forms.map((form) => {
           if (!isEmpty(form.form_fields)) {
-            const arrayVariables = [];
+            const variables = [];
 
             Object.keys(form.form_fields).forEach((key) => {
+              /*
+              * @Lera24
+              * convert this.call.forms from backend (examples key1: value1) to the form of
+              * {key: key1, value: value1} for convenient drawing in the layout
+              * */
               const transformedObj = { key, value: form.form_fields[key] };
               /*
               * https://my.webitel.com/browse/WTEL-3665
@@ -140,21 +145,21 @@ export default {
               * Need display only names separated by commas
               * */
               if (key === 'filesOutcome' || key === 'filesIncome') {
-                const arrayFilenames = JSON.parse(form.form_fields[key]).map((item) => item.name);
-                transformedObj.value = arrayFilenames.join(', ');
+                const filenames = JSON.parse(form.form_fields[key]).map((item) => item.name);
+                transformedObj.value = filenames.join(', ');
               }
-              arrayVariables.push(transformedObj);
+              variables.push(transformedObj);
             });
 
-            finalArray.push({
-              variables: [...arrayVariables],
+            postProcessingData.push({
+              variables,
               agent: form.agent,
             });
           }
         });
       }
-      if (this.agentDescription) finalArray.unshift({ variables: [...this.agentDescription] });
-      return finalArray;
+      if (this.agentDescription) postProcessingData.unshift({ variables: [...this.agentDescription] });
+      return postProcessingData;
     },
   },
 };
