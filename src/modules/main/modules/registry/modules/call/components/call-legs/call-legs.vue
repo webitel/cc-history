@@ -11,6 +11,7 @@
         :grid-actions="false"
         :headers="shownHeaders"
         :selectable="false"
+        :row-class="getRowClass"
       >
         <template #direction="{ item }">
           <table-direction :item="item" />
@@ -98,7 +99,7 @@
               icon="transfer-from"
               icon-prefix="hs"
               @mouseenter.native="highlightRow([item.transferFrom])"
-              @mouseleave.native="highlightRow([item.transferFrom])"
+              @mouseleave.native="highlightRow([item.transferFrom], true)"
             />
 
             <wt-icon
@@ -108,7 +109,7 @@
               icon="transfer-merge"
               icon-prefix="hs"
               @mouseenter.native="highlightRow([item.transferFrom, item.transferTo])"
-              @mouseleave.native="highlightRow([item.transferFrom, item.transferTo])"
+              @mouseleave.native="highlightRow([item.transferFrom, item.transferTo], true)"
             />
 
             <wt-icon
@@ -118,7 +119,7 @@
               icon="transfer-to"
               icon-prefix="hs"
               @mouseenter.native="highlightRow([item.transferTo])"
-              @mouseleave.native="highlightRow([item.transferTo])"
+              @mouseleave.native="highlightRow([item.transferTo], true)"
             />
           </div>
         </template>
@@ -231,19 +232,14 @@ export default {
       },
     }),
 
-    highlightRow(ids) {
-      ids.forEach((id) => {
-        const table = this.$refs['call-legs-table'];
-        const className = `wt-table__tr__${id}`;
-        const row = table.$el.querySelector(`.${className}`);
-        if (row) {
-          if (row.classList.contains('wt-table__tr--highlighted')) {
-            row.classList.remove('wt-table__tr--highlighted');
-          } else {
-            row.classList.add('wt-table__tr--highlighted');
-          }
-        }
-      });
+    highlightRow(ids, removeHighlight = false) {
+      this.tableData.forEach(row => {
+        row.highlighted = ids.includes(row.id) && !removeHighlight
+      })
+    },
+
+    getRowClass(row) {
+      return row.highlighted ? 'wt-table__tr--highlighted' : ''
     },
   },
   async created() {
