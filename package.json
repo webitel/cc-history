@@ -1,6 +1,6 @@
 {
   "name": "@webitel/history",
-  "version": "25.05.0",
+  "version": "25.08.0",
   "private": true,
   "scripts": {
     "dev": "vite",
