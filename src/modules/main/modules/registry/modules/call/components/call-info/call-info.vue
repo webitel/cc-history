@@ -58,14 +58,31 @@
       <template>
         <ul>
           <li
-            v-for="(variable, key) of formFields"
-            :key="key"
+            v-for="({ agent, variables }, idx) of formFields"
+            :key="idx"
             class="call-info__item"
           >
-            <h3 class="call-info__title">
-              {{ variable.key }}:
-            </h3>
-            <span class="call-info__value">{{ variable.value }}</span>
+            <div v-if="agent" class="call-info__title">
+              <wt-icon icon="agent"></wt-icon>
+              {{ agent.name }}
+            </div>
+
+            <ul>
+              <li
+                v-for="(variable, key) of variables"
+                :key="key"
+              >
+                <wt-divider v-if="key"></wt-divider>
+
+                <div class="call-info__inner">
+                  <h3 class="call-info__title">
+                    {{ variable.key }}:
+                  </h3>
+                  <span class="call-info__value">{{ variable.value }}</span>
+                </div>
+
+              </li>
+            </ul>
           </li>
         </ul>
       </template>
@@ -78,6 +95,8 @@
 </template>
 
 <script>
+import { isEmpty } from '@webitel/ui-sdk/scripts';
+
 export default {
   name: 'CallInfo',
   props: {
@@ -89,7 +108,7 @@ export default {
   computed: {
     variables() {
       return Object.keys(this.call.variables)
-        .map((key) => ({ key, value: this.call.variables[key] }));
+      .map((key) => ({ key, value: this.call.variables[key] }));
     },
     amdLogs() {
       return this.call.amdAiLogs && this.call.amdAiLogs.join(', ');
@@ -107,23 +126,40 @@ export default {
       };
     },
     formFields() {
-      let arrayValues = [];
-      if (this.call.form_fields) arrayValues = Object.keys(this.call.form_fields)
-        .map((key) => {
-          const transformedObj = { key, value: this.call.form_fields[key] };
-          /*
-          * https://my.webitel.com/browse/WTEL-3665
-          * For fields of type 'filesOutcome' and 'filesIncome' get full data about files.
-          * Need display only names separated by commas
-          * */
-          if (key === 'filesOutcome' || key === 'filesIncome') {
-            const arrayFilenames = JSON.parse(this.call.form_fields[key]).map((item) => item.name);
-            transformedObj.value = arrayFilenames.join(', ');
+      const postProcessingData = [];
+      if (this.call.forms) {
+        this.call.forms.map((form) => {
+          if (!isEmpty(form.form_fields)) {
+            const variables = [];
+
+            Object.keys(form.form_fields).forEach((key) => {
+              /*
+              * @Lera24
+              * convert this.call.forms from backend (examples key1: value1) to the form of
+              * {key: key1, value: value1} for convenient drawing in the layout
+              * */
+              const transformedObj = { key, value: form.form_fields[key] };
+              /*
+              * https://my.webitel.com/browse/WTEL-3665
+              * For fields of type 'filesOutcome' and 'filesIncome' get full data about files.
+              * Need display only names separated by commas
+              * */
+              if (key === 'filesOutcome' || key === 'filesIncome') {
+                const filenames = JSON.parse(form.form_fields[key]).map((item) => item.name);
+                transformedObj.value = filenames.join(', ');
+              }
+              variables.push(transformedObj);
+            });
+
+            postProcessingData.push({
+              variables,
+              agent: form.agent,
+            });
           }
-          return transformedObj;
         });
-      if (this.agentDescription) arrayValues.unshift(this.agentDescription);
-      return arrayValues;
+      }
+      if (this.agentDescription) postProcessingData.unshift({ variables: [...this.agentDescription] });
+      return postProcessingData;
     },
   },
 };
@@ -143,16 +179,14 @@ export default {
     border-radius: var(--spacing-2xs);
   }
 
-  &__item {
+  &__item,
+  &__inner {
     padding: var(--spacing-xs);
-
-    &:not(:last-child) {
-      border-bottom: 1px solid var(--secondary-color);
-    }
   }
 
   &__title {
     @extend %typo-subtitle-1;
+    padding: var(--spacing-xs);
     display: inline;
   }
 

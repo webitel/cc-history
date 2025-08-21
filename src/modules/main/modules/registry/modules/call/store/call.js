@@ -22,7 +22,7 @@ const REQUIRED_MAIN_CALL_FIELDS = [
   'amd_result',
   'rate_id',
   'allow_evaluation',
-  'form_fields',
+  'forms'
 ];
 const REQUIRED_DATA_FIELDS = [
   'id',
