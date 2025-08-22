@@ -20,7 +20,7 @@
     "@webitel/api-services": "^0.0.33",
     "@webitel/styleguide": "^24.12.44",
     "@webitel/ui-datalist": "^1.0.61",
-    "@webitel/ui-sdk": "~25.8",
+    "@webitel/ui-sdk": "~25.10",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "deep-copy": "^1.4.2",
