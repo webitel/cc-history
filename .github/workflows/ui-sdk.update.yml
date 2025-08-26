@@ -22,7 +22,7 @@ jobs:
 
         run: |
           npm ci
-          npm run utils:upd-lib
+          npm run utils:up-libs
 
       # Commit all changed files back to the repository
       - uses: stefanzweifel/git-auto-commit-action@v5

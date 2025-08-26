@@ -10,7 +10,7 @@
     "test:unit": "vitest",
     "utils:i": "npm install --install-links",
     "utils:link-libs": "npm link @webitel/api-services @webitel/ui-sdk @webitel/ui-datalist",
-    "utils:upd-lib": "npm up @webitel/ui-sdk && npm ls @webitel/ui-sdk"
+    "utils:up-libs": "npm up @webitel/ui-sdk && npm ls @webitel/ui-sdk"
   },
   "type": "module",
   "dependencies": {
