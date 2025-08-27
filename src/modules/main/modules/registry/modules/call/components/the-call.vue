@@ -1,5 +1,5 @@
 <template>
-  <wt-page-wrapper :actions-panel="false">
+  <wt-page-wrapper :actions-panel="false" :hide-header="viewMode">
     <template #header>
       <wt-page-header
         hide-primary
