@@ -70,6 +70,7 @@ const auditFormInfo = computed(() => [
 
     .audit-rate-summary-row__value {
       white-space: pre-wrap;
+      word-break: break-word;
     }
   }
 }
