@@ -65,13 +65,4 @@ describe.todo('Opened call history store', () => {
     expect(store.state.registry.call.mainCallId).toBe(null);
     expect(store.state.registry.call.legsData).toEqual([]);
   });
-  it('loads annotations from API', async () => {
-    const annotations = [];
-    RegistryAPIRepository.getHistory.mockImplementationOnce(() =>
-      Promise.resolve({ items: [{ annotations }] }),
-    );
-    await store.dispatch('registry/call/LOAD_MAIN_CALL_ANNOTATIONS');
-    expect(RegistryAPIRepository.getHistory).toHaveBeenCalled();
-    expect(store.state.registry.call.mainCallAnnotations).toEqual(annotations);
-  });
 });

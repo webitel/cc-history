@@ -14,34 +14,32 @@
   />
 </template>
 
-<script>
-import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
-import { mapGetters } from 'vuex';
+<script lang="ts" setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { WtApplication } from '@webitel/ui-sdk/enums';
 
 import AppHeader from './shared/app-header/app-header.vue';
+import { useRegistryStore } from '../../modules/main/modules/registry/store/new/registry.store';
 
-export default {
-  name: 'TheHistory',
-  components: {
-    AppHeader,
-  },
+const store = useStore();
 
-  computed: {
-    ...mapGetters('userinfo', {
-      checkAppAccess: 'CHECK_APP_ACCESS',
-    }),
-    hasAccess() {
-      return this.checkAppAccess(WebitelApplications.HISTORY);
-    },
-  },
+const checkAppAccess = computed(() => store.getters['userinfo/CHECK_APP_ACCESS']);
 
-  methods: {
-    goToApplicationHub() {
-      const adminUrl = import.meta.env.VITE_APPLICATION_HUB_URL;
-      window.location.href = adminUrl;
-    },
-  },
-};
+const hasAccess = computed(() => {
+  return checkAppAccess.value(WtApplication.History);
+});
+
+const historyTableStore = useRegistryStore();
+
+// [https://webitel.atlassian.net/browse/WTEL-6468]
+// Initialize field value to pass a new value to the loadList method, saved from the main table history
+historyTableStore.setupStore();
+
+function goToApplicationHub() {
+  const adminUrl = import.meta.env.VITE_APPLICATION_HUB_URL;
+  window.location.href = adminUrl;
+}
 </script>
 
 <style lang="scss" scoped>
