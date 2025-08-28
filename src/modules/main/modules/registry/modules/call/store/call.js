@@ -29,12 +29,12 @@ const REQUIRED_DATA_FIELDS = [
   'parent_id',
   'transfer_from',
   'transfer_to',
+  'annotations',
 ];
 
 const state = {
   mainCallId: null,
   mainCall: {},
-  mainCallAnnotations: [],
   fileId: null,
   legsData: [],
   isLoading: false,
@@ -79,6 +79,8 @@ const getters = {
     state.mainCall.transcripts ||
     state.mainCall.filesJob ||
     [].map(({ id }) => ({ id, name: id })),
+
+  CALL_ANNOTATIONS: (state) => state.mainCall.annotations || [],
 };
 
 const actions = {
@@ -100,10 +102,10 @@ const actions = {
     }
   },
 
-  LOAD_MAIN_CALL: async (context, { fields }) => {
+  LOAD_MAIN_CALL: async (context, { fields } = {}) => {
     context.commit('SET_LOADING', true);
     const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS();
-    params.fields = [...new Set([...params.fields, ...fields])];
+    params.fields = [...new Set([...params.fields, ...fields || []])];
     try {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
@@ -119,14 +121,6 @@ const actions = {
     } finally {
       context.commit('SET_LOADING', false);
     }
-  },
-
-  LOAD_MAIN_CALL_ANNOTATIONS: async (context, query = {}) => {
-    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS(query);
-    params.fields = ['annotations'];
-    const { items } = await historyAPI.getHistory(params);
-    const { annotations } = items[0];
-    context.commit('SET_MAIN_CALL_ANNOTATIONS', annotations);
   },
 
   SET_FILE_ID: (context, fileId) => {
@@ -148,12 +142,35 @@ const actions = {
     await context.dispatch('evaluation/RESET_EVALUATION_RESULT');
   },
 
-  ADD_ANNOTATION: async (context, annotation) =>
-    annotationsAPI.add({ itemInstance: annotation }),
-  EDIT_ANNOTATION: async (context, annotation) =>
-    annotationsAPI.update({ itemInstance: annotation }),
-  DELETE_ANNOTATION: async (context, annotation) =>
-    annotationsAPI.delete({ itemInstance: annotation }),
+  ADD_ANNOTATION: async (context, annotationDraft) => {
+    const responseAnnotation = await annotationsAPI.add({ itemInstance: annotationDraft });
+    context.commit('SET_MAIN_CALL', {
+      ...context.state.mainCall,
+      annotations: [...context.state.mainCall.annotations, responseAnnotation],
+    });
+  },
+  EDIT_ANNOTATION: async (context, annotationDraft) => {
+    const responseAnnotation = await annotationsAPI.update({ itemInstance: annotationDraft });
+    const editedAnnotationIndex = context.state.mainCall.annotations.findIndex((annotation) => annotation.id === annotationDraft.id);
+
+    if (editedAnnotationIndex !== -1) {
+      const newAnnotations = [...context.state.mainCall.annotations];
+      newAnnotations[editedAnnotationIndex] = responseAnnotation;
+      context.commit('SET_MAIN_CALL', {
+        ...context.state.mainCall,
+        annotations: newAnnotations,
+      });
+    } else {
+      await context.dispatch('LOAD_MAIN_CALL');
+    }
+  },
+  DELETE_ANNOTATION: async (context, annotationDraft) => {
+    const responseAnnotation = await annotationsAPI.delete({ itemInstance: annotationDraft });
+    context.commit('SET_MAIN_CALL', {
+      ...context.state.mainCall,
+      annotations: context.state.mainCall.annotations.filter((annotation) => annotation.id !== responseAnnotation.id),
+    });
+  },
 
   INITIALIZE_RECORDING_FILE: (context) =>
     context.dispatch(
@@ -168,10 +185,6 @@ const mutations = {
   SET_MAIN_CALL: (state, mainCall) => {
     state.mainCall = mainCall;
   },
-  SET_MAIN_CALL_ANNOTATIONS: (state, annotations) => {
-    state.mainCallAnnotations = annotations;
-  },
-
   SET_FILE_ID: (state, fileId) => {
     state.fileId = fileId;
   },
