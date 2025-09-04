@@ -160,8 +160,6 @@ export default {
       fields: registryTableFields,
     } = storeToRefs(tableStore);
 
-    const { initialize } = tableStore;
-
     const legsTableSpecificFields = [
       'id',
       'parent_id',
@@ -202,8 +200,6 @@ export default {
     return {
       shownHeaders,
       fields,
-
-      initialize,
     }
   },
 
@@ -243,9 +239,15 @@ export default {
     },
   },
   async created() {
-    // [https://webitel.atlassian.net/browse/WTEL-6468]
-    // Initialize field value to pass a new value to the loadList method, saved from the main table history
-    this.loadList({ fields: this.fields });
+    /*
+     init only once, if necessary. 
+     legsData resets on the-call.vue component unmount.
+
+     https://webitel.atlassian.net/browse/WTEL-7495
+     */
+    if (!this.legsData.length) {
+      this.loadList({ fields: this.fields });
+    }
   },
 };
 </script>
@@ -253,12 +255,12 @@ export default {
 <style lang="scss" scoped>
 
 // make 1st row (aka main parent) bold
-::v-deep .wt-table__row-wrap:first-child .wt-table__td > div {
+:deep(.wt-table__row-wrap:first-child .wt-table__td > div) {
   font-weight: 600;
 }
 
 // blinking animation to highlighted row
-::v-deep .wt-table__tr--highlighted {
+:deep(.wt-table__tr--highlighted) {
   animation: row-bg-blinking 1s linear infinite;
 }
 
@@ -276,7 +278,7 @@ export default {
 }
 
 // making row relative for leg marker positioning
-::v-deep .wt-table__tr {
+:deep(.wt-table__tr) {
   position: relative;
 }
 

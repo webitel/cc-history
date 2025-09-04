@@ -1,5 +1,4 @@
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
-import { mapActions } from 'vuex';
 
 const tooltipStyle = {
   minWidth: 0,
@@ -75,11 +74,8 @@ export default {
     showHolds: false,
   }),
   methods: {
-    ...mapActions('registry/call', { loadMainCall: 'LOAD_MAIN_CALL' }),
-
     async updateRegions() {
       this.closeCommentMode();
-      await this.loadAnnotations();
       this.redrawRegions();
     },
 

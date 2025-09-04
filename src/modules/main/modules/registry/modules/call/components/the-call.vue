@@ -1,5 +1,5 @@
 <template>
-  <wt-page-wrapper :actions-panel="false">
+  <wt-page-wrapper :actions-panel="false" :hide-header="viewMode">
     <template #header>
       <wt-page-header
         hide-primary
@@ -64,12 +64,8 @@ export default {
       fields,
     } = storeToRefs(tableStore);
 
-    const { initialize } = tableStore;
-
     return {
       fields,
-
-      initialize,
     }
   },
   data: () => ({
@@ -127,7 +123,6 @@ export default {
     },
   },
   async created() {
-    await this.initialize();
     this.setMainCall({ id: this.callId, fields: this.fields });
   },
   unmounted() {

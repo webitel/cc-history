@@ -301,10 +301,10 @@ export default {
 
   computed: {
     ...mapState('registry/call', {
-      annotations: (state) => state.mainCallAnnotations,
       file: (state) => state.selectedRecordingFile,
     }),
     ...mapGetters('registry/call', {
+      annotations: 'CALL_ANNOTATIONS',
       fileOptions: 'RECORDING_FILE_SELECT_OPTIONS',
     }),
     fileUrl() {
@@ -329,8 +329,6 @@ export default {
       addAnnotation: 'ADD_ANNOTATION',
       updateAnnotation: 'EDIT_ANNOTATION',
       deleteAnnotation: 'DELETE_ANNOTATION',
-      loadAnnotations: 'LOAD_MAIN_CALL_ANNOTATIONS',
-
       setFile: 'SET_RECORDING_FILE',
     }),
 
@@ -498,7 +496,6 @@ export default {
   },
   created() {
     this.initFilesExport({ filename: 'history-record' });
-    this.loadAnnotations();
   },
 
   mounted() {

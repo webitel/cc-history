@@ -64,6 +64,11 @@ const resetFilters = () => {
   filtersManager.value.reset({
     exclude: [...excludeNotDeletableFilters, 'search'],
   });
+
+  addFilter({
+    name: FilterOption.CreatedAt,
+    value: RelativeDatetimeValue.Today,
+  })
 };
 
 const applyPreset = (snapshot: string) => {
