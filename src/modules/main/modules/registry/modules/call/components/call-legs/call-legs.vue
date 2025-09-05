@@ -84,7 +84,6 @@
         <template #legMarker="{ item }">
           <wt-icon
             v-if="!item.parentId"
-            class="icon__leg-marker"
             icon="leg-a-marker"
             icon-prefix="hs"
             size="sm"
@@ -167,24 +166,28 @@ export default {
       'transfer_to',
     ];
 
+    const legMarkerHeader = [
+    {
+        value: 'legMarker',
+        show: true,
+        sort: null,
+        field: '',
+        width: '20px',
+      },
+    ];
+
     const legsTableSpecificShownHeaders = [
       {
         value: 'transfers',
         show: true,
         sort: null,
         field: 'transfer_from, transfer_to',
-      },
-      {
-        value: 'legMarker',
-        show: true,
-        sort: null,
-        field: '',
-        width: '0',
-      },
+      }
     ];
 
     const shownHeaders = computed(() => {
       return [
+        ...legMarkerHeader,
         ...registryTableShownHeaders.value,
         ...legsTableSpecificShownHeaders,
       ];
