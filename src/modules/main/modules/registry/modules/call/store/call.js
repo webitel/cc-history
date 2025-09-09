@@ -1,6 +1,8 @@
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
 
 import APIRepository from '../../../../../../../app/api/APIRepository';
+import { MediaType } from '../../../components/table-templates/types/mediaAction.js';
+import { getRecordingType } from '../../../components/table-templates/utils/getRecordingType.js';
 import { headers } from '../../../store/headers/headers';
 import evaluation from '../modules/call-audit/store/evaluation.js';
 
@@ -105,7 +107,7 @@ const actions = {
   LOAD_MAIN_CALL: async (context, { fields } = {}) => {
     context.commit('SET_LOADING', true);
     const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS();
-    params.fields = [...new Set([...params.fields, ...fields || []])];
+    params.fields = [...new Set([...params.fields, ...(fields || [])])];
     try {
       const { items } = await historyAPI.getHistory(params);
       const mainCall = items[0];
@@ -143,15 +145,21 @@ const actions = {
   },
 
   ADD_ANNOTATION: async (context, annotationDraft) => {
-    const responseAnnotation = await annotationsAPI.add({ itemInstance: annotationDraft });
+    const responseAnnotation = await annotationsAPI.add({
+      itemInstance: annotationDraft,
+    });
     context.commit('SET_MAIN_CALL', {
       ...context.state.mainCall,
       annotations: [...context.state.mainCall.annotations, responseAnnotation],
     });
   },
   EDIT_ANNOTATION: async (context, annotationDraft) => {
-    const responseAnnotation = await annotationsAPI.update({ itemInstance: annotationDraft });
-    const editedAnnotationIndex = context.state.mainCall.annotations.findIndex((annotation) => annotation.id === annotationDraft.id);
+    const responseAnnotation = await annotationsAPI.update({
+      itemInstance: annotationDraft,
+    });
+    const editedAnnotationIndex = context.state.mainCall.annotations.findIndex(
+      (annotation) => annotation.id === annotationDraft.id,
+    );
 
     if (editedAnnotationIndex !== -1) {
       const newAnnotations = [...context.state.mainCall.annotations];
@@ -165,18 +173,24 @@ const actions = {
     }
   },
   DELETE_ANNOTATION: async (context, annotationDraft) => {
-    const responseAnnotation = await annotationsAPI.delete({ itemInstance: annotationDraft });
+    const responseAnnotation = await annotationsAPI.delete({
+      itemInstance: annotationDraft,
+    });
     context.commit('SET_MAIN_CALL', {
       ...context.state.mainCall,
-      annotations: context.state.mainCall.annotations.filter((annotation) => annotation.id !== responseAnnotation.id),
+      annotations: context.state.mainCall.annotations.filter(
+        (annotation) => annotation.id !== responseAnnotation.id,
+      ),
     });
   },
 
-  INITIALIZE_RECORDING_FILE: (context) =>
-    context.dispatch(
-      'SET_RECORDING_FILE',
-      context.getters.RECORDING_FILE_SELECT_OPTIONS[0],
-    ),
+  INITIALIZE_RECORDING_FILE: (context) => {
+    const audioFiles = context.getters.RECORDING_FILE_SELECT_OPTIONS.filter(
+      (file) => getRecordingType(file.mimeType) !== MediaType.Video,
+    );
+
+    context.dispatch('SET_RECORDING_FILE', audioFiles[0]);
+  },
   SET_RECORDING_FILE: (context, file) =>
     context.commit('SET_RECORDING_FILE', file),
 };

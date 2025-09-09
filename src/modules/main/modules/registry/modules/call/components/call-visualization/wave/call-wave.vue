@@ -7,7 +7,7 @@
           :value="file"
           :clearable="false"
           :placeholder="$t('vocabulary.file')"
-          :options="fileOptions"
+          :options="audioFiles"
           track-by="id"
           @input="setFile"
         />
@@ -205,6 +205,10 @@ import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 
+import { MediaType } from '../../../../../components/table-templates/types/mediaAction.js';
+import {
+  getRecordingType,
+} from '../../../../../components/table-templates/utils/getRecordingType.js';
 import generateMediaURL from '../../../../../mixins/media/scripts/generateMediaURL';
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import regionsMixin from '../mixins/regionsMixin';
@@ -312,6 +316,9 @@ export default {
     },
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
+    },
+    audioFiles() {
+      return this.fileOptions.filter((file) => getRecordingType(file.mimeType) !== MediaType.Video);
     },
     callDuration() {
       return Math.round(this.player?.getDuration());
