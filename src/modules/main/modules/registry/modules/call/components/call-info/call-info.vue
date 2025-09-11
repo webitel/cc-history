@@ -159,11 +159,7 @@ export default {
         });
       }
       if (this.agentDescription) {
-        if(!postProcessingData.length) {
           postProcessingData.unshift({ variables: [this.agentDescription] });
-        } else {
-          postProcessingData.variables.unshift(this.agentDescription);
-        }
       }
       return postProcessingData;
     },
