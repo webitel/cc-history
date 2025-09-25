@@ -3,7 +3,7 @@
     <section class="table-section">
       <header class="table-title">
         <h3 class="table-title__title">
-          {{ t('registry.call.screenRecordings') }}
+          {{ t('objects.screenRecordings', 2) }}
         </h3>
         <wt-action-bar
           :include="[IconAction.REFRESH, IconAction.DELETE]"
@@ -50,11 +50,11 @@
             </template>
 
             <template #dateTime="{item}">
-                {{new Date(+item.startAt).toLocaleString()}}
+                {{prettifyTimestamp(item)}}
             </template>
 
             <template #recordingDuration="{item}">
-              {{ convertDuration(+item.stopAt - +item.startAt) }}
+              {{ calcDuration(item) }}
             </template>
 
             <template #actions="{ item }">
@@ -120,6 +120,10 @@ const isLoading = computed(() => {
 const loadDataList = () => {
   store.dispatch(`${props.namespace}/LOAD_MAIN_CALL`);
 };
+
+const prettifyTimestamp = (item) => new Date(+item.startAt).toLocaleString()
+
+const calcDuration = (item) => convertDuration(+item.stopAt - +item.startAt)
 
 const handleDelete = async (items: []) => {
   const deleteIds = items.map(item => item.id)

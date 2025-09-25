@@ -116,7 +116,7 @@ const actions = {
       context.commit('SET_MAIN_CALL', mainCall);
       if (!state.fileId && mainCall.files) {
         await context.dispatch('SET_FILE_ID', mainCall.files[0].id);
-        await context.dispatch('SET_SCREENRECORDINGS_FILES', mainCall.files);
+        await context.dispatch('SET_SCREEN_RECORDINGS_FILES', mainCall.files);
       }
       if (context.getters.RECORDING_FILE_SELECT_OPTIONS) {
         // we should initialize recording file before opening "call visualization" tab
@@ -197,9 +197,9 @@ const actions = {
   SET_RECORDING_FILE: (context, file) =>
     context.commit('SET_RECORDING_FILE', file),
 
-  SET_SCREENRECORDINGS_FILES: (context, mainCallFiles) => {
+  SET_SCREEN_RECORDINGS_FILES: (context, mainCallFiles) => {
     const files = mainCallFiles.filter((file) => file.channel === MediaChannel.ScreenSharing);
-    context.commit('SET_SCREENRECORDINGS_FILES', files)
+    context.commit('SET_SCREEN_RECORDINGS_FILES', files)
   },
 };
 
@@ -246,7 +246,7 @@ const mutations = {
     state.selectedRecordingFile = file;
   },
 
-  SET_SCREENRECORDINGS_FILES: (state, files) => {
+  SET_SCREEN_RECORDINGS_FILES: (state, files) => {
     state.screenRecordingsFiles = files;
   },
 };

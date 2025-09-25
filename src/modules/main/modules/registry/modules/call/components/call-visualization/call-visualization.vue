@@ -70,7 +70,7 @@ export default {
           namespace: `${this.namespace}/evaluation`,
         },
         SCREEN_RECORDINGS: {
-          text: this.$t('registry.call.screenRecordings'),
+          text: this.$t('objects.screenRecordings', 2),
           value: 'call-screen-recordings',
           namespace: this.namespace,
         }
