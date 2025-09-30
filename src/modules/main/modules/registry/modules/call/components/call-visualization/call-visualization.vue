@@ -24,6 +24,7 @@ import { WtObject } from '@webitel/ui-sdk/enums';
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallAuditSection from '../../modules/call-audit/components/call-audit-section.vue';
+import ScreenRecordings from './screen-recordings/screen-recordings.vue';
 import CallWave from './wave/call-wave.vue';
 
 export default {
@@ -32,6 +33,7 @@ export default {
     CallWave,
     CallTranscript,
     CallEvaluation: CallAuditSection,
+    CallScreenRecordings: ScreenRecordings,
   },
   props: {
     call: {
@@ -67,12 +69,17 @@ export default {
           value: 'call-evaluation',
           namespace: `${this.namespace}/evaluation`,
         },
+        SCREEN_RECORDINGS: {
+          text: this.$t('objects.screenRecordings', 2),
+          value: 'call-screen-recordings',
+          namespace: this.namespace,
+        }
       };
     },
     tabs() {
       return (this.call.allowEvaluation && this.hasEvaluationReadAccess)
-        ? [this.tabValues.TRANSCRIPT, this.tabValues.EVALUATION]
-        : [this.tabValues.TRANSCRIPT];
+        ? [this.tabValues.TRANSCRIPT, this.tabValues.EVALUATION, this.tabValues.SCREEN_RECORDINGS]
+        : [this.tabValues.TRANSCRIPT, this.tabValues.SCREEN_RECORDINGS];
     },
   },
   created() {
