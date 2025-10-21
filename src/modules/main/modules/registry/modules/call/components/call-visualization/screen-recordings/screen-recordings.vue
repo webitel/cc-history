@@ -165,7 +165,6 @@ const {
 });
 
 const openVideo = (item) => {
-  console.log('open')
   currentVideo.value = item
   isVideoOpen.value = true
 }
