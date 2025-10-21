@@ -1,4 +1,12 @@
 <template>
+  <wt-vidstack-player 
+    v-if="isVideoOpen"
+    closable
+    :src="getScreenRecordingMediaUrl(currentVideo.id)"
+    :title="currentVideo.name"
+    :mime="currentVideo.mime_type"
+    @close="closeVideo"
+  />
   <div class="table-page">
     <section class="table-section">
       <header class="table-title">
@@ -46,7 +54,9 @@
               width="48px" 
               overlay-icon="play" 
               :src="getScreenRecordingMediaUrl(item.id, true)" 
-              alt="" />
+              alt="" 
+              @click="openVideo(item)"
+            />
           </template>
 
           <template #dateTime="{item}">
@@ -84,7 +94,7 @@ import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedS
 import { useRegistryStore } from '../../../../../store/new/registry.store.js';
 import { useStore } from 'vuex';
 import { IconAction } from '@webitel/ui-sdk/enums';
-import { WtEmpty } from '@webitel/ui-sdk/components';
+import { WtEmpty, WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
@@ -111,6 +121,9 @@ const dataList = computed(() => {
 const error = ref('')
 
 const selected = ref([])
+
+const currentVideo = ref(null)
+const isVideoOpen = ref(false)
 
 const isLoading = computed(() => {
   return getNamespacedState(store.state, props.namespace).isLoading
@@ -150,4 +163,14 @@ const {
   dataList,
   error,
 });
+
+const openVideo = (item) => {
+  currentVideo.value = item
+  isVideoOpen.value = true
+}
+
+const closeVideo = () => {
+  currentVideo.value = null
+  isVideoOpen.value = false
+}
 </script>
