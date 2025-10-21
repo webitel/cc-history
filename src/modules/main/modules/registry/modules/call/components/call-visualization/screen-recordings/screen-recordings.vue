@@ -15,6 +15,7 @@
         </h3>
         <wt-action-bar
           :include="[IconAction.REFRESH, IconAction.DELETE]"
+          :disabled:delete="!selected.length"
           @click:refresh="loadDataList"
           @click:delete="
             askDeleteConfirmation({
