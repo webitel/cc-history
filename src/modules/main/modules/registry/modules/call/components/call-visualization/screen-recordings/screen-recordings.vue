@@ -122,7 +122,7 @@ const error = ref('')
 
 const selected = ref([])
 
-const currentVideo = ref()
+const currentVideo = ref(null)
 const isVideoOpen = ref(false)
 
 const isLoading = computed(() => {
