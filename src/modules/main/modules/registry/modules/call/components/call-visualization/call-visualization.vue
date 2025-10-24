@@ -32,11 +32,7 @@ import { useUserinfoStore } from '../../../../../../../userinfo/store/userinfoSt
 import { SpecialGlobalAction } from '@webitel/ui-sdk/src/modules/Userinfo/v2/enums/index';
 
 interface Props {
-  call: {
-    files?: unknown;
-    allowEvaluation?: boolean;
-    [key: string]: unknown;
-  };
+  call: any;
   namespace?: string;
 }
 
