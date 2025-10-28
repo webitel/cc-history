@@ -11,6 +11,7 @@ import WebitelUi from './app/plugins/webitel-ui';
 import router from './app/router';
 import store from './app/store';
 import { useUserinfoStore } from './modules/userinfo/store/userinfoStore';
+import { useUserSettings } from './modules/userinfo/store/userSettingsStore';
 import App from './the-app.vue';
 
 const setTokenFromUrl = () => {
@@ -50,8 +51,11 @@ const initApp = async () => {
     .use(...WebitelUi);
 
   const { initialize, routeAccessGuard } = useUserinfoStore();
+  const { initialize: initializeSettings } = useUserSettings();
+
   try {
     await initialize();
+    await initializeSettings();
     createUserAccessControl(useUserinfoStore);
     router.beforeEach(routeAccessGuard);
   } catch (err) {

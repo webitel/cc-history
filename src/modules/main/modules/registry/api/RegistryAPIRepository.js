@@ -14,22 +14,38 @@ import configuration from '../../../../../app/api/openAPIConfig';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
+const getUserTimezone = () => {
+  try {
+    const { timezone } = JSON.parse(localStorage.getItem('timezone'));
+    const [timezoneId] = timezone.name.split(' ');
+    return timezoneId;
+  } catch {
+    return 'UTC';
+  }
+};
+
 const computeDate = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleDateString();
+  return date.toLocaleDateString(undefined, {
+    timeZone: getUserTimezone(),
+  });
 };
 
 const computeTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleTimeString();
+  return date.toLocaleTimeString(undefined, {
+    timeZone: getUserTimezone(),
+  });
 };
 
 const computeDateAndTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleString('en-GB');
+  return date.toLocaleString('en-GB', {
+    timeZone: getUserTimezone(),
+  });
 };
 
 const mapDefaultComments = (item) => {
