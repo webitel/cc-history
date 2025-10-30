@@ -6,6 +6,7 @@ import applyTransform, {
 } from '@webitel/ui-sdk/api/transformers/index';
 import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
+import { TIMEZONE_STORAGE_KEY } from '@webitel/ui-sdk/src/modules/UserSettings/constants/UserSettingsConstants';
 import { startOfToday } from 'date-fns';
 import { CallServiceApiFactory } from 'webitel-sdk';
 
@@ -16,9 +17,7 @@ const callService = new CallServiceApiFactory(configuration, '', instance);
 
 const getUserTimezone = () => {
   try {
-    const { timezone } = JSON.parse(localStorage.getItem('timezone'));
-    const [timezoneId] = timezone.name.split(' ');
-    return timezoneId;
+    return localStorage.getItem(TIMEZONE_STORAGE_KEY);
   } catch {
     return 'UTC';
   }
