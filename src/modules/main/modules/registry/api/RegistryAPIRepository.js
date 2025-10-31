@@ -173,7 +173,7 @@ const getList =
         page,
         size,
         sort,
-        fields: ['id', 'files', 'files_job', 'transcripts', ...fields],
+        fields: ['id', 'files', 'files_job', 'transcripts', 'screencast', ...fields],
         created_at: setupCreatedAt(createdAt),
         user_id: user,
         agent_id: agent,

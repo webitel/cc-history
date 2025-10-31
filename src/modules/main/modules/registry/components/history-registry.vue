@@ -140,6 +140,7 @@
             :files="item.files"
             @play="play"
             @stop="closePlayer"
+            @set-video="setVideo"
           />
         </template>
         <template
@@ -192,11 +193,21 @@
         @close="closePlayer"
         @play="isPlayingNow = true"
       />
+
     </div>
   </div>
+
+  <wt-vidstack-player
+    v-if="currentVideo"
+    closable
+    :src="currentVideo.video"
+    :title="currentVideo.text"
+    @close="closeVideo"
+  />
 </template>
 
 <script lang="ts" setup>
+import { getScreenRecordingMediaUrl } from '@webitel/api-services/api';
 import { IconAction } from '@webitel/ui-sdk/enums';
 import {
   WtActionBar,
@@ -319,6 +330,22 @@ const updateVariablesHeaders = (variables) => {
   const mainHeaders = headers?.value.filter((header) => !header.value.includes('variables.'));
   updateShownHeaders([...mainHeaders, ...variables]);
 };
+
+const currentVideo = ref<null>(null)
+const isVideoOpen = ref(false)
+
+const closeVideo = () => {
+  currentVideo.value = null
+  isVideoOpen.value = false
+}
+const setVideo = async (data) => {
+  currentVideo.value = data
+  currentVideo.value.video = await getScreenRecordingMediaUrl(data.id)
+
+  setTimeout(() => {
+    isVideoOpen.value = true
+  }, 500)
+}
 </script>
 
 <style lang="scss" scoped>
