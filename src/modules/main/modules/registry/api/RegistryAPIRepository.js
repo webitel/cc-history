@@ -6,6 +6,7 @@ import applyTransform, {
 } from '@webitel/ui-sdk/api/transformers/index';
 import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
+import { TIMEZONE_STORAGE_KEY } from '@webitel/ui-sdk/src/modules/UserSettings/constants/UserSettingsConstants';
 import { startOfToday } from 'date-fns';
 import { CallServiceApiFactory } from 'webitel-sdk';
 
@@ -14,22 +15,36 @@ import configuration from '../../../../../app/api/openAPIConfig';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
+const getUserTimezone = () => {
+  try {
+    return localStorage.getItem(TIMEZONE_STORAGE_KEY);
+  } catch {
+    return 'UTC';
+  }
+};
+
 const computeDate = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleDateString();
+  return date.toLocaleDateString(undefined, {
+    timeZone: getUserTimezone(),
+  });
 };
 
 const computeTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleTimeString();
+  return date.toLocaleTimeString(undefined, {
+    timeZone: getUserTimezone(),
+  });
 };
 
 const computeDateAndTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleString('en-GB');
+  return date.toLocaleString('en-GB', {
+    timeZone: getUserTimezone(),
+  });
 };
 
 const mapDefaultComments = (item) => {
