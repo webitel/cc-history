@@ -136,7 +136,7 @@ const loadDataList = () => {
 
 const prettifyTimestamp = (item) => new Date(+item.startAt).toLocaleString()
 
-const calcDuration = (item) => convertDuration(+item.stopAt - +item.startAt)
+const calcDuration = (item) => convertDuration(Math.floor((Number(item.stopAt) - Number(item.startAt)) / 1000))
 
 const handleDelete = async (items: []) => {
   const deleteIds = items.map(item => item.id)
