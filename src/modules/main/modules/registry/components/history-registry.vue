@@ -219,6 +219,7 @@ import {
   WtPagination,
   WtPlayer,
   WtTable,
+  WtVidstackPlayer,
 } from '@webitel/ui-sdk/src/components/index.js';
 import {
   useTableEmpty,
@@ -331,20 +332,17 @@ const updateVariablesHeaders = (variables) => {
   updateShownHeaders([...mainHeaders, ...variables]);
 };
 
-const currentVideo = ref<null>(null)
+const currentVideo = ref(null)
 const isVideoOpen = ref(false)
 
 const closeVideo = () => {
   currentVideo.value = null
   isVideoOpen.value = false
 }
-const setVideo = async (data) => {
+const setVideo = (data) => {
   currentVideo.value = data
-  currentVideo.value.video = await getScreenRecordingMediaUrl(data.id)
-
-  setTimeout(() => {
-    isVideoOpen.value = true
-  }, 500)
+  currentVideo.value.video = getScreenRecordingMediaUrl(data.id)
+  isVideoOpen.value = true
 }
 </script>
 
