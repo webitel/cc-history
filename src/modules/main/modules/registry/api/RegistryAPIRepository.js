@@ -6,7 +6,7 @@ import applyTransform, {
 } from '@webitel/ui-sdk/api/transformers/index';
 import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
-import { TIMEZONE_STORAGE_KEY } from '@webitel/ui-sdk/src/modules/UserSettings/constants/UserSettingsConstants';
+import { TIMEZONE_STORAGE_KEY } from '@webitel/ui-sdk/src/modules/Userinfo/v2/constants/UserSettingsConstants';
 import { startOfToday } from 'date-fns';
 import { CallServiceApiFactory } from 'webitel-sdk';
 
