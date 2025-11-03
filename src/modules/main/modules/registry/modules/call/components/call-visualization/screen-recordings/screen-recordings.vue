@@ -1,5 +1,5 @@
 <template>
-  <wt-vidstack-player 
+  <wt-vidstack-player
     v-if="isVideoOpen"
     closable
     :src="getScreenRecordingMediaUrl(currentVideo.id)"
@@ -25,36 +25,36 @@
         >
         </wt-action-bar>
       </header>
-  
+
       <delete-confirmation-popup
         :shown="isDeleteConfirmationPopup"
         :callback="deleteCallback"
         :delete-count="deleteCount"
         @close="closeDelete"
       />
-  
+
       <div class="table-section__table-wrapper">
         <wt-empty
           v-show="showEmpty"
           :image="imageEmpty"
           :text="textEmpty"
         />
-  
+
         <wt-loader v-show="isLoading" />
-  
+
         <wt-table
           v-show="dataList.length && !isLoading"
+          v-model:selected="selected"
           :data="dataList"
           :headers="headers"
           sortable
-          v-model:selected="selected"
         >
           <template #screenRecordings="{ item }">
-            <wt-image 
-              width="48px" 
-              overlay-icon="play" 
-              :src="getScreenRecordingMediaUrl(item.id, true)" 
-              alt="" 
+            <wt-image
+              width="48px"
+              overlay-icon="play"
+              :src="getScreenRecordingMediaUrl(item.id, true)"
+              alt=""
               @click="openVideo(item)"
             />
           </template>
@@ -89,20 +89,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
-import { useRegistryStore } from '../../../../../store/new/registry.store.js';
-import { useStore } from 'vuex';
-import { IconAction } from '@webitel/ui-sdk/enums';
+import { FileServicesAPI } from '@webitel/api-services/api';
+import { downloadFile, getScreenRecordingMediaUrl } from '@webitel/api-services/api';
 import { WtEmpty, WtVidstackPlayer } from '@webitel/ui-sdk/components';
+import { IconAction } from '@webitel/ui-sdk/enums';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
-import { useI18n } from 'vue-i18n';
-import { headers } from './store/headers/headers.js';
-import { FileServicesAPI } from '@webitel/api-services/api';
-import { downloadFile, getScreenRecordingMediaUrl } from '@webitel/api-services/api'; 
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
+
+import { useRegistryStore } from '../../../../../store/new/registry.store.js';
+import { headers } from './store/headers/headers.js';
 
 const props = defineProps({
   namespace: {
