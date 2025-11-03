@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { EMPTY_SYMBOL } from '@webitel/ui-sdk/utils';
-import {computed, defineEmits, defineProps} from 'vue';
+import { computed, defineEmits, defineProps } from 'vue';
 
 import { MediaType } from './types/mediaAction';
 import { getRecordingType } from './utils/getRecordingType.ts';
