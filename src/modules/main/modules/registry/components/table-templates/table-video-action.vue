@@ -30,10 +30,9 @@
 
 <script setup lang="ts">
 import { EMPTY_SYMBOL } from '@webitel/ui-sdk/utils';
-import { computed, defineProps } from 'vue';
+import { computed, defineEmits, defineProps } from 'vue';
 
 import { MediaType } from './types/mediaAction';
-import generateMediaURL from './utils/generateMediaURL';
 import { getRecordingType } from './utils/getRecordingType.ts';
 
 interface Props {
@@ -42,15 +41,20 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const emit = defineEmits<{
+  (e: 'set-video', val: unknown): void;
+}>();
+
 const contextOptions = computed(() => props.files.map(({ name, id, mimeType }) => ({
   text: name,
   id,
   mimeType,
 })).filter((option) => getRecordingType(option.mimeType) === MediaType.Video));
 
+
 const handleOptionSelect = ({ option }) => {
   if (option.id && getRecordingType(option.mimeType) === MediaType.Video) {
-    window.open(generateMediaURL(option.id), '_blank');
+    emit('set-video', option)
     return;
   }
 };
