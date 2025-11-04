@@ -53,17 +53,17 @@ jobs:
                   git commit -m "chore: bump version to ${{ steps.version.outputs.full_version }}"
                   git push -u origin ${{ steps.version.outputs.version_tag }}
 
-            - name: Create and push tag
-              run: |
-                  git tag ${{ steps.version.outputs.version_tag }}
-                  git push origin ${{ steps.version.outputs.version_tag }}
-
             - name: Merge release branch to default branch (keep branch)
               run: |
                   git checkout ${{ github.event.repository.default_branch }}
                   git merge ${{ steps.version.outputs.version_tag }} --no-ff
                   git push origin ${{ github.event.repository.default_branch }}
                   # Note: Release branch is kept and not deleted
+
+            - name: Create and push tag (after merge)
+              run: |
+                  git tag ${{ steps.version.outputs.version_tag }}
+                  git push --tags
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
