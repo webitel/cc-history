@@ -183,12 +183,11 @@ export default {
 
   &__item,
   &__inner {
-    padding: var(--spacing-xs);
+    padding: var(--spacing-xs) 0;
   }
 
   &__title {
     @extend %typo-subtitle-1;
-    padding: var(--spacing-xs);
     display: inline;
   }
 
