@@ -33,12 +33,16 @@ jobs:
             - name: Set version variables
               id: version
               run: |
-                  echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
-                  echo "version_tag=v${{ inputs.version }}" >> $GITHUB_OUTPUT
+                  VERSION="${{ inputs.version }}"
+                  # Extract major.minor (strip patch version)
+                  BRANCH_VERSION=$(echo "$VERSION" | cut -d. -f1,2)
+                  echo "version=$VERSION" >> $GITHUB_OUTPUT
+                  echo "version_tag=v$VERSION" >> $GITHUB_OUTPUT
+                  echo "branch_name=v$BRANCH_VERSION" >> $GITHUB_OUTPUT
 
             - name: Create release branch
               run: |
-                  git checkout -b ${{ steps.version.outputs.version_tag }}
+                  git checkout -b ${{ steps.version.outputs.branch_name }}
 
             - name: Update version in package.json
               run: npm version ${{ steps.version.outputs.version }} --no-git-tag-version
@@ -47,18 +51,17 @@ jobs:
               run: |
                   git add package.json
                   git commit -m "chore: bump version to ${{ steps.version.outputs.version }}"
-                  git push -u origin ${{ steps.version.outputs.version_tag }}
+                  git push -u origin ${{ steps.version.outputs.branch_name }}
 
             - name: Create and push tag
-              uses: rickstaa/action-create-tag@v1
-              with:
-                  tag: ${{ steps.version.outputs.version_tag }}
-                  message: "Release ${{ steps.version.outputs.version_tag }}"
+              run: |
+                  git tag ${{ steps.version.outputs.version_tag }}
+                  git push origin ${{ steps.version.outputs.version_tag }}
 
             - name: Merge release branch to main
               run: |
                   git checkout ${{ github.event.repository.default_branch }}
-                  git merge ${{ steps.version.outputs.version_tag }} --no-ff
+                  git merge ${{ steps.version.outputs.branch_name }} --no-ff
                   git push origin ${{ github.event.repository.default_branch }}
 
             - name: Create GitHub Release
