@@ -105,7 +105,7 @@ export default {
     },
     tabs() {
       const tabs = [this.tabValues.INFO];
-      const audioExists = this.mainCall.files.find((file) => file.channel === MediaChannel.Call)
+      const audioExists = this.mainCall?.files?.find((file) => file.channel === MediaChannel.Call)
 
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
       if ((this.mainCall.files?.length || this.mainCall.transcripts?.length
