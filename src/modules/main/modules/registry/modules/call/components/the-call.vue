@@ -126,7 +126,7 @@ export default {
     },
   },
   async created() {
-    this.setMainCall({ id: this.callId, fields: this.fields });
+    this.setMainCall({ id: this.callId, fields: this.fields, skipParent: false });
   },
   unmounted() {
     this.resetMainCall();
