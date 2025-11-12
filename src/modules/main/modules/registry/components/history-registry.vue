@@ -135,7 +135,6 @@
         </template>
         <template #screencast="{ item }">
           <video-action
-            v-if="item.files"
             :currently-playing="currentlyPlaying"
             :files="item.files"
             @play="play"
