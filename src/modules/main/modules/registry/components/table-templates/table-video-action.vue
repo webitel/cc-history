@@ -8,7 +8,7 @@
     >
       <template #activator="{ toggle }">
         <wt-icon-btn
-          v-if="contextOptions.length"
+          v-if="contextOptions?.length"
           icon="preview-tag-video"
           @click="toggle"
         />
@@ -23,7 +23,7 @@
       </template>
     </wt-context-menu>
     <p>
-      {{ contextOptions.length || EMPTY_SYMBOL }}
+      {{ contextOptions?.length || EMPTY_SYMBOL }}
     </p>
   </div>
 </template>
@@ -45,7 +45,7 @@ const emit = defineEmits<{
   (e: 'set-video', val: unknown): void;
 }>();
 
-const contextOptions = computed(() => props.files.map(({ name, id, mimeType }) => ({
+const contextOptions = computed(() => props?.files?.map(({ name, id, mimeType }) => ({
   text: name,
   id,
   mimeType,
