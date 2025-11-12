@@ -106,9 +106,9 @@ const actions = {
     }
   },
 
-  LOAD_MAIN_CALL: async (context, { fields } = {}) => {
+  LOAD_MAIN_CALL: async (context, { fields, skipParent } = {}) => {
     context.commit('SET_LOADING', true);
-    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS();
+    const params = await context.getters.GET_MAIN_CALL_REQUEST_PARAMS({ skipParent });
     params.fields = [...new Set([...params.fields, ...(fields || [])])];
     try {
       const { items } = await historyAPI.getHistory(params);
