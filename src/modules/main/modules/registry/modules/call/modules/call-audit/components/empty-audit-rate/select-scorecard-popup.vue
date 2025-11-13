@@ -69,6 +69,7 @@ export default {
       fields: ['id', 'name', 'questions'],
       enabled: true,
       active: true,
+      teamFilter: true,
     }),
   },
 };
