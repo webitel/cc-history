@@ -162,6 +162,7 @@ export default {
     from: 'De',
     to: 'Para',
     dateTime: 'Fecha y hora:',
+    createdAt: 'Fecha y hora',
     gateway: 'Pasarela',
     queue: 'Cola',
     team: 'Equipo',

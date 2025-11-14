@@ -161,6 +161,7 @@ export default {
     from: 'Từ',
     to: 'Đến',
     dateTime: 'Ngày & giờ:',
+    createdAt: 'Ngày & giờ',
     gateway: 'Cổng',
     queue: 'Hàng đợi',
     team: 'Nhóm',

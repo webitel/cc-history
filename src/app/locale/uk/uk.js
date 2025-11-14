@@ -159,6 +159,7 @@ export default {
     from: 'Номер від',
     to: 'Номер кому',
     dateTime: 'Дата и Час:',
+    createdAt: 'Дата і час',
     gateway: 'Шлюз',
     queue: 'Черга',
     team: 'Команда',
