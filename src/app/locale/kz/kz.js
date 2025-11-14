@@ -162,7 +162,6 @@ export default {
     from: 'Нөмір кімнен ',
     to: 'Нөмір кімге',
     dateTime: 'Күні мен уақыты:',
-    createdAt: 'Күні мен уақыты',
     gateway: 'Шлюз',
     queue: 'Кезек',
     team: 'Команда',

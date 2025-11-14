@@ -162,7 +162,6 @@ export default {
     from: 'De la',
     to: 'Către',
     dateTime: 'Dată & Oră:',
-    createdAt: 'Dată și oră',
     gateway: 'Gateway',
     queue: 'Coadă',
     team: 'Echipă',
