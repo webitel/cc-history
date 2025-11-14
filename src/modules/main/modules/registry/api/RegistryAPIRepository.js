@@ -63,8 +63,9 @@ const transformResponseItems = (items) => {
   return items.map((item) => ({
     ...defaultObject,
     ...item,
-    date: computeDate(item.createdAt),
-    time: computeTime(item.createdAt),
+    createdAt: item.createdAt
+      ? new Date(+item.createdAt).toLocaleString()
+      : null,
     bridgedAt: computeTime(item.bridgedAt),
     queueBridgedAt: computeTime(item.queueBridgedAt),
     createdAt: computeDateAndTime(item.createdAt),

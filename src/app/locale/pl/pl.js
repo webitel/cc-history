@@ -161,6 +161,7 @@ export default {
     from: 'Od',
     to: 'Do',
     dateTime: 'Data i godzina:',
+    createdAt: 'Data i godzina',
     gateway: 'Bramka',
     queue: 'Kolejka',
     team: 'Zespół',
