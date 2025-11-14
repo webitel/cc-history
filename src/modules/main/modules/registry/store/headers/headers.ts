@@ -2,16 +2,11 @@ import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtT
 
 export const headers: WtTableHeader[] = [
   {
-    value: 'date',
+    value: 'createdAt',
     show: true,
     sort: null,
     field: 'created_at',
-  },
-  {
-    value: 'time',
-    show: true,
-    sort: null,
-    field: 'created_at',
+    locale: 'reusable.dateTime',
   },
   {
     value: 'direction',

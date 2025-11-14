@@ -12,7 +12,7 @@ export default {
     both: 'Both',
     logs: 'Log | Logs',
     display: 'Display',
-  },
+  }, 
   confirmDelete: {
     title: 'Delete confirmation',
     askConfirmation:
