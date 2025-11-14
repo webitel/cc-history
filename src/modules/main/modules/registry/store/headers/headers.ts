@@ -6,6 +6,7 @@ export const headers: WtTableHeader[] = [
     show: true,
     sort: null,
     field: 'created_at',
+    locale: 'reusable.dateTime',
   },
   {
     value: 'direction',

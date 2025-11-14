@@ -12,8 +12,7 @@ export default {
     both: 'Both',
     logs: 'Log | Logs',
     display: 'Display',
-    createdAt: 'Date & time',
-  },
+  }, 
   confirmDelete: {
     title: 'Delete confirmation',
     askConfirmation:
@@ -163,7 +162,6 @@ export default {
     from: 'From',
     to: 'To',
     dateTime: 'Date & Time:',
-    createdAt: 'Date & time',
     gateway: 'Gateway',
     queue: 'Queue',
     team: 'Team',

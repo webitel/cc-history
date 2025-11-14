@@ -159,7 +159,6 @@ export default {
     from: 'Kimdan',
     to: 'Kimga',
     dateTime: 'Sana va vaqt:',
-    createdAt: 'Sana va vaqt',
     gateway: 'Shlyuz',
     queue: 'Navbat',
     team: 'Jamoa',
