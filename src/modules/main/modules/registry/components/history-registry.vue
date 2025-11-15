@@ -19,7 +19,7 @@
         </template>
         <template #columns>
           <wt-table-column-select
-            :headers="headers"
+            :headers="filteredHeaders"
             @change="updateShownHeaders"
           />
         </template>
@@ -53,7 +53,7 @@
         v-show="!isLoading"
         ref="wt-table"
         :data="dataList"
-        :headers="shownHeaders"
+        :headers="filteredShownHeaders"
         :selected="selected"
         sortable
         fixed-actions
@@ -223,6 +223,7 @@ import {
 import {
   useTableEmpty,
 } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js';
+import { SpecialGlobalAction } from '@webitel/ui-sdk/src/modules/Userinfo/v2/enums/index';
 import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
@@ -230,6 +231,7 @@ import { EngineHistoryCall } from 'webitel-sdk';
 
 import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
 import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
+import {useUserinfoStore} from "../../../../userinfo/store/userinfoStore.ts";
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
@@ -282,6 +284,17 @@ const anyFiltersOnFiltersPanel = computed(() => {
 
 const variableHeaders = computed(() => {
   return shownHeaders.value.filter((header) => header.value.includes('variables.'));
+});
+
+const userinfoStore = useUserinfoStore();
+
+const isControlAgentScreenAllow = computed(() => userinfoStore.hasSpecialGlobalActionAccess(SpecialGlobalAction.ControlAgentScreen))
+const filteredShownHeaders = computed(() => {
+  return shownHeaders.value.filter((header) => header.value === 'screencast' ? !isControlAgentScreenAllow.value : true);
+});
+
+const filteredHeaders = computed(() => {
+  return headers.value.filter((header) => header.value === 'screencast' ? !isControlAgentScreenAllow.value : true);
 });
 
 const {
