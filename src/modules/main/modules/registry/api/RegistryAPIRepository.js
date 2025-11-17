@@ -68,7 +68,6 @@ const transformResponseItems = (items) => {
       : null,
     bridgedAt: computeTime(item.bridgedAt),
     queueBridgedAt: computeTime(item.queueBridgedAt),
-    createdAt: computeDateAndTime(item.createdAt),
     answeredAt: computeTime(item.answeredAt),
     joinedAt: computeTime(item.joinedAt),
     leavingAt: computeTime(item.leavingAt),
