@@ -14,7 +14,7 @@
     />
     <div class="comment-form-textarea">
       <wt-textarea
-        v-model="draft.note"
+        v-model:model-value="draft.note"
         class="comment-form-textarea__textarea"
         :class="{'comment-form-textarea--expanded': isTextareaExpanded}"
         :label="$t('registry.call.comment', 1)"
