@@ -36,6 +36,12 @@ export default {
       transferTo: 'Transferir a',
       noInfo: 'No hay información',
       callVisualization: 'Visualización de llamada',
+      callVideoRecording: 'Grabación de videollamada',
+      chatHistory: 'Historial de chat',
+      videoFile: 'Archivo de video',
+      noVideoFile: 'No hay archivo de video',
+      noMessages: 'No hay mensajes',
+      pdfs: 'PDFs',
       hold: 'Espera | Esperas',
       comment: 'Nota | Notas',
       wave: {
