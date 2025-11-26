@@ -1,7 +1,7 @@
 <template>
   <ul class="audit-rate-summary-info">
     <li
-      v-for="({ title, value }) in auditFormInfo"
+      v-for="{ title, value } in auditFormInfo"
       :key="title"
       class="audit-rate-summary-row"
     >
@@ -12,7 +12,6 @@
         {{ value }}
       </span>
     </li>
-
 
     <li
       v-if="rate.comment"
@@ -29,6 +28,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { EngineAuditRate } from 'webitel-sdk';
@@ -42,8 +42,14 @@ const { t } = useI18n();
 const auditFormInfo = computed(() => [
   { title: t('fields.ratedBy'), value: props.rate.createdBy.name },
   { title: t('fields.agent'), value: props.rate.ratedUser?.name },
-  { title: t('fields.date'), value: new Date(+props.rate.createdAt).toLocaleDateString() },
-  { title: t('registry.call.evaluation.scorecard'), value: props.rate.form.name },
+  {
+    title: t('fields.date'),
+    value: formatDate(+props.rate.createdAt, 'datetime'),
+  },
+  {
+    title: t('registry.call.evaluation.scorecard'),
+    value: props.rate.form.name,
+  },
 ]);
 </script>
 
@@ -53,9 +59,9 @@ const auditFormInfo = computed(() => [
 .audit-rate-summary-row {
   display: flex;
   justify-content: space-between;
-  padding: var(--spacing-xs) 0;
-  border-bottom: 1px solid var(--secondary-color);
   gap: var(--spacing-sm);
+  border-bottom: 1px solid var(--secondary-color);
+  padding: var(--spacing-xs) 0;
 
   .audit-rate-summary-row__title {
     @extend %typo-subtitle-1;

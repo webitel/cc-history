@@ -1,4 +1,5 @@
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import { formatDate } from '@webitel/ui-sdk/utils';
 
 const tooltipStyle = {
   minWidth: 0,
@@ -22,14 +23,7 @@ const holdStyle = {
   width: '4px',
 };
 
-const formatCommentDate = (dateString) =>
-  new Date(+dateString).toLocaleString('uk-UA', {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  });
+const formatCommentDate = (dateString) => formatDate(+dateString, 'datetime');
 
 const createHeaderBlock = (changedBy) => {
   const commentAuthorEl = document.createElement('p');

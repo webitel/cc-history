@@ -1,3 +1,5 @@
+import { formatDate } from '@webitel/ui-sdk/utils';
+
 import Visualizations from '../../components/dashboards/enums/Visualizations.enum';
 import IntervalOptions from '../../modules/filters/enums/IntervalOptions.enum';
 import calcRelativeData from './scripts/calcRelativeData';
@@ -10,7 +12,7 @@ const prettifyDate = (date, interval) => {
     );
     return Interval.prettify(date);
   }
-  return new Date(date).toLocaleString();
+  return formatDate(new Date(date), 'datetime');
 };
 
 export default {
