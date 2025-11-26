@@ -50,6 +50,7 @@ const initApp = async () => {
     .use(...WebitelUi);
 
   const { initialize, routeAccessGuard } = useUserinfoStore();
+
   try {
     await initialize();
     createUserAccessControl(useUserinfoStore);
