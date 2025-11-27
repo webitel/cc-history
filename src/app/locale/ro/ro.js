@@ -36,6 +36,12 @@ export default {
       transferTo: 'Transfer către',
       noInfo: 'Nu există informații',
       callVisualization: 'Vizualizare apel',
+      callVideoRecording: 'Înregistrare apel video',
+      chatHistory: 'Istoric chat',
+      videoFile: 'Fișier video',
+      noVideoFile: 'Nu există fișier video',
+      noMessages: 'Nu există mesaje',
+      pdfs: 'PDFs',
       hold: 'Așteptare | Așteptări',
       comment: 'Notă | Note',
       wave: {

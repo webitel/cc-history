@@ -14,6 +14,9 @@ const CallLegs = import(
 const CallVisualization = import(
   '../../modules/main/modules/registry/modules/call/components/call-visualization/call-visualization.vue'
 );
+const CallVideoRecording = import(
+  '../../modules/main/modules/registry/modules/call/components/call-video-recording/call-video-recording.vue'
+);
 
 const routes = [
   {
@@ -45,6 +48,11 @@ const routes = [
             path: 'call-visualization',
             name: CallTabsPathNames.CALL_VISUALIZATION,
             component: CallVisualization,
+          },
+          {
+            path: 'call-video-recording',
+            name: CallTabsPathNames.CALL_VIDEO_RECORDING,
+            component: CallVideoRecording,
           },
         ],
       },

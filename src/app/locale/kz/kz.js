@@ -36,6 +36,12 @@ export default {
       transferTo: '.... ауыстыру',
       noInfo: 'Бұл қоңырауда ақпарат жоқ',
       callVisualization: 'Қоңырау визуализациясы',
+      callVideoRecording: 'Бейне қоңырау жазбасы',
+      chatHistory: 'Чат тарихы',
+      videoFile: 'Бейне файл',
+      noVideoFile: 'Бейне файл жоқ',
+      noMessages: 'Хабарлар жоқ',
+      pdfs: 'PDFs',
       hold: 'Ұстап тұру | Ұстап тұру',
       comment: 'Түсініктеме | Түсініктемелер',
       wave: {

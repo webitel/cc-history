@@ -42,6 +42,7 @@ import historyRegistryQueriesMixin from '../../../mixins/historyRegistryQueries.
 import { useRegistryStore } from '../../../store/new/registry.store.js';
 import CallInfo from './call-info/call-info.vue';
 import CallLegs from './call-legs/call-legs.vue';
+import CallVideoRecording from './call-video-recording/call-video-recording.vue';
 import CallVisualization from './call-visualization/call-visualization.vue';
 
 export default {
@@ -50,6 +51,7 @@ export default {
     CallInfo,
     CallLegs,
     CallVisualization,
+    CallVideoRecording,
   },
   mixins: [historyRegistryQueriesMixin],
   props: {
@@ -101,6 +103,11 @@ export default {
           value: 'call-visualization',
           pathName: `${prefix}${CallTabsPathNames.CALL_VISUALIZATION}`,
         },
+        VIDEO_RECORDING: {
+          text: this.$t('registry.call.callVideoRecording'),
+          value: 'call-video-recording',
+          pathName: `${prefix}${CallTabsPathNames.CALL_VIDEO_RECORDING}`,
+        },
       };
     },
     tabs() {
@@ -110,6 +117,7 @@ export default {
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
       if ((this.mainCall.files?.length || this.mainCall.transcripts?.length
         || this.mainCall.filesJob?.length) && audioExists) tabs.push(this.tabValues.VISUALIZATION);
+      tabs.push(this.tabValues.VIDEO_RECORDING);
       return tabs;
     },
     callId() {
