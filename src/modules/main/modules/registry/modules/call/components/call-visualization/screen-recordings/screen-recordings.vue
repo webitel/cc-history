@@ -96,6 +96,7 @@ import {
 } from '@webitel/api-services/api';
 import { WtEmpty, WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import { IconAction } from '@webitel/ui-sdk/enums';
+import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
@@ -138,7 +139,7 @@ const loadDataList = () => {
   store.dispatch(`${props.namespace}/LOAD_MAIN_CALL`);
 };
 
-const prettifyTimestamp = (item) => formatDate(+item.startAt, 'datetime');
+const prettifyTimestamp = (item) => formatDate(+item.startAt, FormatDateMode.DATETIME);
 
 const calcDuration = (item) =>
   convertDuration(

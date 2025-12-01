@@ -1,3 +1,4 @@
+import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { formatDate } from '@webitel/ui-sdk/utils';
 
@@ -23,7 +24,7 @@ const holdStyle = {
   width: '4px',
 };
 
-const formatCommentDate = (dateString) => formatDate(+dateString, 'datetime');
+const formatCommentDate = (dateString) => formatDate(+dateString, FormatDateMode.DATETIME);
 
 const createHeaderBlock = (changedBy) => {
   const commentAuthorEl = document.createElement('p');

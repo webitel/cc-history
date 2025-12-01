@@ -4,6 +4,7 @@ import applyTransform, {
   notify,
   snakeToCamel,
 } from '@webitel/ui-sdk/api/transformers/index';
+import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
 import { formatDate } from '@webitel/ui-sdk/utils';
@@ -19,19 +20,19 @@ const callService = new CallServiceApiFactory(configuration, '', instance);
 const computeDate = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return formatDate(date, 'date');
+  return formatDate(date, FormatDateMode.DATE);
 };
 
 const computeTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return formatDate(date, 'time');
+  return formatDate(date, FormatDateMode.TIME);
 };
 
 const computeDateAndTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return formatDate(date, 'datetime');
+  return formatDate(date, FormatDateMode.DATETIME);
 };
 
 const mapDefaultComments = (item) => {
@@ -66,7 +67,7 @@ const transformResponseItems = (items) => {
     ...defaultObject,
     ...item,
     createdAt: item.createdAt
-      ? formatDate(new Date(+item.createdAt), 'datetime')
+      ? formatDate(+item.createdAt, FormatDateMode.DATETIME)
       : null,
     bridgedAt: computeTime(item.bridgedAt),
     queueBridgedAt: computeTime(item.queueBridgedAt),

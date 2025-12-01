@@ -28,6 +28,7 @@
 </template>
 
 <script setup lang="ts">
+import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -44,7 +45,7 @@ const auditFormInfo = computed(() => [
   { title: t('fields.agent'), value: props.rate.ratedUser?.name },
   {
     title: t('fields.date'),
-    value: formatDate(+props.rate.createdAt, 'datetime'),
+    value: formatDate(+props.rate.createdAt, FormatDateMode.DATETIME),
   },
   {
     title: t('registry.call.evaluation.scorecard'),

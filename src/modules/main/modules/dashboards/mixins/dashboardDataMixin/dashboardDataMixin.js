@@ -1,3 +1,4 @@
+import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import { formatDate } from '@webitel/ui-sdk/utils';
 
 import Visualizations from '../../components/dashboards/enums/Visualizations.enum';
@@ -12,7 +13,7 @@ const prettifyDate = (date, interval) => {
     );
     return Interval.prettify(date);
   }
-  return formatDate(new Date(date), 'datetime');
+  return formatDate(new Date(date), FormatDateMode.DATETIME);
 };
 
 export default {
