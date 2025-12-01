@@ -36,7 +36,7 @@ export default {
       transferTo: 'Transfer către',
       noInfo: 'Nu există informații',
       callVisualization: 'Vizualizare apel',
-      callVideoRecording: 'Înregistrare apel video',
+      videoCallRecording: 'Înregistrare apel video',
       chatHistory: 'Istoric chat',
       videoFile: 'Fișier video',
       noVideoFile: 'Nu există fișier video',

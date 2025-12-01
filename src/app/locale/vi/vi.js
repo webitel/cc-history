@@ -36,7 +36,7 @@ export default {
       transferTo: '...chuyển đến',
       noInfo: 'Không có thông tin cho cuộc gọi này',
       callVisualization: 'Trực quan hóa cuộc gọi',
-      callVideoRecording: 'Ghi âm cuộc gọi video',
+      videoCallRecording: 'Ghi âm cuộc gọi video',
       chatHistory: 'Lịch sử trò chuyện',
       videoFile: 'Tệp video',
       noVideoFile: 'Không có tệp video',

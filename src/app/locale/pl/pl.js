@@ -36,7 +36,7 @@ export default {
       transferTo: '...przekaż do',
       noInfo: 'Brak informacji o tym połączeniu',
       callVisualization: 'Wizualizacja połączenia',
-      callVideoRecording: 'Nagranie rozmowy wideo',
+      videoCallRecording: 'Nagranie rozmowy wideo',
       chatHistory: 'Historia czatu',
       videoFile: 'Plik wideo',
       noVideoFile: 'Brak pliku wideo',

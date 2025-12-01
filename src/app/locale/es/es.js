@@ -36,7 +36,7 @@ export default {
       transferTo: 'Transferir a',
       noInfo: 'No hay información',
       callVisualization: 'Visualización de llamada',
-      callVideoRecording: 'Grabación de videollamada',
+      videoCallRecording: 'Grabación de videollamada',
       chatHistory: 'Historial de chat',
       videoFile: 'Archivo de video',
       noVideoFile: 'No hay archivo de video',

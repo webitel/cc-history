@@ -1,14 +1,14 @@
 <template>
-  <section class="call-video-recording">
+  <section class="video-call-recording">
     <div 
       ref="contentRef"
-      class="call-video-recording__content"
+      class="video-call-recording__content"
     >
       <video-file 
         ref="videoRef"
-        class="call-video-recording__video"
+        class="video-call-recording__video"
       />
-      <chat-history class="call-video-recording__chat"/>
+      <chat-history class="video-call-recording__chat"/>
     </div>
     <div class="history-tabs-wrapper">
       <wt-tabs
@@ -73,28 +73,28 @@ const currentTab = ref(tabValues.value.SCREENSHOTS);
 </script>
 
 <style lang="scss" scoped>
-.call-video-recording {
+.video-call-recording {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
 }
 
-.call-video-recording__content {
+.video-call-recording__content {
   --content-gap: var(--spacing-sm);
 
   display: grid;
   gap: var(--content-gap);
   grid-template-rows: auto;
 
-  .call-video-recording__video,
-  .call-video-recording__chat {
+  .video-call-recording__video,
+  .video-call-recording__chat {
     display: flex;
     flex-direction: column;
     align-self: baseline;
     height: 100%;
   }
 
-  .call-video-recording__chat {
+  .video-call-recording__chat {
     max-height: var(--video-col-height);
   }
 
@@ -117,7 +117,7 @@ const currentTab = ref(tabValues.value.SCREENSHOTS);
   @media (max-width: 959px) {
     grid-template-columns: 1fr;
 
-    .call-video-recording__chat {
+    .video-call-recording__chat {
       max-height: 470px;
     }
   }

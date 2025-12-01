@@ -34,7 +34,7 @@ export default {
       transferTo: '...ga o‘tkazish',
       noInfo: 'Bu qo‘ng‘iroqda ma’lumot yo‘q',
       callVisualization: 'Qo‘ng‘iroq vizualizatsiyasi',
-      callVideoRecording: 'Video qo‘ng‘iroq yozuvi',
+      videoCallRecording: 'Video qo‘ng‘iroq yozuvi',
       chatHistory: 'Chat tarixi',
       videoFile: 'Video fayl',
       noVideoFile: 'Video fayl yo‘q',

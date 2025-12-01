@@ -2,5 +2,5 @@ export default Object.freeze({
   CALL_INFO: 'call-info',
   LEGS_A_B: 'legs-a-b',
   CALL_VISUALIZATION: 'call-visualization',
-  CALL_VIDEO_RECORDING: 'call-video-recording',
+  VIDEO_CALL_RECORDING: 'video-call-recording',
 });

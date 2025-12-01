@@ -36,7 +36,7 @@ export default {
       transferTo: 'Трансфер На',
       noInfo: 'Цей дзвінок не має інформації',
       callVisualization: 'Візуалізація дзвінка',
-      callVideoRecording: 'Запис відеодзвінка',
+      videoCallRecording: 'Запис відеодзвінка',
       chatHistory: 'Історія чату',
       videoFile: 'Відеофайл',
       noVideoFile: 'Тут немає відеофайлу',
