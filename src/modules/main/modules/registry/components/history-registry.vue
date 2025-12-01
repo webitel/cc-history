@@ -57,6 +57,10 @@
         :selected="selected"
         sortable
         fixed-actions
+        resizable-columns
+        reorderable-columns
+        @column-resize="columnResize"
+        @column-reorder="columnReorder"
         @sort="updateSort"
         @update:selected="updateSelected"
       >
@@ -266,6 +270,8 @@ const {
   updateSize,
   updateSort,
   updateShownHeaders,
+  columnResize,
+  columnReorder,
 } = tableStore;
 
 /*
