@@ -4,8 +4,10 @@ import applyTransform, {
   notify,
   snakeToCamel,
 } from '@webitel/ui-sdk/api/transformers/index';
+import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
+import { formatDate } from '@webitel/ui-sdk/utils';
 import { startOfToday } from 'date-fns';
 import { CallServiceApiFactory } from 'webitel-sdk';
 
@@ -14,22 +16,23 @@ import configuration from '../../../../../app/api/openAPIConfig';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
 
+// Функція не використовується
 const computeDate = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleDateString();
+  return formatDate(date, FormatDateMode.DATE);
 };
 
 const computeTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleTimeString();
+  return formatDate(date, FormatDateMode.TIME);
 };
 
 const computeDateAndTime = (timestamp) => {
   if (!timestamp) return null;
   const date = new Date(+timestamp);
-  return date.toLocaleString('en-GB');
+  return formatDate(date, FormatDateMode.DATETIME);
 };
 
 const mapDefaultComments = (item) => {
@@ -64,7 +67,7 @@ const transformResponseItems = (items) => {
     ...defaultObject,
     ...item,
     createdAt: item.createdAt
-      ? new Date(+item.createdAt).toLocaleString()
+      ? formatDate(+item.createdAt, FormatDateMode.DATETIME)
       : null,
     bridgedAt: computeTime(item.bridgedAt),
     queueBridgedAt: computeTime(item.queueBridgedAt),
@@ -132,7 +135,7 @@ const getList =
       hasTranscription,
       description,
       grantee,
-      talkSec,
+      talkSec, // Це теж не використовується
       score,
       variable,
       contact,
@@ -235,6 +238,7 @@ const exportHistoryToFile = getList({
         const convertedItem = { ...item };
 
         if (item.created_at) {
+          // Це було закоментовано 8 місяців тому. Можливо прибрати?
           // convertedItem.date = computeDate(item.created_at);
           // convertedItem.time = computeTime(item.created_at);
           convertedItem.created_at = computeDateAndTime(item.created_at);

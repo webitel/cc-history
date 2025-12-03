@@ -59,11 +59,11 @@
             />
           </template>
 
-          <template #dateTime="{item}">
-              {{prettifyTimestamp(item)}}
+          <template #dateTime="{ item }">
+            {{ prettifyTimestamp(item) }}
           </template>
 
-          <template #recordingDuration="{item}">
+          <template #recordingDuration="{ item }">
             {{ calcDuration(item) }}
           </template>
 
@@ -90,62 +90,70 @@
 
 <script setup lang="ts">
 import { FileServicesAPI } from '@webitel/api-services/api';
-import { downloadFile, getScreenRecordingMediaUrl } from '@webitel/api-services/api';
+import {
+  downloadFile,
+  getScreenRecordingMediaUrl,
+} from '@webitel/api-services/api';
 import { WtEmpty, WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import { IconAction } from '@webitel/ui-sdk/enums';
+import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 
-import { useRegistryStore } from '../../../../../store/new/registry.store.js';
+import { useRegistryStore } from '../../../../../store/new/registry.store.js'; // Не використовується
 import { headers } from './store/headers/headers.js';
 
 const props = defineProps({
   namespace: {
     type: String,
   },
-})
+});
 
 const store = useStore();
 
 const { t } = useI18n();
 
 const dataList = computed(() => {
-  return getNamespacedState(store.state, props.namespace).screenRecordingsFiles
+  return getNamespacedState(store.state, props.namespace).screenRecordingsFiles;
 });
 
-const error = ref('')
+const error = ref('');
 
-const selected = ref([])
+const selected = ref([]);
 
-const currentVideo = ref(null)
-const isVideoOpen = ref(false)
+const currentVideo = ref(null);
+const isVideoOpen = ref(false);
 
 const isLoading = computed(() => {
-  return getNamespacedState(store.state, props.namespace).isLoading
+  return getNamespacedState(store.state, props.namespace).isLoading;
 });
 
 const loadDataList = () => {
   store.dispatch(`${props.namespace}/LOAD_MAIN_CALL`);
 };
 
-const prettifyTimestamp = (item) => new Date(+item.startAt).toLocaleString()
+const prettifyTimestamp = (item) => formatDate(+item.startAt, FormatDateMode.DATETIME);
 
-const calcDuration = (item) => convertDuration(Math.floor((Number(item.stopAt) - Number(item.startAt)) / 1000))
+const calcDuration = (item) =>
+  convertDuration(
+    Math.floor((Number(item.stopAt) - Number(item.startAt)) / 1000),
+  );
 
 const handleDelete = async (items: []) => {
-  const deleteIds = items.map(item => item.id)
+  const deleteIds = items.map((item) => item.id);
   try {
     FileServicesAPI.delete(deleteIds);
   } finally {
     loadDataList();
   }
-}
+};
 
 const {
   isVisible: isDeleteConfirmationPopup,
@@ -166,12 +174,12 @@ const {
 });
 
 const openVideo = (item) => {
-  currentVideo.value = item
-  isVideoOpen.value = true
-}
+  currentVideo.value = item;
+  isVideoOpen.value = true;
+};
 
 const closeVideo = () => {
-  currentVideo.value = null
-  isVideoOpen.value = false
-}
+  currentVideo.value = null;
+  isVideoOpen.value = false;
+};
 </script>
