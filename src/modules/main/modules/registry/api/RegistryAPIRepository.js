@@ -59,6 +59,15 @@ const mapTranscripts = (item) => {
     : [];
 };
 
+const groupFilesByType = (files) => {
+  if (!files) return {};
+  return files.reduce((acc, file) => {
+    acc[file.type] = acc[file.type] || [];
+    acc[file.type].push(file);
+    return acc;
+  }, {});
+};
+
 const transformResponseItems = (items) => {
   const defaultObject = {
     _isSelected: false,
@@ -90,6 +99,7 @@ const transformResponseItems = (items) => {
       : '',
     score: item.scoreRequired ? item.scoreRequired.toFixed(2) : null,
     transcripts: mapTranscripts(item),
+    files: groupFilesByType(item.files),
   }));
 };
 

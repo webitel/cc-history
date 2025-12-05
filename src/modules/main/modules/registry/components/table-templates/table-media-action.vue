@@ -25,9 +25,6 @@
 <script setup lang="ts">
 import { computed, defineProps, withDefaults } from 'vue';
 
-import { MediaType } from './types/mediaAction.ts';
-import { getRecordingType } from './utils/getRecordingType.ts';
-
 interface Props {
   files: unknown[],
   currentlyPlaying?: string,
@@ -47,7 +44,7 @@ const contextOptions = computed(() => props.files.map(({ name, id, mimeType }) =
   text: name,
   id,
   mimeType,
-})).filter((option) => getRecordingType(option.mimeType) !== MediaType.Video));
+})));
 
 const handleOptionSelect = ({ option }) => {
   if (props.currentlyPlaying === option.id) {

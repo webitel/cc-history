@@ -29,11 +29,9 @@
 </template>
 
 <script setup lang="ts">
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { EMPTY_SYMBOL } from '@webitel/ui-sdk/utils';
 import { computed, defineEmits, defineProps } from 'vue';
-
-import { MediaType } from './types/mediaAction';
-import { getRecordingType } from './utils/getRecordingType.ts';
 
 interface Props {
   files: unknown[],
@@ -45,15 +43,15 @@ const emit = defineEmits<{
   (e: 'set-video', val: unknown): void;
 }>();
 
-const contextOptions = computed(() => props?.files?.map(({ name, id, mimeType }) => ({
+const contextOptions = computed(() => props?.files?.[EngineCallFileType.FileTypeScreensharing]?.map(({ name, id, mimeType }) => ({
   text: name,
   id,
   mimeType,
-})).filter((option) => getRecordingType(option.mimeType) === MediaType.Video));
+})))
 
 
 const handleOptionSelect = ({ option }) => {
-  if (option.id && getRecordingType(option.mimeType) === MediaType.Video) {
+  if (option.id && option.type === EngineCallFileType.FileTypeScreensharing) {
     emit('set-video', option)
     return;
   }
