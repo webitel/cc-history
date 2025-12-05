@@ -2,7 +2,7 @@
   <wt-vidstack-player
     v-if="isVideoOpen"
     closable
-    :src="getScreenRecordingMediaUrl(currentVideo.id)"
+    :src="getMediaUrl(currentVideo.id)"
     :title="currentVideo.name"
     :mime="currentVideo.mime_type"
     @close="closeVideo"
@@ -53,7 +53,7 @@
             <wt-image
               width="48px"
               overlay-icon="play"
-              :src="getScreenRecordingMediaUrl(item.id, true)"
+              :src="getMediaUrl(item.id, true)"
               alt=""
               @click="openVideo(item)"
             />
@@ -92,7 +92,7 @@
 import { FileServicesAPI } from '@webitel/api-services/api';
 import {
   downloadFile,
-  getScreenRecordingMediaUrl,
+  getMediaUrl,
 } from '@webitel/api-services/api';
 import { WtEmpty, WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import { IconAction } from '@webitel/ui-sdk/enums';
