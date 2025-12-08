@@ -206,7 +206,7 @@ import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 
-import generateMediaURL from '../../../../../mixins/media/scripts/generateMediaURL';
+import { getCallMediaUrl } from '@webitel/api-services/api';
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import regionsMixin from '../mixins/regionsMixin';
 import soundFiltersMixin from '../mixins/soundFiltersMixin';
@@ -309,7 +309,7 @@ export default {
       fileOptions: 'RECORDING_FILE_SELECT_OPTIONS',
     }),
     fileUrl() {
-      return generateMediaURL(this.file.id, true);
+      return getCallMediaUrl(this.file.id, { download: true });
     },
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
