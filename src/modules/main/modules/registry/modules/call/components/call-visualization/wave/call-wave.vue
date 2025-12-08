@@ -309,7 +309,7 @@ export default {
       fileOptions: 'RECORDING_FILE_SELECT_OPTIONS',
     }),
     fileUrl() {
-      return getCallMediaUrl(this.file.id, true);
+      return getCallMediaUrl(this.file.id, { download: true });
     },
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
