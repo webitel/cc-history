@@ -33,11 +33,11 @@
 
 <script>
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { storeToRefs } from 'pinia';
 import { mapActions, mapState } from 'vuex';
 
 import CallTabsPathNames from '../../../../../../../app/router/_internals/CallTabsPathNames.enum.js';
-import { MediaChannel } from '../../../components/table-templates/types/mediaChannel.js';
 import historyRegistryQueriesMixin from '../../../mixins/historyRegistryQueries.mixin.js';
 import { useRegistryStore } from '../../../store/new/registry.store.js';
 import CallInfo from './call-info/call-info.vue';
@@ -105,11 +105,11 @@ export default {
     },
     tabs() {
       const tabs = [this.tabValues.INFO];
-      const audioExists = this.mainCall?.files?.find((file) => file.channel === MediaChannel.Call)
+      const audioExists = this.mainCall?.files?.[EngineCallFileType.FileTypeAudio]
 
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
-      if ((this.mainCall.files?.length || this.mainCall.transcripts?.length
-        || this.mainCall.filesJob?.length) && audioExists) tabs.push(this.tabValues.VISUALIZATION);
+      if ((this.mainCall.transcripts?.length || this.mainCall.filesJob?.length 
+        || audioExists)) tabs.push(this.tabValues.VISUALIZATION);
       return tabs;
     },
     callId() {

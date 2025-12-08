@@ -1,9 +1,7 @@
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 
 import APIRepository from '../../../../../../../app/api/APIRepository';
-import { MediaType } from '../../../components/table-templates/types/mediaAction.js';
-import { MediaChannel } from '../../../components/table-templates/types/mediaChannel.js';
-import { getRecordingType } from '../../../components/table-templates/utils/getRecordingType.js';
 import { headers } from '../../../store/headers/headers';
 import evaluation from '../modules/call-audit/store/evaluation.js';
 
@@ -115,7 +113,7 @@ const actions = {
       const mainCall = items[0];
       context.commit('SET_MAIN_CALL', mainCall);
       if (!state.fileId && mainCall.files) {
-        await context.dispatch('SET_FILE_ID', mainCall.files[0].id);
+        await context.dispatch('SET_FILE_ID', mainCall.files[EngineCallFileType.FileTypeAudio]?.[0]?.id);
         await context.dispatch('SET_SCREEN_RECORDINGS_FILES', mainCall.files);
       }
       if (context.getters.RECORDING_FILE_SELECT_OPTIONS) {
@@ -188,17 +186,13 @@ const actions = {
   },
 
   INITIALIZE_RECORDING_FILE: (context) => {
-    const audioFiles = context.getters.RECORDING_FILE_SELECT_OPTIONS.filter(
-      (file) => getRecordingType(file.mimeType) !== MediaType.Video,
-    );
-
-    context.dispatch('SET_RECORDING_FILE', audioFiles[0]);
+    context.dispatch('SET_RECORDING_FILE', context.getters.RECORDING_FILE_SELECT_OPTIONS?.[EngineCallFileType.FileTypeAudio]?.[0]);
   },
   SET_RECORDING_FILE: (context, file) =>
     context.commit('SET_RECORDING_FILE', file),
 
   SET_SCREEN_RECORDINGS_FILES: (context, mainCallFiles) => {
-    const files = mainCallFiles.filter((file) => file.channel === MediaChannel.ScreenSharing);
+    const files = mainCallFiles?.[EngineCallFileType.FileTypeScreensharing] || []
     context.commit('SET_SCREEN_RECORDINGS_FILES', files)
   },
 };

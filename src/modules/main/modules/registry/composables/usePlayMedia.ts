@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-import generateMediaURL from '../mixins/media/scripts/generateMediaURL';
+import { getCallMediaUrl } from '@webitel/api-services/api';
 
 export const usePlayMedia = () => {
   const audioURL = ref('');
@@ -10,7 +10,7 @@ export const usePlayMedia = () => {
   const play = (fileId) => {
     if (fileId) {
       currentlyPlaying.value = fileId;
-      audioURL.value = generateMediaURL(fileId);
+      audioURL.value = getCallMediaUrl(fileId);
     } else {
       closePlayer();
     }

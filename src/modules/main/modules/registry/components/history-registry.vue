@@ -57,6 +57,10 @@
         :selected="selected"
         sortable
         fixed-actions
+        resizable-columns
+        reorderable-columns
+        @column-resize="columnResize"
+        @column-reorder="columnReorder"
         @sort="updateSort"
         @update:selected="updateSelected"
       >
@@ -151,9 +155,9 @@
 
         <template #actions="{ item }">
           <media-action
-            v-if="item.files"
+            v-if="recordingFiles(item).length"
             :currently-playing="currentlyPlaying"
-            :files="item.files"
+            :files="recordingFiles(item)"
             @play="play"
             @stop="closePlayer"
           />
@@ -206,8 +210,9 @@
 </template>
 
 <script lang="ts" setup>
-import { getScreenRecordingMediaUrl } from '@webitel/api-services/api';
+import { getMediaUrl } from '@webitel/api-services/api';
 import { IconAction } from '@webitel/ui-sdk/enums';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import {
   WtActionBar,
   WtBadge,
@@ -266,6 +271,8 @@ const {
   updateSize,
   updateSort,
   updateShownHeaders,
+  columnResize,
+  columnReorder,
 } = tableStore;
 
 /*
@@ -340,8 +347,15 @@ const closeVideo = () => {
 }
 const setVideo = (data) => {
   currentVideo.value = data
-  currentVideo.value.video = getScreenRecordingMediaUrl(data.id)
+  currentVideo.value.video = getMediaUrl(data.id)
   isVideoOpen.value = true
+}
+
+const recordingFiles = (item) => {
+  return [
+    ...item.files?.[EngineCallFileType.FileTypeAudio] || [],
+    ...item.files?.[EngineCallFileType.FileTypeVideo] || []
+  ]
 }
 </script>
 
