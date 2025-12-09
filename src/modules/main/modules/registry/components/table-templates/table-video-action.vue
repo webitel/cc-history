@@ -43,10 +43,11 @@ const emit = defineEmits<{
   (e: 'set-video', val: unknown): void;
 }>();
 
-const contextOptions = computed(() => props?.files?.[EngineCallFileType.FileTypeScreensharing]?.map(({ name, id, mimeType }) => ({
+const contextOptions = computed(() => props?.files?.[EngineCallFileType.FileTypeScreensharing]?.map(({ name, id, mimeType, type }) => ({
   text: name,
   id,
   mimeType,
+  type,
 })))
 
 
