@@ -36,8 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (e: 'play', file: { id: string, type: EngineCallFileType }): void;
-  (e: 'stop'): void;
+  play: [file: { id: string, type: EngineCallFileType }];
+  stop: [];
 }>();
 
 const isAnyFilesPlaying = computed(() => props.files.some((file) => file.id === props.currentlyPlaying));
