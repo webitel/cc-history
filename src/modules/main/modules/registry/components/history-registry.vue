@@ -138,12 +138,9 @@
           </div>
         </template>
         <template #screencast="{ item }">
-          <video-action
-            :currently-playing="currentlyPlaying"
+          <screen-recording-action
             :files="item.files"
-            @play="play"
-            @stop="closePlayer"
-            @set-video="setVideo"
+            @set-video="setScreenRecording"
           />
         </template>
         <template
@@ -154,14 +151,26 @@
         </template>
 
         <template #actions="{ item }">
-          <media-action
-            v-if="recordingFiles(item).length"
-            :currently-playing="currentlyPlaying"
-            :files="recordingFiles(item)"
-            @play="play"
-            @stop="closePlayer"
-          />
+          <template v-if="recordingFiles(item).length">
+            <wt-icon 
+              :color="IconColor.INFO" 
+              :icon="getRecordingTypeIcon(item)"
+            />
 
+            <media-action
+              :currently-playing="currentlyMediaPlaying"
+              :files="recordingFiles(item)"
+              @play="handlePlayMedia"
+              @stop="closePlayer"
+            />
+
+            <wt-chip 
+              :color="ChipColor.SECONDARY"
+            >
+              {{ recordingFiles(item).length }}
+            </wt-chip>
+          </template>
+          
           <!--          v-if transcript can be added, exists, or already in progress -->
           <stt-action
             v-if="showItemStt(item)"
@@ -191,27 +200,35 @@
       />
 
       <wt-player
-        v-show="audioURL"
-        :src="audioURL"
+        v-if="audioData.src"
+        :src="audioData.src"
         @close="closePlayer"
-        @play="isPlayingNow = true"
+        @play="isMediaPlayingNow = true"
       />
 
     </div>
   </div>
 
   <wt-vidstack-player
-    v-if="currentVideo"
+    v-if="currentScreenRecording"
     closable
-    :src="currentVideo.video"
-    :title="currentVideo.text"
-    @close="closeVideo"
+    :src="currentScreenRecording.video"
+    :title="currentScreenRecording.text"
+    @close="closeScreenRecording"
+  />
+
+  <wt-vidstack-player
+    v-if="videoData.src"
+    closable
+    :src="videoData.src"
+    :title="videoData.text"
+    @close="closePlayer"
   />
 </template>
 
 <script lang="ts" setup>
 import { getMediaUrl } from '@webitel/api-services/api';
-import { IconAction } from '@webitel/ui-sdk/enums';
+import { ChipColor, IconAction, IconColor } from '@webitel/ui-sdk/enums';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import {
   WtActionBar,
@@ -241,7 +258,7 @@ import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
 import TableDirection from './table-templates/table-direction.vue';
 import MediaAction from './table-templates/table-media-action.vue';
-import VideoAction from './table-templates/table-video-action.vue';
+import ScreenRecordingAction from './table-templates/table-video-action.vue';
 
 const emit = defineEmits<{
   'toggle:filters-panel': [];
@@ -309,9 +326,10 @@ const {
 initialize();
 
 const {
-  audioURL,
-  currentlyPlaying,
-  isPlayingNow,
+  audioData,
+  videoData,
+  currentlyMediaPlaying,
+  isMediaPlayingNow,
 
   play,
   closePlayer,
@@ -338,17 +356,18 @@ const updateVariablesHeaders = (variables) => {
   updateShownHeaders([...mainHeaders, ...variables]);
 };
 
-const currentVideo = ref(null)
-const isVideoOpen = ref(false)
+const currentScreenRecording = ref(null)
+const isScreenRecordingOpen = ref(false)
 
-const closeVideo = () => {
-  currentVideo.value = null
-  isVideoOpen.value = false
+const closeScreenRecording = () => {
+  currentScreenRecording.value = null
+  isScreenRecordingOpen.value = false
 }
-const setVideo = (data) => {
-  currentVideo.value = data
-  currentVideo.value.video = getMediaUrl(data.id)
-  isVideoOpen.value = true
+const setScreenRecording = (data) => {
+  currentScreenRecording.value = data
+  currentScreenRecording.value.video = getMediaUrl(data.id)
+  closePlayer()
+  isScreenRecordingOpen.value = true
 }
 
 const recordingFiles = (item) => {
@@ -356,6 +375,15 @@ const recordingFiles = (item) => {
     ...item.files?.[EngineCallFileType.FileTypeAudio] || [],
     ...item.files?.[EngineCallFileType.FileTypeVideo] || []
   ]
+}
+
+const getRecordingTypeIcon = (item) => {
+  return item.files?.[EngineCallFileType.FileTypeVideo] ? 'preview-tag-video' : 'preview-tag-audio'
+}
+
+const handlePlayMedia = (mediaData) => {
+  closeScreenRecording()
+  play(mediaData)
 }
 </script>
 
