@@ -21,7 +21,7 @@
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 
 import APIRepository from '../../../../app/api/APIRepository';
-import generateMediaURL from '../../../main/modules/registry/mixins/media/scripts/generateMediaURL';
+import { getCallMediaUrl } from '@webitel/api-services/api';
 import downloadTranscriptsMixin from '../../mixins/downloadTranscriptsMixin';
 import historyActionMixin from '../../mixins/historyActionMixin';
 import FilesCounter from './files-counter.vue';
@@ -72,7 +72,7 @@ export default {
     this.initFilesExport({
       fetchMethod: APIRepository.history.getHistory,
       filename: 'history-records',
-      filesURL: generateMediaURL,
+      filesURL: getCallMediaUrl,
     });
   },
   methods: {

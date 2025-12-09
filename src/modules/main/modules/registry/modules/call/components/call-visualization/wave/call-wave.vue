@@ -199,17 +199,14 @@
 <script>
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 
-import { MediaType } from '../../../../../components/table-templates/types/mediaAction.js';
-import {
-  getRecordingType,
-} from '../../../../../components/table-templates/utils/getRecordingType.js';
-import generateMediaURL from '../../../../../mixins/media/scripts/generateMediaURL';
+import { getCallMediaUrl } from '@webitel/api-services/api';
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import regionsMixin from '../mixins/regionsMixin';
 import soundFiltersMixin from '../mixins/soundFiltersMixin';
@@ -312,13 +309,13 @@ export default {
       fileOptions: 'RECORDING_FILE_SELECT_OPTIONS',
     }),
     fileUrl() {
-      return generateMediaURL(this.file.id, true);
+      return getCallMediaUrl(this.file.id, { download: true });
     },
     player() {
       return this.$refs.surf && this.$refs.surf.waveSurfer;
     },
     audioFiles() {
-      return this.fileOptions.filter((file) => getRecordingType(file.mimeType) !== MediaType.Video);
+      return this.fileOptions?.[EngineCallFileType.FileTypeAudio] || [];
     },
     callDuration() {
       return Math.round(this.player?.getDuration());

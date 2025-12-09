@@ -33,46 +33,60 @@
   </wt-popup>
 </template>
 
-<script>
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { useUserinfoStore } from '../../../../../../../../../userinfo/store/userinfoStore';
 import AuditFormAPI from '../../api/AuditFormAPI.js';
+
+interface Scorecard {
+  id: string;
+  name: string;
+  questions?: any;
+}
+
+interface Emits {
+  (e: 'close'): void;
+  (e: 'change', scorecard: Scorecard): void;
+}
+
+const emit = defineEmits<Emits>();
 
 const scorecardIdCacheKey = 'history-last-used-scorecard-id';
 
-export default {
-  name: 'SelectScorecardPopup',
+const userinfoStore = useUserinfoStore();
+const scorecard = ref<Scorecard | null>(null);
 
-  data: () => ({
-    scorecard: null,
-  }),
-  created() {
-    this.setScorecardFromCache();
-  },
-
-  methods: {
-    selectScorecard() {
-      this.$emit('change', this.scorecard);
-      this.cacheScorecardId(this.scorecard.id);
-      this.$emit('close');
-    },
-    cacheScorecardId(id) {
-      localStorage.setItem(scorecardIdCacheKey, id);
-    },
-    async setScorecardFromCache() {
-      const scorecardId = localStorage.getItem(scorecardIdCacheKey);
-      if (scorecardId) {
-        const response = await AuditFormAPI.get({ itemId: scorecardId });
-        this.scorecard = response;
-      }
-    },
-    loadScorecards: (params) => AuditFormAPI.getLookup({
-      ...params,
-      fields: ['id', 'name', 'questions'],
-      enabled: true,
-      active: true,
-      teamFilter: true,
-    }),
-  },
+const selectScorecard = () => {
+  if (scorecard.value) {
+    emit('change', scorecard.value);
+    cacheScorecardId(scorecard.value.id);
+    emit('close');
+  }
 };
+
+const cacheScorecardId = (id: string) => {
+  localStorage.setItem(scorecardIdCacheKey, id);
+};
+
+const setScorecardFromCache = async () => {
+  const scorecardId = localStorage.getItem(scorecardIdCacheKey);
+  if (scorecardId) {
+    const response = await AuditFormAPI.get({ itemId: scorecardId });
+    scorecard.value = response;
+  }
+};
+
+const loadScorecards = (params) => AuditFormAPI.getLookup({
+  ...params,
+  fields: ['id', 'name', 'questions'],
+  enabled: true,
+  active: true,
+  teamFilter: userinfoStore?.userId,
+});
+
+onMounted(() => {
+  setScorecardFromCache();
+});
 </script>
 
 <style lang="scss" scoped>
