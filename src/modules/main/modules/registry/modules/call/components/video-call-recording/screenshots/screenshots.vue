@@ -40,14 +40,13 @@
       />
 
       <wt-loader v-show="isLoading" />
-      <!-- {{ selected }} -->
+
       <wt-table
         v-show="dataList.length && !isLoading"
         v-model:selected="selected"
         :data="dataList"
         :headers="headers"
         sortable
-        @update:selected="updateSelected"
       >
         <template #screenshots="{ item }">
           <wt-image
@@ -60,7 +59,7 @@
         </template>
 
         <template #uploaded_at="{ item }">
-          {{ item.formattedDate }}
+          {{ formatDate(+item.startAt, FormatDateMode.DATETIME) }}
         </template>
 
         <template #actions="{ item }">
@@ -118,13 +117,7 @@ const isLoading = computed(() => {
   return getNamespacedState(store.state, props.namespace).isLoading;
 });
 
-const dataList = computed(() => {
-  const files = props.call?.files?.[EngineCallFileType.FileTypeScreenshot] || [];
-  return files.map(item => ({
-    ...item,
-    formattedDate: item.startAt ? formatDate(+item.startAt, FormatDateMode.DATETIME) : ''
-  }));
-})
+const dataList = ref(props.call?.files?.[EngineCallFileType.FileTypeScreenshot] || []);
 
 const { t } = useI18n();
 
@@ -173,21 +166,17 @@ const openScreenshot = (id) => {
   galleriaVisible.value = true;
 };
 
-const updateSelected = (value) => {
-  console.log(value);
-  // selected.value = value.map((item) => item.id);
-};
-
 const handleDelete = async (items: []) => {
   const deleteIds = items.map((item) => item.id);
-  console.log(deleteIds);
+  
+  await FileServicesAPI.delete(deleteIds);
 
-  // await FileServicesAPI.delete(deleteIds);
-
+  dataList.value = dataList.value.filter((item) => !deleteIds.includes(item.id));
+  selected.value = selected.value.filter((item) => !deleteIds.includes(item.id));
 };
 
 const handleDeleteFromGalleria = () => {
-  // handleDelete([dataList.value[galleriaActiveIndex.value]]);
+  handleDelete([dataList.value[galleriaActiveIndex.value]]);
   if (galleriaActiveIndex.value > 0) galleriaActiveIndex.value -= 1;
 };
 </script>

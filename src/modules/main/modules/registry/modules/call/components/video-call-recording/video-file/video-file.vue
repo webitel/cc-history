@@ -1,5 +1,12 @@
 <template>
   <section class="video-file">
+    <delete-confirmation-popup
+      :shown="isDeleteConfirmationPopup"
+      :callback="deleteCallback"
+      :delete-count="deleteCount"
+      @close="closeDelete"
+    />
+
     <div class="video-file__header">
       <span class="video-file__title">
         {{ t('registry.call.videoFile') }}
@@ -7,16 +14,23 @@
       <div class="video-file__actions">
         <wt-icon-btn
           icon="download"
+          :disabled="!currentVideo"
           @click="downloadFile(currentVideo.id)"
         />
         <wt-icon-btn
           icon="bucket"
+          :disabled="!currentVideo"
+          @click="
+            askDeleteConfirmation({
+            deleted: [currentVideo],
+            callback: () => handleDelete(),
+          })"
         />
       </div>
     </div>
     <wt-select 
       v-model="currentVideo"
-      :options="files"
+      :options="dataList"
       :placeholder="t('vocabulary.file')"
       :clearable="false"
     />
@@ -33,13 +47,13 @@
         :size="ComponentSize.LG"
         :src="currentVideoUrl"
         :title="currentVideo.name"
-        @change-size="changePlayerSize"
       />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { FileServicesAPI } from '@webitel/api-services/api';
 import { useI18n } from 'vue-i18n';
 import EmptyVideo from './_internals/assets/empty-video.svg'
 import EmptyVideoDark from './_internals/assets/empty-video-dark.svg'
@@ -47,6 +61,8 @@ import { computed, inject, ref } from 'vue';
 import { EngineCallFile } from '@webitel/api-services/gen/models';
 import { downloadFile,getMediaUrl } from '@webitel/api-services/api';
 import { ComponentSize } from '@webitel/ui-sdk/enums';
+import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
+import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 
 interface Props {
   files?: EngineCallFile[]
@@ -60,14 +76,32 @@ const { t } = useI18n();
 
 const darkMode = inject('darkMode');
 
-const currentVideo = ref<EngineCallFile | null>(props.files[0] ?? null);
+const dataList = ref(props.files || []);
+
+const currentVideo = ref<EngineCallFile | null>(dataList.value[0] ?? null);
 
 const currentVideoUrl = computed(() => {
   return currentVideo.value ? getMediaUrl(currentVideo.value.id) : '';
 })
 
-const changePlayerSize = (size: ComponentSize) => {
-  console.log(size);
+const {
+  isVisible: isDeleteConfirmationPopup,
+  deleteCount,
+  deleteCallback,
+
+  askDeleteConfirmation,
+  closeDelete,
+} = useDeleteConfirmationPopup();
+
+const handleDelete = async () => {
+  await FileServicesAPI.delete([currentVideo.value?.id]);
+
+  dataList.value = dataList.value.filter((item) => item.id !== currentVideo.value?.id);
+  if (dataList.value.length) { 
+    currentVideo.value = dataList.value[0];
+  } else {
+    currentVideo.value = null;
+  }
 }
 </script>
 
