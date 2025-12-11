@@ -46,6 +46,7 @@ export default {
       comment: 'Note | Notes',
       wave: {
         wave: 'Call Wave',
+        noAudio: 'There is no call recording',
       },
       stt: {
         noTranscript: 'There is no transcription for this file',

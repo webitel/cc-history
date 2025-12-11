@@ -113,12 +113,13 @@ export default {
     tabs() {
       const tabs = [this.tabValues.INFO];
       const audioExists = this.mainCall?.files?.[EngineCallFileType.FileTypeAudio]
+      const screenRecordingsExists = this.mainCall?.files?.[EngineCallFileType.FileTypeScreensharing];
       const videoExists = this.mainCall?.files?.[EngineCallFileType.FileTypeVideo]
 
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
       if ((this.mainCall.transcripts?.length || this.mainCall.filesJob?.length 
-        || audioExists)) tabs.push(this.tabValues.VISUALIZATION);
-      if (videoExists) tabs.push(this.tabValues.VIDEO_RECORDING);
+        || screenRecordingsExists || audioExists)) tabs.push(this.tabValues.VISUALIZATION);
+        if (videoExists) tabs.push(this.tabValues.VIDEO_RECORDING);
       return tabs;
     },
     callId() {

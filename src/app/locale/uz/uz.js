@@ -44,6 +44,7 @@ export default {
       comment: 'Izoh | Izohlar',
       wave: {
         wave: 'Qo‘ng‘iroqni belgilash',
+        noAudio: 'Qo‘ng‘iroqning audio yozuvi yo‘q',
       },
       stt: {
         noTranscript: 'Fayl transkriptsiyasi yo‘q',

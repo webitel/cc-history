@@ -46,6 +46,7 @@ export default {
       comment: 'Nota | Notas',
       wave: {
         wave: 'Onda de llamada',
+        noAudio: 'No hay grabación de llamada',
       },
       stt: {
         noTranscript: 'No hay transcripción para este archivo',

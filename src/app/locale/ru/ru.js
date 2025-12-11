@@ -44,7 +44,10 @@ export default {
       pdfs: 'PDFs',
       hold: 'Удержание | Удержания',
       comment: 'Комментарий | Комментарии',
-      wave: { wave: 'Разметка звонка' },
+      wave: {
+        wave: 'Разметка звонка',
+        noAudio: 'У звонка нет аудиозаписи',
+      },
       stt: {
         noTranscript: 'Транскрипция файла отсутствует',
         transcribingInProgress:
