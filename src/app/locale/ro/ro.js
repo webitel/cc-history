@@ -40,6 +40,7 @@ export default {
       comment: 'Notă | Note',
       wave: {
         wave: 'Undă apel',
+        noAudio: 'Nu există înregistrare a apelului',
       },
       stt: {
         noTranscript: 'Nu există transcriere pentru acest fișier',

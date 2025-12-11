@@ -40,6 +40,7 @@ export default {
       comment: 'Komentarz | Komentarze',
       wave: {
         wave: 'Oznacz połączenie',
+        noAudio: 'Brak nagrania połączenia',
       },
       stt: {
         noTranscript: 'Brak transkrypcji pliku',
