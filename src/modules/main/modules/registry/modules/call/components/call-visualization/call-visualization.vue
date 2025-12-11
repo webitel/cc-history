@@ -1,7 +1,12 @@
 <template>
   <section class="call-visualization">
+    <wt-empty 
+      v-if="!call.files[EngineCallFileType.FileTypeAudio]"
+      :image="darkMode ? NoCallRecordingsDark : NoCallRecordings"
+      :title="t('registry.call.wave.noAudio')"
+    />
     <call-wave
-      v-if="call.files"
+      v-else
       :call="call"
     />
     <div class="history-tabs-wrapper">
@@ -19,9 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { WtObject } from '@webitel/ui-sdk/enums';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
@@ -30,6 +36,8 @@ import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
 import CallWave from './wave/call-wave.vue';
 import { useUserinfoStore } from '../../../../../../../userinfo/store/userinfoStore';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/src/modules/Userinfo/v2/enums/index';
+import NoCallRecordings from './assets/no-call-recordings.svg';
+import NoCallRecordingsDark from './assets/no-call-recordings-dark.svg';
 
 interface Props {
   call: any;
@@ -45,6 +53,8 @@ const userinfoStore = useUserinfoStore();
 const isControlAgentScreenAllow = computed(() => userinfoStore.hasSpecialGlobalActionAccess(SpecialGlobalAction.ControlAgentScreen))
 
 const { t } = useI18n();
+
+const darkMode = inject('darkMode');
 
 const {
   hasReadAccess: hasEvaluationReadAccess,
