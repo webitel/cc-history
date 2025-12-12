@@ -54,15 +54,15 @@
 
 <script setup lang="ts">
 import { FileServicesAPI } from '@webitel/api-services/api';
-import { useI18n } from 'vue-i18n';
-import EmptyVideo from './_internals/assets/empty-video.svg'
-import EmptyVideoDark from './_internals/assets/empty-video-dark.svg'
-import { computed, inject, ref } from 'vue';
 import { EngineCallFile } from '@webitel/api-services/gen/models';
 import { downloadFile,getMediaUrl } from '@webitel/api-services/api';
 import { ComponentSize } from '@webitel/ui-sdk/enums';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
+import { useI18n } from 'vue-i18n';
+import EmptyVideo from './_internals/assets/empty-video.svg'
+import EmptyVideoDark from './_internals/assets/empty-video-dark.svg'
+import { computed, inject, ref } from 'vue';
 
 interface Props {
   files?: EngineCallFile[]

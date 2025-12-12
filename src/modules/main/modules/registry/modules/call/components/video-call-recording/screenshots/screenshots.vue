@@ -88,21 +88,22 @@ import {
   downloadFile,
   getMediaUrl,
 } from '@webitel/api-services/api';
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { IconAction } from '@webitel/ui-sdk/enums';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { useStore } from 'vuex';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
-import { headers } from './store/headers/headers.ts';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { FormatDateMode } from '@webitel/ui-sdk/enums';
+import { EngineHistoryCall } from 'webitel-sdk';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
+import { headers } from './store/headers/headers.ts';
 
 interface Props {
-  call: any,
+  call: EngineHistoryCall,
   namespace?: string,
 }
 
