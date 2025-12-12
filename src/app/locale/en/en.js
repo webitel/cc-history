@@ -36,6 +36,12 @@ export default {
       transferTo: 'Transfer To',
       noInfo: 'There is no info',
       callVisualization: 'Call visualization',
+      videoCallRecording: 'Video call recording',
+      chatHistory: 'Chat history',
+      videoFile: 'Video file',
+      noVideoFile: 'There is no video file',
+      noMessages: 'There is no messages',
+      pdfs: 'PDFs',
       hold: 'Hold | Holds',
       comment: 'Note | Notes',
       wave: {

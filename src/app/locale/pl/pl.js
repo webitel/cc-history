@@ -36,6 +36,12 @@ export default {
       transferTo: '...przekaż do',
       noInfo: 'Brak informacji o tym połączeniu',
       callVisualization: 'Wizualizacja połączenia',
+      videoCallRecording: 'Nagranie rozmowy wideo',
+      chatHistory: 'Historia czatu',
+      videoFile: 'Plik wideo',
+      noVideoFile: 'Brak pliku wideo',
+      noMessages: 'Brak wiadomości',
+      pdfs: 'PDFs',
       hold: 'Zawieszenie | Zawieszenie',
       comment: 'Komentarz | Komentarze',
       wave: {
