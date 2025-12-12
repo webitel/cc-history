@@ -106,10 +106,11 @@ export default {
     tabs() {
       const tabs = [this.tabValues.INFO];
       const audioExists = this.mainCall?.files?.[EngineCallFileType.FileTypeAudio]
+      const screenRecordingsExists = this.mainCall?.files?.[EngineCallFileType.FileTypeScreensharing];
 
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
       if ((this.mainCall.transcripts?.length || this.mainCall.filesJob?.length
-        || audioExists)) tabs.push(this.tabValues.VISUALIZATION);
+        || screenRecordingsExists || audioExists)) tabs.push(this.tabValues.VISUALIZATION);
       return tabs;
     },
     callId() {

@@ -40,6 +40,7 @@ export default {
       comment: 'Bình luận | Các bình luận',
       wave: {
         wave: 'Đánh dấu cuộc gọi',
+        noAudio: 'Không có bản ghi âm cuộc gọi',
       },
       stt: {
         noTranscript: 'Không có bản ghi âm',

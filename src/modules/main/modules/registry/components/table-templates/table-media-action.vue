@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import { computed, defineProps, withDefaults } from 'vue';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 
 interface Props {
   files: unknown[],
@@ -35,22 +36,23 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (e: 'play', fileId: string): void;
-  (e: 'stop'): void;
+  play: [file: { id: string, type: EngineCallFileType }];
+  stop: [];
 }>();
 
 const isAnyFilesPlaying = computed(() => props.files.some((file) => file.id === props.currentlyPlaying));
-const contextOptions = computed(() => props.files.map(({ name, id, mimeType }) => ({
+const contextOptions = computed(() => props.files.map(({ name, id, mimeType, type }) => ({
   text: name,
   id,
   mimeType,
+  type
 })));
 
 const handleOptionSelect = ({ option }) => {
   if (props.currentlyPlaying === option.id) {
     emit('stop');
   } else {
-    emit('play', option.id);
+    emit('play', option);
   }
 };
 </script>
