@@ -2,6 +2,7 @@
   <section class="call-evaluation">
     <select-scorecard-popup
       v-if="isScorecardSelectOpened"
+      :call="call"
       @change="setScorecard"
       @close="toggleScorecardsPopup"
     />

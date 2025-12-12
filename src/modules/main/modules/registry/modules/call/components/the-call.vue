@@ -108,7 +108,7 @@ export default {
       const audioExists = this.mainCall?.files?.[EngineCallFileType.FileTypeAudio]
 
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
-      if ((this.mainCall.transcripts?.length || this.mainCall.filesJob?.length 
+      if ((this.mainCall.transcripts?.length || this.mainCall.filesJob?.length
         || audioExists)) tabs.push(this.tabValues.VISUALIZATION);
       return tabs;
     },
