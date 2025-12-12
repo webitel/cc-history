@@ -7,6 +7,7 @@
       <video-file 
         ref="videoRef"
         class="video-call-recording__video"
+        :files="call.files?.[EngineCallFileType.FileTypeVideo]"
       />
       <chat-history class="video-call-recording__chat"/>
     </div>
@@ -25,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { computed, ref, useTemplateRef, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VideoFile from './video-file/video-file.vue';
@@ -54,13 +56,13 @@ const tabValues = computed(() => ({
     text: t('objects.screenshots', 2),
     component: Screenshots,
     value: 'screenshots',
-    namespace: `${props.namespace}/screenshots`,
+    namespace: `${props.namespace}`,
   },
   PDFS: {
     text: t('registry.call.pdfs', 2),
     component: Pdfs,
     value: 'pdfs',
-    namespace: `${props.namespace}/pdfs`,
+    namespace: `${props.namespace}`,
   },
 }));
 
