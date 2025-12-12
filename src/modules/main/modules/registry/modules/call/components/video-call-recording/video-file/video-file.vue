@@ -44,7 +44,9 @@
       <wt-vidstack-player
         v-else
         static
-        :size="ComponentSize.LG"
+        hide-expand
+        stretch
+        :size="ComponentSize.SM"
         :src="currentVideoUrl"
         :title="currentVideo.name"
       />
@@ -53,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import { WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import { FileServicesAPI } from '@webitel/api-services/api';
 import { EngineCallFile } from '@webitel/api-services/gen/models';
 import { downloadFile,getMediaUrl } from '@webitel/api-services/api';
