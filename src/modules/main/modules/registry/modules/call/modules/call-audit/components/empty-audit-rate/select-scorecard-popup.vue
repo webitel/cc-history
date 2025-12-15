@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import AuditFormAPI from '../../api/AuditFormAPI.js';
 
 interface Scorecard {
@@ -79,12 +79,17 @@ const setScorecardFromCache = async () => {
   }
 };
 
+//NOTE: call?.user?.id can be undefined so to add team filter backend need from?.id or to?.id
+const teamFilter = computed(() => {
+  return props.call?.user?.id || props.call?.from?.id || props.call?.to?.id;
+})
+
 const loadScorecards = (params) => AuditFormAPI.getLookup({
   ...params,
   fields: ['id', 'name', 'questions'],
   enabled: true,
   active: true,
-  teamFilter: props.call?.user?.id,
+  teamFilter: teamFilter.value,
 });
 
 onMounted(() => {
