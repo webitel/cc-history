@@ -29,6 +29,7 @@ export default {
     registry: 'Lịch sử',
     call: {
       callInfo: 'Thông tin',
+      callDetails: 'Chi tiết cuộc gọi',
       agentDescription: 'Mô tả tác vụ',
       callLegs: 'Chân A-B',
       transferFrom: '...chuyển từ',
