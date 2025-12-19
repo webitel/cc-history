@@ -27,6 +27,7 @@ export default {
     registry: 'Tarix',
     call: {
       callInfo: 'Ma’lumot',
+      callDetails: 'Qo‘ng‘iroq tafsilotlari',
       agentDescription: 'Operator izohi',
       callLegs: 'A-B qismlar',
       transferFrom: '...dan o‘tkazish',

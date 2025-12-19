@@ -29,6 +29,7 @@ export default {
     registry: 'Тарих',
     call: {
       callInfo: 'Ақпарат',
+      callDetails: 'Қоңырау туралы мәліметтер',
       agentDescription: 'Оператордың түсініктемесі',
       callLegs: 'Аяқтар A-B',
       transferFrom: '.....ауыстыру',

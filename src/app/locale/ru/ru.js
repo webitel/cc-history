@@ -29,6 +29,7 @@ export default {
     registry: 'История',
     call: {
       callInfo: 'Информация',
+      callDetails: 'Детали звонка',
       agentDescription: 'Комментарий оператора',
       callLegs: 'Legs A-B',
       transferFrom: 'Перевод От',
