@@ -1,5 +1,5 @@
 <template>
-  <wt-app-header>
+  <wt-app-header class="app-header">
     <a :href="startPageHref">
       <wt-logo
         :dark-mode="darkMode"
@@ -103,5 +103,9 @@ export default {
 <style lang="scss" scoped>
 .wt-dark-mode-switcher {
   margin-right: auto;
+}
+
+.app-header {
+  flex-shrink: 0;
 }
 </style>
