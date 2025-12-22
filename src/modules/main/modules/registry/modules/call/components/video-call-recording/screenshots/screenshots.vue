@@ -15,7 +15,7 @@
       <wt-action-bar
         :include="[IconAction.DOWNLOAD_PDF, IconAction.DELETE]"
         :disabled:delete="!selected.length"
-        :disabled:download-pdf="!selected.length"
+        :disabled:download-pdf="!dataList.length"
         @click:download-pdf="downloadPdf"
         @click:delete="
           askDeleteConfirmation({
