@@ -104,4 +104,8 @@ export default {
 .wt-dark-mode-switcher {
   margin-right: auto;
 }
+
+.wt-app-header {
+  flex-shrink: 0;
+}
 </style>
