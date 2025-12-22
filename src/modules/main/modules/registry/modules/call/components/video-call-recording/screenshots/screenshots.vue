@@ -15,6 +15,8 @@
       <wt-action-bar
         :include="[IconAction.DOWNLOAD_PDF, IconAction.DELETE]"
         :disabled:delete="!selected.length"
+        :disabled:download-pdf="!selected.length"
+        @click:download-pdf="downloadPdf"
         @click:delete="
           askDeleteConfirmation({
             deleted: selected,
@@ -83,11 +85,12 @@
 </template>
 
 <script setup lang="ts">
-import { FileServicesAPI } from '@webitel/api-services/api';
+import { FileServicesAPI, PdfServicesAPI } from '@webitel/api-services/api';
 import {
   downloadFile,
   getMediaUrl,
 } from '@webitel/api-services/api';
+import { eventBus } from '@webitel/ui-sdk/scripts';
 import { IconAction } from '@webitel/ui-sdk/enums';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
@@ -100,6 +103,7 @@ import { EngineHistoryCall } from 'webitel-sdk';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import { headers } from './store/headers/headers.ts';
 
 interface Props {
@@ -113,6 +117,10 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const store = useStore();
+
+const route = useRoute();
+
+const callId = computed(() => route.params.pathMatch);
 
 const isLoading = computed(() => {
   return getNamespacedState(store.state, props.namespace).isLoading;
@@ -174,6 +182,26 @@ const handleDelete = async (items: []) => {
 
   dataList.value = dataList.value.filter((item) => !deleteIds.includes(item.id));
   selected.value = selected.value.filter((item) => !deleteIds.includes(item.id));
+};
+
+const downloadPdf = async () => {
+  try {
+    await PdfServicesAPI.createCallExport({
+      callId: callId.value,
+      itemInstance: {
+        fileIds: selected.value.length ? selected.value.map(({ id }) => id) : dataList.value.map(({ id }) => id),
+      },
+    });
+    eventBus.$emit('notification', {
+      type: 'info',
+      text: t('webitelUI.pdfGeneration.generationStarted'),
+    });
+  } catch (e) {
+    eventBus.$emit('notification', {
+      type: 'error',
+      text: e?.response?.data?.detail,
+    });
+  }
 };
 
 const handleDeleteFromGalleria = () => {
