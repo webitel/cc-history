@@ -38,7 +38,7 @@
       <wt-empty 
         v-if="!currentVideo"
         :image="darkMode ? EmptyVideoDark : EmptyVideo"
-        :title="t('registry.call.noVideoFile')"
+        :headline="t('registry.call.noVideoFile')"
         style="width: auto;"
       />
       <wt-vidstack-player

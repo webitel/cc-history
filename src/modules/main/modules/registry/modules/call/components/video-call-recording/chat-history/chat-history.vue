@@ -8,7 +8,7 @@
     <div class="char-history__content">
       <wt-empty 
         :image="darkMode ? EmptyChatDark : EmptyChat"
-        :title="t('registry.call.noMessages')"
+        :headline="t('registry.call.noMessages')"
         style="width: auto;"
       />
     </div>

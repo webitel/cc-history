@@ -36,7 +36,7 @@
       <wt-empty
         v-show="showEmpty"
         :image="imageEmpty"
-        :text="textEmpty"
+        :headline="textEmpty"
       />
 
       <wt-loader v-show="isLoading" />
