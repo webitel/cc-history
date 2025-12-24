@@ -20,7 +20,7 @@
     "@vuelidate/validators": "^2.0.4",
     "@webitel/api-services": "^0.0.101",
     "@webitel/styleguide": "^24.12.44",
-    "@webitel/ui-datalist": "^1.0.93",
+    "@webitel/ui-datalist": "^1.0.94",
     "@webitel/ui-sdk": "~25.12",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
