@@ -1,7 +1,7 @@
 export const headers = [
   {
     value: 'preview',
-    locale: 'objects.agentPdfs.preview',
+    locale: 'objects.agentPdfs.pdfs',
     show: true,
     field: 'preview',
   },
