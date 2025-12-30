@@ -4,6 +4,7 @@ const TheCallView = () => import('../components/the-call-view.vue');
 const CallInfo = () => import('../components/call-info/call-info.vue');
 const CallLegs = () => import('../components/call-legs/call-legs.vue');
 const CallVisualization = () => import('../components/call-visualization/call-visualization.vue');
+const VideoCallRecording = () => import('../components/video-call-recording/video-call-recording.vue');
 
 const CALL_VIEW_NAME = 'call_view';
 
@@ -22,6 +23,11 @@ const callChildrenRoutes: RouteRecordRaw[] = [
     path: 'call-visualization',
     name: `${CALL_VIEW_NAME}-call-visualization`,
     component: CallVisualization,
+  },
+  {
+    path: 'video-call-recording',
+    name: `${CALL_VIEW_NAME}-video-call-recording`,
+    component: VideoCallRecording,
   },
 ];
 
