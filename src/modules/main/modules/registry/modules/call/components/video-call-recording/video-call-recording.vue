@@ -101,6 +101,7 @@ const currentTab = ref(tabValues.value.SCREENSHOTS);
   }
 
   .video-call-recording__chat {
+    overflow: hidden;
     max-height: var(--video-col-height);
   }
 

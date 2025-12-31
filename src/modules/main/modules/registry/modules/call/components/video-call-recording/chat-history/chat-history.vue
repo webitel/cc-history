@@ -95,7 +95,8 @@ onMounted(async () => {
   @extend %typo-heading-4;
 }
 
-.char-history__content {
+.chat-history__content {
+  overflow: auto;
   display: flex;
   margin-block: auto;
 }
