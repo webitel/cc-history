@@ -29,6 +29,7 @@ export default {
     registry: 'Istoric',
     call: {
       callInfo: 'Informații apel',
+      callDetails: 'Detalii apel',
       agentDescription: 'Comentariul agentului',
       callLegs: 'Segmente A-B',
       transferFrom: 'Transfer de la',

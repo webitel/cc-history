@@ -9,14 +9,12 @@ export const headers = [
     value: 'name',
     locale: 'reusable.name',
     show: true,
-    sort: null,
     field: 'name',
   },
   {
     value: 'uploaded_at',
     locale: 'reusable.dateTime',
     show: true,
-    sort: null,
     field: 'uploaded_at',
   },
 ];

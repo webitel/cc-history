@@ -97,6 +97,7 @@ const currentTab = ref(tabValues.value.SCREENSHOTS);
     flex-direction: column;
     align-self: baseline;
     height: 100%;
+    min-width: 0;
   }
 
   .video-call-recording__chat {

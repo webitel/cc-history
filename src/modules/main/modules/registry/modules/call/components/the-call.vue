@@ -116,7 +116,7 @@ export default {
       const screenRecordingsExists = this.mainCall?.files?.[EngineCallFileType.FileTypeScreensharing];
 
       if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
-      if ((this.mainCall.transcripts?.length || this.mainCall.filesJob?.length 
+      if ((this.mainCall.transcripts?.length || this.mainCall.filesJob?.length
         || screenRecordingsExists || audioExists)) tabs.push(this.tabValues.VISUALIZATION);
       tabs.push(this.tabValues.VIDEO_RECORDING);
       return tabs;

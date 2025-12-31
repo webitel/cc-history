@@ -29,6 +29,7 @@ export default {
     registry: 'Historia',
     call: {
       callInfo: 'Informacje',
+      callDetails: 'Szczegóły połączenia',
       agentDescription: 'Opis agenta',
       callLegs: 'Nogi A-B',
       transferFrom: '...przekaż od',

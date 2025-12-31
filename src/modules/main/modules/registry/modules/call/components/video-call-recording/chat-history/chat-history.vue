@@ -9,7 +9,7 @@
       <wt-empty
         v-if="!messagesList?.messages?.length"
         :image="darkMode ? EmptyChatDark : EmptyChat"
-        :title="t('registry.call.noMessages')"
+        :headline="t('registry.call.noMessages')"
         style="width: auto;"
       />
       <chat-container

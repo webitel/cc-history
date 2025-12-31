@@ -182,6 +182,7 @@
             :to="`/${item.id}`"
           >
             <wt-icon-btn
+              v-tooltip="$t('registry.call.callDetails')"
               icon="forks"
               icon-prefix="hs"
             />

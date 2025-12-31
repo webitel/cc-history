@@ -34,8 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useUserinfoStore } from '../../../../../../../../../userinfo/store/userinfoStore';
+import { computed, onMounted, ref } from 'vue';
 import AuditFormAPI from '../../api/AuditFormAPI.js';
 
 interface Scorecard {
@@ -44,16 +43,20 @@ interface Scorecard {
   questions?: any;
 }
 
+interface Props {
+  call: any
+}
+
 interface Emits {
   (e: 'close'): void;
   (e: 'change', scorecard: Scorecard): void;
 }
 
+const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const scorecardIdCacheKey = 'history-last-used-scorecard-id';
 
-const userinfoStore = useUserinfoStore();
 const scorecard = ref<Scorecard | null>(null);
 
 const selectScorecard = () => {
@@ -76,12 +79,17 @@ const setScorecardFromCache = async () => {
   }
 };
 
+//NOTE: call?.user?.id can be undefined so to add team filter backend need from?.id or to?.id
+const teamFilter = computed(() => {
+  return props.call?.user?.id || props.call?.from?.id || props.call?.to?.id;
+})
+
 const loadScorecards = (params) => AuditFormAPI.getLookup({
   ...params,
   fields: ['id', 'name', 'questions'],
   enabled: true,
   active: true,
-  teamFilter: userinfoStore?.userId,
+  teamFilter: teamFilter.value,
 });
 
 onMounted(() => {
