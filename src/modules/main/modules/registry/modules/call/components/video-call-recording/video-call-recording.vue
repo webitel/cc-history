@@ -9,7 +9,10 @@
         class="video-call-recording__video"
         :files="call.files?.[EngineCallFileType.FileTypeVideo]"
       />
-      <chat-history class="video-call-recording__chat"/>
+      <chat-history 
+        class="video-call-recording__chat"
+        :call="call"
+      />
     </div>
     <div class="history-tabs-wrapper">
       <wt-tabs
