@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { MessagesServiceAPI } from '@webitel/api-services/api';
+import { WebitelChatMessage, WebitelChatPeer } from '@webitel/api-services/gen';
 import { ChatContainer, ChatMessageType } from '@webitel/ui-chats/ui';
 import { EngineHistoryCall } from 'webitel-sdk';
 import { useI18n } from 'vue-i18n';
@@ -41,7 +42,10 @@ interface Props {
 const props = defineProps<Props>();
 
 const conversationId = computed(() => props.call.conversationId);
-const messagesList = ref({});
+const messagesList = ref<{
+  messages?: WebitelChatMessage[];
+  peers?: WebitelChatPeer[];
+}>({});
 
 const { t } = useI18n();
 
