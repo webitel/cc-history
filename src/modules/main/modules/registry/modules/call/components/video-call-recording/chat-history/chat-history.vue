@@ -60,7 +60,8 @@ const adaptedMessages = computed<ChatMessageType[]>(() => {
     file: message.file,
     member: {
       ...message.from,
-      type: message.from?.type || 'user',
+      self: messagesList.value.peers[+message.from?.id - 1].type === 'user',
+      type: messagesList.value.peers[+message.from?.id - 1].type,
     },
     peer: {
       ...message.sender,
