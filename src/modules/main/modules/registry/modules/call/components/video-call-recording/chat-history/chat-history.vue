@@ -71,7 +71,7 @@ const adaptedMessages = computed<ChatMessageType[]>(() => {
     channelId: message.chat?.id,
     contact: message.from,
     text: message.text,
-  }));
+  })).reverse();
 });
 
 onMounted(async () => {
