@@ -82,7 +82,7 @@ onMounted(async () => {
   if (!conversationId.value) return;
   messagesList.value = await MessagesServiceAPI.getChatHistory({
     chatId: conversationId.value,
-    size: 100,
+    limit: 100,
   });
 })
 </script>
