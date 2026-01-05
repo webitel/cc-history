@@ -15,7 +15,10 @@
       <chat-container
         v-else
         :messages="adaptedMessages"
+        is-next-messages-loading
+        can-load-next-messages
         without-avatars
+        @load-next-messages="loadNextMessages"
       >
         <template #footer>
           <div></div>
@@ -75,11 +78,15 @@ const adaptedMessages = computed<ChatMessageType[]>(() => {
   })).reverse();
 });
 
+const loadNextMessages = async () => {
+  console.log('load next messages');
+}
+
 onMounted(async () => {
   if (!conversationId.value) return;
   messagesList.value = await MessagesServiceAPI.getChatHistory({
     chatId: conversationId.value,
-    size: 100,
+    size: 1,
   });
 })
 </script>
