@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { MessagesServiceAPI } from '@webitel/api-services/api';
+import { MessagesServiceAPI, getMediaUrl } from '@webitel/api-services/api';
 import { WebitelChatMessage, WebitelChatPeer } from '@webitel/api-services/gen';
 import { ChatContainer, ChatMessageType } from '@webitel/ui-chats/ui';
 import { EngineHistoryCall } from 'webitel-sdk';
@@ -57,7 +57,10 @@ const adaptedMessages = computed<ChatMessageType[]>(() => {
 
   return messagesList.value.messages.map((message) => ({
     id: parseInt(message.id),
-    file: message.file,
+    file: message.file && {
+      ...message.file,
+      url: getMediaUrl(message.file.id),
+    },
     member: {
       ...message.from,
       self: messagesList.value.peers[+message.from?.id - 1].type === 'user',
