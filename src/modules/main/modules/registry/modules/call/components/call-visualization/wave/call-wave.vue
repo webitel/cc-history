@@ -382,7 +382,8 @@ export default {
     },
 
     downloadFile() {
-      this.exportFiles(this.call.files);
+      const audioFiles = this.call.files?.[EngineCallFileType.FileTypeAudio] || [];
+      this.exportFiles(audioFiles);
     },
     volumeRightChangeHandler(value) {
       this.volumeRightGain = value;
