@@ -7,7 +7,7 @@
     </div>
     <div class="chat-history__content">
       <wt-empty
-        v-if="!messagesList?.messages?.length"
+        v-if="!adaptedMessages.length"
         :image="darkMode ? EmptyChatDark : EmptyChat"
         :headline="t('registry.call.noMessages')"
         style="width: auto;"
@@ -15,7 +15,10 @@
       <chat-container
         v-else
         :messages="adaptedMessages"
+        :is-next-messages-loading="isChatLoading"
+        :can-load-next-messages="canLoadNextMessages"
         without-avatars
+        @load-next-messages="loadNextMessages"
       >
         <template #footer>
           <div></div>
@@ -42,48 +45,65 @@ interface Props {
 const props = defineProps<Props>();
 
 const conversationId = computed(() => props.call.conversationId);
-const messagesList = ref<{
-  messages?: WebitelChatMessage[];
-  peers?: WebitelChatPeer[];
-}>({});
 
 const { t } = useI18n();
 
 const darkMode = inject('darkMode');
 
-// Adapter function to transform API messages to ChatMessageType format
-const adaptedMessages = computed<ChatMessageType[]>(() => {
-  if (!messagesList.value?.messages?.length) return [];
+const isChatLoading = ref(false);
+const adaptedMessages = ref<ChatMessageType[]>([])
+const canLoadNextMessages = ref(false);
 
-  return messagesList.value.messages.map((message) => ({
+// Adapter function to transform API messages to ChatMessageType format
+const adaptateMessages = (messages: WebitelChatMessage[], peers: WebitelChatPeer[]) => {
+  if (!messages?.length) return [];
+
+  return messages.map((message) => ({
     id: parseInt(message.id),
     file: message.file && {
       ...message.file,
+      mime: message.file.type,
       url: getMediaUrl(message.file.id),
     },
     member: {
       ...message.from,
-      self: messagesList.value.peers[+message.from?.id - 1].type === 'user',
-      type: messagesList.value.peers[+message.from?.id - 1].type,
-    },
-    peer: {
-      ...message.sender,
-      type: message.sender?.type || 'user',
+      self: peers[+message.from?.id - 1].type === 'user',
+      type: peers[+message.from?.id - 1].type,
     },
     chat: message.chat,
     createdAt: new Date(parseInt(message.date)).getTime(),
     channelId: message.chat?.id,
-    contact: message.from,
     text: message.text,
   })).reverse();
-});
+}
+
+const lastLoadedMessageId = computed(() => adaptedMessages.value?.[0]?.id);
+
+const loadNextMessages = async () => {
+  if (isChatLoading.value) return;
+  isChatLoading.value = true;
+
+  const params = {
+    chatId: conversationId.value,
+    limit: 15
+  };
+
+  if (lastLoadedMessageId.value) {
+    params['offset.id'] = lastLoadedMessageId.value;
+  }
+
+  try {
+    const { messages, peers, next } = await MessagesServiceAPI.getChatHistory(params);
+    canLoadNextMessages.value = next;
+    adaptedMessages.value = [...adaptateMessages(messages, peers), ...adaptedMessages.value];
+  } finally {
+    isChatLoading.value = false;
+  }
+}
 
 onMounted(async () => {
   if (!conversationId.value) return;
-  messagesList.value = await MessagesServiceAPI.getChatHistory({
-    chatId: conversationId.value,
-    limit: 100,
-  });
+  loadNextMessages()
 })
 </script>
 
