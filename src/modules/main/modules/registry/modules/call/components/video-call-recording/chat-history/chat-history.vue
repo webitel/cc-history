@@ -7,14 +7,14 @@
     </div>
     <div class="chat-history__content">
       <wt-empty
-        v-if="!adaptedMessages.length"
+        v-if="!normalizedMessages.length"
         :image="darkMode ? EmptyChatDark : EmptyChat"
         :headline="t('registry.call.noMessages')"
         style="width: auto;"
       />
       <chat-container
         v-else
-        :messages="adaptedMessages"
+        :messages="normalizedMessages"
         :is-next-messages-loading="isChatLoading"
         :can-load-next-messages="canLoadNextMessages"
         without-avatars
@@ -51,11 +51,11 @@ const { t } = useI18n();
 const darkMode = inject('darkMode');
 
 const isChatLoading = ref(false);
-const adaptedMessages = ref<ChatMessageType[]>([])
+const normalizedMessages = ref<ChatMessageType[]>([])
 const canLoadNextMessages = ref(false);
 
-// Adapter function to transform API messages to ChatMessageType format
-const adaptateMessages = (messages: WebitelChatMessage[], peers: WebitelChatPeer[]) => {
+// Normalize function to transform API messages to ChatMessageType format
+const normalizeMessages = (messages: WebitelChatMessage[], peers: WebitelChatPeer[]) => {
   if (!messages?.length) return [];
 
   return messages.map((message) => ({
@@ -77,7 +77,7 @@ const adaptateMessages = (messages: WebitelChatMessage[], peers: WebitelChatPeer
   })).reverse();
 }
 
-const lastLoadedMessageId = computed(() => adaptedMessages.value?.[0]?.id);
+const lastLoadedMessageId = computed(() => normalizedMessages.value?.[0]?.id);
 
 const loadNextMessages = async () => {
   if (isChatLoading.value) return;
@@ -85,7 +85,7 @@ const loadNextMessages = async () => {
 
   const params = {
     chatId: conversationId.value,
-    limit: 15
+    limit: 15  // 15 is enough amount of messages to get scroll on container 
   };
 
   if (lastLoadedMessageId.value) {
@@ -96,7 +96,7 @@ const loadNextMessages = async () => {
   try {
     const { messages, peers, next } = await MessagesServiceAPI.getChatHistory(params);
     canLoadNextMessages.value = next;
-    adaptedMessages.value = [...adaptateMessages(messages, peers), ...adaptedMessages.value];
+    normalizedMessages.value = [...normalizeMessages(messages, peers), ...normalizedMessages.value];
   } finally {
     isChatLoading.value = false;
   }
