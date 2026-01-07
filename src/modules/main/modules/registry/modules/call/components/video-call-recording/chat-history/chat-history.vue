@@ -29,14 +29,14 @@
 </template>
 
 <script setup lang="ts">
-import { MessagesServiceAPI, getMediaUrl } from '@webitel/api-services/api';
-import { WebitelChatMessage, WebitelChatPeer } from '@webitel/api-services/gen';
+import { MessagesServiceAPI } from '@webitel/api-services/api';
 import { ChatContainer, ChatMessageType } from '@webitel/ui-chats/ui';
 import { EngineHistoryCall } from 'webitel-sdk';
 import { useI18n } from 'vue-i18n';
 import EmptyChat from './_internals/assets/empty-chat.svg'
 import EmptyChatDark from './_internals/assets/empty-chat-dark.svg'
 import { computed, inject, onMounted, ref } from 'vue';
+import { normalizeMessages } from './_internals/scripts/normalizeMessages';
 
 interface Props {
   call: EngineHistoryCall,
@@ -53,29 +53,6 @@ const darkMode = inject('darkMode');
 const isChatLoading = ref(false);
 const normalizedMessages = ref<ChatMessageType[]>([])
 const canLoadNextMessages = ref(false);
-
-// Normalize function to transform API messages to ChatMessageType format
-const normalizeMessages = (messages: WebitelChatMessage[], peers: WebitelChatPeer[]) => {
-  if (!messages?.length) return [];
-
-  return messages.map((message) => ({
-    id: parseInt(message.id),
-    file: message.file && {
-      ...message.file,
-      mime: message.file.type,
-      url: getMediaUrl(message.file.id),
-    },
-    member: {
-      ...message.from,
-      self: peers[+message.from?.id - 1].type === 'user' || peers[+message.from?.id - 1].type === 'bot',
-      type: peers[+message.from?.id - 1].type,
-    },
-    chat: message.chat,
-    createdAt: new Date(parseInt(message.date)).getTime(),
-    channelId: message.chat?.id,
-    text: message.text,
-  })).reverse();
-}
 
 const lastLoadedMessageId = computed(() => normalizedMessages.value?.[0]?.id);
 
