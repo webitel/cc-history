@@ -324,7 +324,7 @@ const {
   isLoading,
 });
 
-initialize();
+loadDataList();
 
 const {
   audioData,
