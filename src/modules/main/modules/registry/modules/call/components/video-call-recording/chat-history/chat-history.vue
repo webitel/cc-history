@@ -89,6 +89,7 @@ const loadNextMessages = async () => {
   };
 
   if (lastLoadedMessageId.value) {
+    // 'offset.id' because the backend cant handle object
     params['offset.id'] = lastLoadedMessageId.value;
   }
 
