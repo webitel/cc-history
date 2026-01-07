@@ -67,7 +67,7 @@ const adaptateMessages = (messages: WebitelChatMessage[], peers: WebitelChatPeer
     },
     member: {
       ...message.from,
-      self: peers[+message.from?.id - 1].type === 'user',
+      self: peers[+message.from?.id - 1].type === 'user' || peers[+message.from?.id - 1].type === 'bot',
       type: peers[+message.from?.id - 1].type,
     },
     chat: message.chat,
