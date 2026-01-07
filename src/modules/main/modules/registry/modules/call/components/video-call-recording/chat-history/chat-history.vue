@@ -7,15 +7,18 @@
     </div>
     <div class="chat-history__content">
       <wt-empty
-        v-if="!messagesList?.messages?.length"
+        v-if="!normalizedMessages.length"
         :image="darkMode ? EmptyChatDark : EmptyChat"
         :headline="t('registry.call.noMessages')"
         style="width: auto;"
       />
       <chat-container
         v-else
-        :messages="adaptedMessages"
+        :messages="normalizedMessages"
+        :is-next-messages-loading="isChatLoading"
+        :can-load-next-messages="canLoadNextMessages"
         without-avatars
+        @load-next-messages="loadNextMessages"
       >
         <template #footer>
           <div></div>
@@ -26,14 +29,14 @@
 </template>
 
 <script setup lang="ts">
-import { MessagesServiceAPI, getMediaUrl } from '@webitel/api-services/api';
-import { WebitelChatMessage, WebitelChatPeer } from '@webitel/api-services/gen';
+import { MessagesServiceAPI } from '@webitel/api-services/api';
 import { ChatContainer, ChatMessageType } from '@webitel/ui-chats/ui';
 import { EngineHistoryCall } from 'webitel-sdk';
 import { useI18n } from 'vue-i18n';
 import EmptyChat from './_internals/assets/empty-chat.svg'
 import EmptyChatDark from './_internals/assets/empty-chat-dark.svg'
 import { computed, inject, onMounted, ref } from 'vue';
+import { normalizeMessages } from './_internals/scripts/normalizeMessages';
 
 interface Props {
   call: EngineHistoryCall,
@@ -42,48 +45,43 @@ interface Props {
 const props = defineProps<Props>();
 
 const conversationId = computed(() => props.call.conversationId);
-const messagesList = ref<{
-  messages?: WebitelChatMessage[];
-  peers?: WebitelChatPeer[];
-}>({});
 
 const { t } = useI18n();
 
 const darkMode = inject('darkMode');
 
-// Adapter function to transform API messages to ChatMessageType format
-const adaptedMessages = computed<ChatMessageType[]>(() => {
-  if (!messagesList.value?.messages?.length) return [];
+const isChatLoading = ref(false);
+const normalizedMessages = ref<ChatMessageType[]>([])
+const canLoadNextMessages = ref(false);
 
-  return messagesList.value.messages.map((message) => ({
-    id: parseInt(message.id),
-    file: message.file && {
-      ...message.file,
-      url: getMediaUrl(message.file.id),
-    },
-    member: {
-      ...message.from,
-      self: messagesList.value.peers[+message.from?.id - 1].type === 'user',
-      type: messagesList.value.peers[+message.from?.id - 1].type,
-    },
-    peer: {
-      ...message.sender,
-      type: message.sender?.type || 'user',
-    },
-    chat: message.chat,
-    createdAt: new Date(parseInt(message.date)).getTime(),
-    channelId: message.chat?.id,
-    contact: message.from,
-    text: message.text,
-  })).reverse();
-});
+const lastLoadedMessageId = computed(() => normalizedMessages.value?.[0]?.id);
+
+const loadNextMessages = async () => {
+  if (isChatLoading.value) return;
+  isChatLoading.value = true;
+
+  const params = {
+    chatId: conversationId.value,
+    limit: 15  // 15 is enough amount of messages to get scroll on container 
+  };
+
+  if (lastLoadedMessageId.value) {
+    // 'offset.id' because the backend cant handle object
+    params['offset.id'] = lastLoadedMessageId.value;
+  }
+
+  try {
+    const { messages, peers, next } = await MessagesServiceAPI.getChatHistory(params);
+    canLoadNextMessages.value = next;
+    normalizedMessages.value = [...normalizeMessages(messages, peers), ...normalizedMessages.value];
+  } finally {
+    isChatLoading.value = false;
+  }
+}
 
 onMounted(async () => {
   if (!conversationId.value) return;
-  messagesList.value = await MessagesServiceAPI.getChatHistory({
-    chatId: conversationId.value,
-    limit: 100,
-  });
+  loadNextMessages()
 })
 </script>
 
