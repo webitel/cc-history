@@ -98,7 +98,7 @@ export default {
     displayHolds(hold, player) {
       hold.forEach((hold) => {
         const region = player.addRegion({
-          start: ((hold.start - this.call.files[0].startAt) / 1000).toFixed(2),
+          start: ((hold.start - this.call.files.file_type_audio[0].startAt) / 1000).toFixed(2),
           showTooltip: false,
           handleStyle: {
             right: holdStyle,
