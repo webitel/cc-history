@@ -19,11 +19,13 @@
         v-model="currentTab"
         :tabs="tabs"
       />
-      <component
-        :is="currentTab.component"
-        :call="call"
-        :namespace="currentTab.namespace"
-      />
+      <keep-alive>
+        <component
+          :is="currentTab.component"
+          :call="call"
+          :namespace="currentTab.namespace"
+        />
+      </keep-alive>
     </div>
   </section>
 </template>
