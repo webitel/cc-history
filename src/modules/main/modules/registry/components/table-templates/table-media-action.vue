@@ -7,14 +7,14 @@
   >
     <template #activator="{ toggle }">
       <wt-icon-btn
-        :icon="isAnyFilesPlaying ? 'stop': 'play'"
+        :icon="isAnyFilesPlaying ? 'stop': icon"
         @click="toggle"
       />
     </template>
     <template #option="{ text, id }">
       <div class="table-media-action__option">
         <wt-icon
-          :icon="id === currentlyPlaying ? 'stop' : 'play'"
+          :icon="id === currentlyPlaying ? 'stop' : icon"
         />
         {{ text }}
       </div>
@@ -29,6 +29,7 @@ import { EngineCallFileType } from '@webitel/api-services/gen/models';
 interface Props {
   files: unknown[],
   currentlyPlaying?: string,
+  icon: string
 }
 
 const props = withDefaults(defineProps<Props>(), {

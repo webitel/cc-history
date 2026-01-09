@@ -152,23 +152,13 @@
 
         <template #actions="{ item }">
           <template v-if="recordingFiles(item).length">
-            <wt-icon 
-              :color="IconColor.INFO" 
-              :icon="getRecordingTypeIcon(item)"
-            />
-
             <media-action
               :currently-playing="currentlyMediaPlaying"
               :files="recordingFiles(item)"
+              :icon="getRecordingTypeIcon(item)"
               @play="handlePlayMedia"
               @stop="closePlayer"
             />
-
-            <wt-chip 
-              :color="ChipColor.SECONDARY"
-            >
-              {{ recordingFiles(item).length }}
-            </wt-chip>
           </template>
           
           <!--          v-if transcript can be added, exists, or already in progress -->
@@ -379,7 +369,7 @@ const recordingFiles = (item) => {
 }
 
 const getRecordingTypeIcon = (item) => {
-  return item.files?.[EngineCallFileType.FileTypeVideo] ? 'preview-tag-video' : 'preview-tag-audio'
+  return item.files?.[EngineCallFileType.FileTypeVideo] ? 'preview-tag-video' : 'play'
 }
 
 const handlePlayMedia = (mediaData) => {
