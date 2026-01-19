@@ -22,7 +22,7 @@
     "@webitel/styleguide": "^24.12.44",
     "@webitel/ui-chats": "^0.0.21",
     "@webitel/ui-datalist": "^1.0.98",
-    "@webitel/ui-sdk": "~25.12",
+    "@webitel/ui-sdk": "~26.2",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "deep-copy": "^1.4.2",
