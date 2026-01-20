@@ -314,9 +314,11 @@ const {
   filters: computed(() => filtersManager.value.getAllValues()),
   isLoading,
 });
+
+// @o.chorpita
+// [WTEL-8649](https://webitel.atlassian.net/browse/WTEL-8649)
 /// Wait for store setup to finish so request fields are taken filters,
 // not the default ones.
-// https://webitel.atlassian.net/browse/WTEL-8649
 watch(
   () => isStoreSetUp.value,
   (isSetUp) => {
