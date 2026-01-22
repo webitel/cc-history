@@ -19,11 +19,13 @@
         v-model="currentTab"
         :tabs="tabs"
       />
-      <component
-        :is="currentTab.component"
-        :call="call"
-        :namespace="currentTab.namespace"
-      />
+      <keep-alive exclude="Pdfs">
+        <component
+          :is="currentTab.component"
+          :call="call"
+          :namespace="currentTab.namespace"
+        />
+      </keep-alive>
     </div>
   </section>
 </template>
@@ -53,6 +55,10 @@ const contentRef = useTemplateRef('contentRef');
 const videoRef = useTemplateRef('videoRef');
 
 useVideoRecordingContentObserver(contentRef, videoRef);
+
+// Set component names for keep-alive
+Screenshots.name = 'Screenshots';
+Pdfs.name = 'Pdfs';
 
 const tabValues = computed(() => ({
   SCREENSHOTS: {

@@ -1,6 +1,6 @@
 {
   "name": "@webitel/history",
-  "version": "25.10.0",
+  "version": "25.12.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -18,11 +18,11 @@
     "@vue/compat": "^3.5.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "@webitel/api-services": "^0.0.104",
+    "@webitel/api-services": "^0.0.107",
     "@webitel/styleguide": "^24.12.44",
-    "@webitel/ui-chats": "^0.0.25",
-    "@webitel/ui-datalist": "^1.0.94",
-    "@webitel/ui-sdk": "~25.12",
+    "@webitel/ui-chats": "^0.0.21",
+    "@webitel/ui-datalist": "^1.0.98",
+    "@webitel/ui-sdk": "~26.2",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "deep-copy": "^1.4.2",

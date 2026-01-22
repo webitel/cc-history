@@ -152,25 +152,15 @@
 
         <template #actions="{ item }">
           <template v-if="recordingFiles(item).length">
-            <wt-icon 
-              :color="IconColor.INFO" 
-              :icon="getRecordingTypeIcon(item)"
-            />
-
             <media-action
               :currently-playing="currentlyMediaPlaying"
               :files="recordingFiles(item)"
+              :icon="getRecordingTypeIcon(item)"
               @play="handlePlayMedia"
               @stop="closePlayer"
             />
-
-            <wt-chip 
-              :color="ChipColor.SECONDARY"
-            >
-              {{ recordingFiles(item).length }}
-            </wt-chip>
           </template>
-          
+
           <!--          v-if transcript can be added, exists, or already in progress -->
           <stt-action
             v-if="showItemStt(item)"
@@ -248,7 +238,7 @@ import {
 } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js';
 import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { EngineHistoryCall } from 'webitel-sdk';
 
 import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
@@ -279,6 +269,7 @@ const {
   shownHeaders,
 
   filtersManager,
+  isStoreSetUp
 } = storeToRefs(tableStore);
 
 const {
@@ -324,7 +315,18 @@ const {
   isLoading,
 });
 
-loadDataList();
+// @o.chorpita
+// [WTEL-8649](https://webitel.atlassian.net/browse/WTEL-8649)
+/// Wait for store setup to finish so request fields are taken filters,
+// not the default ones.
+watch(
+  () => isStoreSetUp.value,
+  (isSetUp) => {
+    if (!isSetUp) return;
+    loadDataList();
+  },
+  { immediate: true }
+);
 
 const {
   audioData,
@@ -379,7 +381,7 @@ const recordingFiles = (item) => {
 }
 
 const getRecordingTypeIcon = (item) => {
-  return item.files?.[EngineCallFileType.FileTypeVideo] ? 'preview-tag-video' : 'preview-tag-audio'
+  return item.files?.[EngineCallFileType.FileTypeVideo] ? 'preview-tag-video' : 'play'
 }
 
 const handlePlayMedia = (mediaData) => {
