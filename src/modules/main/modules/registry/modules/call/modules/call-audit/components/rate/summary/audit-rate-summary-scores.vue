@@ -10,10 +10,10 @@
         size="3xl"
         :color="color"
       />
-      <span class="call-evaluation-score__value">
+      <span class="call-evaluation-score__value typo-subtitle-1">
       {{ value.toFixed(2) }}
     </span>
-      <span class="call-evaluation-score__title">
+      <span class="call-evaluation-score__title typo-body-1">
       {{ title }}
     </span>
     </div>
@@ -21,35 +21,35 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
-  scoreRequired: number | null;
-  scoreOptional: number | null;
+	scoreRequired: number | null;
+	scoreOptional: number | null;
 }>();
 
 const { t } = useI18n();
 
 const scores = computed(() => {
-  const scores = [];
-  if (props.scoreRequired != null) {
-    scores.push({
-      title: t('registry.call.evaluation.mandatory'),
-      value: props.scoreRequired,
-      color: 'success',
-    });
-  }
+	const scores = [];
+	if (props.scoreRequired != null) {
+		scores.push({
+			title: t("registry.call.evaluation.mandatory"),
+			value: props.scoreRequired,
+			color: "success",
+		});
+	}
 
-  if (props.scoreOptional != null) {
-    scores.push({
-      title: t('registry.call.evaluation.optional'),
-      value: props.scoreOptional,
-      color: 'disabled',
-    });
-  }
+	if (props.scoreOptional != null) {
+		scores.push({
+			title: t("registry.call.evaluation.optional"),
+			value: props.scoreOptional,
+			color: "disabled",
+		});
+	}
 
-  return scores;
+	return scores;
 });
 </script>
 
@@ -70,11 +70,9 @@ const scores = computed(() => {
   color: var(--text-main-color);
 
   &__value {
-    @extend %typo-subtitle-1;
   }
 
   &__title {
-    @extend %typo-body-1;
   }
 }
 

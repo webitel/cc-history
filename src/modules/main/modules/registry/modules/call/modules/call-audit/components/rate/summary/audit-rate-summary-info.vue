@@ -5,10 +5,10 @@
       :key="title"
       class="audit-rate-summary-row"
     >
-      <h5 class="audit-rate-summary-row__title">
+      <h5 class="audit-rate-summary-row__title typo-subtitle-1">
         {{ title }}
       </h5>
-      <span class="audit-rate-summary-row__value">
+      <span class="audit-rate-summary-row__value typo-body-1">
         {{ value }}
       </span>
     </li>
@@ -17,10 +17,10 @@
       v-if="rate.comment"
       class="audit-rate-summary-row audit-rate-summary-row--comment"
     >
-      <span class="audit-rate-summary-row__title">
+      <span class="audit-rate-summary-row__title typo-subtitle-1">
         {{ $t('registry.call.evaluation.comment') }}
       </span>
-      <p class="audit-rate-summary-row__value">
+      <p class="audit-rate-summary-row__value typo-body-1">
         {{ rate.comment }}
       </p>
     </li>
@@ -28,29 +28,29 @@
 </template>
 
 <script setup lang="ts">
-import { FormatDateMode } from '@webitel/ui-sdk/enums';
-import { formatDate } from '@webitel/ui-sdk/utils';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { EngineAuditRate } from 'webitel-sdk';
+import { FormatDateMode } from "@webitel/ui-sdk/enums";
+import { formatDate } from "@webitel/ui-sdk/utils";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { EngineAuditRate } from "webitel-sdk";
 
 const props = defineProps<{
-  rate: EngineAuditRate;
+	rate: EngineAuditRate;
 }>();
 
 const { t } = useI18n();
 
 const auditFormInfo = computed(() => [
-  { title: t('fields.ratedBy'), value: props.rate.createdBy.name },
-  { title: t('fields.agent'), value: props.rate.ratedUser?.name },
-  {
-    title: t('fields.date'),
-    value: formatDate(+props.rate.createdAt, FormatDateMode.DATETIME),
-  },
-  {
-    title: t('registry.call.evaluation.scorecard'),
-    value: props.rate.form.name,
-  },
+	{ title: t("fields.ratedBy"), value: props.rate.createdBy.name },
+	{ title: t("fields.agent"), value: props.rate.ratedUser?.name },
+	{
+		title: t("fields.date"),
+		value: formatDate(+props.rate.createdAt, FormatDateMode.DATETIME),
+	},
+	{
+		title: t("registry.call.evaluation.scorecard"),
+		value: props.rate.form.name,
+	},
 ]);
 </script>
 
@@ -65,11 +65,9 @@ const auditFormInfo = computed(() => [
   padding: var(--spacing-xs) 0;
 
   .audit-rate-summary-row__title {
-    @extend %typo-subtitle-1;
   }
 
   .audit-rate-summary-row__value {
-    @extend %typo-body-1;
   }
 
   &--comment {

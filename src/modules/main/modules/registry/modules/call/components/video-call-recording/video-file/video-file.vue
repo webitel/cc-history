@@ -8,7 +8,7 @@
     />
 
     <div class="video-file__header">
-      <span class="video-file__title">
+      <span class="video-file__title typo-heading-4">
         {{ t('registry.call.videoFile') }}
       </span>
       <div class="video-file__actions">
@@ -55,57 +55,59 @@
 </template>
 
 <script setup lang="ts">
-import { WtVidstackPlayer } from '@webitel/ui-sdk/components';
-import { FileServicesAPI } from '@webitel/api-services/api';
-import { EngineCallFile } from '@webitel/api-services/gen/models';
-import { downloadFile,getMediaUrl } from '@webitel/api-services/api';
-import { ComponentSize } from '@webitel/ui-sdk/enums';
-import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
-import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
-import { useI18n } from 'vue-i18n';
-import EmptyVideo from './_internals/assets/empty-video.svg'
-import EmptyVideoDark from './_internals/assets/empty-video-dark.svg'
-import { computed, inject, ref } from 'vue';
+import { WtVidstackPlayer } from "@webitel/ui-sdk/components";
+import { FileServicesAPI } from "@webitel/api-services/api";
+import { EngineCallFile } from "@webitel/api-services/gen/models";
+import { downloadFile, getMediaUrl } from "@webitel/api-services/api";
+import { ComponentSize } from "@webitel/ui-sdk/enums";
+import DeleteConfirmationPopup from "@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue";
+import { useDeleteConfirmationPopup } from "@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup";
+import { useI18n } from "vue-i18n";
+import EmptyVideo from "./_internals/assets/empty-video.svg";
+import EmptyVideoDark from "./_internals/assets/empty-video-dark.svg";
+import { computed, inject, ref } from "vue";
 
 interface Props {
-  files?: EngineCallFile[]
+	files?: EngineCallFile[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  files: [],
+	files: [],
 });
 
 const { t } = useI18n();
 
-const darkMode = inject('darkMode');
+const darkMode = inject("darkMode");
 
 const dataList = ref(props.files || []);
 
 const currentVideo = ref<EngineCallFile | null>(dataList.value[0] ?? null);
 
 const currentVideoUrl = computed(() => {
-  return currentVideo.value ? getMediaUrl(currentVideo.value.id) : '';
-})
+	return currentVideo.value ? getMediaUrl(currentVideo.value.id) : "";
+});
 
 const {
-  isVisible: isDeleteConfirmationPopup,
-  deleteCount,
-  deleteCallback,
+	isVisible: isDeleteConfirmationPopup,
+	deleteCount,
+	deleteCallback,
 
-  askDeleteConfirmation,
-  closeDelete,
+	askDeleteConfirmation,
+	closeDelete,
 } = useDeleteConfirmationPopup();
 
 const handleDelete = async () => {
-  await FileServicesAPI.delete([currentVideo.value?.id]);
+	await FileServicesAPI.delete([currentVideo.value?.id]);
 
-  dataList.value = dataList.value.filter((item) => item.id !== currentVideo.value?.id);
-  if (dataList.value.length) { 
-    currentVideo.value = dataList.value[0];
-  } else {
-    currentVideo.value = null;
-  }
-}
+	dataList.value = dataList.value.filter(
+		(item) => item.id !== currentVideo.value?.id,
+	);
+	if (dataList.value.length) {
+		currentVideo.value = dataList.value[0];
+	} else {
+		currentVideo.value = null;
+	}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -120,7 +122,6 @@ const handleDelete = async () => {
 }
 
 .video-file__title {
-  @extend %typo-heading-4;
 }
 
 .video-file__actions {

@@ -1,8 +1,8 @@
 <template>
-  <div class="files-counter">
+  <div class="files-counter typo-caption">
     <div class="files-counter__line-wrapper">
       {{ $t('headerSection.filesLoaded') }}
-      <span class="files-counter__count">
+      <span class="files-counter__count typo-caption">
         {{ downloadProgress }}
       </span>
     </div>
@@ -11,7 +11,7 @@
       class="files-counter__line-wrapper"
     >
       {{ $t('headerSection.zippingProgress') }}
-      <span class="files-counter__count">
+      <span class="files-counter__count typo-caption">
         {{ zippingProgress }}%
       </span>
     </div>
@@ -20,15 +20,15 @@
 
 <script>
 export default {
-  name: 'FilesCounter',
-  props: {
-    downloadProgress: {
-      type: Number,
-    },
-    zippingProgress: {
-      type: Number,
-    },
-  },
+	name: "FilesCounter",
+	props: {
+		downloadProgress: {
+			type: Number,
+		},
+		zippingProgress: {
+			type: Number,
+		},
+	},
 };
 </script>
 
@@ -36,7 +36,6 @@ export default {
 @use '@webitel/ui-sdk/src/css/main' as *;
 
 .files-counter {
-  @extend %typo-caption;
   position: absolute;
   top: 100%;
   right: 0;
@@ -52,7 +51,6 @@ export default {
   }
 
   &__count {
-    @extend %typo-caption;
   }
 }
 </style>

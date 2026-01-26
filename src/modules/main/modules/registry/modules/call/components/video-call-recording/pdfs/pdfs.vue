@@ -8,7 +8,7 @@
   >
     <template #header="{ selected, loadDataList, askDeleteConfirmation, handleDelete }">
       <header class="table-title">
-        <h3 class="table-title__title">
+        <h3 class="table-title__title typo-heading-4">
           {{ t('registry.call.pdfs', 2) }}
         </h3>
         <wt-action-bar
@@ -29,13 +29,13 @@
 </template>
 
 <script lang="ts" setup>
-import { IconAction } from '@webitel/ui-sdk/enums';
-import AgentPdfsTabSdk from '@webitel/ui-sdk/src/modules/AgentPdfs/components/agent-pdfs-tab.vue';
-import { usePdfsDataListStore } from './store/pdfs';
-import { useRoute } from 'vue-router';
-import { FileServicesAPI } from '@webitel/api-services/api';
-import { WebitelMediaExporterExportRecord } from '@webitel/api-services/gen/models';
-import { useI18n } from 'vue-i18n';
+import { IconAction } from "@webitel/ui-sdk/enums";
+import AgentPdfsTabSdk from "@webitel/ui-sdk/src/modules/AgentPdfs/components/agent-pdfs-tab.vue";
+import { usePdfsDataListStore } from "./store/pdfs";
+import { useRoute } from "vue-router";
+import { FileServicesAPI } from "@webitel/api-services/api";
+import { WebitelMediaExporterExportRecord } from "@webitel/api-services/gen/models";
+import { useI18n } from "vue-i18n";
 
 const route = useRoute();
 
@@ -46,7 +46,7 @@ const callId = route.params.pathMatch as string;
 const tableStore = usePdfsDataListStore();
 
 const handleDeleteItem = (item: WebitelMediaExporterExportRecord) => {
-  return FileServicesAPI.delete([item.fileId]);
+	return FileServicesAPI.delete([item.fileId]);
 };
 </script>
 
@@ -71,6 +71,5 @@ const handleDeleteItem = (item: WebitelMediaExporterExportRecord) => {
 }
 
 .table-title__title {
-  @extend %typo-heading-4;
 }
 </style>
