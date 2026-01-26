@@ -85,7 +85,7 @@ export default {
     },
 
     displayHoldIcons(region, hold) {
-      const { wrapperEl, iconEl, tooltipEl } = this.createIcon(
+      const { wrapperEl, iconEl, tooltipEl} = this.createIcon(
         region,
         this.player,
       );
@@ -95,19 +95,56 @@ export default {
       region.element.appendChild(wrapperEl);
     },
 
+    // Displays hold markers on audio timeline, accounting for recording delay and that holds aren't in the audio file
     displayHolds(hold, player) {
-      hold.forEach((hold) => {
+      const audioFile = this.call.files.file_type_audio[0];
+      const callStart = this.convertCreatedAtToTimestamp(this.call.createdAt);
+      const actualAudioDuration = player.getDuration();
+
+      let accumulatedHoldTime = 0;
+
+      hold.forEach((holdItem) => {
+        const holdDuration = holdItem.stop - holdItem.start;
+        let position;
+
+        // Hold before recording started
+        if (holdItem.start < audioFile.startAt) {
+          position = 0;
+        }
+        // Hold after recording ended
+        else if (holdItem.start >= audioFile.stopAt) {
+          position = actualAudioDuration
+        }
+        // Hold during recording - adjust for delay and previous holds
+        else {
+          const offset = holdItem.start - audioFile.startAt;
+          const delay = audioFile.startAt - callStart;
+          position = (offset - delay - accumulatedHoldTime) / 1000;
+          accumulatedHoldTime += holdDuration;
+        }
+
         const region = player.addRegion({
-          start: ((hold.start - this.call.files.file_type_audio[0].startAt) / 1000).toFixed(2),
+          start: position.toFixed(2),
           showTooltip: false,
           handleStyle: {
             right: holdStyle,
             left: holdStyle,
           },
         });
-        this.displayHoldIcons(region, hold);
+
+        this.displayHoldIcons(region, holdItem);
       });
+
       this.blockRegionResize(player);
+    },
+
+    // Converts formatted date string "dd.MM.yyyy, HH:mm:ss" to Unix timestamp in milliseconds
+    convertCreatedAtToTimestamp(createdAt) {
+      const [datePart, timePart] = createdAt.split(', ');
+      const [day, month, year] = datePart.split('.');
+      const [hours, minutes, seconds] = timePart.split(':');
+
+      return new Date(year, month - 1, day, hours, minutes, seconds).getTime();
     },
 
     displayCommentIcons(region, comment) {
