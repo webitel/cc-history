@@ -15,10 +15,10 @@
           :class="{ 'dashboard-select__option--selected': dashboard.type === selected }"
           @click="selected = dashboard.type"
         >
-          <h4 class="dashboard-select__option__title">
+          <h4 class="dashboard-select__option__title typo-subtitle-2">
             {{ dashboard.title }}
           </h4>
-          <p class="dashboard-select__option__description">
+          <p class="dashboard-select__option__description typo-body-2">
             {{ dashboard.description }}
           </p>
         </li>
@@ -42,29 +42,31 @@
 </template>
 
 <script>
-import Dashboards from '../../dashboards/enums/Dashboards.enum';
+import Dashboards from "../../dashboards/enums/Dashboards.enum";
 
 export default {
-  name: 'DashboardSelectPopup',
-  data: () => ({
-    selected: null,
-  }),
-  computed: {
-    dashboards() {
-      return Dashboards.map((Dashboard) => ({
-        title: this.$t(`dashboards.${Dashboard.type}.title`),
-        description: this.$t(`dashboards.${Dashboard.type}.description`),
-        type: Dashboard.type,
-    }));
-    },
-  },
-  methods: {
-    selectDashboard() {
-      const Dashboard = Dashboards.find((Dashboard) => Dashboard.type === this.selected);
-      const dashboard = new Dashboard();
-      this.$emit('input', dashboard);
-    },
-  },
+	name: "DashboardSelectPopup",
+	data: () => ({
+		selected: null,
+	}),
+	computed: {
+		dashboards() {
+			return Dashboards.map((Dashboard) => ({
+				title: this.$t(`dashboards.${Dashboard.type}.title`),
+				description: this.$t(`dashboards.${Dashboard.type}.description`),
+				type: Dashboard.type,
+			}));
+		},
+	},
+	methods: {
+		selectDashboard() {
+			const Dashboard = Dashboards.find(
+				(Dashboard) => Dashboard.type === this.selected,
+			);
+			const dashboard = new Dashboard();
+			this.$emit("input", dashboard);
+		},
+	},
 };
 </script>
 
@@ -86,12 +88,10 @@ export default {
     }
 
     &__title {
-      @extend %typo-subtitle-2;
       margin-bottom: 5px;
     }
 
     &__description {
-      @extend %typo-body-2;
     }
   }
 </style>

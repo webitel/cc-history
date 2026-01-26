@@ -1,6 +1,6 @@
 <template>
   <header class="dashboard-header">
-    <h4 class="dashboard-header__heading">
+    <h4 class="dashboard-header__heading typo-heading-2">
       {{ name }}
     </h4>
     <div class="dashboard-header__actions-wrapper">
@@ -20,13 +20,13 @@
 
 <script>
 export default {
-  name: 'DashboardHeader',
-  props: {
-    name: {
-      type: String,
-      default: '',
-    },
-  },
+	name: "DashboardHeader",
+	props: {
+		name: {
+			type: String,
+			default: "",
+		},
+	},
 };
 </script>
 
@@ -39,7 +39,6 @@ export default {
   }
 
   .dashboard-header__heading {
-    @extend %typo-heading-2;
   }
 
   .dashboard-header__actions-wrapper {

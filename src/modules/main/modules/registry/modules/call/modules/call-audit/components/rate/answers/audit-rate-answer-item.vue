@@ -1,7 +1,7 @@
 <template>
   <li class="audit-rate-answer-item">
     <h4
-      class="audit-rate-answer-item-question-text"
+      class="audit-rate-answer-item-question-text typo-subtitle-1"
       :class="{'audit-rate-answer-item-question-text--required': question.required }"
     >
       {{ question.question }} <!-- lol -->
@@ -11,7 +11,7 @@
       v-if="answer.score >= 0 /* coz be null, if not answered */"
       class="audit-rate-answer-item-answer"
     >
-      <p class="audit-rate-answer-item-answer__name">
+      <p class="audit-rate-answer-item-answer__name typo-body-1">
         {{ answerName }}
       </p>
 
@@ -36,22 +36,21 @@
 </template>
 
 <script setup lang="ts">
-
-import AuditFormAnswerEditingInfo
-  from '@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
-import { computed } from 'vue';
-import { EngineQuestion, EngineQuestionAnswer } from 'webitel-sdk';
+import AuditFormAnswerEditingInfo from "@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue";
+import { computed } from "vue";
+import { EngineQuestion, EngineQuestionAnswer } from "webitel-sdk";
 
 const props = defineProps<{
-  question: EngineQuestion;
-  answer: EngineQuestionAnswer;
+	question: EngineQuestion;
+	answer: EngineQuestionAnswer;
 }>();
 
 const answerName = computed(() => {
-  const answeredOption = props.question.options?.find(({ score }) => score === props.answer.score);
-  return answeredOption?.name || '';
+	const answeredOption = props.question.options?.find(
+		({ score }) => score === props.answer.score,
+	);
+	return answeredOption?.name || "";
 });
-
 </script>
 
 <style scoped lang="scss">
@@ -65,7 +64,6 @@ const answerName = computed(() => {
 }
 
 .audit-rate-answer-item-question-text {
-  @extend %typo-subtitle-1;
   overflow-wrap: anywhere; // break words in text with no spaces, but preserve words if text has spaces
   padding: var(--spacing-2xs) 0 var(--spacing-3xs);
 
@@ -82,7 +80,6 @@ const answerName = computed(() => {
   padding: var(--spacing-2xs) 0;
 
   &__name {
-    @extend %typo-body-1;
     padding-right: var(--spacing-2xs);
   }
 

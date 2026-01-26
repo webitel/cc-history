@@ -218,101 +218,101 @@
 </template>
 
 <script lang="ts" setup>
-import { getMediaUrl } from '@webitel/api-services/api';
-import { ChipColor, IconAction, IconColor } from '@webitel/ui-sdk/enums';
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { getMediaUrl } from "@webitel/api-services/api";
+import { ChipColor, IconAction, IconColor } from "@webitel/ui-sdk/enums";
+import { EngineCallFileType } from "@webitel/api-services/gen/models";
 import {
-  WtActionBar,
-  WtBadge,
-  WtEmpty,
-  WtIconAction,
-  WtIconBtn,
-  WtLoader,
-  WtPagination,
-  WtPlayer,
-  WtTable,
-  WtVidstackPlayer,
-} from '@webitel/ui-sdk/src/components/index.js';
-import {
-  useTableEmpty,
-} from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty.js';
-import get from 'lodash/get';
-import { storeToRefs } from 'pinia';
-import { computed, ref, watch } from 'vue';
-import { EngineHistoryCall } from 'webitel-sdk';
+	WtActionBar,
+	WtBadge,
+	WtEmpty,
+	WtIconAction,
+	WtIconBtn,
+	WtLoader,
+	WtPagination,
+	WtPlayer,
+	WtTable,
+	WtVidstackPlayer,
+} from "@webitel/ui-sdk/components";
+import { useTableEmpty } from "@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty";
+import get from "lodash/get";
+import { storeToRefs } from "pinia";
+import { computed, ref, watch } from "vue";
+import { EngineHistoryCall } from "webitel-sdk";
 
-import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
-import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
-import { usePlayMedia } from '../composables/usePlayMedia.ts';
-import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
-import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
-import { useRegistryStore } from '../store/new/registry.store.ts';
-import TableDirection from './table-templates/table-direction.vue';
-import MediaAction from './table-templates/table-media-action.vue';
-import ScreenRecordingAction from './table-templates/table-video-action.vue';
+import VariableColumnSelect from "../../../../filters/components/variable-column-select.vue";
+import { SearchMode } from "../../../../filters/enums/SearchMode.ts";
+import { usePlayMedia } from "../composables/usePlayMedia.ts";
+import SttPopup from "../modules/stt/components/registry/stt-popup.vue";
+import SttAction from "../modules/stt/components/registry/table-stt-action.vue";
+import { useRegistryStore } from "../store/new/registry.store.ts";
+import TableDirection from "./table-templates/table-direction.vue";
+import MediaAction from "./table-templates/table-media-action.vue";
+import ScreenRecordingAction from "./table-templates/table-video-action.vue";
 
 const emit = defineEmits<{
-  'toggle:filters-panel': [];
+	"toggle:filters-panel": [];
 }>();
 
 const tableStore = useRegistryStore();
 
 const {
-  dataList,
-  selected,
-  error,
-  isLoading,
-  page,
-  size,
-  next,
-  headers,
-  shownHeaders,
+	dataList,
+	selected,
+	error,
+	isLoading,
+	page,
+	size,
+	next,
+	headers,
+	shownHeaders,
 
-  filtersManager,
-  isStoreSetUp
+	filtersManager,
+	isStoreSetUp,
 } = storeToRefs(tableStore);
 
 const {
-  initialize,
-  loadDataList,
-  updateSelected,
-  updatePage,
-  updateSize,
-  updateSort,
-  updateShownHeaders,
-  columnResize,
-  columnReorder,
+	initialize,
+	loadDataList,
+	updateSelected,
+	updatePage,
+	updateSize,
+	updateSort,
+	updateShownHeaders,
+	columnResize,
+	columnReorder,
 } = tableStore;
 
 /*
-* show "toggle filters panel" badge if any filters are applied...
-* */
+ * show "toggle filters panel" badge if any filters are applied...
+ * */
 const anyFiltersOnFiltersPanel = computed(() => {
-  /*
-  * ...excluding search filters, which shown in other panel
-  * */
-  return filtersManager.value.getAllKeys().some((filterName) => {
-    return !Object.values(SearchMode).some((mode) => mode === filterName);
-  });
+	/*
+	 * ...excluding search filters, which shown in other panel
+	 * */
+	return filtersManager.value.getAllKeys().some((filterName) => {
+		return !Object.values(SearchMode).some((mode) => mode === filterName);
+	});
 });
 
 const variableHeaders = computed(() => {
-  return shownHeaders.value.filter((header) => header.value.includes('variables.'));
+	return shownHeaders.value.filter((header) =>
+		header.value.includes("variables."),
+	);
 });
 
 const {
-  showEmpty,
-  image: emptyImage,
-  headline: emptyHeadline,
-  title: emptyTitle,
-  text: emptyText,
-  primaryActionText: emptyPrimaryActionText,
-  secondaryActionText: emptySecondaryActionText,
+	showEmpty,
+	image: emptyImage,
+	headline: emptyHeadline,
+	title: emptyTitle,
+	text: emptyText,
+	primaryActionText: emptyPrimaryActionText,
+	secondaryActionText: emptySecondaryActionText,
 } = useTableEmpty({
-  dataList,
-  error,
-  filters: computed(() => filtersManager.value.getAllValues()),
-  isLoading,
+	dataList,
+	error,
+	filters: computed(() => filtersManager.value.getAllValues()),
+	isLoading,
 });
 
 // @o.chorpita
@@ -320,79 +320,90 @@ const {
 /// Wait for store setup to finish so request fields are taken filters,
 // not the default ones.
 watch(
-  () => isStoreSetUp.value,
-  (isSetUp) => {
-    if (!isSetUp) return;
-    loadDataList();
-  },
-  { immediate: true }
+	() => isStoreSetUp.value,
+	(isSetUp) => {
+		if (!isSetUp) return;
+		loadDataList();
+	},
+	{ immediate: true },
 );
 
 const {
-  audioData,
-  videoData,
-  currentlyMediaPlaying,
-  isMediaPlayingNow,
+	audioData,
+	videoData,
+	currentlyMediaPlaying,
+	isMediaPlayingNow,
 
-  play,
-  closePlayer,
+	play,
+	closePlayer,
 } = usePlayMedia();
 
 const sttPopupCallId = ref<string | null>(null);
 
 const getVariableValue = (item: EngineHistoryCall, field: string) => {
-  return get(item, ['variables', field.replace('variables.', '')]);
+	return get(item, ["variables", field.replace("variables.", "")]);
 };
 
 const showItemStt = (item: EngineHistoryCall) => {
-  return item.files || item.transcripts?.length || item.filesJob;
+	return item.files || item.transcripts?.length || item.filesJob;
 };
 
-const handleTranscriptDelete = ({ callId, transcript }: { callId: string, transcript }) => {
-  const call = dataList.value.find(({ id }) => id === callId);
-  // should find transcript instead of indexOf cause transcript source is not that call
-  call.transcripts.splice(call.transcripts.findIndex(({ id }) => id === transcript.id), 1);
+const handleTranscriptDelete = ({
+	callId,
+	transcript,
+}: {
+	callId: string;
+	transcript;
+}) => {
+	const call = dataList.value.find(({ id }) => id === callId);
+	// should find transcript instead of indexOf cause transcript source is not that call
+	call.transcripts.splice(
+		call.transcripts.findIndex(({ id }) => id === transcript.id),
+		1,
+	);
 };
 
 const updateVariablesHeaders = (variables) => {
-  const mainHeaders = headers?.value.filter((header) => !header.value.includes('variables.'));
-  updateShownHeaders([...mainHeaders, ...variables]);
+	const mainHeaders = headers?.value.filter(
+		(header) => !header.value.includes("variables."),
+	);
+	updateShownHeaders([...mainHeaders, ...variables]);
 };
 
-const currentScreenRecording = ref(null)
-const isScreenRecordingOpen = ref(false)
+const currentScreenRecording = ref(null);
+const isScreenRecordingOpen = ref(false);
 
 const closeScreenRecording = () => {
-  currentScreenRecording.value = null
-  isScreenRecordingOpen.value = false
-}
+	currentScreenRecording.value = null;
+	isScreenRecordingOpen.value = false;
+};
 const setScreenRecording = (data) => {
-  currentScreenRecording.value = data
-  currentScreenRecording.value.video = getMediaUrl(data.id)
-  closePlayer()
-  isScreenRecordingOpen.value = true
-}
+	currentScreenRecording.value = data;
+	currentScreenRecording.value.video = getMediaUrl(data.id);
+	closePlayer();
+	isScreenRecordingOpen.value = true;
+};
 
 const recordingFiles = (item) => {
-  return [
-    ...item.files?.[EngineCallFileType.FileTypeAudio] || [],
-    ...item.files?.[EngineCallFileType.FileTypeVideo] || []
-  ]
-}
+	return [
+		...(item.files?.[EngineCallFileType.FileTypeAudio] || []),
+		...(item.files?.[EngineCallFileType.FileTypeVideo] || []),
+	];
+};
 
 const getRecordingTypeIcon = (item) => {
-  return item.files?.[EngineCallFileType.FileTypeVideo] ? 'preview-tag-video' : 'play'
-}
+	return item.files?.[EngineCallFileType.FileTypeVideo]
+		? "preview-tag-video"
+		: "play";
+};
 
 const handlePlayMedia = (mediaData) => {
-  closeScreenRecording()
-  play(mediaData)
-}
+	closeScreenRecording();
+	play(mediaData);
+};
 </script>
 
-<style lang="scss" scoped>
-@use '@webitel/ui-sdk/src/css/pages/table-page.scss' as *;
-
+<style scoped>
 .wt-action-bar {
   margin-left: auto;
 }

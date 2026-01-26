@@ -9,7 +9,7 @@
 
   <section class="table-page">
     <header class="table-title">
-      <h3 class="table-title__title">
+      <h3 class="table-title__title typo-heading-4">
         {{ t('objects.screenshots', 2) }}
       </h3>
       <wt-action-bar
@@ -85,35 +85,32 @@
 </template>
 
 <script setup lang="ts">
-import { FileServicesAPI, PdfServicesAPI } from '@webitel/api-services/api';
-import {
-  downloadFile,
-  getMediaUrl,
-} from '@webitel/api-services/api';
-import { eventBus } from '@webitel/ui-sdk/scripts';
-import { IconAction } from '@webitel/ui-sdk/enums';
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
-import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
-import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
-import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
-import { formatDate } from '@webitel/ui-sdk/utils';
-import { FormatDateMode } from '@webitel/ui-sdk/enums';
-import { EngineHistoryCall } from 'webitel-sdk';
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
-import { headers } from './store/headers/headers.ts';
+import { FileServicesAPI, PdfServicesAPI } from "@webitel/api-services/api";
+import { downloadFile, getMediaUrl } from "@webitel/api-services/api";
+import { eventBus } from "@webitel/ui-sdk/scripts";
+import { IconAction } from "@webitel/ui-sdk/enums";
+import { EngineCallFileType } from "@webitel/api-services/gen/models";
+import getNamespacedState from "@webitel/ui-sdk/src/store/helpers/getNamespacedState";
+import DeleteConfirmationPopup from "@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue";
+import { useDeleteConfirmationPopup } from "@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup";
+import { useTableEmpty } from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty";
+import { formatDate } from "@webitel/ui-sdk/utils";
+import { FormatDateMode } from "@webitel/ui-sdk/enums";
+import { EngineHistoryCall } from "webitel-sdk";
+import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import { headers } from "./store/headers/headers.ts";
 
 interface Props {
-  call: EngineHistoryCall,
-  namespace?: string,
+	call: EngineHistoryCall;
+	namespace?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  call: () => [],
-  namespace: '',
+	call: () => [],
+	namespace: "",
 });
 
 const store = useStore();
@@ -123,14 +120,16 @@ const route = useRoute();
 const callId = computed(() => route.params.pathMatch);
 
 const isLoading = computed(() => {
-  return getNamespacedState(store.state, props.namespace).isLoading;
+	return getNamespacedState(store.state, props.namespace).isLoading;
 });
 
-const dataList = ref(props.call?.files?.[EngineCallFileType.FileTypeScreenshot] || []);
+const dataList = ref(
+	props.call?.files?.[EngineCallFileType.FileTypeScreenshot] || [],
+);
 
 const { t } = useI18n();
 
-const error = ref('');
+const error = ref("");
 
 const selected = ref([]);
 
@@ -138,75 +137,81 @@ const galleriaVisible = ref(false);
 const galleriaActiveIndex = ref(0);
 
 const galleriaData = computed(() => {
-  if (!dataList.value?.length) return [];
+	if (!dataList.value?.length) return [];
 
-  return dataList.value
-    .filter((item) => item && item.id && item.name)
-    .map((item) => ({
-      src: getMediaUrl(item.id, false),
-      thumbnailSrc: getMediaUrl(item.id, true),
-      title: item.name,
-      alt: item.name,
-    }));
+	return dataList.value
+		.filter((item) => item && item.id && item.name)
+		.map((item) => ({
+			src: getMediaUrl(item.id, false),
+			thumbnailSrc: getMediaUrl(item.id, true),
+			title: item.name,
+			alt: item.name,
+		}));
 });
 
 const {
-  isVisible: isDeleteConfirmationPopup,
-  deleteCount,
-  deleteCallback,
+	isVisible: isDeleteConfirmationPopup,
+	deleteCount,
+	deleteCallback,
 
-  askDeleteConfirmation,
-  closeDelete,
+	askDeleteConfirmation,
+	closeDelete,
 } = useDeleteConfirmationPopup();
 
 const {
-  showEmpty,
-  image: imageEmpty,
-  text: textEmpty,
+	showEmpty,
+	image: imageEmpty,
+	text: textEmpty,
 } = useTableEmpty({
-  dataList,
-  error,
+	dataList,
+	error,
 });
 
 const openScreenshot = (id) => {
-  galleriaActiveIndex.value = dataList.value.findIndex(
-    (item) => item.id === id,
-  );
-  galleriaVisible.value = true;
+	galleriaActiveIndex.value = dataList.value.findIndex(
+		(item) => item.id === id,
+	);
+	galleriaVisible.value = true;
 };
 
 const handleDelete = async (items: []) => {
-  const deleteIds = items.map((item) => item.id);
-  
-  await FileServicesAPI.delete(deleteIds);
+	const deleteIds = items.map((item) => item.id);
 
-  dataList.value = dataList.value.filter((item) => !deleteIds.includes(item.id));
-  selected.value = selected.value.filter((item) => !deleteIds.includes(item.id));
+	await FileServicesAPI.delete(deleteIds);
+
+	dataList.value = dataList.value.filter(
+		(item) => !deleteIds.includes(item.id),
+	);
+	selected.value = selected.value.filter(
+		(item) => !deleteIds.includes(item.id),
+	);
 };
 
 const downloadPdf = async () => {
-  try {
-    await PdfServicesAPI.createCallExport({
-      callId: callId.value,
-      itemInstance: {
-        fileIds: selected.value.length ? selected.value.map(({ id }) => id) : dataList.value.map(({ id }) => id),
-      },
-    });
-    eventBus.$emit('notification', {
-      type: 'info',
-      text: t('webitelUI.pdfGeneration.generationStarted'),
-    });
-  } catch (e) {
-    eventBus.$emit('notification', {
-      type: 'error',
-      text: e?.response?.data?.detail,
-    });
-  }
+	try {
+		await PdfServicesAPI.createCallExport({
+			callId: callId.value,
+			itemInstance: {
+				fileIds: selected.value.length
+					? selected.value.map(({ id }) => id)
+					: dataList.value.map(({ id }) => id),
+			},
+		});
+		eventBus.$emit("notification", {
+			type: "info",
+			text: t("webitelUI.pdfGeneration.generationStarted"),
+		});
+	} catch (e) {
+		eventBus.$emit("notification", {
+			type: "error",
+			text: e?.response?.data?.detail,
+		});
+	}
 };
 
 const handleDeleteFromGalleria = () => {
-  handleDelete([dataList.value[galleriaActiveIndex.value]]);
-  if (galleriaActiveIndex.value > 0) galleriaActiveIndex.value -= 1;
+	handleDelete([dataList.value[galleriaActiveIndex.value]]);
+	if (galleriaActiveIndex.value > 0) galleriaActiveIndex.value -= 1;
 };
 </script>
 
@@ -218,6 +223,5 @@ const handleDeleteFromGalleria = () => {
 }
 
 .table-title__title {
-  @extend %typo-heading-4;
 }
 </style>
