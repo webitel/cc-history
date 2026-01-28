@@ -8,8 +8,8 @@
     </template>
     <template #main>
       <form class="dashboard-config-form">
-        <wt-input
-          v-model="options.name"
+        <wt-input-text
+          v-model:model-value="options.name"
           :label="$t('dashboards.dashboardConfigForm.name')"
         />
         <wt-select
@@ -36,9 +36,9 @@
           track-by="value"
           :clearable="false"
         />
-        <wt-input
+        <wt-input-text
           v-if="dashboard.options.param === VisualizationParams.VARIABLES"
-          v-model="options.variable"
+          v-model:model-value="options.variable"
           :label="$t('dashboards.dashboardConfigForm.variable')"
         />
         <wt-select

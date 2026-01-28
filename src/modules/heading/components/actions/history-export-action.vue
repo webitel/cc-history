@@ -30,13 +30,12 @@
           required
           @input="selectHandler"
         />
-        <wt-input
+        <wt-input-text
           v-if="isExportSettingsFormatCSV"
+          v-model:model-value="draft.separator"
           :label="$t('headerSection.exportPopup.separator')"
           :v="v$.draft.separator"
-          :value="draft.separator"
           required
-          @input="inputHandler"
         />
       </template>
       <template #actions>
