@@ -21,8 +21,8 @@
       </template>
       <template #main>
         <div class="variable-column-popup__form">
-          <wt-input
-            v-model="newVariableKey"
+          <wt-input-text
+            v-model:model-value="newVariableKey"
             :label="t('vocabulary.keys', 1)"
             :v="v$.newVariableKey"
             class="variable-column-popup__input"
