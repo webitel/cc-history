@@ -8,6 +8,7 @@ import instance from './app/api/instance';
 import { createUserAccessControl } from './app/composables/useUserAccessControl';
 import i18n from './app/locale/i18n';
 import WebitelUi from './app/plugins/webitel-ui';
+import './app/plugins/webitel-ui-chats.ts'
 import router from './app/router';
 import store from './app/store';
 import { useUserinfoStore } from './modules/userinfo/store/userinfoStore';
