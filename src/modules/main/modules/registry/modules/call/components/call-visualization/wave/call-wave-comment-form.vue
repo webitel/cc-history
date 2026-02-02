@@ -1,13 +1,13 @@
 <template>
   <section class="comment-form">
     <wt-timepicker
-      v-model="draft.startSec"
+      v-model:model-value="draft.startSec"
       :v="v$.draft.startSec"
       :custom-validators="customValidation(0)"
       :label="$t('reusable.from')"
     />
     <wt-timepicker
-      v-model="draft.endSec"
+      v-model:model-value="draft.endSec"
       :v="v$.draft.endSec"
       :custom-validators="customValidation(minimalEndCommentValue)"
       :label="$t('reusable.to')"
