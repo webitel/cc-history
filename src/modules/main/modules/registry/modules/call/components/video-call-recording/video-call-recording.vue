@@ -16,8 +16,9 @@
     </div>
     <div class="history-tabs-wrapper">
       <wt-tabs
-        v-model="currentTab"
+        :current="currentTab"
         :tabs="tabs"
+        @change="currentTab = $event"
       />
       <keep-alive exclude="Pdfs">
         <component

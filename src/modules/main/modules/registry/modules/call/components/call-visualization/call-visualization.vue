@@ -11,8 +11,9 @@
     />
     <div class="history-tabs-wrapper">
       <wt-tabs
-        v-model="currentTab"
+        :current="currentTab"
         :tabs="tabs"
+        @chane="currentTab = $event"
       />
       <component
         :is="currentTab.component"
