@@ -13,7 +13,7 @@
       <wt-tabs
         :current="currentTab"
         :tabs="tabs"
-        @chane="currentTab = $event"
+        @change="currentTab = $event"
       />
       <component
         :is="currentTab.component"
