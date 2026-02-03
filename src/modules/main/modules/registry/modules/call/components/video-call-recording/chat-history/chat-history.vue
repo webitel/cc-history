@@ -19,6 +19,7 @@
         :can-load-next-messages="canLoadNextMessages"
         without-avatars
         @load-next-messages="loadNextMessages"
+        @[MessageAction.ClickOnImage]="openChatMedia"
       >
         <template #footer>
           <div></div>
@@ -29,14 +30,14 @@
 </template>
 
 <script setup lang="ts">
-import { MessagesServiceAPI } from '@webitel/api-services/api';
-import { ChatContainer, ChatMessageType } from '@webitel/ui-chats/ui';
-import { EngineHistoryCall } from 'webitel-sdk';
-import { useI18n } from 'vue-i18n';
-import EmptyChat from './_internals/assets/empty-chat.svg'
-import EmptyChatDark from './_internals/assets/empty-chat-dark.svg'
-import { computed, inject, onMounted, ref } from 'vue';
-import { normalizeMessages } from './_internals/scripts/normalizeMessages';
+import { MessagesServiceAPI } from "@webitel/api-services/api";
+import { ChatContainer, ChatMessageType, MessageAction } from "@webitel/ui-chats/ui";
+import { EngineHistoryCall } from "webitel-sdk";
+import { useI18n } from "vue-i18n";
+import EmptyChat from "./_internals/assets/empty-chat.svg";
+import EmptyChatDark from "./_internals/assets/empty-chat-dark.svg";
+import { computed, inject, onMounted, ref } from "vue";
+import { normalizeMessages } from "./_internals/scripts/normalizeMessages";
 
 interface Props {
   call: EngineHistoryCall,
@@ -70,13 +71,21 @@ const loadNextMessages = async () => {
     params['offset.id'] = lastLoadedMessageId.value;
   }
 
-  try {
-    const { messages, peers, next } = await MessagesServiceAPI.getChatHistory(params);
-    canLoadNextMessages.value = next;
-    normalizedMessages.value = [...normalizeMessages(messages, peers), ...normalizedMessages.value];
-  } finally {
-    isChatLoading.value = false;
-  }
+	try {
+		const { messages, peers, next } =
+			await MessagesServiceAPI.getChatHistory(params);
+		canLoadNextMessages.value = next;
+		normalizedMessages.value = [
+			...normalizeMessages(messages, peers),
+			...normalizedMessages.value,
+		];
+	} finally {
+		isChatLoading.value = false;
+	}
+};
+
+const openChatMedia = ({file}) => {
+  window.open(file.url, '_blank');
 }
 
 onMounted(async () => {
