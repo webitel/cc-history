@@ -19,6 +19,7 @@
         :can-load-next-messages="canLoadNextMessages"
         without-avatars
         @load-next-messages="loadNextMessages"
+        @[MessageAction.ClickOnImage]="openChatMedia"
       >
         <template #footer>
           <div></div>
@@ -30,7 +31,7 @@
 
 <script setup lang="ts">
 import { MessagesServiceAPI } from "@webitel/api-services/api";
-import { ChatContainer, ChatMessageType } from "@webitel/ui-chats/ui";
+import { ChatContainer, ChatMessageType, MessageAction } from "@webitel/ui-chats/ui";
 import { EngineHistoryCall } from "webitel-sdk";
 import { useI18n } from "vue-i18n";
 import EmptyChat from "./_internals/assets/empty-chat.svg";
@@ -82,6 +83,10 @@ const loadNextMessages = async () => {
 		isChatLoading.value = false;
 	}
 };
+
+const openChatMedia = ({file}) => {
+  window.open(file.url, '_blank');
+}
 
 onMounted(async () => {
 	if (!conversationId.value) return;
