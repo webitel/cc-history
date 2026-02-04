@@ -13,69 +13,68 @@
   />
 </template>
 
-<script lang="ts" setup>
-import {FilterOption,TableFiltersPanelComponent as TableFiltersPanel} from '@webitel/ui-datalist/filters';
-import {RelativeDatetimeValue} from "@webitel/ui-sdk/enums";
-import {storeToRefs} from 'pinia';
-
-import {namespace} from "../../main/modules/registry/namespace.ts";
-import {useRegistryStore} from '../../main/modules/registry/store/new/registry.store.ts';
-import {filtersOptions} from "../configs/filtersOptions.ts";
+<script
+  lang="ts"
+  setup
+>
 import {
-  useRegistryFilterPresetsStore
-} from "../modules/presets/store/useRegistryFilterPresetsStore.ts";
+	FilterOption,
+	TableFiltersPanelComponent as TableFiltersPanel,
+} from "@webitel/ui-datalist/filters";
+import { RelativeDatetimeValue } from "@webitel/ui-sdk/enums";
+import { storeToRefs } from "pinia";
+
+import { namespace } from "../../main/modules/registry/namespace";
+import { useRegistryStore } from "../../main/modules/registry/store/new/registry.store";
+import { filtersOptions } from "../configs/filtersOptions";
+import { useRegistryFilterPresetsStore } from "../modules/presets/store/useRegistryFilterPresetsStore";
 
 const emit = defineEmits<{
-  hide: [],
+	hide: [];
 }>();
 
 const tableStore = useRegistryStore();
-const {filtersManager} = storeToRefs(tableStore);
+const { filtersManager } = storeToRefs(tableStore);
 
-const {
-  addFilter,
-  updateFilter,
-  deleteFilter,
-} = tableStore;
+const { addFilter, updateFilter, deleteFilter } = tableStore;
 
 const initializeDefaultCreatedAtFilter = () => {
-  if (filtersManager.value.hasFilter(FilterOption.CreatedAt)) return;
+	if (filtersManager.value.hasFilter(FilterOption.CreatedAt)) return;
 
-  addFilter({
-    name: FilterOption.CreatedAt,
-    value: RelativeDatetimeValue.Today,
-  });
+	addFilter({
+		name: FilterOption.CreatedAt,
+		value: RelativeDatetimeValue.Today,
+	});
 };
 
 initializeDefaultCreatedAtFilter();
 
 const resetFilters = () => {
-  const excludeNotDeletableFilters = filtersOptions.reduce((excludes, opt) => {
-    if (opt?.notDeletable) {
-      return [
-        ...excludes,
-        opt.name,
-      ];
-    }
+	const excludeNotDeletableFilters = filtersOptions.reduce((excludes, opt) => {
+		if (opt?.notDeletable) {
+			return [...excludes, opt.name];
+		}
 
-    return excludes;
-  }, []);
+		return excludes;
+	}, []);
 
-  filtersManager.value.reset({
-    exclude: [...excludeNotDeletableFilters, 'search'],
-  });
+	filtersManager.value.reset({
+		exclude: [...excludeNotDeletableFilters, "search"],
+	});
 
-  addFilter({
-    name: FilterOption.CreatedAt,
-    value: RelativeDatetimeValue.Today,
-  })
+	addFilter({
+		name: FilterOption.CreatedAt,
+		value: RelativeDatetimeValue.Today,
+	});
 };
 
 const applyPreset = (snapshot: string) => {
-  resetFilters();
-  filtersManager.value.fromString(snapshot);
+	resetFilters();
+	filtersManager.value.fromString(snapshot);
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style
+  lang="scss"
+  scoped
+></style>

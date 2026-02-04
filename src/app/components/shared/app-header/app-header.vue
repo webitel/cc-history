@@ -1,111 +1,103 @@
 <template>
   <wt-app-header>
-    <a :href="startPageHref">
-      <wt-logo
-        :dark-mode="darkMode"
-      />
-    </a>
+    <wt-logo
+      :dark-mode="darkMode"
+      :logo-href="startPageHref"
+    />
     <wt-dark-mode-switcher />
     <wt-app-navigator
-      :current-app="currentApp"
       :apps="apps"
+      :current-app="currentApp"
       :dark-mode="darkMode"
     />
     <wt-header-actions
-      :user="user"
       :build-info="buildInfo"
-      @settings="settings"
+      :user="userInfo"
       @logout="logoutUser"
+      @settings="settings"
     />
   </wt-app-header>
 </template>
 
-<script>
-import WebitelApplications from '@webitel/ui-sdk/src/enums/WebitelApplications/WebitelApplications.enum';
-import WtDarkModeSwitcher from '@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue';
-import { mapActions,mapGetters, mapState } from 'vuex';
+<script
+  setup
+  lang="ts"
+>
+import {
+	WtAppHeader,
+	WtAppNavigator,
+	WtHeaderActions,
+	WtLogo,
+	WtNavigationBar,
+} from "@webitel/ui-sdk/components";
+import { WtApplication } from "@webitel/ui-sdk/enums";
+import WtDarkModeSwitcher from "@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue";
+import { storeToRefs } from "pinia";
+import { computed, inject } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  name: 'AppHeader',
-  components: { WtDarkModeSwitcher },
-  inject: ['$config'],
-  data: () => ({
-    buildInfo: {
-      release: process.env.npm_package_version,
-      build: import.meta.env.VITE_BUILD_NUMBER,
-    },
-  }),
-  computed: {
-    ...mapState('userinfo', {
-      user: (state) => state,
-      currentApp: (state) => state.thisApp,
-    }),
-    ...mapGetters('userinfo', {
-      checkAccess: 'CHECK_APP_ACCESS',
-    }),
-    ...mapGetters('appearance', {
-      darkMode: 'DARK_MODE',
-    }),
-    startPageHref() {
-      return import.meta.env.VITE_START_PAGE_URL;
-    },
-    apps() {
-      const agent = {
-        name: WebitelApplications.AGENT,
-        href: import.meta.env.VITE_AGENT_URL,
-      };
-      const supervisor = {
-        name: WebitelApplications.SUPERVISOR,
-        href: import.meta.env.VITE_SUPERVISOR_URL,
-      };
-      const history = {
-        name: WebitelApplications.HISTORY,
-        href: import.meta.env.VITE_HISTORY_URL,
-      };
-      const audit = {
-        name: WebitelApplications.AUDIT,
-        href: import.meta.env.VITE_AUDIT_URL,
-      };
-      const admin = {
-        name: WebitelApplications.ADMIN,
-        href: import.meta.env.VITE_ADMIN_URL,
-      };
-      const grafana = {
-        name: WebitelApplications.ANALYTICS,
-        href: import.meta.env.VITE_GRAFANA_URL,
-      };
-      const crm = {
-        name: WebitelApplications.CRM,
-        href: import.meta.env.VITE_CRM_URL,
-      };
-      const apps = [admin, supervisor, agent, history, audit, crm];
-      if (this.$config?.ON_SITE) apps.push(grafana);
-      return apps.filter(({ name }) => this.checkAccess(name));
-    },
-  },
+import { useUserinfoStore } from "../../../../modules/userinfo/stores/userinfoStore";
 
-  methods: {
-    ...mapActions('userinfo', {
-      logout: 'LOGOUT',
-    }),
-    settings() {
-      const settingsUrl = import.meta.env.VITE_SETTINGS_URL;
-      window.open(settingsUrl);
-    },
+const store = useStore();
+const config = inject<{ ON_SITE?: boolean }>("$config");
 
-    async logoutUser() {
-      return this.logout();
-    },
-  },
+const userInfoStore = useUserinfoStore();
+const { hasApplicationVisibility, logoutUser } = userInfoStore;
+const { userInfo } = storeToRefs(userInfoStore);
+
+const currentApp = WtApplication.History;
+
+const darkMode = computed(() => store.getters["appearance/DARK_MODE"]);
+const startPageHref = computed(() => import.meta.env.VITE_START_PAGE_URL);
+
+const buildInfo = {
+	release: process.env.npm_package_version,
+	build: import.meta.env.VITE_BUILD_NUMBER,
 };
+
+const apps = computed(() => {
+	const agent = {
+		name: WtApplication.Agent,
+		href: import.meta.env.VITE_AGENT_URL,
+	};
+	const supervisor = {
+		name: WtApplication.Supervisor,
+		href: import.meta.env.VITE_SUPERVISOR_URL,
+	};
+	const history = {
+		name: WtApplication.History,
+		href: import.meta.env.VITE_HISTORY_URL,
+	};
+	const audit = {
+		name: WtApplication.Audit,
+		href: import.meta.env.VITE_AUDIT_URL,
+	};
+	const admin = {
+		name: WtApplication.Admin,
+		href: import.meta.env.VITE_ADMIN_URL,
+	};
+	const grafana = {
+		name: WtApplication.Analytics,
+		href: import.meta.env.VITE_GRAFANA_URL,
+	};
+	const crm = {
+		name: WtApplication.Crm,
+		href: import.meta.env.VITE_CRM_URL,
+	};
+
+	const allApps = [admin, supervisor, agent, history, audit, crm];
+	if (config?.ON_SITE) allApps.push(grafana);
+	return allApps.filter(({ name }) => hasApplicationVisibility(name));
+});
+
+function settings() {
+	const settingsUrl = import.meta.env.VITE_SETTINGS_URL;
+	window.open(settingsUrl, "_blank", "noopener,noreferrer");
+}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .wt-dark-mode-switcher {
   margin-right: auto;
-}
-
-.wt-app-header {
-  flex-shrink: 0;
 }
 </style>
