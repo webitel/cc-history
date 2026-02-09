@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { WtApplication } from "@webitel/ui-sdk/enums";
 
 import AccessDenied from "../components/shared/access-denied-component.vue";
 import Call from "../../modules/main/modules/registry/modules/call/components/the-call.vue";
@@ -23,6 +24,7 @@ const routes = [
 	{
 		path: "/",
 		component: History,
+		meta: { app: WtApplication.History },
 		children: [
 			{
 				path: "/",
