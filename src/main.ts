@@ -6,16 +6,21 @@ import { createApp } from "vue";
 
 import { createUserAccessControl } from "./app/composables/useUserAccessControl";
 import i18n from "./app/locale/i18n";
-import WebitelUi from "./app/plugins/webitel-ui";
+import {
+	plugin as WebitelUi,
+	options as WebitelUiOptions,
+} from "./app/plugins/webitel/ui-sdk";
 import "./app/plugins/webitel-ui-chats.ts";
-import router from "./app/router";
+import { initRouter, router } from "./app/router";
 import store from "./app/store";
 import { useUserinfoStore } from "./modules/userinfo/stores/userinfoStore";
 import App from "./the-app.vue";
 
 const setTokenFromUrl = () => {
 	try {
-		const queryMap = window.location.search
+		const queryMap: {
+			accessToken?: string;
+		} = window.location.search
 			.slice(1)
 			.split("&")
 			.reduce((obj, query) => {
@@ -40,22 +45,24 @@ const fetchConfig = async () => {
 const pinia = createPinia();
 
 const initApp = async () => {
-	const app = createApp(App)
-		.use(store)
-		.use(i18n)
-		.use(pinia)
-		.use(...WebitelUi);
+	const app = createApp(App).use(store).use(i18n).use(pinia);
 
 	const { initialize, routeAccessGuard } = useUserinfoStore();
 	try {
 		await initialize();
 		createUserAccessControl(useUserinfoStore);
-		router.beforeEach(routeAccessGuard);
+		await initRouter({
+			beforeEach: [routeAccessGuard],
+		});
 	} catch (err) {
 		console.error("Error initializing app", err);
 	}
 
 	app.use(router);
+	app.use(WebitelUi, {
+		...WebitelUiOptions,
+		router,
+	}); // setup webitel ui after router init
 
 	return app;
 };
