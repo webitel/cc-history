@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import AccessDenied from "../components/shared/access-denied-component.vue";
-import { checkAppAccess } from "./_internals/guards";
 import Call from "../../modules/main/modules/registry/modules/call/components/the-call.vue";
 import HistoryMainPage from "../components/history-main-page.vue";
 import History from "../components/the-history.vue";
@@ -24,7 +23,6 @@ const routes = [
 	{
 		path: "/",
 		component: History,
-		beforeEnter: checkAppAccess,
 		children: [
 			{
 				path: "/",
