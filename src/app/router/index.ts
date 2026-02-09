@@ -24,7 +24,7 @@ const routes = [
 	{
 		path: "/",
 		component: History,
-		meta: { app: WtApplication.History },
+		meta: { WtApplication: WtApplication.History },
 		children: [
 			{
 				path: "/",
