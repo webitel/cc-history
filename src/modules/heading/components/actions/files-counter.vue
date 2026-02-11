@@ -20,7 +20,7 @@
 
 <script>
 export default {
-	name: "FilesCounter",
+	name: 'FilesCounter',
 	props: {
 		downloadProgress: {
 			type: Number,

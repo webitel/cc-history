@@ -28,20 +28,19 @@
   setup
   lang="ts"
 >
-import { computed, ref, inject } from "vue";
-import { useI18n } from "vue-i18n";
-import { WtObject } from "@webitel/ui-sdk/enums";
-import { EngineCallFileType } from "@webitel/api-services/gen/models";
-
-import { useUserAccessControl } from "../../../../../../../../app/composables/useUserAccessControl";
-import CallTranscript from "../../../stt/components/call-page/call-transcript-section.vue";
-import CallEvaluation from "../../modules/call-audit/components/call-audit-section.vue";
-import CallScreenRecordings from "./screen-recordings/screen-recordings.vue";
-import CallWave from "./wave/call-wave.vue";
-import { useUserinfoStore } from "../../../../../../../userinfo/stores/userinfoStore";
-import { SpecialGlobalAction } from "@webitel/ui-sdk/modules/Userinfo";
-import NoCallRecordings from "./assets/no-call-recordings.svg";
-import NoCallRecordingsDark from "./assets/no-call-recordings-dark.svg";
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { WtObject } from '@webitel/ui-sdk/enums';
+import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
+import { computed, inject, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
+import { useUserinfoStore } from '../../../../../../../userinfo/stores/userinfoStore';
+import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
+import CallEvaluation from '../../modules/call-audit/components/call-audit-section.vue';
+import NoCallRecordings from './assets/no-call-recordings.svg';
+import NoCallRecordingsDark from './assets/no-call-recordings-dark.svg';
+import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
+import CallWave from './wave/call-wave.vue';
 
 interface Props {
 	call: any;
@@ -49,7 +48,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	namespace: "",
+	namespace: '',
 });
 
 const userinfoStore = useUserinfoStore();
@@ -62,7 +61,7 @@ const isControlAgentScreenAllow = computed(() =>
 
 const { t } = useI18n();
 
-const darkMode = inject("darkMode");
+const darkMode = inject('darkMode');
 
 const { hasReadAccess: hasEvaluationReadAccess } = useUserAccessControl(
 	WtObject.AuditRating,
@@ -70,27 +69,29 @@ const { hasReadAccess: hasEvaluationReadAccess } = useUserAccessControl(
 
 const tabValues = computed(() => ({
 	TRANSCRIPT: {
-		text: t("registry.stt.transcription"),
+		text: t('registry.stt.transcription'),
 		component: CallTranscript,
-		value: "call-transcript",
+		value: 'call-transcript',
 		namespace: props.namespace,
 	},
 	EVALUATION: {
-		text: t("registry.call.evaluation.evaluation"),
+		text: t('registry.call.evaluation.evaluation'),
 		component: CallEvaluation,
-		value: "call-evaluation",
+		value: 'call-evaluation',
 		namespace: `${props.namespace}/evaluation`,
 	},
 	SCREEN_RECORDINGS: {
-		text: t("objects.screenRecordings", 2),
+		text: t('objects.screenRecordings', 2),
 		component: CallScreenRecordings,
-		value: "call-screen-recordings",
+		value: 'call-screen-recordings',
 		namespace: props.namespace,
 	},
 }));
 
 const tabs = computed(() => {
-	const tabs = [tabValues.value.TRANSCRIPT];
+	const tabs = [
+		tabValues.value.TRANSCRIPT,
+	];
 	if (props.call.allowEvaluation && hasEvaluationReadAccess.value)
 		tabs.push(tabValues.value.EVALUATION);
 	if (isControlAgentScreenAllow.value)

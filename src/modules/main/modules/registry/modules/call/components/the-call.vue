@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { storeToRefs } from 'pinia';
 import { mapActions, mapState } from 'vuex';
 
@@ -42,125 +42,149 @@ import historyRegistryQueriesMixin from '../../../mixins/historyRegistryQueries.
 import { useRegistryStore } from '../../../store/new/registry.store.js';
 import CallInfo from './call-info/call-info.vue';
 import CallLegs from './call-legs/call-legs.vue';
-import VideoCallRecording from './video-call-recording/video-call-recording.vue';
 import CallVisualization from './call-visualization/call-visualization.vue';
+import VideoCallRecording from './video-call-recording/video-call-recording.vue';
 
 export default {
-  name: 'TheCall',
-  components: {
-    CallInfo,
-    CallLegs,
-    CallVisualization,
-    VideoCallRecording,
-  },
-  mixins: [historyRegistryQueriesMixin],
-  props: {
-    viewMode: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup: () => {
-    const tableStore = useRegistryStore();
+	name: 'TheCall',
+	components: {
+		CallInfo,
+		CallLegs,
+		CallVisualization,
+		VideoCallRecording,
+	},
+	mixins: [
+		historyRegistryQueriesMixin,
+	],
+	props: {
+		viewMode: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	setup: () => {
+		const tableStore = useRegistryStore();
 
-    const {
-      fields,
-    } = storeToRefs(tableStore);
+		const { fields } = storeToRefs(tableStore);
 
-    return {
-      fields,
-    }
-  },
-  data: () => ({
-    namespace: 'registry/call',
-  }),
-  computed: {
-    ...mapState({
-      mainCall(state) {
-        return getNamespacedState(state, this.namespace).mainCall;
-      },
-      isLoading(state) {
-        return getNamespacedState(state, this.namespace).isLoading;
-      },
-    }),
-    tabValues() {
-      // Use different route names for view mode vs regular mode
-      const prefix = this.viewMode ? 'call_view-' : '';
+		return {
+			fields,
+		};
+	},
+	data: () => ({
+		namespace: 'registry/call',
+	}),
+	computed: {
+		...mapState({
+			mainCall(state) {
+				return getNamespacedState(state, this.namespace).mainCall;
+			},
+			isLoading(state) {
+				return getNamespacedState(state, this.namespace).isLoading;
+			},
+		}),
+		tabValues() {
+			// Use different route names for view mode vs regular mode
+			const prefix = this.viewMode ? 'call_view-' : '';
 
-      return {
-        INFO: {
-          text: this.$t('registry.call.callInfo'),
-          value: 'call-info',
-          pathName: `${prefix}${CallTabsPathNames.CALL_INFO}`,
-        },
-        LEGS: {
-          text: this.$t('registry.call.callLegs'),
-          value: 'call-legs',
-          pathName: `${prefix}${CallTabsPathNames.LEGS_A_B}`,
-        },
-        VISUALIZATION: {
-          text: this.$t('registry.call.callVisualization'),
-          value: 'call-visualization',
-          pathName: `${prefix}${CallTabsPathNames.CALL_VISUALIZATION}`,
-        },
-        VIDEO_RECORDING: {
-          text: this.$t('registry.call.videoCallRecording'),
-          value: 'video-call-recording',
-          pathName: `${prefix}${CallTabsPathNames.VIDEO_CALL_RECORDING}`,
-        },
-      };
-    },
-    tabs() {
-      const tabs = [this.tabValues.INFO];
-      const audioExists = this.mainCall?.files?.[EngineCallFileType.FileTypeAudio]
-      const screenRecordingsExists = this.mainCall?.files?.[EngineCallFileType.FileTypeScreensharing];
+			return {
+				INFO: {
+					text: this.$t('registry.call.callInfo'),
+					value: 'call-info',
+					pathName: `${prefix}${CallTabsPathNames.CALL_INFO}`,
+				},
+				LEGS: {
+					text: this.$t('registry.call.callLegs'),
+					value: 'call-legs',
+					pathName: `${prefix}${CallTabsPathNames.LEGS_A_B}`,
+				},
+				VISUALIZATION: {
+					text: this.$t('registry.call.callVisualization'),
+					value: 'call-visualization',
+					pathName: `${prefix}${CallTabsPathNames.CALL_VISUALIZATION}`,
+				},
+				VIDEO_RECORDING: {
+					text: this.$t('registry.call.videoCallRecording'),
+					value: 'video-call-recording',
+					pathName: `${prefix}${CallTabsPathNames.VIDEO_CALL_RECORDING}`,
+				},
+			};
+		},
+		tabs() {
+			const tabs = [
+				this.tabValues.INFO,
+			];
+			const audioExists =
+				this.mainCall?.files?.[EngineCallFileType.FileTypeAudio];
+			const screenRecordingsExists =
+				this.mainCall?.files?.[EngineCallFileType.FileTypeScreensharing];
 
-      if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
-      if ((this.mainCall.transcripts?.length || this.mainCall.filesJob?.length
-        || screenRecordingsExists || audioExists)) tabs.push(this.tabValues.VISUALIZATION);
-      tabs.push(this.tabValues.VIDEO_RECORDING);
-      return tabs;
-    },
-    callId() {
-      return this.$route.params?.pathMatch;
-    },
-    path() {
-      return [
-        { name: this.$t('registry.registry') },
-        { name: `${this.$t('registry.call.callInfo')} (${this.callId})` },
-      ];
-    },
-    currentTab() {
-      return this.tabs.find(({pathName}) => this.$route.name === pathName) || this.tabs[0];
-    },
-  },
-  async created() {
-    this.setMainCall({ id: this.callId, fields: this.fields, skipParent: false });
-  },
-  unmounted() {
-    this.resetMainCall();
-  },
-  methods: {
-    ...mapActions({
-      setMainCall(dispatch, payload) {
-        return dispatch(`${this.namespace}/SET_OPENED_CALL`, payload);
-      },
-      resetMainCall(dispatch, payload) {
-        return dispatch(`${this.namespace}/RESET_OPENED_CALL`, payload);
-      },
+			if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
+			if (
+				this.mainCall.transcripts?.length ||
+				this.mainCall.filesJob?.length ||
+				screenRecordingsExists ||
+				audioExists
+			)
+				tabs.push(this.tabValues.VISUALIZATION);
+			tabs.push(this.tabValues.VIDEO_RECORDING);
+			return tabs;
+		},
+		callId() {
+			return this.$route.params?.pathMatch;
+		},
+		path() {
+			return [
+				{
+					name: this.$t('registry.registry'),
+				},
+				{
+					name: `${this.$t('registry.call.callInfo')} (${this.callId})`,
+				},
+			];
+		},
+		currentTab() {
+			return (
+				this.tabs.find(({ pathName }) => this.$route.name === pathName) ||
+				this.tabs[0]
+			);
+		},
+	},
+	async created() {
+		this.setMainCall({
+			id: this.callId,
+			fields: this.fields,
+			skipParent: false,
+		});
+	},
+	unmounted() {
+		this.resetMainCall();
+	},
+	methods: {
+		...mapActions({
+			setMainCall(dispatch, payload) {
+				return dispatch(`${this.namespace}/SET_OPENED_CALL`, payload);
+			},
+			resetMainCall(dispatch, payload) {
+				return dispatch(`${this.namespace}/RESET_OPENED_CALL`, payload);
+			},
+		}),
+		changeTab(tab) {
+			this.$router.push({
+				...this.$route,
+				name: tab.pathName,
+			});
+		},
+		closeTab() {
+			// Need to close the tab if you moved from another application
+			// https://webitel.atlassian.net/browse/WTEL-4552
 
-    }),
-    changeTab(tab) {
-      this.$router.push({ ...this.$route, name: tab.pathName });
-    },
-    closeTab() {
-      // Need to close the tab if you moved from another application
-      // https://webitel.atlassian.net/browse/WTEL-4552
-
-      if(window.history.length === 1) window.close();
-      this.$router.push({name: 'history'});
-    },
-  },
+			if (window.history.length === 1) window.close();
+			this.$router.push({
+				name: 'history',
+			});
+		},
+	},
 };
 </script>
 

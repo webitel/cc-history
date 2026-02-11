@@ -218,9 +218,8 @@
 </template>
 
 <script lang="ts" setup>
-import { getMediaUrl } from "@webitel/api-services/api";
-import { ChipColor, IconAction, IconColor } from "@webitel/ui-sdk/enums";
-import { EngineCallFileType } from "@webitel/api-services/gen/models";
+import { getMediaUrl } from '@webitel/api-services/api';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import {
 	WtActionBar,
 	WtBadge,
@@ -232,25 +231,26 @@ import {
 	WtPlayer,
 	WtTable,
 	WtVidstackPlayer,
-} from "@webitel/ui-sdk/components";
-import { useTableEmpty } from "@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty";
-import get from "lodash/get";
-import { storeToRefs } from "pinia";
-import { computed, ref, watch } from "vue";
-import { EngineHistoryCall } from "webitel-sdk";
+} from '@webitel/ui-sdk/components';
+import { ChipColor, IconAction, IconColor } from '@webitel/ui-sdk/enums';
+import { useTableEmpty } from '@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty';
+import get from 'lodash/get';
+import { storeToRefs } from 'pinia';
+import { computed, ref, watch } from 'vue';
+import { EngineHistoryCall } from 'webitel-sdk';
 
-import VariableColumnSelect from "../../../../filters/components/variable-column-select.vue";
-import { SearchMode } from "../../../../filters/enums/SearchMode.ts";
-import { usePlayMedia } from "../composables/usePlayMedia.ts";
-import SttPopup from "../modules/stt/components/registry/stt-popup.vue";
-import SttAction from "../modules/stt/components/registry/table-stt-action.vue";
-import { useRegistryStore } from "../store/new/registry.store.ts";
-import TableDirection from "./table-templates/table-direction.vue";
-import MediaAction from "./table-templates/table-media-action.vue";
-import ScreenRecordingAction from "./table-templates/table-video-action.vue";
+import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
+import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
+import { usePlayMedia } from '../composables/usePlayMedia.ts';
+import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
+import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
+import { useRegistryStore } from '../store/new/registry.store.ts';
+import TableDirection from './table-templates/table-direction.vue';
+import MediaAction from './table-templates/table-media-action.vue';
+import ScreenRecordingAction from './table-templates/table-video-action.vue';
 
 const emit = defineEmits<{
-	"toggle:filters-panel": [];
+	'toggle:filters-panel': [];
 }>();
 
 const tableStore = useRegistryStore();
@@ -296,7 +296,7 @@ const anyFiltersOnFiltersPanel = computed(() => {
 
 const variableHeaders = computed(() => {
 	return shownHeaders.value.filter((header) =>
-		header.value.includes("variables."),
+		header.value.includes('variables.'),
 	);
 });
 
@@ -325,7 +325,9 @@ watch(
 		if (!isSetUp) return;
 		loadDataList();
 	},
-	{ immediate: true },
+	{
+		immediate: true,
+	},
 );
 
 const {
@@ -341,7 +343,10 @@ const {
 const sttPopupCallId = ref<string | null>(null);
 
 const getVariableValue = (item: EngineHistoryCall, field: string) => {
-	return get(item, ["variables", field.replace("variables.", "")]);
+	return get(item, [
+		'variables',
+		field.replace('variables.', ''),
+	]);
 };
 
 const showItemStt = (item: EngineHistoryCall) => {
@@ -365,9 +370,12 @@ const handleTranscriptDelete = ({
 
 const updateVariablesHeaders = (variables) => {
 	const mainHeaders = headers?.value.filter(
-		(header) => !header.value.includes("variables."),
+		(header) => !header.value.includes('variables.'),
 	);
-	updateShownHeaders([...mainHeaders, ...variables]);
+	updateShownHeaders([
+		...mainHeaders,
+		...variables,
+	]);
 };
 
 const currentScreenRecording = ref(null);
@@ -393,8 +401,8 @@ const recordingFiles = (item) => {
 
 const getRecordingTypeIcon = (item) => {
 	return item.files?.[EngineCallFileType.FileTypeVideo]
-		? "preview-tag-video"
-		: "play";
+		? 'preview-tag-video'
+		: 'play';
 };
 
 const handlePlayMedia = (mediaData) => {

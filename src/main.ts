@@ -1,20 +1,20 @@
-import "./app/assets/icons/sprite";
-import "./app/css/main.scss";
+import './app/assets/icons/sprite';
+import './app/css/main.scss';
 
-import { createPinia } from "pinia";
-import { createApp } from "vue";
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
 
-import { createUserAccessControl } from "./app/composables/useUserAccessControl";
-import i18n from "./app/locale/i18n";
+import { createUserAccessControl } from './app/composables/useUserAccessControl';
+import i18n from './app/locale/i18n';
 import {
 	plugin as WebitelUi,
 	options as WebitelUiOptions,
-} from "./app/plugins/webitel/ui-sdk";
-import "./app/plugins/webitel-ui-chats.ts";
-import { initRouter, router } from "./app/router";
-import store from "./app/store";
-import { useUserinfoStore } from "./modules/userinfo/stores/userinfoStore";
-import App from "./the-app.vue";
+} from './app/plugins/webitel/ui-sdk';
+import './app/plugins/webitel-ui-chats.ts';
+import { initRouter, router } from './app/router';
+import store from './app/store';
+import { useUserinfoStore } from './modules/userinfo/stores/userinfoStore';
+import App from './the-app.vue';
 
 const setTokenFromUrl = () => {
 	try {
@@ -22,18 +22,18 @@ const setTokenFromUrl = () => {
 			accessToken?: string;
 		} = window.location.search
 			.slice(1)
-			.split("&")
+			.split('&')
 			.reduce((obj, query) => {
-				const [key, value] = query.split("=");
+				const [key, value] = query.split('=');
 				obj[key] = value;
 				return obj;
 			}, {});
 
 		if (queryMap.accessToken) {
-			localStorage.setItem("access-token", queryMap.accessToken);
+			localStorage.setItem('access-token', queryMap.accessToken);
 		}
 	} catch (err) {
-		console.error("Error restoring token from url", err);
+		console.error('Error restoring token from url', err);
 	}
 };
 
@@ -52,10 +52,12 @@ const initApp = async () => {
 		await initialize();
 		createUserAccessControl(useUserinfoStore);
 		await initRouter({
-			beforeEach: [routeAccessGuard],
+			beforeEach: [
+				routeAccessGuard,
+			],
 		});
 	} catch (err) {
-		console.error("Error initializing app", err);
+		console.error('Error initializing app', err);
 	}
 
 	app.use(router);
@@ -74,10 +76,10 @@ const initApp = async () => {
 		setTokenFromUrl();
 		config = await fetchConfig();
 	} catch (err) {
-		console.error("before app mount error:", err);
+		console.error('before app mount error:', err);
 	} finally {
 		const app = await initApp();
-		app.provide("$config", config);
-		app.mount("#app");
+		app.provide('$config', config);
+		app.mount('#app');
 	}
 })();

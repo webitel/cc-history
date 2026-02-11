@@ -36,9 +36,9 @@
 </template>
 
 <script setup lang="ts">
-import AuditFormAnswerEditingInfo from "@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue";
-import { computed } from "vue";
-import { EngineQuestion, EngineQuestionAnswer } from "webitel-sdk";
+import AuditFormAnswerEditingInfo from '@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
+import { computed } from 'vue';
+import { EngineQuestion, EngineQuestionAnswer } from 'webitel-sdk';
 
 const props = defineProps<{
 	question: EngineQuestion;
@@ -49,7 +49,7 @@ const answerName = computed(() => {
 	const answeredOption = props.question.options?.find(
 		({ score }) => score === props.answer.score,
 	);
-	return answeredOption?.name || "";
+	return answeredOption?.name || '';
 });
 </script>
 

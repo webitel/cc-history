@@ -71,13 +71,21 @@
 </template>
 
 <script lang="ts" setup>
-import {useVuelidate} from '@vuelidate/core';
-import {required} from '@vuelidate/validators';
-import {WtBadge, WtButton, WtCheckbox,WtIconBtn, WtInput, WtPopup, WtTooltip} from "@webitel/ui-sdk/components";
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+import {
+	WtBadge,
+	WtButton,
+	WtCheckbox,
+	WtIconBtn,
+	WtInput,
+	WtPopup,
+	WtTooltip,
+} from '@webitel/ui-sdk/components';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
-import {WtTableHeader} from "@webitel/ui-sdk/src/components/wt-table/types/WtTable.d.ts";
-import {computed, reactive, ref} from 'vue';
-import {useI18n} from "vue-i18n";
+import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.d.ts';
+import { computed, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 /*
 do we even need them?
@@ -90,10 +98,10 @@ const props = defineProps<Props>();
 */
 
 const emit = defineEmits<{
-  'update:variable-headers': (value: WtTableHeader[]) => void;
+	'update:variable-headers': (value: WtTableHeader[]) => void;
 }>();
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 const shownPopup = ref(false);
 
@@ -106,85 +114,88 @@ const draft = reactive([]);
 const isLoading = ref(false);
 
 const variablesFromDraft = computed(() => {
-  return draft.map(({value}) => value.replace('variables.', ''))
+	return draft.map(({ value }) => value.replace('variables.', ''));
 });
 
 const v$ = useVuelidate(
-  computed(() => ({
-    newVariableKey: {
-      required,
-      alreadyExists: (v) => {
-        return !variablesFromDraft.value?.some((variable) => variable === v);
-      },
-    },
-  })),
-  {newVariableKey},
-  {$autoDirty: true},
+	computed(() => ({
+		newVariableKey: {
+			required,
+			alreadyExists: (v) => {
+				return !variablesFromDraft.value?.some((variable) => variable === v);
+			},
+		},
+	})),
+	{
+		newVariableKey,
+	},
+	{
+		$autoDirty: true,
+	},
 );
 v$.value.$touch();
 
 const open = () => {
-  shownPopup.value = true;
+	shownPopup.value = true;
 };
 
 const close = () => {
-  shownPopup.value = false;
+	shownPopup.value = false;
 };
 
 const deleteKey = (keyToDelete) => {
-  draft.splice(draft.indexOf(keyToDelete), 1);
+	draft.splice(draft.indexOf(keyToDelete), 1);
 };
 
-
 const localStorageKey = 'history/registry/variable-headers';
-const localStorageSeparator = ';'
+const localStorageSeparator = ';';
 
 const setToLocalStorage = (variableHeaders) => {
-  const storedValue = variableHeaders.join(localStorageSeparator);
-  if (storedValue) {
-    localStorage.setItem(localStorageKey, storedValue);
-  } else {
-    localStorage.removeItem(localStorageKey);
-  }
-}
+	const storedValue = variableHeaders.join(localStorageSeparator);
+	if (storedValue) {
+		localStorage.setItem(localStorageKey, storedValue);
+	} else {
+		localStorage.removeItem(localStorageKey);
+	}
+};
 
 const getFromLocalStorage = () => {
-  return localStorage.getItem(localStorageKey)?.split(localStorageSeparator);
-}
+	return localStorage.getItem(localStorageKey)?.split(localStorageSeparator);
+};
 
 const addVariableHeader = (variableKey) => {
-  const variableHeader = {
-    value: `variables.${variableKey}`,
-    show: true,
-    field: `variables.${variableKey}`,
-    text: variableKey,
-  };
+	const variableHeader = {
+		value: `variables.${variableKey}`,
+		show: true,
+		field: `variables.${variableKey}`,
+		text: variableKey,
+	};
 
-  draft.unshift(variableHeader);
+	draft.unshift(variableHeader);
 
-  /* if input value is the source, clear it after adding do draft */
-  if (newVariableKey.value) {
-    newVariableKey.value = '';
-  }
+	/* if input value is the source, clear it after adding do draft */
+	if (newVariableKey.value) {
+		newVariableKey.value = '';
+	}
 };
 
 const save = () => {
-  isLoading.value = true;
-  try {
-    setToLocalStorage(variablesFromDraft.value);
-    emit('update:variable-headers', draft);
-  } finally {
-    isLoading.value = false;
-  }
-  close();
-}
+	isLoading.value = true;
+	try {
+		setToLocalStorage(variablesFromDraft.value);
+		emit('update:variable-headers', draft);
+	} finally {
+		isLoading.value = false;
+	}
+	close();
+};
 
 const restore = () => {
-  const storedValue = getFromLocalStorage();
-  if (!isEmpty(storedValue)) {
-    storedValue.map((variableKey) => addVariableHeader(variableKey));
-    save();
-  }
+	const storedValue = getFromLocalStorage();
+	if (!isEmpty(storedValue)) {
+		storedValue.map((variableKey) => addVariableHeader(variableKey));
+		save();
+	}
 };
 
 restore();

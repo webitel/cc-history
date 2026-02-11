@@ -6,8 +6,8 @@ import { namespace } from '../../namespace.ts';
 import { headers } from '../headers/headers.ts';
 
 export const useRegistryStore = createTableStore<EngineHistoryCall>(namespace, {
-  apiModule: {
-    getList: RegistryApi.getHistory,
-  },
-  headers,
+	apiModule: {
+		getList: RegistryApi.getHistory,
+	},
+	headers,
 });

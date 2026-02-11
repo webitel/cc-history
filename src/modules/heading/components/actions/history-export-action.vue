@@ -71,139 +71,153 @@ import historyActionMixin from '../../mixins/historyActionMixin';
 import FilesCounter from './files-counter.vue';
 
 export default {
-  name: 'HistoryExportAction',
-  components: { FilesCounter },
-  mixins: [
-    historyActionMixin,
-    exportCSVMixin,
-    exportXLSMixin,
-  ],
-  props: {
-    dataList: {
-      type: Array,
-    },
-    filters: {
-      type: Object,
-    },
-    fields: {
-      type: Array,
-      required: true,
-    },
-  },
-  validations() {
-    return {
-      draft: {
-        format: { required },
-        separator: { requiredIfRef: requiredIf(this.isExportSettingsFormatCSV) },
-      },
-    };
-  },
-  setup: () => ({
-    v$: useVuelidate(),
-  }),
-  data: () => ({
-    exportPopup: false,
-    isLoading: false,
-    draft: {
-      format: {},
-      separator: '',
-    },
-  }),
-  computed: {
-    selectedIds() {
-      return this.selected.map(({ id }) => id);
-    },
-    exportSettingOptions() {
-      return Object.keys(TypesExportedSettingsEnum)
-      .map(key => ({
-        name: TypesExportedSettingsEnum[key],
-        value: TypesExportedSettingsEnum[key],
-        id: TypesExportedSettingsEnum[key],
-      }));
-    },
-    isExportSettingsFormatCSV() {
-      return this.draft?.format === TypesExportedSettingsEnum.CSV;
-    },
-    disableSaving() {
-      this.v$.draft.$touch();
-      return this.v$.draft.$pending || this.v$.draft.$error;
-    },
-  },
-  mounted() {
-    this.checkExportSettings();
-  },
-  created() {
-    this.initCSVExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
-    this.initXLSExport(APIRepository.history.exportHistoryToFile, { filename: 'history' });
-  },
-  methods: {
-    updateDraft({ format, separator } = {}) {
-      this.draft = {
-        format: format || '',
-        separator: separator || '',
-      };
-    },
-    async checkExportSettings() {
-      const response = await ConfigurationAPI.getList({ name: EngineSystemSettingName.ExportSettings });
-      const exportSettingsValue = response.items[0]?.value;
+	name: 'HistoryExportAction',
+	components: {
+		FilesCounter,
+	},
+	mixins: [
+		historyActionMixin,
+		exportCSVMixin,
+		exportXLSMixin,
+	],
+	props: {
+		dataList: {
+			type: Array,
+		},
+		filters: {
+			type: Object,
+		},
+		fields: {
+			type: Array,
+			required: true,
+		},
+	},
+	validations() {
+		return {
+			draft: {
+				format: {
+					required,
+				},
+				separator: {
+					requiredIfRef: requiredIf(this.isExportSettingsFormatCSV),
+				},
+			},
+		};
+	},
+	setup: () => ({
+		v$: useVuelidate(),
+	}),
+	data: () => ({
+		exportPopup: false,
+		isLoading: false,
+		draft: {
+			format: {},
+			separator: '',
+		},
+	}),
+	computed: {
+		selectedIds() {
+			return this.selected.map(({ id }) => id);
+		},
+		exportSettingOptions() {
+			return Object.keys(TypesExportedSettingsEnum).map((key) => ({
+				name: TypesExportedSettingsEnum[key],
+				value: TypesExportedSettingsEnum[key],
+				id: TypesExportedSettingsEnum[key],
+			}));
+		},
+		isExportSettingsFormatCSV() {
+			return this.draft?.format === TypesExportedSettingsEnum.CSV;
+		},
+		disableSaving() {
+			this.v$.draft.$touch();
+			return this.v$.draft.$pending || this.v$.draft.$error;
+		},
+	},
+	mounted() {
+		this.checkExportSettings();
+	},
+	created() {
+		this.initCSVExport(APIRepository.history.exportHistoryToFile, {
+			filename: 'history',
+		});
+		this.initXLSExport(APIRepository.history.exportHistoryToFile, {
+			filename: 'history',
+		});
+	},
+	methods: {
+		updateDraft({ format, separator } = {}) {
+			this.draft = {
+				format: format || '',
+				separator: separator || '',
+			};
+		},
+		async checkExportSettings() {
+			const response = await ConfigurationAPI.getList({
+				name: EngineSystemSettingName.ExportSettings,
+			});
+			const exportSettingsValue = response.items[0]?.value;
 
-      if (exportSettingsValue) {
-        this.updateDraft(exportSettingsValue);
-      }
-    },
-    exportFile(format) {
-      const fields = this.fields;
-      const delimiter = this.draft.separator;
-      // https://webitel.atlassian.net/browse/DEV-3797
-      const params = {
-        ...this.filters,
-        fields,
-        skipParent: true,
-        _columns: fields,
-      };
-      switch (format) {
-        case TypesExportedSettingsEnum.CSV:
-          return this.exportCSV({ ...params, delimiter });
-        case TypesExportedSettingsEnum.XLS:
-          return this.exportXLS(params);
-        default:
-          console.error(`Unsupported format: ${format}`);
-      }
-    },
-    handleExport() {
-      if (!this.draft.format?.length) {
-        this.exportPopup = true;
-      } else {
-        this.exportFile(this.draft.format);
-      }
-    },
-    save() {
-      this.isLoading = true;
-      try {
-        this.exportFile(this.draft.format);
-      } finally {
-        this.isLoading = false;
-        this.closePopup();
-      }
-      //NOTE: This code is required to clear draft and re-execute checkExportSettings
-      this.updateDraft();
-    },
-    selectHandler(selectedValue) {
-      this.draft.format = selectedValue.value;
-      if (!this.isExportSettingsFormatCSV) {
-        delete this.draft.separator;
-      }
-    },
-    inputHandler(inputValue) {
-      this.draft.separator = inputValue;
-    },
-    closePopup() {
-      this.exportPopup = false;
+			if (exportSettingsValue) {
+				this.updateDraft(exportSettingsValue);
+			}
+		},
+		exportFile(format) {
+			const fields = this.fields;
+			const delimiter = this.draft.separator;
+			// https://webitel.atlassian.net/browse/DEV-3797
+			const params = {
+				...this.filters,
+				fields,
+				skipParent: true,
+				_columns: fields,
+			};
+			switch (format) {
+				case TypesExportedSettingsEnum.CSV:
+					return this.exportCSV({
+						...params,
+						delimiter,
+					});
+				case TypesExportedSettingsEnum.XLS:
+					return this.exportXLS(params);
+				default:
+					console.error(`Unsupported format: ${format}`);
+			}
+		},
+		handleExport() {
+			if (!this.draft.format?.length) {
+				this.exportPopup = true;
+			} else {
+				this.exportFile(this.draft.format);
+			}
+		},
+		save() {
+			this.isLoading = true;
+			try {
+				this.exportFile(this.draft.format);
+			} finally {
+				this.isLoading = false;
+				this.closePopup();
+			}
+			//NOTE: This code is required to clear draft and re-execute checkExportSettings
+			this.updateDraft();
+		},
+		selectHandler(selectedValue) {
+			this.draft.format = selectedValue.value;
+			if (!this.isExportSettingsFormatCSV) {
+				delete this.draft.separator;
+			}
+		},
+		inputHandler(inputValue) {
+			this.draft.separator = inputValue;
+		},
+		closePopup() {
+			this.exportPopup = false;
 
-      //NOTE: This code is required to clear draft and re-execute checkExportSettings
-      this.updateDraft();
-    },
-  },
+			//NOTE: This code is required to clear draft and re-execute checkExportSettings
+			this.updateDraft();
+		},
+	},
 };
 </script>
 

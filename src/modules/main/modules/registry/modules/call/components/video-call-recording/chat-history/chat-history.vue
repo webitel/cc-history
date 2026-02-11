@@ -30,14 +30,18 @@
 </template>
 
 <script setup lang="ts">
-import { MessagesServiceAPI } from "@webitel/api-services/api";
-import { ChatContainer, ChatMessageType, MessageAction } from "@webitel/ui-chats/ui";
-import { EngineHistoryCall } from "webitel-sdk";
-import { useI18n } from "vue-i18n";
-import EmptyChat from "./_internals/assets/empty-chat.svg";
-import EmptyChatDark from "./_internals/assets/empty-chat-dark.svg";
-import { computed, inject, onMounted, ref } from "vue";
-import { normalizeMessages } from "./_internals/scripts/normalizeMessages";
+import { MessagesServiceAPI } from '@webitel/api-services/api';
+import {
+	ChatContainer,
+	ChatMessageType,
+	MessageAction,
+} from '@webitel/ui-chats/ui';
+import { computed, inject, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { EngineHistoryCall } from 'webitel-sdk';
+import EmptyChat from './_internals/assets/empty-chat.svg';
+import EmptyChatDark from './_internals/assets/empty-chat-dark.svg';
+import { normalizeMessages } from './_internals/scripts/normalizeMessages';
 
 interface Props {
 	call: EngineHistoryCall;
@@ -49,7 +53,7 @@ const conversationId = computed(() => props.call.conversationId);
 
 const { t } = useI18n();
 
-const darkMode = inject("darkMode");
+const darkMode = inject('darkMode');
 
 const isChatLoading = ref(false);
 const normalizedMessages = ref<ChatMessageType[]>([]);
@@ -68,7 +72,7 @@ const loadNextMessages = async () => {
 
 	if (lastLoadedMessageId.value) {
 		// 'offset.id' because the backend cant handle object
-		params["offset.id"] = lastLoadedMessageId.value;
+		params['offset.id'] = lastLoadedMessageId.value;
 	}
 
 	try {
@@ -84,9 +88,9 @@ const loadNextMessages = async () => {
 	}
 };
 
-const openChatMedia = ({file}) => {
-  window.open(file.url, '_blank');
-}
+const openChatMedia = ({ file }) => {
+	window.open(file.url, '_blank');
+};
 
 onMounted(async () => {
 	if (!conversationId.value) return;

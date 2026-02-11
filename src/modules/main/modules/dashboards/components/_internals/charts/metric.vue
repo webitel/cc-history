@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { AggregationParams } from "../../../api/params/DashboardParams.enum";
+import { AggregationParams } from '../../../api/params/DashboardParams.enum';
 
 const aggSum = (list) => list.reduce((sum, item) => sum + item, 0);
 const aggAvg = (list) => aggSum(list) / list.length;
@@ -42,7 +42,7 @@ const aggMax = (list) => Math.max(...list);
 const aggMin = (list) => Math.min(...list);
 
 export default {
-	name: "Metric",
+	name: 'Metric',
 	props: {
 		chartData: {
 			type: Object,
@@ -63,10 +63,10 @@ export default {
 				: this.aggregation;
 		},
 		truthyLabel() {
-			return this.chartData.true?.label || "";
+			return this.chartData.true?.label || '';
 		},
 		falsyLabel() {
-			return this.chartData.false?.label || "";
+			return this.chartData.false?.label || '';
 		},
 		truthyValue() {
 			if (!this.chartData.true) return null;
@@ -99,7 +99,7 @@ export default {
 		},
 		truePercent() {
 			if (
-				typeof this.aggregation !== "number" ||
+				typeof this.aggregation !== 'number' ||
 				Number.isNaN(this.aggregation)
 			)
 				return 0;
@@ -107,7 +107,7 @@ export default {
 		},
 		falsePercent() {
 			if (
-				typeof this.aggregation !== "number" ||
+				typeof this.aggregation !== 'number' ||
 				Number.isNaN(this.aggregation)
 			)
 				return 0;
@@ -124,16 +124,16 @@ export default {
 				case AggregationParams.COUNT:
 					return percent;
 				case AggregationParams.AVG:
-					if (!aggValue && value) return "+100";
-					if (!aggValue && !value) return "+0";
+					if (!aggValue && value) return '+100';
+					if (!aggValue && !value) return '+0';
 					return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
 				case AggregationParams.MAX:
-					if (!aggValue && value) return "+100";
-					if (!aggValue && !value) return "+0";
+					if (!aggValue && value) return '+100';
+					if (!aggValue && !value) return '+0';
 					return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
 				case AggregationParams.MIN:
-					if (!aggValue && value) return "+100";
-					if (!aggValue && !value) return "+0";
+					if (!aggValue && value) return '+100';
+					if (!aggValue && !value) return '+0';
 					return isSmaller ? `${percent - 100}` : `+${percent - 100}`; // -100% -- diff
 				case AggregationParams.SUM:
 					return percent;

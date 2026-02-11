@@ -85,23 +85,26 @@
 </template>
 
 <script setup lang="ts">
-import { FileServicesAPI, PdfServicesAPI } from "@webitel/api-services/api";
-import { downloadFile, getMediaUrl } from "@webitel/api-services/api";
-import { eventBus } from "@webitel/ui-sdk/scripts";
-import { IconAction } from "@webitel/ui-sdk/enums";
-import { EngineCallFileType } from "@webitel/api-services/gen/models";
-import getNamespacedState from "@webitel/ui-sdk/src/store/helpers/getNamespacedState";
-import DeleteConfirmationPopup from "@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue";
-import { useDeleteConfirmationPopup } from "@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup";
-import { useTableEmpty } from "@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty";
-import { formatDate } from "@webitel/ui-sdk/utils";
-import { FormatDateMode } from "@webitel/ui-sdk/enums";
-import { EngineHistoryCall } from "webitel-sdk";
-import { computed, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useStore } from "vuex";
-import { useRoute } from "vue-router";
-import { headers } from "./store/headers/headers.ts";
+import {
+	downloadFile,
+	FileServicesAPI,
+	getMediaUrl,
+	PdfServicesAPI,
+} from '@webitel/api-services/api';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { FormatDateMode, IconAction } from '@webitel/ui-sdk/enums';
+import { eventBus } from '@webitel/ui-sdk/scripts';
+import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
+import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
+import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
+import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { formatDate } from '@webitel/ui-sdk/utils';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { EngineHistoryCall } from 'webitel-sdk';
+import { headers } from './store/headers/headers.ts';
 
 interface Props {
 	call: EngineHistoryCall;
@@ -110,7 +113,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
 	call: () => [],
-	namespace: "",
+	namespace: '',
 });
 
 const store = useStore();
@@ -129,7 +132,7 @@ const dataList = ref(
 
 const { t } = useI18n();
 
-const error = ref("");
+const error = ref('');
 
 const selected = ref([]);
 
@@ -197,20 +200,22 @@ const downloadPdf = async () => {
 					: dataList.value.map(({ id }) => id),
 			},
 		});
-		eventBus.$emit("notification", {
-			type: "info",
-			text: t("webitelUI.pdfGeneration.generationStarted"),
+		eventBus.$emit('notification', {
+			type: 'info',
+			text: t('webitelUI.pdfGeneration.generationStarted'),
 		});
 	} catch (e) {
-		eventBus.$emit("notification", {
-			type: "error",
+		eventBus.$emit('notification', {
+			type: 'error',
 			text: e?.response?.data?.detail,
 		});
 	}
 };
 
 const handleDeleteFromGalleria = () => {
-	handleDelete([dataList.value[galleriaActiveIndex.value]]);
+	handleDelete([
+		dataList.value[galleriaActiveIndex.value],
+	]);
 	if (galleriaActiveIndex.value > 0) galleriaActiveIndex.value -= 1;
 };
 </script>

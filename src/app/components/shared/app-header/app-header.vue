@@ -29,17 +29,19 @@ import {
 	WtHeaderActions,
 	WtLogo,
 	WtNavigationBar,
-} from "@webitel/ui-sdk/components";
-import { WtApplication } from "@webitel/ui-sdk/enums";
-import WtDarkModeSwitcher from "@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue";
-import { storeToRefs } from "pinia";
-import { computed, inject } from "vue";
-import { useStore } from "vuex";
+} from '@webitel/ui-sdk/components';
+import { WtApplication } from '@webitel/ui-sdk/enums';
+import WtDarkModeSwitcher from '@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue';
+import { storeToRefs } from 'pinia';
+import { computed, inject } from 'vue';
+import { useStore } from 'vuex';
 
-import { useUserinfoStore } from "../../../../modules/userinfo/stores/userinfoStore";
+import { useUserinfoStore } from '../../../../modules/userinfo/stores/userinfoStore';
 
 const store = useStore();
-const config = inject<{ ON_SITE?: boolean }>("$config");
+const config = inject<{
+	ON_SITE?: boolean;
+}>('$config');
 
 const userInfoStore = useUserinfoStore();
 const { hasApplicationVisibility, logoutUser } = userInfoStore;
@@ -47,7 +49,7 @@ const { userInfo } = storeToRefs(userInfoStore);
 
 const currentApp = WtApplication.History;
 
-const darkMode = computed(() => store.getters["appearance/DARK_MODE"]);
+const darkMode = computed(() => store.getters['appearance/DARK_MODE']);
 const startPageHref = computed(() => import.meta.env.VITE_START_PAGE_URL);
 
 const buildInfo = {
@@ -85,14 +87,21 @@ const apps = computed(() => {
 		href: import.meta.env.VITE_CRM_URL,
 	};
 
-	const allApps = [admin, supervisor, agent, history, audit, crm];
+	const allApps = [
+		admin,
+		supervisor,
+		agent,
+		history,
+		audit,
+		crm,
+	];
 	if (config?.ON_SITE) allApps.push(grafana);
 	return allApps.filter(({ name }) => hasApplicationVisibility(name));
 });
 
 function settings() {
 	const settingsUrl = import.meta.env.VITE_SETTINGS_URL;
-	window.open(settingsUrl, "_blank", "noopener,noreferrer");
+	window.open(settingsUrl, '_blank', 'noopener,noreferrer');
 }
 </script>
 

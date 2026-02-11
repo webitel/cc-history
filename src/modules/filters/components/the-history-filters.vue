@@ -20,14 +20,14 @@
 import {
 	FilterOption,
 	TableFiltersPanelComponent as TableFiltersPanel,
-} from "@webitel/ui-datalist/filters";
-import { RelativeDatetimeValue } from "@webitel/ui-sdk/enums";
-import { storeToRefs } from "pinia";
+} from '@webitel/ui-datalist/filters';
+import { RelativeDatetimeValue } from '@webitel/ui-sdk/enums';
+import { storeToRefs } from 'pinia';
 
-import { namespace } from "../../main/modules/registry/namespace";
-import { useRegistryStore } from "../../main/modules/registry/store/new/registry.store";
-import { filtersOptions } from "../configs/filtersOptions";
-import { useRegistryFilterPresetsStore } from "../modules/presets/store/useRegistryFilterPresetsStore";
+import { namespace } from '../../main/modules/registry/namespace';
+import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store';
+import { filtersOptions } from '../configs/filtersOptions';
+import { useRegistryFilterPresetsStore } from '../modules/presets/store/useRegistryFilterPresetsStore';
 
 const emit = defineEmits<{
 	hide: [];
@@ -52,14 +52,20 @@ initializeDefaultCreatedAtFilter();
 const resetFilters = () => {
 	const excludeNotDeletableFilters = filtersOptions.reduce((excludes, opt) => {
 		if (opt?.notDeletable) {
-			return [...excludes, opt.name];
+			return [
+				...excludes,
+				opt.name,
+			];
 		}
 
 		return excludes;
 	}, []);
 
 	filtersManager.value.reset({
-		exclude: [...excludeNotDeletableFilters, "search"],
+		exclude: [
+			...excludeNotDeletableFilters,
+			'search',
+		],
 	});
 
 	addFilter({

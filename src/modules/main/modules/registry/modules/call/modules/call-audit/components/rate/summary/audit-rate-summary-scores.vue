@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
 	scoreRequired: number | null;
@@ -35,17 +35,17 @@ const scores = computed(() => {
 	const scores = [];
 	if (props.scoreRequired != null) {
 		scores.push({
-			title: t("registry.call.evaluation.mandatory"),
+			title: t('registry.call.evaluation.mandatory'),
 			value: props.scoreRequired,
-			color: "success",
+			color: 'success',
 		});
 	}
 
 	if (props.scoreOptional != null) {
 		scores.push({
-			title: t("registry.call.evaluation.optional"),
+			title: t('registry.call.evaluation.optional'),
 			value: props.scoreOptional,
-			color: "disabled",
+			color: 'disabled',
 		});
 	}
 

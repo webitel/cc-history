@@ -1,14 +1,14 @@
-declare module "*.scss" {
+declare module '*.scss' {
 	const classes: Record<string, string>;
 	export default classes;
 }
 
-declare module "*.css" {
+declare module '*.css' {
 	const classes: Record<string, string>;
 	export default classes;
 }
 
-declare module "*.svg?raw" {
+declare module '*.svg?raw' {
 	const content: string;
 	export default content;
 }

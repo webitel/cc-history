@@ -42,25 +42,27 @@
 </template>
 
 <script>
-import getNamespacedState from "@webitel/ui-sdk/src/store/helpers/getNamespacedState";
-import { mapState } from "vuex";
+import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
+import { mapState } from 'vuex';
 
-import CallVisualizationHeader from "../../../call/components/call-visualization/call-visualization-header.vue";
-import CallTranscriptAPI from "../../api/callTranscript.js";
-import transcriptPhrasesMixin from "../../mixins/transcriptPhrasesMixin";
-import SttDeleteAction from "../utils/stt-delete-action.vue";
-import SttDownloadAction from "../utils/stt-download-action.vue";
-import CallNoTranscript from "./call-no-transcript-section.vue";
+import CallVisualizationHeader from '../../../call/components/call-visualization/call-visualization-header.vue';
+import CallTranscriptAPI from '../../api/callTranscript.js';
+import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
+import SttDeleteAction from '../utils/stt-delete-action.vue';
+import SttDownloadAction from '../utils/stt-download-action.vue';
+import CallNoTranscript from './call-no-transcript-section.vue';
 
 export default {
-	name: "CallTranscript",
+	name: 'CallTranscript',
 	components: {
 		SttDeleteAction,
 		SttDownloadAction,
 		CallVisualizationHeader,
 		CallNoTranscript,
 	},
-	mixins: [transcriptPhrasesMixin],
+	mixins: [
+		transcriptPhrasesMixin,
+	],
 	props: {
 		call: {
 			type: Object,
@@ -100,7 +102,10 @@ export default {
 			].reduce(
 				(channels, channel) => ({
 					...channels,
-					[channel]: { value: channel, show: true },
+					[channel]: {
+						value: channel,
+						show: true,
+					},
 				}),
 				{},
 			);
@@ -108,7 +113,9 @@ export default {
 		async deleteTranscript() {
 			const fileId = this.transcript.id;
 			const index = this.call.transcripts.indexOf(this.transcript);
-			await CallTranscriptAPI.delete({ fileId });
+			await CallTranscriptAPI.delete({
+				fileId,
+			});
 			/**
 			 * we mock deletion of transcription with sending api request from call-transcript.vue
 			 * to prevent refreshing of all call data and page reload

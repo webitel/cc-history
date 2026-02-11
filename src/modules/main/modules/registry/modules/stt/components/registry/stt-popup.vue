@@ -39,18 +39,20 @@
 </template>
 
 <script>
-import APIRepository from "../../../../../../../../app/api/APIRepository";
-import transcriptPhrasesMixin from "../../mixins/transcriptPhrasesMixin";
-import SttDeleteAction from "../utils/stt-delete-action.vue";
-import SttDownloadAction from "../utils/stt-download-action.vue";
+import APIRepository from '../../../../../../../../app/api/APIRepository';
+import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
+import SttDeleteAction from '../utils/stt-delete-action.vue';
+import SttDownloadAction from '../utils/stt-download-action.vue';
 
 export default {
-	name: "SttPopup",
+	name: 'SttPopup',
 	components: {
 		SttDeleteAction,
 		SttDownloadAction,
 	},
-	mixins: [transcriptPhrasesMixin],
+	mixins: [
+		transcriptPhrasesMixin,
+	],
 	props: {
 		callId: {
 			type: String,
@@ -58,7 +60,9 @@ export default {
 		},
 	},
 	data: () => ({
-		call: { transcripts: [] },
+		call: {
+			transcripts: [],
+		},
 		transcript: null,
 	}),
 	watch: {
@@ -76,18 +80,26 @@ export default {
 				this.call.transcripts.indexOf(this.transcript),
 				1,
 			);
-			this.transcript = this.call.transcripts[0] || this.$emit("close");
+			this.transcript = this.call.transcripts[0] || this.$emit('close');
 		},
 		async loadCall() {
 			/*
       loading call separately is needed for transcript channels representation
        */
 			const params = {
-				id: [this.callId],
+				id: [
+					this.callId,
+				],
 				createdAtFrom: 0,
 				page: 1,
 				size: 1,
-				fields: ["from", "to", "id", "createdAt", "transcripts"],
+				fields: [
+					'from',
+					'to',
+					'id',
+					'createdAt',
+					'transcripts',
+				],
 			};
 			const res = await APIRepository.history.getHistory(params);
 			[this.call] = res.items;

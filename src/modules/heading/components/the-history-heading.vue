@@ -47,12 +47,12 @@
 
 <script lang="ts" setup>
 import { DynamicFilterSearchComponent as DynamicFilterSearch } from '@webitel/ui-datalist/filters';
-import {storeToRefs} from "pinia";
-import {computed} from "vue";
-import { useI18n } from "vue-i18n";
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { SearchMode } from "../../filters/enums/SearchMode";
-import {useRegistryStore} from "../../main/modules/registry/store/new/registry.store.ts";
+import { SearchMode } from '../../filters/enums/SearchMode';
+import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store.ts';
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
 import HistoryExportAction from './actions/history-export-action.vue';
@@ -62,36 +62,32 @@ const { t } = useI18n();
 const registryStore = useRegistryStore();
 
 const {
-  dataList,
-  selected,
-  fields: tableFields,
-  filtersManager,
-  isFiltersRestoring,
+	dataList,
+	selected,
+	fields: tableFields,
+	filtersManager,
+	isFiltersRestoring,
 } = storeToRefs(registryStore);
 
-const {
-  loadDataList,
-  addFilter,
-  updateFilter,
-  deleteFilter,
-} = registryStore;
+const { loadDataList, addFilter, updateFilter, deleteFilter } = registryStore;
 
 // [WTEL-6378](https://webitel.atlassian.net/browse/WTEL-6378?focusedCommentId=669091)
 const fields = computed(() => {
-  return ['id'].concat(tableFields.value);
+	return [
+		'id',
+	].concat(tableFields.value);
 });
 
 const filters = computed(() => filtersManager.value.getAllValues());
 
 const searchModeOptions = computed(() => {
-  return Object.values(SearchMode).map((mode) => {
-    return {
-      text: t(`filters.search.${mode}`),
-      value: mode,
-    };
-  });
+	return Object.values(SearchMode).map((mode) => {
+		return {
+			text: t(`filters.search.${mode}`),
+			value: mode,
+		};
+	});
 });
-
 </script>
 
 <style lang="scss" scoped>

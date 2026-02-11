@@ -9,12 +9,14 @@
 import AbstractEnumFilter from '@webitel/ui-sdk/src/modules/QueryFilters/components/abstract-enum-filter.vue';
 
 export default {
-  name: 'FilterInterval',
-  components: { AbstractEnumFilter },
-  data: () => ({
-    filterQuery: 'interval',
-    namespace: 'dashboards/filters',
-  }),
+	name: 'FilterInterval',
+	components: {
+		AbstractEnumFilter,
+	},
+	data: () => ({
+		filterQuery: 'interval',
+		namespace: 'dashboards/filters',
+	}),
 };
 </script>
 

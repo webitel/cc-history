@@ -6,10 +6,10 @@ import CallsDurationDashboard from '../CallsDurationDashboard/CallsDurationDashb
 import CallsDurationMetricDashboard from '../CallsDurationMetricDashboard/CallsDurationMetricDashboard';
 
 export default Object.freeze([
-  CallsByPeriodDashboard,
-  CallsCountDashboard,
-  CallsCountMetricDashboard,
-  CallsCountVariableDashboard,
-  CallsDurationDashboard,
-  CallsDurationMetricDashboard,
+	CallsByPeriodDashboard,
+	CallsCountDashboard,
+	CallsCountMetricDashboard,
+	CallsCountVariableDashboard,
+	CallsDurationDashboard,
+	CallsDurationMetricDashboard,
 ]);

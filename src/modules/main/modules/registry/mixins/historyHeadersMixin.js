@@ -1,34 +1,34 @@
-import { mapActions,mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
-  computed: {
-    ...mapState('registry', {
-      headersValue: (state) => state.headers,
-    }),
+	computed: {
+		...mapState('registry', {
+			headersValue: (state) => state.headers,
+		}),
 
-    headers: {
-      get() {
-        return this.headersValue.map(({ text, ...header }) => {
-          let modifiedText = text;
+		headers: {
+			get() {
+				return this.headersValue.map(({ text, ...header }) => {
+					let modifiedText = text;
 
-          if (header.value.includes('variables')) {
-            modifiedText = header.value.replace(/^variables\./, '');
-          }
+					if (header.value.includes('variables')) {
+						modifiedText = header.value.replace(/^variables\./, '');
+					}
 
-          return {
-            ...header,
-            text: modifiedText,
-          };
-        });
-      },
-      set(value) {
-        this.setHeaders(value);
-      },
-    },
-  },
-  methods: {
-    ...mapActions('registry', {
-      setHeaders: 'SET_HEADERS',
-    }),
-  },
+					return {
+						...header,
+						text: modifiedText,
+					};
+				});
+			},
+			set(value) {
+				this.setHeaders(value);
+			},
+		},
+	},
+	methods: {
+		...mapActions('registry', {
+			setHeaders: 'SET_HEADERS',
+		}),
+	},
 };
