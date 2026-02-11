@@ -95,10 +95,10 @@
 </template>
 
 <script>
-import { isEmpty } from "@webitel/ui-sdk/scripts";
+import { isEmpty } from '@webitel/ui-sdk/scripts';
 
 export default {
-	name: "CallInfo",
+	name: 'CallInfo',
 	props: {
 		call: {
 			type: Object,
@@ -113,10 +113,10 @@ export default {
 			}));
 		},
 		amdLogs() {
-			return this.call.amdAiLogs && this.call.amdAiLogs.join(", ");
+			return this.call.amdAiLogs && this.call.amdAiLogs.join(', ');
 		},
 		isDisplayAmdLogs() {
-			return this.call.amdResult && this.call.amdResult !== "undefined";
+			return this.call.amdResult && this.call.amdResult !== 'undefined';
 		},
 		emptyValue() {
 			return (
@@ -128,7 +128,7 @@ export default {
 		agentDescription() {
 			return (
 				this.call.agentDescription && {
-					key: this.$t("registry.call.agentDescription"),
+					key: this.$t('registry.call.agentDescription'),
 					value: this.call.agentDescription,
 				}
 			);
@@ -146,17 +146,20 @@ export default {
 							 * convert this.call.forms from backend (examples key1: value1) to the form of
 							 * {key: key1, value: value1} for convenient drawing in the layout
 							 * */
-							const transformedObj = { key, value: form.form_fields[key] };
+							const transformedObj = {
+								key,
+								value: form.form_fields[key],
+							};
 							/*
 							 * https://my.webitel.com/browse/WTEL-3665
 							 * For fields of type 'filesOutcome' and 'filesIncome' get full data about files.
 							 * Need display only names separated by commas
 							 * */
-							if (key === "filesOutcome" || key === "filesIncome") {
+							if (key === 'filesOutcome' || key === 'filesIncome') {
 								const filenames = JSON.parse(form.form_fields[key]).map(
 									(item) => item.name,
 								);
-								transformedObj.value = filenames.join(", ");
+								transformedObj.value = filenames.join(', ');
 							}
 							variables.push(transformedObj);
 						});
@@ -169,7 +172,11 @@ export default {
 				});
 			}
 			if (this.agentDescription) {
-				postProcessingData.unshift({ variables: [this.agentDescription] });
+				postProcessingData.unshift({
+					variables: [
+						this.agentDescription,
+					],
+				});
 			}
 			return postProcessingData;
 		},

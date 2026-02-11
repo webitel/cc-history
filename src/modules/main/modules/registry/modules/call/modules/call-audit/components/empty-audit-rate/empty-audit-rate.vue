@@ -22,10 +22,9 @@
 </template>
 
 <script lang="ts" setup>
-
 const props = defineProps<{
-  hasRatingCreateAccess: boolean;
-  hasAuditFormReadAccess: boolean;
+	hasRatingCreateAccess: boolean;
+	hasAuditFormReadAccess: boolean;
 }>();
 </script>
 

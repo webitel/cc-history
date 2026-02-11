@@ -43,13 +43,13 @@
 </template>
 
 <script>
-import { useVuelidate } from "@vuelidate/core";
-import { maxValue, minValue, required } from "@vuelidate/validators";
-import convertDuration from "@webitel/ui-sdk/src/scripts/convertDuration";
-import deepCopy from "deep-copy";
+import { useVuelidate } from '@vuelidate/core';
+import { maxValue, minValue, required } from '@vuelidate/validators';
+import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import deepCopy from 'deep-copy';
 
 export default {
-	name: "CallWaveCommentForm",
+	name: 'CallWaveCommentForm',
 
 	props: {
 		callId: {
@@ -69,7 +69,7 @@ export default {
 	}),
 	data: () => ({
 		draft: {
-			note: "",
+			note: '',
 			startSec: 0,
 			endSec: 0,
 		},
@@ -80,12 +80,14 @@ export default {
 		customValidation() {
 			return (value) => [
 				{
-					name: "minValue",
-					text: this.$t("validation.minValue", { min: convertDuration(value) }),
+					name: 'minValue',
+					text: this.$t('validation.minValue', {
+						min: convertDuration(value),
+					}),
 				},
 				{
-					name: "maxValue",
-					text: this.$t("validation.maxValue").concat(
+					name: 'maxValue',
+					text: this.$t('validation.maxValue').concat(
 						` ${convertDuration(this.callDuration)}`,
 					),
 				},
@@ -112,7 +114,9 @@ export default {
 				maxValue: maxValue(this.callDuration),
 			},
 		};
-		return { draft };
+		return {
+			draft,
+		};
 	},
 
 	watch: {
@@ -134,10 +138,10 @@ export default {
 			}
 		},
 		saveComment() {
-			this.$emit("save", this.draft);
+			this.$emit('save', this.draft);
 		},
 		deleteComment() {
-			this.$emit("delete");
+			this.$emit('delete');
 		},
 	},
 };

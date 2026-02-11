@@ -20,31 +20,28 @@
 </template>
 
 <script lang="ts" setup>
-import DeleteConfirmationPopup
-  from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
-import {
-  useDeleteConfirmationPopup,
-} from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
+import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
+import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { EngineAuditRate } from 'webitel-sdk';
 
 import AuditRateAnswers from './answers/audit-rate-answers.vue';
 import AuditRateSummary from './summary/audit-rate-summary.vue';
 
 defineProps<{
-  rate: EngineAuditRate;
+	rate: EngineAuditRate;
 }>();
 
 const emit = defineEmits<{
-  'rate:edit': [];
-  'rate:delete': [];
+	'rate:edit': [];
+	'rate:delete': [];
 }>();
 
 const {
-  isVisible: isConfirmationPopup,
-  deleteCount,
-  deleteCallback,
-  askDeleteConfirmation,
-  closeDelete,
+	isVisible: isConfirmationPopup,
+	deleteCount,
+	deleteCallback,
+	askDeleteConfirmation,
+	closeDelete,
 } = useDeleteConfirmationPopup();
 </script>
 

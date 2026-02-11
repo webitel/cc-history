@@ -1,5 +1,5 @@
 import applyTransform, {
-  notify,
+	notify,
 } from '@webitel/ui-sdk/src/api/transformers/index.js';
 import { FileServiceApiFactory } from 'webitel-sdk';
 
@@ -9,17 +9,25 @@ import configuration from '../../../../../../../app/api/openAPIConfig';
 const fileService = new FileServiceApiFactory(configuration, '', instance);
 
 const deleteRecordings = async (id) => {
-  try {
-    const idsArray = Array.isArray(id) ? id : [id];
-    const response = await fileService.deleteFiles({ id: idsArray });
-    return applyTransform(response.data, []);
-  } catch (err) {
-    throw applyTransform(err, [notify]);
-  }
+	try {
+		const idsArray = Array.isArray(id)
+			? id
+			: [
+					id,
+				];
+		const response = await fileService.deleteFiles({
+			id: idsArray,
+		});
+		return applyTransform(response.data, []);
+	} catch (err) {
+		throw applyTransform(err, [
+			notify,
+		]);
+	}
 };
 
 const CallRecordingsAPI = {
-  delete: deleteRecordings,
+	delete: deleteRecordings,
 };
 
 export default CallRecordingsAPI;

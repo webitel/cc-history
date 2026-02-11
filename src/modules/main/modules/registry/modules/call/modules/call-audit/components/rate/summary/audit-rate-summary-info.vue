@@ -28,11 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { FormatDateMode } from "@webitel/ui-sdk/enums";
-import { formatDate } from "@webitel/ui-sdk/utils";
-import { computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { EngineAuditRate } from "webitel-sdk";
+import { FormatDateMode } from '@webitel/ui-sdk/enums';
+import { formatDate } from '@webitel/ui-sdk/utils';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { EngineAuditRate } from 'webitel-sdk';
 
 const props = defineProps<{
 	rate: EngineAuditRate;
@@ -41,14 +41,20 @@ const props = defineProps<{
 const { t } = useI18n();
 
 const auditFormInfo = computed(() => [
-	{ title: t("fields.ratedBy"), value: props.rate.createdBy.name },
-	{ title: t("fields.agent"), value: props.rate.ratedUser?.name },
 	{
-		title: t("fields.date"),
+		title: t('fields.ratedBy'),
+		value: props.rate.createdBy.name,
+	},
+	{
+		title: t('fields.agent'),
+		value: props.rate.ratedUser?.name,
+	},
+	{
+		title: t('fields.date'),
 		value: formatDate(+props.rate.createdAt, FormatDateMode.DATETIME),
 	},
 	{
-		title: t("registry.call.evaluation.scorecard"),
+		title: t('registry.call.evaluation.scorecard'),
 		value: props.rate.form.name,
 	},
 ]);

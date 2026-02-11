@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import Dashboards from "../../dashboards/enums/Dashboards.enum";
+import Dashboards from '../../dashboards/enums/Dashboards.enum';
 
 export default {
-	name: "DashboardSelectPopup",
+	name: 'DashboardSelectPopup',
 	data: () => ({
 		selected: null,
 	}),
@@ -64,7 +64,7 @@ export default {
 				(Dashboard) => Dashboard.type === this.selected,
 			);
 			const dashboard = new Dashboard();
-			this.$emit("input", dashboard);
+			this.$emit('input', dashboard);
 		},
 	},
 };

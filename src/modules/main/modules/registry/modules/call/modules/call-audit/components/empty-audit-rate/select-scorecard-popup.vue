@@ -38,18 +38,18 @@ import { computed, onMounted, ref } from 'vue';
 import AuditFormAPI from '../../api/AuditFormAPI.js';
 
 interface Scorecard {
-  id: string;
-  name: string;
-  questions?: any;
+	id: string;
+	name: string;
+	questions?: any;
 }
 
 interface Props {
-  call: any
+	call: any;
 }
 
 interface Emits {
-  (e: 'close'): void;
-  (e: 'change', scorecard: Scorecard): void;
+	(e: 'close'): void;
+	(e: 'change', scorecard: Scorecard): void;
 }
 
 const props = defineProps<Props>();
@@ -60,40 +60,47 @@ const scorecardIdCacheKey = 'history-last-used-scorecard-id';
 const scorecard = ref<Scorecard | null>(null);
 
 const selectScorecard = () => {
-  if (scorecard.value) {
-    emit('change', scorecard.value);
-    cacheScorecardId(scorecard.value.id);
-    emit('close');
-  }
+	if (scorecard.value) {
+		emit('change', scorecard.value);
+		cacheScorecardId(scorecard.value.id);
+		emit('close');
+	}
 };
 
 const cacheScorecardId = (id: string) => {
-  localStorage.setItem(scorecardIdCacheKey, id);
+	localStorage.setItem(scorecardIdCacheKey, id);
 };
 
 const setScorecardFromCache = async () => {
-  const scorecardId = localStorage.getItem(scorecardIdCacheKey);
-  if (scorecardId) {
-    const response = await AuditFormAPI.get({ itemId: scorecardId });
-    scorecard.value = response;
-  }
+	const scorecardId = localStorage.getItem(scorecardIdCacheKey);
+	if (scorecardId) {
+		const response = await AuditFormAPI.get({
+			itemId: scorecardId,
+		});
+		scorecard.value = response;
+	}
 };
 
 //NOTE: call?.user?.id can be undefined so to add team filter backend need from?.id or to?.id
 const teamFilter = computed(() => {
-  return props.call?.user?.id || props.call?.from?.id || props.call?.to?.id;
-})
-
-const loadScorecards = (params) => AuditFormAPI.getLookup({
-  ...params,
-  fields: ['id', 'name', 'questions'],
-  enabled: true,
-  active: true,
-  teamFilter: teamFilter.value,
+	return props.call?.user?.id || props.call?.from?.id || props.call?.to?.id;
 });
 
+const loadScorecards = (params) =>
+	AuditFormAPI.getLookup({
+		...params,
+		fields: [
+			'id',
+			'name',
+			'questions',
+		],
+		enabled: true,
+		active: true,
+		teamFilter: teamFilter.value,
+	});
+
 onMounted(() => {
-  setScorecardFromCache();
+	setScorecardFromCache();
 });
 </script>
 

@@ -23,38 +23,47 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, withDefaults } from 'vue';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { computed, defineProps, withDefaults } from 'vue';
 
 interface Props {
-  files: unknown[],
-  currentlyPlaying?: string,
-  icon: string
+	files: unknown[];
+	currentlyPlaying?: string;
+	icon: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  currentlyPlaying: '',
+	currentlyPlaying: '',
 });
 
 const emit = defineEmits<{
-  play: [file: { id: string, type: EngineCallFileType }];
-  stop: [];
+	play: [
+		file: {
+			id: string;
+			type: EngineCallFileType;
+		},
+	];
+	stop: [];
 }>();
 
-const isAnyFilesPlaying = computed(() => props.files.some((file) => file.id === props.currentlyPlaying));
-const contextOptions = computed(() => props.files.map(({ name, id, mimeType, type }) => ({
-  text: name,
-  id,
-  mimeType,
-  type
-})));
+const isAnyFilesPlaying = computed(() =>
+	props.files.some((file) => file.id === props.currentlyPlaying),
+);
+const contextOptions = computed(() =>
+	props.files.map(({ name, id, mimeType, type }) => ({
+		text: name,
+		id,
+		mimeType,
+		type,
+	})),
+);
 
 const handleOptionSelect = ({ option }) => {
-  if (props.currentlyPlaying === option.id) {
-    emit('stop');
-  } else {
-    emit('play', option);
-  }
+	if (props.currentlyPlaying === option.id) {
+		emit('stop');
+	} else {
+		emit('play', option);
+	}
 };
 </script>
 

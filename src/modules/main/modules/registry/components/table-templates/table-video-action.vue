@@ -34,28 +34,29 @@ import { EMPTY_SYMBOL } from '@webitel/ui-sdk/utils';
 import { computed, defineEmits, defineProps } from 'vue';
 
 interface Props {
-  files: unknown[],
+	files: unknown[];
 }
 
 const props = defineProps<Props>();
 
-const emit = defineEmits<{
-  (e: 'set-video', val: unknown): void;
-}>();
+const emit = defineEmits<(e: 'set-video', val: unknown) => void>();
 
-const contextOptions = computed(() => props?.files?.[EngineCallFileType.FileTypeScreensharing]?.map(({ name, id, mimeType, type }) => ({
-  text: name,
-  id,
-  mimeType,
-  type,
-})))
-
+const contextOptions = computed(() =>
+	props?.files?.[EngineCallFileType.FileTypeScreensharing]?.map(
+		({ name, id, mimeType, type }) => ({
+			text: name,
+			id,
+			mimeType,
+			type,
+		}),
+	),
+);
 
 const handleOptionSelect = ({ option }) => {
-  if (option.id && option.type === EngineCallFileType.FileTypeScreensharing) {
-    emit('set-video', option)
-    return;
-  }
+	if (option.id && option.type === EngineCallFileType.FileTypeScreensharing) {
+		emit('set-video', option);
+		return;
+	}
 };
 </script>
 

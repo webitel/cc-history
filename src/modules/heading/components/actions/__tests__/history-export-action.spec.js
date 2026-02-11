@@ -5,16 +5,23 @@ import HistoryExportAction from '../history-export-action.vue';
 
 const dataList = [];
 
-const props = { dataList, fields: [] };
+const props = {
+	dataList,
+	fields: [],
+};
 
 describe('HistoryExportCsvAction', () => {
-  it('renders a component', () => {
-    const wrapper = shallowMount(HistoryExportAction, { props });
-    expect(wrapper.isVisible()).toBe(true);
-  });
+	it('renders a component', () => {
+		const wrapper = shallowMount(HistoryExportAction, {
+			props,
+		});
+		expect(wrapper.isVisible()).toBe(true);
+	});
 
-  it('creates csv export module instance', () => {
-    const wrapper = shallowMount(HistoryExportAction, { props });
-    expect(wrapper.vm.CSVExport instanceof CSVExport).toBe(true);
-  });
+	it('creates csv export module instance', () => {
+		const wrapper = shallowMount(HistoryExportAction, {
+			props,
+		});
+		expect(wrapper.vm.CSVExport instanceof CSVExport).toBe(true);
+	});
 });

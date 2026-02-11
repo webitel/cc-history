@@ -4,13 +4,17 @@ import QueryFiltersStoreModule from '@webitel/ui-sdk/src/modules/QueryFilters/st
 import IntervalOptions from '../enums/IntervalOptions.enum';
 
 const state = {
-  interval: new EnumFilterSchema({
-    value: {},
-    defaultValue: IntervalOptions.find((interval) => interval.value === 'auto'),
-    options: IntervalOptions,
-    locale: { label: 'dashboards.interval.interval' },
-    multiple: false,
-  }),
+	interval: new EnumFilterSchema({
+		value: {},
+		defaultValue: IntervalOptions.find((interval) => interval.value === 'auto'),
+		options: IntervalOptions,
+		locale: {
+			label: 'dashboards.interval.interval',
+		},
+		multiple: false,
+	}),
 };
 
-export default new QueryFiltersStoreModule({ state }).getModule();
+export default new QueryFiltersStoreModule({
+	state,
+}).getModule();

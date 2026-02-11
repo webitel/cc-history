@@ -11,12 +11,12 @@
 
 <script lang="ts" setup>
 import { computed, defineProps } from 'vue';
-import {EngineAuditRate} from "webitel-sdk";
+import { EngineAuditRate } from 'webitel-sdk';
 
 import AuditRateAnswerItem from './audit-rate-answer-item.vue';
 
 const props = defineProps<{
-  rate: EngineAuditRate;
+	rate: EngineAuditRate;
 }>();
 </script>
 

@@ -6,13 +6,21 @@ let call;
 let props;
 
 describe('CallVisualization', () => {
-  beforeEach(() => {
-    call = { files: [{}] };
-    props = { call };
-  });
+	beforeEach(() => {
+		call = {
+			files: [
+				{},
+			],
+		};
+		props = {
+			call,
+		};
+	});
 
-  it('renders a component', () => {
-    const wrapper = shallowMount(CallVisualization, { props });
-    expect(wrapper.isVisible()).toBe(true);
-  });
+	it('renders a component', () => {
+		const wrapper = shallowMount(CallVisualization, {
+			props,
+		});
+		expect(wrapper.isVisible()).toBe(true);
+	});
 });

@@ -33,21 +33,21 @@
 
 <script setup lang="ts">
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { computed, ref, useTemplateRef, onMounted } from 'vue';
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import VideoFile from './video-file/video-file.vue';
-import Screenshots from './screenshots/screenshots.vue';
-import Pdfs from './pdfs/pdfs.vue';
 import ChatHistory from './chat-history/chat-history.vue';
 import { useVideoRecordingContentObserver } from './composables/useVideoRecordingContentObserver';
+import Pdfs from './pdfs/pdfs.vue';
+import Screenshots from './screenshots/screenshots.vue';
+import VideoFile from './video-file/video-file.vue';
 
 interface Props {
-  call: any;
-  namespace?: string;
+	call: any;
+	namespace?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  namespace: '',
+	namespace: '',
 });
 
 const { t } = useI18n();
@@ -62,24 +62,24 @@ Screenshots.name = 'Screenshots';
 Pdfs.name = 'Pdfs';
 
 const tabValues = computed(() => ({
-  SCREENSHOTS: {
-    text: t('objects.screenshots', 2),
-    component: Screenshots,
-    value: 'screenshots',
-    namespace: `${props.namespace}`,
-  },
-  PDFS: {
-    text: t('registry.call.pdfs', 2),
-    component: Pdfs,
-    value: 'pdfs',
-    namespace: `${props.namespace}`,
-  },
+	SCREENSHOTS: {
+		text: t('objects.screenshots', 2),
+		component: Screenshots,
+		value: 'screenshots',
+		namespace: `${props.namespace}`,
+	},
+	PDFS: {
+		text: t('registry.call.pdfs', 2),
+		component: Pdfs,
+		value: 'pdfs',
+		namespace: `${props.namespace}`,
+	},
 }));
 
-const tabs = computed (() => [
-  tabValues.value.SCREENSHOTS,
-  tabValues.value.PDFS
-])
+const tabs = computed(() => [
+	tabValues.value.SCREENSHOTS,
+	tabValues.value.PDFS,
+]);
 
 const currentTab = ref(tabValues.value.SCREENSHOTS);
 </script>

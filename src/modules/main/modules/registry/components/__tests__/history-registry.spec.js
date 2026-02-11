@@ -7,42 +7,47 @@ import registry from '../../store/registry';
 import HistoryRegistry from '../history-registry.vue';
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    {
-      path: '/',
-      name: 'vi',
-    },
-  ],
+	history: createWebHistory(),
+	routes: [
+		{
+			path: '/',
+			name: 'vi',
+		},
+	],
 });
 
 // todo: fix or rewrite or delete me
 describe.todo('History table', () => {
-  let store;
+	let store;
 
-  const SET_OPENED_CALL = vi.fn();
-  const RESET_OPENED_CALL = vi.fn();
-  openedHistoryCall.actions.SET_OPENED_CALL = SET_OPENED_CALL;
-  openedHistoryCall.actions.RESET_OPENED_CALL = RESET_OPENED_CALL;
+	const SET_OPENED_CALL = vi.fn();
+	const RESET_OPENED_CALL = vi.fn();
+	openedHistoryCall.actions.SET_OPENED_CALL = SET_OPENED_CALL;
+	openedHistoryCall.actions.RESET_OPENED_CALL = RESET_OPENED_CALL;
 
-  beforeEach(() => {
-    store = createStore({
-      modules: {
-        registry: {
-          ...registry,
-          modules: {
-            call: { ...openedHistoryCall },
-          },
-        },
-      },
-    });
-  });
-  it('renders a component', () => {
-    const wrapper = shallowMount(HistoryRegistry, {
-      global: {
-        plugins: [store, router],
-      },
-    });
-    expect(wrapper.classes('history-registry')).toBe(true);
-  });
+	beforeEach(() => {
+		store = createStore({
+			modules: {
+				registry: {
+					...registry,
+					modules: {
+						call: {
+							...openedHistoryCall,
+						},
+					},
+				},
+			},
+		});
+	});
+	it('renders a component', () => {
+		const wrapper = shallowMount(HistoryRegistry, {
+			global: {
+				plugins: [
+					store,
+					router,
+				],
+			},
+		});
+		expect(wrapper.classes('history-registry')).toBe(true);
+	});
 });

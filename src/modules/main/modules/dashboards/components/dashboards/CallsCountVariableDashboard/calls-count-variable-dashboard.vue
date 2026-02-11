@@ -18,19 +18,21 @@ import DummyLight from '../../../../../../../app/assets/dummy/hs-dummy-after-sea
 import dashboardMixin from '../../../mixins/dashboardMixin';
 
 export default {
-  name: 'CallsCountVariableDashboard',
-  mixins: [dashboardMixin],
-  props: {
-    darkMode: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    dummy() {
-      return this.darkMode ? DummyDark : DummyLight;
-    },
-  },
+	name: 'CallsCountVariableDashboard',
+	mixins: [
+		dashboardMixin,
+	],
+	props: {
+		darkMode: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	computed: {
+		dummy() {
+			return this.darkMode ? DummyDark : DummyLight;
+		},
+	},
 };
 </script>
 

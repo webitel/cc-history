@@ -20,11 +20,11 @@
 
 <script>
 export default {
-	name: "DashboardHeader",
+	name: 'DashboardHeader',
 	props: {
 		name: {
 			type: String,
-			default: "",
+			default: '',
 		},
 	},
 };

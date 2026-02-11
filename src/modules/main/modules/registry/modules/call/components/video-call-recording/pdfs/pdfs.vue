@@ -29,13 +29,13 @@
 </template>
 
 <script lang="ts" setup>
-import { IconAction } from "@webitel/ui-sdk/enums";
-import AgentPdfsTabSdk from "@webitel/ui-sdk/src/modules/AgentPdfs/components/agent-pdfs-tab.vue";
-import { usePdfsDataListStore } from "./store/pdfs";
-import { useRoute } from "vue-router";
-import { FileServicesAPI } from "@webitel/api-services/api";
-import { WebitelMediaExporterExportRecord } from "@webitel/api-services/gen/models";
-import { useI18n } from "vue-i18n";
+import { FileServicesAPI } from '@webitel/api-services/api';
+import { WebitelMediaExporterExportRecord } from '@webitel/api-services/gen/models';
+import { IconAction } from '@webitel/ui-sdk/enums';
+import AgentPdfsTabSdk from '@webitel/ui-sdk/src/modules/AgentPdfs/components/agent-pdfs-tab.vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+import { usePdfsDataListStore } from './store/pdfs';
 
 const route = useRoute();
 
@@ -46,7 +46,9 @@ const callId = route.params.pathMatch as string;
 const tableStore = usePdfsDataListStore();
 
 const handleDeleteItem = (item: WebitelMediaExporterExportRecord) => {
-	return FileServicesAPI.delete([item.fileId]);
+	return FileServicesAPI.delete([
+		item.fileId,
+	]);
 };
 </script>
 

@@ -1,7 +1,7 @@
 export default {
-  props: {
-    selected: {
-      type: Array,
-    },
-  },
+	props: {
+		selected: {
+			type: Array,
+		},
+	},
 };

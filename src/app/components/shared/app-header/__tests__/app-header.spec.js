@@ -1,14 +1,14 @@
-import { mount } from "@vue/test-utils";
-import { createStore } from "vuex";
+import { mount } from '@vue/test-utils';
+import { createStore } from 'vuex';
 
-import AppHeader from "../app-header.vue";
+import AppHeader from '../app-header.vue';
 
 const user = {
-	username: "username",
-	account: "account",
+	username: 'username',
+	account: 'account',
 };
 
-describe("App Header", () => {
+describe('App Header', () => {
 	let store;
 
 	beforeEach(() => {
@@ -23,37 +23,53 @@ describe("App Header", () => {
 		});
 	});
 
-	it("renders an app header with all nested functional components", () => {
+	it('renders an app header with all nested functional components', () => {
 		const wrapper = mount(AppHeader, {
 			global: {
-				plugins: [store],
+				plugins: [
+					store,
+				],
 			},
 		});
-		expect(wrapper.classes()).toContain("wt-app-header");
-		expect(wrapper.findComponent({ name: "wt-app-navigator" }).exists()).toBe(
-			true,
-		);
-		expect(wrapper.findComponent({ name: "wt-header-actions" }).exists()).toBe(
-			true,
-		);
+		expect(wrapper.classes()).toContain('wt-app-header');
+		expect(
+			wrapper
+				.findComponent({
+					name: 'wt-app-navigator',
+				})
+				.exists(),
+		).toBe(true);
+		expect(
+			wrapper
+				.findComponent({
+					name: 'wt-header-actions',
+				})
+				.exists(),
+		).toBe(true);
 	});
 
-	it("calls API logout at user logout action", () => {
+	it('calls API logout at user logout action', () => {
 		const mock = vi
-			.spyOn(AppHeader.methods, "logout")
+			.spyOn(AppHeader.methods, 'logout')
 			.mockImplementationOnce(vi.fn());
 		const wrapper = mount(AppHeader, {
 			global: {
-				plugins: [store],
+				plugins: [
+					store,
+				],
 			},
 		});
-		wrapper.findComponent({ name: "wt-header-actions" }).vm.$emit("logout");
+		wrapper
+			.findComponent({
+				name: 'wt-header-actions',
+			})
+			.vm.$emit('logout');
 		expect(mock).toHaveBeenCalled();
 	});
 
-	it("opens settings at user settings action", () => {
+	it('opens settings at user settings action', () => {
 		const open = vi.fn();
-		Object.defineProperty(window, "open", {
+		Object.defineProperty(window, 'open', {
 			configurable: true,
 			get() {
 				return open;
@@ -61,10 +77,16 @@ describe("App Header", () => {
 		});
 		const wrapper = mount(AppHeader, {
 			global: {
-				plugins: [store],
+				plugins: [
+					store,
+				],
 			},
 		});
-		wrapper.findComponent({ name: "wt-header-actions" }).vm.$emit("settings");
+		wrapper
+			.findComponent({
+				name: 'wt-header-actions',
+			})
+			.vm.$emit('settings');
 		expect(open).toHaveBeenCalled();
 	});
 });

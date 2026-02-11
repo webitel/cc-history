@@ -7,11 +7,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
-import { WtApplication } from "@webitel/ui-sdk/enums";
-
-import AppHeader from "./shared/app-header/app-header.vue";
-import { useRegistryStore } from "../../modules/main/modules/registry/store/new/registry.store";
+import { WtApplication } from '@webitel/ui-sdk/enums';
+import { computed } from 'vue';
+import { useRegistryStore } from '../../modules/main/modules/registry/store/new/registry.store';
+import AppHeader from './shared/app-header/app-header.vue';
 
 const historyTableStore = useRegistryStore();
 

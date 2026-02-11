@@ -26,17 +26,19 @@
 import FilterInterval from '../../../modules/filters/components/interval/filter-interval.vue';
 
 export default {
-  name: 'DashboardsHeader',
-  components: { FilterInterval },
-  model: {
-    prop: 'layout',
-    event: 'reflow',
-  },
-  props: {
-    layout: {
-      type: String,
-    },
-  },
+	name: 'DashboardsHeader',
+	components: {
+		FilterInterval,
+	},
+	model: {
+		prop: 'layout',
+		event: 'reflow',
+	},
+	props: {
+		layout: {
+			type: String,
+		},
+	},
 };
 </script>
 

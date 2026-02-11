@@ -65,107 +65,105 @@ import DashboardConfigPopup from './_internals/dashboard-config-popup/dashboard-
 import DashboardSelectPopup from './_internals/dashboard-select-popup/dashboard-select-popup.vue';
 import DashboardsHeader from './_internals/dashboards-header/dashboards-header.vue';
 import DashboardHeader from './dashboards/_internals/dashboard-header/dashboard-header.vue';
-import CallsByPeriodDashboard
-  from './dashboards/CallsByPeriodDashboard/calls-by-period-dashboard.vue';
+import CallsByPeriodDashboard from './dashboards/CallsByPeriodDashboard/calls-by-period-dashboard.vue';
 import CallsCountDashboard from './dashboards/CallsCountDashboard/calls-count-dashboard.vue';
-import CallsCountMetricDashboard
-  from './dashboards/CallsCountMetricDashboard/calls-count-metric-dashboard.vue';
-import CallsCountVariableDashboard
-  from './dashboards/CallsCountVariableDashboard/calls-count-variable-dashboard.vue';
-import CallsDurationDashboard
-  from './dashboards/CallsDurationDashboard/calls-duration-dashboard.vue';
-import CallsDurationMetricDashboard
-  from './dashboards/CallsDurationMetricDashboard/calls-duration-metric-dashboard.vue';
+import CallsCountMetricDashboard from './dashboards/CallsCountMetricDashboard/calls-count-metric-dashboard.vue';
+import CallsCountVariableDashboard from './dashboards/CallsCountVariableDashboard/calls-count-variable-dashboard.vue';
+import CallsDurationDashboard from './dashboards/CallsDurationDashboard/calls-duration-dashboard.vue';
+import CallsDurationMetricDashboard from './dashboards/CallsDurationMetricDashboard/calls-duration-metric-dashboard.vue';
 
 export default {
-  name: 'HistoryDashboards',
-  components: {
-    DashboardsHeader,
-    DashboardHeader,
-    CallsByPeriodDashboard,
-    CallsCountDashboard,
-    DashboardSelectPopup,
-    DashboardConfigPopup,
-    CallsCountMetricDashboard,
-    CallsCountVariableDashboard,
-    CallsDurationDashboard,
-    CallsDurationMetricDashboard,
-  },
-  data: () => ({
-    isReflow: false, // variable forces dashboards rerender
-    configuredDashboard: null,
-    isDashboardSelect: false,
-    isDashboardConfig: false,
-  }),
-  watch: {
-    '$route.query': {
-      handler() {
-        this.loadDashboardsData();
-      },
-    },
-    dashboards() {
-      this.loadDashboardsData();
-    },
-  },
-  created() {
-    this.restoreDashboards();
-  },
-  computed: {
-    ...mapState('dashboards', {
-      dashboards: (state) => state.dashboards,
-      dashboardsData: (state) => state.dashboardsData,
-      layout: (state) => state.layout,
-      isLoading: (state) => state.isLoading,
-    }),
-    ...mapGetters('appearance', {
-      darkMode: 'DARK_MODE',
-    }),
-  },
-  methods: {
-    ...mapActions('dashboards', {
-      addDashboard: 'ADD_DASHBOARD',
-      deleteDashboard: 'DELETE_DASHBOARD',
-      restoreDashboards: 'RESTORE_DASHBOARDS',
-      loadDashboardsData: 'LOAD_DASHBOARDS_DATA',
-      changeLayout: 'CHANGE_LAYOUT',
-    }),
+	name: 'HistoryDashboards',
+	components: {
+		DashboardsHeader,
+		DashboardHeader,
+		CallsByPeriodDashboard,
+		CallsCountDashboard,
+		DashboardSelectPopup,
+		DashboardConfigPopup,
+		CallsCountMetricDashboard,
+		CallsCountVariableDashboard,
+		CallsDurationDashboard,
+		CallsDurationMetricDashboard,
+	},
+	data: () => ({
+		isReflow: false, // variable forces dashboards rerender
+		configuredDashboard: null,
+		isDashboardSelect: false,
+		isDashboardConfig: false,
+	}),
+	watch: {
+		'$route.query': {
+			handler() {
+				this.loadDashboardsData();
+			},
+		},
+		dashboards() {
+			this.loadDashboardsData();
+		},
+	},
+	created() {
+		this.restoreDashboards();
+	},
+	computed: {
+		...mapState('dashboards', {
+			dashboards: (state) => state.dashboards,
+			dashboardsData: (state) => state.dashboardsData,
+			layout: (state) => state.layout,
+			isLoading: (state) => state.isLoading,
+		}),
+		...mapGetters('appearance', {
+			darkMode: 'DARK_MODE',
+		}),
+	},
+	methods: {
+		...mapActions('dashboards', {
+			addDashboard: 'ADD_DASHBOARD',
+			deleteDashboard: 'DELETE_DASHBOARD',
+			restoreDashboards: 'RESTORE_DASHBOARDS',
+			loadDashboardsData: 'LOAD_DASHBOARDS_DATA',
+			changeLayout: 'CHANGE_LAYOUT',
+		}),
 
-    async reflow(value) {
-      this.isReflow = true;
-      this.changeLayout(value);
-      await this.$nextTick();
-      this.isReflow = false;
-    },
-    handleDashboardConfig(options) {
-      this.closeDashboardConfig();
-      this.addDashboard({ dashboard: this.configuredDashboard, options });
-      this.resetConfiguredDashboard();
-    },
-    editDashboard(dashboard) {
-      this.configuredDashboard = dashboard;
-      this.openDashboardConfig();
-    },
-    selectDashboard(dashboard) {
-      this.configuredDashboard = dashboard;
-      this.closeDashboardSelect();
-      this.openDashboardConfig();
-    },
-    openDashboardSelect() {
-      this.isDashboardSelect = true;
-    },
-    openDashboardConfig() {
-      this.isDashboardConfig = true;
-    },
-    closeDashboardSelect() {
-      this.isDashboardSelect = false;
-    },
-    closeDashboardConfig() {
-      this.isDashboardConfig = false;
-    },
-    resetConfiguredDashboard() {
-      this.configuredDashboard = null;
-    },
-  },
+		async reflow(value) {
+			this.isReflow = true;
+			this.changeLayout(value);
+			await this.$nextTick();
+			this.isReflow = false;
+		},
+		handleDashboardConfig(options) {
+			this.closeDashboardConfig();
+			this.addDashboard({
+				dashboard: this.configuredDashboard,
+				options,
+			});
+			this.resetConfiguredDashboard();
+		},
+		editDashboard(dashboard) {
+			this.configuredDashboard = dashboard;
+			this.openDashboardConfig();
+		},
+		selectDashboard(dashboard) {
+			this.configuredDashboard = dashboard;
+			this.closeDashboardSelect();
+			this.openDashboardConfig();
+		},
+		openDashboardSelect() {
+			this.isDashboardSelect = true;
+		},
+		openDashboardConfig() {
+			this.isDashboardConfig = true;
+		},
+		closeDashboardSelect() {
+			this.isDashboardSelect = false;
+		},
+		closeDashboardConfig() {
+			this.isDashboardConfig = false;
+		},
+		resetConfiguredDashboard() {
+			this.configuredDashboard = null;
+		},
+	},
 };
 </script>
 

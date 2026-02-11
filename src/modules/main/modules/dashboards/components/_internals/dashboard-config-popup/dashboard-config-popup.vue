@@ -76,108 +76,143 @@
 import { VisualizationParams } from '../../../api/params/DashboardParams.enum';
 
 export default {
-  name: 'DashboardConfigPopup',
-  props: {
-    dashboard: {
-      type: Object,
-      required: true,
-    },
-  },
-  data: () => ({
-    VisualizationParams,
-    options: {},
-  }),
+	name: 'DashboardConfigPopup',
+	props: {
+		dashboard: {
+			type: Object,
+			required: true,
+		},
+	},
+	data: () => ({
+		VisualizationParams,
+		options: {},
+	}),
 
-  computed: {
-    visualization: {
-      get() {
-        const { visualization } = this.options;
-        return {
-          name: this.$t(`dashboards.visualizations.${visualization.split('-')[0]}`),
-          value: visualization,
-        };
-      },
-      set(value) { this.options.visualization = value.value; },
-    },
+	computed: {
+		visualization: {
+			get() {
+				const { visualization } = this.options;
+				return {
+					name: this.$t(
+						`dashboards.visualizations.${visualization.split('-')[0]}`,
+					),
+					value: visualization,
+				};
+			},
+			set(value) {
+				this.options.visualization = value.value;
+			},
+		},
 
-    aggregation: {
-      get() {
-        const { aggregation } = this.options;
-        return {
-          name: this.$t(`dashboards.aggregations.${aggregation}`),
-          value: aggregation,
-        };
-      },
-      set(value) { this.options.aggregation = value.value; },
-    },
+		aggregation: {
+			get() {
+				const { aggregation } = this.options;
+				return {
+					name: this.$t(`dashboards.aggregations.${aggregation}`),
+					value: aggregation,
+				};
+			},
+			set(value) {
+				this.options.aggregation = value.value;
+			},
+		},
 
-    param: {
-      get() {
-        const { param } = this.options;
-        return { name: this.$t(`fields.${param}`), value: param };
-      },
-      set(value) { this.options.param = value.value; },
-    },
+		param: {
+			get() {
+				const { param } = this.options;
+				return {
+					name: this.$t(`fields.${param}`),
+					value: param,
+				};
+			},
+			set(value) {
+				this.options.param = value.value;
+			},
+		},
 
-    limit: {
-      get() {
-        const { limit } = this.options;
-        return { name: this.$t(`dashboards.dashboardConfigForm.limit.${limit}`), value: limit };
-      },
-      set(value) { this.options.limit = value.value; },
-    },
+		limit: {
+			get() {
+				const { limit } = this.options;
+				return {
+					name: this.$t(`dashboards.dashboardConfigForm.limit.${limit}`),
+					value: limit,
+				};
+			},
+			set(value) {
+				this.options.limit = value.value;
+			},
+		},
 
-    visualizationOptions() {
-      return this.dashboard.visualizationOptions
-        ? this.dashboard.visualizationOptions
-        .map((visualization) => ({
-          name: this.$t(`dashboards.visualizations.${visualization.split('-')[0]}`),
-          value: visualization,
-        }))
-        : [];
-    },
+		visualizationOptions() {
+			return this.dashboard.visualizationOptions
+				? this.dashboard.visualizationOptions.map((visualization) => ({
+						name: this.$t(
+							`dashboards.visualizations.${visualization.split('-')[0]}`,
+						),
+						value: visualization,
+					}))
+				: [];
+		},
 
-    aggregationOptions() {
-      return this.dashboard.aggregationOptions
-        ? this.dashboard.aggregationOptions
-        .map((aggregation) => ({ name: this.$t(`dashboards.aggregations.${aggregation}`), value: aggregation }))
-        : [];
-    },
+		aggregationOptions() {
+			return this.dashboard.aggregationOptions
+				? this.dashboard.aggregationOptions.map((aggregation) => ({
+						name: this.$t(`dashboards.aggregations.${aggregation}`),
+						value: aggregation,
+					}))
+				: [];
+		},
 
-    paramOptions() {
-      return this.dashboard.paramOptions
-        ? this.dashboard.paramOptions
-        .map((param) => ({ name: this.$t(`fields.${param}`), value: param }))
-        : [];
-    },
+		paramOptions() {
+			return this.dashboard.paramOptions
+				? this.dashboard.paramOptions.map((param) => ({
+						name: this.$t(`fields.${param}`),
+						value: param,
+					}))
+				: [];
+		},
 
-    limitOptions() {
-      return [
-        { name: this.$t('dashboards.dashboardConfigForm.limit.5'), value: 5 },
-        { name: this.$t('dashboards.dashboardConfigForm.limit.10'), value: 10 },
-        { name: this.$t('dashboards.dashboardConfigForm.limit.15'), value: 15 },
-        { name: this.$t('dashboards.dashboardConfigForm.limit.20'), value: 20 },
-        ];
-    },
+		limitOptions() {
+			return [
+				{
+					name: this.$t('dashboards.dashboardConfigForm.limit.5'),
+					value: 5,
+				},
+				{
+					name: this.$t('dashboards.dashboardConfigForm.limit.10'),
+					value: 10,
+				},
+				{
+					name: this.$t('dashboards.dashboardConfigForm.limit.15'),
+					value: 15,
+				},
+				{
+					name: this.$t('dashboards.dashboardConfigForm.limit.20'),
+					value: 20,
+				},
+			];
+		},
 
-    isLimit() {
-      return this.dashboard.isLimit();
-    },
+		isLimit() {
+			return this.dashboard.isLimit();
+		},
 
-    isRelative() {
-      return this.dashboard.isRelative();
-    },
-  },
+		isRelative() {
+			return this.dashboard.isRelative();
+		},
+	},
 
-  created() {
-    this.options = { ...this.dashboard.options };
-  },
+	created() {
+		this.options = {
+			...this.dashboard.options,
+		};
+	},
 
-  methods: {
-    save() {
-      this.$emit('input', this.options);
-    },
-  },
+	methods: {
+		save() {
+			this.$emit('input', this.options);
+		},
+	},
 };
 </script>
 

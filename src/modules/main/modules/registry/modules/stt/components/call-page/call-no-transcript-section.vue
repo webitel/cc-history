@@ -63,41 +63,45 @@ import { mapActions, mapState } from 'vuex';
 import CallTranscriptAPI from '../../api/callTranscript.js';
 
 export default {
-  name: 'CallNoTranscript',
-  props: {
-    call: {
-      type: Object,
-      required: true,
-    },
-    namespace: {
-      type: String,
-    },
-  },
-  data: () => ({
-    JobState: EngineHistoryFileJobHistoryFileJobState,
-  }),
-  computed: {
-    ...mapState({
-      file(state) {
-        return getNamespacedState(state, this.namespace).selectedRecordingFile;
-      },
-    }),
-    fileJob() {
-      return (this.call.filesJob || []).find(({ fileId }) => this.file.id === fileId);
-    },
-  },
-  methods: {
-    ...mapActions({
-      refreshCall(dispatch, payload) {
-        return dispatch(`${this.namespace}/LOAD_MAIN_CALL`, payload);
-      },
-    }),
-    async transcribe() {
-      const callId = this.call.id;
-      await CallTranscriptAPI.create({ callId });
-      this.refreshCall();
-    },
-  },
+	name: 'CallNoTranscript',
+	props: {
+		call: {
+			type: Object,
+			required: true,
+		},
+		namespace: {
+			type: String,
+		},
+	},
+	data: () => ({
+		JobState: EngineHistoryFileJobHistoryFileJobState,
+	}),
+	computed: {
+		...mapState({
+			file(state) {
+				return getNamespacedState(state, this.namespace).selectedRecordingFile;
+			},
+		}),
+		fileJob() {
+			return (this.call.filesJob || []).find(
+				({ fileId }) => this.file.id === fileId,
+			);
+		},
+	},
+	methods: {
+		...mapActions({
+			refreshCall(dispatch, payload) {
+				return dispatch(`${this.namespace}/LOAD_MAIN_CALL`, payload);
+			},
+		}),
+		async transcribe() {
+			const callId = this.call.id;
+			await CallTranscriptAPI.create({
+				callId,
+			});
+			this.refreshCall();
+		},
+	},
 };
 </script>
 

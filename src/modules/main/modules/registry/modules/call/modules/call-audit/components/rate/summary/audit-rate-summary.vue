@@ -28,28 +28,27 @@
 
 <script lang="ts" setup>
 import { WtButton } from '@webitel/ui-sdk/components';
-import { WtObject } from "@webitel/ui-sdk/enums";
+import { WtObject } from '@webitel/ui-sdk/enums';
 import { useI18n } from 'vue-i18n';
 import { EngineAuditRate } from 'webitel-sdk';
 
-import {useUserAccessControl} from "../../../../../../../../../../../app/composables/useUserAccessControl.ts";
+import { useUserAccessControl } from '../../../../../../../../../../../app/composables/useUserAccessControl.ts';
 import AuditRateSummaryInfo from './audit-rate-summary-info.vue';
 import AuditRateSummaryScores from './audit-rate-summary-scores.vue';
 
 defineProps<{
-  rate: EngineAuditRate;
+	rate: EngineAuditRate;
 }>();
 
 const emit = defineEmits<{
-  'rate:edit': [];
-  'rate:delete': [];
+	'rate:edit': [];
+	'rate:delete': [];
 }>();
 
 const { t } = useI18n();
-const {
-  hasUpdateAccess,
-  hasDeleteAccess,
-} = useUserAccessControl(WtObject.AuditRating);
+const { hasUpdateAccess, hasDeleteAccess } = useUserAccessControl(
+	WtObject.AuditRating,
+);
 </script>
 
 <style lang="scss" scoped>

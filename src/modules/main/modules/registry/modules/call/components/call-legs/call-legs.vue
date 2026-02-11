@@ -137,121 +137,123 @@ import TableDirection from '../../../../components/table-templates/table-directi
 import { useRegistryStore } from '../../../../store/new/registry.store.js';
 
 export default {
-  name: 'CallLegs',
-  components: {
-    TableDirection,
-  },
-  props: {
-    call: {
-      type: Object,
-      required: true,
-    },
-    namespace: {
-      type: String,
-    },
-  },
+	name: 'CallLegs',
+	components: {
+		TableDirection,
+	},
+	props: {
+		call: {
+			type: Object,
+			required: true,
+		},
+		namespace: {
+			type: String,
+		},
+	},
 
-  setup: () => {
-    const tableStore = useRegistryStore();
+	setup: () => {
+		const tableStore = useRegistryStore();
 
-    const {
-      shownHeaders: registryTableShownHeaders,
-      fields: registryTableFields,
-    } = storeToRefs(tableStore);
+		const {
+			shownHeaders: registryTableShownHeaders,
+			fields: registryTableFields,
+		} = storeToRefs(tableStore);
 
-    const legsTableSpecificFields = [
-      'id',
-      'parent_id',
-      'transfer_from',
-      'transfer_to',
-    ];
+		const legsTableSpecificFields = [
+			'id',
+			'parent_id',
+			'transfer_from',
+			'transfer_to',
+		];
 
-    const legMarkerHeader = [
-    {
-        value: 'legMarker',
-        show: true,
-        sort: null,
-        field: '',
-        width: '20px',
-      },
-    ];
+		const legMarkerHeader = [
+			{
+				value: 'legMarker',
+				show: true,
+				sort: null,
+				field: '',
+				width: '20px',
+			},
+		];
 
-    const legsTableSpecificShownHeaders = [
-      {
-        value: 'transfers',
-        show: true,
-        sort: null,
-        field: 'transfer_from, transfer_to',
-      }
-    ];
+		const legsTableSpecificShownHeaders = [
+			{
+				value: 'transfers',
+				show: true,
+				sort: null,
+				field: 'transfer_from, transfer_to',
+			},
+		];
 
-    const shownHeaders = computed(() => {
-      return [
-        ...legMarkerHeader,
-        ...registryTableShownHeaders.value,
-        ...legsTableSpecificShownHeaders,
-      ];
-    });
+		const shownHeaders = computed(() => {
+			return [
+				...legMarkerHeader,
+				...registryTableShownHeaders.value,
+				...legsTableSpecificShownHeaders,
+			];
+		});
 
-    const fields = computed(() => {
-      return [
-        ...registryTableFields.value,
-        ...legsTableSpecificFields,
-      ];
-    });
+		const fields = computed(() => {
+			return [
+				...registryTableFields.value,
+				...legsTableSpecificFields,
+			];
+		});
 
-    return {
-      shownHeaders,
-      fields,
-    }
-  },
+		return {
+			shownHeaders,
+			fields,
+		};
+	},
 
-  computed: {
-    ...mapState({
-      legsData(state) {
-        return getNamespacedState(state, this.namespace).legsData;
-      },
-      isLoading(state) {
-        return getNamespacedState(state, this.namespace).isLegsDataLoading;
-      },
-    }),
+	computed: {
+		...mapState({
+			legsData(state) {
+				return getNamespacedState(state, this.namespace).legsData;
+			},
+			isLoading(state) {
+				return getNamespacedState(state, this.namespace).isLegsDataLoading;
+			},
+		}),
 
-    tableData() {
-      return [
-        this.call,
-        ...this.legsData,
-      ];
-    },
-  },
+		tableData() {
+			return [
+				this.call,
+				...this.legsData,
+			];
+		},
+	},
 
-  methods: {
-    ...mapActions({
-      loadList(dispatch, payload) {
-        return dispatch(`${this.namespace}/LOAD_LEGS_DATA_LIST`, payload);
-      },
-    }),
+	methods: {
+		...mapActions({
+			loadList(dispatch, payload) {
+				return dispatch(`${this.namespace}/LOAD_LEGS_DATA_LIST`, payload);
+			},
+		}),
 
-    highlightRow(ids, removeHighlight = false) {
-      this.tableData.forEach(row => {
-        row.highlighted = ids.includes(row.id) && !removeHighlight
-      })
-    },
+		highlightRow(ids, removeHighlight = false) {
+			this.tableData.forEach((row) => {
+				row.highlighted = ids.includes(row.id) && !removeHighlight;
+			});
+		},
 
-    getRowClass(row) {
-      return row.highlighted ? 'wt-table__tr--highlighted' : ''
-    },
-  },
-  async created() {
-    /*
+		getRowClass(row) {
+			return row.highlighted ? 'wt-table__tr--highlighted' : '';
+		},
+	},
+	async created() {
+		/*
      init only once, if necessary. 
      legsData resets on the-call.vue component unmount.
 
      https://webitel.atlassian.net/browse/WTEL-7495
      */
-    if (!this.legsData.length) {
-      this.loadList({ fields: this.fields });
-    }
-  },
+		if (!this.legsData.length) {
+			this.loadList({
+				fields: this.fields,
+			});
+		}
+	},
 };
 </script>
 
