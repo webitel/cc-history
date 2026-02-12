@@ -23,6 +23,12 @@ export default {
 			separator: 'Ajratgich',
 		},
 	},
+	export: {
+		audioRecording: 'Audio yozuv | Audio yozuvlar',
+		videoRecording: 'Video yozuv | Video yozuvlar',
+		screenRecording: 'Ekran yozuvi | Ekran yozuvlari',
+		transcription: 'Transkriptsiya | Transkriptsiyalar',
+	},
 	registry: {
 		registry: 'Tarix',
 		call: {

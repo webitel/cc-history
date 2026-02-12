@@ -25,6 +25,12 @@ export default {
 			separator: 'Dấu phân cách',
 		},
 	},
+	export: {
+		audioRecording: 'Ghi âm | Các bản ghi âm',
+		videoRecording: 'Ghi hình | Các bản ghi hình',
+		screenRecording: 'Ghi màn hình | Các bản ghi màn hình',
+		transcription: 'Phiên âm | Các phiên âm',
+	},
 	registry: {
 		registry: 'Lịch sử',
 		call: {

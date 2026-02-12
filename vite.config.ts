@@ -1,18 +1,18 @@
-import vue from "@vitejs/plugin-vue";
-import { resolve } from "path";
-import { defineConfig, loadEnv } from "vite";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
-import vueDevTools from "vite-plugin-vue-devtools";
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
+import { defineConfig, loadEnv } from 'vite';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import vueDevTools from 'vite-plugin-vue-devtools';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
-	const env = loadEnv(mode, process.cwd(), "");
+	const env = loadEnv(mode, process.cwd(), '');
 
 	return defineConfig({
-		base: "/history",
+		base: '/history',
 		define: {
-			"process.env": JSON.parse(
-				JSON.stringify(env).replaceAll("VITE_", "VUE_APP_"),
+			'process.env': JSON.parse(
+				JSON.stringify(env).replaceAll('VITE_', 'VUE_APP_'),
 			),
 		},
 		server: {
@@ -21,27 +21,36 @@ export default ({ mode }) => {
 		css: {
 			preprocessorOptions: {
 				scss: {
-					api: "modern",
+					api: 'modern',
 				},
 			},
 		},
 		optimizeDeps: {
-			include: ["clipboard-copy", "deep-equal", "deepmerge"],
-			exclude: ["@webitel/ui-sdk/icons"],
+			include: [
+				'clipboard-copy',
+				'deep-equal',
+				'deepmerge',
+			],
+			exclude: [
+				'@webitel/ui-sdk/icons',
+			],
 		},
 		resolve: {
-			dedupe: ["vue", "@vue/compat"],
+			dedupe: [
+				'vue',
+				'@vue/compat',
+			],
 			alias: {
-				vue: "@vue/compat",
-				"@": resolve(__dirname, "src"),
-				"lodash/fp": "lodash-es",
-				lodash: "lodash-es",
+				vue: '@vue/compat',
+				'@': resolve(__dirname, 'src'),
+				'lodash/fp': 'lodash-es',
+				lodash: 'lodash-es',
 				/* vue-datepicker v4 relies on date-fns v2
          where "/esm" dir still exists. need to update vue-datepicker to v8 at least */
-				"date-fns/esm": "date-fns",
-				"@aliasedDeps/api-services/axios": resolve(
+				'date-fns/esm': 'date-fns',
+				'@aliasedDeps/api-services/axios': resolve(
 					__dirname,
-					"src/app/api/instance",
+					'src/app/api/instance',
 				),
 			},
 			// preserveSymlinks: false,
@@ -59,24 +68,29 @@ export default ({ mode }) => {
 			// https://www.npmjs.com/package/vite-plugin-node-polyfills
 			nodePolyfills({
 				// are needed for csv-parse
-				include: ["buffer", "stream"],
+				include: [
+					'buffer',
+					'stream',
+				],
 				globals: {
 					Buffer: true, // can also be 'build', 'dev', or false
 				},
 			}),
 			vueDevTools({
-				launchEditor: "webstorm",
+				launchEditor: 'webstorm',
 			}),
 		],
 		test: {
 			globals: true,
 			coverage: {
 				enabled: true,
-				reporter: "json",
+				reporter: 'json',
 			},
 			server: {
 				deps: {
-					inline: ["@webitel/ui-sdk/src"],
+					inline: [
+						'@webitel/ui-sdk/src',
+					],
 				},
 			},
 			alias: {
@@ -84,10 +98,12 @@ export default ({ mode }) => {
 				 * override the default alias vue -> vue/compat for dev and prod,
 				 * which is creating 2 vue instances while running tests :(
 				 */
-				vue: "vue",
+				vue: 'vue',
 			},
-			environment: "happy-dom",
-			setupFiles: ["./tests/config/config.js"],
+			environment: 'happy-dom',
+			setupFiles: [
+				'./tests/config/config.js',
+			],
 		},
 	});
 };

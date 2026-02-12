@@ -25,6 +25,12 @@ export default {
 			separator: 'Разделитель',
 		},
 	},
+	export: {
+		audioRecording: 'Аудиозапись | Аудиозаписи',
+		videoRecording: 'Видеозапись | Видеозаписи',
+		screenRecording: 'Запись экрана | Записи экрана',
+		transcription: 'Транскрипция | Транскрипции',
+	},
 	registry: {
 		registry: 'История',
 		call: {

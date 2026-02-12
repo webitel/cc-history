@@ -25,6 +25,12 @@ export default {
 			separator: 'Бөлгіш',
 		},
 	},
+	export: {
+		audioRecording: 'Аудиожазба | Аудиожазбалар',
+		videoRecording: 'Бейнежазба | Бейнежазбалар',
+		screenRecording: 'Экран жазбасы | Экран жазбалары',
+		transcription: 'Транскрипция | Транскрипциялар',
+	},
 	registry: {
 		registry: 'Тарих',
 		call: {

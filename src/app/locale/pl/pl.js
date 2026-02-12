@@ -25,6 +25,12 @@ export default {
 			separator: 'Separator',
 		},
 	},
+	export: {
+		audioRecording: 'Nagranie audio | Nagrania audio',
+		videoRecording: 'Nagranie wideo | Nagrania wideo',
+		screenRecording: 'Nagranie ekranu | Nagrania ekranu',
+		transcription: 'Transkrypcja | Transkrypcje',
+	},
 	registry: {
 		registry: 'Historia',
 		call: {

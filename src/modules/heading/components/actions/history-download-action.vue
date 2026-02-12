@@ -20,6 +20,7 @@
 <script>
 import { getCallMediaUrl } from '@webitel/api-services/api';
 import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import APIRepository from '../../../../app/api/APIRepository';
 import downloadTranscriptsMixin from '../../mixins/downloadTranscriptsMixin';
 import historyActionMixin from '../../mixins/historyActionMixin';
@@ -59,13 +60,23 @@ export default {
 		downloadOptions() {
 			return [
 				{
-					value: 'recording',
-					text: this.$t('registry.recordings.recording', 2),
-					handler: this.callExportFiles.bind(this),
+					value: 'audio-recording',
+					text: this.$t('export.audioRecording', 2),
+					handler: this.callExportAudioFiles.bind(this),
+				},
+				{
+					value: 'video-recording',
+					text: this.$t('export.videoRecording', 2),
+					handler: this.callExportVideoFiles.bind(this),
+				},
+				{
+					value: 'screen-recording',
+					text: this.$t('export.screenRecording', 2),
+					handler: this.callExportScreenRecordings.bind(this),
 				},
 				{
 					value: 'transcript',
-					text: this.$t('registry.stt.transcription', 2),
+					text: this.$t('export.transcription', 2),
 					handler: this.exportTranscripts.bind(this),
 				},
 			];
@@ -79,13 +90,33 @@ export default {
 		});
 	},
 	methods: {
-		callExportFiles() {
+		callExportAudioFiles() {
 			if (this.isLoading) return;
 			const params = {
 				...this.filters,
 				hasFile: true,
 			};
-			return this.exportFiles(null, params);
+			return this.exportFiles(null, params, EngineCallFileType.FileTypeAudio);
+		},
+		callExportVideoFiles() {
+			if (this.isLoading) return;
+			const params = {
+				...this.filters,
+				hasFile: true,
+			};
+			return this.exportFiles(null, params, EngineCallFileType.FileTypeVideo);
+		},
+		callExportScreenRecordings() {
+			if (this.isLoading) return;
+			const params = {
+				...this.filters,
+				hasFile: true,
+			};
+			return this.exportFiles(
+				null,
+				params,
+				EngineCallFileType.FileTypeScreensharing,
+			);
 		},
 	},
 };

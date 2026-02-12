@@ -25,6 +25,12 @@ export default {
 			separator: 'Separator',
 		},
 	},
+	export: {
+		audioRecording: 'Înregistrare audio | Înregistrări audio',
+		videoRecording: 'Înregistrare video | Înregistrări video',
+		screenRecording: 'Înregistrare ecran | Înregistrări ecran',
+		transcription: 'Transcriere | Transcrieri',
+	},
 	registry: {
 		registry: 'Istoric',
 		call: {
