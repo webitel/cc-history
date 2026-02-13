@@ -213,6 +213,7 @@
     closable
     :src="videoData.src"
     :title="videoData.text"
+    :size="ComponentSize.MD"
     @close="closePlayer"
   />
 </template>
@@ -232,7 +233,12 @@ import {
 	WtTable,
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
-import { ChipColor, IconAction, IconColor } from '@webitel/ui-sdk/enums';
+import {
+	ChipColor,
+	ComponentSize,
+	IconAction,
+	IconColor,
+} from '@webitel/ui-sdk/enums';
 import { useTableEmpty } from '@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty';
 import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
