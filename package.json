@@ -21,7 +21,7 @@
     "@webitel/api-services": "^0.0.107",
     "@webitel/styleguide": "^24.12.44",
     "@webitel/ui-chats": "^0.0.26",
-    "@webitel/ui-datalist": "^1.0.98",
+    "@webitel/ui-datalist": "1.0.98",
     "@webitel/ui-sdk": "~25.12",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
@@ -76,6 +76,7 @@
   },
   "overrides": {
     "vite": "^6.1.1",
-    "@vue/compiler-sfc": "^3.5.1"
+    "@vue/compiler-sfc": "^3.5.1",
+    "zod": "^4.x"
   }
 }
