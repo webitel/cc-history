@@ -13,10 +13,12 @@
         {{ t('objects.screenshots', 2) }}
       </h3>
       <wt-action-bar
-        :include="[IconAction.DOWNLOAD_PDF, IconAction.DELETE]"
+        :include="[IconAction.DOWNLOAD_PDF, IconAction.DOWNLOAD, IconAction.DELETE]"
         :disabled:delete="!selected.length"
         :disabled:download-pdf="!dataList.length"
+        :disabled:download="!dataList.length"
         @click:download-pdf="downloadPdf"
+        @click:download="downloadZip"
         @click:delete="
           askDeleteConfirmation({
             deleted: selected,
@@ -92,6 +94,7 @@ import {
 	PdfServicesAPI,
 } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { useFilesExport } from '@webitel/ui-sdk/modules/FilesExport';
 import { FormatDateMode, IconAction } from '@webitel/ui-sdk/enums';
 import { eventBus } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
@@ -104,7 +107,8 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { EngineHistoryCall } from 'webitel-sdk';
-import { headers } from './store/headers/headers.ts';
+
+import { headers } from './store/headers/headers';
 
 interface Props {
 	call: EngineHistoryCall;
@@ -212,6 +216,17 @@ const downloadPdf = async () => {
 	}
 };
 
+const { exportFiles: downloadZip } = useFilesExport({
+	getFileURL: (item) => getMediaUrl(item.id, false),
+	fetch: () => {
+		const items = selected.value.length ? selected.value : dataList.value;
+		return {
+			items,
+		};
+	},
+	filename: `screenshots-callId-${callId.value}`,
+});
+
 const handleDeleteFromGalleria = () => {
 	handleDelete([
 		dataList.value[galleriaActiveIndex.value],
@@ -220,13 +235,8 @@ const handleDeleteFromGalleria = () => {
 };
 </script>
 
-<style scoped lang="scss">
-@use '@webitel/styleguide/typography' as *;
-
+<style scoped>
 .table-title {
   padding-inline: var(--spacing-xs);
-}
-
-.table-title__title {
 }
 </style>
