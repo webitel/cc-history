@@ -9,9 +9,9 @@
 		"lint:fix-staged": "npx lint-staged",
 		"test:unit": "vitest",
 		"utils:i": "npm install --install-links && npm run utils:ls-libs",
-		"utils:link-libs": "npm link @webitel/api-services @webitel/ui-sdk @webitel/ui-datalist && npm run utils:ls-libs",
-		"utils:up-libs": "npm up @webitel/ui-sdk @webitel/ui-datalist @webitel/api-services && npm run utils:ls-libs",
-		"utils:ls-libs": "npm ls @webitel/ui-sdk @webitel/ui-datalist @webitel/api-services",
+		"utils:link-libs": "npm link @webitel/api-services @webitel/ui-sdk @webitel/ui-datalist @webitel/ui-chats && npm run utils:ls-libs",
+		"utils:up-libs": "npm up @webitel/ui-sdk @webitel/ui-datalist @webitel/api-services  @webitel/ui-chats && npm run utils:ls-libs",
+		"utils:ls-libs": "npm ls @webitel/ui-sdk @webitel/ui-datalist @webitel/api-services  @webitel/ui-chats",
 		"prepare": "husky || true"
 	},
 	"type": "module",
