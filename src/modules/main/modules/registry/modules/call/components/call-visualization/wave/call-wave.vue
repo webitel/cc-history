@@ -199,13 +199,14 @@
 <script>
 import { getCallMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
-import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
+import { convertDuration } from '@webitel/ui-sdk/scripts';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
 import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
+import { useFilesExport } from '@webitel/ui-sdk/modules/FilesExport';
+
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import regionsMixin from '../mixins/regionsMixin';
 import soundFiltersMixin from '../mixins/soundFiltersMixin';
@@ -257,7 +258,6 @@ export default {
 		Wavesurfer,
 	},
 	mixins: [
-		exportFilesMixin,
 		soundFiltersMixin,
 		regionsMixin,
 	],
@@ -304,7 +304,25 @@ export default {
 			},
 		},
 	}),
+	setup(props) {
+		const audioFiles = props.call.files?.[EngineCallFileType.FileTypeAudio];
 
+		const { exportFiles } = useFilesExport({
+			getFileURL: (item) =>
+				getCallMediaUrl(item.id, {
+					download: true,
+				}),
+			fetch: () => {
+				return {
+					items: audioFiles,
+				};
+			},
+			filename: 'history-record',
+		});
+		return {
+			downloadFile: exportFiles,
+		};
+	},
 	computed: {
 		...mapState('registry/call', {
 			file: (state) => state.selectedRecordingFile,
@@ -397,12 +415,6 @@ export default {
 			return this.commentsMode
 				? this.closeCommentMode()
 				: this.openCommentMode();
-		},
-
-		downloadFile() {
-			const audioFiles =
-				this.call.files?.[EngineCallFileType.FileTypeAudio] || [];
-			this.exportFiles(audioFiles);
 		},
 		volumeRightChangeHandler(value) {
 			this.volumeRightGain = value;
@@ -519,12 +531,6 @@ export default {
 			this.player.load(this.fileUrl);
 		},
 	},
-	created() {
-		this.initFilesExport({
-			filename: 'history-record',
-		});
-	},
-
 	mounted() {
 		this.$nextTick(() => {
 			if (this.player && this.fileUrl) {

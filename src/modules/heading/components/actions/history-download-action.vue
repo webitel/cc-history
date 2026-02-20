@@ -1,129 +1,107 @@
 <template>
-  <div class="history-download-action">
-    <wt-button-select
-      :disabled="!dataList.length"
-      :options="downloadOptions"
-      class="history-action"
-      color="secondary"
-      @click:option="$event.handler()"
-    >
-      {{ $t('reusable.download') }}...
-    </wt-button-select>
-    <files-counter
-      v-show="isLoading"
-      :download-progress="downloadProgress"
-      :zipping-progress="zippingProgress"
-    />
-  </div>
+	<div class="history-download-action">
+		<wt-button-select
+			:disabled="!dataList.length || isLoading"
+			:options="downloadOptions"
+			:loading="isLoading"
+			class="history-action"
+			color="secondary"
+			@click:option="$event.handler()"
+		>
+			{{ $t('reusable.download') }}...
+		</wt-button-select>
+		<files-counter
+			v-show="isLoading"
+			:download-progress="filesDownloadProgress.count || transcriptsDownloadProgress.count"
+			:zipping-progress="filesZippingProgress.percent || transcriptsZippingProgress.percent"
+		/>
+	</div>
 </template>
 
-<script>
+<script
+	lang="ts"
+	setup
+>
+import { ref, computed, toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getCallMediaUrl } from '@webitel/api-services/api';
-import exportFilesMixin from '@webitel/ui-sdk/src/modules/FilesExport/mixins/exportFilesMixin';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import APIRepository from '../../../../app/api/APIRepository';
-import downloadTranscriptsMixin from '../../mixins/downloadTranscriptsMixin';
-import historyActionMixin from '../../mixins/historyActionMixin';
+import {
+	EngineHistoryCall,
+	EngineTranscriptLookup,
+	StorageListPhrases,
+} from '@webitel/api-services/gen/models';
+
+import CallTranscriptAPI from '../../../../modules/main/modules/registry/modules/stt/api/callTranscript';
+import { useCallFilesExport } from '../../composables/useCallFilesExport';
+import { useCallTranscriptsExport } from '../../composables/useCallTranscriptsExport';
 import FilesCounter from './files-counter.vue';
 
-export default {
-	name: 'HistoryDownloadAction',
-	components: {
-		FilesCounter,
+const props = defineProps<{
+	dataList: Record<string, unknown>[];
+	filters: Record<string, unknown>;
+	selected: Record<string, unknown>[];
+}>();
+
+const { filters, selected } = toRefs(props);
+
+const { t } = useI18n();
+
+const {
+	exportAudioFiles,
+	exportVideoFiles,
+	exportScreenRecordings,
+	isLoading: isFilesLoading,
+	downloadStatus: filesDownloadProgress,
+	zippingStatus: filesZippingProgress,
+} = useCallFilesExport({
+	filters,
+	selected,
+});
+
+const {
+	exportFiles: exportTranscripts,
+	isLoading: isTranscriptsLoading,
+	downloadStatus: transcriptsDownloadProgress,
+	zippingStatus: transcriptsZippingProgress,
+} = useCallTranscriptsExport({
+	filters,
+	selected,
+});
+
+const isLoading = computed(
+	() => isFilesLoading.value || isTranscriptsLoading.value,
+);
+
+const downloadOptions = computed(() => [
+	{
+		value: 'audio-recording',
+		text: t('export.audioRecording', 2),
+		handler: exportAudioFiles,
 	},
-	mixins: [
-		historyActionMixin,
-		exportFilesMixin,
-		downloadTranscriptsMixin,
-	],
-	props: {
-		dataList: {
-			type: Array,
-		},
-		filters: {
-			type: Object,
-		},
+	{
+		value: 'video-recording',
+		text: t('export.videoRecording', 2),
+		handler: exportVideoFiles,
 	},
-	computed: {
-		selectedItems() {
-			return this.selected;
-		}, // needed for exportFilesMixin
-		isLoading() {
-			return this.isTranscriptsLoading || this.isFilesLoading;
-		},
-		downloadProgress() {
-			return this.transcriptDownloadProgress || this.filesDownloadProgress;
-		},
-		zippingProgress() {
-			return this.transcriptZippingProgress || this.filesZippingProgress;
-		},
-		downloadOptions() {
-			return [
-				{
-					value: 'audio-recording',
-					text: this.$t('export.audioRecording', 2),
-					handler: this.callExportAudioFiles.bind(this),
-				},
-				{
-					value: 'video-recording',
-					text: this.$t('export.videoRecording', 2),
-					handler: this.callExportVideoFiles.bind(this),
-				},
-				{
-					value: 'screen-recording',
-					text: this.$t('export.screenRecording', 2),
-					handler: this.callExportScreenRecordings.bind(this),
-				},
-				{
-					value: 'transcript',
-					text: this.$t('export.transcription', 2),
-					handler: this.exportTranscripts.bind(this),
-				},
-			];
-		},
+	{
+		value: 'screen-recording',
+		text: t('export.screenRecording', 2),
+		handler: exportScreenRecordings,
 	},
-	created() {
-		this.initFilesExport({
-			fetchMethod: APIRepository.history.getHistory,
-			filename: 'history-records',
-			filesURL: getCallMediaUrl,
-		});
+	{
+		value: 'transcript',
+		text: t('export.transcription', 2),
+		handler: exportTranscripts,
 	},
-	methods: {
-		callExportAudioFiles() {
-			if (this.isLoading) return;
-			const params = {
-				...this.filters,
-				hasFile: true,
-			};
-			return this.exportFiles(null, params, EngineCallFileType.FileTypeAudio);
-		},
-		callExportVideoFiles() {
-			if (this.isLoading) return;
-			const params = {
-				...this.filters,
-				hasFile: true,
-			};
-			return this.exportFiles(null, params, EngineCallFileType.FileTypeVideo);
-		},
-		callExportScreenRecordings() {
-			if (this.isLoading) return;
-			const params = {
-				...this.filters,
-				hasFile: true,
-			};
-			return this.exportFiles(
-				null,
-				params,
-				EngineCallFileType.FileTypeScreensharing,
-			);
-		},
-	},
-};
+]);
 </script>
 
-<style lang="scss" scoped>
+<style
+	lang="scss"
+	scoped
+>
 .history-download-action {
-  position: relative;
+	position: relative;
 }
 </style>
