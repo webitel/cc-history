@@ -14,7 +14,7 @@
       </h3>
       <wt-action-bar
         :include="[IconAction.DOWNLOAD_PDF, IconAction.DOWNLOAD, IconAction.DELETE]"
-        :disabled:delete="!selected.length"
+        :disabled:delete="!selected.length || !hasDeleteAccess"
         :disabled:download-pdf="!dataList.length"
         :disabled:download="!dataList.length"
         @click:download-pdf="downloadPdf"
@@ -73,6 +73,7 @@
           />
           <wt-icon-action
             action="delete"
+            :disabled="!hasDeleteAccess"
             @click="
               askDeleteConfirmation({
                 deleted: [item],
@@ -107,6 +108,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { EngineHistoryCall } from 'webitel-sdk';
+import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 
 import { headers } from './store/headers/headers';
 
@@ -155,6 +157,8 @@ const galleriaData = computed(() => {
 			alt: item.name,
 		}));
 });
+
+const { hasDeleteAccess } = useRecordingFilesAccess();
 
 const {
 	isVisible: isDeleteConfirmationPopup,

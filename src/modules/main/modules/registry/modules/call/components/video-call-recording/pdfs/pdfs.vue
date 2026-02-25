@@ -4,6 +4,9 @@
     :store="tableStore"
     entity-id-key="callId"
     :entity-id-value="callId"
+    :access="{
+      delete: hasDeleteAccess,
+    }"
     :on-delete-item="handleDeleteItem"
   >
     <template #header="{ selected, loadDataList, askDeleteConfirmation, handleDelete }">
@@ -13,7 +16,7 @@
         </h3>
         <wt-action-bar
           :include="[IconAction.REFRESH, IconAction.DELETE]"
-          :disabled:delete="!selected.length"
+          :disabled:delete="!selected.length || !hasDeleteAccess"
           @click:refresh="loadDataList"
           @click:delete="
             askDeleteConfirmation({
@@ -36,6 +39,7 @@ import AgentPdfsTabSdk from '@webitel/ui-sdk/src/modules/AgentPdfs/components/ag
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { usePdfsDataListStore } from './store/pdfs';
+import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 
 const route = useRoute();
 
@@ -45,6 +49,8 @@ const callId = route.params.pathMatch as string;
 
 const tableStore = usePdfsDataListStore();
 
+const { hasDeleteAccess } = useRecordingFilesAccess();
+
 const handleDeleteItem = (item: WebitelMediaExporterExportRecord) => {
 	return FileServicesAPI.delete([
 		item.fileId,
@@ -53,7 +59,6 @@ const handleDeleteItem = (item: WebitelMediaExporterExportRecord) => {
 </script>
 
 <style lang="scss" scoped>
-@use '@webitel/styleguide/typography' as *;
 
 // These styles are duplicated here because they weren't being 
 // applied from their location in the supervisor repo

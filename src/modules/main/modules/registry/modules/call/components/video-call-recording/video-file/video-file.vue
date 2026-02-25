@@ -19,7 +19,7 @@
         />
         <wt-icon-btn
           icon="bucket"
-          :disabled="!currentVideo"
+          :disabled="!currentVideo || !hasDeleteAccess"
           @click="
             askDeleteConfirmation({
             deleted: [currentVideo],
@@ -69,6 +69,7 @@ import { computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import EmptyVideo from './_internals/assets/empty-video.svg';
 import EmptyVideoDark from './_internals/assets/empty-video-dark.svg';
+import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 
 interface Props {
 	files?: EngineCallFile[];
@@ -89,6 +90,8 @@ const currentVideo = ref<EngineCallFile | null>(dataList.value[0] ?? null);
 const currentVideoUrl = computed(() => {
 	return currentVideo.value ? getMediaUrl(currentVideo.value.id) : '';
 });
+
+const { hasDeleteAccess } = useRecordingFilesAccess();
 
 const {
 	isVisible: isDeleteConfirmationPopup,
@@ -116,8 +119,6 @@ const handleDelete = async () => {
 </script>
 
 <style lang="scss" scoped>
-@use '@webitel/ui-sdk/src/css/main' as *;
-
 .video-file__header {
   display: flex;
   align-items: center;

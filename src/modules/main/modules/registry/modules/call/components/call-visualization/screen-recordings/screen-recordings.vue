@@ -15,7 +15,7 @@
         </h3>
         <wt-action-bar
           :include="[IconAction.DELETE]"
-          :disabled:delete="!selected.length"
+          :disabled:delete="!selected.length || !hasDeleteAccess"
           @click:delete="
             askDeleteConfirmation({
               deleted: selected,
@@ -74,6 +74,7 @@
             />
             <wt-icon-action
               action="delete"
+              :disabled="!hasDeleteAccess"
               @click="
                 askDeleteConfirmation({
                   deleted: [item],
@@ -105,6 +106,7 @@ import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
+import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 
 import { useRegistryStore } from '../../../../../store/new/registry.store.js'; // Не використовується
 import { headers } from './store/headers/headers.js';
@@ -145,6 +147,8 @@ const calcDuration = (item) =>
 	convertDuration(
 		Math.floor((Number(item.stopAt) - Number(item.startAt)) / 1000),
 	);
+
+const { hasDeleteAccess } = useRecordingFilesAccess();
 
 const handleDelete = async (items: []) => {
 	const deleteIds = items.map((item) => item.id);
