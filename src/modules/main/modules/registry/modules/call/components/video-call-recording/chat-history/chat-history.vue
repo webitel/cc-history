@@ -97,11 +97,9 @@ onMounted(async () => {
   margin-bottom: var(--spacing-xs);
 }
 
-.chat-history__title {
-}
-
 .chat-history__content {
   overflow: auto;
   display: flex;
+  margin-block: auto;
 }
 </style>
