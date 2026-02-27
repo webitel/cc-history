@@ -152,7 +152,7 @@
 
         <template #actions="{ item }">
           <template v-if="recordingFiles(item).length">
-            <media-action
+            <table-media-action
               :currently-playing="currentlyMediaPlaying"
               :files="recordingFiles(item)"
               :icon="getRecordingTypeIcon(item)"
@@ -193,6 +193,7 @@
       <wt-player
         v-if="audioData.src"
         :src="audioData.src"
+        :autoplay="false"
         @close="closePlayer"
         @play="isMediaPlayingNow = true"
       />
@@ -216,6 +217,14 @@
     :size="ComponentSize.MD"
     @close="closePlayer"
   />
+
+<!-- <wt-player
+  v-if="true"
+  src="https://cdn6.sefon.pro/files/prev/1/The%20Eagles%20-%20Hotel%20California%20%28192kbps%29.mp3"
+  :autoplay="false"
+  @close="closePlayer"
+  @play="isMediaPlayingNow = true"
+/> -->
 </template>
 
 <script lang="ts" setup>
@@ -252,7 +261,7 @@ import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
 import TableDirection from './table-templates/table-direction.vue';
-import MediaAction from './table-templates/table-media-action.vue';
+import TableMediaAction from './table-templates/table-media-action.vue';
 import ScreenRecordingAction from './table-templates/table-video-action.vue';
 
 const emit = defineEmits<{
@@ -336,8 +345,17 @@ watch(
 	},
 );
 
+const audioData = {
+	//
+	src: {
+		src: 'https://cdn6.sefon.pro/files/prev/1/The%20Eagles%20-%20Hotel%20California%20%28192kbps%29.mp3',
+		type: 'audio/mp3',
+	},
+	// type: 'audio/wav',
+};
+
 const {
-	audioData,
+	// audioData,
 	videoData,
 	currentlyMediaPlaying,
 	isMediaPlayingNow,
