@@ -69,6 +69,8 @@ export default {
 				noEvaluation: 'Połączenie nie zostało jeszcze ocenione',
 				optional: 'Opcjonalne',
 				mandatory: 'Obowiązkowe',
+				selectYes: 'Wybierz „Tak”',
+				criticalViolation: 'Krytyczne naruszenie',
 			},
 		},
 		stt: {

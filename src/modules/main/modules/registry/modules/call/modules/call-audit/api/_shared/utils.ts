@@ -1,8 +1,8 @@
-import { EngineAuditQuestionType } from 'webitel-sdk';
+import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
 
 export const questionDefaultValuesHandler = (questions) =>
 	questions.map((question) => {
-		if (question.type === EngineAuditQuestionType.Score) {
+		if (question.type === EngineAuditQuestionType.QuestionScore) {
 			return {
 				...question,
 				max: question.max || 1,
@@ -11,7 +11,7 @@ export const questionDefaultValuesHandler = (questions) =>
 				question: question.question || '',
 			};
 		}
-		if (question.type === EngineAuditQuestionType.Option) {
+		if (question.type === EngineAuditQuestionType.QuestionOption) {
 			return {
 				...question,
 				options: question.options.map((option) => ({

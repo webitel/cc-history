@@ -69,6 +69,8 @@ export default {
 				noEvaluation: 'Қоңырау әлі бағаланған жоқ',
 				optional: 'Қосымша',
 				mandatory: 'Міндетті',
+				selectYes: '«Иә» таңдау',
+				criticalViolation: 'Сыни бұзу',
 			},
 		},
 		stt: {

@@ -69,6 +69,8 @@ export default {
 				noEvaluation: 'Звонок еще не оценен',
 				optional: 'Опциональные',
 				mandatory: 'Обязательные',
+				selectYes: 'Выбор «Да»',
+				criticalViolation: 'Критическое нарушение',
 			},
 		},
 		stt: {

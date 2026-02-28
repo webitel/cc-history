@@ -4,11 +4,20 @@
       class="audit-rate-answer-item-question-text typo-subtitle-1"
       :class="{'audit-rate-answer-item-question-text--required': question.required }"
     >
-      {{ question.question }} <!-- lol -->
+      <span class="audit-rate-answer-item-question-text__wrapper">
+        <wt-icon
+          v-if="isYesQuestion && question.criticalViolation"
+          class="audit-rate-answer-item-question-text__critical-icon"
+          :color="answer.score ? 'error' : 'icon'"
+          icon="violation--filled"
+          size="sm"
+        />
+        {{ question.question }}
+      </span>
     </h4>
 
     <div
-      v-if="answer.score >= 0 /* coz be null, if not answered */"
+      v-if="!isYesQuestion && answer.score >= 0 /* coz be null, if not answered */"
       class="audit-rate-answer-item-answer"
     >
       <p class="audit-rate-answer-item-answer__name typo-body-1">
@@ -38,14 +47,23 @@
 <script setup lang="ts">
 import AuditFormAnswerEditingInfo from '@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
 import { computed } from 'vue';
-import { EngineQuestion, EngineQuestionAnswer } from 'webitel-sdk';
+import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
+import type {
+	EngineQuestion,
+	EngineQuestionAnswer,
+} from '@webitel/api-services/gen/models';
 
 const props = defineProps<{
 	question: EngineQuestion;
 	answer: EngineQuestionAnswer;
 }>();
 
+const isYesQuestion = computed(
+	() => props.question.type === EngineAuditQuestionType.QuestionYes,
+);
+
 const answerName = computed(() => {
+	if (isYesQuestion.value) return '';
 	const answeredOption = props.question.options?.find(
 		({ score }) => score === props.answer.score,
 	);
@@ -67,6 +85,16 @@ const answerName = computed(() => {
   overflow-wrap: anywhere; // break words in text with no spaces, but preserve words if text has spaces
   padding: var(--spacing-2xs) 0 var(--spacing-3xs);
 
+  &__wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2xs);
+  }
+
+  &__critical-icon {
+    flex-shrink: 0;
+  }
+
   &--required::after {
     content: '*';
     color: var(--error-color);
@@ -81,6 +109,10 @@ const answerName = computed(() => {
 
   &__name {
     padding-right: var(--spacing-2xs);
+  }
+
+  &__value {
+    margin: 0;
   }
 
   &__score {
