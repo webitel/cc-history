@@ -1,34 +1,37 @@
 <template>
-  <wt-page-wrapper :actions-panel="false" :hide-header="viewMode">
-    <template #header>
-      <wt-page-header
-        hide-primary
-        :secondary-action="closeTab"
-      >
-        <wt-breadcrumb :path="path" />
-      </wt-page-header>
-    </template>
+	<wt-page-wrapper
+		:actions-panel="false"
+		:hide-header="viewMode"
+	>
+		<template #header>
+			<wt-page-header
+				hide-primary
+				:secondary-action="closeTab"
+			>
+				<wt-breadcrumb :path="path" />
+			</wt-page-header>
+		</template>
 
-    <template #main>
-      <wt-loader v-if="isLoading" />
-      <div
-        v-else
-        class="history-tabs-wrapper"
-      >
-        <wt-tabs
-          :current="currentTab"
-          :tabs="tabs"
-          @change="changeTab"
-        />
-        <component
-          :is="currentTab.value"
-          v-if="mainCall"
-          :call="mainCall"
-          :namespace="namespace"
-        />
-      </div>
-    </template>
-  </wt-page-wrapper>
+		<template #main>
+			<wt-loader v-if="isLoading" />
+			<div
+				v-else
+				class="history-tabs-wrapper"
+			>
+				<wt-tabs
+					:current="currentTab"
+					:tabs="tabs"
+					@change="changeTab"
+				/>
+				<component
+					:is="currentTab.value"
+					v-if="mainCall"
+					:call="mainCall"
+					:namespace="namespace"
+				/>
+			</div>
+		</template>
+	</wt-page-wrapper>
 </template>
 
 <script>
@@ -83,52 +86,61 @@ export default {
 				return getNamespacedState(state, this.namespace).isLoading;
 			},
 		}),
-		tabValues() {
+		showCallVisualizationTab() {
+			const hasTranscripts = this.mainCall?.transcripts?.length;
+			const hasPendingTranscriptJobs = this.mainCall?.filesJob?.length;
+			const hasAudio = this.mainCall?.files?.[EngineCallFileType.FileTypeAudio];
+			const hasScreenRecordings =
+				this.mainCall?.files?.[EngineCallFileType.FileTypeScreensharing];
+
+			return (
+				hasTranscripts ||
+				hasPendingTranscriptJobs ||
+				hasAudio ||
+				hasScreenRecordings
+			);
+		},
+		showVideoRecordingTab() {
+			const hasVideo = this.mainCall?.files?.[EngineCallFileType.FileTypeVideo];
+			const hasScreenshots =
+				this.mainCall?.files?.[EngineCallFileType.FileTypeScreenshot];
+			const hasScreenshotPdfs =
+				this.mainCall?.files?.[EngineCallFileType.FileTypePdf];
+
+			return hasVideo || hasScreenshots || hasScreenshotPdfs;
+		},
+		tabs() {
 			// Use different route names for view mode vs regular mode
 			const prefix = this.viewMode ? 'call_view-' : '';
 
-			return {
-				INFO: {
+			const tabs = [
+				{
 					text: this.$t('registry.call.callInfo'),
 					value: 'call-info',
 					pathName: `${prefix}${CallTabsPathNames.CALL_INFO}`,
+					show: true,
 				},
-				LEGS: {
+				{
 					text: this.$t('registry.call.callLegs'),
 					value: 'call-legs',
 					pathName: `${prefix}${CallTabsPathNames.LEGS_A_B}`,
+					show: !!this.mainCall.hasChildren,
 				},
-				VISUALIZATION: {
+				{
 					text: this.$t('registry.call.callVisualization'),
 					value: 'call-visualization',
 					pathName: `${prefix}${CallTabsPathNames.CALL_VISUALIZATION}`,
+					show: this.showCallVisualizationTab,
 				},
-				VIDEO_RECORDING: {
+				{
 					text: this.$t('registry.call.videoCallRecording'),
 					value: 'video-call-recording',
 					pathName: `${prefix}${CallTabsPathNames.VIDEO_CALL_RECORDING}`,
+					show: this.showVideoRecordingTab,
 				},
-			};
-		},
-		tabs() {
-			const tabs = [
-				this.tabValues.INFO,
 			];
-			const audioExists =
-				this.mainCall?.files?.[EngineCallFileType.FileTypeAudio];
-			const screenRecordingsExists =
-				this.mainCall?.files?.[EngineCallFileType.FileTypeScreensharing];
 
-			if (this.mainCall.hasChildren) tabs.push(this.tabValues.LEGS);
-			if (
-				this.mainCall.transcripts?.length ||
-				this.mainCall.filesJob?.length ||
-				screenRecordingsExists ||
-				audioExists
-			)
-				tabs.push(this.tabValues.VISUALIZATION);
-			tabs.push(this.tabValues.VIDEO_RECORDING);
-			return tabs;
+			return tabs.filter(({ show }) => show);
 		},
 		callId() {
 			return this.$route.params?.pathMatch;
@@ -188,13 +200,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
+<style
+	lang="scss"
+	scoped
+>
 .history-tabs-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: var(--spacing-sm);
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: var(--spacing-sm);
 }
-
 </style>
