@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import vueDevTools from 'vite-plugin-vue-devtools';
+import { vite as vidstack } from 'vidstack/plugins';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -39,6 +40,7 @@ export default ({ mode }) => {
 			dedupe: [
 				'vue',
 				'@vue/compat',
+				'vidstack',
 			],
 			alias: {
 				vue: '@vue/compat',
@@ -62,9 +64,12 @@ export default ({ mode }) => {
 						compatConfig: {
 							MODE: 2,
 						},
+
+						isCustomElement: (tag) => tag.startsWith('media-'),
 					},
 				},
 			}),
+			vidstack(),
 			// https://www.npmjs.com/package/vite-plugin-node-polyfills
 			nodePolyfills({
 				// are needed for csv-parse
@@ -76,9 +81,7 @@ export default ({ mode }) => {
 					Buffer: true, // can also be 'build', 'dev', or false
 				},
 			}),
-			vueDevTools({
-				launchEditor: 'webstorm',
-			}),
+			vueDevTools(),
 		],
 		test: {
 			globals: true,

@@ -152,7 +152,7 @@
 
         <template #actions="{ item }">
           <template v-if="recordingFiles(item).length">
-            <media-action
+            <table-media-action
               :currently-playing="currentlyMediaPlaying"
               :files="recordingFiles(item)"
               :icon="getRecordingTypeIcon(item)"
@@ -190,15 +190,17 @@
         @prev="updatePage(page-1)"
       />
 
-      <wt-player
-        v-if="audioData.src"
-        :src="audioData.src"
-        @close="closePlayer"
-        @play="isMediaPlayingNow = true"
-      />
-
     </div>
   </div>
+
+  <wt-player
+    v-if="audioData"
+    :src="audioData.src"
+    :id="audioData.id"
+    position="fixed"
+    @close="closePlayer"
+    @play="isMediaPlayingNow = true"
+  />
 
   <wt-vidstack-player
     v-if="currentScreenRecording"
@@ -209,7 +211,7 @@
   />
 
   <wt-vidstack-player
-    v-if="videoData.src"
+    v-if="videoData"
     closable
     :src="videoData.src"
     :title="videoData.text"
@@ -252,7 +254,7 @@ import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
 import TableDirection from './table-templates/table-direction.vue';
-import MediaAction from './table-templates/table-media-action.vue';
+import TableMediaAction from './table-templates/table-media-action.vue';
 import ScreenRecordingAction from './table-templates/table-video-action.vue';
 
 const emit = defineEmits<{
@@ -433,7 +435,6 @@ const handlePlayMedia = (mediaData) => {
 }
 
 .wt-pagination {
-  margin-top: 20px;
   margin-left: auto;
 }
 
@@ -449,5 +450,11 @@ const handlePlayMedia = (mediaData) => {
 .media-select {
   position: absolute;
   right: 28px;
+}
+
+.wt-player {
+  right: var(--spacing-xs);
+  left: var(--spacing-xs);
+  bottom: var(--spacing-xs);
 }
 </style>
