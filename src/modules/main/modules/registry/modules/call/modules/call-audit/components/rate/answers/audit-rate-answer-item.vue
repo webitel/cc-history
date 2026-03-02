@@ -6,9 +6,9 @@
     >
       <span class="audit-rate-answer-item-question-text__wrapper">
         <wt-icon
-          v-if="isYesQuestion && question.criticalViolation"
+          v-if="question.criticalViolation"
           class="audit-rate-answer-item-question-text__critical-icon"
-          :color="answer.score ? 'error' : 'icon'"
+          :color="answer.score ? 'error' : null"
           icon="violation--filled"
           size="sm"
         />

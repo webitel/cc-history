@@ -7,8 +7,8 @@
     <audit-rate-summary-scores
       :score-required="rate.scoreRequired"
       :score-optional="rate.scoreOptional"
-      :select-yes-count="rate.selectYesCount"
-      :critical-count="criticalCountDisplay"
+      :select-yes-display="rate.selectYesCount"
+      :critical-display="criticalDisplay"
     />
 
     <footer class="audit-rate-actions">
@@ -33,7 +33,6 @@ import { WtButton } from '@webitel/ui-sdk/components';
 import { WtObject } from '@webitel/ui-sdk/enums';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
 import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 
 import { useUserAccessControl } from '../../../../../../../../../../../app/composables/useUserAccessControl.ts';
@@ -54,17 +53,15 @@ const { hasUpdateAccess, hasDeleteAccess } = useUserAccessControl(
 	WtObject.AuditRating,
 );
 
-const criticalCountDisplay = computed(() => {
+const criticalDisplay = computed(() => {
 	const questions = props.rate.questions ?? [];
 	const answers = props.rate.answers ?? [];
 
 	const { total, violations } = questions.reduce(
 		(accumulator, question, index) => {
-			const isCriticalYes =
-				question.type === EngineAuditQuestionType.QuestionYes &&
-				question.criticalViolation;
+			const isCritical = question.criticalViolation;
 
-			if (!isCriticalYes) return accumulator;
+			if (!isCritical) return accumulator;
 
 			const isViolation = answers[index]?.score === 1;
 

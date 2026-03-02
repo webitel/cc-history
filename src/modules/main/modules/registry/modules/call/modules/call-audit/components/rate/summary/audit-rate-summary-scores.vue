@@ -1,22 +1,23 @@
 <template>
   <section class="call-evaluation-scores">
-    <div
-      v-for="({ title, value, icon, color }, index) in scoreWidgets"
-      :key="index"
-      class="call-evaluation-score"
-    >
-      <wt-icon
-        :icon="icon"
-        size="3xl"
-        :color="color"
-      />
-      <span class="call-evaluation-score__value typo-subtitle-1">
-        {{ value }}
-      </span>
-      <span class="call-evaluation-score__title typo-body-1">
-        {{ title }}
-      </span>
-    </div>
+    <template v-for="({ title, value, icon, color, display }, index) in scoreWidgets" :key="index">
+      <div
+        v-if="display != null"
+        class="call-evaluation-score"
+      >
+        <wt-icon
+          :icon="icon"
+          size="3xl"
+          :color="color"
+        />
+        <span class="call-evaluation-score__value typo-subtitle-1">
+          {{ value }}
+        </span>
+        <span class="call-evaluation-score__title typo-body-1">
+          {{ title }}
+        </span>
+      </div>
+    </template>
   </section>
 </template>
 
@@ -27,58 +28,50 @@ import { useI18n } from 'vue-i18n';
 const props = defineProps<{
 	scoreRequired: number | null;
 	scoreOptional: number | null;
-	selectYesCount?: string | null;
-	criticalCount?: string | null;
+	selectYesDisplay?: string | null;
+	criticalDisplay?: string | null;
 }>();
 
 const { t } = useI18n();
 
-const scoreWidgets = computed(() => {
-	const widgets: Array<{
-		title: string;
-		value: string;
-		icon: string;
-		color: string;
-	}> = [];
+type ScoreWidget = {
+	title: string;
+	value: string;
+	icon: string;
+	color: string;
+	display: number | string | null | undefined;
+};
 
-	if (props.scoreRequired != null) {
-		widgets.push({
-			title: t('registry.call.evaluation.mandatory'),
-			value: props.scoreRequired.toFixed(2),
-			icon: 'star--filled',
-			color: 'success',
-		});
-	}
-
-	if (props.scoreOptional != null) {
-		widgets.push({
-			title: t('registry.call.evaluation.optional'),
-			value: props.scoreOptional.toFixed(2),
-			icon: 'star--filled',
-			color: 'disabled',
-		});
-	}
-
-	if (props.selectYesCount != null) {
-		widgets.push({
-			title: t('registry.call.evaluation.selectYes'),
-			value: props.selectYesCount,
-			icon: 'chat-message-status-sent',
-			color: 'success',
-		});
-	}
-
-	if (props.criticalCount != null) {
-		widgets.push({
-			title: t('registry.call.evaluation.criticalViolation'),
-			value: props.criticalCount,
-			icon: 'violation--filled',
-			color: 'error',
-		});
-	}
-
-	return widgets;
-});
+const scoreWidgets = computed<ScoreWidget[]>(() => [
+	{
+		title: t('registry.call.evaluation.mandatory'),
+		value: props.scoreRequired?.toFixed(2) ?? '',
+		icon: 'star--filled',
+		color: 'success',
+		display: props.scoreRequired,
+	},
+	{
+		title: t('registry.call.evaluation.optional'),
+		value: props.scoreOptional?.toFixed(2) ?? '',
+		icon: 'star--filled',
+		color: 'disabled',
+		display: props.scoreOptional,
+	},
+	{
+		title: t('registry.call.evaluation.selectYes'),
+		value: props.selectYesDisplay ?? '',
+		icon: 'chat-message-status-sent',
+		color: 'success',
+		display: props.selectYesDisplay,
+	},
+	{
+		title: t('registry.call.evaluation.criticalViolation'),
+		value: props.criticalDisplay ?? '',
+		icon: 'violation--filled',
+		color: 'error',
+		display: props.criticalDisplay,
+	},
+]);
 </script>
 
 <style lang="scss" scoped>
