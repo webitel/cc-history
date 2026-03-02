@@ -60,17 +60,17 @@ const criticalCountDisplay = computed(() => {
 
 	const { total, violations } = questions.reduce(
 		(accumulator, question, index) => {
-			if (
-				question.type !== EngineAuditQuestionType.QuestionYes ||
-				!question.criticalViolation
-			) {
-				return accumulator;
-			}
+			const isCriticalYes =
+				question.type === EngineAuditQuestionType.QuestionYes &&
+				question.criticalViolation;
+
+			if (!isCriticalYes) return accumulator;
+
+			const isViolation = answers[index]?.score === 1;
 
 			return {
 				total: accumulator.total + 1,
-				violations:
-					accumulator.violations + (answers[index]?.score === 1 ? 1 : 0),
+				violations: accumulator.violations + (isViolation ? 1 : 0),
 			};
 		},
 		{
