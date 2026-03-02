@@ -190,16 +190,17 @@
         @prev="updatePage(page-1)"
       />
 
-      <wt-player
-        v-if="audioData.src"
-        :src="audioData.src"
-        :autoplay="false"
-        @close="closePlayer"
-        @play="isMediaPlayingNow = true"
-      />
-
     </div>
   </div>
+
+  <wt-player
+    v-if="audioData"
+    :src="audioData.src"
+    :id="audioData.id"
+    position="fixed"
+    @close="closePlayer"
+    @play="isMediaPlayingNow = true"
+  />
 
   <wt-vidstack-player
     v-if="currentScreenRecording"
@@ -210,21 +211,13 @@
   />
 
   <wt-vidstack-player
-    v-if="videoData.src"
+    v-if="videoData"
     closable
     :src="videoData.src"
     :title="videoData.text"
     :size="ComponentSize.MD"
     @close="closePlayer"
   />
-
-<!-- <wt-player
-  v-if="true"
-  src="https://cdn6.sefon.pro/files/prev/1/The%20Eagles%20-%20Hotel%20California%20%28192kbps%29.mp3"
-  :autoplay="false"
-  @close="closePlayer"
-  @play="isMediaPlayingNow = true"
-/> -->
 </template>
 
 <script lang="ts" setup>
@@ -345,17 +338,8 @@ watch(
 	},
 );
 
-const audioData = {
-	//
-	src: {
-		src: 'https://cdn6.sefon.pro/files/prev/1/The%20Eagles%20-%20Hotel%20California%20%28192kbps%29.mp3',
-		type: 'audio/mp3',
-	},
-	// type: 'audio/wav',
-};
-
 const {
-	// audioData,
+	audioData,
 	videoData,
 	currentlyMediaPlaying,
 	isMediaPlayingNow,
@@ -451,7 +435,6 @@ const handlePlayMedia = (mediaData) => {
 }
 
 .wt-pagination {
-  margin-top: 20px;
   margin-left: auto;
 }
 
@@ -467,5 +450,11 @@ const handlePlayMedia = (mediaData) => {
 .media-select {
   position: absolute;
   right: 28px;
+}
+
+.wt-player {
+  right: var(--spacing-xs);
+  left: var(--spacing-xs);
+  bottom: var(--spacing-xs);
 }
 </style>
