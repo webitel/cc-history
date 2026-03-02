@@ -87,6 +87,7 @@ export const usePlayMedia = () => {
 		videoData.value = null;
 	}
 
+	// https://github.com/vidstack/player/issues/1453
 	function handleVidstackUnsupportedAudioTypes(
 		mimeType: string,
 	): AudioMimeType {
