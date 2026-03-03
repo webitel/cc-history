@@ -69,6 +69,8 @@ export default {
 				noEvaluation: 'Chưa được đánh giá',
 				optional: 'Tùy chọn',
 				mandatory: 'Bắt buộc',
+				selectYes: 'Chọn "Có"',
+				criticalViolation: 'Vi phạm nghiêm trọng',
 			},
 		},
 		stt: {

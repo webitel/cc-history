@@ -69,6 +69,8 @@ export default {
 				noEvaluation: 'Дзвінок ще не оцінений',
 				optional: 'Опціональні',
 				mandatory: "Обов'язкові",
+				selectYes: 'Вибір «Так»',
+				criticalViolation: 'Критичне порушення',
 			},
 		},
 		stt: {

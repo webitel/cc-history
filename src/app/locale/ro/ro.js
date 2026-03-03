@@ -69,6 +69,8 @@ export default {
 				noEvaluation: 'Apelul nu a fost evaluat încă',
 				optional: 'Opțional',
 				mandatory: 'Obligatoriu',
+				selectYes: 'Selectați «Da»',
+				criticalViolation: 'Încălcare critică',
 			},
 		},
 		stt: {

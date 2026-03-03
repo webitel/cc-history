@@ -67,6 +67,8 @@ export default {
 				noEvaluation: 'Qo‘ng‘iroq hali baholanmagan',
 				optional: 'Ixtiyoriy',
 				mandatory: 'Majburiy',
+				selectYes: '"Ha" ni tanlang',
+				criticalViolation: 'Muhim buzilish',
 			},
 		},
 		stt: {

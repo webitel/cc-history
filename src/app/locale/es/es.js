@@ -69,6 +69,8 @@ export default {
 				noEvaluation: 'La llamada aún no ha sido calificada',
 				optional: 'Opcional',
 				mandatory: 'Obligatorio',
+				selectYes: 'Seleccionar «Sí»',
+				criticalViolation: 'Violación crítica',
 			},
 		},
 		stt: {

@@ -27,6 +27,7 @@ export default () => {
 			],
 			exclude: [
 				'@webitel/ui-sdk/icons',
+				'@webitel/styleguide',
 			],
 		},
 		resolve: {

@@ -69,6 +69,8 @@ export default {
 				noEvaluation: 'The call is not rated yet',
 				optional: 'Optional',
 				mandatory: 'Mandatory',
+				selectYes: 'Select "Yes"',
+				criticalViolation: 'Critical violation',
 			},
 		},
 		stt: {
