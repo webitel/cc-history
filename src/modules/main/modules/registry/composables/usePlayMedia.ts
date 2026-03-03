@@ -50,9 +50,7 @@ export const usePlayMedia = () => {
 			...mediaFile,
 			src: {
 				src: getCallMediaUrl(mediaFile.id),
-				type: handleVidstackUnsupportedAudioTypes(
-					mediaFile.mimeType,
-				) as AudioMimeType,
+				type: mediaFile.mimeType as AudioMimeType,
 			},
 		};
 	}
@@ -85,18 +83,6 @@ export const usePlayMedia = () => {
 
 	function resetVideo() {
 		videoData.value = null;
-	}
-
-	// https://github.com/vidstack/player/issues/1453
-	function handleVidstackUnsupportedAudioTypes(
-		mimeType: string,
-	): AudioMimeType {
-		const unsupportedTypes = [
-			'audio/wav',
-		];
-		return unsupportedTypes.includes(mimeType)
-			? 'audio/mp3'
-			: (mimeType as AudioMimeType);
 	}
 
 	return {
