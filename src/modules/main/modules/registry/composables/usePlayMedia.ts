@@ -1,36 +1,89 @@
 import { getCallMediaUrl } from '@webitel/api-services/api';
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import {
+	EngineCallFileType,
+	EngineCallFile,
+} from '@webitel/api-services/gen/models';
 import { ref } from 'vue';
+import type {
+	AudioSrc,
+	VideoSrc,
+	AudioMimeType,
+	VideoMimeType,
+} from 'vidstack';
 
 export const usePlayMedia = () => {
-	const audioData = ref({});
-	const videoData = ref({});
+	const audioData = ref<
+		EngineCallFile & {
+			src: AudioSrc;
+		}
+	>();
+	const videoData = ref<
+		EngineCallFile & {
+			src: VideoSrc;
+		}
+	>();
+
 	const currentlyMediaPlaying = ref('0');
 	const isMediaPlayingNow = ref(false);
 
-	const play = (mediaData) => {
-		if (mediaData.id) {
-			currentlyMediaPlaying.value = mediaData.id;
-			if (mediaData.type === EngineCallFileType.FileTypeAudio) {
-				videoData.value = {};
-				audioData.value = mediaData;
-				audioData.value.src = getCallMediaUrl(mediaData.id);
+	const play = (
+		mediaFile: EngineCallFile & {
+			text?: string;
+		},
+	) => {
+		if (mediaFile.id) {
+			currentlyMediaPlaying.value = mediaFile.id;
+			if (mediaFile.type === EngineCallFileType.FileTypeAudio) {
+				resetVideo();
+				playAudio(mediaFile);
 			} else {
-				audioData.value = {};
-				videoData.value = mediaData;
-				videoData.value.src = getCallMediaUrl(mediaData.id);
+				resetAudio();
+				playVideo(mediaFile);
 			}
 		} else {
 			closePlayer();
 		}
 	};
 
-	const closePlayer = () => {
-		audioData.value = {};
-		videoData.value = {};
+	function playAudio(mediaFile: EngineCallFile) {
+		audioData.value = {
+			...mediaFile,
+			src: {
+				src: getCallMediaUrl(mediaFile.id),
+				type: mediaFile.mimeType as AudioMimeType,
+			},
+		};
+	}
+
+	function playVideo(
+		mediaFile: EngineCallFile & {
+			text?: string;
+		},
+	) {
+		videoData.value = {
+			...mediaFile,
+			src: {
+				...mediaFile,
+				src: getCallMediaUrl(mediaFile.id),
+				type: mediaFile.mimeType as VideoMimeType,
+			},
+		};
+	}
+
+	function closePlayer() {
+		resetAudio();
+		resetVideo();
 		isMediaPlayingNow.value = false;
 		currentlyMediaPlaying.value = '0';
-	};
+	}
+
+	function resetAudio() {
+		audioData.value = null;
+	}
+
+	function resetVideo() {
+		videoData.value = null;
+	}
 
 	return {
 		audioData,
