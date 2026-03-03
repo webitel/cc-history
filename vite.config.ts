@@ -6,16 +6,9 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 import { vite as vidstack } from 'vidstack/plugins';
 
 // https://vitejs.dev/config/
-export default ({ mode }) => {
-	const env = loadEnv(mode, process.cwd(), '');
-
+export default () => {
 	return defineConfig({
 		base: '/history',
-		define: {
-			'process.env': JSON.parse(
-				JSON.stringify(env).replaceAll('VITE_', 'VUE_APP_'),
-			),
-		},
 		server: {
 			// host: true,  // uncomment me to enable localhost access by IP (including from other devices in the network)
 		},
