@@ -106,8 +106,9 @@ export default {
 				this.mainCall?.files?.[EngineCallFileType.FileTypeScreenshot];
 			const hasScreenshotPdfs =
 				this.mainCall?.files?.[EngineCallFileType.FileTypePdf];
+			const hasChatHistory = !!this.mainCall.conversationId;
 
-			return hasVideo || hasScreenshots || hasScreenshotPdfs;
+			return hasVideo || hasScreenshots || hasScreenshotPdfs || hasChatHistory;
 		},
 		tabs() {
 			// Use different route names for view mode vs regular mode
