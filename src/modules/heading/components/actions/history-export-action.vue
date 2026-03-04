@@ -1,7 +1,7 @@
 <template>
   <div class="history-export-action">
     <wt-button
-      :disabled="!dataList.length"
+      :disabled="!dataList.length || !hasExportDataGridAccess"
       color="secondary"
       @click="handleExport"
     >
@@ -58,17 +58,20 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, requiredIf } from '@vuelidate/validators';
-import TypesExportedSettingsEnum from '@webitel/ui-sdk/src/enums/TypesExportedSettings/TypesExportedSettings.enum.js';
+import TypesExportedSettingsEnum from '@webitel/ui-sdk/src/enums/TypesExportedSettings/TypesExportedSettings.enum';
 import exportCSVMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportCSVMixin';
 import exportXLSMixin from '@webitel/ui-sdk/src/modules/CSVExport/mixins/exportXLSMixin';
 import { EngineSystemSettingName } from 'webitel-sdk';
+import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 
 import APIRepository from '../../../../app/api/APIRepository';
 import ConfigurationAPI from '../../api/configuration.js';
 import historyActionMixin from '../../mixins/historyActionMixin';
 import FilesCounter from './files-counter.vue';
+import { useUserinfoStore } from '../../../userinfo/stores/userinfoStore';
 
 export default {
 	name: 'HistoryExportAction',
@@ -104,9 +107,20 @@ export default {
 			},
 		};
 	},
-	setup: () => ({
-		v$: useVuelidate(),
-	}),
+	setup: () => {
+		const userinfoStore = useUserinfoStore();
+
+		const hasExportDataGridAccess = computed(() => {
+			return userinfoStore.hasSpecialGlobalActionAccess(
+				SpecialGlobalAction.ExportDataGrid,
+			);
+		});
+
+		return {
+			v$: useVuelidate(),
+			hasExportDataGridAccess,
+		};
+	},
 	data: () => ({
 		exportPopup: false,
 		isLoading: false,
