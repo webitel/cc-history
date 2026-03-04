@@ -13,7 +13,7 @@
 
     <footer class="audit-rate-actions">
       <wt-button
-        :disabled="!hasUpdateAccess"
+        :disabled="!hasEditRateAccess"
         color="secondary"
         @click="emit('rate:edit')"
       >{{ t('reusable.edit') }}
@@ -49,9 +49,18 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+
+const { hasReadAccess: hasScorecardsReadAccess } = useUserAccessControl(
+	WtObject.AuditForm,
+);
+
 const { hasUpdateAccess, hasDeleteAccess } = useUserAccessControl(
 	WtObject.AuditRating,
 );
+
+const hasEditRateAccess = computed(() => {
+	return hasScorecardsReadAccess.value && hasUpdateAccess.value;
+});
 
 const criticalDisplay = computed(() => {
 	const questions = props.rate.questions ?? [];
