@@ -7,85 +7,81 @@
     :mime="currentVideo.mime_type"
     @close="closeVideo"
   />
-  <div class="table-page">
-    <section class="table-section">
-      <header class="table-title">
-        <h3 class="table-title__title">
-          {{ t('objects.screenRecordings', 2) }}
-        </h3>
-        <wt-action-bar
-          :include="[IconAction.DELETE]"
-          :disabled:delete="!selected.length || !hasDeleteAccess"
-          @click:delete="
+  <header class="table-title">
+    <h3 class="table-title__title">
+      {{ t('objects.screenRecordings', 2) }}
+    </h3>
+    <wt-action-bar
+      :include="[IconAction.DELETE]"
+      :disabled:delete="!selected.length || !hasDeleteAccess"
+      @click:delete="
+        askDeleteConfirmation({
+          deleted: selected,
+          callback: () => handleDelete(selected),
+        })
+      "
+    >
+    </wt-action-bar>
+  </header>
+
+  <delete-confirmation-popup
+    :shown="isDeleteConfirmationPopup"
+    :callback="deleteCallback"
+    :delete-count="deleteCount"
+    @close="closeDelete"
+  />
+
+  <div class="table-section__table-wrapper">
+    <wt-empty
+      v-show="showEmpty"
+      :image="imageEmpty"
+      :text="textEmpty"
+    />
+
+    <wt-loader v-show="isLoading" />
+
+    <wt-table
+      v-show="dataList.length && !isLoading"
+      v-model:selected="selected"
+      :data="dataList"
+      :headers="headers"
+      sortable
+    >
+      <template #screenRecordings="{ item }">
+        <wt-image
+          width="48px"
+          overlay-icon="play"
+          :src="getMediaUrl(item.id, true)"
+          alt=""
+          @click="openVideo(item)"
+        />
+      </template>
+
+      <template #dateTime="{ item }">
+        {{ prettifyTimestamp(item) }}
+      </template>
+
+      <template #recordingDuration="{ item }">
+        {{ calcDuration(item) }}
+      </template>
+
+      <template #actions="{ item }">
+        <wt-icon-action
+          action="download"
+          @click="downloadFile(item.id)"
+        />
+        <wt-icon-action
+          action="delete"
+          :disabled="!hasDeleteAccess"
+          @click="
             askDeleteConfirmation({
-              deleted: selected,
-              callback: () => handleDelete(selected),
+              deleted: [item],
+              callback: () => handleDelete([item]),
             })
           "
-        >
-        </wt-action-bar>
-      </header>
-
-      <delete-confirmation-popup
-        :shown="isDeleteConfirmationPopup"
-        :callback="deleteCallback"
-        :delete-count="deleteCount"
-        @close="closeDelete"
-      />
-
-      <div class="table-section__table-wrapper">
-        <wt-empty
-          v-show="showEmpty"
-          :image="imageEmpty"
-          :text="textEmpty"
         />
-
-        <wt-loader v-show="isLoading" />
-
-        <wt-table
-          v-show="dataList.length && !isLoading"
-          v-model:selected="selected"
-          :data="dataList"
-          :headers="headers"
-          sortable
-        >
-          <template #screenRecordings="{ item }">
-            <wt-image
-              width="48px"
-              overlay-icon="play"
-              :src="getMediaUrl(item.id, true)"
-              alt=""
-              @click="openVideo(item)"
-            />
-          </template>
-
-          <template #dateTime="{ item }">
-            {{ prettifyTimestamp(item) }}
-          </template>
-
-          <template #recordingDuration="{ item }">
-            {{ calcDuration(item) }}
-          </template>
-
-          <template #actions="{ item }">
-            <wt-icon-action
-              action="download"
-              @click="downloadFile(item.id)"
-            />
-            <wt-icon-action
-              action="delete"
-              :disabled="!hasDeleteAccess"
-              @click="
-                askDeleteConfirmation({
-                  deleted: [item],
-                  callback: () => handleDelete([item]),
-                })
-              "
-            />
-          </template>
-        </wt-table>
-      </div>
-    </section>
+      </template>
+    </wt-table>
   </div>
 </template>
 
