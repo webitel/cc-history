@@ -7,7 +7,7 @@
     <audit-rate-summary-scores
       :score-required="rate.scoreRequired"
       :score-optional="rate.scoreOptional"
-      :select-yes-display="rate.selectYesCount"
+      :select-yes-display="selectYesDisplay"
       :critical-display="criticalDisplay"
     />
 
@@ -34,6 +34,7 @@ import { WtObject } from '@webitel/ui-sdk/enums';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { EngineAuditRate } from '@webitel/api-services/gen/models';
+import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
 
 import { useUserAccessControl } from '../../../../../../../../../../../app/composables/useUserAccessControl.ts';
 import AuditRateSummaryInfo from './audit-rate-summary-info.vue';
@@ -60,6 +61,34 @@ const { hasUpdateAccess, hasDeleteAccess } = useUserAccessControl(
 
 const hasEditRateAccess = computed(() => {
 	return hasScorecardsReadAccess.value && hasUpdateAccess.value;
+});
+
+const selectYesDisplay = computed(() => {
+	const questions = props.rate.questions ?? [];
+	const answers = props.rate.answers ?? [];
+
+	const { total, yes } = questions.reduce(
+		(accumulator, question, index) => {
+			if (question.type !== EngineAuditQuestionType.QuestionYes) {
+				return accumulator;
+			}
+
+			const isYes = answers[index]?.score === 1;
+
+			return {
+				total: accumulator.total + 1,
+				yes: accumulator.yes + (isYes ? 1 : 0),
+			};
+		},
+		{
+			total: 0,
+			yes: 0,
+		},
+	);
+
+	if (total === 0) return null;
+
+	return `${yes}`;
 });
 
 const criticalDisplay = computed(() => {
