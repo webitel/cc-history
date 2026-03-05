@@ -52,6 +52,7 @@ const getters = {
 		createdAt: {
 			from: 0, // get all
 		},
+		sort: '+created_at',
 		size: 100,
 		skipParent: false,
 	}),
