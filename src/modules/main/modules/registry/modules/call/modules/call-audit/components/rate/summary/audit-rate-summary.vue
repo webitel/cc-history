@@ -63,61 +63,54 @@ const hasEditRateAccess = computed(() => {
 	return hasScorecardsReadAccess.value && hasUpdateAccess.value;
 });
 
-const selectYesDisplay = computed(() => {
-	const questions = props.rate.questions ?? [];
-	const answers = props.rate.answers ?? [];
+function getScoreDisplay(
+	questions: EngineAuditRate['questions'],
+	answers: EngineAuditRate['answers'],
+	includeQuestion: (
+		question: NonNullable<EngineAuditRate['questions']>[number],
+		index: number,
+	) => boolean,
+): string | null {
+	const normalizedQuestions = questions ?? [];
+	const normalizedAnswers = answers ?? [];
 
-	const { total, yes } = questions.reduce(
+	const { total, hits } = normalizedQuestions.reduce(
 		(accumulator, question, index) => {
-			if (question.type !== EngineAuditQuestionType.QuestionYes) {
-				return accumulator;
-			}
+			if (!includeQuestion(question, index)) return accumulator;
 
-			const isYes = answers[index]?.score === 1;
+			const isHit = normalizedAnswers[index]?.score === 1;
 
 			return {
 				total: accumulator.total + 1,
-				yes: accumulator.yes + (isYes ? 1 : 0),
+				hits: accumulator.hits + (isHit ? 1 : 0),
 			};
 		},
 		{
 			total: 0,
-			yes: 0,
+			hits: 0,
 		},
 	);
 
 	if (total === 0) return null;
 
-	return `${yes}`;
-});
+	return `${hits}/${total}`;
+}
 
-const criticalDisplay = computed(() => {
-	const questions = props.rate.questions ?? [];
-	const answers = props.rate.answers ?? [];
+const selectYesDisplay = computed(() =>
+	getScoreDisplay(
+		props.rate.questions,
+		props.rate.answers,
+		(question) => question.type === EngineAuditQuestionType.QuestionYes,
+	),
+);
 
-	const { total, violations } = questions.reduce(
-		(accumulator, question, index) => {
-			const isCritical = question.criticalViolation;
-
-			if (!isCritical) return accumulator;
-
-			const isViolation = answers[index]?.score === 1;
-
-			return {
-				total: accumulator.total + 1,
-				violations: accumulator.violations + (isViolation ? 1 : 0),
-			};
-		},
-		{
-			total: 0,
-			violations: 0,
-		},
-	);
-
-	if (total === 0) return null;
-
-	return `${violations}/${total}`;
-});
+const criticalDisplay = computed(() =>
+	getScoreDisplay(
+		props.rate.questions,
+		props.rate.answers,
+		(question) => question.criticalViolation === true,
+	),
+);
 </script>
 
 <style lang="scss" scoped>
