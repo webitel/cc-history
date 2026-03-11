@@ -85,12 +85,12 @@ const transformResponseItems = (items) => {
 			? formatDate(+item.createdAt, FormatDateMode.DATETIME)
 			: null,
 		bridgedAt: computeTimeWithSec(item.bridgedAt),
-		queueBridgedAt: computeTime(item.queueBridgedAt),
+		queueBridgedAt: computeTimeWithSec(item.queueBridgedAt),
 		answeredAt: computeTimeWithSec(item.answeredAt),
-		joinedAt: computeTime(item.joinedAt),
-		leavingAt: computeTime(item.leavingAt),
+		joinedAt: computeTimeWithSec(item.joinedAt),
+		leavingAt: computeTimeWithSec(item.leavingAt),
 		hangupAt: computeTimeWithSec(item.hangupAt),
-		reportingAt: computeTime(item.reportingAt),
+		reportingAt: computeTimeWithSec(item.reportingAt),
 		duration: convertDuration(item.duration),
 		holdSec: convertDuration(item.holdSec),
 		waitSec: convertDuration(item.waitSec),
@@ -279,35 +279,37 @@ const exportHistoryToFile = getList({
 					// Це було закоментовано 8 місяців тому. Можливо прибрати?
 					// convertedItem.date = computeDate(item.created_at);
 					// convertedItem.time = computeTime(item.created_at);
-					convertedItem.created_at = computeDateAndTime(item.created_at);
+					convertedItem.created_at = computeTimeWithSec(item.created_at);
 				}
 
 				if (item.bridged_at) {
-					convertedItem.bridged_at = computeTime(item.bridged_at);
+					convertedItem.bridged_at = computeTimeWithSec(item.bridged_at);
 				}
 
 				if (item.queue_bridged_at) {
-					convertedItem.queue_bridged_at = computeTime(item.queue_bridged_at);
+					convertedItem.queue_bridged_at = computeTimeWithSec(
+						item.queue_bridged_at,
+					);
 				}
 
 				if (item.answered_at) {
-					convertedItem.answered_at = computeTime(item.answered_at);
+					convertedItem.answered_at = computeTimeWithSec(item.answered_at);
 				}
 
 				if (item.joined_at) {
-					convertedItem.joined_at = computeTime(item.joined_at);
+					convertedItem.joined_at = computeTimeWithSec(item.joined_at);
 				}
 
 				if (item.leaving_at) {
-					convertedItem.leaving_at = computeTime(item.leaving_at);
+					convertedItem.leaving_at = computeTimeWithSec(item.leaving_at);
 				}
 
 				if (item.hangup_at) {
-					convertedItem.hangup_at = computeTime(item.hangup_at);
+					convertedItem.hangup_at = computeTimeWithSec(item.hangup_at);
 				}
 
 				if (item.reporting_at) {
-					convertedItem.reporting_at = computeTime(item.reporting_at);
+					convertedItem.reporting_at = computeTimeWithSec(item.reporting_at);
 				}
 
 				if (item.duration) {
