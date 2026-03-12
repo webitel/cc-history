@@ -17,11 +17,11 @@
     </h4>
 
     <div
-      v-if="!isYesQuestion && answer.score >= 0 /* coz be null, if not answered */"
+      v-if="answer.score >= 0 /* coz be null, if not answered */"
       class="audit-rate-answer-item-answer"
     >
       <p class="audit-rate-answer-item-answer__name typo-body-1">
-        {{ answerName }}
+        {{ displayName }}
       </p>
 
       <div class="audit-rate-answer-item-answer__score">
@@ -30,9 +30,15 @@
           icon="star--filled"
           size="md"
         />
-        <wt-chip>
+        <wt-chip v-if="!isYesQuestion">
           {{ answer.score }}
         </wt-chip>
+        <wt-icon
+          v-else
+          color="success"
+          icon="tick"
+          size="md"
+        />
       </div>
     </div>
 
@@ -47,6 +53,7 @@
 <script setup lang="ts">
 import AuditFormAnswerEditingInfo from '@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
 import type {
 	EngineQuestion,
@@ -58,17 +65,22 @@ const props = defineProps<{
 	answer: EngineQuestionAnswer;
 }>();
 
+const { t } = useI18n();
+
 const isYesQuestion = computed(
 	() => props.question.type === EngineAuditQuestionType.QuestionYes,
 );
 
 const answerName = computed(() => {
-	if (isYesQuestion.value) return '';
 	const answeredOption = props.question.options?.find(
 		({ score }) => score === props.answer.score,
 	);
 	return answeredOption?.name || '';
 });
+
+const displayName = computed(() =>
+	isYesQuestion.value ? t('vocabulary.yes') : answerName.value,
+);
 </script>
 
 <style scoped lang="scss">
