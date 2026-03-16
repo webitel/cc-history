@@ -17,7 +17,7 @@
     </h4>
 
     <div
-      v-if="answer.score >= 0 /* coz be null, if not answered */"
+      v-if="isAnswerVisible"
       class="audit-rate-answer-item-answer"
     >
       <p class="audit-rate-answer-item-answer__name typo-body-1">
@@ -69,6 +69,16 @@ const { t } = useI18n();
 
 const isYesQuestion = computed(
 	() => props.question.type === EngineAuditQuestionType.QuestionYes,
+);
+
+const isAnsweredYesQuestion = computed(
+	() => isYesQuestion.value && props.answer.score > 0,
+);
+
+const isAnswerVisible = computed(
+	() =>
+		(!isYesQuestion.value && props.answer.score >= 0) ||
+		isAnsweredYesQuestion.value,
 );
 
 const answerName = computed(() => {
