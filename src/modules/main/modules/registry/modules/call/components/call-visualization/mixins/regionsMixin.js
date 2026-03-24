@@ -1,14 +1,15 @@
 import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import { formatDate } from '@webitel/ui-sdk/utils';
+import hsNoteIcon from '@/app/assets/icons/sprite/hs-note.svg?raw';
 
 const tooltipStyle = {
 	minWidth: 0,
 	boxSizing: 'border-box',
 	position: 'absolute',
 	padding: 'var(--tooltip-padding)',
-	color: 'var(--tooltip-light-text-color)',
-	background: 'var(--tooltip-light-bg-color)',
+	color: 'var(--wt-tooltip-text-color)',
+	background: 'var(--wt-tooltip-background-color)',
 	borderRadius: 'var(--border-radius)',
 	boxShadow: 'var(--box-shadow)',
 	transition: 'var(--transition)',
@@ -159,8 +160,15 @@ export default {
 			);
 			const noteEl = document.createElement('p');
 			noteEl.innerText = `"${comment.note}"`;
-			iconEl.innerHTML =
-				'<svg width="24" height="24" fill="var(--transfer-color)"><use xlink:href="#hs-note"</svg>';
+			iconEl.innerHTML = `
+				<svg
+					width="24"
+					height="24"
+					fill="var(--transfer-color)"
+				>
+					${hsNoteIcon}
+				</svg>
+			`;
 			const commentHeader = createCommentHeader(comment);
 			tooltipEl.style.width = '300px';
 			const difference =
