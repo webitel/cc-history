@@ -64,7 +64,7 @@
           >
             <div v-if="agent" class="call-info__title typo-subtitle-1">
               <wt-icon icon="agent"></wt-icon>
-              {{ agent.name }}
+              <span>{{ agent.name }}</span>
             </div>
 
             <ul>
@@ -203,8 +203,15 @@ export default {
     padding: var(--spacing-xs) 0;
   }
 
+  &__inner {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+
   &__title {
-    display: inline;
+    display: inline-flex;
+    gap: var(--spacing-xs);
+    align-items: center;
   }
 
   &__value {
