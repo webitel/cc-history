@@ -210,6 +210,7 @@
   <wt-vidstack-player
     v-if="currentScreenRecording"
     closable
+    :size="ComponentSize.MD"
     :src="currentScreenRecording.video"
     :title="currentScreenRecording.text"
     @close="closeScreenRecording"
