@@ -5,7 +5,7 @@
     :value="screenshots"
     @delete="handleDelete"
   />
-  <div class="screenshots-action-wrapper">
+  <div class="table-screenshots-action__wrapper">
     <wt-icon-btn 
       icon="preview-tag-image"
       @click="openGalleria"
@@ -63,7 +63,7 @@ const handleDelete = async () => {
 </script>
 
 <style scoped>
-.screenshots-action-wrapper {
+.table-screenshots-action__wrapper {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
