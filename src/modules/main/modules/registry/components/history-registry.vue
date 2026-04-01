@@ -137,6 +137,11 @@
             {{ item.tags.join(', ') }}
           </div>
         </template>
+        <template #screenshots="{ item }">
+          <screenshots-action
+            :files="item.files"
+          />
+        </template>
         <template #screencast="{ item }">
           <screen-recording-action
             :files="item.files"
@@ -256,6 +261,7 @@ import { useRegistryStore } from '../store/new/registry.store.ts';
 import TableDirection from './table-templates/table-direction.vue';
 import TableMediaAction from './table-templates/table-media-action.vue';
 import ScreenRecordingAction from './table-templates/table-video-action.vue';
+import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 
 const emit = defineEmits<{
 	'toggle:filters-panel': [];
