@@ -135,7 +135,6 @@ export const headers: WtTableHeader[] = [
 	{
 		value: 'screenshots',
 		show: false,
-		sort: undefined,
 		field: 'screenshots',
 		locale: [
 			'objects.screenshots',
