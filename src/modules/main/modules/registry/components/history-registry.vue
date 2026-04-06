@@ -143,7 +143,7 @@
           />
         </template>
         <template #screencast="{ item }">
-          <screen-recording-action
+          <wt-table-screencast-action
             :files="item.files"
             @set-video="setScreenRecording"
           />
@@ -259,9 +259,9 @@ import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
+import { WtTableScreencastAction } from '@webitel/ui-sdk/components';
 import TableDirection from './table-templates/table-direction.vue';
 import TableMediaAction from './table-templates/table-media-action.vue';
-import ScreenRecordingAction from './table-templates/table-video-action.vue';
 import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 
 const emit = defineEmits<{
