@@ -3,6 +3,7 @@
     v-model:visible="isGalleriaVisible"
     v-model:active-index="galleriaActiveIndex"
     :value="screenshots"
+		@download="downloadFile(screenshots[galleriaActiveIndex].id)"
     @delete="handleDelete"
   />
   <div class="table-screenshots-action__wrapper">
@@ -17,7 +18,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { getMediaUrl, FileServicesAPI } from '@webitel/api-services/api';
+import {
+	getMediaUrl,
+	downloadFile,
+	FileServicesAPI,
+} from '@webitel/api-services/api';
 
 interface Props {
 	files: any;
