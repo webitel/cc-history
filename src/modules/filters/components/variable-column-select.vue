@@ -182,6 +182,9 @@ const addVariableHeader = (variableKey) => {
 const save = () => {
 	isLoading.value = true;
 	try {
+		if (newVariableKey.value && !v$.value.newVariableKey.$invalid) {
+			addVariableHeader(newVariableKey.value);
+		}
 		setToLocalStorage(variablesFromDraft.value);
 		emit('update:variable-headers', draft);
 	} finally {
