@@ -54,10 +54,11 @@
       </template>
       <template #actions>
         <wt-button
+          :disabled="!draft.length"
           :loading="isLoading"
           @click="save"
         >
-          {{ t('reusable.add') }}
+          {{ t('reusable.save') }}
         </wt-button>
         <wt-button
           color="secondary"
@@ -182,9 +183,6 @@ const addVariableHeader = (variableKey) => {
 const save = () => {
 	isLoading.value = true;
 	try {
-		if (newVariableKey.value && !v$.value.newVariableKey.$invalid) {
-			addVariableHeader(newVariableKey.value);
-		}
 		setToLocalStorage(variablesFromDraft.value);
 		emit('update:variable-headers', draft);
 	} finally {
