@@ -311,7 +311,7 @@ const anyFiltersOnFiltersPanel = computed(() => {
 
 const variableHeaders = computed(() => {
 	return shownHeaders.value.filter((header) =>
-		header.value.includes('variables.'),
+		header.value?.includes('variables.'),
 	);
 });
 
@@ -385,7 +385,7 @@ const handleTranscriptDelete = ({
 
 const updateVariablesHeaders = (variables) => {
 	const mainHeaders = headers?.value.filter(
-		(header) => !header.value.includes('variables.'),
+		(header) => !header.value?.includes('variables.'),
 	);
 	updateShownHeaders([
 		...mainHeaders,

@@ -54,10 +54,11 @@
       </template>
       <template #actions>
         <wt-button
+          :disabled="!draft.length"
           :loading="isLoading"
           @click="save"
         >
-          {{ t('reusable.add') }}
+          {{ t('reusable.save') }}
         </wt-button>
         <wt-button
           color="secondary"
