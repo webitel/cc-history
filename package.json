@@ -24,7 +24,7 @@
 		"@webitel/api-services": "^0.1.8",
 		"@webitel/styleguide": "~26.2",
 		"@webitel/ui-chats": "^0.1.18",
-		"@webitel/ui-datalist": "^1.1.12",
+		"@webitel/ui-datalist": "^1.1.21",
 		"@webitel/ui-sdk": "~26.4",
 		"axios": "1.13.2",
 		"clipboard-copy": "^4.0.1",
