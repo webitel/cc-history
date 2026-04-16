@@ -137,8 +137,13 @@
             {{ item.tags.join(', ') }}
           </div>
         </template>
+        <template #screenshots="{ item }">
+          <screenshots-action
+            :files="item.files"
+          />
+        </template>
         <template #screencast="{ item }">
-          <screen-recording-action
+          <wt-screen-recordings-action
             :files="item.files"
             @set-video="setScreenRecording"
           />
@@ -205,6 +210,7 @@
   <wt-vidstack-player
     v-if="currentScreenRecording"
     closable
+    :size="ComponentSize.MD"
     :src="currentScreenRecording.video"
     :title="currentScreenRecording.text"
     @close="closeScreenRecording"
@@ -253,9 +259,10 @@ import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
+import { WtScreenRecordingsAction } from '@webitel/ui-sdk/components';
 import TableDirection from './table-templates/table-direction.vue';
 import TableMediaAction from './table-templates/table-media-action.vue';
-import ScreenRecordingAction from './table-templates/table-video-action.vue';
+import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 
 const emit = defineEmits<{
 	'toggle:filters-panel': [];
@@ -304,7 +311,7 @@ const anyFiltersOnFiltersPanel = computed(() => {
 
 const variableHeaders = computed(() => {
 	return shownHeaders.value.filter((header) =>
-		header.value.includes('variables.'),
+		header.value?.includes('variables.'),
 	);
 });
 
@@ -378,7 +385,7 @@ const handleTranscriptDelete = ({
 
 const updateVariablesHeaders = (variables) => {
 	const mainHeaders = headers?.value.filter(
-		(header) => !header.value.includes('variables.'),
+		(header) => !header.value?.includes('variables.'),
 	);
 	updateShownHeaders([
 		...mainHeaders,

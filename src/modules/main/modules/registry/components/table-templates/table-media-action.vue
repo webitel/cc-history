@@ -11,7 +11,7 @@
         @click="toggle"
       />
     </template>
-    <template #option="{ text, id }">
+    <template #option="{ text, id, icon }">
       <div class="table-media-action__option">
         <wt-icon
           :icon="id === currentlyPlaying ? 'stop' : icon"
@@ -55,6 +55,7 @@ const contextOptions = computed(() =>
 		id,
 		mimeType,
 		type,
+		icon: mimeType === 'video/mp4' ? 'preview-tag-video' : 'play',
 	})),
 );
 
