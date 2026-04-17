@@ -139,9 +139,6 @@ export function useCallWaveRegions({
 
 	function displayHolds(holds: CallHoldItem[], player: WaveSurfer) {
 		const audioFile = call.value.files.file_type_audio?.[0];
-		if (!audioFile) {
-			return;
-		}
 		const callCreatedAtMs = convertCreatedAtToTimestamp(call.value.createdAt);
 		const actualAudioDuration = player.getDuration();
 
@@ -174,13 +171,7 @@ export function useCallWaveRegions({
 	}
 
 	function displayCommentIcons(region: Region, comment: WaveAnnotation) {
-		if (!region.element) {
-			return;
-		}
 		const player = getPlayer();
-		if (!player) {
-			return;
-		}
 		const iconMountElement = mountRegionIconOverlay({
 			region,
 			player,
@@ -192,9 +183,6 @@ export function useCallWaveRegions({
 				editAnnotation(comment);
 			},
 		});
-		if (!iconMountElement) {
-			return;
-		}
 
 		// Tooltip position reads layout; run after the overlay is in the DOM.
 		void nextTick(() => {

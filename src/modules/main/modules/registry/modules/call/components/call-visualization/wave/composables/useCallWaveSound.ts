@@ -47,37 +47,37 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 		const decoded = player.getDecodedData();
 		const channels = decoded?.numberOfChannels ?? 2;
 
-		const ac = new AudioContext();
-		audioContext.value = ac;
-		const source = ac.createMediaElementSource(media);
+		const context = new AudioContext();
+		audioContext.value = context;
+		const source = context.createMediaElementSource(media);
 		mediaSourceNode.value = source;
 
 		if (channels >= 2) {
-			const splitter = ac.createChannelSplitter(2);
-			const merger = ac.createChannelMerger(2);
-			const lg = ac.createGain();
-			const rg = ac.createGain();
+			const splitter = context.createChannelSplitter(2);
+			const merger = context.createChannelMerger(2);
+			const leftChannelGainNode = context.createGain();
+			const rightChannelGainNode = context.createGain();
 			soundOptions.splitter = splitter;
 			soundOptions.merger = merger;
-			soundOptions.leftGain = lg;
-			soundOptions.rightGain = rg;
-			leftGain.audio = lg;
-			rightGain.audio = rg;
+			soundOptions.leftGain = leftChannelGainNode;
+			soundOptions.rightGain = rightChannelGainNode;
+			leftGain.audio = leftChannelGainNode;
+			rightGain.audio = rightChannelGainNode;
 			rightGain.disabled = false;
 
 			source.connect(splitter);
-			splitter.connect(lg, 0);
-			splitter.connect(rg, 1);
-			lg.connect(merger, 0, 0);
-			rg.connect(merger, 0, 1);
-			merger.connect(ac.destination);
+			splitter.connect(leftChannelGainNode, 0);
+			splitter.connect(rightChannelGainNode, 1);
+			leftChannelGainNode.connect(merger, 0, 0);
+			rightChannelGainNode.connect(merger, 0, 1);
+			merger.connect(context.destination);
 		} else {
-			const lg = ac.createGain();
-			soundOptions.leftGain = lg;
-			leftGain.audio = lg;
+			const monoChannelGainNode = context.createGain();
+			soundOptions.leftGain = monoChannelGainNode;
+			leftGain.audio = monoChannelGainNode;
 			rightGain.disabled = true;
-			source.connect(lg);
-			lg.connect(ac.destination);
+			source.connect(monoChannelGainNode);
+			monoChannelGainNode.connect(context.destination);
 		}
 
 		volumeLeftGain.value = 1;
