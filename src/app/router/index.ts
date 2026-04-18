@@ -1,11 +1,14 @@
 import { WtApplication } from '@webitel/ui-sdk/enums';
 import { createRouter, createWebHistory } from 'vue-router';
-import Call from '../../modules/main/modules/registry/modules/call/components/the-call.vue';
 import callViewRoute from '../../modules/main/modules/registry/modules/call/router/call-view.ts';
-import HistoryMainPage from '../components/history-main-page.vue';
-import AccessDenied from '../components/shared/access-denied-component.vue';
-import History from '../components/the-history.vue';
 import CallTabsPathNames from './_internals/CallTabsPathNames.enum.js';
+
+const History = import('../components/the-history.vue');
+const HistoryMainPage = import('../components/history-main-page.vue');
+const AccessDenied = import('../components/shared/access-denied-component.vue');
+const Call = import(
+	'../../modules/main/modules/registry/modules/call/components/the-call.vue'
+);
 
 const CallInfo = import(
 	'../../modules/main/modules/registry/modules/call/components/call-info/call-info.vue'
@@ -81,7 +84,7 @@ const routes = [
 
 export let router = null;
 
-export const initRouter = async ({ beforeEach = [] } = {}) => {
+export const initRouter = async ({ beforeEach = [], afterEach = [] } = {}) => {
 	router = createRouter({
 		history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -116,6 +119,10 @@ export const initRouter = async ({ beforeEach = [] } = {}) => {
 
 	beforeEach.forEach((guard) => {
 		router.beforeEach(guard);
+	});
+
+	afterEach.forEach((guard) => {
+		router.afterEach(guard);
 	});
 
 	return router;
