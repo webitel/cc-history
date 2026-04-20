@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import callViewRoute from '../../modules/main/modules/registry/modules/call/router/call-view.ts';
 import CallTabsPathNames from './_internals/CallTabsPathNames.enum.js';
 
-const History = import('../components/the-history.vue');
+import History from '../components/the-history.vue';
 const HistoryMainPage = import('../components/history-main-page.vue');
 const AccessDenied = import('../components/shared/access-denied-component.vue');
 const Call = import(
