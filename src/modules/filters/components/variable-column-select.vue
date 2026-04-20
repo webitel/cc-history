@@ -24,7 +24,6 @@
           <wt-input-text
             v-model:model-value="newVariableKey"
             :label="t('vocabulary.keys', 1)"
-            :v="v$.newVariableKey"
             class="variable-column-popup__input"
           />
           <wt-button
@@ -210,7 +209,7 @@ restore();
 .variable-column-popup {
   &__form {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     width: 100%;
     gap: var(--spacing-xs);
