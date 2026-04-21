@@ -34,7 +34,7 @@ export const useCallFilesExport = ({
 					],
 					size: 200,
 					hasFile: true,
-					...filters,
+					...filters.value,
 				};
 
 				if (selected.value.length) {
