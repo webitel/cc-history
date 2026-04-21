@@ -192,7 +192,7 @@ export default {
 						...params,
 						delimiter,
 					});
-				case TypesExportedSettingsEnum.XLS:
+				case TypesExportedSettingsEnum.XLSX:
 					return this.exportXLS(params);
 				default:
 					console.error(`Unsupported format: ${format}`);
