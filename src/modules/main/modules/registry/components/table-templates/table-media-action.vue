@@ -55,7 +55,7 @@ const contextOptions = computed(() =>
 		id,
 		mimeType,
 		type,
-		icon: mimeType === 'video/mp4' ? 'preview-tag-video' : 'play',
+		icon: mimeType === 'video/mp4' ? 'preview-tag-video' : 'preview-tag-audio',
 	})),
 );
 
