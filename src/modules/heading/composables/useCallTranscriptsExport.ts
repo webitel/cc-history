@@ -54,7 +54,7 @@ export const useCallTranscriptsExport = ({
 						'to',
 						'transcripts',
 					],
-					...filters,
+					...filters.value,
 				};
 
 				if (selected.value.length) {
