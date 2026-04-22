@@ -309,11 +309,13 @@ const anyFiltersOnFiltersPanel = computed(() => {
 	});
 });
 
-const variableHeaders = computed(() => {
-	return shownHeaders.value.filter((header) =>
-		header.value?.includes('variables.'),
-	);
-});
+const isVariableColumnHeader = (header) =>
+	(header.field ?? '').startsWith('variables.') ||
+	(header.value ?? '').startsWith('variables.');
+
+const variableHeaders = computed(() =>
+	shownHeaders.value.filter(isVariableColumnHeader),
+);
 
 const {
 	showEmpty,
@@ -384,11 +386,11 @@ const handleTranscriptDelete = ({
 };
 
 const updateVariablesHeaders = (variables) => {
-	const mainHeaders = headers?.value.filter(
-		(header) => !header.value?.includes('variables.'),
+	const main = headers.value.filter(
+		(header) => !isVariableColumnHeader(header),
 	);
 	updateShownHeaders([
-		...mainHeaders,
+		...main,
 		...variables,
 	]);
 };
