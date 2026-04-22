@@ -53,7 +53,6 @@
       </template>
       <template #actions>
         <wt-button
-          :disabled="!draft.length"
           :loading="isLoading"
           @click="save"
         >
