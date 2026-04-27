@@ -157,7 +157,7 @@
 
         <template #actions="{ item }">
           <wt-call-media-action
-            :currently-playing="currentlyMediaPlaying"
+            :playing-file-id="currentlyMediaPlaying"
             :files="item.files"
             @play="handlePlayMedia"
             @stop="closePlayer"
