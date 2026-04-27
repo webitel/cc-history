@@ -37,13 +37,10 @@
         <ul class="variable-column-popup__list">
           <li
             v-for="key in draft"
-            :key="key"
+            :key="key.field"
             class="variable-column-popup__item"
           >
-            <wt-checkbox
-              v-model:selected="key.show"
-              :label="key.text"
-            />
+            <span class="variable-column-popup__label">{{ key.text }}</span>
             <wt-icon-btn
               icon="bucket"
               @click="deleteKey(key)"
@@ -75,7 +72,6 @@ import { required } from '@vuelidate/validators';
 import {
 	WtBadge,
 	WtButton,
-	WtCheckbox,
 	WtIconBtn,
 	WtInput,
 	WtPopup,
@@ -86,18 +82,11 @@ import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtT
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-/*
-do we even need them?
-
-interface Props {
-  variableHeaders: WtTableHeader[];
-}
-
-const props = defineProps<Props>();
-*/
-
 const emit = defineEmits<{
-	'update:variable-headers': (value: WtTableHeader[]) => void;
+	'update:variable-headers': [
+		value: WtTableHeader[],
+		fromRestore?: boolean,
+	];
 }>();
 
 const { t } = useI18n();
@@ -193,7 +182,9 @@ const restore = () => {
 	const storedValue = getFromLocalStorage();
 	if (!isEmpty(storedValue)) {
 		storedValue.map((variableKey) => addVariableHeader(variableKey));
-		save();
+		// On restore, we only know variable keys. Visibility is restored in parent
+		// from table `fields` persistence (Visible columns modal state).
+		emit('update:variable-headers', draft, true);
 	}
 };
 
@@ -228,6 +219,11 @@ restore();
   &__item {
     display: flex;
     justify-content: space-between;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
   }
 }
 </style>
