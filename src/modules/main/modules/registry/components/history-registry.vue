@@ -20,12 +20,12 @@
         <template #columns>
           <wt-table-column-select
             :headers="headers"
+            enable-search
             @change="updateShownHeaders"
           />
         </template>
         <template #variables>
           <variable-column-select
-            :variable-headers="variableHeaders"
             @update:variable-headers="updateVariablesHeaders"
           />
         </template>
@@ -156,15 +156,12 @@
         </template>
 
         <template #actions="{ item }">
-          <template v-if="recordingFiles(item).length">
-            <table-media-action
-              :currently-playing="currentlyMediaPlaying"
-              :files="recordingFiles(item)"
-              :icon="getRecordingTypeIcon(item)"
-              @play="handlePlayMedia"
-              @stop="closePlayer"
-            />
-          </template>
+          <wt-call-media-action
+            :playing-file-id="currentlyMediaPlaying"
+            :files="item.files"
+            @play="handlePlayMedia"
+            @stop="closePlayer"
+          />
 
           <!--          v-if transcript can be added, exists, or already in progress -->
           <stt-action
@@ -228,10 +225,10 @@
 
 <script lang="ts" setup>
 import { getMediaUrl } from '@webitel/api-services/api';
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import {
 	WtActionBar,
 	WtBadge,
+	WtCallMediaAction,
 	WtEmpty,
 	WtIconAction,
 	WtIconBtn,
@@ -261,7 +258,6 @@ import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
 import { WtScreenRecordingsAction } from '@webitel/ui-sdk/components';
 import TableDirection from './table-templates/table-direction.vue';
-import TableMediaAction from './table-templates/table-media-action.vue';
 import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 
 const emit = defineEmits<{
@@ -280,6 +276,7 @@ const {
 	next,
 	headers,
 	shownHeaders,
+	fields,
 
 	filtersManager,
 	isStoreSetUp,
@@ -309,11 +306,13 @@ const anyFiltersOnFiltersPanel = computed(() => {
 	});
 });
 
-const variableHeaders = computed(() => {
-	return shownHeaders.value.filter((header) =>
-		header.value?.includes('variables.'),
-	);
-});
+const isVariableColumnHeader = (header) =>
+	(header.field ?? '').startsWith('variables.') ||
+	(header.value ?? '').startsWith('variables.');
+
+const variableHeaders = computed(() =>
+	shownHeaders.value.filter(isVariableColumnHeader),
+);
 
 const {
 	showEmpty,
@@ -383,14 +382,28 @@ const handleTranscriptDelete = ({
 	);
 };
 
-const updateVariablesHeaders = (variables) => {
-	const mainHeaders = headers?.value.filter(
-		(header) => !header.value?.includes('variables.'),
+const updateVariablesHeaders = (variables, fromRestore = false) => {
+	const main = headers.value.filter(
+		(header) => !isVariableColumnHeader(header),
 	);
-	updateShownHeaders([
-		...mainHeaders,
-		...variables,
-	]);
+
+	if (fromRestore) {
+		// Restored variable payload may contain `show: true` for all keys.
+		// Use persisted visible fields as the source of truth after reload.
+		const visible = new Set(fields.value);
+		updateShownHeaders([
+			...main,
+			...variables.map((variableHeader) => ({
+				...variableHeader,
+				show: visible.has(variableHeader.field),
+			})),
+		]);
+	} else {
+		updateShownHeaders([
+			...main,
+			...variables,
+		]);
+	}
 };
 
 const currentScreenRecording = ref(null);
@@ -405,19 +418,6 @@ const setScreenRecording = (data) => {
 	currentScreenRecording.value.video = getMediaUrl(data.id);
 	closePlayer();
 	isScreenRecordingOpen.value = true;
-};
-
-const recordingFiles = (item) => {
-	return [
-		...(item.files?.[EngineCallFileType.FileTypeAudio] || []),
-		...(item.files?.[EngineCallFileType.FileTypeVideo] || []),
-	];
-};
-
-const getRecordingTypeIcon = (item) => {
-	return item.files?.[EngineCallFileType.FileTypeVideo]
-		? 'preview-tag-video'
-		: 'play';
 };
 
 const handlePlayMedia = (mediaData) => {

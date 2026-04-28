@@ -279,37 +279,37 @@ const exportHistoryToFile = getList({
 					// Це було закоментовано 8 місяців тому. Можливо прибрати?
 					// convertedItem.date = computeDate(item.created_at);
 					// convertedItem.time = computeTime(item.created_at);
-					convertedItem.created_at = computeTimeWithSec(item.created_at);
+					convertedItem.created_at = computeDateAndTime(item.created_at);
 				}
 
 				if (item.bridged_at) {
-					convertedItem.bridged_at = computeTimeWithSec(item.bridged_at);
+					convertedItem.bridged_at = computeDateAndTime(item.bridged_at);
 				}
 
 				if (item.queue_bridged_at) {
-					convertedItem.queue_bridged_at = computeTimeWithSec(
+					convertedItem.queue_bridged_at = computeDateAndTime(
 						item.queue_bridged_at,
 					);
 				}
 
 				if (item.answered_at) {
-					convertedItem.answered_at = computeTimeWithSec(item.answered_at);
+					convertedItem.answered_at = computeDateAndTime(item.answered_at);
 				}
 
 				if (item.joined_at) {
-					convertedItem.joined_at = computeTimeWithSec(item.joined_at);
+					convertedItem.joined_at = computeDateAndTime(item.joined_at);
 				}
 
 				if (item.leaving_at) {
-					convertedItem.leaving_at = computeTimeWithSec(item.leaving_at);
+					convertedItem.leaving_at = computeDateAndTime(item.leaving_at);
 				}
 
 				if (item.hangup_at) {
-					convertedItem.hangup_at = computeTimeWithSec(item.hangup_at);
+					convertedItem.hangup_at = computeDateAndTime(item.hangup_at);
 				}
 
 				if (item.reporting_at) {
-					convertedItem.reporting_at = computeTimeWithSec(item.reporting_at);
+					convertedItem.reporting_at = computeDateAndTime(item.reporting_at);
 				}
 
 				if (item.duration) {

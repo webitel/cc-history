@@ -100,6 +100,5 @@ onMounted(async () => {
 .chat-history__content {
   overflow: auto;
   display: flex;
-  margin-block: auto;
 }
 </style>
