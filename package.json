@@ -13,7 +13,9 @@
 		"utils:link-libs": "npm link @webitel/api-services @webitel/ui-sdk @webitel/ui-datalist @webitel/ui-chats && npm run utils:ls-libs",
 		"utils:up-libs": "npm up @webitel/ui-sdk @webitel/ui-datalist @webitel/api-services  @webitel/ui-chats && npm run utils:ls-libs",
 		"utils:ls-libs": "npm ls @webitel/ui-sdk @webitel/ui-datalist @webitel/api-services  @webitel/ui-chats",
-		"prepare": "husky || true"
+		"prepare": "husky || true",
+		"biome:ci:gh": "biome ci ./src --reporter=github",
+		"test:unit:ci": "vitest run --coverage"
 	},
 	"type": "module",
 	"dependencies": {
