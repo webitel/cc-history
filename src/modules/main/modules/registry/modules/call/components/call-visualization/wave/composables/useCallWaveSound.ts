@@ -90,9 +90,9 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 		}
 	}
 
-	function resumeAudioContext() {
+	async function resumeAudioContext() {
 		if (audioContext.value?.state === 'suspended') {
-			void audioContext.value.resume();
+			await audioContext.value.resume();
 		}
 	}
 
@@ -129,8 +129,8 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 		isPlaying.value = player?.isPlaying() ?? false;
 	}
 
-	function playPause() {
-		void getPlayer()?.playPause();
+	async function playPause() {
+		await getPlayer()?.playPause();
 	}
 
 	function redraw() {
