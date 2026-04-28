@@ -171,7 +171,7 @@ export function useCallWaveRegions({
 		});
 	}
 
-	function displayCommentIcons(region: Region, comment: WaveAnnotation) {
+	async function displayCommentIcons(region: Region, comment: WaveAnnotation) {
 		const player = getPlayer();
 		const iconMountElement = mountRegionIconOverlay({
 			region,
@@ -186,13 +186,12 @@ export function useCallWaveRegions({
 		});
 
 		// Tooltip position reads layout; run after the overlay is in the DOM.
-		void nextTick(() => {
-			adjustCommentTooltipPosition(iconMountElement, region, player, 300);
-		});
+		await nextTick();
+		adjustCommentTooltipPosition(iconMountElement, region, player, 300);
 	}
 
-	function displayComments(annotations: WaveAnnotation[]) {
-		annotations.forEach((comment) => {
+	async function displayComments(annotations: WaveAnnotation[]) {
+		for (const comment of annotations) {
 			// `comment-` prefix: `region-created` ignores these (saved regions), user drags use other ids.
 			const regionId = comment.id
 				? `${COMMENT_REGION_ID_PREFIX}${comment.id}`
@@ -207,8 +206,8 @@ export function useCallWaveRegions({
 				resize: false,
 				drag: false,
 			});
-			displayCommentIcons(region, comment);
-		});
+			await displayCommentIcons(region, comment);
+		}
 	}
 
 	function renderHoldsLayer() {
@@ -225,12 +224,12 @@ export function useCallWaveRegions({
 		displayHolds(call.value.hold, player);
 	}
 
-	function renderCommentsLayer() {
+	async function renderCommentsLayer() {
 		clearCommentRegions();
 		if (!showComments.value || !commentsSize.value) {
 			return;
 		}
-		displayComments(annotations.value);
+		await displayComments(annotations.value);
 	}
 
 	function closeCommentMode() {
@@ -245,14 +244,14 @@ export function useCallWaveRegions({
 		});
 	}
 
-	function updateRegions() {
+	async function updateRegions() {
 		closeCommentMode();
-		renderCommentsLayer();
+		await renderCommentsLayer();
 	}
 
-	function toggleComments() {
+	async function toggleComments() {
 		showComments.value = !showComments.value;
-		renderCommentsLayer();
+		await renderCommentsLayer();
 	}
 
 	function toggleHolds() {

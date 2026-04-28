@@ -505,12 +505,12 @@ watch(
 	},
 );
 
-onBeforeUnmount(() => {
+onBeforeUnmount(async () => {
 	unsubscribeZoomSync.value?.();
 	unsubscribeZoomSync.value = null;
 	unsubscribeRegionCreated.value?.();
 	dragSelectionCleanup.value?.();
-	destroyChannelAudio();
+	await destroyChannelAudio();
 });
 </script>
 

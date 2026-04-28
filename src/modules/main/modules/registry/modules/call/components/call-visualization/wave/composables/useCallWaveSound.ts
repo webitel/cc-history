@@ -96,7 +96,7 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 		}
 	}
 
-	function destroyChannelAudio() {
+	async function destroyChannelAudio() {
 		mediaSourceNode.value?.disconnect();
 		mediaSourceNode.value = null;
 		soundOptions.splitter?.disconnect();
@@ -108,7 +108,7 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 		soundOptions.leftGain = null;
 		soundOptions.rightGain = null;
 		if (audioContext.value) {
-			void audioContext.value.close();
+			await audioContext.value.close();
 			audioContext.value = null;
 		}
 		leftGain.audio = null;
