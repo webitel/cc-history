@@ -390,8 +390,6 @@ const updateVariablesHeaders = (variables, fromRestore = false) => {
 		(header) => !isVariableColumnHeader(header),
 	);
 
-	console.log(fromRestore);
-
 	if (fromRestore) {
 		// Restored variable payload may contain `show: true` for all keys.
 		// Use persisted visible fields as the source of truth after reload.
