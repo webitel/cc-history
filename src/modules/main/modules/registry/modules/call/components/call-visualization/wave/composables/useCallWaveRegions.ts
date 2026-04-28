@@ -1,6 +1,7 @@
 // WaveSurfer regions for holds and comments: draw layers, overlays, toggles, and comment drag-selection lifecycle.
 import { getIconFromRepository } from '@webitel/ui-sdk/icons';
 import { convertDuration } from '@webitel/ui-sdk/scripts';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import type { Region } from 'wavesurfer.js/plugins/regions';
 import type RegionsPlugin from 'wavesurfer.js/plugins/regions';
 import type WaveSurfer from 'wavesurfer.js';
@@ -138,7 +139,7 @@ export function useCallWaveRegions({
 	}
 
 	function displayHolds(holds: CallHoldItem[], player: WaveSurfer) {
-		const audioFile = call.value.files.file_type_audio?.[0];
+		const audioFile = call.value.files?.[EngineCallFileType.FileTypeAudio]?.[0];
 		const callCreatedAtMs = convertCreatedAtToTimestamp(call.value.createdAt);
 		const actualAudioDuration = player.getDuration();
 
