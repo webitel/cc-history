@@ -124,18 +124,48 @@
           v-if="fileUrl"
           class="call-wave-data-plugin"
         >
-          <wavesurfer
-            ref="surf"
-            :options="waveOptions"
-            :src="fileUrl"
-          />
           <div
-            id="wave-timeline"
-            class="call-wave-timeline"
-          />
+            class="call-wave-wave-wrap"
+            :class="{ 'call-wave-wave-wrap--mono': rightGain.disabled }"
+          >
+            <wavesurfer
+              ref="wavesurferComponentRef"
+              :options="waveOptions"
+              :src="fileUrl"
+            />
+            <div class="call-wave-markers">
+              <div
+                class="call-wave-marker call-wave-marker--left"
+                :style="{ color: channelColorLeft }"
+              >
+                <span class="call-wave-marker__icon">
+                  <svg
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                  ><use xlink:href="#contacts" /></svg>
+                </span>
+                <span class="call-wave-marker__label">{{ call.from.name || call.from.number || ' ' }}</span>
+              </div>
+              <div
+                v-if="!rightGain.disabled"
+                class="call-wave-marker call-wave-marker--right"
+                :style="{ color: channelColorRight }"
+              >
+                <span class="call-wave-marker__icon">
+                  <svg
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                  ><use xlink:href="#contacts" /></svg>
+                </span>
+                <span class="call-wave-marker__label">{{ call.to?.name || call.to?.number || call.destination }}</span>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <div /> <!-- an empty div in order to position in the correct grid column -->
+        <div />
         <section class="call-wave-actions">
           <section class="call-wave-actions-buttons">
             <wt-button
@@ -174,7 +204,7 @@
           </section>
           <section class="call-wave-actions-buttons">
             <wt-button
-              :disabled="zoom > 1000"
+              :disabled="zoomInDisabled"
               color="secondary"
               contains-icon
               @click="increaseZoom"
@@ -182,7 +212,7 @@
               <wt-icon icon="zoom-in" />
             </wt-button>
             <wt-button
-              :disabled="zoom < 0.001"
+              :disabled="zoomOutDisabled"
               color="secondary"
               contains-icon
               @click="decreaseZoom"
@@ -196,424 +226,414 @@
   </section>
 </template>
 
-<script>
+<script setup lang="ts">
 import { getCallMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { convertDuration } from '@webitel/ui-sdk/scripts';
-import { mapActions, mapGetters, mapState } from 'vuex';
-import Cursor from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
-import Markers from 'wavesurfer.js/dist/plugin/wavesurfer.markers';
-import Regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
-import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 import { useFilesExport } from '@webitel/ui-sdk/modules/FilesExport';
+import {
+	computed,
+	nextTick,
+	onBeforeUnmount,
+	ref,
+	toRef,
+	watch,
+	type Ref,
+} from 'vue';
+import { useStore } from 'vuex';
+import type { Region } from 'wavesurfer.js/plugins/regions';
 
 import CallVisualizationHeader from '../call-visualization-header.vue';
-import regionsMixin from '../mixins/regionsMixin';
-import soundFiltersMixin from '../mixins/soundFiltersMixin';
 import CallCommentForm from './call-wave-comment-form.vue';
+import type {
+	CallWaveCallRecord,
+	CommentDragSelectionOptions,
+	NewCommentDraft,
+	WaveAnnotation,
+} from './call-wave.types';
+import {
+	annotationSecondsToInt,
+	useCallWaveAnnotations,
+} from './composables/useCallWaveAnnotations';
+import { useCallWavePlugins } from './composables/useCallWavePlugins';
+import { useCallWaveRegions } from './composables/useCallWaveRegions';
+import { useCallWaveSound } from './composables/useCallWaveSound';
+import { useCallWaveZoom } from './composables/useCallWaveZoom';
 import Wavesurfer from './wavesurfer.vue';
 
-const cursorOptions = {
-	showTime: true,
-	opacity: 1,
-	customShowTimeStyle: {
-		backgroundColor: 'var(--contrast-color)',
-		color: 'var(--main-color)',
-		padding: 'var(--spacing-sm)',
-	},
-	formatTimeCallback: convertDuration,
-};
-
-const timelineOptions = {
-	container: '#wave-timeline',
-	notchPercentHeight: 1,
-	unlabeledNotchColor: 'var(--secondary-color)',
-	fontFamily: 'Montserrat, monospace',
-	primaryFontColor: 'hsla(225, 20%, 50%, 1)',
-	fontSize: 12,
-	height: 16,
-	labelPadding: 5,
-	primaryLabelInterval: 5,
-	secondaryLabelInterval: 0,
-	formatTimeCallback: convertDuration,
-};
-
-const commentOptions = {
-	showTooltip: false,
+const COMMENT_DRAG_OPTIONS: CommentDragSelectionOptions = {
 	color: 'hsla(var(--_transfer-color), 0.2)',
 	resize: true,
 };
 
-const createMarker = (color) => {
-	const marker = document.createElement('span');
-	marker.innerHTML = `<svg width="16" height="16" fill="${color}"><use xlink:href="#contacts"</svg>`;
-	return marker;
-};
+const props = defineProps<{
+	call: CallWaveCallRecord;
+}>();
 
-export default {
-	name: 'CallWave',
-	components: {
-		CallVisualizationHeader,
-		CallCommentForm,
-		Wavesurfer,
-	},
-	mixins: [
-		soundFiltersMixin,
-		regionsMixin,
-	],
-	props: {
-		call: {
-			type: Object,
-			required: true,
-		},
-	},
-	data: () => ({
-		volumeLeftGain: 1,
-		volumeRightGain: 1,
-		isLoading: true,
-		loadProgress: 0,
-		zoom: 1,
-		playbackRate: 1,
-		isPlaying: false,
-		commentsMode: false,
-		selectedComment: null,
-		waveOptions: {
-			cursorWidth: 2,
-			splitChannels: true,
-			height: 96,
-			pixelRatio: 1,
-			responsive: true,
-			plugins: [
-				Cursor.create(cursorOptions),
-				Markers.create({
-					markers: [],
-				}),
-				Timeline.create(timelineOptions),
-				Regions.create({}),
-			],
-			splitChannelsOptions: {
-				overlay: false,
-				channelColors: {
-					0: {
-						progressColor: 'hsla(119, 60%, 40%, 0.8)',
-					},
-					1: {
-						progressColor: 'hsl(42, 100%, 50%)',
-					},
-				},
-			},
-		},
+const store = useStore();
+
+const file = computed(() => store.state.registry.call.selectedRecordingFile);
+const annotations = computed<WaveAnnotation[]>(
+	() => store.getters['registry/call/CALL_ANNOTATIONS'],
+);
+const fileOptions = computed(
+	() => store.getters['registry/call/RECORDING_FILE_SELECT_OPTIONS'],
+);
+
+const fileUrl = computed(() =>
+	getCallMediaUrl(file.value.id, {
+		download: true,
 	}),
-	setup(props) {
-		const audioFiles = props.call.files?.[EngineCallFileType.FileTypeAudio];
+);
 
-		const { exportFiles } = useFilesExport({
-			getFileURL: (item) =>
-				getCallMediaUrl(item.id, {
-					download: true,
-				}),
-			fetch: () => {
-				return {
-					items: audioFiles,
-				};
-			},
-			filename: 'history-record',
-		});
-		return {
-			downloadFile: exportFiles,
-		};
-	},
-	computed: {
-		...mapState('registry/call', {
-			file: (state) => state.selectedRecordingFile,
+const audioFiles = computed(
+	() => fileOptions.value?.[EngineCallFileType.FileTypeAudio] || [],
+);
+
+const callRef = toRef(props, 'call');
+
+const holdsSize = computed(() =>
+	props.call.hold ? props.call.hold.length : 0,
+);
+const commentsSize = computed(() =>
+	annotations.value ? annotations.value.length : 0,
+);
+
+const channelColorLeft = computed(() => 'var(--true-color)');
+const channelColorRight = computed(() => 'var(--primary-color)');
+
+const wavesurferComponentRef = ref<InstanceType<typeof Wavesurfer> | null>(
+	null,
+);
+const player = computed(() => wavesurferComponentRef.value?.waveSurfer ?? null);
+
+const playbackRate = ref(1);
+const isLoading = ref(true);
+const loadProgress = ref(0);
+const commentsMode = ref(false);
+const selectedComment: Ref<WaveAnnotation | NewCommentDraft | null> = ref(null);
+const dragSelectionCleanup: Ref<(() => void) | null> = ref(null);
+const unsubscribeRegionCreated: Ref<(() => void) | null> = ref(null);
+const unsubscribeZoomSync: Ref<(() => void) | null> = ref(null);
+const waveListenersAttached = ref(false);
+
+const { regionsPlugin, waveOptions } = useCallWavePlugins();
+
+const {
+	zoomInDisabled,
+	zoomOutDisabled,
+	resetZoomState,
+	increaseZoom,
+	decreaseZoom,
+	syncZoomValue,
+} = useCallWaveZoom(() => player.value);
+
+const {
+	volumeLeftGain,
+	volumeRightGain,
+	isPlaying,
+	leftGain,
+	rightGain,
+	initChannelAudioGraph,
+	destroyChannelAudio,
+	onLoad,
+	changedPlaying,
+	playPause,
+	redraw,
+	volumeLeftChangeHandler,
+	volumeRightChangeHandler,
+} = useCallWaveSound(() => player.value);
+
+function editAnnotation(comment: WaveAnnotation) {
+	selectedComment.value = comment;
+	commentsMode.value = true;
+}
+
+const {
+	showHolds,
+	showComments,
+	toggleHolds,
+	toggleComments,
+	updateRegions,
+	blockRegionResize,
+	closeCommentMode,
+} = useCallWaveRegions({
+	regionsPlugin,
+	getPlayer: () => player.value,
+	call: callRef,
+	holdsSize,
+	commentsSize,
+	annotations,
+	editAnnotation,
+	commentsMode,
+	selectedComment,
+	dragSelectionCleanup,
+	commentDragOptions: COMMENT_DRAG_OPTIONS,
+});
+
+const callDuration = computed(() =>
+	Math.round(player.value?.getDuration() ?? 0),
+);
+
+const { exportFiles: downloadFile } = useFilesExport({
+	getFileURL: (item) =>
+		getCallMediaUrl(item.id as string, {
+			download: true,
 		}),
-		...mapGetters('registry/call', {
-			annotations: 'CALL_ANNOTATIONS',
-			fileOptions: 'RECORDING_FILE_SELECT_OPTIONS',
-		}),
-		fileUrl() {
-			return getCallMediaUrl(this.file.id, {
-				download: true,
-			});
+	fetch: async () => ({
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		items: (props.call.files?.[EngineCallFileType.FileTypeAudio] ?? []) as any,
+		next: false,
+	}),
+	filename: 'history-record',
+});
+
+function setFile(payload: unknown) {
+	store.dispatch('registry/call/SET_RECORDING_FILE', payload);
+}
+
+function speedButtonColor(value: number): 'primary' | 'secondary' {
+	return playbackRate.value === value ? 'primary' : 'secondary';
+}
+
+const { saveComment, deleteComment: deleteCommentBySelection } =
+	useCallWaveAnnotations(store, props.call.id, updateRegions);
+const deleteComment = () => deleteCommentBySelection(selectedComment.value);
+
+function openCommentMode() {
+	commentsMode.value = true;
+}
+
+function toggleCommentMode() {
+	if (commentsMode.value) {
+		closeCommentMode();
+	} else {
+		openCommentMode();
+	}
+}
+
+function toggleRate(value) {
+	playbackRate.value = playbackRate.value === value ? 1 : value;
+	player.value?.setPlaybackRate(playbackRate.value, true);
+}
+
+function showProgress(progress: string | number) {
+	isLoading.value = true;
+	loadProgress.value = +progress;
+}
+
+function hideProgress() {
+	loadProgress.value = 0;
+	isLoading.value = false;
+}
+
+// New drag: v7 fires `region-created` but not `region-updated` for that path; skip saved regions (`comment-` id).
+function createComment(region: Region) {
+	if (region.start === region.end) {
+		return;
+	}
+	if (region.id.startsWith('comment-')) {
+		return;
+	}
+	if (dragSelectionCleanup.value) {
+		dragSelectionCleanup.value();
+		dragSelectionCleanup.value = null;
+	}
+	selectedComment.value = {
+		startSec: String(annotationSecondsToInt(region.start)),
+		endSec: String(annotationSecondsToInt(region.end)),
+		note: '',
+	};
+	commentsMode.value = true;
+	blockRegionResize();
+}
+
+async function onReady() {
+	onLoad();
+	initChannelAudioGraph();
+	hideProgress();
+	// Loading UI toggles in the same tick as `ready`; wait so layout matches before `reRender()`.
+	await nextTick();
+	redraw();
+}
+
+function initWave() {
+	const waveSurfer = player.value;
+	if (!waveSurfer) {
+		return;
+	}
+	waveSurfer.on('pause', changedPlaying);
+	waveSurfer.on('finish', changedPlaying);
+	waveSurfer.on('play', changedPlaying);
+	waveSurfer.on('loading', showProgress);
+	waveSurfer.on('ready', onReady);
+	waveSurfer.on('destroy', hideProgress);
+	waveSurfer.on('error', hideProgress);
+	dragSelectionCleanup.value = regionsPlugin.enableDragSelection({
+		...COMMENT_DRAG_OPTIONS,
+	});
+	unsubscribeRegionCreated.value = regionsPlugin.on(
+		'region-created',
+		createComment,
+	);
+	unsubscribeZoomSync.value = waveSurfer.on(
+		'zoom',
+		(minPxPerSecFromWaveSurfer) => {
+			syncZoomValue(minPxPerSecFromWaveSurfer);
 		},
-		player() {
-			return this.$refs.surf && this.$refs.surf.waveSurfer;
-		},
-		audioFiles() {
-			return this.fileOptions?.[EngineCallFileType.FileTypeAudio] || [];
-		},
-		callDuration() {
-			return Math.round(this.player?.getDuration());
-		},
-		holdsSize() {
-			return this.call.hold ? this.call.hold.length : 0;
-		},
-		commentsSize() {
-			return this.annotations ? this.annotations.length : 0;
-		},
+	);
+}
+
+// `wavesurfer.vue` loads from `src` only; avoid double `load()` on file change.
+watch(fileUrl, () => {
+	resetZoomState();
+});
+
+watch(
+	[
+		player,
+		fileUrl,
+	],
+	() => {
+		if (!player.value || !fileUrl.value || waveListenersAttached.value) {
+			return;
+		}
+		initWave();
+		waveListenersAttached.value = true;
 	},
-
-	methods: {
-		...mapActions('registry/call', {
-			addAnnotation: 'ADD_ANNOTATION',
-			updateAnnotation: 'EDIT_ANNOTATION',
-			deleteAnnotation: 'DELETE_ANNOTATION',
-			setFile: 'SET_RECORDING_FILE',
-		}),
-
-		speedButtonColor(value) {
-			return this.playbackRate === value ? 'primary' : 'secondary';
-		},
-		editAnnotation(comment) {
-			this.selectedComment = comment;
-			this.commentsMode = true;
-		},
-
-		async saveComment(draft) {
-			if (draft.id) {
-				await this.updateAnnotation({
-					callId: this.call.id,
-					...draft,
-				});
-			} else {
-				await this.addAnnotation({
-					callId: this.call.id,
-					...draft,
-				});
-			}
-			await this.updateRegions();
-		},
-		async deleteComment() {
-			await this.deleteAnnotation({
-				id: this.selectedComment.id,
-				callId: this.call.id,
-			});
-			await this.updateRegions();
-		},
-		openCommentMode() {
-			this.commentsMode = true;
-		},
-		closeCommentMode() {
-			this.commentsMode = false;
-			this.selectedComment = null;
-			// every comment region instance has DOM children: the icon with comment itself and two
-			// border lines indicating start and the end of region.
-			// We are looking if some region has no icon with comment. In case it exists, it means the
-			// comment was not saved and the region must be deleted to have a cleaner wave.
-			if (this.player.regions.list) {
-				const cancelledRegion = Object.keys(this.player.regions.list).find(
-					(region) =>
-						this.player.regions.list[region].element.children.length < 3,
-				);
-				if (cancelledRegion) this.redrawRegions();
-			}
-			this.player.enableDragSelection({
-				...commentOptions,
-			});
-		},
-		toggleCommentMode() {
-			return this.commentsMode
-				? this.closeCommentMode()
-				: this.openCommentMode();
-		},
-		volumeRightChangeHandler(value) {
-			this.volumeRightGain = value;
-			this.rightGain.muted = !this.volumeRightGain;
-			this.rightGain.audio.gain.value = value;
-		},
-		volumeLeftChangeHandler(value) {
-			this.volumeLeftGain = value;
-			this.leftGain.muted = !this.volumeLeftGain;
-			this.leftGain.audio.gain.value = value;
-		},
-		toggleRate(value) {
-			const { player } = this;
-			this.playbackRate = this.playbackRate === value ? 1 : value;
-			// https://github.com/katspaugh/wavesurfer.js/issues/2349
-			const isPlaying = player.isPlaying();
-			if (isPlaying) this.playPause();
-			player.setPlaybackRate(this.playbackRate);
-			if (isPlaying) this.playPause();
-		},
-		toggleLeftGain() {
-			this.leftGain.audio.gain.value =
-				this.leftGain.audio.gain.value === 0 ? this.volumeLeftGain : 0;
-			this.leftGain.muted = !this.leftGain.muted;
-		},
-		toggleRightGain() {
-			this.rightGain.audio.gain.value =
-				this.rightGain.audio.gain.value === 0 ? this.volumeRightGain : 0;
-			this.rightGain.muted = !this.rightGain.muted;
-		},
-		increaseZoom() {
-			this.zoom *= 2;
-			this.player.zoom(this.zoom);
-		},
-		decreaseZoom() {
-			this.zoom /= 2;
-			this.player.zoom(this.zoom);
-		},
-		initWave() {
-			const { player } = this;
-			player.on('pause', this.changedPlaying.bind(this));
-			player.on('finish', this.changedPlaying.bind(this));
-			player.on('play', this.changedPlaying.bind(this));
-			player.on('loading', this.showProgress.bind(this));
-			player.on('ready', this.onReady.bind(this));
-			player.on('destroy', this.hideProgress.bind(this));
-			player.on('error', this.hideProgress.bind(this));
-			player.enableDragSelection({
-				...commentOptions,
-			});
-		},
-
-		showProgress(progress) {
-			this.isLoading = true;
-			this.loadProgress = +progress;
-		},
-		hideProgress() {
-			this.loadProgress = 0;
-			this.isLoading = false;
-		},
-		createComment(region) {
-			this.player.disableDragSelection();
-			this.selectedComment = {
-				startSec: region.start.toFixed(),
-				endSec: region.end.toFixed(),
-				note: '',
-			};
-			this.commentsMode = true;
-			this.blockRegionResize(this.player);
-		},
-		async onReady() {
-			const { player, call } = this;
-			this.onLoad();
-			this.hideProgress();
-			try {
-				player.addMarker({
-					time: 0,
-					position: 'top',
-					/* in order to show empty FROM
-           (not blocking mounting if name and number are not received) */
-					label: call.from.name || call.from.number || ' ',
-					color:
-						player.params.splitChannelsOptions.channelColors[0].progressColor,
-					markerElement: createMarker('var(--true-color)'),
-				});
-				if (this.rightGain) {
-					player.addMarker({
-						time: 0,
-						label: call.to?.name || call.to?.number || call.destination,
-						color:
-							player.params.splitChannelsOptions.channelColors[1].progressColor,
-						markerElement: createMarker('var(--primary-color)'),
-					});
-				}
-				const createdMarkers = document.querySelectorAll('marker');
-				// seting our font for marker title:
-				createdMarkers.forEach((marker) => {
-					marker.children[1].children[1].style.fontFamily =
-						'"Montserrat", monospace';
-				});
-			} catch (err) {
-				throw err;
-			}
-
-			await this.$nextTick();
-			player.drawBuffer(); // https://github.com/katspaugh/wavesurfer.js/issues/1127#issuecomment-309044858
-			this.redraw();
-			player.on('region-update-end', this.createComment);
-		},
+	{
+		immediate: true,
 	},
+);
 
-	watch: {
-		fileUrl() {
-			this.player.load(this.fileUrl);
-		},
-	},
-	mounted() {
-		this.$nextTick(() => {
-			if (this.player && this.fileUrl) {
-				this.initWave();
-			}
-		});
-	},
-};
+onBeforeUnmount(async () => {
+	unsubscribeZoomSync.value?.();
+	unsubscribeZoomSync.value = null;
+	unsubscribeRegionCreated.value?.();
+	dragSelectionCleanup.value?.();
+	await destroyChannelAudio();
+});
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .call-visualization-header {
   margin-bottom: var(--spacing-sm);
 }
 
-.call-wave-page {
-  .call-wave-page__file-select {
-    width: 280px;
-  }
-
-  .call-wave-page__region-actions {
-    display: flex;
-    align-items: center;
-    justify-content:  center;
-    gap: var(--spacing-xs);
-  }
-
-  .call-wave-page-main {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-
-    &--hidden {
-      display: none;
-    }
-  }
-
-  .call-wave-data--grid {
-    display: grid;
-    grid-gap: var(--spacing-sm);
-    grid-template-columns: 70px 1fr;
-    grid-template-rows: repeat(2, auto);
-
-    .call-wave-data-legs-actions {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: space-evenly;
-    }
-
-    .call-wave-actions {
-      display: flex;
-      justify-content: space-between;
-      gap: var(--spacing-sm);
-
-      .call-wave-actions-buttons {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-      }
-    }
-
-    .call-wave-data-plugin {
-      position: relative;
-
-      // setting css styles to marker title and icon
-      ::v-deep marker {
-        div:nth-child(2) {
-          padding-left: var(--spacing-xs);
-          gap: var(--spacing-xs);
-        }
-      }
-
-      .call-wave-timeline {
-        background-color: var(--secondary-light-color);
-      }
-    }
-  }
-
-  ::v-deep .wavesurfer-region {
-    /* prevent region itself from overlapping other region icon with info tooltip on it */
-    z-index: auto !important;
-  }
+.call-wave-page .call-wave-page__file-select {
+  width: 280px;
 }
 
+.call-wave-page .call-wave-page__region-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+.call-wave-page .call-wave-page-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.call-wave-page .call-wave-page-main--hidden {
+  display: none;
+}
+
+.call-wave-page .call-wave-data--grid {
+  display: grid;
+  grid-gap: var(--spacing-sm);
+  grid-template-columns: 70px 1fr;
+  grid-template-rows: repeat(2, auto);
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-legs-actions {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-actions .call-wave-actions-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin {
+  position: relative;
+  min-width: 0;
+  overflow: visible;
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-wave-wrap {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .wavesurfer-mount {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-markers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-rows: 96px 96px;
+  align-items: stretch;
+  height: 192px;
+  box-sizing: border-box;
+  padding: 0 var(--spacing-3xs);
+  font-size: 12px;
+  pointer-events: none;
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.95),
+    0 0 8px rgba(255, 255, 255, 0.85);
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-wave-wrap--mono .call-wave-markers {
+  grid-template-rows: 96px;
+  height: 96px;
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker--left {
+  align-self: start;
+}
+
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker--right {
+  align-self: end;
+}
+
+:deep(.wavesurfer-mount > div)::part(timeline) {
+  background-color: var(--secondary-light-color);
+}
+
+:deep(.wavesurfer-mount > div)::part(region) {
+  border-left: 2px solid rgb(0, 0, 0);
+  border-right: 2px solid rgb(0, 0, 0);
+}
+
+:deep(.wavesurfer-mount > div)::part(marker) {
+  border-left: 4px solid var(--hold-color);
+}
 </style>
+
