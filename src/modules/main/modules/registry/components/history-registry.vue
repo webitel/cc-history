@@ -26,7 +26,6 @@
         </template>
         <template #variables>
           <variable-column-select
-            :variable-headers="variableHeaders"
             @update:variable-headers="updateVariablesHeaders"
           />
         </template>
@@ -277,6 +276,7 @@ const {
 	next,
 	headers,
 	shownHeaders,
+	fields,
 
 	filtersManager,
 	isStoreSetUp,
@@ -382,14 +382,28 @@ const handleTranscriptDelete = ({
 	);
 };
 
-const updateVariablesHeaders = (variables) => {
+const updateVariablesHeaders = (variables, fromRestore = false) => {
 	const main = headers.value.filter(
 		(header) => !isVariableColumnHeader(header),
 	);
-	updateShownHeaders([
-		...main,
-		...variables,
-	]);
+
+	if (fromRestore) {
+		// Restored variable payload may contain `show: true` for all keys.
+		// Use persisted visible fields as the source of truth after reload.
+		const visible = new Set(fields.value);
+		updateShownHeaders([
+			...main,
+			...variables.map((variableHeader) => ({
+				...variableHeader,
+				show: visible.has(variableHeader.field),
+			})),
+		]);
+	} else {
+		updateShownHeaders([
+			...main,
+			...variables,
+		]);
+	}
 };
 
 const currentScreenRecording = ref(null);
