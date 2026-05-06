@@ -3,24 +3,19 @@ import { createRouter, createWebHistory } from 'vue-router';
 import callViewRoute from '../../modules/main/modules/registry/modules/call/router/call-view.ts';
 import CallTabsPathNames from './_internals/CallTabsPathNames.enum.js';
 
-import History from '../components/the-history.vue';
-import HistoryMainPage from '../components/history-main-page.vue';
-import AccessDenied from '../components/shared/access-denied-component.vue';
-import Call from '../../modules/main/modules/registry/modules/call/components/the-call.vue';
+const History = () => import('../components/the-history.vue');
+const HistoryMainPage = () => import('../components/history-main-page.vue');
+const AccessDenied = () =>
+	import('../components/shared/access-denied-component.vue');
+const Call = () =>
+	import(
+		'../../modules/main/modules/registry/modules/call/components/the-call.vue'
+	);
 
-const CallInfo = import(
-	'../../modules/main/modules/registry/modules/call/components/call-info/call-info.vue'
-);
-const CallLegs = import(
-	'../../modules/main/modules/registry/modules/call/components/call-legs/call-legs.vue'
-);
-const CallVisualization = import(
-	'../../modules/main/modules/registry/modules/call/components/call-visualization/call-visualization.vue'
-);
-const VideoCallRecording = import(
-	'../../modules/main/modules/registry/modules/call/components/video-call-recording/video-call-recording.vue'
-);
-
+import CallInfo from '../../modules/main/modules/registry/modules/call/components/call-info/call-info.vue';
+import CallLegs from '../../modules/main/modules/registry/modules/call/components/call-legs/call-legs.vue';
+import CallVisualization from '../../modules/main/modules/registry/modules/call/components/call-visualization/call-visualization.vue';
+import VideoCallRecording from '../../modules/main/modules/registry/modules/call/components/video-call-recording/video-call-recording.vue';
 const routes = [
 	{
 		path: '/',
