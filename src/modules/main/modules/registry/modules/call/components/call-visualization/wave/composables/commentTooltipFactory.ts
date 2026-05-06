@@ -78,6 +78,8 @@ export function createCommentTooltipContent(comment: WaveAnnotation) {
 		{
 			style: {
 				margin: 0,
+				whiteSpace: 'pre-wrap',
+				wordBreak: 'break-word',
 			},
 		},
 		`"${comment.note}"`,
