@@ -69,6 +69,7 @@
         :comment="selectedComment"
         @delete="deleteComment"
         @save="saveComment"
+        @update-draft-range="handleCommentDraftRangeUpdate"
       />
 
       <section class="call-wave-data--grid">
@@ -354,6 +355,7 @@ const {
 	toggleHolds,
 	toggleComments,
 	updateRegions,
+	updateDraftSelectionRange,
 	blockRegionResize,
 	closeCommentMode,
 } = useCallWaveRegions({
@@ -398,6 +400,16 @@ function speedButtonColor(value: number): 'primary' | 'secondary' {
 const { saveComment, deleteComment: deleteCommentBySelection } =
 	useCallWaveAnnotations(store, props.call.id, updateRegions);
 const deleteComment = () => deleteCommentBySelection(selectedComment.value);
+
+function handleCommentDraftRangeUpdate({
+	startSec,
+	endSec,
+}: {
+	startSec: number;
+	endSec: number;
+}) {
+	updateDraftSelectionRange(startSec, endSec);
+}
 
 function openCommentMode() {
 	commentsMode.value = true;

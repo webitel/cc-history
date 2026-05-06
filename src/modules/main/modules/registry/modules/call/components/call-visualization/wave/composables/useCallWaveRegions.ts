@@ -123,6 +123,24 @@ export function useCallWaveRegions({
 		});
 	}
 
+	function updateDraftSelectionRange(startSec: number, endSec: number) {
+		const draftRegion = regionsPlugin
+			.getRegions()
+			.find((region) => !isHoldRegion(region) && !isCommentRegion(region));
+		if (!draftRegion) {
+			return;
+		}
+		const normalizedStartSec = Math.max(0, Math.min(startSec, endSec));
+		const normalizedEndSec = Math.max(
+			normalizedStartSec,
+			Math.max(startSec, endSec),
+		);
+		draftRegion.setOptions({
+			start: normalizedStartSec,
+			end: normalizedEndSec,
+		});
+	}
+
 	function displayHoldIcons(
 		region: Region,
 		hold: CallHoldItem,
@@ -265,6 +283,7 @@ export function useCallWaveRegions({
 		toggleHolds,
 		toggleComments,
 		updateRegions,
+		updateDraftSelectionRange,
 		blockRegionResize,
 		closeCommentMode,
 	};

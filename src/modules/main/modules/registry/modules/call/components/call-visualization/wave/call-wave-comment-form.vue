@@ -42,109 +42,145 @@
   </section>
 </template>
 
-<script>
+<script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { maxValue, minValue, required } from '@vuelidate/validators';
 import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import deepCopy from 'deep-copy';
+import { computed, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import type { NewCommentDraft, WaveAnnotation } from './call-wave.types';
 
-export default {
+defineOptions({
 	name: 'CallWaveCommentForm',
+});
 
-	props: {
-		callId: {
-			type: String,
-			required: true,
-		},
-		callDuration: {
-			type: Number,
-			required: true,
-		},
-		comment: {
-			type: Object,
-		},
-	},
-	setup: () => ({
-		v$: useVuelidate(),
-	}),
-	data: () => ({
-		draft: {
-			note: '',
-			startSec: 0,
-			endSec: 0,
-		},
-		isTextareaExpanded: false,
-	}),
+interface CommentFormDraft {
+	id?: string;
+	note: string;
+	startSec: number | string;
+	endSec: number | string;
+}
 
-	computed: {
-		customValidation() {
-			return (value) => [
-				{
-					name: 'minValue',
-					text: this.$t('validation.minValue', {
-						min: convertDuration(value),
-					}),
-				},
-				{
-					name: 'maxValue',
-					text: this.$t('validation.maxValue').concat(
-						` ${convertDuration(this.callDuration)}`,
-					),
-				},
-			];
-		},
-		minimalEndCommentValue() {
-			return Math.min(this.callDuration, this.draft.startSec);
-		},
-		disableSaving() {
-			this.v$.draft.$touch();
-			return this.v$.draft.$pending || this.v$.draft.$error;
-		},
-	},
-	validations() {
-		const draft = {
-			startSec: {
-				required,
-				minValue: minValue(0),
-				maxValue: maxValue(this.callDuration),
-			},
-			endSec: {
-				required,
-				minValue: minValue(this.draft.startSec),
-				maxValue: maxValue(this.callDuration),
-			},
-		};
-		return {
-			draft,
-		};
-	},
+const props = defineProps<{
+	callId: string;
+	callDuration: number;
+	comment: WaveAnnotation | NewCommentDraft | null;
+}>();
 
-	watch: {
-		comment: {
-			handler(value) {
-				this.initDraft(value);
-			},
-			immediate: true,
+const emit = defineEmits<{
+	(event: 'save', value: CommentFormDraft): void;
+	(event: 'delete'): void;
+	(
+		event: 'update-draft-range',
+		value: {
+			startSec: number;
+			endSec: number;
 		},
-	},
+	): void;
+}>();
 
-	methods: {
-		expandTextarea() {
-			this.isTextareaExpanded = !this.isTextareaExpanded;
+const { t } = useI18n();
+
+const draft = reactive<CommentFormDraft>({
+	note: '',
+	startSec: 0,
+	endSec: 0,
+});
+const isTextareaExpanded = ref(false);
+
+const minimalEndCommentValue = computed(() =>
+	Math.min(props.callDuration, Number(draft.startSec)),
+);
+
+const rules = computed(() => ({
+	draft: {
+		startSec: {
+			required,
+			minValue: minValue(0),
+			maxValue: maxValue(props.callDuration),
 		},
-		initDraft(draft) {
-			if (draft) {
-				this.draft = deepCopy(draft);
-			}
-		},
-		saveComment() {
-			this.$emit('save', this.draft);
-		},
-		deleteComment() {
-			this.$emit('delete');
+		endSec: {
+			required,
+			minValue: minValue(Number(draft.startSec)),
+			maxValue: maxValue(props.callDuration),
 		},
 	},
-};
+}));
+
+const v$ = useVuelidate(rules, {
+	draft,
+});
+
+const disableSaving = computed(() => {
+	v$.value.draft.$touch();
+	return v$.value.draft.$pending || v$.value.draft.$error;
+});
+
+const customValidation = (value: number) => [
+	{
+		name: 'minValue',
+		text: t('validation.minValue', {
+			min: convertDuration(value),
+		}),
+	},
+	{
+		name: 'maxValue',
+		text: t('validation.maxValue').concat(
+			` ${convertDuration(props.callDuration)}`,
+		),
+	},
+];
+
+function expandTextarea() {
+	isTextareaExpanded.value = !isTextareaExpanded.value;
+}
+
+function initDraft(newDraft: WaveAnnotation | NewCommentDraft | null) {
+	if (!newDraft) return;
+	const value = deepCopy(newDraft);
+	draft.note = value.note ?? '';
+	draft.startSec = value.startSec ?? 0;
+	draft.endSec = value.endSec ?? 0;
+	if (value.id) {
+		draft.id = value.id;
+	} else {
+		delete draft.id;
+	}
+}
+
+function saveComment() {
+	emit('save', deepCopy(draft));
+}
+
+function deleteComment() {
+	emit('delete');
+}
+
+function emitDraftRange() {
+	const startSec = Number(draft.startSec);
+	const endSec = Number(draft.endSec);
+	if (Number.isNaN(startSec) || Number.isNaN(endSec)) {
+		return;
+	}
+	emit('update-draft-range', {
+		startSec,
+		endSec,
+	});
+}
+
+watch(
+	() => props.comment,
+	(value) => {
+		initDraft(value);
+	},
+	{
+		immediate: true,
+	},
+);
+
+watch(() => draft.startSec, emitDraftRange);
+watch(() => draft.endSec, emitDraftRange);
 </script>
 
 <style lang="scss" scoped>
