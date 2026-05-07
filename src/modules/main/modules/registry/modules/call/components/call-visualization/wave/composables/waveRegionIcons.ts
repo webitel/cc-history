@@ -196,15 +196,23 @@ export function adjustCommentTooltipPosition(
 	if (!tooltipElement || !region.element) {
 		return;
 	}
-	const duration = player.getDuration();
-	const scrollWidth = getWaveformScrollWidth(player);
-	if (!duration || !scrollWidth) {
+	const iconWrapElement = mountElement.querySelector(
+		'.wave-region-icon-wrap',
+	) as HTMLElement | null;
+	if (!iconWrapElement) {
 		return;
 	}
-	const leftEdgePx = (region.start / duration) * scrollWidth;
-	// If the tooltip overflows the right edge of the waveform, shift it left.
-	const overflowPx = leftEdgePx + tooltipWidthPx - player.getWidth();
+
+	const wrapper = player.getWrapper();
+	const scrollContainer = wrapper.parentElement ?? wrapper;
+	const iconWrapRect = iconWrapElement.getBoundingClientRect();
+	const containerRect = scrollContainer.getBoundingClientRect();
+	const overflowPx = iconWrapRect.left + tooltipWidthPx - containerRect.right;
+
+	// Keep tooltip inside visible waveform viewport while preserving icon anchor.
 	if (overflowPx > 0) {
 		tooltipElement.style.left = `-${overflowPx}px`;
+	} else {
+		tooltipElement.style.left = '0';
 	}
 }
