@@ -647,5 +647,11 @@ onBeforeUnmount(async () => {
 :deep(.wavesurfer-mount > div)::part(marker) {
   border-left: 4px solid var(--hold-color);
 }
+
+/* Hover plugin animates opacity/transform and may briefly show x=0 on quick pointer leave/enter. */
+:deep(.wavesurfer-mount > div)::part(hover),
+:deep(.wavesurfer-mount > div)::part(hover-label) {
+  transition: none !important;
+}
 </style>
 
