@@ -609,9 +609,6 @@ onBeforeUnmount(async () => {
   padding: 0 var(--spacing-3xs);
   font-size: 12px;
   pointer-events: none;
-  text-shadow:
-    0 0 4px rgba(255, 255, 255, 0.95),
-    0 0 8px rgba(255, 255, 255, 0.85);
 }
 
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-wave-wrap--mono .call-wave-markers {
