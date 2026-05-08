@@ -21,6 +21,7 @@ const tooltipStyle: Record<string, string> = {
 };
 
 const NEAR_WAVE_START_PX = 30;
+const TOOLTIP_CLASS = 'wave-region-tooltip';
 
 function getWaveformScrollWidth(player: WaveSurfer): number {
 	const wrapper = player.getWrapper();
@@ -122,7 +123,7 @@ export function mountRegionIconOverlay({
 			h(
 				'div',
 				{
-					class: 'wave-region-tooltip',
+					class: TOOLTIP_CLASS,
 					style: {
 						...tooltipStyle,
 						width: tooltipWidth,
@@ -162,7 +163,15 @@ export function mountRegionIconOverlay({
 	const tooltipElement = mountElement.querySelector(
 		'.wave-region-tooltip',
 	) as HTMLElement | null;
+	let removeTooltipWheelBlocker: (() => void) | null = null;
 	if (iconWrapElement && tooltipElement) {
+		const stopWheelZoom = (event: WheelEvent) => {
+			event.stopPropagation();
+		};
+		tooltipElement.addEventListener('wheel', stopWheelZoom);
+		removeTooltipWheelBlocker = () => {
+			tooltipElement.removeEventListener('wheel', stopWheelZoom);
+		};
 		iconWrapElement.addEventListener('mouseenter', () => {
 			setTooltipVisibility(tooltipElement, true);
 			setWaveHoverVisibility(player, false);
@@ -176,6 +185,8 @@ export function mountRegionIconOverlay({
 	region.once('remove', () => {
 		unsubscribeRegionRender();
 		unsubscribeWaveSurferZoom();
+		removeTooltipWheelBlocker?.();
+		removeTooltipWheelBlocker = null;
 		render(null, mountElement);
 		mountElement.remove();
 	});
