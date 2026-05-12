@@ -198,10 +198,6 @@ const getList =
 				sort,
 				fields: [
 					'id',
-					'files',
-					'files_job',
-					'transcripts',
-					'conversation_id',
 					...fields,
 				],
 				created_at: setupCreatedAt(createdAt),
@@ -250,19 +246,31 @@ const getList =
 		}
 	};
 
-const getHistory = getList({
-	paramsTransformers: [],
-	responseTransformers: [
-		snakeToCamel([
-			'variables',
-			'form_fields',
-		]),
-		merge(getDefaultGetListResponse()),
-	],
-	responseItemsTransformers: [
-		transformResponseItems,
-	],
-});
+const getHistory = (requestParams) => {
+	const requestFields = [
+		'files',
+		'files_job',
+		'transcripts',
+		'conversation_id',
+		...requestParams.fields,
+	];
+	return getList({
+		paramsTransformers: [],
+		responseTransformers: [
+			snakeToCamel([
+				'variables',
+				'form_fields',
+			]),
+			merge(getDefaultGetListResponse()),
+		],
+		responseItemsTransformers: [
+			transformResponseItems,
+		],
+	})({
+		...requestParams,
+		fields: requestFields,
+	});
+};
 
 const exportHistoryToFile = getList({
 	responseTransformers: [
