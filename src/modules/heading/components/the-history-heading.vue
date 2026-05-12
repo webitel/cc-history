@@ -94,6 +94,5 @@ const searchModeOptions = computed(() => {
 .the-history-heading-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
 }
 </style>
