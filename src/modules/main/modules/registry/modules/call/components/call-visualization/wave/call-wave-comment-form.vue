@@ -49,18 +49,17 @@ import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import deepCopy from 'deep-copy';
 import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { NewCommentDraft, WaveAnnotation } from './call-wave.types';
+import {
+	RangeField,
+	type CommentFormDraft,
+	type NewCommentDraft,
+	type WaveAnnotation,
+	type RangeField as RangeFieldType,
+} from './call-wave.types';
 
 defineOptions({
 	name: 'CallWaveCommentForm',
 });
-
-interface CommentFormDraft {
-	id?: string;
-	note: string;
-	startSec: number | string;
-	endSec: number | string;
-}
 
 const props = defineProps<{
 	callId: string;
@@ -88,14 +87,14 @@ const draft = reactive<CommentFormDraft>({
 	endSec: 0,
 });
 const isTextareaExpanded = ref(false);
-const lastEditedField = ref<'startSec' | 'endSec' | null>(null);
+const lastEditedField = ref<RangeFieldType | null>(null);
 
 const minimalEndCommentValue = computed(() =>
 	Math.min(props.callDuration, Number(draft.startSec)),
 );
 
 const maximumStartCommentValue = computed(() =>
-	lastEditedField.value === 'startSec'
+	lastEditedField.value === RangeField.StartSec
 		? Math.min(props.callDuration, Number(draft.endSec))
 		: props.callDuration,
 );
@@ -110,7 +109,9 @@ const rules = computed(() => ({
 		endSec: {
 			required,
 			minValue: minValue(
-				lastEditedField.value === 'endSec' ? Number(draft.startSec) : 0,
+				lastEditedField.value === RangeField.EndSec
+					? Number(draft.startSec)
+					: 0,
 			),
 			maxValue: maxValue(props.callDuration),
 		},
@@ -126,18 +127,16 @@ const disableSaving = computed(() => {
 	return v$.value.draft.$pending || v$.value.draft.$invalid || hasInvalidRange;
 });
 
-const customValidation = (minValueForText: number, maxValueForText: number) => [
+const customValidation = (minValue: number, maxValue: number) => [
 	{
 		name: 'minValue',
 		text: t('validation.minValue', {
-			min: convertDuration(minValueForText),
+			min: convertDuration(minValue),
 		}),
 	},
 	{
 		name: 'maxValue',
-		text: t('validation.maxValue').concat(
-			` ${convertDuration(maxValueForText)}`,
-		),
+		text: t('validation.maxValue').concat(` ${convertDuration(maxValue)}`),
 	},
 ];
 
@@ -186,8 +185,11 @@ function emitDraftRange() {
 	});
 }
 
-function handleRangeFieldChange(activeField: 'startSec' | 'endSec') {
-	const inactiveField = activeField === 'startSec' ? 'endSec' : 'startSec';
+function handleRangeFieldChange(activeField: RangeFieldType) {
+	const inactiveField =
+		activeField === RangeField.StartSec
+			? RangeField.EndSec
+			: RangeField.StartSec;
 	lastEditedField.value = activeField;
 	v$.value.draft[activeField].$touch();
 	v$.value.draft[inactiveField].$reset();
@@ -208,11 +210,11 @@ watch(
 
 watch(
 	() => draft.startSec,
-	() => handleRangeFieldChange('startSec'),
+	() => handleRangeFieldChange(RangeField.StartSec),
 );
 watch(
 	() => draft.endSec,
-	() => handleRangeFieldChange('endSec'),
+	() => handleRangeFieldChange(RangeField.EndSec),
 );
 </script>
 
