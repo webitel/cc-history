@@ -54,3 +54,17 @@ export interface NewCommentDraft {
 	endSec: string;
 	note: string;
 }
+
+export interface CommentFormDraft {
+	id?: string;
+	note: string;
+	startSec: number | string;
+	endSec: number | string;
+}
+
+export const RangeField = {
+	StartSec: 'startSec',
+	EndSec: 'endSec',
+} as const;
+
+export type RangeField = (typeof RangeField)[keyof typeof RangeField];
