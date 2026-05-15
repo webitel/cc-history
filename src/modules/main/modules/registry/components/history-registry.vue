@@ -245,6 +245,7 @@ import {
 	IconColor,
 } from '@webitel/ui-sdk/enums';
 import { useTableEmpty } from '@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty';
+import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.d.ts';
 import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
@@ -382,28 +383,34 @@ const handleTranscriptDelete = ({
 	);
 };
 
-const updateVariablesHeaders = (variables, fromRestore = false) => {
-	const main = headers.value.filter(
-		(header) => !isVariableColumnHeader(header),
+const updateVariablesHeaders = (variables: WtTableHeader[]) => {
+	const incomingByField = new Map<string, WtTableHeader>(
+		variables.map((variable) => [
+			variable.field,
+			variable,
+		]),
 	);
 
-	if (fromRestore) {
-		// Restored variable payload may contain `show: true` for all keys.
-		// Use persisted visible fields as the source of truth after reload.
-		const visible = new Set(fields.value);
-		updateShownHeaders([
-			...main,
-			...variables.map((variableHeader) => ({
-				...variableHeader,
-				show: visible.has(variableHeader.field),
-			})),
-		]);
-	} else {
-		updateShownHeaders([
-			...main,
-			...variables,
-		]);
-	}
+	const updatedHeaders = headers.value.flatMap((header) => {
+		if (!isVariableColumnHeader(header))
+			return [
+				header,
+			];
+		const replacement = incomingByField.get(header.field);
+		if (!replacement) return [];
+		incomingByField.delete(header.field);
+		return [
+			{
+				...replacement,
+				show: header.show,
+			},
+		];
+	});
+
+	updateShownHeaders([
+		...updatedHeaders,
+		...incomingByField.values(),
+	]);
 };
 
 const currentScreenRecording = ref(null);
