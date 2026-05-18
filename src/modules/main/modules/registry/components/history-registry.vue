@@ -245,7 +245,7 @@ import {
 	IconColor,
 } from '@webitel/ui-sdk/enums';
 import { useTableEmpty } from '@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty';
-import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.d.ts';
+import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.d';
 import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
@@ -384,7 +384,7 @@ const handleTranscriptDelete = ({
 };
 
 const updateVariablesHeaders = (variables: WtTableHeader[]) => {
-	const incomingByField = new Map<string, WtTableHeader>(
+	const variablesByField = new Map<string, WtTableHeader>(
 		variables.map((variable) => [
 			variable.field,
 			variable,
@@ -396,20 +396,26 @@ const updateVariablesHeaders = (variables: WtTableHeader[]) => {
 			return [
 				header,
 			];
-		const replacement = incomingByField.get(header.field);
-		if (!replacement) return [];
-		incomingByField.delete(header.field);
+
+		const variableHeader = variablesByField.get(header.field);
+		if (!variableHeader) return [];
+
+		variablesByField.delete(header.field);
 		return [
 			{
-				...replacement,
+				...variableHeader,
 				show: header.show,
 			},
 		];
 	});
 
+	const newVariableHeaders = [
+		...variablesByField.values(),
+	];
+
 	updateShownHeaders([
 		...updatedHeaders,
-		...incomingByField.values(),
+		...newVariableHeaders,
 	]);
 };
 
