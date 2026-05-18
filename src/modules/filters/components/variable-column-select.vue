@@ -85,7 +85,6 @@ import { useI18n } from 'vue-i18n';
 const emit = defineEmits<{
 	'update:variable-headers': [
 		value: WtTableHeader[],
-		fromRestore?: boolean,
 	];
 }>();
 
@@ -181,10 +180,12 @@ const save = () => {
 const restore = () => {
 	const storedValue = getFromLocalStorage();
 	if (!isEmpty(storedValue)) {
-		storedValue.map((variableKey) => addVariableHeader(variableKey));
-		// On restore, we only know variable keys. Visibility is restored in parent
-		// from table `fields` persistence (Visible columns modal state).
-		emit('update:variable-headers', draft, true);
+		storedValue.forEach((variableKey) => addVariableHeader(variableKey));
+		// Visibility is restored later from the persisted `fields` (URL/LS):
+		draft.forEach((variable) => {
+			variable.show = false;
+		});
+		emit('update:variable-headers', draft);
 	}
 };
 
