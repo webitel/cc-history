@@ -25,7 +25,7 @@
           :clearable="false"
           :label="$t('vocabulary.format')"
           :options="exportSettingOptions"
-          :v="v$.draft.format"
+          :v="v$.draft?.format"
           :value="draft.format"
           required
           @input="selectHandler"
@@ -34,7 +34,7 @@
           v-if="isExportSettingsFormatCSV"
           v-model:model-value="draft.separator"
           :label="$t('headerSection.exportPopup.separator')"
-          :v="v$.draft.separator"
+          :v="v$.draft?.separator"
           required
         />
       </template>
@@ -57,13 +57,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, reactive, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { required, requiredIf } from '@vuelidate/validators';
-import TypesExportedSettingsEnum from '@webitel/ui-sdk/src/enums/TypesExportedSettings/TypesExportedSettings.enum';
-import { FormatDateMode } from '@webitel/ui-sdk/enums';
+import { FormatDateMode, TypesExportedSettings } from '@webitel/ui-sdk/enums';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { EngineSystemSettingName } from 'webitel-sdk';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
@@ -71,26 +70,25 @@ import { useCSVExport } from '@webitel/ui-sdk/src/modules/CSVExport/composables/
 import XLSExportClass from '@webitel/ui-sdk/src/modules/CSVExport/XLSExport';
 
 import APIRepository from '../../../../app/api/APIRepository';
-import ConfigurationAPI from '../../api/configuration.js';
+import ConfigurationAPI from '../../api/configuration';
 import FilesCounter from './files-counter.vue';
 import { useUserinfoStore } from '../../../userinfo/stores/userinfoStore';
-const props = defineProps({
-	dataList: {
-		type: Array,
-		default: () => [],
-	},
-	filters: {
-		type: Object,
-		default: () => ({}),
-	},
-	fields: {
-		type: Array,
-		required: true,
-	},
-	selected: {
-		type: Array,
-		default: () => [],
-	},
+
+type SelectedItem = {
+	id: string | number;
+};
+
+interface Props {
+	dataList?: unknown[];
+	filters?: Record<string, unknown>;
+	fields: string[];
+	selected?: SelectedItem[];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+	dataList: () => [],
+	filters: () => ({}),
+	selected: () => [],
 });
 const { dataList, fields, filters, selected } = toRefs(props);
 
@@ -132,15 +130,15 @@ const hasExportDataGridAccess = computed(() => {
 });
 
 const exportSettingOptions = computed(() => {
-	return Object.keys(TypesExportedSettingsEnum).map((key) => ({
-		name: TypesExportedSettingsEnum[key],
-		value: TypesExportedSettingsEnum[key],
-		id: TypesExportedSettingsEnum[key],
+	return Object.keys(TypesExportedSettings).map((key) => ({
+		name: TypesExportedSettings[key],
+		value: TypesExportedSettings[key],
+		id: TypesExportedSettings[key],
 	}));
 });
 
 const isExportSettingsFormatCSV = computed(
-	() => draft.format === TypesExportedSettingsEnum.CSV,
+	() => draft.format === TypesExportedSettings.CSV,
 );
 
 const rules = computed(() => ({
@@ -162,13 +160,18 @@ const disableSaving = computed(() => {
 	return v$.value.draft.$pending || v$.value.draft.$error;
 });
 
-function initXLSExport(fetchMethod, options = {}) {
+function initXLSExport(
+	fetchMethod,
+	options: {
+		filename: string;
+	},
+) {
 	XLSExportInstance.value = new XLSExportClass(fetchMethod, options);
 }
 
-async function exportXLS(exportParams) {
+async function exportXLS(exportParams?: Record<string, unknown>) {
 	const routeQuery = route.query;
-	const params = {
+	const params: Record<string, unknown> = {
 		...(exportParams || routeQuery),
 		size: 5000,
 	};
@@ -178,7 +181,13 @@ async function exportXLS(exportParams) {
 	await XLSExportInstance.value?.export(params);
 }
 
-function updateDraft({ format, separator } = {}) {
+function updateDraft({
+	format,
+	separator,
+}: {
+	format?: string;
+	separator?: string;
+} = {}) {
 	draft.format = format || '';
 	draft.separator = separator || '';
 }
@@ -200,7 +209,7 @@ function getExportFilename() {
 	return `history-${date}-${time}`;
 }
 
-function exportFile(format) {
+function exportFile(format: string) {
 	const delimiter = draft.separator;
 	const filename = getExportFilename();
 	// https://webitel.atlassian.net/browse/DEV-3797
@@ -219,12 +228,12 @@ function exportFile(format) {
 	}
 
 	switch (format) {
-		case TypesExportedSettingsEnum.CSV:
+		case TypesExportedSettings.CSV:
 			return exportCSV({
 				...params,
 				delimiter,
 			});
-		case TypesExportedSettingsEnum.XLSX:
+		case TypesExportedSettings.XLSX:
 			return exportXLS(params);
 		default:
 			console.error(`Unsupported format: ${format}`);
@@ -257,7 +266,7 @@ function save() {
 	updateDraft();
 }
 
-function selectHandler(selectedValue) {
+function selectHandler(selectedValue: { value: string }) {
 	draft.format = selectedValue.value;
 	if (!isExportSettingsFormatCSV.value) {
 		draft.separator = '';
