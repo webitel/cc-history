@@ -74,15 +74,11 @@ import ConfigurationAPI from '../../api/configuration';
 import FilesCounter from './files-counter.vue';
 import { useUserinfoStore } from '../../../userinfo/stores/userinfoStore';
 
-type SelectedItem = {
-	id: string | number;
-};
-
 interface Props {
-	dataList?: unknown[];
-	filters?: Record<string, unknown>;
+	dataList: Record<string, unknown>[];
+	filters: Record<string, unknown>;
 	fields: string[];
-	selected?: SelectedItem[];
+	selected: Record<string, unknown>[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
