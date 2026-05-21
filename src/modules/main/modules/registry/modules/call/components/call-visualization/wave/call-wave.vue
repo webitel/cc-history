@@ -255,6 +255,7 @@ import {
 	annotationSecondsToInt,
 	useCallWaveAnnotations,
 } from './composables/useCallWaveAnnotations';
+import { useCallWaveFileAnnotations } from './composables/useCallWaveFileAnnotations';
 import { useCallWavePlugins } from './composables/useCallWavePlugins';
 import { useCallWaveRegions } from './composables/useCallWaveRegions';
 import { useCallWaveSound } from './composables/useCallWaveSound';
@@ -273,7 +274,7 @@ const props = defineProps<{
 const store = useStore();
 
 const file = computed(() => store.state.registry.call.selectedRecordingFile);
-const annotations = computed<WaveAnnotation[]>(
+const allAnnotations = computed<WaveAnnotation[]>(
 	() => store.getters['registry/call/CALL_ANNOTATIONS'],
 );
 const fileOptions = computed(
@@ -286,17 +287,17 @@ const fileUrl = computed(() =>
 	}),
 );
 
-const audioFiles = computed(
-	() => fileOptions.value?.[EngineCallFileType.FileTypeAudio] || [],
-);
+const { audioFiles, currentFileId, annotations, commentsSize } =
+	useCallWaveFileAnnotations({
+		file,
+		fileOptions,
+		allAnnotations,
+	});
 
 const callRef = toRef(props, 'call');
 
 const holdsSize = computed(() =>
 	props.call.hold ? props.call.hold.length : 0,
-);
-const commentsSize = computed(() =>
-	annotations.value ? annotations.value.length : 0,
 );
 
 const channelColorLeft = computed(() => 'var(--true-color)');
@@ -322,7 +323,7 @@ const { regionsPlugin, waveOptions } = useCallWavePlugins();
 const {
 	zoomInDisabled,
 	zoomOutDisabled,
-	resetZoomState,
+	resetZoom,
 	increaseZoom,
 	decreaseZoom,
 	syncZoomValue,
@@ -398,7 +399,7 @@ function speedButtonColor(value: number): 'primary' | 'secondary' {
 }
 
 const { saveComment, deleteComment: deleteCommentBySelection } =
-	useCallWaveAnnotations(store, props.call.id, updateRegions);
+	useCallWaveAnnotations(store, props.call.id, currentFileId, updateRegions);
 const deleteComment = () => deleteCommentBySelection(selectedComment.value);
 
 function handleCommentDraftRangeUpdate({
@@ -451,6 +452,7 @@ function createComment(region: Region) {
 		dragSelectionCleanup.value = null;
 	}
 	selectedComment.value = {
+		fileId: currentFileId.value,
 		startSec: String(annotationSecondsToInt(region.start)),
 		endSec: String(annotationSecondsToInt(region.end)),
 		note: '',
@@ -466,6 +468,8 @@ async function onReady() {
 	// Loading UI toggles in the same tick as `ready`; wait so layout matches before `reRender()`.
 	await nextTick();
 	redraw();
+	resetZoom();
+	await updateRegions();
 }
 
 function initWave() {
@@ -496,10 +500,6 @@ function initWave() {
 }
 
 // `wavesurfer.vue` loads from `src` only; avoid double `load()` on file change.
-watch(fileUrl, () => {
-	resetZoomState();
-});
-
 watch(
 	[
 		player,
