@@ -29,6 +29,7 @@ export interface CallWaveCallRecord {
 
 export interface WaveAnnotation {
 	id?: string;
+	fileId?: string;
 	note: string;
 	startSec: number | string;
 	endSec: number | string;
@@ -50,6 +51,7 @@ export interface CommentDragSelectionOptions {
 }
 
 export interface NewCommentDraft {
+	fileId?: string;
 	startSec: string;
 	endSec: string;
 	note: string;
@@ -57,6 +59,7 @@ export interface NewCommentDraft {
 
 export interface CommentFormDraft {
 	id?: string;
+	fileId?: string;
 	note: string;
 	startSec: number | string;
 	endSec: number | string;
