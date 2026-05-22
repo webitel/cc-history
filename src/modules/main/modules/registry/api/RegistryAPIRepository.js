@@ -354,6 +354,10 @@ const exportHistoryToFile = getList({
 					);
 				}
 
+				if (item.from) {
+					convertedItem.from = item.from.number;
+				}
+
 				return convertedItem;
 			}),
 	],
