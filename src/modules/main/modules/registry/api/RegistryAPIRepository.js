@@ -4,110 +4,16 @@ import applyTransform, {
 	notify,
 	snakeToCamel,
 } from '@webitel/ui-sdk/api/transformers/index';
-import { FormatDateMode } from '@webitel/ui-sdk/enums';
-import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
-import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
-import { formatDate } from '@webitel/ui-sdk/utils';
+import { normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import { startOfToday } from 'date-fns';
 import { CallServiceApiFactory } from 'webitel-sdk';
 
 import instance from '../../../../../app/api/instance';
 import configuration from '../../../../../app/api/openAPIConfig';
+import { transformExportItems } from './_internals/transformExportItems.ts';
+import { transformHistoryItems } from './_internals/transformHistoryItems.ts';
 
 const callService = new CallServiceApiFactory(configuration, '', instance);
-
-// Функція не використовується
-const computeDate = (timestamp) => {
-	if (!timestamp) return null;
-	const date = new Date(+timestamp);
-	return formatDate(date, FormatDateMode.DATE);
-};
-
-const computeTime = (timestamp) => {
-	if (!timestamp) return null;
-	const date = new Date(+timestamp);
-	return formatDate(date, FormatDateMode.TIME);
-};
-
-const computeTimeWithSec = (timestamp) => {
-	if (!timestamp) return null;
-	const date = new Date(+timestamp);
-	return formatDate(date, FormatDateMode.TIME_SEC);
-};
-
-const computeDateAndTime = (timestamp) => {
-	if (!timestamp) return null;
-	const date = new Date(+timestamp);
-	return formatDate(date, FormatDateMode.DATETIME);
-};
-
-const mapDefaultComments = (item) => {
-	const defaultComment = {
-		startSec: 0,
-		endSec: 0,
-		note: '',
-	};
-
-	return item.annotations
-		? item.annotations.map((comment) => ({
-				...defaultComment,
-				...comment,
-			}))
-		: [];
-};
-
-const mapTranscripts = (item) => {
-	return item.transcripts
-		? item.transcripts.map((transcript) => ({
-				...transcript,
-				name: transcript.file?.name,
-			}))
-		: [];
-};
-
-const groupFilesByType = (files) => {
-	if (!files) return {};
-	return files.reduce((acc, file) => {
-		acc[file.type] = acc[file.type] || [];
-		acc[file.type].push(file);
-		return acc;
-	}, {});
-};
-
-const transformResponseItems = (items) => {
-	const defaultObject = {
-		_isSelected: false,
-	};
-	return items.map((item) => ({
-		...defaultObject,
-		...item,
-		createdAt: item.createdAt
-			? formatDate(+item.createdAt, FormatDateMode.DATETIME)
-			: null,
-		bridgedAt: computeTimeWithSec(item.bridgedAt),
-		queueBridgedAt: computeTimeWithSec(item.queueBridgedAt),
-		answeredAt: computeTimeWithSec(item.answeredAt),
-		joinedAt: computeTimeWithSec(item.joinedAt),
-		leavingAt: computeTimeWithSec(item.leavingAt),
-		hangupAt: computeTimeWithSec(item.hangupAt),
-		reportingAt: computeTimeWithSec(item.reportingAt),
-		duration: convertDuration(item.duration),
-		holdSec: convertDuration(item.holdSec),
-		waitSec: convertDuration(item.waitSec),
-		billSec: convertDuration(item.billSec),
-		talkSec: convertDuration(item.talkSec),
-		reportingSec: convertDuration(item.reportingSec),
-		queueWaitSec: convertDuration(item.queueWaitSec),
-		queueDurationSec: convertDuration(item.queueDurationSec),
-		annotations: mapDefaultComments(item),
-		hangupDisposition: item.hangupDisposition
-			? converters.snakeToCamel(item.hangupDisposition)
-			: '',
-		score: item.scoreRequired ? item.scoreRequired.toFixed(2) : null,
-		transcripts: mapTranscripts(item),
-		files: groupFilesByType(item.files),
-	}));
-};
 
 /*
 pass custom transformers to use "abstract" getList function in both UI and CSV export cases:
@@ -264,7 +170,7 @@ const getHistory = (requestParams) => {
 			merge(getDefaultGetListResponse()),
 		],
 		responseItemsTransformers: [
-			transformResponseItems,
+			transformHistoryItems,
 		],
 	})({
 		...requestParams,
@@ -277,89 +183,7 @@ const exportHistoryToFile = getList({
 		merge(getDefaultGetListResponse()),
 	],
 	responseItemsTransformers: [
-		(items) =>
-			items.map((item) => {
-				const convertedItem = {
-					...item,
-				};
-
-				if (item.created_at) {
-					// Це було закоментовано 8 місяців тому. Можливо прибрати?
-					// convertedItem.date = computeDate(item.created_at);
-					// convertedItem.time = computeTime(item.created_at);
-					convertedItem.created_at = computeDateAndTime(item.created_at);
-				}
-
-				if (item.bridged_at) {
-					convertedItem.bridged_at = computeDateAndTime(item.bridged_at);
-				}
-
-				if (item.queue_bridged_at) {
-					convertedItem.queue_bridged_at = computeDateAndTime(
-						item.queue_bridged_at,
-					);
-				}
-
-				if (item.answered_at) {
-					convertedItem.answered_at = computeDateAndTime(item.answered_at);
-				}
-
-				if (item.joined_at) {
-					convertedItem.joined_at = computeDateAndTime(item.joined_at);
-				}
-
-				if (item.leaving_at) {
-					convertedItem.leaving_at = computeDateAndTime(item.leaving_at);
-				}
-
-				if (item.hangup_at) {
-					convertedItem.hangup_at = computeDateAndTime(item.hangup_at);
-				}
-
-				if (item.reporting_at) {
-					convertedItem.reporting_at = computeDateAndTime(item.reporting_at);
-				}
-
-				if (item.duration) {
-					convertedItem.duration = convertDuration(item.duration);
-				}
-
-				if (item.hold_sec) {
-					convertedItem.hold_sec = convertDuration(item.hold_sec);
-				}
-
-				if (item.wait_sec) {
-					convertedItem.wait_sec = convertDuration(item.wait_sec);
-				}
-
-				if (item.bill_sec) {
-					convertedItem.bill_sec = convertDuration(item.bill_sec);
-				}
-
-				if (item.talk_sec) {
-					convertedItem.talk_sec = convertDuration(item.talk_sec);
-				}
-
-				if (item.reporting_sec) {
-					convertedItem.reporting_sec = convertDuration(item.reporting_sec);
-				}
-
-				if (item.queue_wait_sec) {
-					convertedItem.queue_wait_sec = convertDuration(item.queue_wait_sec);
-				}
-
-				if (item.queue_duration_sec) {
-					convertedItem.queue_duration_sec = convertDuration(
-						item.queue_duration_sec,
-					);
-				}
-
-				if (item.from) {
-					convertedItem.from = item.from.number;
-				}
-
-				return convertedItem;
-			}),
+		transformExportItems,
 	],
 });
 
