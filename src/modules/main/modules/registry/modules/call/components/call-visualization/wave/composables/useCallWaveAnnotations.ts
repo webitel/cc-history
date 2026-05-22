@@ -18,7 +18,7 @@ export function annotationSecondsToInt(
 export function useCallWaveAnnotations(
 	store: Store<unknown>,
 	callId: string,
-	currentFileId: ComputedRef<string | undefined>,
+	currentFileId: ComputedRef<string>,
 	updateRegions: UpdateRegions,
 ) {
 	async function saveComment(draft: WaveAnnotation) {

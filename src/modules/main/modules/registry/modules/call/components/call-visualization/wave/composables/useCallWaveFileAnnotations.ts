@@ -9,16 +9,10 @@ interface AudioFileOption {
 }
 
 interface UseCallWaveFileAnnotationsOptions {
-	file: ComputedRef<
-		| {
-				id?: string;
-		  }
-		| null
-		| undefined
-	>;
-	fileOptions: ComputedRef<
-		Record<string, AudioFileOption[]> | null | undefined
-	>;
+	file: ComputedRef<{
+		id?: string;
+	}>;
+	fileOptions: ComputedRef<Record<string, AudioFileOption[]>>;
 	allAnnotations: ComputedRef<WaveAnnotation[]>;
 }
 
@@ -28,18 +22,17 @@ export function useCallWaveFileAnnotations({
 	allAnnotations,
 }: UseCallWaveFileAnnotationsOptions) {
 	const audioFiles = computed<AudioFileOption[]>(
-		() => fileOptions.value?.[EngineCallFileType.FileTypeAudio] || [],
+		() => fileOptions.value[EngineCallFileType.FileTypeAudio] || [],
 	);
 
 	const firstAudioFileId = computed(() => audioFiles.value?.[0]?.id);
-	const currentFileId = computed(() => file.value?.id);
+	const currentFileId = computed(
+		() => file.value?.id || firstAudioFileId.value,
+	);
 
 	const annotations = computed<WaveAnnotation[]>(() => {
-		if (!allAnnotations.value?.length) {
-			return [];
-		}
 		const selectedFileId = currentFileId.value;
-		if (!selectedFileId) {
+		if (!allAnnotations.value?.length || !selectedFileId) {
 			return [];
 		}
 		return allAnnotations.value.filter((annotation) => {

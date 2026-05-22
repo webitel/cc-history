@@ -170,7 +170,7 @@ function initDraft(newDraft: WaveAnnotation | NewCommentDraft | null) {
 	draft.startSec = value.startSec ?? 0;
 	draft.endSec = value.endSec ?? 0;
 	setOptionalDraftField('fileId', value.fileId);
-	setOptionalDraftField('id', value.id);
+	setOptionalDraftField('id', 'id' in value ? value.id : undefined);
 }
 
 function saveComment() {
