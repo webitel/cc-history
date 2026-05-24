@@ -20,16 +20,22 @@ export function useCallWaveZoom(getPlayer: WaveSurferGetter) {
 		return minPxPerSec.value < MIN_ZOOM_PX_PER_SEC;
 	});
 
-	function resetZoomState() {
-		minPxPerSec.value = 0;
-	}
-
 	function naturalPxPerSec(): number {
 		const waveSurfer = getPlayer();
 		const duration = waveSurfer?.getDuration();
 		const width = waveSurfer?.getWidth();
 		if (!duration || !width) return 0;
 		return width / duration;
+	}
+
+	function resetZoom() {
+		minPxPerSec.value = 0;
+		const waveSurfer = getPlayer();
+		if (!waveSurfer) return;
+		const natural = naturalPxPerSec();
+		if (natural > 0) {
+			waveSurfer.zoom(natural);
+		}
 	}
 
 	function increaseZoom() {
@@ -54,7 +60,7 @@ export function useCallWaveZoom(getPlayer: WaveSurferGetter) {
 		minPxPerSec,
 		zoomInDisabled,
 		zoomOutDisabled,
-		resetZoomState,
+		resetZoom,
 		increaseZoom,
 		decreaseZoom,
 		syncZoomValue,

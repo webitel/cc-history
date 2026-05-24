@@ -1,4 +1,5 @@
 // Vuex dispatch for annotation CRUD and refreshing regions after save or delete.
+import type { ComputedRef } from 'vue';
 import type { Store } from 'vuex';
 import type { NewCommentDraft, WaveAnnotation } from '../call-wave.types';
 
@@ -17,15 +18,18 @@ export function annotationSecondsToInt(
 export function useCallWaveAnnotations(
 	store: Store<unknown>,
 	callId: string,
+	currentFileId: ComputedRef<string>,
 	updateRegions: UpdateRegions,
 ) {
 	async function saveComment(draft: WaveAnnotation) {
 		const startSec = annotationSecondsToInt(draft.startSec);
 		const endSec = annotationSecondsToInt(draft.endSec);
+		const fileId = draft.fileId || currentFileId.value;
 		if (draft.id) {
 			await store.dispatch('registry/call/EDIT_ANNOTATION', {
 				callId,
 				...draft,
+				fileId,
 				startSec,
 				endSec,
 			});
@@ -33,6 +37,7 @@ export function useCallWaveAnnotations(
 			await store.dispatch('registry/call/ADD_ANNOTATION', {
 				callId,
 				...draft,
+				fileId,
 				startSec,
 				endSec,
 			});

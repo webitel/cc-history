@@ -152,17 +152,25 @@ function expandTextarea() {
 	isTextareaExpanded.value = !isTextareaExpanded.value;
 }
 
+function setOptionalDraftField(
+	key: 'id' | 'fileId',
+	value: string | undefined,
+) {
+	if (value) {
+		draft[key] = value;
+		return;
+	}
+	delete draft[key];
+}
+
 function initDraft(newDraft: WaveAnnotation | NewCommentDraft | null) {
 	if (!newDraft) return;
 	const value = deepCopy(newDraft);
 	draft.note = value.note ?? '';
 	draft.startSec = value.startSec ?? 0;
 	draft.endSec = value.endSec ?? 0;
-	if (value.id) {
-		draft.id = value.id;
-	} else {
-		delete draft.id;
-	}
+	setOptionalDraftField('fileId', value.fileId);
+	setOptionalDraftField('id', 'id' in value ? value.id : undefined);
 }
 
 function saveComment() {

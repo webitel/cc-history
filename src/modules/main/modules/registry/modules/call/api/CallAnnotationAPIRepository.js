@@ -15,6 +15,7 @@ const fieldsToSend = [
 	'note',
 	'startSec',
 	'endSec',
+	'fileId',
 	'callId',
 ];
 
