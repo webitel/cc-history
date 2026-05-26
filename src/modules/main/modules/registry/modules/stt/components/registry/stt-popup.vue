@@ -72,7 +72,7 @@ export default {
 	},
 	methods: {
 		initCurrentTranscript() {
-			[this.transcript] = this.call.transcripts;
+			[this.transcript] = this.call?.transcripts || [];
 		},
 		async handleDeleteTranscription() {
 			await this.deleteTranscription();
@@ -102,7 +102,11 @@ export default {
 				],
 			};
 			const res = await APIRepository.history.getHistory(params);
-			[this.call] = res.items;
+			const [call] = res?.items || [];
+			this.call = {
+				transcripts: call?.transcripts || [],
+				...call,
+			};
 		},
 		async initialize() {
 			await this.loadCall();
