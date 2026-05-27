@@ -64,8 +64,7 @@
     >
       <call-comment-form
         v-if="commentsMode"
-        :call-duration="callDuration"
-        :call-id="call.id"
+        :call-duration="getCommentFormDuration()"
         :comment="selectedComment"
         @delete="deleteComment"
         @save="saveComment"
@@ -372,9 +371,9 @@ const {
 	commentDragOptions: COMMENT_DRAG_OPTIONS,
 });
 
-const callDuration = computed(() =>
-	Math.round(player.value?.getDuration() ?? 0),
-);
+function getCommentFormDuration() {
+	return Math.round(player.value?.getDuration() ?? 0);
+}
 
 const { exportFiles: downloadFile } = useFilesExport({
 	getFileURL: (item) =>
