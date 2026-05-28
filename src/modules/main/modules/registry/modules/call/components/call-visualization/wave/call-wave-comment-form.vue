@@ -62,7 +62,6 @@ defineOptions({
 });
 
 const props = defineProps<{
-	callId: string;
 	callDuration: number;
 	comment: WaveAnnotation | NewCommentDraft | null;
 }>();
