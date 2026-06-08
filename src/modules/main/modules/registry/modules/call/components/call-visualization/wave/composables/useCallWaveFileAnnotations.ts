@@ -1,5 +1,5 @@
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { computed, type ComputedRef } from 'vue';
+import { type ComputedRef, computed } from 'vue';
 
 import type { WaveAnnotation } from '../call-wave.types';
 

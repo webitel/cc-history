@@ -1,5 +1,8 @@
 import { getMediaUrl } from '@webitel/api-services/api';
-import { WebitelChatMessage, WebitelChatPeer } from '@webitel/api-services/gen';
+import type {
+	WebitelChatMessage,
+	WebitelChatPeer,
+} from '@webitel/api-services/gen';
 
 // Normalize function to transform API messages to ChatMessageType format
 export const normalizeMessages = (

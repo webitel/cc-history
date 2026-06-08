@@ -38,8 +38,8 @@ import { IconAction } from '@webitel/ui-sdk/enums';
 import AgentPdfsTabSdk from '@webitel/ui-sdk/src/modules/AgentPdfs/components/agent-pdfs-tab.vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { usePdfsDataListStore } from './store/pdfs';
 import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
+import { usePdfsDataListStore } from './store/pdfs';
 
 const route = useRoute();
 

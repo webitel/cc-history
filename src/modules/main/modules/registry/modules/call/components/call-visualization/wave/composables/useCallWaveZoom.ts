@@ -1,5 +1,5 @@
 // Zoom level state (px/s), zoom in/out actions, and syncing from WaveSurfer zoom events.
-import { computed, ref, type ComputedRef } from 'vue';
+import { type ComputedRef, computed, ref } from 'vue';
 import type WaveSurfer from 'wavesurfer.js';
 
 type WaveSurferGetter = () => WaveSurfer | null | undefined;

@@ -51,14 +51,14 @@
 </template>
 
 <script setup lang="ts">
-import AuditFormAnswerEditingInfo from '@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
 import type {
 	EngineQuestion,
 	EngineQuestionAnswer,
 } from '@webitel/api-services/gen/models';
+import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
+import AuditFormAnswerEditingInfo from '@webitel/ui-sdk/modules/AuditForm/components/form-answers/answer-editing-info/audit-form-answer-editing-info.vue';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
 	question: EngineQuestion;

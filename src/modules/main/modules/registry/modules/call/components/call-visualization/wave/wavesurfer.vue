@@ -7,8 +7,8 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
-import WaveSurfer from 'wavesurfer.js';
 import type { WaveSurferOptions } from 'wavesurfer.js';
+import WaveSurfer from 'wavesurfer.js';
 import { useWaveSurferResizeStabilizer } from './composables/useWaveSurferResizeStabilizer';
 
 // `container` is always provided by this component itself — callers must not set it.

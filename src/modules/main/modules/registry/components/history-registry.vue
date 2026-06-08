@@ -235,6 +235,7 @@ import {
 	WtLoader,
 	WtPagination,
 	WtPlayer,
+	WtScreenRecordingsAction,
 	WtTable,
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
@@ -250,14 +251,12 @@ import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { EngineHistoryCall } from 'webitel-sdk';
-
 import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
 import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
-import { WtScreenRecordingsAction } from '@webitel/ui-sdk/components';
 import TableDirection from './table-templates/table-direction.vue';
 import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 

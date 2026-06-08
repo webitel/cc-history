@@ -16,13 +16,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import {
-	getMediaUrl,
 	downloadFile,
 	FileServicesAPI,
+	getMediaUrl,
 } from '@webitel/api-services/api';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { computed, ref } from 'vue';
 
 interface Props {
 	files: any;

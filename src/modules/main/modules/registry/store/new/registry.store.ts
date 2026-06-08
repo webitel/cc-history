@@ -1,5 +1,5 @@
 import { createTableStore } from '@webitel/ui-datalist';
-import { EngineHistoryCall } from 'webitel-sdk';
+import type { EngineHistoryCall } from 'webitel-sdk';
 
 import RegistryApi from '../../api/RegistryAPIRepository.js';
 import { namespace } from '../../namespace.ts';

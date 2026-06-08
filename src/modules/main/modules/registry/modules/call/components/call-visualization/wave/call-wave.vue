@@ -234,22 +234,22 @@ import {
 	computed,
 	nextTick,
 	onBeforeUnmount,
+	type Ref,
 	ref,
 	toRef,
 	watch,
-	type Ref,
 } from 'vue';
 import { useStore } from 'vuex';
 import type { Region } from 'wavesurfer.js/plugins/regions';
 
 import CallVisualizationHeader from '../call-visualization-header.vue';
-import CallCommentForm from './call-wave-comment-form.vue';
 import type {
 	CallWaveCallRecord,
 	CommentDragSelectionOptions,
 	NewCommentDraft,
 	WaveAnnotation,
 } from './call-wave.types';
+import CallCommentForm from './call-wave-comment-form.vue';
 import {
 	annotationSecondsToInt,
 	useCallWaveAnnotations,

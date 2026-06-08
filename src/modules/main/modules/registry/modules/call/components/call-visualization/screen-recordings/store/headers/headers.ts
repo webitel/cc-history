@@ -1,4 +1,4 @@
-import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.type.js';
+import type { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.type.js';
 
 export const headers: WtTableHeader[] = [
 	{

@@ -1,15 +1,15 @@
 import { getCallMediaUrl } from '@webitel/api-services/api';
 import {
+	type EngineCallFile,
 	EngineCallFileType,
-	EngineCallFile,
 } from '@webitel/api-services/gen/models';
-import { ref } from 'vue';
 import type {
-	AudioSrc,
-	VideoSrc,
 	AudioMimeType,
+	AudioSrc,
 	VideoMimeType,
+	VideoSrc,
 } from 'vidstack';
+import { ref } from 'vue';
 
 export const usePlayMedia = () => {
 	const audioData = ref<
