@@ -10,14 +10,13 @@
     </template>
     <template #main>
       <div class="stt-popup-toolbar">
-        <wt-select
-          :value="transcript"
-          :clearable="false"
+        <wt-single-select
+          v-model:model-value="transcript"
+          :show-clear="false"
           :label="$t('vocabulary.file')"
           :options="call.transcripts"
           option-label="name"
-          track-by="fileId"
-          @input="transcript = $event"
+          data-key="fileId"
         />
         <div class="stt-popup-toolbar__actions">
           <stt-download-action @click="downloadTxt(data)" />

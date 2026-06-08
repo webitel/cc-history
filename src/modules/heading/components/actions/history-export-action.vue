@@ -21,14 +21,14 @@
         {{ $t('reusable.export') }}
       </template>
       <template #main>
-        <wt-select
-          :clearable="false"
+        <wt-single-select
+          :show-clear="false"
           :label="$t('vocabulary.format')"
           :options="exportSettingOptions"
           :v="v$.draft?.format"
-          :value="draft.format"
+          :model-value="draft.format"
           required
-          @input="selectHandler"
+          @update:model-value="selectHandler"
         />
         <wt-input-text
           v-if="isExportSettingsFormatCSV"

@@ -12,42 +12,42 @@
           v-model:model-value="options.name"
           :label="$t('dashboards.dashboardConfigForm.name')"
         />
-        <wt-select
-          v-model="visualization"
+        <wt-single-select
+          v-model:model-value="visualization"
           :label="$t('dashboards.dashboardConfigForm.visualization')"
           :disabled="!dashboard.visualizationOptions"
           :options="visualizationOptions"
-          track-by="value"
-          :clearable="false"
+          data-key="value"
+          :show-clear="false"
         />
-        <wt-select
+        <wt-single-select
           v-if="aggregationOptions.length"
-          v-model="aggregation"
+          v-model:model-value="aggregation"
           :label="$t('dashboards.dashboardConfigForm.aggregation')"
           :options="aggregationOptions"
-          track-by="value"
-          :clearable="false"
+          data-key="value"
+          :show-clear="false"
         />
-        <wt-select
+        <wt-single-select
           v-if="paramOptions.length"
-          v-model="param"
+          v-model:model-value="param"
           :label="$t('dashboards.dashboardConfigForm.param')"
           :options="paramOptions"
-          track-by="value"
-          :clearable="false"
+          data-key="value"
+          :show-clear="false"
         />
         <wt-input-text
           v-if="dashboard.options.param === VisualizationParams.VARIABLES"
           v-model:model-value="options.variable"
           :label="$t('dashboards.dashboardConfigForm.variable')"
         />
-        <wt-select
+        <wt-single-select
           v-if="isLimit"
-          v-model="limit"
+          v-model:model-value="limit"
           :label="$t('dashboards.dashboardConfigForm.limit.limit')"
           :options="limitOptions"
-          track-by="value"
-          :clearable="false"
+          data-key="value"
+          :show-clear="false"
         />
         <wt-checkbox
           v-if="isRelative"
