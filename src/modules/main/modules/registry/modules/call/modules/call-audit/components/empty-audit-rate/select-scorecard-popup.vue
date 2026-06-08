@@ -40,11 +40,11 @@ import AuditFormAPI from '../../api/AuditFormAPI.js';
 interface Scorecard {
 	id: string;
 	name: string;
-	questions?: any;
+	questions?: unknown;
 }
 
 interface Props {
-	call: any;
+	call: Record<string, unknown>;
 }
 
 interface Emits {

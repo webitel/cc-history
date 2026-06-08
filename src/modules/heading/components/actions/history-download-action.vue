@@ -22,15 +22,15 @@
 	lang="ts"
 	setup
 >
-import { ref, computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { getCallMediaUrl } from '@webitel/api-services/api';
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import {
+	EngineCallFileType,
 	EngineHistoryCall,
 	EngineTranscriptLookup,
 	StorageListPhrases,
 } from '@webitel/api-services/gen/models';
+import { computed, ref, toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import CallTranscriptAPI from '../../../../modules/main/modules/registry/modules/stt/api/callTranscript';
 import { useCallFilesExport } from '../../composables/useCallFilesExport';

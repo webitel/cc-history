@@ -29,12 +29,12 @@
 </template>
 
 <script lang="ts" setup>
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
+import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
 import { WtButton } from '@webitel/ui-sdk/components';
 import { WtObject } from '@webitel/ui-sdk/enums';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { EngineAuditRate } from '@webitel/api-services/gen/models';
-import { EngineAuditQuestionType } from '@webitel/api-services/gen/models';
 
 import { useUserAccessControl } from '../../../../../../../../../../../app/composables/useUserAccessControl.ts';
 import AuditRateSummaryInfo from './audit-rate-summary-info.vue';

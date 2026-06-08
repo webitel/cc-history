@@ -16,6 +16,7 @@ import CallInfo from '../../modules/main/modules/registry/modules/call/component
 import CallLegs from '../../modules/main/modules/registry/modules/call/components/call-legs/call-legs.vue';
 import CallVisualization from '../../modules/main/modules/registry/modules/call/components/call-visualization/call-visualization.vue';
 import VideoCallRecording from '../../modules/main/modules/registry/modules/call/components/video-call-recording/video-call-recording.vue';
+
 const routes = [
 	{
 		path: '/',

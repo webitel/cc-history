@@ -1,11 +1,12 @@
 // WaveSurfer regions for holds and comments: draw layers, overlays, toggles, and comment drag-selection lifecycle.
+
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { getIconFromRepository } from '@webitel/ui-sdk/icons';
 import { convertDuration } from '@webitel/ui-sdk/scripts';
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import type { Region } from 'wavesurfer.js/plugins/regions';
-import type RegionsPlugin from 'wavesurfer.js/plugins/regions';
+import { type ComputedRef, nextTick, type Ref, ref } from 'vue';
 import type WaveSurfer from 'wavesurfer.js';
-import { nextTick, ref, type ComputedRef, type Ref } from 'vue';
+import type RegionsPlugin from 'wavesurfer.js/plugins/regions';
+import type { Region } from 'wavesurfer.js/plugins/regions';
 import hsNoteIcon from '@/app/assets/icons/sprite/hs-note.svg?raw';
 
 import type {
@@ -15,13 +16,14 @@ import type {
 	NewCommentDraft,
 	WaveAnnotation,
 } from '../call-wave.types';
+import { createCommentTooltipContent } from './commentTooltipFactory';
+import { mapHoldToWaveformSeconds } from './holdTimelinePosition';
+import { annotationSecondsToInt } from './useCallWaveAnnotations';
 import {
 	adjustCommentTooltipPosition,
 	mountRegionIconOverlay,
 } from './waveRegionIcons';
-import { createCommentTooltipContent } from './commentTooltipFactory';
-import { mapHoldToWaveformSeconds } from './holdTimelinePosition';
-import { annotationSecondsToInt } from './useCallWaveAnnotations';
+
 const pauseIcon = getIconFromRepository('pause') || '';
 
 const COMMENT_REGION_ID_PREFIX = 'comment-';

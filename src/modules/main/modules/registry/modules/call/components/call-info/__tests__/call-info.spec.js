@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 
 import callInfo from '../call-info.vue';
 
@@ -31,20 +31,23 @@ describe('Opened call info tab', () => {
 		expect(wrapper.classes('call-info')).toBe(true);
 	});
 
-	it('renders a component with call variables', () => {
+	it('renders a component with call variables', async () => {
 		const wrapper = mount(callInfo, {
 			props,
 		});
+		// wt-expansion-panel renders its default slot content after a tick
+		await flushPromises();
 		expect(wrapper.findAll('li.call-info__item').length).toBe(
 			Object.keys(variables).length,
 		);
 	});
 
-	it('renders variables value', () => {
+	it('renders variables value', async () => {
 		const wrapper = mount(callInfo, {
 			props,
 		});
 		const varKey = Object.keys(variables)[0];
+		await flushPromises();
 		expect(wrapper.find('li > h3.call-info__title').text()).toBe(`${varKey}:`);
 	});
 

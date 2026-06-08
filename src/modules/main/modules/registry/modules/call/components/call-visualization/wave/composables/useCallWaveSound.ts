@@ -1,5 +1,5 @@
 // Web Audio routing for stereo/mono, per-channel gain, play state, and volume slider handlers.
-import { reactive, ref, type Ref } from 'vue';
+import { type Ref, reactive, ref } from 'vue';
 import type WaveSurfer from 'wavesurfer.js';
 
 export type WaveSurferGetter = () => WaveSurfer | null | undefined;

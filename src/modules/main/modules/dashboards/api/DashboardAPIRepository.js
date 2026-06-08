@@ -68,15 +68,10 @@ const getDashboardsData = async (params) => {
 	]);
 
 	try {
-		const variables =
-			variable &&
-			variable.split('&').reduce(
-				(vars, currVar) => ({
-					...vars,
-					[currVar.split('=')[0]]: currVar.split('=')[1],
-				}),
-				{},
-			);
+		const variables = variable?.split('&').reduce((vars, currVar) => {
+			vars[currVar.split('=')[0]] = currVar.split('=')[1];
+			return vars;
+		}, {});
 
 		const response = await callService.aggregateHistoryCall({
 			aggs,

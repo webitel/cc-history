@@ -234,22 +234,22 @@ import {
 	computed,
 	nextTick,
 	onBeforeUnmount,
+	type Ref,
 	ref,
 	toRef,
 	watch,
-	type Ref,
 } from 'vue';
 import { useStore } from 'vuex';
 import type { Region } from 'wavesurfer.js/plugins/regions';
 
 import CallVisualizationHeader from '../call-visualization-header.vue';
-import CallCommentForm from './call-wave-comment-form.vue';
 import type {
 	CallWaveCallRecord,
 	CommentDragSelectionOptions,
 	NewCommentDraft,
 	WaveAnnotation,
 } from './call-wave.types';
+import CallCommentForm from './call-wave-comment-form.vue';
 import {
 	annotationSecondsToInt,
 	useCallWaveAnnotations,
@@ -382,8 +382,8 @@ const { exportFiles: downloadFile } = useFilesExport({
 			download: true,
 		}),
 	fetch: async () => ({
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		items: (props.call.files?.[EngineCallFileType.FileTypeAudio] ?? []) as any,
+		items: (props.call.files?.[EngineCallFileType.FileTypeAudio] ??
+			[]) as unknown[],
 		next: false,
 	}),
 	filename: 'history-record',

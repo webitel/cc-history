@@ -67,9 +67,9 @@ import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmat
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 import EmptyVideo from './_internals/assets/empty-video.svg';
 import EmptyVideoDark from './_internals/assets/empty-video-dark.svg';
-import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 
 interface Props {
 	files?: EngineCallFile[];

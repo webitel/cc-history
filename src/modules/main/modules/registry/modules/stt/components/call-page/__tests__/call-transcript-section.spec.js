@@ -50,6 +50,9 @@ describe('CallTranscriptSection', () => {
 		};
 		computed.file = () => file;
 		CallTranscript.delete = vi.fn();
+		// component auto-loads the transcript on mount; stub the fetch so it
+		// does not hit the network and leak an unhandled rejection
+		CallTranscript.get = vi.fn().mockResolvedValue([]);
 		const wrapper = shallowMount(CallTranscriptSection, {
 			props,
 			computed,

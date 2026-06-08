@@ -13,6 +13,10 @@ describe('Annotation store', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		context = getContextMock(vi);
+		// actions read/write `state.mainCall.annotations`
+		context.state.mainCall = {
+			annotations: [],
+		};
 	});
 
 	it('ADD_ANNOTATION calls CallAnnotationApi add method', async () => {

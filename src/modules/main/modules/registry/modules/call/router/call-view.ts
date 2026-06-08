@@ -1,4 +1,4 @@
-import { type RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 
 const TheCallView = () => import('../components/the-call-view.vue');
 const CallInfo = () => import('../components/call-info/call-info.vue');

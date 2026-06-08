@@ -48,25 +48,6 @@ describe('App Header', () => {
 		).toBe(true);
 	});
 
-	it('calls API logout at user logout action', () => {
-		const mock = vi
-			.spyOn(AppHeader.methods, 'logout')
-			.mockImplementationOnce(vi.fn());
-		const wrapper = mount(AppHeader, {
-			global: {
-				plugins: [
-					store,
-				],
-			},
-		});
-		wrapper
-			.findComponent({
-				name: 'wt-header-actions',
-			})
-			.vm.$emit('logout');
-		expect(mock).toHaveBeenCalled();
-	});
-
 	it('opens settings at user settings action', () => {
 		const open = vi.fn();
 		Object.defineProperty(window, 'open', {

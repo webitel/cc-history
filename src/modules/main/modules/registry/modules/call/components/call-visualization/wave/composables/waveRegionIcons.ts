@@ -1,7 +1,8 @@
 // Region icon + tooltip DOM injected with Vue render(); keeps positions aligned on zoom and region updates.
-import type { Region } from 'wavesurfer.js/plugins/regions';
-import type WaveSurfer from 'wavesurfer.js';
+
 import { h, nextTick, render, type VNode, type VNodeArrayChildren } from 'vue';
+import type WaveSurfer from 'wavesurfer.js';
+import type { Region } from 'wavesurfer.js/plugins/regions';
 
 const tooltipStyle: Record<string, string> = {
 	minWidth: '0',
@@ -148,7 +149,7 @@ export function mountRegionIconOverlay({
 		requestAnimationFrame(() => {
 			applyIconWrapLeft(mountElement, region, player);
 			const tooltipWidthPx = parseFloat(tooltipWidth);
-			if (!isNaN(tooltipWidthPx)) {
+			if (!Number.isNaN(tooltipWidthPx)) {
 				adjustCommentTooltipPosition(
 					mountElement,
 					region,

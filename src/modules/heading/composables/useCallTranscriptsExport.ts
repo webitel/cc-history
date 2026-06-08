@@ -1,17 +1,16 @@
-import {
+import type {
 	EngineHistoryCall,
 	EngineTranscriptLookup,
 	StorageListPhrases,
 	StorageTranscriptPhrase,
 } from '@webitel/api-services/gen/models';
 import {
-	ExportedItem,
+	type ExportedItem,
 	useFilesExport,
 } from '@webitel/ui-sdk/modules/FilesExport';
-
+import type { Ref } from 'vue';
 import APIRepository from '../../../app/api/APIRepository';
 import CallTranscriptAPI from '../../../modules/main/modules/registry/modules/stt/api/callTranscript.js';
-import { Ref } from 'vue';
 
 interface ExportedTranscriptItem extends ExportedItem {
 	call: EngineHistoryCall;

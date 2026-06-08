@@ -50,11 +50,11 @@ import deepCopy from 'deep-copy';
 import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
-	RangeField,
 	type CommentFormDraft,
 	type NewCommentDraft,
-	type WaveAnnotation,
+	RangeField,
 	type RangeField as RangeFieldType,
+	type WaveAnnotation,
 } from './call-wave.types';
 
 defineOptions({

@@ -52,10 +52,7 @@ initializeDefaultCreatedAtFilter();
 const resetFilters = () => {
 	const excludeNotDeletableFilters = filtersOptions.reduce((excludes, opt) => {
 		if (opt?.notDeletable) {
-			return [
-				...excludes,
-				opt.name,
-			];
+			excludes.push(opt.name);
 		}
 
 		return excludes;

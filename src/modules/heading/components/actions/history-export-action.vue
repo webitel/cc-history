@@ -58,21 +58,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, toRefs } from 'vue';
-import { useRoute } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { required, requiredIf } from '@vuelidate/validators';
 import { FormatDateMode, TypesExportedSettings } from '@webitel/ui-sdk/enums';
-import { formatDate } from '@webitel/ui-sdk/utils';
-import { EngineSystemSettingName } from 'webitel-sdk';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 import { useCSVExport } from '@webitel/ui-sdk/src/modules/CSVExport/composables/useCSVExport';
 import XLSExportClass from '@webitel/ui-sdk/src/modules/CSVExport/XLSExport';
+import { formatDate } from '@webitel/ui-sdk/utils';
+import { computed, onMounted, reactive, ref, toRefs } from 'vue';
+import { useRoute } from 'vue-router';
+import { EngineSystemSettingName } from 'webitel-sdk';
 
 import APIRepository from '../../../../app/api/APIRepository';
+import { useUserinfoStore } from '../../../userinfo/stores/userinfoStore';
 import ConfigurationAPI from '../../api/configuration';
 import FilesCounter from './files-counter.vue';
-import { useUserinfoStore } from '../../../userinfo/stores/userinfoStore';
 
 interface Props {
 	dataList: Record<string, unknown>[];

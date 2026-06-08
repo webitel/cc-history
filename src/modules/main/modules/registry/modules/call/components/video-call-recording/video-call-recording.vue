@@ -42,7 +42,7 @@ import Screenshots from './screenshots/screenshots.vue';
 import VideoFile from './video-file/video-file.vue';
 
 interface Props {
-	call: any;
+	call: Record<string, unknown>;
 	namespace?: string;
 }
 
