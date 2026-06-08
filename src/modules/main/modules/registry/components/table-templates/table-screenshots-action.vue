@@ -25,7 +25,12 @@ import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { computed, ref } from 'vue';
 
 interface Props {
-	files: any;
+	files: Record<
+		string,
+		Array<{
+			id: string;
+		}>
+	>;
 }
 
 const props = withDefaults(defineProps<Props>(), {

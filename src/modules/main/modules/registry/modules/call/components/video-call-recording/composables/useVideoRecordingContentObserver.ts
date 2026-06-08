@@ -1,9 +1,11 @@
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, type Ref } from 'vue';
 
 // composable to make chat history block height equal to video block height
 export const useVideoRecordingContentObserver = (
-	contentRef: any,
-	videoRef: any,
+	contentRef: Ref<HTMLElement | null>,
+	videoRef: Ref<{
+		$el: HTMLElement;
+	} | null>,
 ) => {
 	let ro: ResizeObserver | null = null;
 

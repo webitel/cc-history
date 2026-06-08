@@ -99,16 +99,13 @@ export default {
 		initChannels() {
 			this.channels = [
 				...new Set(this.data.map(({ channel }) => channel)),
-			].reduce(
-				(channels, channel) => ({
-					...channels,
-					[channel]: {
-						value: channel,
-						show: true,
-					},
-				}),
-				{},
-			);
+			].reduce((channels, channel) => {
+				channels[channel] = {
+					value: channel,
+					show: true,
+				};
+				return channels;
+			}, {});
 		},
 		async deleteTranscript() {
 			const fileId = this.transcript.id;

@@ -28,8 +28,15 @@ import { useI18n } from 'vue-i18n';
 import CallRecordingsAPI from '../../../main/modules/registry/modules/recordings/api/CallRecordingsAPI';
 import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/callTranscript.js';
 
+interface HistoryItem {
+	id?: string;
+	files?: Record<string, unknown[]>;
+	transcripts?: unknown;
+	[key: string]: unknown;
+}
+
 const props = defineProps<{
-	selected: any[];
+	selected: HistoryItem[];
 }>();
 
 const emit = defineEmits<{

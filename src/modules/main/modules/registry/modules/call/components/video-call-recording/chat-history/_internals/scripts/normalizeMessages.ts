@@ -13,7 +13,7 @@ export const normalizeMessages = (
 
 	return messages
 		.map((message) => ({
-			id: parseInt(message.id),
+			id: parseInt(message.id, 10),
 			file: message.file && {
 				...message.file,
 				mime: message.file.type,
@@ -27,7 +27,7 @@ export const normalizeMessages = (
 				type: peers[+message.from?.id - 1].type,
 			},
 			chat: message.chat,
-			createdAt: new Date(parseInt(message.date)).getTime(),
+			createdAt: new Date(parseInt(message.date, 10)).getTime(),
 			channelId: message.chat?.id,
 			text: message.text,
 		}))

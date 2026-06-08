@@ -149,7 +149,7 @@ export function mountRegionIconOverlay({
 		requestAnimationFrame(() => {
 			applyIconWrapLeft(mountElement, region, player);
 			const tooltipWidthPx = parseFloat(tooltipWidth);
-			if (!isNaN(tooltipWidthPx)) {
+			if (!Number.isNaN(tooltipWidthPx)) {
 				adjustCommentTooltipPosition(
 					mountElement,
 					region,

@@ -382,8 +382,8 @@ const { exportFiles: downloadFile } = useFilesExport({
 			download: true,
 		}),
 	fetch: async () => ({
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		items: (props.call.files?.[EngineCallFileType.FileTypeAudio] ?? []) as any,
+		items: (props.call.files?.[EngineCallFileType.FileTypeAudio] ??
+			[]) as unknown[],
 		next: false,
 	}),
 	filename: 'history-record',

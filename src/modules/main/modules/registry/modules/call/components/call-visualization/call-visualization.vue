@@ -43,7 +43,7 @@ import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
 import CallWave from './wave/call-wave.vue';
 
 interface Props {
-	call: any;
+	call: Record<string, unknown>;
 	namespace?: string;
 }
 

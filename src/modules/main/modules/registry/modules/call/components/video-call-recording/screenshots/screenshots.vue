@@ -149,7 +149,7 @@ const galleriaData = computed(() => {
 	if (!dataList.value?.length) return [];
 
 	return dataList.value
-		.filter((item) => item && item.id && item.name)
+		.filter((item) => item?.id && item.name)
 		.map((item) => ({
 			src: getMediaUrl(item.id, false),
 			thumbnailSrc: getMediaUrl(item.id, true),

@@ -45,10 +45,8 @@ export const useCallFilesExport = ({
 				return {
 					items: response.items.reduce((acc, { files }) => {
 						const itemFiles = files[currentlyDownloadingFileType.value] || [];
-						return [
-							...acc,
-							...itemFiles,
-						];
+						acc.push(...itemFiles);
+						return acc;
 					}, []),
 					next: response.next,
 				};

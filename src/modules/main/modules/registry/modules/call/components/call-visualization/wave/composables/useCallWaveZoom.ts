@@ -39,14 +39,16 @@ export function useCallWaveZoom(getPlayer: WaveSurferGetter) {
 	}
 
 	function increaseZoom() {
-		const waveSurfer = getPlayer()!;
+		const waveSurfer = getPlayer();
+		if (!waveSurfer) return;
 		const base = minPxPerSec.value || naturalPxPerSec();
 		minPxPerSec.value = base * 2;
 		waveSurfer.zoom(minPxPerSec.value);
 	}
 
 	function decreaseZoom() {
-		const waveSurfer = getPlayer()!;
+		const waveSurfer = getPlayer();
+		if (!waveSurfer) return;
 		const base = minPxPerSec.value || naturalPxPerSec();
 		minPxPerSec.value = Math.max(base / 2, MIN_ZOOM_PX_PER_SEC);
 		waveSurfer.zoom(minPxPerSec.value);

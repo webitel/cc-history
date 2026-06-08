@@ -113,7 +113,7 @@ export default {
 			}));
 		},
 		amdLogs() {
-			return this.call.amdAiLogs && this.call.amdAiLogs.join(', ');
+			return this.call.amdAiLogs?.join(', ');
 		},
 		isDisplayAmdLogs() {
 			return this.call.amdResult && this.call.amdResult !== 'undefined';
@@ -136,7 +136,7 @@ export default {
 		formFields() {
 			const postProcessingData = [];
 			if (this.call.forms) {
-				this.call.forms.map((form) => {
+				this.call.forms.forEach((form) => {
 					if (!isEmpty(form.form_fields)) {
 						const variables = [];
 

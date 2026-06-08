@@ -180,7 +180,9 @@ const save = () => {
 const restore = () => {
 	const storedValue = getFromLocalStorage();
 	if (!isEmpty(storedValue)) {
-		storedValue.forEach((variableKey) => addVariableHeader(variableKey));
+		storedValue.forEach((variableKey) => {
+			addVariableHeader(variableKey);
+		});
 		// Visibility is restored later from the persisted `fields` (URL/LS):
 		draft.forEach((variable) => {
 			variable.show = false;
