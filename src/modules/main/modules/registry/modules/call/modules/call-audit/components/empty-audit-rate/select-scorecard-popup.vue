@@ -9,11 +9,11 @@
       {{ $t('registry.call.evaluation.selectTheScorecard') }}
     </template>
     <template #main>
-      <wt-select
-        v-model="scorecard"
+      <wt-single-select
+        v-model:model-value="scorecard"
         :label="$t('registry.call.evaluation.scorecard')"
         :search-method="loadScorecards"
-        :clearable="false"
+        :show-clear="false"
       />
     </template>
     <template #actions>

@@ -2,14 +2,14 @@
   <section class="call-wave-page">
     <call-visualization-header>
       <template #main>
-        <wt-select
+        <wt-single-select
           class="call-wave-page__file-select"
-          :value="file"
-          :clearable="false"
+          :model-value="file"
+          :show-clear="false"
           :placeholder="$t('vocabulary.file')"
           :options="audioFiles"
-          track-by="id"
-          @input="setFile"
+          data-key="id"
+          @update:model-value="setFile"
         />
         <div
           v-if="!isLoading"

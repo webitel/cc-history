@@ -28,11 +28,11 @@
         />
       </div>
     </div>
-    <wt-select 
-      v-model="currentVideo"
+    <wt-single-select 
+      v-model:model-value="currentVideo"
       :options="dataList"
       :placeholder="t('vocabulary.file')"
-      :clearable="false"
+      :show-clear="false"
     />
     <div class="video-file__player">
       <wt-empty 
