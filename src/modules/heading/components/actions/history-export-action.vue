@@ -8,8 +8,8 @@
       {{ $t('reusable.export') }}
     </wt-button>
     <files-counter
-      v-show="isCSVLoading || isXLSLoading"
-      :download-progress="CSVDownloadProgress || XLSDownloadProgress"
+      v-show="isCounterVisible"
+      :download-progress="downloadProgress"
     />
     <wt-popup
       v-if="exportPopup"
@@ -62,7 +62,10 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, requiredIf } from '@vuelidate/validators';
 import { FormatDateMode, TypesExportedSettings } from '@webitel/ui-sdk/enums';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
-import { useCSVExport } from '@webitel/ui-sdk/src/modules/CSVExport/composables/useCSVExport';
+import {
+	type FetchMethod,
+	useCSVExport,
+} from '@webitel/ui-sdk/src/modules/CSVExport/composables/useCSVExport';
 import XLSExportClass from '@webitel/ui-sdk/src/modules/CSVExport/XLSExport';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed, onMounted, reactive, ref, toRefs } from 'vue';
@@ -100,21 +103,36 @@ const draft = reactive({
 
 const selectedIds = computed(() => selected.value.map((item) => item.id));
 
-const {
-	CSVExportInstance,
-	CSVDownloadProgress,
-	isCSVLoading,
-	initCSVExport,
-	exportCSV,
-} = useCSVExport({
+const { CSVExportInstance, initCSVExport, exportCSV } = useCSVExport({
 	selected: selectedIds,
 });
 
+const EXPORT_COUNTER_DELAY = 1000;
+
+const downloadProgress = ref(0);
+const isCounterVisible = ref(false);
+
+function wrapFetch(fetchMethod: FetchMethod): FetchMethod {
+	return async (params) => {
+		const response = await fetchMethod(params);
+		downloadProgress.value += response.items.length;
+		return response;
+	};
+}
+
+async function runExport(exportFn: () => Promise<unknown>) {
+	downloadProgress.value = 0;
+	isCounterVisible.value = true;
+
+	try {
+		await exportFn();
+		await new Promise((resolve) => setTimeout(resolve, EXPORT_COUNTER_DELAY));
+	} finally {
+		isCounterVisible.value = false;
+	}
+}
+
 const XLSExportInstance = ref(null);
-const XLSDownloadProgress = computed(() =>
-	XLSExportInstance.value ? XLSExportInstance.value.downloadProgress.count : 0,
-);
-const isXLSLoading = computed(() => !!XLSDownloadProgress.value);
 
 const CSVExport = computed(() => CSVExportInstance.value);
 const XLSExport = computed(() => XLSExportInstance.value);
@@ -225,12 +243,14 @@ function exportFile(format: string) {
 
 	switch (format) {
 		case TypesExportedSettings.CSV:
-			return exportCSV({
-				...params,
-				delimiter,
-			});
+			return runExport(() =>
+				exportCSV({
+					...params,
+					delimiter,
+				}),
+			);
 		case TypesExportedSettings.XLSX:
-			return exportXLS(params);
+			return runExport(() => exportXLS(params));
 		default:
 			console.error(`Unsupported format: ${format}`);
 	}
@@ -269,10 +289,10 @@ function selectHandler(selectedValue: { value: string }) {
 	}
 }
 
-initCSVExport(APIRepository.history.exportHistoryToFile, {
+initCSVExport(wrapFetch(APIRepository.history.exportHistoryToFile), {
 	filename: 'history',
 });
-initXLSExport(APIRepository.history.exportHistoryToFile, {
+initXLSExport(wrapFetch(APIRepository.history.exportHistoryToFile), {
 	filename: 'history',
 });
 onMounted(checkExportSettings);
