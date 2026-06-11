@@ -63,8 +63,8 @@ import { required, requiredIf } from '@vuelidate/validators';
 import { FormatDateMode, TypesExportedSettings } from '@webitel/ui-sdk/enums';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 import {
-	useCSVExport,
 	type FetchMethod,
+	useCSVExport,
 } from '@webitel/ui-sdk/src/modules/CSVExport/composables/useCSVExport';
 import XLSExportClass from '@webitel/ui-sdk/src/modules/CSVExport/XLSExport';
 import { formatDate } from '@webitel/ui-sdk/utils';
