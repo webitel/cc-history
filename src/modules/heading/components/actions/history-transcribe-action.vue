@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
 
 import CallTranscriptAPI from '../../../main/modules/registry/modules/stt/api/callTranscript.js';
@@ -26,14 +27,17 @@ export default {
 	computed: {
 		allowTranscribe() {
 			const hasSelected = (selected) => selected.length;
-			const eachHasFile = (selected) =>
-				selected.every(({ files }) => !isEmpty(files));
+			// TODO: Remove this after transcription via video is added
+			const eachHasAudioFile = (selected) =>
+				selected.every(
+					({ files }) => !isEmpty(files?.[EngineCallFileType.FileTypeAudio]),
+				);
 			const eachHasNoTranscript = (selected) =>
 				selected.every(({ transcripts }) => isEmpty(transcripts));
 
 			return [
 				hasSelected,
-				eachHasFile,
+				eachHasAudioFile,
 				eachHasNoTranscript,
 			].every((rule) => rule(this.selected));
 		},
