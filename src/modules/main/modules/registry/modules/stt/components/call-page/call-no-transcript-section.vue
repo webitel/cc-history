@@ -12,7 +12,9 @@
         size="xl"
         color="error"
       />
+      <!-- TODO: Remove this after transcription via video is added -->
       <wt-button
+        v-if="hasAudioFile"
         @click="transcribe"
       >
         {{ $t('reusable.retry') }}
@@ -46,7 +48,9 @@
         size="xl"
         color="disabled"
       />
+      <!-- TODO: Remove this after transcription via video is added -->
       <wt-button
+        v-if="hasAudioFile"
         @click="transcribe"
       >
         {{ $t('registry.stt.transcribe') }}
@@ -56,7 +60,11 @@
 </template>
 
 <script>
-import { EngineHistoryFileJobHistoryFileJobState } from '@webitel/api-services/gen/models';
+import {
+	EngineCallFileType,
+	EngineHistoryFileJobHistoryFileJobState,
+} from '@webitel/api-services/gen/models';
+import { isEmpty } from '@webitel/ui-sdk/scripts';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { mapActions, mapState } from 'vuex';
 
@@ -86,6 +94,9 @@ export default {
 			return (this.call.filesJob || []).find(
 				({ fileId }) => this.file.id === fileId,
 			);
+		},
+		hasAudioFile() {
+			return !isEmpty(this.call?.files?.[EngineCallFileType.FileTypeAudio]);
 		},
 	},
 	methods: {

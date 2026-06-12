@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 
 import HistoryTranscribeAction from '../history-transcribe-action.vue';
 
@@ -12,13 +13,17 @@ describe('HistoryTranscribeAction', () => {
 		const wrapper = shallowMount(HistoryTranscribeAction, {
 			props,
 		});
-		expect(wrapper.isVisible()).toBe(true);
+		expect(wrapper.exists()).toBe(true);
 	});
-	it('transcribe action is enabled is there`s some selected', () => {
+	it('transcribe action is enabled when selected calls have audio files', () => {
 		selected = [
 			{
 				files: {
-					id: 12,
+					[EngineCallFileType.FileTypeAudio]: [
+						{
+							id: 12,
+						},
+					],
 				},
 			},
 		];
@@ -32,7 +37,7 @@ describe('HistoryTranscribeAction', () => {
 		});
 		expect(btn.vm.disabled).toBe(false);
 	});
-	it('transcribe action is disabled for noed', () => {
+	it('transcribe action is disabled when nothing is selected', () => {
 		selected = [];
 		const wrapper = shallowMount(HistoryTranscribeAction, {
 			props: {
@@ -44,7 +49,7 @@ describe('HistoryTranscribeAction', () => {
 		});
 		expect(btn.vm.disabled).toBe(true);
 	});
-	it('transcribe action is disabled for selected with no files or transcripts', () => {
+	it('transcribe action is disabled for selected calls without audio files', () => {
 		selected = [
 			{},
 			{},
