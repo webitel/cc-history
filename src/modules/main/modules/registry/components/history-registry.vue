@@ -225,6 +225,7 @@
 
 <script lang="ts" setup>
 import { getMediaUrl } from '@webitel/api-services/api';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import {
 	WtActionBar,
 	WtBadge,
@@ -246,12 +247,11 @@ import {
 	IconColor,
 } from '@webitel/ui-sdk/enums';
 import { useTableEmpty } from '@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty';
+import { isEmpty } from '@webitel/ui-sdk/scripts';
 import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.d';
 import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { isEmpty } from '@webitel/ui-sdk/scripts';
 import { EngineHistoryCall } from 'webitel-sdk';
 import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
 import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
