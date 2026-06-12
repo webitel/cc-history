@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import APIRepository from '../../../../../../../../app/api/APIRepository';
 import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
 import SttDeleteAction from '../utils/stt-delete-action.vue';
 import SttDownloadAction from '../utils/stt-download-action.vue';
@@ -53,20 +52,20 @@ export default {
 		transcriptPhrasesMixin,
 	],
 	props: {
-		callId: {
-			type: String,
-			required: true,
+		call: {
+			type: Object,
+			default: null,
 		},
 	},
 	data: () => ({
-		call: {
-			transcripts: [],
-		},
 		transcript: null,
 	}),
 	watch: {
-		callId(id) {
-			if (id) this.initialize();
+		call: {
+			handler(value) {
+				if (value) this.initCurrentTranscript();
+			},
+			immediate: true,
 		},
 	},
 	methods: {
@@ -80,36 +79,6 @@ export default {
 				1,
 			);
 			this.transcript = this.call.transcripts[0] || this.$emit('close');
-		},
-		async loadCall() {
-			/*
-      loading call separately is needed for transcript channels representation
-       */
-			const params = {
-				id: [
-					this.callId,
-				],
-				createdAtFrom: 0,
-				page: 1,
-				size: 1,
-				fields: [
-					'from',
-					'to',
-					'id',
-					'createdAt',
-					'transcripts',
-				],
-			};
-			const res = await APIRepository.history.getHistory(params);
-			const [call] = res?.items || [];
-			this.call = {
-				transcripts: call?.transcripts || [],
-				...call,
-			};
-		},
-		async initialize() {
-			await this.loadCall();
-			this.initCurrentTranscript();
 		},
 	},
 };
