@@ -3,31 +3,14 @@ import { shallowMount } from '@vue/test-utils';
 import transcriptPhrasesMixin from '../../../mixins/transcriptPhrasesMixin';
 import SttPopup from '../stt-popup.vue';
 
-const transcripts = [];
 const props = {
-	callId: '1',
+	call: {
+		id: '1',
+		transcripts: [],
+	},
 };
 
-vi.mock('../../../../../../../../../app/api/instance.js', () => ({
-	default: {
-		request: () =>
-			Promise.resolve({
-				data: {
-					items: [
-						{
-							transcripts: [],
-						},
-					],
-				},
-			}),
-	},
-}));
-
 describe('SttPopup', () => {
-	beforeEach(() => {
-		transcripts.length = 0;
-	});
-
 	vi.spyOn(
 		transcriptPhrasesMixin.methods,
 		'loadCallTranscript',
@@ -43,15 +26,25 @@ describe('SttPopup', () => {
 		});
 		expect(wrapper.isVisible()).toBe(true);
 	});
-	it('fetches call with transcripts', async () => {
-		const mock = vi.fn();
-		vi.spyOn(SttPopup.methods, 'loadCall').mockImplementationOnce(mock);
+	it('initializes transcript from call prop', async () => {
 		const wrapper = shallowMount(SttPopup, {
-			props,
+			props: {
+				call: {
+					id: '1',
+					transcripts: [
+						{
+							id: '177',
+							name: 'recording.wav',
+						},
+					],
+				},
+			},
 		});
-		await wrapper.vm.initialize();
 		await wrapper.vm.$nextTick();
-		expect(mock).toHaveBeenCalled();
+		expect(wrapper.vm.transcript).toEqual({
+			id: '177',
+			name: 'recording.wav',
+		});
 	});
 	it('closes popup if no transcripts after delete', async () => {
 		const wrapper = shallowMount(SttPopup, {

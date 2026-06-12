@@ -32,10 +32,10 @@
       </wt-action-bar>
     </header>
     <stt-popup
-      :call-id="sttPopupCallId"
-      :shown="sttPopupCallId"
-      @close="sttPopupCallId = null"
-      @delete="handleTranscriptDelete({ callId: sttPopupCallId, transcript: $event })"
+      :call="sttPopupCall"
+      :shown="sttPopupCall"
+      @close="sttPopupCall = null"
+      @delete="handleTranscriptDelete({ callId: sttPopupCall?.id, transcript: $event })"
     />
     <wt-loader v-show="isLoading" />
     <wt-empty
@@ -167,7 +167,7 @@
           <stt-action
             v-if="showItemStt(item)"
             :item="item"
-            @open="sttPopupCallId = item.id"
+            @open="sttPopupCall = item"
           />
 
           <router-link
@@ -355,7 +355,7 @@ const {
 	closePlayer,
 } = usePlayMedia();
 
-const sttPopupCallId = ref<string | null>(null);
+const sttPopupCall = ref<EngineHistoryCall | null>(null);
 
 const getVariableValue = (item: EngineHistoryCall, field: string) => {
 	return get(item, [
