@@ -32,10 +32,10 @@
       </wt-action-bar>
     </header>
     <stt-popup
-      :call-id="sttPopupCallId"
-      :shown="sttPopupCallId"
-      @close="sttPopupCallId = null"
-      @delete="handleTranscriptDelete({ callId: sttPopupCallId, transcript: $event })"
+      :call="sttPopupCall"
+      :shown="sttPopupCall"
+      @close="sttPopupCall = null"
+      @delete="handleTranscriptDelete({ callId: sttPopupCall?.id, transcript: $event })"
     />
     <wt-loader v-show="isLoading" />
     <wt-empty
@@ -167,7 +167,7 @@
           <stt-action
             v-if="showItemStt(item)"
             :item="item"
-            @open="sttPopupCallId = item.id"
+            @open="sttPopupCall = item"
           />
 
           <router-link
@@ -225,6 +225,7 @@
 
 <script lang="ts" setup>
 import { getMediaUrl } from '@webitel/api-services/api';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import {
 	WtActionBar,
 	WtBadge,
@@ -245,6 +246,7 @@ import {
 	IconColor,
 } from '@webitel/ui-sdk/enums';
 import { useTableEmpty } from '@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty';
+import { isEmpty } from '@webitel/ui-sdk/scripts';
 import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.d';
 import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
@@ -355,7 +357,7 @@ const {
 	closePlayer,
 } = usePlayMedia();
 
-const sttPopupCallId = ref<string | null>(null);
+const sttPopupCall = ref<EngineHistoryCall | null>(null);
 
 const getVariableValue = (item: EngineHistoryCall, field: string) => {
 	return get(item, [
@@ -364,8 +366,11 @@ const getVariableValue = (item: EngineHistoryCall, field: string) => {
 	]);
 };
 
+// TODO: Remove this after transcription via video is added
 const showItemStt = (item: EngineHistoryCall) => {
-	return item.files || item.transcripts?.length || item.filesJob;
+	const hasAudio = !isEmpty(item.files?.[EngineCallFileType.FileTypeAudio]);
+
+	return hasAudio || item.transcripts?.length;
 };
 
 const handleTranscriptDelete = ({
