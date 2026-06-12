@@ -1,5 +1,8 @@
 import { mount, shallowMount } from '@vue/test-utils';
-import { EngineHistoryFileJobHistoryFileJobState } from '@webitel/api-services/gen/models';
+import {
+	EngineCallFileType,
+	EngineHistoryFileJobHistoryFileJobState,
+} from '@webitel/api-services/gen/models';
 
 import CallTranscript from '../../../api/callTranscript.js';
 import CallNoTranscriptSection from '../call-no-transcript-section.vue';
@@ -15,9 +18,11 @@ describe('CallNoTranscriptSection', () => {
 			id: 1,
 		};
 		call = {
-			files: [
-				file,
-			],
+			files: {
+				[EngineCallFileType.FileTypeAudio]: [
+					file,
+				],
+			},
 		};
 		props = {
 			call,

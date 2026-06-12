@@ -249,6 +249,8 @@ import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtT
 import get from 'lodash/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { isEmpty } from '@webitel/ui-sdk/scripts';
 import { EngineHistoryCall } from 'webitel-sdk';
 
 import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
@@ -364,8 +366,11 @@ const getVariableValue = (item: EngineHistoryCall, field: string) => {
 	]);
 };
 
+// TODO: Remove this after transcription via video is added
 const showItemStt = (item: EngineHistoryCall) => {
-	return item.files || item.transcripts?.length || item.filesJob;
+	const hasAudio = !isEmpty(item.files?.[EngineCallFileType.FileTypeAudio]);
+
+	return hasAudio || item.transcripts?.length;
 };
 
 const handleTranscriptDelete = ({
