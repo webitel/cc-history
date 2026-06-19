@@ -317,7 +317,7 @@ const unsubscribeRegionCreated: Ref<(() => void) | null> = ref(null);
 const unsubscribeZoomSync: Ref<(() => void) | null> = ref(null);
 const waveListenersAttached = ref(false);
 
-const { regionsPlugin, waveOptions } = useCallWavePlugins();
+const { regionsPlugin, timelinePlugin, waveOptions } = useCallWavePlugins();
 
 const {
 	zoomInDisabled,
@@ -326,7 +326,9 @@ const {
 	increaseZoom,
 	decreaseZoom,
 	syncZoomValue,
-} = useCallWaveZoom(() => player.value);
+	attachTimelineSync,
+	detachTimelineSync,
+} = useCallWaveZoom(() => player.value, timelinePlugin);
 
 const {
 	volumeLeftGain,
@@ -339,7 +341,6 @@ const {
 	onLoad,
 	changedPlaying,
 	playPause,
-	redraw,
 	volumeLeftChangeHandler,
 	volumeRightChangeHandler,
 } = useCallWaveSound(() => player.value);
@@ -466,7 +467,6 @@ async function onReady() {
 	hideProgress();
 	// Loading UI toggles in the same tick as `ready`; wait so layout matches before `reRender()`.
 	await nextTick();
-	redraw();
 	resetZoom();
 	await updateRegions();
 }
@@ -496,6 +496,7 @@ function initWave() {
 			syncZoomValue(minPxPerSecFromWaveSurfer);
 		},
 	);
+	attachTimelineSync();
 }
 
 // `wavesurfer.vue` loads from `src` only; avoid double `load()` on file change.
@@ -517,6 +518,7 @@ watch(
 );
 
 onBeforeUnmount(async () => {
+	detachTimelineSync();
 	unsubscribeZoomSync.value?.();
 	unsubscribeZoomSync.value = null;
 	unsubscribeRegionCreated.value?.();

@@ -19,8 +19,6 @@ export function useCallWavePlugins() {
 	// Timeline must live inside getWrapper() so its width matches the waveform; a light-DOM container is viewport-wide and clips ticks when zoomed/scrolled.
 	const timelinePlugin = Timeline.create({
 		height: TIMELINE_HEIGHT,
-		primaryLabelInterval: 5,
-		secondaryLabelInterval: 0,
 		formatTimeCallback: convertDuration,
 		style: {
 			fontFamily: 'Montserrat, monospace',
@@ -60,6 +58,7 @@ export function useCallWavePlugins() {
 
 	return {
 		regionsPlugin,
+		timelinePlugin,
 		waveOptions,
 	};
 }
