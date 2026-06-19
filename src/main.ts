@@ -16,8 +16,6 @@ import store from './app/store';
 import { useUserinfoStore } from './modules/userinfo/stores/userinfoStore';
 import App from './the-app.vue';
 
-console.warn('VITE_STAGING_ENV=', import.meta.env.VITE_STAGING_ENV);
-
 const setTokenFromUrl = () => {
 	try {
 		const queryMap: {
