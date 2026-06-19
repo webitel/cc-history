@@ -17,6 +17,8 @@ import { useUserinfoStore } from './modules/userinfo/stores/userinfoStore';
 import App from './the-app.vue';
 
 console.warn('VITE_STAGING_ENV=', import.meta.env.VITE_STAGING_ENV);
+console.warn('VITE_BUILD_NUMBER=', import.meta.env.VITE_BUILD_NUMBER);
+console.warn('VITE_BUILD_TIMESTAMP=', import.meta.env.VITE_BUILD_TIMESTAMP);
 
 const setTokenFromUrl = () => {
 	try {
