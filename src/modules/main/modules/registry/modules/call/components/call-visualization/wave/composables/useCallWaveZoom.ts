@@ -93,7 +93,9 @@ export function useCallWaveZoom(
 	}
 
 	function detachTimelineSync() {
-		unsubscribeFns.forEach((unsubscribe) => unsubscribe());
+		unsubscribeFns.forEach((unsubscribe) => {
+			unsubscribe();
+		});
 		unsubscribeFns.length = 0;
 	}
 
