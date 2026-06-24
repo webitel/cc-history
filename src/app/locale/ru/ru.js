@@ -72,6 +72,22 @@ export default {
 				selectYes: 'Выбор «Да»',
 				criticalViolation: 'Критическое нарушение',
 			},
+			callQuality: {
+				title: 'Качество звонка',
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: 'Нет данных о качестве звонка',
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Транскрипция | Транскрипции',
@@ -220,6 +236,7 @@ export default {
 		attemptId: 'Id попытки',
 		postProcessing: 'Постобработка',
 		contact: 'Контакт',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'Выбрать колонки с переменными',

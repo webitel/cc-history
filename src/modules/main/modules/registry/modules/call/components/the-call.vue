@@ -45,6 +45,7 @@ import historyRegistryQueriesMixin from '../../../mixins/historyRegistryQueries.
 import { useRegistryStore } from '../../../store/new/registry.store.js';
 import CallInfo from './call-info/call-info.vue';
 import CallLegs from './call-legs/call-legs.vue';
+import CallQuality from './call-quality/call-quality.vue';
 import CallVisualization from './call-visualization/call-visualization.vue';
 import VideoCallRecording from './video-call-recording/video-call-recording.vue';
 
@@ -55,6 +56,7 @@ export default {
 		CallLegs,
 		CallVisualization,
 		VideoCallRecording,
+		CallQuality,
 	},
 	mixins: [
 		historyRegistryQueriesMixin,
@@ -138,6 +140,12 @@ export default {
 					value: 'video-call-recording',
 					pathName: `${prefix}${CallTabsPathNames.VIDEO_CALL_RECORDING}`,
 					show: this.showVideoRecordingTab,
+				},
+				{
+					text: this.$t('registry.call.callQuality.title'),
+					value: 'call-quality',
+					pathName: `${prefix}${CallTabsPathNames.CALL_QUALITY}`,
+					show: true,
 				},
 			];
 

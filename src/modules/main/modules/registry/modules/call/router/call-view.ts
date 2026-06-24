@@ -7,6 +7,7 @@ const CallVisualization = () =>
 	import('../components/call-visualization/call-visualization.vue');
 const VideoCallRecording = () =>
 	import('../components/video-call-recording/video-call-recording.vue');
+const CallQuality = () => import('../components/call-quality/call-quality.vue');
 
 const CALL_VIEW_NAME = 'call_view';
 
@@ -30,6 +31,11 @@ const callChildrenRoutes: RouteRecordRaw[] = [
 		path: 'video-call-recording',
 		name: `${CALL_VIEW_NAME}-video-call-recording`,
 		component: VideoCallRecording,
+	},
+	{
+		path: 'call-quality',
+		name: `${CALL_VIEW_NAME}-call-quality`,
+		component: CallQuality,
 	},
 ];
 

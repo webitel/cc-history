@@ -72,6 +72,22 @@ export default {
 				selectYes: 'Seleccionar «Sí»',
 				criticalViolation: 'Violación crítica',
 			},
+			callQuality: {
+				title: 'Calidad de la llamada',
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: 'No hay datos de calidad de la llamada',
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Transcripción | Transcripciones',
@@ -220,6 +236,7 @@ export default {
 		attemptId: 'ID de intento',
 		postProcessing: 'Postprocesamiento',
 		contact: 'Contacto',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'Seleccionar columnas de variables',

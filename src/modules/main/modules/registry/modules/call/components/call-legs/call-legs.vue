@@ -16,6 +16,13 @@
         <template #direction="{ item }">
           <table-direction :item="item" />
         </template>
+        <template #mos="{ item }">
+          <wt-call-media-metric
+            :mos-avg="item.qualityMetrics?.mosAvg"
+            show-tooltip
+            :size="ComponentSize.SM"
+          />
+        </template>
         <template #from="{ item }">
           <div v-if="item.from">
             {{ item.from.number }}
@@ -128,11 +135,12 @@
 </template>
 
 <script>
+import { WtCallMediaMetric } from '@webitel/ui-sdk/components';
+import { ComponentSize } from '@webitel/ui-sdk/enums';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { mapActions, mapState } from 'vuex';
-
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
 import { useRegistryStore } from '../../../../store/new/registry.store.js';
 
@@ -140,6 +148,7 @@ export default {
 	name: 'CallLegs',
 	components: {
 		TableDirection,
+		WtCallMediaMetric,
 	},
 	props: {
 		call: {
@@ -203,6 +212,7 @@ export default {
 		return {
 			shownHeaders,
 			fields,
+			ComponentSize,
 		};
 	},
 
@@ -243,7 +253,7 @@ export default {
 	},
 	async created() {
 		/*
-     init only once, if necessary. 
+     init only once, if necessary.
      legsData resets on the-call.vue component unmount.
 
      https://webitel.atlassian.net/browse/WTEL-7495

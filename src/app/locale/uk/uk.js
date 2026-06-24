@@ -72,6 +72,22 @@ export default {
 				selectYes: 'Вибір «Так»',
 				criticalViolation: 'Критичне порушення',
 			},
+			callQuality: {
+				title: 'Якість дзвінка',
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: 'Немає даних про якість дзвінка',
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Транскрипція | Транскрипції',
@@ -219,6 +235,7 @@ export default {
 		attemptId: 'Id спроби',
 		postProcessing: 'Постобробка',
 		contact: 'Контакт',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'Вибрати колонки зі змінними',
