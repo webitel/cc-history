@@ -24,6 +24,7 @@ const REQUIRED_MAIN_CALL_FIELDS = [
 	'rate_id',
 	'allow_evaluation',
 	'forms',
+	'quality_metrics',
 ];
 const REQUIRED_DATA_FIELDS = [
 	'id',

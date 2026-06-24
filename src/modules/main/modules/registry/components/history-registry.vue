@@ -67,6 +67,13 @@
         <template #direction="{ item }">
           <table-direction :item="item" />
         </template>
+        <template #mos="{ item }">
+          <wt-call-media-metric
+            :mos-avg="item.qualityMetrics?.mosAvg"
+            show-tooltip
+            size="sm"
+          />
+        </template>
         <template #from="{ item }">
           <div v-if="item.from">
             {{ item.from.number }}
@@ -230,6 +237,7 @@ import {
 	WtActionBar,
 	WtBadge,
 	WtCallMediaAction,
+	WtCallMediaMetric,
 	WtEmpty,
 	WtIconAction,
 	WtIconBtn,

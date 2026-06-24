@@ -70,6 +70,22 @@ export default {
 				selectYes: '"Ha" ni tanlang',
 				criticalViolation: 'Muhim buzilish',
 			},
+			callQuality: {
+				title: "Qo'ng'iroq sifati",
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: "Qo'ng'iroq sifati ma'lumotlari yo'q",
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Transkriptsiya | Transkriptsiyalar',
@@ -217,6 +233,7 @@ export default {
 		postProcessing: 'Keyingi ishlov',
 		contact: 'Aloqa',
 		hangupPhrase: 'Yakunlash ifodasi',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'O‘zgaruvchilar ustunini tanlash',

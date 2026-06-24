@@ -14,6 +14,7 @@ const Call = () =>
 
 import CallInfo from '../../modules/main/modules/registry/modules/call/components/call-info/call-info.vue';
 import CallLegs from '../../modules/main/modules/registry/modules/call/components/call-legs/call-legs.vue';
+import CallQuality from '../../modules/main/modules/registry/modules/call/components/call-quality/call-quality.vue';
 import CallVisualization from '../../modules/main/modules/registry/modules/call/components/call-visualization/call-visualization.vue';
 import VideoCallRecording from '../../modules/main/modules/registry/modules/call/components/video-call-recording/video-call-recording.vue';
 
@@ -57,6 +58,11 @@ const routes = [
 						path: 'video-call-recording',
 						name: CallTabsPathNames.VIDEO_CALL_RECORDING,
 						component: VideoCallRecording,
+					},
+					{
+						path: 'call-quality',
+						name: CallTabsPathNames.CALL_QUALITY,
+						component: CallQuality,
 					},
 				],
 			},
