@@ -135,12 +135,11 @@
 </template>
 
 <script>
+import { WtCallMediaMetric } from '@webitel/ui-sdk/components';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { mapActions, mapState } from 'vuex';
-
-import { WtCallMediaMetric } from '@webitel/ui-sdk/components';
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
 import { useRegistryStore } from '../../../../store/new/registry.store.js';
 
