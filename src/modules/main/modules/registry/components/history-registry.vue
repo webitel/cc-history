@@ -71,7 +71,7 @@
           <wt-call-media-metric
             :mos-avg="item.qualityMetrics?.mosAvg"
             show-tooltip
-            size="sm"
+            :size="ComponentSize.SM"
           />
         </template>
         <template #from="{ item }">

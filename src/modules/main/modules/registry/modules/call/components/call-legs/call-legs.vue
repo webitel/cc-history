@@ -20,7 +20,7 @@
           <wt-call-media-metric
             :mos-avg="item.qualityMetrics?.mosAvg"
             show-tooltip
-            size="sm"
+            :size="ComponentSize.SM"
           />
         </template>
         <template #from="{ item }">
@@ -136,6 +136,7 @@
 
 <script>
 import { WtCallMediaMetric } from '@webitel/ui-sdk/components';
+import { ComponentSize } from '@webitel/ui-sdk/enums';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
@@ -211,6 +212,7 @@ export default {
 		return {
 			shownHeaders,
 			fields,
+			ComponentSize,
 		};
 	},
 
