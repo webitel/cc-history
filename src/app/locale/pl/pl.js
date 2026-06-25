@@ -72,6 +72,22 @@ export default {
 				selectYes: 'Wybierz „Tak”',
 				criticalViolation: 'Krytyczne naruszenie',
 			},
+			callQuality: {
+				title: 'Jakość połączenia',
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: 'Brak danych o jakości połączenia',
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Transkrypcja | Transkrypcje',
@@ -219,6 +235,7 @@ export default {
 		attemptId: 'Id próby',
 		postProcessing: 'Po zakończeniu',
 		contact: 'Kontakt',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'Wybierz kolumny zmiennych',

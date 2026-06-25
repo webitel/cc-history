@@ -72,6 +72,22 @@ export default {
 				selectYes: '«Иә» таңдау',
 				criticalViolation: 'Сыни бұзу',
 			},
+			callQuality: {
+				title: 'Қоңырау сапасы',
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: 'Қоңырау сапасы туралы деректер жоқ',
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Транскрипция | Транскрипциялар',
@@ -220,6 +236,7 @@ export default {
 		postProcessing: 'Өңдеуден кейін',
 		contact: 'Байланыс',
 		hangupPhrase: 'Аяқтау сипаттамасы',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'Айнымалылар бағандарын таңдау',

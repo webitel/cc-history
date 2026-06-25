@@ -72,6 +72,22 @@ export default {
 				selectYes: 'Selectați «Da»',
 				criticalViolation: 'Încălcare critică',
 			},
+			callQuality: {
+				title: 'Calitatea apelului',
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: 'Nu există date despre calitatea apelului',
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Transcriere | Transcrieri',
@@ -220,6 +236,7 @@ export default {
 		attemptId: 'ID încercare',
 		postProcessing: 'Postprocesare',
 		contact: 'Contact',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'Selectează coloanele variabile',

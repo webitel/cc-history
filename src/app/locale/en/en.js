@@ -72,6 +72,22 @@ export default {
 				selectYes: 'Select "Yes"',
 				criticalViolation: 'Critical violation',
 			},
+			callQuality: {
+				title: 'Call quality',
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: 'There is no call quality data',
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Transcription | Transcriptions',
@@ -220,6 +236,7 @@ export default {
 		attemptId: 'Attempt Id',
 		postProcessing: 'Postprocessing',
 		contact: 'Contact',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'Select variables columns',

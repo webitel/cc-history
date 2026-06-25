@@ -72,6 +72,22 @@ export default {
 				selectYes: 'Chọn "Có"',
 				criticalViolation: 'Vi phạm nghiêm trọng',
 			},
+			callQuality: {
+				title: 'Chất lượng cuộc gọi',
+				parameter: 'Parameter',
+				avg: 'avg',
+				min: 'min',
+				minAt: 'min_at',
+				max: 'max',
+				maxAt: 'max_at',
+				noData: 'Không có dữ liệu chất lượng cuộc gọi',
+				parameters: {
+					mos: 'mos',
+					jitter: 'jitter',
+					packetloss: 'packetloss',
+					roundtrip: 'roundtrip',
+				},
+			},
 		},
 		stt: {
 			transcription: 'Bản ghi | Các bản ghi',
@@ -219,6 +235,7 @@ export default {
 		postProcessing: 'Xử lý sau',
 		contact: 'Liên hệ',
 		hangupPhrase: 'Cụm từ kết thúc',
+		mos: 'MOS',
 	},
 	variableColumnSelect: {
 		title: 'Chọn cột biến',
