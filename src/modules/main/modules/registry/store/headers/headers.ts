@@ -17,7 +17,7 @@ export const headers: WtTableHeader[] = [
 	{
 		value: 'mos',
 		show: false,
-		sort: null,
+		sort: undefined,
 		field: 'quality_metrics',
 	},
 	{
