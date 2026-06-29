@@ -21,22 +21,24 @@
         {{ $t('reusable.export') }}
       </template>
       <template #main>
-        <wt-single-select
-          :show-clear="false"
-          :label="$t('vocabulary.format')"
-          :options="exportSettingOptions"
-          :v="v$.draft?.format"
-          :model-value="draft.format"
-          required
-          @update:model-value="selectHandler"
-        />
-        <wt-input-text
-          v-if="isExportSettingsFormatCSV"
-          v-model:model-value="draft.separator"
-          :label="$t('headerSection.exportPopup.separator')"
-          :v="v$.draft?.separator"
-          required
-        />
+        <div class="history-export-action__form">
+          <wt-single-select
+            :show-clear="false"
+            :label="$t('vocabulary.format')"
+            :options="exportSettingOptions"
+            :v="v$.draft?.format"
+            :model-value="draft.format"
+            required
+            @update:model-value="selectHandler"
+          />
+          <wt-input-text
+            v-if="isExportSettingsFormatCSV"
+            v-model:model-value="draft.separator"
+            :label="$t('headerSection.exportPopup.separator')"
+            :v="v$.draft?.separator"
+            required
+          />
+        </div>
       </template>
       <template #actions>
         <wt-button
@@ -301,5 +303,11 @@ onMounted(checkExportSettings);
 <style lang="scss" scoped>
 .history-export-action {
   position: relative;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
 }
 </style>
