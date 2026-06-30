@@ -1,7 +1,6 @@
 <template>
   <main class="the-history">
     <app-header />
-    <wt-notifications-bar />
     <router-view />
   </main>
 </template>
