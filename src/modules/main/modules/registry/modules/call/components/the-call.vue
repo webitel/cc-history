@@ -1,6 +1,7 @@
 <template>
 	<wt-page-wrapper
 		:actions-panel="false"
+		class="opened-call-page"
 		:hide-header="viewMode"
 	>
 		<template #header>
@@ -213,6 +214,12 @@ export default {
 	lang="scss"
 	scoped
 >
+.opened-call-page {
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+}
+
 .history-tabs-wrapper {
 	display: flex;
 	flex-direction: column;
