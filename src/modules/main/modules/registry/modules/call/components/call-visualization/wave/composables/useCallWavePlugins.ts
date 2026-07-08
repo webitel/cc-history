@@ -9,6 +9,13 @@ const WAVE_HEIGHT = 96;
 const TIMELINE_HEIGHT = 20;
 const ZOOM_MAX_PX_PER_SEC = 20000;
 
+// wavesurfer renders to <canvas>, whose fillStyle can't resolve CSS `var(...)`,
+// so we inline the palette values (styleguide colors.css + palette.css):
+// --success-color -> --green-darken-4 (hue-green 121, saturation-darken-4 75%, lightness-darken-4 35%)
+// --primary-color -> --amber-accent-3 (hue-amber 43, saturation-accent-3 97%, lightness-accent-3 50%)
+const SUCCESS_COLOR = 'hsla(121, 75%, 35%, 1)';
+const PRIMARY_COLOR = 'hsla(43, 97%, 50%, 1)';
+
 export function useCallWavePlugins() {
 	const regionsPlugin = RegionsPlugin.create();
 	const hoverPlugin = Hover.create({
@@ -40,12 +47,12 @@ export function useCallWavePlugins() {
 			{
 				height: WAVE_HEIGHT,
 				overlay: false,
-				progressColor: 'hsla(119, 60%, 40%, 0.8)',
+				progressColor: SUCCESS_COLOR,
 			},
 			{
 				height: WAVE_HEIGHT,
 				overlay: false,
-				progressColor: 'hsl(42, 100%, 50%)',
+				progressColor: PRIMARY_COLOR,
 			},
 		],
 		plugins: [
