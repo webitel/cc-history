@@ -1,5 +1,7 @@
 // Instantiates WaveSurfer plugins (regions, hover, timeline, zoom) and shared `waveOptions` for the player.
 import { convertDuration } from '@webitel/ui-sdk/scripts';
+import { computed, inject, type Ref, ref, watch } from 'vue';
+import type WaveSurfer from 'wavesurfer.js';
 import Hover from 'wavesurfer.js/plugins/hover';
 import RegionsPlugin from 'wavesurfer.js/plugins/regions';
 import Timeline from 'wavesurfer.js/plugins/timeline';
@@ -10,13 +12,18 @@ const TIMELINE_HEIGHT = 20;
 const ZOOM_MAX_PX_PER_SEC = 20000;
 
 // wavesurfer renders to <canvas>, whose fillStyle can't resolve CSS `var(...)`,
-// so we inline the palette values (styleguide colors.css + palette.css):
-// --success-color -> --green-darken-4 (hue-green 121, saturation-darken-4 75%, lightness-darken-4 35%)
-// --primary-color -> --amber-accent-3 (hue-amber 43, saturation-accent-3 97%, lightness-accent-3 50%)
-const SUCCESS_COLOR = 'hsla(121, 75%, 35%, 1)';
-const PRIMARY_COLOR = 'hsla(43, 97%, 50%, 1)';
+// so we read the computed value of the styleguide color tokens instead.
+function resolveCssColor(variable: string): string {
+	return getComputedStyle(document.documentElement)
+		.getPropertyValue(variable)
+		.trim();
+}
 
-export function useCallWavePlugins() {
+type PlayerGetter = () => WaveSurfer | null | undefined;
+
+export function useCallWavePlugins(getPlayer?: PlayerGetter) {
+	const darkMode = inject<Ref<boolean>>('darkMode', ref(false));
+
 	const regionsPlugin = RegionsPlugin.create();
 	const hoverPlugin = Hover.create({
 		labelBackground: 'var(--contrast-color)',
@@ -40,28 +47,39 @@ export function useCallWavePlugins() {
 		exponentialZooming: false,
 	});
 
-	const waveOptions = {
-		cursorWidth: 2,
-		height: WAVE_HEIGHT,
-		splitChannels: [
-			{
-				height: WAVE_HEIGHT,
-				overlay: false,
-				progressColor: SUCCESS_COLOR,
-			},
-			{
-				height: WAVE_HEIGHT,
-				overlay: false,
-				progressColor: PRIMARY_COLOR,
-			},
-		],
-		plugins: [
-			hoverPlugin,
-			timelinePlugin,
-			regionsPlugin,
-			zoomPlugin,
-		],
-	};
+	// `darkMode` is read so the tokens re-resolve when the theme switches.
+	const waveOptions = computed(() => {
+		void darkMode.value;
+		const waveColor = resolveCssColor('--secondary-color');
+
+		return {
+			cursorWidth: 2,
+			height: WAVE_HEIGHT,
+			splitChannels: [
+				{
+					height: WAVE_HEIGHT,
+					overlay: false,
+					waveColor,
+					progressColor: resolveCssColor('--success-color'),
+				},
+				{
+					height: WAVE_HEIGHT,
+					overlay: false,
+					waveColor,
+					progressColor: resolveCssColor('--primary-color'),
+				},
+			],
+			plugins: [
+				hoverPlugin,
+				timelinePlugin,
+				regionsPlugin,
+				zoomPlugin,
+			],
+		};
+	});
+
+	// Re-apply colors to the already-created player on theme change.
+	watch(darkMode, () => getPlayer?.()?.setOptions(waveOptions.value));
 
 	return {
 		regionsPlugin,

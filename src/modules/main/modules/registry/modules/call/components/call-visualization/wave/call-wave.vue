@@ -317,7 +317,9 @@ const unsubscribeRegionCreated: Ref<(() => void) | null> = ref(null);
 const unsubscribeZoomSync: Ref<(() => void) | null> = ref(null);
 const waveListenersAttached = ref(false);
 
-const { regionsPlugin, timelinePlugin, waveOptions } = useCallWavePlugins();
+const { regionsPlugin, timelinePlugin, waveOptions } = useCallWavePlugins(
+	() => player.value,
+);
 
 const {
 	zoomInDisabled,
