@@ -1,5 +1,5 @@
-import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
 import type { EngineAuditRate } from '@webitel/api-services/gen/models';
+import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
 
 import AuditFormRateAPI from '../api/AuditFormRateAPI';
 

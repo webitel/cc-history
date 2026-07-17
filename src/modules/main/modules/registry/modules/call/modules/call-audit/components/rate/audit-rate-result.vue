@@ -20,10 +20,9 @@
 </template>
 
 <script lang="ts" setup>
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
-
-import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import AuditRateAnswers from './answers/audit-rate-answers.vue';
 import AuditRateSummary from './summary/audit-rate-summary.vue';
 

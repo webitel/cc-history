@@ -1,9 +1,9 @@
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import applyTransform, {
 	camelToSnake,
 	notify,
 	snakeToCamel,
 } from '@webitel/ui-sdk/src/api/transformers/index.js';
-import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import { AuditFormServiceApiFactory } from 'webitel-sdk';
 
 import instance from '../../../../../../../../../app/api/instance';

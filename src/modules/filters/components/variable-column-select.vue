@@ -69,6 +69,7 @@
 <script lang="ts" setup>
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import {
 	WtBadge,
 	WtButton,
@@ -76,7 +77,6 @@ import {
 	WtPopup,
 } from '@webitel/ui-sdk/components';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
-import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 

@@ -40,8 +40,8 @@ import CallEvaluation from '../../modules/call-audit/components/call-audit-secti
 import NoCallRecordings from './assets/no-call-recordings.svg';
 import NoCallRecordingsDark from './assets/no-call-recordings-dark.svg';
 import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
-import CallWave from './wave/call-wave.vue';
 import type { CallWaveCallRecord } from './wave/call-wave.types';
+import CallWave from './wave/call-wave.vue';
 
 interface VisualizationTab {
 	text: string;

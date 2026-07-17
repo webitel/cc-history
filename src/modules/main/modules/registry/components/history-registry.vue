@@ -233,6 +233,7 @@
 <script lang="ts" setup>
 import { getMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import {
 	WtActionBar,
 	WtBadge,
@@ -249,8 +250,8 @@ import {
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
 import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
-import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
+import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
 import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
@@ -261,7 +262,6 @@ import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
-import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import TableDirection from './table-templates/table-direction.vue';
 import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 
