@@ -1,10 +1,10 @@
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
-import type { EngineAuditRate } from 'webitel-sdk';
 
 import AuditFormRateAPI from '../api/AuditFormRateAPI';
 
 const state = {
-	result: {}, // todo: rename to auditRate
+	result: {} as EngineAuditRate,
 	isEvaluationLoading: false,
 };
 
@@ -43,8 +43,13 @@ const actions = {
 		}
 	},
 	// todo: rename "evaluation" -> "audit rate"
-	DELETE_EVALUATION: async (context, { id } = {}) => {
-		const rateId = id || context.state.result.id;
+	DELETE_EVALUATION: async (
+		context,
+		payload?: {
+			id?: string;
+		},
+	) => {
+		const rateId = payload?.id || context.state.result.id;
 		context.commit('SET_LOADING', true);
 		try {
 			await AuditFormRateAPI.delete(rateId);

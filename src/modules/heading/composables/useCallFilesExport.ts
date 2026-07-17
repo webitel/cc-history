@@ -24,7 +24,7 @@ export const useCallFilesExport = ({
 					download: true,
 				}),
 			fetch: async ({ page }) => {
-				const params = {
+				const params: Record<string, unknown> = {
 					page,
 					createdAt: {
 						from: 0,

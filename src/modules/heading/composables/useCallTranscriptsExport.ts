@@ -40,7 +40,7 @@ export const useCallTranscriptsExport = ({
 				return blob;
 			},
 			fetch: async ({ page }) => {
-				const params = {
+				const params: Record<string, unknown> = {
 					page,
 					createdAt: {
 						from: 0,

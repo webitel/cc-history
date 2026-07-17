@@ -22,17 +22,9 @@
 	lang="ts"
 	setup
 >
-import { getCallMediaUrl } from '@webitel/api-services/api';
-import {
-	EngineCallFileType,
-	EngineHistoryCall,
-	EngineTranscriptLookup,
-	StorageListPhrases,
-} from '@webitel/api-services/gen/models';
-import { computed, ref, toRefs } from 'vue';
+import { computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import CallTranscriptAPI from '../../../../modules/main/modules/registry/modules/stt/api/callTranscript';
 import { useCallFilesExport } from '../../composables/useCallFilesExport';
 import { useCallTranscriptsExport } from '../../composables/useCallTranscriptsExport';
 import FilesCounter from './files-counter.vue';
@@ -40,7 +32,9 @@ import FilesCounter from './files-counter.vue';
 const props = defineProps<{
 	dataList: Record<string, unknown>[];
 	filters: Record<string, unknown>;
-	selected: Record<string, unknown>[];
+	selected: {
+		id: string;
+	}[];
 }>();
 
 const { filters, selected } = toRefs(props);

@@ -1,5 +1,9 @@
 import { WtApplication } from '@webitel/ui-sdk/enums';
-import { createRouter, createWebHistory } from 'vue-router';
+import {
+	createRouter,
+	createWebHistory,
+	type RouteRecordRaw,
+} from 'vue-router';
 import callViewRoute from '../../modules/main/modules/registry/modules/call/router/call-view.ts';
 import CallTabsPathNames from './_internals/CallTabsPathNames.enum.js';
 
@@ -80,7 +84,7 @@ const routes = [
 		name: 'not-found',
 		// component: notFound
 	},
-];
+] as RouteRecordRaw[];
 
 export let router = null;
 
@@ -91,7 +95,7 @@ export const initRouter = async ({
 	router = createRouter({
 		history: createWebHistory(import.meta.env.BASE_URL),
 
-		scrollBehavior(to, from, savedPosition) {
+		scrollBehavior() {
 			return {
 				left: 0,
 				top: 0,
@@ -100,7 +104,7 @@ export const initRouter = async ({
 		routes,
 	});
 
-	router.beforeEach((to, from, next) => {
+	router.beforeEach((to, _from, next) => {
 		if (!localStorage.getItem('access-token') && !to.query.accessToken) {
 			// @author @Lear24
 			// remove flag about shown notifications from localStorage

@@ -229,7 +229,10 @@
 <script setup lang="ts">
 import { getCallMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { useFilesExport } from '@webitel/ui-sdk/modules/FilesExport';
+import {
+	type ExportedItem,
+	useFilesExport,
+} from '@webitel/ui-sdk/modules/FilesExport';
 import {
 	computed,
 	nextTick,
@@ -386,7 +389,7 @@ const { exportFiles: downloadFile } = useFilesExport({
 		}),
 	fetch: async () => ({
 		items: (props.call.files?.[EngineCallFileType.FileTypeAudio] ??
-			[]) as unknown[],
+			[]) as unknown as ExportedItem[],
 		next: false,
 	}),
 	filename: 'history-record',

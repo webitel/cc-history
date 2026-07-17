@@ -44,7 +44,7 @@
 
     <audit-form-answer-editing-info
       v-if="answer.updatedAt"
-      :answer="answer"
+      :answer="editingInfoAnswer"
       collapsible
     />
   </li>
@@ -72,12 +72,12 @@ const isYesQuestion = computed(
 );
 
 const isAnsweredYesQuestion = computed(
-	() => isYesQuestion.value && props.answer.score > 0,
+	() => isYesQuestion.value && (props.answer.score ?? 0) > 0,
 );
 
 const isAnswerVisible = computed(
 	() =>
-		(!isYesQuestion.value && props.answer.score >= 0) ||
+		(!isYesQuestion.value && (props.answer.score ?? -1) >= 0) ||
 		isAnsweredYesQuestion.value,
 );
 
@@ -91,6 +91,8 @@ const answerName = computed(() => {
 const displayName = computed(() =>
 	isYesQuestion.value ? t('vocabulary.yes') : answerName.value,
 );
+
+const editingInfoAnswer = computed(() => props.answer);
 </script>
 
 <style scoped lang="scss">

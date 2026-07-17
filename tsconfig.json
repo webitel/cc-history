@@ -1,12 +1,21 @@
 {
 	"compilerOptions": {
 		"target": "esnext",
-		"lib": ["ES2023", "dom"],
+		"lib": [
+			"ES2023",
+			"dom"
+		],
 		"module": "esnext",
 		"allowJs": true,
 		"skipLibCheck": true,
-		"plugins": [{ "name": "typescript-plugin-css-modules" }],
-		"types": ["vidstack/vue"],
+		"plugins": [
+			{
+				"name": "typescript-plugin-css-modules"
+			}
+		],
+		"types": [
+			"vidstack/vue"
+		],
 		"moduleResolution": "Bundler",
 		"allowImportingTsExtensions": true,
 		"isolatedModules": true,
@@ -17,7 +26,25 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUncheckedSideEffectImports": true
+		"noUncheckedSideEffectImports": true,
+
+		"baseUrl": ".",
+		"paths": {
+			"@webitel/ui-sdk/src/*": [
+				"./node_modules/@webitel/ui-sdk/types/*",
+				"./node_modules/@webitel/ui-sdk/src/*"
+			]
+		}
 	},
-	"include": ["src", "docs/pages"]
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.vue",
+		"src/**/*.js"
+	],
+	"exclude": [
+		"**/*.spec.ts",
+		"**/*.spec.js",
+		"**/*.test.ts",
+		"**/*.test.js"
+	]
 }

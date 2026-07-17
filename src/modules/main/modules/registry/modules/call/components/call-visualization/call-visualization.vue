@@ -31,7 +31,7 @@
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { WtObject } from '@webitel/ui-sdk/enums';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
-import { computed, inject, ref } from 'vue';
+import { type Component, computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import { useUserinfoStore } from '../../../../../../../userinfo/stores/userinfoStore';
@@ -40,10 +40,20 @@ import CallEvaluation from '../../modules/call-audit/components/call-audit-secti
 import NoCallRecordings from './assets/no-call-recordings.svg';
 import NoCallRecordingsDark from './assets/no-call-recordings-dark.svg';
 import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
+import type { CallWaveCallRecord } from './wave/call-wave.types';
 import CallWave from './wave/call-wave.vue';
 
+interface VisualizationTab {
+	text: string;
+	component: Component;
+	value: string;
+	namespace: string;
+}
+
 interface Props {
-	call: Record<string, unknown>;
+	call: CallWaveCallRecord & {
+		allowEvaluation?: boolean;
+	};
 	namespace?: string;
 }
 
@@ -67,39 +77,41 @@ const { hasReadAccess: hasEvaluationReadAccess } = useUserAccessControl(
 	WtObject.AuditRating,
 );
 
-const tabValues = computed(() => ({
-	TRANSCRIPT: {
-		text: t('registry.stt.transcription'),
-		component: CallTranscript,
-		value: 'call-transcript',
-		namespace: props.namespace,
-	},
-	EVALUATION: {
-		text: t('registry.call.evaluation.evaluation'),
-		component: CallEvaluation,
-		value: 'call-evaluation',
-		namespace: `${props.namespace}/evaluation`,
-	},
-	SCREEN_RECORDINGS: {
-		text: t('objects.screenRecordings', 2),
-		component: CallScreenRecordings,
-		value: 'call-screen-recordings',
-		namespace: props.namespace,
-	},
-}));
+const tabValues = computed(
+	(): Record<string, VisualizationTab> => ({
+		TRANSCRIPT: {
+			text: t('registry.stt.transcription'),
+			component: CallTranscript,
+			value: 'call-transcript',
+			namespace: props.namespace,
+		},
+		EVALUATION: {
+			text: t('registry.call.evaluation.evaluation'),
+			component: CallEvaluation,
+			value: 'call-evaluation',
+			namespace: `${props.namespace}/evaluation`,
+		},
+		SCREEN_RECORDINGS: {
+			text: t('objects.screenRecordings', 2),
+			component: CallScreenRecordings,
+			value: 'call-screen-recordings',
+			namespace: props.namespace,
+		},
+	}),
+);
 
-const tabs = computed(() => {
-	const tabs = [
+const tabs = computed((): VisualizationTab[] => {
+	const tabList: VisualizationTab[] = [
 		tabValues.value.TRANSCRIPT,
 	];
 	if (props.call.allowEvaluation && hasEvaluationReadAccess.value)
-		tabs.push(tabValues.value.EVALUATION);
+		tabList.push(tabValues.value.EVALUATION);
 	if (isControlAgentScreenAllow.value)
-		tabs.push(tabValues.value.SCREEN_RECORDINGS);
-	return tabs;
+		tabList.push(tabValues.value.SCREEN_RECORDINGS);
+	return tabList;
 });
 
-const currentTab = ref(tabValues.value.TRANSCRIPT);
+const currentTab = ref<VisualizationTab>(tabValues.value.TRANSCRIPT);
 </script>
 
 <style

@@ -2,13 +2,13 @@
   <section class="comment-form">
     <wt-timepicker
       v-model:model-value="draft.startSec"
-      :v="v$.draft.startSec"
+      :v="startSecValidation"
       :custom-validators="startCustomValidation"
       :label="$t('reusable.from')"
     />
     <wt-timepicker
       v-model:model-value="draft.endSec"
-      :v="v$.draft.endSec"
+      :v="endSecValidation"
       :custom-validators="endCustomValidation"
       :label="$t('reusable.to')"
     />
@@ -121,9 +121,35 @@ const v$ = useVuelidate(rules, {
 	draft,
 });
 
+// vuelidate exports BaseValidation, but its `[key: string]: any` breaks Vue
+// UnwrapRef / Pick, and computed rules make `v$.value.draft` infer as undefined.
+interface DraftValidation {
+	$touch: () => void;
+	$reset: () => void;
+	$pending: boolean;
+	$invalid: boolean;
+	startSec: {
+		$touch: () => void;
+		$reset: () => void;
+	};
+	endSec: {
+		$touch: () => void;
+		$reset: () => void;
+	};
+}
+
+const draftValidation = computed(
+	() => v$.value.draft as DraftValidation | undefined,
+);
+const startSecValidation = computed(() => draftValidation.value?.startSec);
+const endSecValidation = computed(() => draftValidation.value?.endSec);
+
 const disableSaving = computed(() => {
 	const hasInvalidRange = Number(draft.startSec) > Number(draft.endSec);
-	return v$.value.draft.$pending || v$.value.draft.$invalid || hasInvalidRange;
+	const validation = draftValidation.value;
+	if (!validation) return true;
+
+	return validation.$pending || validation.$invalid || hasInvalidRange;
 });
 
 const customValidation = (minValue: number, maxValue: number) => [
@@ -193,13 +219,17 @@ function emitDraftRange() {
 }
 
 function handleRangeFieldChange(activeField: RangeFieldType) {
-	const inactiveField =
-		activeField === RangeField.StartSec
-			? RangeField.EndSec
-			: RangeField.StartSec;
+	const validation = draftValidation.value;
+	if (!validation) return;
+
 	lastEditedField.value = activeField;
-	v$.value.draft[activeField].$touch();
-	v$.value.draft[inactiveField].$reset();
+	if (activeField === RangeField.StartSec) {
+		validation.startSec.$touch();
+		validation.endSec.$reset();
+	} else {
+		validation.endSec.$touch();
+		validation.startSec.$reset();
+	}
 	emitDraftRange();
 }
 

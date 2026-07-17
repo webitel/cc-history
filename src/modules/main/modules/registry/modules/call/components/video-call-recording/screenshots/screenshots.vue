@@ -96,7 +96,10 @@ import {
 } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { FormatDateMode, IconAction } from '@webitel/ui-sdk/enums';
-import { useFilesExport } from '@webitel/ui-sdk/modules/FilesExport';
+import {
+	type ExportedItem,
+	useFilesExport,
+} from '@webitel/ui-sdk/modules/FilesExport';
 import { eventBus } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
@@ -112,13 +115,22 @@ import { useRecordingFilesAccess } from '../../../../../composables/useRecording
 
 import { headers } from './store/headers/headers';
 
+interface ScreenshotFile {
+	id: string;
+	name?: string;
+	startAt?: string | number;
+}
+
+type HistoryCallWithFiles = EngineHistoryCall & {
+	files?: Record<string, ScreenshotFile[]>;
+};
+
 interface Props {
-	call: EngineHistoryCall;
+	call: HistoryCallWithFiles;
 	namespace?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	call: () => [],
 	namespace: '',
 });
 
@@ -140,7 +152,7 @@ const { t } = useI18n();
 
 const error = ref('');
 
-const selected = ref([]);
+const selected = ref<ScreenshotFile[]>([]);
 
 const galleriaVisible = ref(false);
 const galleriaActiveIndex = ref(0);
@@ -175,7 +187,9 @@ const {
 	text: textEmpty,
 } = useTableEmpty({
 	dataList,
+	filters: ref({}),
 	error,
+	isLoading,
 });
 
 const openScreenshot = (id) => {
@@ -185,7 +199,7 @@ const openScreenshot = (id) => {
 	galleriaVisible.value = true;
 };
 
-const handleDelete = async (items: []) => {
+const handleDelete = async (items: ScreenshotFile[]) => {
 	const deleteIds = items.map((item) => item.id);
 
 	await FileServicesAPI.delete(deleteIds);
@@ -221,13 +235,13 @@ const downloadPdf = async () => {
 };
 
 const { exportFiles: downloadZip } = useFilesExport({
-	getFileURL: (item) => getMediaUrl(item.id, false),
-	fetch: () => {
-		const items = selected.value.length ? selected.value : dataList.value;
-		return {
-			items,
-		};
-	},
+	getFileURL: (item) => getMediaUrl(item.id as string, false),
+	fetch: async () => ({
+		items: (selected.value.length
+			? selected.value
+			: dataList.value) as ExportedItem[],
+		next: false,
+	}),
 	filename: `screenshots-callId-${callId.value}`,
 });
 

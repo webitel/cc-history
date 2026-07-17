@@ -20,6 +20,7 @@ export const usePlayMedia = () => {
 	const videoData = ref<
 		EngineCallFile & {
 			src: VideoSrc;
+			text?: string;
 		}
 	>();
 
@@ -67,6 +68,7 @@ export const usePlayMedia = () => {
 				src: getCallMediaUrl(mediaFile.id),
 				type: mediaFile.mimeType as VideoMimeType,
 			},
+			text: mediaFile.text,
 		};
 	}
 

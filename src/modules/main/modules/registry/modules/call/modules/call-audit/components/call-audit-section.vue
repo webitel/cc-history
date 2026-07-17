@@ -35,14 +35,14 @@
 </template>
 
 <script lang="ts" setup>
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import { WtObject } from '@webitel/ui-sdk/enums';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import { EngineAuditRate } from 'webitel-sdk';
-
 import { useUserAccessControl } from '../../../../../../../../../app/composables/useUserAccessControl';
 import AuditFormAPI from '../api/AuditFormAPI';
+import type { AuditScorecard } from '../types/audit-rate.types';
 import EmptyAuditRate from './empty-audit-rate/empty-audit-rate.vue';
 import SelectScorecardPopup from './empty-audit-rate/select-scorecard-popup.vue';
 import CallAuditForm from './form/call-audit-form.vue';
@@ -59,7 +59,7 @@ const props = defineProps({
 });
 
 const isScorecardSelectOpened = ref(false);
-const scorecard = ref({});
+const scorecard = ref<AuditScorecard>({});
 
 const isEditingEvaluationResult = ref(false);
 
@@ -142,7 +142,7 @@ const saveEvaluationResult = async (evaluationResult: EngineAuditRate) => {
 	}
 };
 
-const setScorecard = (value) => {
+const setScorecard = (value: AuditScorecard) => {
 	scorecard.value = value;
 };
 

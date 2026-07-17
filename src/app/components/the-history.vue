@@ -6,8 +6,6 @@
 </template>
 
 <script lang="ts" setup>
-import { WtApplication } from '@webitel/ui-sdk/enums';
-import { computed } from 'vue';
 import { useRegistryStore } from '../../modules/main/modules/registry/store/new/registry.store';
 import AppHeader from './shared/app-header/app-header.vue';
 
@@ -16,11 +14,6 @@ const historyTableStore = useRegistryStore();
 // [https://webitel.atlassian.net/browse/WTEL-6468]
 // Initialize field value to pass a new value to the loadList method, saved from the main table history
 historyTableStore.setupStore();
-
-function goToApplicationHub() {
-	const adminUrl = import.meta.env.VITE_APPLICATION_HUB_URL;
-	window.location.href = adminUrl;
-}
 </script>
 
 <style scoped>

@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { computed, onMounted, ref, useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ChatHistory from './chat-history/chat-history.vue';
 import { useVideoRecordingContentObserver } from './composables/useVideoRecordingContentObserver';

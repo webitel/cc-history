@@ -28,7 +28,6 @@ import {
 	WtAppNavigator,
 	WtHeaderActions,
 	WtLogo,
-	WtNavigationBar,
 } from '@webitel/ui-sdk/components';
 import { WtApplication } from '@webitel/ui-sdk/enums';
 import WtDarkModeSwitcher from '@webitel/ui-sdk/src/modules/Appearance/components/wt-dark-mode-switcher.vue';
@@ -88,7 +87,10 @@ const apps = computed(() => {
 		href: import.meta.env.VITE_CRM_URL,
 	};
 
-	const allApps = [
+	const allApps: {
+		name: WtApplication;
+		href: string | undefined;
+	}[] = [
 		admin,
 		supervisor,
 		agent,

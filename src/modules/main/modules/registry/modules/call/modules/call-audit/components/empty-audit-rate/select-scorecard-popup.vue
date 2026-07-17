@@ -43,8 +43,16 @@ interface Scorecard {
 	questions?: unknown;
 }
 
+interface CallParticipant {
+	id?: string;
+}
+
 interface Props {
-	call: Record<string, unknown>;
+	call: {
+		user?: CallParticipant;
+		from?: CallParticipant;
+		to?: CallParticipant;
+	};
 }
 
 interface Emits {
