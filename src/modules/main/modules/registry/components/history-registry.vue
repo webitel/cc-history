@@ -248,16 +248,10 @@ import {
 	WtTable,
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
-import {
-	ChipColor,
-	ComponentSize,
-	IconAction,
-	IconColor,
-} from '@webitel/ui-sdk/enums';
-import { useTableEmpty } from '@webitel/ui-sdk/modules/TableComponentModule/composables/useTableEmpty';
+import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
+import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
-import { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.d';
-import get from 'lodash/get';
+import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { EngineHistoryCall } from 'webitel-sdk';
@@ -267,6 +261,7 @@ import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
+import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import TableDirection from './table-templates/table-direction.vue';
 import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 
@@ -286,14 +281,12 @@ const {
 	next,
 	headers,
 	shownHeaders,
-	fields,
 
 	filtersManager,
 	isStoreSetUp,
 } = storeToRefs(tableStore);
 
 const {
-	initialize,
 	loadDataList,
 	updateSelected,
 	updatePage,
@@ -330,8 +323,6 @@ const {
 	headline: emptyHeadline,
 	title: emptyTitle,
 	text: emptyText,
-	primaryActionText: emptyPrimaryActionText,
-	secondaryActionText: emptySecondaryActionText,
 } = useTableEmpty({
 	dataList,
 	error,
@@ -395,8 +386,8 @@ const handleTranscriptDelete = ({
 	);
 };
 
-const updateVariablesHeaders = (variables: WtTableHeader[]) => {
-	const variablesByField = new Map<string, WtTableHeader>(
+const updateVariablesHeaders = (variables: DatalistTableHeader[]) => {
+	const variablesByField = new Map<string, DatalistTableHeader>(
 		variables.map((variable) => [
 			variable.field,
 			variable,

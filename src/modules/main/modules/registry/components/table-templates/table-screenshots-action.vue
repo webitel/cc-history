@@ -29,6 +29,7 @@ interface Props {
 		string,
 		Array<{
 			id: string;
+			name?: string;
 		}>
 	>;
 }

@@ -30,10 +30,10 @@
 
 <script setup lang="ts">
 import { MessagesServiceAPI } from '@webitel/api-services/api';
+import type { EngineHistoryCall } from '@webitel/api-services/gen/models';
 import { ChatContainer, ChatMessageType } from '@webitel/ui-chats/ui';
 import { computed, inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { EngineHistoryCall } from 'webitel-sdk';
 import EmptyChat from './_internals/assets/empty-chat.svg';
 import EmptyChatDark from './_internals/assets/empty-chat-dark.svg';
 import { normalizeMessages } from './_internals/scripts/normalizeMessages';
@@ -75,7 +75,7 @@ const loadNextMessages = async () => {
 			await MessagesServiceAPI.getChatHistory(params);
 		canLoadNextMessages.value = next;
 		normalizedMessages.value = [
-			...normalizeMessages(messages, peers),
+			...(normalizeMessages(messages, peers) as unknown as ChatMessageType[]),
 			...normalizedMessages.value,
 		];
 	} finally {

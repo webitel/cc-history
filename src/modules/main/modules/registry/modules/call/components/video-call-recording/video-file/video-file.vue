@@ -76,7 +76,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	files: [],
+	files: () => [],
 });
 
 const { t } = useI18n();

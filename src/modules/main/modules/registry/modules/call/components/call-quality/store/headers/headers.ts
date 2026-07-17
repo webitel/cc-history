@@ -1,6 +1,6 @@
-import type { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable.type.js';
+import type { DatalistTableHeader } from '@webitel/ui-datalist';
 
-export const headers: WtTableHeader[] = [
+export const headers: DatalistTableHeader[] = [
 	{
 		value: 'parameter',
 		show: true,

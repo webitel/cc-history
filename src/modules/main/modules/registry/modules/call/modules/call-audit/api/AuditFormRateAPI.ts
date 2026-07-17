@@ -3,7 +3,8 @@ import applyTransform, {
 	notify,
 	snakeToCamel,
 } from '@webitel/ui-sdk/src/api/transformers/index.js';
-import { AuditFormServiceApiFactory, type EngineAuditRate } from 'webitel-sdk';
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
+import { AuditFormServiceApiFactory } from 'webitel-sdk';
 
 import instance from '../../../../../../../../../app/api/instance';
 import configuration from '../../../../../../../../../app/api/openAPIConfig';
@@ -13,7 +14,7 @@ const auditService = AuditFormServiceApiFactory(configuration, '', instance);
 
 const fillAnswersCreatedAtFromRate = (rate: EngineAuditRate) => ({
 	...rate,
-	answers: rate.answers.map((answer) => ({
+	answers: (rate.answers ?? []).map((answer) => ({
 		...answer,
 		createdAt: rate.createdAt,
 	})),

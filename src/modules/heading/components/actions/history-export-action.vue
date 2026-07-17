@@ -26,7 +26,7 @@
             :show-clear="false"
             :label="$t('vocabulary.format')"
             :options="exportSettingOptions"
-            :v="v$.draft?.format"
+            :v="formatValidation"
             :model-value="draft.format"
             required
             @update:model-value="selectHandler"
@@ -35,7 +35,7 @@
             v-if="isExportSettingsFormatCSV"
             v-model:model-value="draft.separator"
             :label="$t('headerSection.exportPopup.separator')"
-            :v="v$.draft?.separator"
+            :v="separatorValidation"
             required
           />
         </div>
@@ -83,7 +83,9 @@ interface Props {
 	dataList: Record<string, unknown>[];
 	filters: Record<string, unknown>;
 	fields: string[];
-	selected: Record<string, unknown>[];
+	selected: {
+		id: string | number;
+	}[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -103,7 +105,9 @@ const draft = reactive({
 	separator: '',
 });
 
-const selectedIds = computed(() => selected.value.map((item) => item.id));
+const selectedIds = computed(() =>
+	selected.value.map((item) => Number(item.id)),
+);
 
 const { CSVExportInstance, initCSVExport, exportCSV } = useCSVExport({
 	selected: selectedIds,
@@ -171,9 +175,28 @@ const v$ = useVuelidate(rules, {
 	draft,
 });
 
+// vuelidate exports BaseValidation, but its `[key: string]: any` breaks Vue
+// UnwrapRef / Pick, and computed rules make `v$.value.draft` infer as undefined.
+// Narrow with a minimal shape matching BaseValidation fields we use.
+interface DraftValidation {
+	$touch: () => void;
+	$pending: boolean;
+	$error: boolean;
+	format?: unknown;
+	separator?: unknown;
+}
+
+const draftValidation = computed(
+	() => v$.value.draft as DraftValidation | undefined,
+);
+const formatValidation = computed(() => draftValidation.value?.format);
+const separatorValidation = computed(() => draftValidation.value?.separator);
+
 const disableSaving = computed(() => {
-	v$.value.draft.$touch();
-	return v$.value.draft.$pending || v$.value.draft.$error;
+	const validation = draftValidation.value;
+	if (!validation) return true;
+	validation.$touch();
+	return validation.$pending || validation.$error;
 });
 
 function initXLSExport(

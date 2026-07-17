@@ -10,9 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps } from 'vue';
-import { EngineAuditRate } from 'webitel-sdk';
-
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import AuditRateAnswerItem from './audit-rate-answer-item.vue';
 
 const props = defineProps<{

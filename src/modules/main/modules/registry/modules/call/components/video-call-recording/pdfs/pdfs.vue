@@ -4,6 +4,7 @@
     :store="tableStore"
     entity-id-key="callId"
     :entity-id-value="callId"
+    :is-created-at-filter="false"
     :access="{
       delete: hasDeleteAccess,
     }"

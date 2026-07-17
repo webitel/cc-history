@@ -13,12 +13,12 @@
 </template>
 
 <script lang="ts" setup>
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import AuditForm from '@webitel/ui-sdk/src/modules/AuditForm/components/audit-form.vue';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import deepCopy from 'deep-copy';
 import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { EngineAuditRate } from 'webitel-sdk';
 
 const props = defineProps({
 	scorecard: {

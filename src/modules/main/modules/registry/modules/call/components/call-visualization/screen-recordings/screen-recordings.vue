@@ -101,11 +101,18 @@ import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedS
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
+import { type Dispatch, useStore } from 'vuex';
 import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 
-import { useRegistryStore } from '../../../../../store/new/registry.store.js'; // Не використовується
 import { headers } from './store/headers/headers.js';
+
+interface ScreenRecordingFile {
+	id: string;
+	name?: string;
+	startAt?: string | number;
+	stopAt?: string | number;
+	mime_type?: string;
+}
 
 const props = defineProps({
 	namespace: {
@@ -123,9 +130,9 @@ const dataList = computed(() => {
 
 const error = ref('');
 
-const selected = ref([]);
+const selected = ref<ScreenRecordingFile[]>([]);
 
-const currentVideo = ref(null);
+const currentVideo = ref<ScreenRecordingFile | null>(null);
 const isVideoOpen = ref(false);
 
 const isLoading = computed(() => {
@@ -133,7 +140,7 @@ const isLoading = computed(() => {
 });
 
 const loadDataList = () => {
-	store.dispatch(`${props.namespace}/LOAD_MAIN_CALL`);
+	(store.dispatch as Dispatch)(`${props.namespace}/LOAD_MAIN_CALL`);
 };
 
 const prettifyTimestamp = (item) =>
@@ -146,7 +153,7 @@ const calcDuration = (item) =>
 
 const { hasDeleteAccess } = useRecordingFilesAccess();
 
-const handleDelete = async (items: []) => {
+const handleDelete = async (items: ScreenRecordingFile[]) => {
 	const deleteIds = items.map((item) => item.id);
 	try {
 		FileServicesAPI.delete(deleteIds);
@@ -170,7 +177,9 @@ const {
 	text: textEmpty,
 } = useTableEmpty({
 	dataList,
+	filters: ref({}),
 	error,
+	isLoading,
 });
 
 const openVideo = (item) => {

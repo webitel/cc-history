@@ -20,7 +20,8 @@ export const normalizeMessages = (
 				url: getMediaUrl(message.file.id),
 			},
 			member: {
-				...message.from,
+				id: message.from?.id ?? '',
+				name: message.from?.name ?? '',
 				self:
 					peers[+message.from?.id - 1].type === 'user' ||
 					peers[+message.from?.id - 1].type === 'bot',

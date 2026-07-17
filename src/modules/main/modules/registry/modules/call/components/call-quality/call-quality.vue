@@ -34,16 +34,22 @@
 </template>
 
 <script setup lang="ts">
+import type {
+	EngineHistoryCall,
+	EngineHistoryCallQualityMetrics,
+} from '@webitel/api-services/gen/models';
 import { WtEmpty, WtTable } from '@webitel/ui-sdk/components';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { EngineHistoryCall } from 'webitel-sdk';
 
 import {
 	headers,
 	QUALITY_PARAMETERS,
 	type QualityParameter,
 } from './store/headers/headers';
+
+type QualityMetricSuffix = 'Avg' | 'Min' | 'MinAt' | 'Max' | 'MaxAt';
+type QualityMetricKey = `${QualityParameter}${QualityMetricSuffix}`;
 
 const props = defineProps<{
 	call: EngineHistoryCall;
@@ -56,17 +62,25 @@ const formatValue = (value?: number) => {
 	return Number(value).toFixed(2);
 };
 
+const getMetric = (
+	metrics: EngineHistoryCallQualityMetrics | undefined,
+	parameter: QualityParameter,
+	suffix: QualityMetricSuffix,
+) => {
+	const key = `${parameter}${suffix}` as QualityMetricKey;
+	return metrics?.[key];
+};
+
 const buildRow = (parameter: QualityParameter) => {
 	const metrics = props.call.qualityMetrics;
-	const prefix = parameter;
 
 	return {
 		parameter,
-		avg: metrics?.[`${prefix}Avg`],
-		min: metrics?.[`${prefix}Min`],
-		minAt: metrics?.[`${prefix}MinAt`],
-		max: metrics?.[`${prefix}Max`],
-		maxAt: metrics?.[`${prefix}MaxAt`],
+		avg: getMetric(metrics, parameter, 'Avg'),
+		min: getMetric(metrics, parameter, 'Min'),
+		minAt: getMetric(metrics, parameter, 'MinAt'),
+		max: getMetric(metrics, parameter, 'Max'),
+		maxAt: getMetric(metrics, parameter, 'MaxAt'),
 	};
 };
 

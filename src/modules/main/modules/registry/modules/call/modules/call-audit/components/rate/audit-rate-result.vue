@@ -10,7 +10,7 @@
     <audit-rate-summary
       :rate="rate"
       @rate:edit="emit('rate:edit')"
-      @rate:delete="askDeleteConfirmation({ callback: () => emit('rate:delete') })"
+      @rate:delete="askDeleteConfirmation({ deleted: [rate], callback: () => emit('rate:delete') })"
     />
 
     <audit-rate-answers
@@ -22,8 +22,8 @@
 <script lang="ts" setup>
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
-import { EngineAuditRate } from 'webitel-sdk';
 
+import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import AuditRateAnswers from './answers/audit-rate-answers.vue';
 import AuditRateSummary from './summary/audit-rate-summary.vue';
 
