@@ -17,11 +17,7 @@
           <table-direction :item="item" />
         </template>
         <template #mos="{ item }">
-          <wt-call-media-metric
-            :mos-avg="item.qualityMetrics?.mosAvg"
-            show-tooltip
-            :size="ComponentSize.SM"
-          />
+          <table-mos-metric :item="item" />
         </template>
         <template #from="{ item }">
           <div v-if="item.from">
@@ -135,20 +131,20 @@
 </template>
 
 <script>
-import { WtCallMediaMetric } from '@webitel/ui-sdk/components';
 import { ComponentSize } from '@webitel/ui-sdk/enums';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { mapActions, mapState } from 'vuex';
 import TableDirection from '../../../../components/table-templates/table-direction.vue';
+import TableMosMetric from '../../../../components/table-templates/table-mos-metric.vue';
 import { useRegistryStore } from '../../../../store/new/registry.store.js';
 
 export default {
 	name: 'CallLegs',
 	components: {
 		TableDirection,
-		WtCallMediaMetric,
+		TableMosMetric,
 	},
 	props: {
 		call: {
