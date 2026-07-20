@@ -68,11 +68,7 @@
           <table-direction :item="item" />
         </template>
         <template #mos="{ item }">
-          <wt-call-media-metric
-            :mos-avg="item.qualityMetrics?.mosAvg"
-            show-tooltip
-            :size="ComponentSize.SM"
-          />
+          <table-mos-metric :item="item" />
         </template>
         <template #from="{ item }">
           <div v-if="item.from">
@@ -238,7 +234,6 @@ import {
 	WtActionBar,
 	WtBadge,
 	WtCallMediaAction,
-	WtCallMediaMetric,
 	WtEmpty,
 	WtIconAction,
 	WtIconBtn,
@@ -263,6 +258,7 @@ import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { useRegistryStore } from '../store/new/registry.store.ts';
 import TableDirection from './table-templates/table-direction.vue';
+import TableMosMetric from './table-templates/table-mos-metric.vue';
 import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 
 const emit = defineEmits<{
