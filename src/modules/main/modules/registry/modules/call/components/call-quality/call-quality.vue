@@ -58,7 +58,7 @@ const props = defineProps<{
 const { t } = useI18n();
 
 const formatValue = (value?: number) => {
-	if (value == null) return '';
+	if (value == null) return '-';
 	return Number(value).toFixed(2);
 };
 
