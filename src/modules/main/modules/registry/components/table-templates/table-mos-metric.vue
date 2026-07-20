@@ -9,11 +9,11 @@
 </template>
 
 <script setup lang="ts">
+import type { EngineHistoryCall } from '@webitel/api-services/gen/models';
 import { WtCallMediaMetric } from '@webitel/ui-sdk/components';
 import { ComponentSize } from '@webitel/ui-sdk/enums';
 import { EMPTY_SYMBOL } from '@webitel/ui-sdk/utils';
 import { computed } from 'vue';
-import { EngineHistoryCall } from 'webitel-sdk';
 
 const props = defineProps<{
 	item: EngineHistoryCall;
