@@ -24,12 +24,14 @@
 					:tabs="tabs"
 					@change="changeTab"
 				/>
-				<component
-					:is="currentTab.value"
-					v-if="mainCall"
-					:call="mainCall"
-					:namespace="namespace"
-				/>
+				<keep-alive :include="['video-call-recording']">
+					<component
+						:is="currentTab.value"
+						v-if="mainCall"
+						:call="mainCall"
+						:namespace="namespace"
+					/>
+				</keep-alive>
 			</div>
 		</template>
 	</wt-page-wrapper>
