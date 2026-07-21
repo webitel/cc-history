@@ -32,7 +32,7 @@
 		"@webitel/ui-sdk": "~26.6",
 		"axios": "^1.18.1",
 		"clipboard-copy": "^4.0.1",
-		"date-fns": "^4.1.0",
+		"date-fns": "^4.4.0",
 		"deep-copy": "^1.x",
 		"deep-equal": "^2.x",
 		"file-saver-es": "^2.0.5",
@@ -40,27 +40,27 @@
 		"jszip-utils": "^0.1.0",
 		"lodash-es": "^4.x",
 		"pinia": "^3.x",
-		"vidstack": "^1.12.13",
+		"vidstack": "^1.15.6",
 		"vue": "^3.5.x",
 		"vue-chartjs": "^4.1.2",
 		"vue-i18n": "^11.x",
 		"vue-router": "^4.x",
 		"vuex": "^4.1.0",
-		"wavesurfer.js": "^7.12.5",
-		"webitel-sdk": "^26.4.8"
+		"wavesurfer.js": "^7.12.11",
+		"webitel-sdk": "^26.4.23"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.4.16",
+		"@biomejs/biome": "^2.5.5",
 		"@pinia/testing": "^1.0.0",
 		"@vitejs/plugin-vue": "^6.x",
 		"@vitest/coverage-v8": "^4.x",
 		"@vue/test-utils": "^2.x",
 		"globals": "^17.x",
-		"happy-dom": "^20.10.6",
+		"happy-dom": "^20.11.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.x",
 		"pinia-plugin-persistedstate": "^4.2.0",
-		"sass": "^1.78.0",
+		"sass": "^1.101.3",
 		"typescript": "5.9.x",
 		"vite": "npm:rolldown-vite@^7.3.x",
 		"vite-plugin-node-polyfills": "^0.x",
@@ -69,7 +69,7 @@
 		"vue-tsc": "^3.3.7"
 	},
 	"optionalDependencies": {
-		"@esbuild/darwin-arm64": "^0.24.0",
+		"@esbuild/darwin-arm64": "^0.28.1",
 		"@rollup/rollup-linux-x64-gnu": "^4"
 	},
 	"overrides": {
