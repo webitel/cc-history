@@ -153,9 +153,14 @@
         </template>
         <template
           v-for="header in variableHeaders"
-          #[header.field]="{ item }"
+          #[header.value]="slotProps"
         >
-          {{ getVariableValue(item, header.field) }}
+          {{
+            getVariableValue(
+              (slotProps as { item: EngineHistoryCall }).item,
+              header.value,
+            )
+          }}
         </template>
 
         <template #actions="{ item }">
