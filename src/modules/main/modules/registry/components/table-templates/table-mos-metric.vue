@@ -4,6 +4,7 @@
     :mos-avg="mosAvg"
     show-tooltip
     :size="ComponentSize.SM"
+    tooltip-text-prefix="calls.connectionQuality"
   />
   <span v-else>{{ EMPTY_SYMBOL }}</span>
 </template>
