@@ -9,6 +9,7 @@
     @filter:delete="deleteFilter"
     @filter:reset-all="resetFilters"
     @preset:apply="applyPreset"
+    @preset:restore="restorePreset"
     @hide="emit('hide')"
   />
 </template>
@@ -76,6 +77,14 @@ const resetFilters = () => {
 
 const applyPreset = (snapshot: string) => {
 	resetFilters();
+	filtersManager.value.fromString(snapshot);
+};
+
+/**
+ * preset cached in localStorage – filters must survive, so no reset here.
+ * `createdAt` is already seeded by initializeDefaultCreatedAtFilter()
+ */
+const restorePreset = (snapshot: string) => {
 	filtersManager.value.fromString(snapshot);
 };
 </script>
