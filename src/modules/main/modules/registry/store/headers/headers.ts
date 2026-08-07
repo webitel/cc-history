@@ -1,6 +1,16 @@
 import type { DatalistTableHeader } from '@webitel/ui-datalist';
+import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 
-export const headers: DatalistTableHeader[] = [
+import { useUserinfoStore } from '../../../../../userinfo/stores/userinfoStore';
+
+/** Matches how the call visualization already hides its screencast tab. */
+const controlAgentScreenAccess = () =>
+	useUserinfoStore().hasSpecialGlobalActionAccess(
+		SpecialGlobalAction.ControlAgentScreen,
+	);
+
+/* annotated on the literal so a mistyped key is an error, not a silent no-op */
+const rawHeaders: DatalistTableHeader[] = [
 	{
 		value: 'createdAt',
 		show: true,
@@ -155,6 +165,7 @@ export const headers: DatalistTableHeader[] = [
 		sort: undefined,
 		field: 'screencast',
 		locale: 'vocabulary.screencast',
+		access: controlAgentScreenAccess,
 	},
 	{
 		value: 'tags',
@@ -288,7 +299,9 @@ export const headers: DatalistTableHeader[] = [
 		sort: null,
 		field: 'contact',
 	},
-].map((header) => ({
+];
+
+export const headers: DatalistTableHeader[] = rawHeaders.map((header) => ({
 	locale: `fields.${header.value}`,
 	...header,
 }));
