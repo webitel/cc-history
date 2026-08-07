@@ -10,15 +10,26 @@
     }"
     :on-delete-item="handleDeleteItem"
   >
-    <template #header="{ selected, loadDataList, askDeleteConfirmation, handleDelete }">
+    <template
+      #header="{
+        selected,
+        loadDataList,
+        askDeleteConfirmation,
+        handleDelete,
+        downloadArchive,
+        isDownloadingArchive,
+      }"
+    >
       <header class="table-title">
         <h3 class="table-title__title typo-heading-4">
           {{ t('registry.call.pdfs', 2) }}
         </h3>
         <wt-action-bar
-          :include="[IconAction.REFRESH, IconAction.DELETE]"
+          :include="[IconAction.REFRESH, IconAction.DOWNLOAD, IconAction.DELETE]"
           :disabled:delete="!selected.length || !hasDeleteAccess"
+          :disabled:download="isDownloadingArchive"
           @click:refresh="loadDataList"
+          @click:download="downloadArchive"
           @click:delete="
             askDeleteConfirmation({
               deleted: selected,
@@ -26,6 +37,17 @@
             })
           "
         >
+          <template #download="{ onClick }">
+            <wt-loader
+              v-if="isDownloadingArchive"
+              :size="ComponentSize.SM"
+            />
+            <wt-icon-action
+              v-else
+              action="download"
+              @click="onClick"
+            />
+          </template>
         </wt-action-bar>
       </header>
     </template>
@@ -35,7 +57,7 @@
 <script lang="ts" setup>
 import { FileServicesAPI } from '@webitel/api-services/api';
 import { WebitelMediaExporterExportRecord } from '@webitel/api-services/gen/models';
-import { IconAction } from '@webitel/ui-sdk/enums';
+import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
 import AgentPdfsTabSdk from '@webitel/ui-sdk/src/modules/AgentPdfs/components/agent-pdfs-tab.vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';

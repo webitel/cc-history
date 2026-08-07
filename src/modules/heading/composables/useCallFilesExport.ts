@@ -20,7 +20,7 @@ export const useCallFilesExport = ({
 	const { exportFiles, isLoading, downloadStatus, zippingStatus } =
 		useFilesExport({
 			getFileURL: (item) =>
-				getCallMediaUrl(item.id, {
+				getCallMediaUrl(item.id as string, {
 					download: true,
 				}),
 			fetch: async ({ page }) => {
