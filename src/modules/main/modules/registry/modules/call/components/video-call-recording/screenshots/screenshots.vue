@@ -138,7 +138,7 @@ const store = useStore();
 
 const route = useRoute();
 
-const callId = computed(() => route.params.pathMatch);
+const callId = computed(() => route.params.pathMatch as string);
 
 const isLoading = computed(() => {
 	return getNamespacedState(store.state, props.namespace).isLoading;
