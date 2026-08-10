@@ -50,6 +50,7 @@
       </template>
       <template #actions>
         <wt-button
+          :disabled="!hasChanges"
           :loading="isLoading"
           @click="save"
         >
@@ -98,6 +99,8 @@ const draft = reactive([]);
 
 const isLoading = ref(false);
 
+const hasChanges = ref(false);
+
 const variablesFromDraft = computed(() => {
 	return draft.map(({ value }) => value.replace('variables.', ''));
 });
@@ -121,6 +124,7 @@ const v$ = useVuelidate(
 v$.value.$touch();
 
 const open = () => {
+	hasChanges.value = false;
 	shownPopup.value = true;
 };
 
@@ -130,6 +134,7 @@ const close = () => {
 
 const deleteKey = (keyToDelete) => {
 	draft.splice(draft.indexOf(keyToDelete), 1);
+	hasChanges.value = true;
 };
 
 const localStorageKey = 'history/registry/variable-headers';
@@ -157,6 +162,7 @@ const addVariableHeader = (variableKey) => {
 	};
 
 	draft.unshift(variableHeader);
+	hasChanges.value = true;
 
 	/* if input value is the source, clear it after adding do draft */
 	if (newVariableKey.value) {
