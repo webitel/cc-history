@@ -8,4 +8,5 @@ export const usePdfsDataListStore = createTableStore('call/pdfs/datalist', {
 		getList: PdfServicesAPI.listCallExports,
 	},
 	headers,
+	disablePersistence: true,
 });
