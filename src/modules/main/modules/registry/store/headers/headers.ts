@@ -17,6 +17,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		sort: null,
 		field: 'created_at',
 		locale: 'reusable.dateTime',
+		reorderable: false,
 	},
 	{
 		value: 'direction',
@@ -147,6 +148,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'duration',
+		reorderable: false,
 	},
 	{
 		value: 'screenshots',
