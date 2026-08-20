@@ -148,7 +148,6 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'duration',
-		reorderable: false,
 	},
 	{
 		value: 'screenshots',
