@@ -17,6 +17,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		sort: null,
 		field: 'created_at',
 		locale: 'reusable.dateTime',
+		reorderable: false,
 	},
 	{
 		value: 'direction',
