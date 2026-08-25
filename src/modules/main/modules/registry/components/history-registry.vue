@@ -37,20 +37,17 @@
       @close="sttPopupCall = null"
       @delete="handleTranscriptDelete({ callId: sttPopupCall?.id, transcript: $event })"
     />
-    <wt-loader v-show="isLoading" />
-    <wt-empty
-      v-if="showEmpty"
-      :image="emptyImage"
-      :headline="emptyHeadline"
-      :title="emptyTitle"
-      :text="emptyText"
-    />
-    <div
-      v-else
-      class="table-section__table-wrapper"
-    >
+    <div class="table-section__table-wrapper">
+      <wt-empty
+        v-show="showEmpty"
+        :image="emptyImage"
+        :headline="emptyHeadline"
+        :title="emptyTitle"
+        :text="emptyText"
+      />
+      <wt-loader v-show="isLoading" />
       <wt-table
-        v-show="!isLoading"
+        v-show="dataList.length && !isLoading"
         ref="wt-table"
         :data="dataList"
         :headers="shownHeaders"
@@ -446,16 +443,6 @@ const handlePlayMedia = (mediaData) => {
 <style scoped>
 .wt-action-bar {
   margin-left: auto;
-}
-
-.table-wrapper {
-  position: relative;
-  display: flex;
-  flex: 1 1 100%;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-  width: 100%;
 }
 
 .wt-pagination {
