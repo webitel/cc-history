@@ -1,3 +1,7 @@
-import { getDefaultInstance } from '@webitel/api-services/api/defaults';
+import { getDefaultAxiosInstance } from '@webitel/api-services/api/axios';
 
-export default getDefaultInstance();
+/*
+ * The same instance generated api-services clients use by default, so
+ * interceptors or header changes made here apply to generated calls too.
+ */
+export default getDefaultAxiosInstance();
