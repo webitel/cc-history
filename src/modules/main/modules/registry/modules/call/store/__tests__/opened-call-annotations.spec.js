@@ -1,8 +1,9 @@
+import { CallAnnotationsAPI } from '@webitel/api-services/api';
 import getContextMock from '../../../../../../../../../tests/unit/mocks/store/contextMock';
-import CallAnnotationAPIRepository from '../../api/CallAnnotationAPIRepository';
+
 import call from '../call';
 
-vi.mock('../../api/CallAnnotationAPIRepository');
+vi.mock('@webitel/api-services/api');
 
 describe('Annotation store', () => {
 	const response = {
@@ -21,21 +22,21 @@ describe('Annotation store', () => {
 
 	it('ADD_ANNOTATION calls CallAnnotationApi add method', async () => {
 		const addMock = vi.fn(() => response);
-		CallAnnotationAPIRepository.add = addMock;
+		CallAnnotationsAPI.add = addMock;
 		await call.actions.ADD_ANNOTATION(context);
 		expect(addMock).toHaveBeenCalled();
 	});
 
 	it('EDIT_ANNOTATION calls CallAnnotationApi update method', async () => {
 		const updateMock = vi.fn(() => response);
-		CallAnnotationAPIRepository.update = updateMock;
+		CallAnnotationsAPI.update = updateMock;
 		await call.actions.EDIT_ANNOTATION(context);
 		expect(updateMock).toHaveBeenCalled();
 	});
 
 	it('DELETE_ANNOTATION calls CallAnnotationApi delete method', async () => {
 		const deleteMock = vi.fn(() => response);
-		CallAnnotationAPIRepository.delete = deleteMock;
+		CallAnnotationsAPI.delete = deleteMock;
 		await call.actions.DELETE_ANNOTATION(context);
 		expect(deleteMock).toHaveBeenCalled();
 	});

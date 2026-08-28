@@ -1,7 +1,6 @@
+import { AuditRatesAPI } from '@webitel/api-services/api';
 import type { EngineAuditRate } from '@webitel/api-services/gen/models';
 import BaseStoreModule from '@webitel/ui-sdk/src/store/BaseStoreModules/BaseStoreModule';
-
-import AuditFormRateAPI from '../api/AuditFormRateAPI';
 
 const state = {
 	result: {} as EngineAuditRate,
@@ -13,7 +12,7 @@ const actions = {
 	GET_EVALUATION: async (context, id) => {
 		context.commit('SET_LOADING', true);
 		try {
-			const result = await AuditFormRateAPI.get(id);
+			const result = await AuditRatesAPI.get(id);
 			context.commit('SET_RESULT', result);
 		} finally {
 			context.commit('SET_LOADING', false);
@@ -23,7 +22,7 @@ const actions = {
 	ADD_EVALUATION: async (context, evaluation: EngineAuditRate) => {
 		context.commit('SET_LOADING', true);
 		try {
-			const result = await AuditFormRateAPI.add(evaluation);
+			const result = await AuditRatesAPI.add(evaluation);
 			context.commit('SET_RESULT', result);
 		} finally {
 			context.commit('SET_LOADING', false);
@@ -33,7 +32,7 @@ const actions = {
 	UPDATE_EVALUATION: async (context, itemInstance: EngineAuditRate) => {
 		context.commit('SET_LOADING', true);
 		try {
-			const result = await AuditFormRateAPI.update({
+			const result = await AuditRatesAPI.update({
 				itemId: context.state.result.id,
 				itemInstance,
 			});
@@ -52,7 +51,7 @@ const actions = {
 		const rateId = payload?.id || context.state.result.id;
 		context.commit('SET_LOADING', true);
 		try {
-			await AuditFormRateAPI.delete(rateId);
+			await AuditRatesAPI.delete(rateId);
 			await context.dispatch('RESET_EVALUATION_RESULT');
 		} finally {
 			context.commit('SET_LOADING', false);
