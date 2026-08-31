@@ -1,7 +1,7 @@
+import { CallHistoryAPI } from '@webitel/api-services/api';
 import { getDefaultGetListResponse } from '@webitel/ui-sdk/api/defaults/index';
 import applyTransform, {
 	merge,
-	notify,
 	snakeToCamel,
 } from '@webitel/ui-sdk/api/transformers/index';
 import { FormatDateMode } from '@webitel/ui-sdk/enums';
@@ -9,12 +9,12 @@ import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { startOfToday } from 'date-fns';
-import { CallServiceApiFactory } from 'webitel-sdk';
 
-import instance from '../../../../../app/api/instance';
-import configuration from '../../../../../app/api/openAPIConfig';
-
-const callService = new CallServiceApiFactory(configuration, '', instance);
+/** `variables` and `form_fields` keys are user data, not API fields. */
+const doNotConvertKeys = [
+	'variables',
+	'form_fields',
+];
 
 // Функція не використовується
 const computeDate = (timestamp) => {
@@ -156,90 +156,87 @@ const getList =
 			variable,
 			contact,
 		} = applyTransform(params, paramsTransformers);
-		try {
-			const variables = variable?.split('&').reduce((vars, currVar) => {
-				const [key, value] = currVar.split('=');
-				/*
+
+		const variables = variable?.split('&').reduce((vars, currVar) => {
+			const [key, value] = currVar.split('=');
+			/*
          This if else statement is needed for sending ''
           to backend when user writes not valid variableSearch, so we can display dummy image.
          */
-				vars[key] = value !== undefined ? value : '';
-				return vars;
-			}, {});
+			vars[key] = value !== undefined ? value : '';
+			return vars;
+		}, {});
 
-			const setupCreatedAt = (createdAt) => {
-				if (typeof createdAt === 'string') {
-					return {
-						from: normalizeToTimestamp(createdAt, {
-							round: 'start',
-						}),
-						to: normalizeToTimestamp(createdAt, {
-							round: 'end',
-						}),
-					};
-				}
+		const setupCreatedAt = (createdAt) => {
+			if (typeof createdAt === 'string') {
+				return {
+					from: normalizeToTimestamp(createdAt, {
+						round: 'start',
+					}),
+					to: normalizeToTimestamp(createdAt, {
+						round: 'end',
+					}),
+				};
+			}
 
-				if (!createdAt) {
-					return {
-						from: normalizeToTimestamp(startOfToday().getTime()),
-					};
-				}
+			if (!createdAt) {
+				return {
+					from: normalizeToTimestamp(startOfToday().getTime()),
+				};
+			}
 
-				return createdAt;
-			};
+			return createdAt;
+		};
 
-			const response = await callService.searchHistoryCallPost({
-				page,
-				size,
-				sort,
-				fields: [
-					'id',
-					...fields,
-				],
-				created_at: setupCreatedAt(createdAt),
-				user_id: user,
-				agent_id: agent,
-				queue_id: queue,
-				team_id: team,
-				member_id: member,
-				gateway_id: gateway,
-				duration: totalDuration,
-				talk: talkDuration,
-				skip_parent: skipParent ?? true,
-				parent_id: parentId,
-				cause,
-				has_file: hasFile !== undefined ? hasFile : undefined,
-				number: search,
-				direction,
-				id,
-				dependency_id: dependencyId,
-				tags: tag,
-				amd_result: amdResult,
-				fts,
-				directions: hangupDisposition,
-				has_transcript:
-					hasTranscription !== undefined ? hasTranscription : undefined,
-				agent_description: description,
-				grantee_id: grantee,
-				rated: rated !== undefined ? rated : undefined,
-				rated_by: ratedBy,
-				score_required: score,
-				variables,
-				contact_id: contact,
-			});
-			const { items, next } = applyTransform(
-				response.data,
-				responseTransformers,
-			);
-			return {
-				items: applyTransform(items, responseItemsTransformers),
-				next,
-			};
-		} catch (err) {
-			throw applyTransform(err, [
-				notify,
-			]);
-		}
+		const data = {
+			page,
+			size,
+			sort,
+			fields: [
+				'id',
+				...fields,
+			],
+			created_at: setupCreatedAt(createdAt),
+			user_id: user,
+			agent_id: agent,
+			queue_id: queue,
+			team_id: team,
+			member_id: member,
+			gateway_id: gateway,
+			duration: totalDuration,
+			talk: talkDuration,
+			skip_parent: skipParent ?? true,
+			parent_id: parentId,
+			cause,
+			has_file: hasFile !== undefined ? hasFile : undefined,
+			number: search,
+			direction,
+			id,
+			dependency_id: dependencyId,
+			tags: tag,
+			amd_result: amdResult,
+			fts,
+			directions: hangupDisposition,
+			has_transcript:
+				hasTranscription !== undefined ? hasTranscription : undefined,
+			agent_description: description,
+			grantee_id: grantee,
+			rated: rated !== undefined ? rated : undefined,
+			rated_by: ratedBy,
+			score_required: score,
+			variables,
+			contact_id: contact,
+		};
+
+		const { items, next } = await CallHistoryAPI.getListPost({
+			data,
+			doNotConvertKeys,
+			responseTransformers,
+		});
+		return {
+			items: applyTransform(items, responseItemsTransformers),
+			next,
+		};
 	};
 
 const getHistory = (requestParams) => {
@@ -253,10 +250,7 @@ const getHistory = (requestParams) => {
 	return getList({
 		paramsTransformers: [],
 		responseTransformers: [
-			snakeToCamel([
-				'variables',
-				'form_fields',
-			]),
+			snakeToCamel(doNotConvertKeys),
 			merge(getDefaultGetListResponse()),
 		],
 		responseItemsTransformers: [
