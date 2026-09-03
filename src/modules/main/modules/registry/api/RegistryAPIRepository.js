@@ -81,6 +81,15 @@ const transformResponseItems = (items) => {
 	return items.map((item) => ({
 		...defaultObject,
 		...item,
+		// Epoch copies for hold markers: the same fields below become display strings.
+		timestamps: {
+			createdAt: item.createdAt,
+			answeredAt: item.answeredAt,
+			bridgedAt: item.bridgedAt,
+			queueBridgedAt: item.queueBridgedAt,
+			duration: item.duration,
+			billSec: item.billSec,
+		},
 		createdAt: item.createdAt
 			? formatDate(+item.createdAt, FormatDateMode.DATETIME)
 			: null,
