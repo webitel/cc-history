@@ -17,7 +17,7 @@ import type {
 	WaveAnnotation,
 } from '../call-wave.types';
 import { createCommentTooltipContent } from './commentTooltipFactory';
-import { mapHoldToWaveformSeconds } from './holdTimelinePosition';
+import { mapHoldsToWaveformSeconds } from './holdTimelinePosition';
 import { annotationSecondsToInt } from './useCallWaveAnnotations';
 import {
 	adjustCommentTooltipPosition,
@@ -28,22 +28,6 @@ const pauseIcon = getIconFromRepository('pause') || '';
 
 const COMMENT_REGION_ID_PREFIX = 'comment-';
 const HOLD_REGION_ID_PREFIX = 'hold-';
-
-// Registry exposes `createdAt` as a formatted string, not epoch ms; parse for hold math vs `audioFile.startAt`.
-function convertCreatedAtToTimestamp(createdAt: string) {
-	const [datePart, timePart] = createdAt.split(', ');
-	const [day, month, year] = datePart.split('.');
-	const [hours, minutes, seconds] = timePart.split(':');
-
-	return new Date(
-		Number(year),
-		Number(month) - 1,
-		Number(day),
-		Number(hours),
-		Number(minutes),
-		Number(seconds),
-	).getTime();
-}
 
 export interface UseCallWaveRegionsOptions {
 	regionsPlugin: RegionsPlugin;
@@ -160,24 +144,19 @@ export function useCallWaveRegions({
 
 	function displayHolds(holds: CallHoldItem[], player: WaveSurfer) {
 		const audioFile = call.value.files?.[EngineCallFileType.FileTypeAudio]?.[0];
-		const callCreatedAtMs = convertCreatedAtToTimestamp(call.value.createdAt);
-		const actualAudioDuration = player.getDuration();
+		if (!audioFile) {
+			return;
+		}
 
-		let accumulatedHoldMs = 0;
+		const holdPositionsSec = mapHoldsToWaveformSeconds(
+			holds,
+			call.value,
+			audioFile,
+			player.getDuration(),
+		);
 
 		holds.forEach((holdItem, index) => {
-			const { holdStartSeconds, nextAccumulatedHoldMs } =
-				mapHoldToWaveformSeconds({
-					hold: holdItem,
-					audioFileStartAt: audioFile.startAt,
-					audioFileStopAt: audioFile.stopAt,
-					callCreatedAtMs,
-					accumulatedHoldMs,
-					actualAudioDurationSec: actualAudioDuration,
-				});
-			accumulatedHoldMs = nextAccumulatedHoldMs;
-
-			const holdPositionSec = Number(holdStartSeconds.toFixed(2));
+			const holdPositionSec = Number(holdPositionsSec[index].toFixed(2));
 			const region = regionsPlugin.addRegion({
 				id: `${HOLD_REGION_ID_PREFIX}${index}-${holdItem.start}-${holdItem.stop}`,
 				start: holdPositionSec,

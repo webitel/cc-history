@@ -25,6 +25,9 @@ const REQUIRED_MAIN_CALL_FIELDS = [
 	'allow_evaluation',
 	'forms',
 	'quality_metrics',
+	'answered_at',
+	'bridged_at',
+	'queue_bridged_at',
 ];
 const REQUIRED_DATA_FIELDS = [
 	'id',
