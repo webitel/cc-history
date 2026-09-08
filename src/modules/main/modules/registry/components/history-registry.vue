@@ -52,6 +52,7 @@
         :data="dataList"
         :headers="shownHeaders"
         :selected="selected"
+        :active-filters="activeFilters"
         sortable
         fixed-actions
         resizable-columns
@@ -160,6 +161,17 @@
           }}
         </template>
 
+        <template #column-filter="scope">
+          <column-filter
+            v-bind="scope"
+            :filters-manager="filtersManager"
+            :filter-options="filtersOptions"
+            @add:filter="addFilter"
+            @update:filter="updateFilter"
+            @delete:filter="deleteFilter"
+          />
+        </template>
+
         <template #actions="{ item }">
           <wt-call-media-action
             :playing-file-id="currentlyMediaPlaying"
@@ -232,6 +244,7 @@
 import { getMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import type { DatalistTableHeader } from '@webitel/ui-datalist';
+import { ColumnFilterComponent as ColumnFilter } from '@webitel/ui-datalist/filters';
 import {
 	WtActionBar,
 	WtBadge,
@@ -254,6 +267,7 @@ import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { EngineHistoryCall } from 'webitel-sdk';
 import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
+import { filtersOptions } from '../../../../filters/configs/filtersOptions';
 import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
@@ -293,7 +307,12 @@ const {
 	updateShownHeaders,
 	columnResize,
 	columnReorder,
+	addFilter,
+	updateFilter,
+	deleteFilter,
 } = tableStore;
+
+const activeFilters = computed(() => filtersManager.value.getAllKeys());
 
 /*
  * show "toggle filters panel" badge if any filters are applied...
