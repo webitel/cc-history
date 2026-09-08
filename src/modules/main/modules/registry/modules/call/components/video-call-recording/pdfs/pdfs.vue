@@ -72,6 +72,13 @@ const callId = route.params.pathMatch as string;
 
 const tableStore = usePdfsDataListStore();
 
+// Clear filters and data left over from a previously viewed call, since this
+// store is a singleton: the SDK's tab only sets the callId filter once (it
+// never updates an existing filter), and without clearing dataList here the
+// previous call's rows would render for a frame before the fresh list loads.
+tableStore.filtersManager.reset();
+tableStore.dataList = [];
+
 const { hasDeleteAccess } = useRecordingFilesAccess();
 
 const handleDeleteItem = (item: WebitelMediaExporterExportRecord) => {
