@@ -232,13 +232,17 @@ function updateDraft({
 }
 
 async function checkExportSettings() {
-	const response = await ConfigurationAPI.getList({
-		name: EngineSystemSettingName.ExportSettings,
-	});
-	const exportSettingsValue = response.items[0]?.value;
+	try {
+		const response = await ConfigurationAPI.getList({
+			name: EngineSystemSettingName.ExportSettings,
+		});
+		const exportSettingsValue = response.items[0]?.value;
 
-	if (exportSettingsValue) {
-		updateDraft(exportSettingsValue);
+		if (exportSettingsValue) {
+			updateDraft(exportSettingsValue);
+		}
+	} catch (error) {
+		console.error(error);
 	}
 }
 
