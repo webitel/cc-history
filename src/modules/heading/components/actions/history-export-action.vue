@@ -242,7 +242,7 @@ async function checkExportSettings() {
 			updateDraft(exportSettingsValue);
 		}
 	} catch (error) {
-		console.error(error);
+		throw new Error(error);
 	}
 }
 
