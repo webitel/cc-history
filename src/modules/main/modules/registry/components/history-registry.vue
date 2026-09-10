@@ -25,8 +25,10 @@
           />
         </template>
         <template #variables>
-          <variable-column-select
-            @update:variable-headers="updateVariablesHeaders"
+          <wt-table-variable-column-select
+            storage-key="history/registry/variable-headers"
+            :title="$t('variableColumnSelect.title')"
+            @update:variable-headers="updateVariableHeaders"
           />
         </template>
       </wt-action-bar>
@@ -152,12 +154,7 @@
           v-for="header in variableHeaders"
           #[header.value]="slotProps"
         >
-          {{
-            getVariableValue(
-              (slotProps as { item: EngineHistoryCall }).item,
-              header.value,
-            )
-          }}
+          {{ getCallVariableValue(slotProps, header.value) }}
         </template>
 
         <template #actions="{ item }">
@@ -231,7 +228,6 @@
 <script lang="ts" setup>
 import { getMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import {
 	WtActionBar,
 	WtBadge,
@@ -244,16 +240,21 @@ import {
 	WtPlayer,
 	WtScreenRecordingsAction,
 	WtTable,
+	WtTableColumnSelect,
+	WtTableVariableColumnSelect,
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
+import {
+	getVariableValue,
+	isVariableHeader,
+	useTableVariableHeaders,
+} from '@webitel/ui-sdk/composables';
 import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
-import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
-import { EngineHistoryCall } from 'webitel-sdk';
-import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
+import type { EngineHistoryCall } from 'webitel-sdk';
 import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
@@ -307,13 +308,24 @@ const anyFiltersOnFiltersPanel = computed(() => {
 	});
 });
 
-const isVariableColumnHeader = (header) =>
-	(header.field ?? '').startsWith('variables.') ||
-	(header.value ?? '').startsWith('variables.');
+const { updateVariableHeaders } = useTableVariableHeaders({
+	headers,
+	updateShownHeaders,
+});
 
 const variableHeaders = computed(() =>
-	shownHeaders.value.filter(isVariableColumnHeader),
+	(shownHeaders.value || []).filter(isVariableHeader),
 );
+
+const getCallVariableValue = (slotProps: unknown, field: string) =>
+	getVariableValue(
+		(
+			slotProps as {
+				item?: EngineHistoryCall;
+			}
+		).item,
+		field,
+	);
 
 const {
 	showEmpty,
@@ -355,13 +367,6 @@ const {
 
 const sttPopupCall = ref<EngineHistoryCall | null>(null);
 
-const getVariableValue = (item: EngineHistoryCall, field: string) => {
-	return get(item, [
-		'variables',
-		field.replace('variables.', ''),
-	]);
-};
-
 // TODO: Remove this after transcription via video is added
 const showItemStt = (item: EngineHistoryCall) => {
 	const hasAudio = !isEmpty(item.files?.[EngineCallFileType.FileTypeAudio]);
@@ -382,42 +387,6 @@ const handleTranscriptDelete = ({
 		call.transcripts.findIndex(({ id }) => id === transcript.id),
 		1,
 	);
-};
-
-const updateVariablesHeaders = (variables: DatalistTableHeader[]) => {
-	const variablesByField = new Map<string, DatalistTableHeader>(
-		variables.map((variable) => [
-			variable.field,
-			variable,
-		]),
-	);
-
-	const updatedHeaders = headers.value.flatMap((header) => {
-		if (!isVariableColumnHeader(header))
-			return [
-				header,
-			];
-
-		const variableHeader = variablesByField.get(header.field);
-		if (!variableHeader) return [];
-
-		variablesByField.delete(header.field);
-		return [
-			{
-				...variableHeader,
-				show: header.show,
-			},
-		];
-	});
-
-	const newVariableHeaders = [
-		...variablesByField.values(),
-	];
-
-	updateShownHeaders([
-		...updatedHeaders,
-		...newVariableHeaders,
-	]);
 };
 
 const currentScreenRecording = ref(null);
