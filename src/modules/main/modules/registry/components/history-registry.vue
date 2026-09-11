@@ -52,6 +52,7 @@
         :data="dataList"
         :headers="shownHeaders"
         :selected="selected"
+        :active-filters="activeFilters"
         sortable
         fixed-actions
         resizable-columns
@@ -160,6 +161,10 @@
           }}
         </template>
 
+        <template #column-filter="scope">
+          <the-history-column-filter v-bind="scope" />
+        </template>
+
         <template #actions="{ item }">
           <wt-call-media-action
             :playing-file-id="currentlyMediaPlaying"
@@ -253,6 +258,7 @@ import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { EngineHistoryCall } from 'webitel-sdk';
+import TheHistoryColumnFilter from '../../../../filters/components/the-history-column-filter.vue';
 import VariableColumnSelect from '../../../../filters/components/variable-column-select.vue';
 import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
@@ -294,6 +300,8 @@ const {
 	columnResize,
 	columnReorder,
 } = tableStore;
+
+const activeFilters = computed(() => filtersManager.value.getAllKeys());
 
 /*
  * show "toggle filters panel" badge if any filters are applied...
