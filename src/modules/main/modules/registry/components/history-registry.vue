@@ -26,7 +26,7 @@
         </template>
         <template #variables>
           <wt-table-variable-column-select
-            storage-key="history/registry/variable-headers"
+            :storage-key="`${namespace}/variable-headers`"
             :title="$t('variableColumnSelect.title')"
             @update:variable-headers="updateVariableHeaders"
           />
@@ -245,13 +245,14 @@ import {
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
 import {
-	getVariableValue,
 	isVariableHeader,
 	useTableVariableHeaders,
+	VARIABLE_FIELD_PREFIX,
 } from '@webitel/ui-sdk/composables';
 import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
+import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import type { EngineHistoryCall } from 'webitel-sdk';
@@ -259,6 +260,7 @@ import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
+import { namespace } from '../namespace.ts';
 import { useRegistryStore } from '../store/new/registry.store.ts';
 import TableDirection from './table-templates/table-direction.vue';
 import TableMosMetric from './table-templates/table-mos-metric.vue';
@@ -317,15 +319,18 @@ const variableHeaders = computed(() =>
 	(shownHeaders.value || []).filter(isVariableHeader),
 );
 
-const getCallVariableValue = (slotProps: unknown, field: string) =>
-	getVariableValue(
-		(
-			slotProps as {
-				item?: EngineHistoryCall;
-			}
-		).item,
-		field,
-	);
+const getCallVariableValue = (slotProps: unknown, field: string) => {
+	const item = (
+		slotProps as {
+			item?: EngineHistoryCall;
+		}
+	).item;
+
+	return get(item, [
+		'variables',
+		field.replace(VARIABLE_FIELD_PREFIX, ''),
+	]);
+};
 
 const {
 	showEmpty,
