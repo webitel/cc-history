@@ -1,7 +1,6 @@
 <template>
   <column-filter
     :header="header"
-    :index="index"
     :form-view="formView"
     :hide="hide"
     :filters-manager="filtersManager"
@@ -26,7 +25,6 @@ import { filtersOptions } from '../configs/filtersOptions';
 defineProps<{
 	header: DatalistTableHeader;
 	formView?: boolean;
-	index?: number;
 	hide?: () => void;
 }>();
 
