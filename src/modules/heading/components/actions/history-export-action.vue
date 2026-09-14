@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { required, requiredIf } from '@vuelidate/validators';
+import { EngineSystemSettingName } from '@webitel/api-services/gen/models';
 import { FormatDateMode, TypesExportedSettings } from '@webitel/ui-sdk/enums';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 import {
@@ -72,7 +73,6 @@ import XLSExportClass from '@webitel/ui-sdk/src/modules/CSVExport/XLSExport';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed, onMounted, reactive, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
-import { EngineSystemSettingName } from 'webitel-sdk';
 
 import APIRepository from '../../../../app/api/APIRepository';
 import { useUserinfoStore } from '../../../userinfo/stores/userinfoStore';
