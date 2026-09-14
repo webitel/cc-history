@@ -241,15 +241,15 @@ import {
 	WtScreenRecordingsAction,
 	WtTable,
 	WtTableColumnSelect,
-	WtTableVariableColumnSelect,
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
+import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
 import {
 	isVariableHeader,
 	useTableVariableHeaders,
 	VARIABLE_FIELD_PREFIX,
-} from '@webitel/ui-sdk/composables';
-import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
+	WtTableVariableColumnSelect,
+} from '@webitel/ui-sdk/modules/TableVariableColumnSelect';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
 import get from 'lodash-es/get';
