@@ -38,16 +38,9 @@
       @delete="handleTranscriptDelete({ callId: sttPopupCall?.id, transcript: $event })"
     />
     <div class="table-section__table-wrapper">
-      <wt-empty
-        v-show="showEmpty"
-        :image="emptyImage"
-        :headline="emptyHeadline"
-        :title="emptyTitle"
-        :text="emptyText"
-      />
       <wt-loader v-show="isLoading" />
       <wt-table
-        v-show="dataList.length && !isLoading"
+        v-show="!isLoading"
         ref="wt-table"
         :data="dataList"
         :headers="shownHeaders"
@@ -190,9 +183,19 @@
             />
           </router-link>
         </template>
+
+        <template #empty>
+          <wt-empty
+            :image="emptyImage"
+            :headline="emptyHeadline"
+            :title="emptyTitle"
+            :text="emptyText"
+          />
+        </template>
       </wt-table>
 
       <wt-pagination
+        v-show="dataList.length"
         :next="next"
         :prev="page > 1"
         :size="size"
@@ -324,7 +327,6 @@ const variableHeaders = computed(() =>
 );
 
 const {
-	showEmpty,
 	image: emptyImage,
 	headline: emptyHeadline,
 	title: emptyTitle,
