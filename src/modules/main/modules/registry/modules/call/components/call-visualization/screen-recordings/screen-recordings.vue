@@ -68,7 +68,7 @@
       <template #actions="{ item }">
         <wt-icon-action
           action="download"
-          @click="downloadFile(item.id)"
+          @click="downloadFile(item.id, item.name)"
         />
         <wt-icon-action
           action="delete"
