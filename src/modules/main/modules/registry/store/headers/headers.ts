@@ -2,6 +2,7 @@ import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import { FilterOption } from '@webitel/ui-datalist/filters';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 
+import { createdAtFilterConfig } from '../../../../../filters/configs/filtersOptions';
 import { useUserinfoStore } from '../../../../../userinfo/stores/userinfoStore';
 
 /** Matches how the call visualization already hides its screencast tab. */
@@ -17,7 +18,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'created_at',
-		filter: FilterOption.CreatedAt,
+		filter: createdAtFilterConfig,
 		locale: 'reusable.dateTime',
 		reorderable: false,
 	},

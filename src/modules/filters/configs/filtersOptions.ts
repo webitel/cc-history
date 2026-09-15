@@ -4,11 +4,13 @@ import {
 	FilterOption,
 } from '@webitel/ui-datalist/filters';
 
+export const createdAtFilterConfig = createFilterConfig({
+	name: FilterOption.CreatedAt,
+	notDeletable: true,
+});
+
 export const filtersOptions: FilterConfigDefinition[] = [
-	createFilterConfig({
-		name: FilterOption.CreatedAt,
-		notDeletable: true,
-	}),
+	createdAtFilterConfig,
 	FilterOption.Agent,
 	FilterOption.AmdResult,
 	FilterOption.Contact,

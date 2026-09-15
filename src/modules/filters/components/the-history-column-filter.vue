@@ -4,7 +4,6 @@
     :form-view="formView"
     :hide="hide"
     :filters-manager="filtersManager"
-    :filter-options="filtersOptions"
     @add:filter="addFilter"
     @update:filter="updateFilter"
     @delete:filter="deleteFilter"
@@ -20,7 +19,6 @@ import { ColumnFilterComponent as ColumnFilter } from '@webitel/ui-datalist/filt
 import { storeToRefs } from 'pinia';
 
 import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store';
-import { filtersOptions } from '../configs/filtersOptions';
 
 defineProps<{
 	header: DatalistTableHeader;
