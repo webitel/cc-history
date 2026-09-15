@@ -45,7 +45,6 @@
         :data="dataList"
         :headers="shownHeaders"
         :selected="selected"
-        :active-filters="activeFilters"
         sortable
         fixed-actions
         resizable-columns
@@ -303,8 +302,6 @@ const {
 	columnResize,
 	columnReorder,
 } = tableStore;
-
-const activeFilters = computed(() => filtersManager.value.getAllKeys());
 
 /*
  * show "toggle filters panel" badge if any filters are applied...
