@@ -3,7 +3,7 @@
     v-model:visible="isGalleriaVisible"
     v-model:active-index="galleriaActiveIndex"
     :value="screenshots"
-		@download="downloadFile(screenshots[galleriaActiveIndex].id)"
+		@download="downloadFile(screenshots[galleriaActiveIndex].id, screenshots[galleriaActiveIndex].title)"
     @delete="handleDelete"
   />
   <div class="table-screenshots-action__wrapper">

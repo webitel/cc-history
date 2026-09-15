@@ -15,7 +15,7 @@
         <wt-icon-btn
           icon="download"
           :disabled="!currentVideo"
-          @click="downloadFile(currentVideo.id)"
+          @click="downloadFile(currentVideo.id, currentVideo.name)"
         />
         <wt-icon-btn
           icon="bucket"
