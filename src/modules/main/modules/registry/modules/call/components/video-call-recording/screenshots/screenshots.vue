@@ -3,7 +3,7 @@
     v-model:visible="galleriaVisible"
     v-model:active-index="galleriaActiveIndex"
     :value="galleriaData"
-    @download="downloadFile(dataList[galleriaActiveIndex].id)"
+    @download="downloadFile(dataList[galleriaActiveIndex].id, dataList[galleriaActiveIndex].name)"
     @delete="handleDeleteFromGalleria"
   />
 
@@ -69,7 +69,7 @@
         <template #actions="{ item }">
           <wt-icon-action
             action="download"
-            @click="downloadFile(item.id)"
+            @click="downloadFile(item.id, item.name)"
           />
           <wt-icon-action
             action="delete"
