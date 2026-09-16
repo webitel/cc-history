@@ -1,6 +1,6 @@
 <template>
   <column-filter
-    :header="header"
+    :header="(header as DatalistTableHeader)"
     :form-view="formView"
     :hide="hide"
     :filters-manager="filtersManager"
@@ -16,12 +16,13 @@
 >
 import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import { ColumnFilterComponent as ColumnFilter } from '@webitel/ui-datalist/filters';
+import type { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable';
 import { storeToRefs } from 'pinia';
 
 import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store';
 
 defineProps<{
-	header: DatalistTableHeader;
+	header: WtTableHeader;
 	formView?: boolean;
 	hide?: () => void;
 }>();
