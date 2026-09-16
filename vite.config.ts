@@ -90,6 +90,8 @@ export default ({ mode }) => {
 				deps: {
 					inline: [
 						'@webitel/ui-sdk/src',
+						'@webitel/api-services',
+						'@webitel/ui-datalist',
 					],
 				},
 			},

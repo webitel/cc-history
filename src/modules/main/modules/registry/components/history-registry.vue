@@ -40,16 +40,9 @@
       @delete="handleTranscriptDelete({ callId: sttPopupCall?.id, transcript: $event })"
     />
     <div class="table-section__table-wrapper">
-      <wt-empty
-        v-show="showEmpty"
-        :image="emptyImage"
-        :headline="emptyHeadline"
-        :title="emptyTitle"
-        :text="emptyText"
-      />
       <wt-loader v-show="isLoading" />
       <wt-table
-        v-show="dataList.length && !isLoading"
+        v-show="!isLoading"
         ref="wt-table"
         :data="dataList"
         :headers="shownHeaders"
@@ -157,6 +150,10 @@
           {{ getCallVariableValue(slotProps, header.value) }}
         </template>
 
+        <template #column-filter="scope">
+          <the-history-column-filter v-bind="scope" />
+        </template>
+
         <template #actions="{ item }">
           <wt-call-media-action
             :playing-file-id="currentlyMediaPlaying"
@@ -182,9 +179,19 @@
             />
           </router-link>
         </template>
+
+        <template #empty>
+          <wt-empty
+            :image="emptyImage"
+            :headline="emptyHeadline"
+            :title="emptyTitle"
+            :text="emptyText"
+          />
+        </template>
       </wt-table>
 
       <wt-pagination
+        v-show="dataList.length"
         :next="next"
         :prev="page > 1"
         :size="size"
@@ -256,6 +263,7 @@ import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import type { EngineHistoryCall } from 'webitel-sdk';
+import TheHistoryColumnFilter from '../../../../filters/components/the-history-column-filter.vue';
 import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
@@ -333,7 +341,6 @@ const getCallVariableValue = (slotProps: unknown, field: string) => {
 };
 
 const {
-	showEmpty,
 	image: emptyImage,
 	headline: emptyHeadline,
 	title: emptyTitle,
