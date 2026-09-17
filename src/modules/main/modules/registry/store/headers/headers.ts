@@ -2,7 +2,7 @@ import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import { FilterOption } from '@webitel/ui-datalist/filters';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 
-import { createdAtFilterConfig } from '../../../../../filters/configs/filtersOptions';
+import { filterConfigs } from '../../../../../filters/configs/filtersOptions';
 import { useUserinfoStore } from '../../../../../userinfo/stores/userinfoStore';
 
 /** Matches how the call visualization already hides its screencast tab. */
@@ -18,7 +18,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'created_at',
-		filter: createdAtFilterConfig,
+		filter: filterConfigs[FilterOption.CreatedAt],
 		locale: 'reusable.dateTime',
 		reorderable: false,
 	},
@@ -27,7 +27,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'direction',
-		filter: FilterOption.CallDirection,
+		filter: filterConfigs[FilterOption.CallDirection],
 	},
 	{
 		value: 'mos',
@@ -88,7 +88,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'user',
-		filter: FilterOption.User,
+		filter: filterConfigs[FilterOption.User],
 	},
 	{
 		value: 'extension',
@@ -117,28 +117,28 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: false,
 		sort: null,
 		field: 'gateway',
-		filter: FilterOption.Gateway,
+		filter: filterConfigs[FilterOption.Gateway],
 	},
 	{
 		value: 'agent',
 		show: false,
 		sort: null,
 		field: 'agent',
-		filter: FilterOption.Agent,
+		filter: filterConfigs[FilterOption.Agent],
 	},
 	{
 		value: 'team',
 		show: false,
 		sort: null,
 		field: 'team',
-		filter: FilterOption.Team,
+		filter: filterConfigs[FilterOption.Team],
 	},
 	{
 		value: 'queue',
 		show: false,
 		sort: null,
 		field: 'queue',
-		filter: FilterOption.Queue,
+		filter: filterConfigs[FilterOption.Queue],
 	},
 	{
 		value: 'member',
@@ -157,7 +157,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'duration',
-		filter: FilterOption.TotalDuration,
+		filter: filterConfigs[FilterOption.TotalDuration],
 	},
 	{
 		value: 'screenshots',
@@ -183,7 +183,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: false,
 		sort: null,
 		field: 'tags',
-		filter: FilterOption.Tag,
+		filter: filterConfigs[FilterOption.Tag],
 	},
 	{
 		value: 'display',
@@ -214,7 +214,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'talk_sec',
-		filter: FilterOption.TalkDuration,
+		filter: filterConfigs[FilterOption.TalkDuration],
 	},
 	{
 		value: 'reportingSec',
@@ -251,7 +251,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: true,
 		sort: null,
 		field: 'cause',
-		filter: FilterOption.HangupCause,
+		filter: filterConfigs[FilterOption.HangupCause],
 	},
 	{
 		value: 'hangupDisposition',
@@ -264,7 +264,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: false,
 		sort: null,
 		field: 'amd_result',
-		filter: FilterOption.AmdResult,
+		filter: filterConfigs[FilterOption.AmdResult],
 	},
 	{
 		value: 'agentDescription',
@@ -283,21 +283,21 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: false,
 		sort: null,
 		field: 'grantee',
-		filter: FilterOption.Grantee,
+		filter: filterConfigs[FilterOption.Grantee],
 	},
 	{
 		value: 'score',
 		show: false,
 		sort: null,
 		field: 'score_required',
-		filter: FilterOption.Score,
+		filter: filterConfigs[FilterOption.Score],
 	},
 	{
 		value: 'ratedBy',
 		show: false,
 		sort: null,
 		field: 'rated_by',
-		filter: FilterOption.RatedBy,
+		filter: filterConfigs[FilterOption.RatedBy],
 	},
 	{
 		value: 'memberId',
@@ -316,7 +316,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		show: false,
 		sort: null,
 		field: 'contact',
-		filter: FilterOption.Contact,
+		filter: filterConfigs[FilterOption.Contact],
 	},
 ];
 
