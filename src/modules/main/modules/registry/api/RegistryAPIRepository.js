@@ -10,11 +10,24 @@ import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { startOfToday } from 'date-fns';
 
+import {
+	isVariableFilterName,
+	variableKeyFromFilterName,
+} from '../../../../filters/scripts/variableFilterName';
+
 /** `variables` and `form_fields` keys are user data, not API fields. */
 const doNotConvertKeys = [
 	'variables',
 	'form_fields',
 ];
+
+const columnVariables = (params) =>
+	Object.entries(params).reduce((vars, [name, value]) => {
+		if (!isVariableFilterName(name)) return vars;
+
+		vars[variableKeyFromFilterName(name)] = value ?? '';
+		return vars;
+	}, {});
 
 // Функція не використовується
 const computeDate = (timestamp) => {
@@ -129,6 +142,8 @@ const getList =
 		responseItemsTransformers = [],
 	}) =>
 	async (params) => {
+		const transformedParams = applyTransform(params, paramsTransformers);
+
 		const {
 			page,
 			size,
@@ -164,9 +179,9 @@ const getList =
 			score,
 			variable,
 			contact,
-		} = applyTransform(params, paramsTransformers);
+		} = transformedParams;
 
-		const variables = variable?.split('&').reduce((vars, currVar) => {
+		const queryVariables = variable?.split('&').reduce((vars, currVar) => {
 			const [key, value] = currVar.split('=');
 			/*
          This if else statement is needed for sending ''
@@ -175,6 +190,15 @@ const getList =
 			vars[key] = value !== undefined ? value : '';
 			return vars;
 		}, {});
+
+		const mergedVariables = {
+			...queryVariables,
+			...columnVariables(transformedParams),
+		};
+
+		const variables = Object.keys(mergedVariables).length
+			? mergedVariables
+			: undefined;
 
 		const setupCreatedAt = (createdAt) => {
 			if (typeof createdAt === 'string') {
