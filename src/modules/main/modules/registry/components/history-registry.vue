@@ -28,7 +28,7 @@
           <wt-table-variable-column-select
             :storage-key="`${namespace}/variable-headers`"
             :title="$t('variableColumnSelect.title')"
-            @update:variable-headers="updateVariableHeaders"
+            @update:variable-headers="setVariableHeaders"
           />
         </template>
       </wt-action-bar>
@@ -151,7 +151,10 @@
         </template>
 
         <template #column-filter="scope">
-          <the-history-column-filter v-bind="scope" />
+          <the-history-column-filter
+            v-bind="scope"
+            :filterable-extension-fields="variableFilterFields"
+          />
         </template>
 
         <template #actions="{ item }">
@@ -253,8 +256,8 @@ import {
 import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
 import {
 	isVariableHeader,
+	type TableVariableHeader,
 	useTableVariableHeaders,
-	VARIABLE_FIELD_PREFIX,
 	WtTableVariableColumnSelect,
 } from '@webitel/ui-sdk/modules/TableVariableColumnSelect';
 import { isEmpty } from '@webitel/ui-sdk/scripts';
@@ -264,7 +267,15 @@ import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import type { EngineHistoryCall } from 'webitel-sdk';
 import TheHistoryColumnFilter from '../../../../filters/components/the-history-column-filter.vue';
+import {
+	toVariableFilterFields,
+	withVariableColumnFilters,
+} from '../../../../filters/configs/variableColumnFilter';
 import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
+import {
+	isVariableFilterName,
+	variableKeyFromFilterName,
+} from '../../../../filters/scripts/variableFilterName';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
@@ -304,6 +315,7 @@ const {
 	updateShownHeaders,
 	columnResize,
 	columnReorder,
+	deleteFilter,
 } = tableStore;
 
 /*
@@ -314,6 +326,8 @@ const anyFiltersOnFiltersPanel = computed(() => {
 	 * ...excluding search filters, which shown in other panel
 	 * */
 	return filtersManager.value.getAllKeys().some((filterName) => {
+		if (isVariableFilterName(filterName)) return false;
+
 		return !Object.values(SearchMode).some((mode) => mode === filterName);
 	});
 });
@@ -323,8 +337,29 @@ const { updateVariableHeaders } = useTableVariableHeaders({
 	updateShownHeaders,
 });
 
+const setVariableHeaders = (variableHeaders: TableVariableHeader[]) => {
+	const variableFields = new Set(
+		variableHeaders.map((header) => header.field ?? header.value),
+	);
+
+	filtersManager.value
+		.getAllKeys()
+		.filter((name) => isVariableFilterName(name) && !variableFields.has(name))
+		.forEach((name) => {
+			deleteFilter({
+				name,
+			});
+		});
+
+	updateVariableHeaders(withVariableColumnFilters(variableHeaders));
+};
+
 const variableHeaders = computed(() =>
 	(shownHeaders.value || []).filter(isVariableHeader),
+);
+
+const variableFilterFields = computed(() =>
+	toVariableFilterFields(variableHeaders.value),
 );
 
 const getCallVariableValue = (slotProps: unknown, field: string) => {
@@ -336,7 +371,7 @@ const getCallVariableValue = (slotProps: unknown, field: string) => {
 
 	return get(item, [
 		'variables',
-		field.replace(VARIABLE_FIELD_PREFIX, ''),
+		variableKeyFromFilterName(field),
 	]);
 };
 
