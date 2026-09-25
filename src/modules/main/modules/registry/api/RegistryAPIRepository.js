@@ -10,24 +10,13 @@ import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { startOfToday } from 'date-fns';
 
-import {
-	isVariableFilterName,
-	variableKeyFromFilterName,
-} from '../../../../filters/scripts/variableFilterName';
+import { extractVariableFilters } from '@webitel/ui-datalist/filters';
 
 /** `variables` and `form_fields` keys are user data, not API fields. */
 const doNotConvertKeys = [
 	'variables',
 	'form_fields',
 ];
-
-const columnVariables = (params) =>
-	Object.entries(params).reduce((vars, [name, value]) => {
-		if (!isVariableFilterName(name)) return vars;
-
-		vars[variableKeyFromFilterName(name)] = value ?? '';
-		return vars;
-	}, {});
 
 // Функція не використовується
 const computeDate = (timestamp) => {
@@ -193,7 +182,7 @@ const getList =
 
 		const mergedVariables = {
 			...queryVariables,
-			...columnVariables(transformedParams),
+			...extractVariableFilters(transformedParams),
 		};
 
 		const variables = Object.keys(mergedVariables).length

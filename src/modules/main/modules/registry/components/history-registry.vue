@@ -270,12 +270,10 @@ import TheHistoryColumnFilter from '../../../../filters/components/the-history-c
 import {
 	toVariableFilterFields,
 	withVariableColumnFilters,
-} from '../../../../filters/configs/variableColumnFilter';
-import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
-import {
 	isVariableFilterName,
 	variableKeyFromFilterName,
-} from '../../../../filters/scripts/variableFilterName';
+} from '@webitel/ui-datalist/filters';
+import { SearchMode } from '../../../../filters/enums/SearchMode';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';

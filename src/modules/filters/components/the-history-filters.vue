@@ -2,10 +2,11 @@
   <table-filters-panel
     :filters-manager="filtersManager"
     :filter-options="filtersOptions"
+    :filterable-extension-fields="variableFilterFields"
     :preset-namespace="namespace"
     :use-presets-store="useRegistryFilterPresetsStore"
-    @filter:add="addFilter"
-    @filter:update="updateFilter"
+    @filter:add="applyVariableFilter"
+    @filter:update="applyVariableFilter"
     @filter:delete="deleteFilter"
     @filter:reset-all="resetFilters"
     @preset:apply="applyPreset"
@@ -21,6 +22,7 @@
 import {
 	FilterOption,
 	TableFiltersPanelComponent as TableFiltersPanel,
+	useVariableColumnFilters,
 } from '@webitel/ui-datalist/filters';
 import { RelativeDatetimeValue } from '@webitel/ui-sdk/enums';
 import { storeToRefs } from 'pinia';
@@ -35,9 +37,17 @@ const emit = defineEmits<{
 }>();
 
 const tableStore = useRegistryStore();
-const { filtersManager } = storeToRefs(tableStore);
+const { filtersManager, shownHeaders } = storeToRefs(tableStore);
 
 const { addFilter, updateFilter, deleteFilter } = tableStore;
+
+const { variableFilterFields, applyVariableFilter } = useVariableColumnFilters({
+	shownHeaders: () => shownHeaders.value,
+	filtersManager: () => filtersManager.value,
+	addFilter,
+	updateFilter,
+	deleteFilter,
+});
 
 const initializeDefaultCreatedAtFilter = () => {
 	if (filtersManager.value.hasFilter(FilterOption.CreatedAt)) return;
