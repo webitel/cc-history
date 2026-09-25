@@ -240,6 +240,12 @@ import { getMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import {
+	isVariableFilterName,
+	toVariableFilterFields,
+	variableKeyFromFilterName,
+	withVariableColumnFilters,
+} from '@webitel/ui-datalist/filters';
+import {
 	WtActionBar,
 	WtBadge,
 	WtCallMediaAction,
@@ -268,12 +274,6 @@ import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import type { EngineHistoryCall } from 'webitel-sdk';
 import TheHistoryColumnFilter from '../../../../filters/components/the-history-column-filter.vue';
-import {
-	toVariableFilterFields,
-	withVariableColumnFilters,
-	isVariableFilterName,
-	variableKeyFromFilterName,
-} from '@webitel/ui-datalist/filters';
 import { SearchMode } from '../../../../filters/enums/SearchMode';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';

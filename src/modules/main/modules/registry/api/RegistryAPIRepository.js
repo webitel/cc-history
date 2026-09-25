@@ -1,4 +1,5 @@
 import { CallHistoryAPI } from '@webitel/api-services/api';
+import { extractVariableFilters } from '@webitel/ui-datalist/filters';
 import { getDefaultGetListResponse } from '@webitel/ui-sdk/api/defaults/index';
 import applyTransform, {
 	merge,
@@ -9,8 +10,6 @@ import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { startOfToday } from 'date-fns';
-
-import { extractVariableFilters } from '@webitel/ui-datalist/filters';
 
 /** `variables` and `form_fields` keys are user data, not API fields. */
 const doNotConvertKeys = [
