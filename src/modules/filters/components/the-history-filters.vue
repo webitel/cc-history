@@ -4,6 +4,7 @@
     :filter-options="filtersOptions"
     :preset-namespace="namespace"
     :use-presets-store="useRegistryFilterPresetsStore"
+    :has-read-access="userinfoStore.hasReadAccess"
     @filter:add="addFilter"
     @filter:update="updateFilter"
     @filter:delete="deleteFilter"
@@ -27,6 +28,7 @@ import { storeToRefs } from 'pinia';
 
 import { namespace } from '../../main/modules/registry/namespace';
 import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store';
+import { useUserinfoStore } from '../../userinfo/stores/userinfoStore';
 import { filtersOptions } from '../configs/filtersOptions';
 import { useRegistryFilterPresetsStore } from '../modules/presets/store/useRegistryFilterPresetsStore';
 
@@ -34,6 +36,7 @@ const emit = defineEmits<{
 	hide: [];
 }>();
 
+const userinfoStore = useUserinfoStore();
 const tableStore = useRegistryStore();
 const { filtersManager } = storeToRefs(tableStore);
 
