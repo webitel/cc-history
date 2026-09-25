@@ -21,7 +21,7 @@
           <wt-table-column-select
             :headers="headers"
             enable-search
-            @change="updateShownHeaders"
+            @change="changeShownHeaders"
           />
         </template>
         <template #variables>
@@ -238,6 +238,7 @@
 <script lang="ts" setup>
 import { getMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import {
 	WtActionBar,
 	WtBadge,
@@ -315,6 +316,15 @@ const {
 	columnReorder,
 	deleteFilter,
 } = tableStore;
+
+const changeShownHeaders = (
+	value: {
+		value: string;
+		show: boolean;
+	}[],
+) => {
+	updateShownHeaders(value as DatalistTableHeader[]);
+};
 
 /*
  * show "toggle filters panel" badge if any filters are applied...
