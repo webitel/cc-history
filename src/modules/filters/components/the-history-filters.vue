@@ -6,8 +6,8 @@
     :preset-namespace="namespace"
     :use-presets-store="useRegistryFilterPresetsStore"
     :has-read-access="userinfoStore.hasReadAccess"
-    @filter:add="applyVariableFilter"
-    @filter:update="applyVariableFilter"
+    @filter:add="handleAddFilter"
+    @filter:update="handleUpdateFilter"
     @filter:delete="deleteFilter"
     @filter:reset-all="resetFilters"
     @preset:apply="applyPreset"
@@ -44,13 +44,14 @@ const { filtersManager, shownHeaders } = storeToRefs(tableStore);
 
 const { addFilter, updateFilter, deleteFilter } = tableStore;
 
-const { variableFilterFields, applyVariableFilter } = useVariableColumnFilters({
-	shownHeaders: () => shownHeaders.value,
-	filtersManager: () => filtersManager.value,
-	addFilter,
-	updateFilter,
-	deleteFilter,
-});
+const { variableFilterFields, handleAddFilter, handleUpdateFilter } =
+	useVariableColumnFilters({
+		shownHeaders: () => shownHeaders.value,
+		filtersManager: () => filtersManager.value,
+		addFilter,
+		updateFilter,
+		deleteFilter,
+	});
 
 const initializeDefaultCreatedAtFilter = () => {
 	if (filtersManager.value.hasFilter(FilterOption.CreatedAt)) return;
