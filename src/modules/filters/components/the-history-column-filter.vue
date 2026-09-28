@@ -6,8 +6,8 @@
     :filters-manager="filtersManager"
     :filterable-extension-fields="filterableExtensionFields"
     :has-read-access="userinfoStore.hasReadAccess"
-    @add:filter="addFilter"
-    @update:filter="updateFilter"
+    @add:filter="handleAddFilter"
+    @update:filter="handleUpdateFilter"
     @delete:filter="deleteFilter"
   />
 </template>
@@ -18,7 +18,10 @@
 >
 import type { DataField } from '@webitel/api-services/gen/models';
 import type { DatalistTableHeader } from '@webitel/ui-datalist';
-import { ColumnFilterComponent as ColumnFilter } from '@webitel/ui-datalist/filters';
+import {
+	ColumnFilterComponent as ColumnFilter,
+	useVariableColumnFilters,
+} from '@webitel/ui-datalist/filters';
 import type { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/types/WtTable';
 import { storeToRefs } from 'pinia';
 
@@ -34,9 +37,17 @@ defineProps<{
 
 const userinfoStore = useUserinfoStore();
 const tableStore = useRegistryStore();
-const { filtersManager } = storeToRefs(tableStore);
+const { filtersManager, shownHeaders } = storeToRefs(tableStore);
 
 const { addFilter, updateFilter, deleteFilter } = tableStore;
+
+const { handleAddFilter, handleUpdateFilter } = useVariableColumnFilters({
+	shownHeaders: () => shownHeaders.value,
+	filtersManager: () => filtersManager.value,
+	addFilter,
+	updateFilter,
+	deleteFilter,
+});
 </script>
 
 <style

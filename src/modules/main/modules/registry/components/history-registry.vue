@@ -240,6 +240,12 @@ import { getMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import {
+	isVariableFilterName,
+	toVariableFilterFields,
+	variableKeyFromFilterName,
+	withVariableColumnFilters,
+} from '@webitel/ui-datalist/filters';
+import {
 	WtActionBar,
 	WtBadge,
 	WtCallMediaAction,
@@ -268,15 +274,7 @@ import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import type { EngineHistoryCall } from 'webitel-sdk';
 import TheHistoryColumnFilter from '../../../../filters/components/the-history-column-filter.vue';
-import {
-	toVariableFilterFields,
-	withVariableColumnFilters,
-} from '../../../../filters/configs/variableColumnFilter';
-import { SearchMode } from '../../../../filters/enums/SearchMode.ts';
-import {
-	isVariableFilterName,
-	variableKeyFromFilterName,
-} from '../../../../filters/scripts/variableFilterName';
+import { SearchMode } from '../../../../filters/enums/SearchMode';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';

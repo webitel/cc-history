@@ -2,13 +2,10 @@ import { flushPromises, mount } from '@vue/test-utils';
 import {
 	ColumnFilterComponent,
 	createFiltersManager,
-} from '@webitel/ui-datalist/filters';
-import { describe, expect, it } from 'vitest';
-
-import {
 	toVariableFilterFields,
 	withVariableColumnFilters,
-} from '../../configs/variableColumnFilter';
+} from '@webitel/ui-datalist/filters';
+import { describe, expect, it } from 'vitest';
 
 const variableHeader = {
 	value: 'variables.sip_code',
