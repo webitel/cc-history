@@ -5,6 +5,7 @@
     :hide="hide"
     :filters-manager="filtersManager"
     :filterable-extension-fields="filterableExtensionFields"
+    :has-read-access="userinfoStore.hasReadAccess"
     @add:filter="addFilter"
     @update:filter="updateFilter"
     @delete:filter="deleteFilter"
@@ -22,6 +23,7 @@ import type { WtTableHeader } from '@webitel/ui-sdk/src/components/wt-table/type
 import { storeToRefs } from 'pinia';
 
 import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store';
+import { useUserinfoStore } from '../../userinfo/stores/userinfoStore';
 
 defineProps<{
 	header: WtTableHeader;
@@ -30,6 +32,7 @@ defineProps<{
 	hide?: () => void;
 }>();
 
+const userinfoStore = useUserinfoStore();
 const tableStore = useRegistryStore();
 const { filtersManager } = storeToRefs(tableStore);
 
