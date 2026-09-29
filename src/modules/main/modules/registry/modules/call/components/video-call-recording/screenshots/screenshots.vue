@@ -4,6 +4,7 @@
     v-model:active-index="galleriaActiveIndex"
     :value="galleriaData"
     @download="downloadFile(dataList[galleriaActiveIndex].id, dataList[galleriaActiveIndex].name)"
+    :delete-disabled="!hasDeleteAccess"
     @delete="handleDeleteFromGalleria"
   />
 
@@ -111,7 +112,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { EngineHistoryCall } from 'webitel-sdk';
-import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
+import { useVideocallFilesAccess } from '../../../../../composables/useVideocallFilesAccess';
 
 import { headers } from './store/headers/headers';
 
@@ -170,7 +171,7 @@ const galleriaData = computed(() => {
 		}));
 });
 
-const { hasDeleteAccess } = useRecordingFilesAccess();
+const { hasDeleteAccess } = useVideocallFilesAccess();
 
 const {
 	isVisible: isDeleteConfirmationPopup,

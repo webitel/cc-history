@@ -62,7 +62,7 @@ import AgentPdfsTabSdk from '@webitel/ui-sdk/src/modules/AgentPdfs/components/ag
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
+import { useVideocallFilesAccess } from '../../../../../composables/useVideocallFilesAccess';
 import { usePdfsDataListStore } from './store/pdfs';
 
 const route = useRoute();
@@ -83,7 +83,7 @@ const { filtersManager, dataList } = storeToRefs(tableStore);
 filtersManager.value.reset();
 dataList.value = [];
 
-const { hasDeleteAccess } = useRecordingFilesAccess();
+const { hasDeleteAccess } = useVideocallFilesAccess();
 
 const handleDeleteItem = (item: WebitelMediaExporterExportRecord) => {
 	return FileServicesAPI.delete([

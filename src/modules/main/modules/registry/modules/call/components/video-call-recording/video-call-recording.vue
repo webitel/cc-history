@@ -14,7 +14,10 @@
         :call="call"
       />
     </div>
-    <div class="history-tabs-wrapper">
+    <div
+      v-if="hasVideocallFilesReadAccess"
+      class="history-tabs-wrapper"
+    >
       <wt-tabs
         :current="currentTab"
         :tabs="tabs"
@@ -35,6 +38,7 @@
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { computed, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useVideocallFilesAccess } from '../../../../composables/useVideocallFilesAccess';
 import ChatHistory from './chat-history/chat-history.vue';
 import { useVideoRecordingContentObserver } from './composables/useVideoRecordingContentObserver';
 import Pdfs from './pdfs/pdfs.vue';
@@ -51,6 +55,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+
+const { hasReadAccess: hasVideocallFilesReadAccess } =
+	useVideocallFilesAccess();
 
 const contentRef = useTemplateRef('contentRef');
 const videoRef = useTemplateRef('videoRef');
