@@ -44,7 +44,6 @@ const state = {
 	legsData: [],
 	isLoading: false,
 	isLegsDataLoading: false,
-	screenRecordingsFiles: [],
 
 	selectedRecordingFile: {},
 };
@@ -142,7 +141,6 @@ const actions = {
 					'SET_FILE_ID',
 					mainCall.files[EngineCallFileType.FileTypeAudio]?.[0]?.id,
 				);
-				await context.dispatch('SET_SCREEN_RECORDINGS_FILES', mainCall.files);
 			}
 			if (context.getters.RECORDING_FILE_SELECT_OPTIONS) {
 				// we should initialize recording file before opening "call visualization" tab
@@ -228,12 +226,6 @@ const actions = {
 	},
 	SET_RECORDING_FILE: (context, file) =>
 		context.commit('SET_RECORDING_FILE', file),
-
-	SET_SCREEN_RECORDINGS_FILES: (context, mainCallFiles) => {
-		const files =
-			mainCallFiles?.[EngineCallFileType.FileTypeScreensharing] || [];
-		context.commit('SET_SCREEN_RECORDINGS_FILES', files);
-	},
 };
 
 const mutations = {
@@ -277,10 +269,6 @@ const mutations = {
 
 	SET_RECORDING_FILE: (state, file) => {
 		state.selectedRecordingFile = file;
-	},
-
-	SET_SCREEN_RECORDINGS_FILES: (state, files) => {
-		state.screenRecordingsFiles = files;
 	},
 };
 
