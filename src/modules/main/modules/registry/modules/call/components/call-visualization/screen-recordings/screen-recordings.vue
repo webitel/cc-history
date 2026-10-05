@@ -36,6 +36,7 @@
 
   <wt-filters-panel-wrapper
     v-if="areDateFiltersOpen"
+    class="screen-recordings-filters"
     is-opened
     :table-action-icons="['filter-reset']"
     @reset="resetDateFilters"
@@ -348,3 +349,13 @@ watch(callId, loadDataList, {
 	immediate: true,
 });
 </script>
+
+<style scoped>
+.table-title {
+  padding-inline: var(--spacing-xs);
+}
+
+.screen-recordings-filters {
+  padding: 0 var(--spacing-xs) var(--spacing-xs);
+}
+</style>
