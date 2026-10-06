@@ -1,13 +1,13 @@
 <template>
   <table-filters-panel
     :filters-manager="filtersManager"
-    :filter-options="filtersOptions"
+    :filter-options="panelFilterOptions"
     :filterable-extension-fields="variableFilterFields"
     :preset-namespace="namespace"
     :use-presets-store="useRegistryFilterPresetsStore"
     :has-read-access="userinfoStore.hasReadAccess"
     @filter:add="handleAddFilter"
-    @filter:update="handleUpdateFilter"
+    @filter:update="handlePanelUpdateFilter"
     @filter:delete="deleteFilter"
     @filter:reset-all="resetFilters"
     @preset:apply="applyPreset"
@@ -27,6 +27,7 @@ import {
 } from '@webitel/ui-datalist/filters';
 import { RelativeDatetimeValue } from '@webitel/ui-sdk/enums';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 
 import { namespace } from '../../main/modules/registry/namespace';
 import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store';
@@ -44,14 +45,23 @@ const { filtersManager, shownHeaders } = storeToRefs(tableStore);
 
 const { addFilter, updateFilter, deleteFilter } = tableStore;
 
-const { variableFilterFields, handleAddFilter, handleUpdateFilter } =
-	useVariableColumnFilters({
-		shownHeaders: () => shownHeaders.value,
-		filtersManager: () => filtersManager.value,
-		addFilter,
-		updateFilter,
-		deleteFilter,
-	});
+const {
+	variableFilterFields,
+	variableFilterConfigs,
+	handleAddFilter,
+	handlePanelUpdateFilter,
+} = useVariableColumnFilters({
+	shownHeaders: () => shownHeaders.value,
+	filtersManager: () => filtersManager.value,
+	addFilter,
+	updateFilter,
+	deleteFilter,
+});
+
+const panelFilterOptions = computed(() => [
+	...filtersOptions,
+	...variableFilterConfigs.value,
+]);
 
 const initializeDefaultCreatedAtFilter = () => {
 	if (filtersManager.value.hasFilter(FilterOption.CreatedAt)) return;
