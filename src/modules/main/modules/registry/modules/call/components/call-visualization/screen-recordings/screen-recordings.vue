@@ -27,7 +27,7 @@
         <wt-badge :hidden="!hasDateFilter">
           <wt-icon-action
             :action="IconAction.FILTERS"
-            @click="areDateFiltersOpen = !areDateFiltersOpen"
+            @click="showDateFilters = !showDateFilters"
           />
         </wt-badge>
       </template>
@@ -35,7 +35,7 @@
   </header>
 
   <wt-filters-panel-wrapper
-    v-if="areDateFiltersOpen"
+    v-if="showDateFilters"
     class="screen-recordings-filters"
     is-opened
     :table-action-icons="['filter-reset']"
@@ -175,7 +175,7 @@ const error = ref('');
 
 const startAtFrom = ref<number | null>(null);
 const startAtTo = ref<number | null>(null);
-const areDateFiltersOpen = ref(false);
+const showDateFilters = ref(false);
 
 const hasDateFilter = computed(
 	() => startAtFrom.value != null || startAtTo.value != null,
