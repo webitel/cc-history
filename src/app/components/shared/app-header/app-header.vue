@@ -86,6 +86,10 @@ const apps = computed(() => {
 		name: WtApplication.Crm,
 		href: import.meta.env.VITE_CRM_URL,
 	};
+	const wfm = {
+		name: WtApplication.Wfm,
+		href: import.meta.env.VITE_WFM_URL,
+	};
 
 	const allApps: {
 		name: WtApplication;
@@ -97,6 +101,7 @@ const apps = computed(() => {
 		history,
 		audit,
 		crm,
+		wfm,
 	];
 	if (config?.ON_SITE) allApps.push(grafana);
 	return allApps.filter(({ name }) => hasApplicationVisibility(name));
