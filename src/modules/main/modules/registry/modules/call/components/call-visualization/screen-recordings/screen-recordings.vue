@@ -150,7 +150,7 @@ import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
+import { useScreenRecordingsAccess } from '../../../../../composables/useScreenRecordingsAccess';
 
 import { buildCallScreenRecordingArchiveParams } from './buildCallScreenRecordingArchiveParams';
 import { headers } from './store/headers/headers';
@@ -220,7 +220,7 @@ const calcDuration = (item: StorageFile) => {
 	return convertDuration(Math.floor((stopAt - startAt) / 1000));
 };
 
-const { hasDeleteAccess } = useRecordingFilesAccess();
+const { hasDeleteAccess } = useScreenRecordingsAccess();
 
 const loadDataList = async () => {
 	if (!callId.value) {
