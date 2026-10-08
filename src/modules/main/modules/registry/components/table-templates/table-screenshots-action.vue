@@ -3,6 +3,7 @@
     v-model:visible="isGalleriaVisible"
     v-model:active-index="galleriaActiveIndex"
     :value="screenshots"
+    :delete-disabled="!hasDeleteAccess"
 		@download="downloadFile(screenshots[galleriaActiveIndex].id, screenshots[galleriaActiveIndex].title)"
     @delete="handleDelete"
   />
@@ -24,6 +25,8 @@ import {
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { computed, ref } from 'vue';
 
+import { useVideocallFilesAccess } from '../../composables/useVideocallFilesAccess';
+
 interface Props {
 	files: Record<
 		string,
@@ -37,6 +40,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
 	files: () => ({}),
 });
+
+const { hasDeleteAccess } = useVideocallFilesAccess();
 
 const screenshots = computed(
 	() =>
