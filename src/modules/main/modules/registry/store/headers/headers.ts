@@ -1,15 +1,13 @@
 import type { DatalistTableHeader } from '@webitel/ui-datalist';
 import { FilterOption } from '@webitel/ui-datalist/filters';
-import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
+import { WtObject } from '@webitel/ui-sdk/enums';
 
 import { filterConfigs } from '../../../../../filters/configs/filtersOptions';
 import { useUserinfoStore } from '../../../../../userinfo/stores/userinfoStore';
 
-/** Matches how the call visualization already hides its screencast tab. */
-const controlAgentScreenAccess = () =>
-	useUserinfoStore().hasSpecialGlobalActionAccess(
-		SpecialGlobalAction.ControlAgentScreen,
-	);
+/** [Claude] Screenshots and screencast columns require read access to screen_recordings. */
+const screenRecordingsAccess = () =>
+	useUserinfoStore().hasReadAccess(WtObject.ScreenRecordings);
 
 /* annotated on the literal so a mistyped key is an error, not a silent no-op */
 const rawHeaders: DatalistTableHeader[] = [
@@ -169,6 +167,7 @@ const rawHeaders: DatalistTableHeader[] = [
 				count: 2,
 			},
 		],
+		access: screenRecordingsAccess,
 	},
 	{
 		value: 'screencast',
@@ -176,7 +175,7 @@ const rawHeaders: DatalistTableHeader[] = [
 		sort: undefined,
 		field: 'screencast',
 		locale: 'vocabulary.screencast',
-		access: controlAgentScreenAccess,
+		access: screenRecordingsAccess,
 	},
 	{
 		value: 'tags',

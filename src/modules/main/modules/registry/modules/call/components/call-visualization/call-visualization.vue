@@ -30,11 +30,10 @@
 >
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { WtObject } from '@webitel/ui-sdk/enums';
-import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 import { type Component, computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
-import { useUserinfoStore } from '../../../../../../../userinfo/stores/userinfoStore';
+import { useScreenRecordingsAccess } from '../../../../composables/useScreenRecordingsAccess';
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallEvaluation from '../../modules/call-audit/components/call-audit-section.vue';
 import NoCallRecordings from './assets/no-call-recordings.svg';
@@ -61,13 +60,8 @@ const props = withDefaults(defineProps<Props>(), {
 	namespace: '',
 });
 
-const userinfoStore = useUserinfoStore();
-
-const isControlAgentScreenAllow = computed(() =>
-	userinfoStore.hasSpecialGlobalActionAccess(
-		SpecialGlobalAction.ControlAgentScreen,
-	),
-);
+const { hasReadAccess: hasScreenRecordingsReadAccess } =
+	useScreenRecordingsAccess();
 
 const { t } = useI18n();
 
@@ -106,7 +100,7 @@ const tabs = computed((): VisualizationTab[] => {
 	];
 	if (props.call.allowEvaluation && hasEvaluationReadAccess.value)
 		tabList.push(tabValues.value.EVALUATION);
-	if (isControlAgentScreenAllow.value)
+	if (hasScreenRecordingsReadAccess.value)
 		tabList.push(tabValues.value.SCREEN_RECORDINGS);
 	return tabList;
 });
