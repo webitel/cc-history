@@ -237,6 +237,7 @@ export default {
 		contact: 'Байланыс',
 		hangupPhrase: 'Аяқтау сипаттамасы',
 		mos: 'MOS',
+		userAgent: 'Шығу тегі',
 	},
 	variableColumnSelect: {
 		title: 'Айнымалылар бағандарын таңдау',
