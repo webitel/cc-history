@@ -317,6 +317,12 @@ const rawHeaders: DatalistTableHeader[] = [
 		field: 'contact',
 		filter: filterConfigs[FilterOption.Contact],
 	},
+	{
+		value: 'userAgent',
+		show: false,
+		sort: null,
+		field: 'user_agent',
+	},
 ];
 
 export const headers: DatalistTableHeader[] = rawHeaders.map((header) => ({

@@ -234,6 +234,7 @@ export default {
 		contact: 'Aloqa',
 		hangupPhrase: 'Yakunlash ifodasi',
 		mos: 'MOS',
+		userAgent: 'Kelib chiqishi',
 	},
 	variableColumnSelect: {
 		title: 'O‘zgaruvchilar ustunini tanlash',

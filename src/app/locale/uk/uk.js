@@ -236,6 +236,7 @@ export default {
 		postProcessing: 'Постобробка',
 		contact: 'Контакт',
 		mos: 'MOS',
+		userAgent: 'Походження',
 	},
 	variableColumnSelect: {
 		title: 'Вибрати колонки зі змінними',

@@ -237,6 +237,7 @@ export default {
 		postProcessing: 'Postprocesare',
 		contact: 'Contact',
 		mos: 'MOS',
+		userAgent: 'Origine',
 	},
 	variableColumnSelect: {
 		title: 'Selectează coloanele variabile',
