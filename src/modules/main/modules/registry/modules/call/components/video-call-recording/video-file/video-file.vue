@@ -63,11 +63,11 @@ import {
 import { EngineCallFile } from '@webitel/api-services/gen/models';
 import { WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import { ComponentSize } from '@webitel/ui-sdk/enums';
-import { getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { getMediaUrlAuth } from '../../../../../../../../../app/api/getMediaUrlAuth';
 import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 import EmptyVideo from './_internals/assets/empty-video.svg';
 import EmptyVideoDark from './_internals/assets/empty-video-dark.svg';
@@ -90,7 +90,9 @@ const currentVideo = ref<EngineCallFile | null>(dataList.value[0] ?? null);
 
 const currentVideoUrl = computed(() => {
 	return currentVideo.value
-		? getMediaUrl(currentVideo.value.id, getMediaUrlAuth())
+		? getMediaUrl(currentVideo.value.id, {
+				auth: getMediaUrlAuth(),
+			})
 		: '';
 });
 

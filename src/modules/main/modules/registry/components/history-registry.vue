@@ -267,12 +267,13 @@ import {
 	useTableVariableHeaders,
 	WtTableVariableColumnSelect,
 } from '@webitel/ui-sdk/modules/TableVariableColumnSelect';
-import { getMediaUrlAuth, isEmpty } from '@webitel/ui-sdk/scripts';
+import { isEmpty } from '@webitel/ui-sdk/scripts';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
 import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import type { EngineHistoryCall } from 'webitel-sdk';
+import { getMediaUrlAuth } from '../../../../../app/api/getMediaUrlAuth';
 import TheHistoryColumnFilter from '../../../../filters/components/the-history-column-filter.vue';
 import { SearchMode } from '../../../../filters/enums/SearchMode';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
@@ -453,7 +454,9 @@ const closeScreenRecording = () => {
 };
 const setScreenRecording = (data) => {
 	currentScreenRecording.value = data;
-	currentScreenRecording.value.video = getMediaUrl(data.id, getMediaUrlAuth());
+	currentScreenRecording.value.video = getMediaUrl(data.id, {
+		auth: getMediaUrlAuth(),
+	});
 	closePlayer();
 	isScreenRecordingOpen.value = true;
 };

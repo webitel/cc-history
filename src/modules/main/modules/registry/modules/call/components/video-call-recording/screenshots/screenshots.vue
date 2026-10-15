@@ -57,7 +57,7 @@
           <wt-image
             width="48"
             overlay-icon="zoom-in"
-            :src="getMediaUrl(item.id, { ...getMediaUrlAuth(), isThumb: true })"
+            :src="getMediaUrl(item.id, { auth: getMediaUrlAuth(), isThumb: true })"
             alt=""
             @click="openScreenshot(item.id)"
           />
@@ -101,7 +101,7 @@ import {
 	type ExportedItem,
 	useFilesExport,
 } from '@webitel/ui-sdk/modules/FilesExport';
-import { eventBus, getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
+import { eventBus } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
@@ -112,6 +112,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { EngineHistoryCall } from 'webitel-sdk';
+import { getMediaUrlAuth } from '../../../../../../../../../app/api/getMediaUrlAuth';
 import { useVideocallFilesAccess } from '../../../../../composables/useVideocallFilesAccess';
 import { headers } from './store/headers/headers';
 
@@ -164,11 +165,11 @@ const galleriaData = computed(() => {
 		.filter((item) => item?.id && item.name)
 		.map((item) => ({
 			src: getMediaUrl(item.id, {
-				...getMediaUrlAuth(),
+				auth: getMediaUrlAuth(),
 				isThumb: false,
 			}),
 			thumbnailSrc: getMediaUrl(item.id, {
-				...getMediaUrlAuth(),
+				auth: getMediaUrlAuth(),
 				isThumb: true,
 			}),
 			title: item.name,
@@ -243,7 +244,7 @@ const downloadPdf = async () => {
 const { exportFiles: downloadZip } = useFilesExport({
 	getFileURL: (item) =>
 		getMediaUrl(item.id as string, {
-			...getMediaUrlAuth(),
+			auth: getMediaUrlAuth(),
 			isThumb: false,
 		}),
 	fetch: async () => ({

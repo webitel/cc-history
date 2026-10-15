@@ -2,7 +2,7 @@
   <wt-vidstack-player
     v-if="isVideoOpen && currentVideo"
     closable
-    :src="getMediaUrl(currentVideo.id, getMediaUrlAuth())"
+    :src="getMediaUrl(currentVideo.id, { auth: getMediaUrlAuth() })"
     :title="currentVideo.viewName || currentVideo.name"
     :mime="currentVideo.mimeType"
     @close="closeVideo"
@@ -84,7 +84,7 @@
         <wt-image
           width="48px"
           overlay-icon="play"
-          :src="getMediaUrl(item.id, { ...getMediaUrlAuth(), isThumb: true })"
+          :src="getMediaUrl(item.id, { auth: getMediaUrlAuth(), isThumb: true })"
           alt=""
           @click="openVideo(item)"
         />
@@ -140,7 +140,7 @@ import {
 } from '@webitel/api-services/scripts';
 import { WtEmpty, WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import { FormatDateMode, IconAction } from '@webitel/ui-sdk/enums';
-import { eventBus, getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
+import { eventBus } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
@@ -150,8 +150,8 @@ import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
+import { getMediaUrlAuth } from '../../../../../../../../../app/api/getMediaUrlAuth';
 import { useScreenRecordingsAccess } from '../../../../../composables/useScreenRecordingsAccess';
-
 import { buildCallScreenRecordingArchiveParams } from './buildCallScreenRecordingArchiveParams';
 import { headers } from './store/headers/headers';
 

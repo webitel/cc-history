@@ -23,9 +23,8 @@ import {
 	getMediaUrl,
 } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 import { computed, ref } from 'vue';
-
+import { getMediaUrlAuth } from '../../../../../../app/api/getMediaUrlAuth';
 import { useVideocallFilesAccess } from '../../composables/useVideocallFilesAccess';
 
 interface Props {
@@ -51,11 +50,11 @@ const screenshots = computed(
 			?.map((item) => ({
 				id: item.id,
 				src: getMediaUrl(item.id, {
-					...getMediaUrlAuth(),
+					auth: getMediaUrlAuth(),
 					isThumb: false,
 				}),
 				thumbnailSrc: getMediaUrl(item.id, {
-					...getMediaUrlAuth(),
+					auth: getMediaUrlAuth(),
 					isThumb: true,
 				}),
 				title: item.name,
