@@ -63,6 +63,7 @@ import {
 import { EngineCallFile } from '@webitel/api-services/gen/models';
 import { WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import { ComponentSize } from '@webitel/ui-sdk/enums';
+import { getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { computed, inject, ref } from 'vue';
@@ -88,7 +89,9 @@ const dataList = ref(props.files || []);
 const currentVideo = ref<EngineCallFile | null>(dataList.value[0] ?? null);
 
 const currentVideoUrl = computed(() => {
-	return currentVideo.value ? getMediaUrl(currentVideo.value.id) : '';
+	return currentVideo.value
+		? getMediaUrl(currentVideo.value.id, getMediaUrlAuth())
+		: '';
 });
 
 const { hasDeleteAccess } = useRecordingFilesAccess();

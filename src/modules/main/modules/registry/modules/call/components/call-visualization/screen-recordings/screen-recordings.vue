@@ -2,7 +2,7 @@
   <wt-vidstack-player
     v-if="isVideoOpen && currentVideo"
     closable
-    :src="getMediaUrl(currentVideo.id)"
+    :src="getMediaUrl(currentVideo.id, getMediaUrlAuth())"
     :title="currentVideo.viewName || currentVideo.name"
     :mime="currentVideo.mimeType"
     @close="closeVideo"
@@ -84,7 +84,7 @@
         <wt-image
           width="48px"
           overlay-icon="play"
-          :src="getMediaUrl(item.id, true)"
+          :src="getMediaUrl(item.id, { ...getMediaUrlAuth(), isThumb: true })"
           alt=""
           @click="openVideo(item)"
         />
@@ -140,7 +140,7 @@ import {
 } from '@webitel/api-services/scripts';
 import { WtEmpty, WtVidstackPlayer } from '@webitel/ui-sdk/components';
 import { FormatDateMode, IconAction } from '@webitel/ui-sdk/enums';
-import { eventBus } from '@webitel/ui-sdk/scripts';
+import { eventBus, getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';

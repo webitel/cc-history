@@ -3,6 +3,7 @@ import {
 	type EngineCallFile,
 	EngineCallFileType,
 } from '@webitel/api-services/gen/models';
+import { getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 import type {
 	AudioMimeType,
 	AudioSrc,
@@ -50,7 +51,7 @@ export const usePlayMedia = () => {
 		audioData.value = {
 			...mediaFile,
 			src: {
-				src: getCallMediaUrl(mediaFile.id),
+				src: getCallMediaUrl(mediaFile.id, getMediaUrlAuth()),
 				type: mediaFile.mimeType as AudioMimeType,
 			},
 		};
@@ -65,7 +66,7 @@ export const usePlayMedia = () => {
 			...mediaFile,
 			src: {
 				...mediaFile,
-				src: getCallMediaUrl(mediaFile.id),
+				src: getCallMediaUrl(mediaFile.id, getMediaUrlAuth()),
 				type: mediaFile.mimeType as VideoMimeType,
 			},
 			text: mediaFile.text,

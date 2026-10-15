@@ -267,7 +267,7 @@ import {
 	useTableVariableHeaders,
 	WtTableVariableColumnSelect,
 } from '@webitel/ui-sdk/modules/TableVariableColumnSelect';
-import { isEmpty } from '@webitel/ui-sdk/scripts';
+import { getMediaUrlAuth, isEmpty } from '@webitel/ui-sdk/scripts';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
 import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
@@ -453,7 +453,7 @@ const closeScreenRecording = () => {
 };
 const setScreenRecording = (data) => {
 	currentScreenRecording.value = data;
-	currentScreenRecording.value.video = getMediaUrl(data.id);
+	currentScreenRecording.value.video = getMediaUrl(data.id, getMediaUrlAuth());
 	closePlayer();
 	isScreenRecordingOpen.value = true;
 };

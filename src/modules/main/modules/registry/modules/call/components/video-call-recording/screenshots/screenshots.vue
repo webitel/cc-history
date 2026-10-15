@@ -57,7 +57,7 @@
           <wt-image
             width="48"
             overlay-icon="zoom-in"
-            :src="getMediaUrl(item.id, true)"
+            :src="getMediaUrl(item.id, { ...getMediaUrlAuth(), isThumb: true })"
             alt=""
             @click="openScreenshot(item.id)"
           />
@@ -101,7 +101,7 @@ import {
 	type ExportedItem,
 	useFilesExport,
 } from '@webitel/ui-sdk/modules/FilesExport';
-import { eventBus } from '@webitel/ui-sdk/scripts';
+import { eventBus, getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
@@ -113,7 +113,6 @@ import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { EngineHistoryCall } from 'webitel-sdk';
 import { useVideocallFilesAccess } from '../../../../../composables/useVideocallFilesAccess';
-
 import { headers } from './store/headers/headers';
 
 interface ScreenshotFile {
@@ -164,8 +163,14 @@ const galleriaData = computed(() => {
 	return dataList.value
 		.filter((item) => item?.id && item.name)
 		.map((item) => ({
-			src: getMediaUrl(item.id, false),
-			thumbnailSrc: getMediaUrl(item.id, true),
+			src: getMediaUrl(item.id, {
+				...getMediaUrlAuth(),
+				isThumb: false,
+			}),
+			thumbnailSrc: getMediaUrl(item.id, {
+				...getMediaUrlAuth(),
+				isThumb: true,
+			}),
 			title: item.name,
 			alt: item.name,
 		}));
@@ -236,7 +241,11 @@ const downloadPdf = async () => {
 };
 
 const { exportFiles: downloadZip } = useFilesExport({
-	getFileURL: (item) => getMediaUrl(item.id as string, false),
+	getFileURL: (item) =>
+		getMediaUrl(item.id as string, {
+			...getMediaUrlAuth(),
+			isThumb: false,
+		}),
 	fetch: async () => ({
 		items: (selected.value.length
 			? selected.value

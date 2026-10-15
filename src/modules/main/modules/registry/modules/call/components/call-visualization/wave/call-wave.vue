@@ -233,6 +233,7 @@ import {
 	type ExportedItem,
 	useFilesExport,
 } from '@webitel/ui-sdk/modules/FilesExport';
+import { getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 import {
 	computed,
 	nextTick,
@@ -244,7 +245,6 @@ import {
 } from 'vue';
 import { useStore } from 'vuex';
 import type { Region } from 'wavesurfer.js/plugins/regions';
-
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import type {
 	CallWaveCallRecord,
@@ -285,6 +285,7 @@ const fileOptions = computed(
 
 const fileUrl = computed(() =>
 	getCallMediaUrl(file.value.id, {
+		...getMediaUrlAuth(),
 		download: true,
 	}),
 );
@@ -385,6 +386,7 @@ function getCommentFormDuration() {
 const { exportFiles: downloadFile } = useFilesExport({
 	getFileURL: (item) =>
 		getCallMediaUrl(item.id as string, {
+			...getMediaUrlAuth(),
 			download: true,
 		}),
 	fetch: async () => ({

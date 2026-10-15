@@ -3,6 +3,7 @@ import type {
 	WebitelChatMessage,
 	WebitelChatPeer,
 } from '@webitel/api-services/gen';
+import { getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 
 // Normalize function to transform API messages to ChatMessageType format
 export const normalizeMessages = (
@@ -17,7 +18,7 @@ export const normalizeMessages = (
 			file: message.file && {
 				...message.file,
 				mime: message.file.type,
-				url: getMediaUrl(message.file.id),
+				url: getMediaUrl(message.file.id, getMediaUrlAuth()),
 			},
 			member: {
 				id: message.from?.id ?? '',

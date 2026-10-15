@@ -23,6 +23,7 @@ import {
 	getMediaUrl,
 } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { getMediaUrlAuth } from '@webitel/ui-sdk/scripts';
 import { computed, ref } from 'vue';
 
 import { useVideocallFilesAccess } from '../../composables/useVideocallFilesAccess';
@@ -49,8 +50,14 @@ const screenshots = computed(
 			?.filter((item) => !deletedIds.value.includes(item.id))
 			?.map((item) => ({
 				id: item.id,
-				src: getMediaUrl(item.id, false),
-				thumbnailSrc: getMediaUrl(item.id, true),
+				src: getMediaUrl(item.id, {
+					...getMediaUrlAuth(),
+					isThumb: false,
+				}),
+				thumbnailSrc: getMediaUrl(item.id, {
+					...getMediaUrlAuth(),
+					isThumb: true,
+				}),
 				title: item.name,
 				alt: item.name,
 			})) || [],
