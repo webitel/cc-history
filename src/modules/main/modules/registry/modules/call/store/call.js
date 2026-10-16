@@ -78,16 +78,13 @@ const getters = {
 		}),
 
 	DATA_FIELDS: () => {
-		let fields = headers
-			.filter((header) => header.show)
-			.map((header) => header.field);
-		fields = [
+		const fields = headers.map((header) => header.field).filter(Boolean);
+		return [
 			...new Set([
 				...REQUIRED_DATA_FIELDS,
 				...fields,
 			]),
 		];
-		return fields;
 	},
 
 	RECORDING_FILE_SELECT_OPTIONS: (state) =>
@@ -110,7 +107,12 @@ const actions = {
 		try {
 			const { items } = await historyAPI.getHistory({
 				...params,
-				fields,
+				fields: [
+					...new Set([
+						...(params.fields || []),
+						...(fields || []),
+					]),
+				],
 			});
 			context.commit('SET_LEGS_DATA_LIST', items);
 		} catch (err) {
