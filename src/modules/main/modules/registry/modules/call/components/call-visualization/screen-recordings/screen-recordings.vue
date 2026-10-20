@@ -12,7 +12,7 @@
       {{ t('objects.screenRecordings', 2) }}
     </h3>
     <wt-action-bar
-      :include="[IconAction.DOWNLOAD, IconAction.FILTERS, IconAction.DELETE]"
+      :include="[IconAction.DOWNLOAD, IconAction.DELETE]"
       :disabled:download="!dataList.length || isDownloadingArchive"
       :disabled:delete="!visibleSelected.length || !hasDeleteAccess"
       @click:download="downloadArchive"
@@ -22,40 +22,8 @@
           callback: () => handleDelete(visibleSelected),
         })
       "
-    >
-      <template #filters>
-        <wt-badge :hidden="!hasDateFilter">
-          <wt-icon-action
-            :action="IconAction.FILTERS"
-            @click="showDateFilters = !showDateFilters"
-          />
-        </wt-badge>
-      </template>
-    </wt-action-bar>
+    />
   </header>
-
-  <wt-filters-panel-wrapper
-    v-if="showDateFilters"
-    class="screen-recordings-filters"
-    is-opened
-    :table-action-icons="['filter-reset']"
-    @reset="resetDateFilters"
-  >
-    <wt-datepicker
-      :model-value="startAtFrom"
-      show-time
-      clearable
-      :label="t('reusable.from')"
-      @update:model-value="setStartAtFrom"
-    />
-    <wt-datepicker
-      :model-value="startAtTo"
-      show-time
-      clearable
-      :label="t('reusable.to')"
-      @update:model-value="setStartAtTo"
-    />
-  </wt-filters-panel-wrapper>
 
   <delete-confirmation-popup
     :shown="isDeleteConfirmationPopup"
@@ -175,11 +143,6 @@ const error = ref('');
 
 const startAtFrom = ref<number | null>(null);
 const startAtTo = ref<number | null>(null);
-const showDateFilters = ref(false);
-
-const hasDateFilter = computed(
-	() => startAtFrom.value != null || startAtTo.value != null,
-);
 
 const dateFilters = computed(() => ({
 	from: startAtFrom.value,
@@ -256,22 +219,6 @@ const loadDataList = async () => {
 	} finally {
 		isLoading.value = false;
 	}
-};
-
-const resetDateFilters = () => {
-	startAtFrom.value = null;
-	startAtTo.value = null;
-	loadDataList();
-};
-
-const setStartAtFrom = (value: number | null) => {
-	startAtFrom.value = value;
-	loadDataList();
-};
-
-const setStartAtTo = (value: number | null) => {
-	startAtTo.value = value;
-	loadDataList();
 };
 
 const downloadArchive = async () => {
@@ -353,9 +300,5 @@ watch(callId, loadDataList, {
 <style scoped>
 .table-title {
   padding-inline: var(--spacing-xs);
-}
-
-.screen-recordings-filters {
-  padding: 0 var(--spacing-xs) var(--spacing-xs);
 }
 </style>
