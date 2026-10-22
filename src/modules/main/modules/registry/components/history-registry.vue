@@ -144,6 +144,14 @@
           />
         </template>
         <template
+          v-for="column in timeColumns"
+          :key="column"
+          #[column]="{ item }"
+        >
+          <wt-time-tooltip :text="item[column]" />
+        </template>
+
+        <template
           v-for="header in variableHeaders"
           #[header.value]="slotProps"
         >
@@ -258,6 +266,7 @@ import {
 	WtScreenRecordingsAction,
 	WtTable,
 	WtTableColumnSelect,
+	WtTimeTooltip,
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
 import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
@@ -287,6 +296,17 @@ import ScreenshotsAction from './table-templates/table-screenshots-action.vue';
 const emit = defineEmits<{
 	'toggle:filters-panel': [];
 }>();
+
+const timeColumns = [
+	'createdAt',
+	'answeredAt',
+	'bridgedAt',
+	'queueBridgedAt',
+	'joinedAt',
+	'leavingAt',
+	'hangupAt',
+	'reportingAt',
+];
 
 const tableStore = useRegistryStore();
 

@@ -95,7 +95,7 @@
       </template>
 
       <template #dateTime="{ item }">
-        {{ prettifyTimestamp(item) }}
+        <wt-time-tooltip :text="prettifyTimestamp(item)" />
       </template>
 
       <template #recordingDuration="{ item }">
@@ -138,7 +138,11 @@ import {
 	FileFormat,
 	downloadFile as saveArchiveFile,
 } from '@webitel/api-services/scripts';
-import { WtEmpty, WtVidstackPlayer } from '@webitel/ui-sdk/components';
+import {
+	WtEmpty,
+	WtTimeTooltip,
+	WtVidstackPlayer,
+} from '@webitel/ui-sdk/components';
 import { FormatDateMode, IconAction } from '@webitel/ui-sdk/enums';
 import { eventBus } from '@webitel/ui-sdk/scripts';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
