@@ -18,6 +18,7 @@
         handleDelete,
         downloadArchive,
         isDownloadingArchive,
+        isListEmpty,
       }"
     >
       <header class="table-title">
@@ -27,7 +28,6 @@
         <wt-action-bar
           :include="[IconAction.REFRESH, IconAction.DOWNLOAD, IconAction.DELETE]"
           :disabled:delete="!selected.length || !hasDeleteAccess"
-          :disabled:download="isDownloadingArchive"
           @click:refresh="loadDataList"
           @click:download="downloadArchive"
           @click:delete="
@@ -44,6 +44,7 @@
             />
             <wt-icon-action
               v-else
+              :disabled="isListEmpty"
               action="download"
               @click="onClick"
             />
