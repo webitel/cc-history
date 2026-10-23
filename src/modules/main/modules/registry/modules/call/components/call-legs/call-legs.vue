@@ -13,6 +13,13 @@
         :selectable="false"
         :row-class="getRowClass"
       >
+        <template
+          v-for="column in timeColumns"
+          :key="column"
+          #[column]="{ item }"
+        >
+          <wt-time-tooltip :text="item[column]" />
+        </template>
         <template #direction="{ item }">
           <table-direction :item="item" />
         </template>
@@ -131,6 +138,7 @@
 </template>
 
 <script>
+import { WtTimeTooltip } from '@webitel/ui-sdk/components';
 import { ComponentSize } from '@webitel/ui-sdk/enums';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
 import { storeToRefs } from 'pinia';
@@ -145,6 +153,7 @@ export default {
 	components: {
 		TableDirection,
 		TableMosMetric,
+		WtTimeTooltip,
 	},
 	props: {
 		call: {
@@ -205,10 +214,22 @@ export default {
 			];
 		});
 
+		const timeColumns = [
+			'createdAt',
+			'answeredAt',
+			'bridgedAt',
+			'queueBridgedAt',
+			'joinedAt',
+			'leavingAt',
+			'hangupAt',
+			'reportingAt',
+		];
+
 		return {
 			shownHeaders,
 			fields,
 			ComponentSize,
+			timeColumns,
 		};
 	},
 
