@@ -1,123 +1,75 @@
 <template>
   <section class="call-wave-page">
-    <call-visualization-header>
-      <template #main>
-        <wt-single-select
-          class="call-wave-page__file-select"
-          :model-value="file"
-          :show-clear="false"
-          :placeholder="$t('vocabulary.file')"
-          :options="audioFiles"
-          data-key="id"
-          @update:model-value="setFile"
-        />
-        <div
-          v-if="!isLoading"
-          class="call-wave-page__region-actions"
-        >
-          <wt-checkbox
-            :label="$t('registry.call.hold', 2)"
-            :selected="showHolds"
-            :value="showHolds"
-            @update:selected="toggleHolds"
-          />
-          <wt-chip>
-            {{ holdsSize }}
-          </wt-chip>
-          <wt-checkbox
-            :label="$t('registry.call.comment', 2)"
-            :selected="showComments"
-            :value="showComments"
-            @update:selected="toggleComments"
-          />
-          <wt-chip>
-            {{ commentsSize }}
-          </wt-chip>
-        </div>
-      </template>
-      <template
-        v-if="!isLoading"
-        #actions
-      >
-        <wt-icon-btn
-          icon="note"
-          icon-prefix="hs"
-          @click="toggleCommentMode"
-        />
-        <wt-icon-btn
-          icon="download-record"
-          icon-prefix="hs"
-          @click="downloadFile"
-        />
-      </template>
-    </call-visualization-header>
+    <call-wave-toolbar
+      :file="file"
+      :files="audioFiles"
+      :is-loading="isLoading"
+      :show-holds="showHolds"
+      :show-comments="showComments"
+      :holds-count="holdsCount"
+      :comments-count="commentsSize"
+      :is-range-editing="!!rangeEditComment"
+      @update:file="setFile"
+      @toggle-holds="toggleHolds"
+      @toggle-comments="toggleComments"
+      @add-note="openAddNote"
+      @download="downloadFile"
+    />
 
     <wt-progress-bar
       v-show="isLoading"
       :max="100"
       :value="loadProgress"
     />
+    <wt-empty
+      v-if="isRecordingDeleted"
+      :image="DeletedCallRecording"
+      :title="t('registry.call.wave.recordingDeleted')"
+    />
+    <!-- v-show keeps wavesurfer mounted, so choosing another file still loads it. -->
     <section
-      v-show="!isLoading"
-      :class="{'call-wave-page-main--hidden': isLoading}"
+      v-show="!isLoading && !isRecordingDeleted"
       class="call-wave-page-main"
     >
+      <call-wave-range-edit-bar
+        v-if="rangeEditComment"
+        :is-changed="isRangeChanged"
+        :is-saving="isRangeSaving"
+        @save="saveCommentRange"
+        @cancel="stopRangeEdit"
+      />
+
       <call-comment-form
-        v-if="commentsMode"
-        :call-duration="getCommentFormDuration()"
-        :comment="selectedComment"
-        @delete="deleteComment"
-        @save="saveComment"
-        @update-draft-range="handleCommentDraftRangeUpdate"
+        v-if="newComment"
+        :call-duration="getCallDurationSec()"
+        :comment="newComment"
+        :is-saving="isAddingComment"
+        @close="closeAddNote"
+        @save="addComment"
+        @update-draft-range="updateDraftSelectionRange($event.startSec, $event.endSec)"
+      />
+
+      <delete-confirmation-popup
+        :shown="isDeleteConfirmationShown"
+        :callback="deleteCallback"
+        :delete-count="deleteCount"
+        @close="closeDelete"
       />
 
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
-          <wt-popover
+          <call-wave-channel-volume
             v-if="!leftGain.disabled"
-          >
-            <template #activator="{ toggle }">
-              <div
-                @click="toggle"
-              >
-                <wt-icon-btn
-                  :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-                />
-              </div>
-            </template>
-
-            <wt-slider
-              :max="2"
-              :min="0"
-              :step="0.01"
-              :width="130"
-              :model-value="volumeLeftGain"
-              @update:model-value="volumeLeftChangeHandler"
-            />
-          </wt-popover>
-
-          <wt-popover
+            :volume="volumeLeftGain"
+            :muted="leftGain.muted"
+            @update:volume="volumeLeftChangeHandler"
+          />
+          <call-wave-channel-volume
             v-if="!rightGain.disabled"
-          >
-            <template #activator="{ toggle }">
-              <div
-                @click="toggle"
-              >
-                <wt-icon-btn
-                  :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-                />
-              </div>
-            </template>
-
-            <wt-slider
-              :max="2"
-              :min="0"
-              :step="0.01"
-              :width="130"
-              :model-value="volumeRightGain"
-              @update:model-value="volumeRightChangeHandler"
-            />
-          </wt-popover>
+            :volume="volumeRightGain"
+            :muted="rightGain.muted"
+            @update:volume="volumeRightChangeHandler"
+          />
         </section>
 
         <section
@@ -126,7 +78,7 @@
         >
           <div
             class="call-wave-wave-wrap"
-            :class="{ 'call-wave-wave-wrap--mono': rightGain.disabled }"
+            :class="{ 'call-wave-wave-wrap--mono': isMono }"
           >
             <wavesurfer
               ref="wavesurferComponentRef"
@@ -134,93 +86,43 @@
               :src="fileUrl"
             />
             <div class="call-wave-markers">
-              <div
-                class="call-wave-marker call-wave-marker--left"
-                :style="{ color: channelColorLeft }"
-              >
-                <span class="call-wave-marker__icon">
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                  ><use xlink:href="#contacts" /></svg>
-                </span>
-                <span class="call-wave-marker__label">{{ call.from.name || call.from.number || ' ' }}</span>
-              </div>
-              <div
-                v-if="!rightGain.disabled"
-                class="call-wave-marker call-wave-marker--right"
-                :style="{ color: channelColorRight }"
-              >
-                <span class="call-wave-marker__icon">
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                  ><use xlink:href="#contacts" /></svg>
-                </span>
-                <span class="call-wave-marker__label">{{ call.to?.name || call.to?.number || call.destination }}</span>
-              </div>
+              <call-wave-channel-label
+                class="call-wave-markers__top-channel"
+                :name="call.from.name || call.from.number || ' '"
+                color="var(--true-color)"
+              />
+              <call-wave-channel-label
+                v-if="!isMono"
+                class="call-wave-markers__bottom-channel"
+                :name="call.to?.name || call.to?.number || call.destination || ''"
+                color="var(--primary-color)"
+              />
+              <call-wave-hold-markers :markers="holdMarkers" />
+              <call-wave-comment-markers
+                v-if="showCommentMarkers"
+                :markers="markers"
+                :top-px="commentMarkerTopPx"
+                :visible-width-px="layout?.visibleWidthPx ?? 0"
+                :save-note-text="saveCommentNote"
+                @active-change="setCommentHighlight"
+                @edit-range="startRangeEdit"
+                @delete="askCommentDeleteConfirmation"
+              />
             </div>
           </div>
         </section>
 
         <div />
-        <section class="call-wave-actions">
-          <section class="call-wave-actions-buttons">
-            <wt-button
-              :color="speedButtonColor(2)"
-              @click="toggleRate(2)"
-            >
-              x2
-            </wt-button>
-            <wt-button
-              :color="speedButtonColor(1.5)"
-              @click="toggleRate(1.5)"
-            >
-              x1.5
-            </wt-button>
-            <wt-button
-              :color="speedButtonColor(0.75)"
-              @click="toggleRate(0.75)"
-            >
-              x0.75
-            </wt-button>
-            <wt-button
-              :color="speedButtonColor(0.5)"
-              @click="toggleRate(0.5)"
-            >
-              x0.5
-            </wt-button>
-            <wt-button
-              :color="isPlaying ? 'primary': 'secondary'"
-              contains-icon
-              @click="playPause"
-            >
-              <wt-icon
-                :icon="!isPlaying ? 'play' : 'pause'"
-              />
-            </wt-button>
-          </section>
-          <section class="call-wave-actions-buttons">
-            <wt-button
-              :disabled="zoomInDisabled"
-              color="secondary"
-              contains-icon
-              @click="increaseZoom"
-            >
-              <wt-icon icon="zoom-in" />
-            </wt-button>
-            <wt-button
-              :disabled="zoomOutDisabled"
-              color="secondary"
-              contains-icon
-              @click="decreaseZoom"
-            >
-              <wt-icon icon="zoom-out" />
-            </wt-button>
-          </section>
-        </section>
+        <call-wave-playback-controls
+          :playback-rate="playbackRate"
+          :is-playing="isPlaying"
+          :zoom-in-disabled="zoomInDisabled"
+          :zoom-out-disabled="zoomOutDisabled"
+          @toggle-rate="toggleRate"
+          @play-pause="playPause"
+          @zoom-in="increaseZoom"
+          @zoom-out="decreaseZoom"
+        />
       </section>
     </section>
   </section>
@@ -233,46 +135,44 @@ import {
 	type ExportedItem,
 	useFilesExport,
 } from '@webitel/ui-sdk/modules/FilesExport';
-import {
-	computed,
-	nextTick,
-	onBeforeUnmount,
-	type Ref,
-	ref,
-	toRef,
-	watch,
-} from 'vue';
+import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
+import { computed, nextTick, onBeforeUnmount, ref, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import type { Region } from 'wavesurfer.js/plugins/regions';
+import type WaveSurfer from 'wavesurfer.js';
 
-import CallVisualizationHeader from '../call-visualization-header.vue';
-import type {
-	CallWaveCallRecord,
-	CommentDragSelectionOptions,
-	NewCommentDraft,
-	WaveAnnotation,
-} from './call-wave.types';
+import DeletedCallRecording from '../assets/deleted-call-recording.svg';
+import type { CallWaveCallRecord, WaveAnnotation } from './call-wave.types';
+import CallWaveChannelLabel from './call-wave-channel-label.vue';
+import CallWaveChannelVolume from './call-wave-channel-volume.vue';
 import CallCommentForm from './call-wave-comment-form.vue';
+import CallWaveCommentMarkers from './call-wave-comment-markers.vue';
+import CallWaveHoldMarkers from './call-wave-hold-markers.vue';
+import CallWavePlaybackControls from './call-wave-playback-controls.vue';
+import CallWaveRangeEditBar from './call-wave-range-edit-bar.vue';
+import CallWaveToolbar from './call-wave-toolbar.vue';
 import {
-	annotationSecondsToInt,
-	useCallWaveAnnotations,
-} from './composables/useCallWaveAnnotations';
+	COMMENT_MARKER_SIZE_PX,
+	useCallWaveCommentMarkers,
+} from './composables/useCallWaveCommentMarkers';
+import { useCallWaveComments } from './composables/useCallWaveComments';
 import { useCallWaveFileAnnotations } from './composables/useCallWaveFileAnnotations';
-import { useCallWavePlugins } from './composables/useCallWavePlugins';
+import { useCallWaveHoldMarkers } from './composables/useCallWaveHoldMarkers';
+import {
+	useCallWavePlugins,
+	WAVE_HEIGHT,
+} from './composables/useCallWavePlugins';
 import { useCallWaveRegions } from './composables/useCallWaveRegions';
 import { useCallWaveSound } from './composables/useCallWaveSound';
 import { useCallWaveZoom } from './composables/useCallWaveZoom';
+import { useWaveformLayout } from './composables/useWaveformLayout';
 import Wavesurfer from './wavesurfer.vue';
-
-const COMMENT_DRAG_OPTIONS: CommentDragSelectionOptions = {
-	color: 'hsla(var(--_transfer-color), 0.2)',
-	resize: true,
-};
 
 const props = defineProps<{
 	call: CallWaveCallRecord;
 }>();
 
+const { t } = useI18n();
 const store = useStore();
 
 const file = computed(() => store.state.registry.call.selectedRecordingFile);
@@ -282,7 +182,6 @@ const allAnnotations = computed<WaveAnnotation[]>(
 const fileOptions = computed(
 	() => store.getters['registry/call/RECORDING_FILE_SELECT_OPTIONS'],
 );
-
 const fileUrl = computed(() =>
 	getCallMediaUrl(file.value.id, {
 		download: true,
@@ -296,90 +195,10 @@ const { audioFiles, currentFileId, annotations, commentsSize } =
 		allAnnotations,
 	});
 
-const callRef = toRef(props, 'call');
+const holdsCount = computed(() => props.call.hold?.length ?? 0);
 
-const holdsSize = computed(() =>
-	props.call.hold ? props.call.hold.length : 0,
-);
-
-const channelColorLeft = computed(() => 'var(--true-color)');
-const channelColorRight = computed(() => 'var(--primary-color)');
-
-const wavesurferComponentRef = ref<InstanceType<typeof Wavesurfer> | null>(
-	null,
-);
-const player = computed(() => wavesurferComponentRef.value?.waveSurfer ?? null);
-
-const playbackRate = ref(1);
-const isLoading = ref(true);
-const loadProgress = ref(0);
-const commentsMode = ref(false);
-const selectedComment: Ref<WaveAnnotation | NewCommentDraft | null> = ref(null);
-const dragSelectionCleanup: Ref<(() => void) | null> = ref(null);
-const unsubscribeRegionCreated: Ref<(() => void) | null> = ref(null);
-const unsubscribeZoomSync: Ref<(() => void) | null> = ref(null);
-const waveListenersAttached = ref(false);
-
-const { regionsPlugin, timelinePlugin, waveOptions } = useCallWavePlugins(
-	() => player.value,
-);
-
-const {
-	zoomInDisabled,
-	zoomOutDisabled,
-	resetZoom,
-	increaseZoom,
-	decreaseZoom,
-	syncZoomValue,
-	attachTimelineSync,
-	detachTimelineSync,
-} = useCallWaveZoom(() => player.value, timelinePlugin);
-
-const {
-	volumeLeftGain,
-	volumeRightGain,
-	isPlaying,
-	leftGain,
-	rightGain,
-	initChannelAudioGraph,
-	destroyChannelAudio,
-	onLoad,
-	changedPlaying,
-	playPause,
-	volumeLeftChangeHandler,
-	volumeRightChangeHandler,
-} = useCallWaveSound(() => player.value);
-
-function editAnnotation(comment: WaveAnnotation) {
-	selectedComment.value = comment;
-	commentsMode.value = true;
-}
-
-const {
-	showHolds,
-	showComments,
-	toggleHolds,
-	toggleComments,
-	updateRegions,
-	updateDraftSelectionRange,
-	blockRegionResize,
-	closeCommentMode,
-} = useCallWaveRegions({
-	regionsPlugin,
-	getPlayer: () => player.value,
-	call: callRef,
-	holdsSize,
-	commentsSize,
-	annotations,
-	editAnnotation,
-	commentsMode,
-	selectedComment,
-	dragSelectionCleanup,
-	commentDragOptions: COMMENT_DRAG_OPTIONS,
-});
-
-function getCommentFormDuration() {
-	return Math.round(player.value?.getDuration() ?? 0);
+function setFile(payload: unknown) {
+	store.dispatch('registry/call/SET_RECORDING_FILE', payload);
 }
 
 const { exportFiles: downloadFile } = useFilesExport({
@@ -395,44 +214,123 @@ const { exportFiles: downloadFile } = useFilesExport({
 	filename: 'history-record',
 });
 
-function setFile(payload: unknown) {
-	store.dispatch('registry/call/SET_RECORDING_FILE', payload);
-}
+const wavesurferComponentRef = ref<InstanceType<typeof Wavesurfer> | null>(
+	null,
+);
+const player = computed(() => wavesurferComponentRef.value?.waveSurfer ?? null);
+const getPlayer = () => player.value;
 
-function speedButtonColor(value: number): 'primary' | 'secondary' {
-	return playbackRate.value === value ? 'primary' : 'secondary';
-}
+const isLoading = ref(true);
+const loadProgress = ref(0);
+const isRecordingDeleted = ref(false);
+const playbackRate = ref(1);
 
-const { saveComment, deleteComment: deleteCommentBySelection } =
-	useCallWaveAnnotations(store, props.call.id, currentFileId, updateRegions);
-const deleteComment = () => deleteCommentBySelection(selectedComment.value);
+const { regionsPlugin, timelinePlugin, waveOptions } =
+	useCallWavePlugins(getPlayer);
 
-function handleCommentDraftRangeUpdate({
-	startSec,
-	endSec,
-}: {
-	startSec: number;
-	endSec: number;
-}) {
-	updateDraftSelectionRange(startSec, endSec);
-}
+const {
+	zoomInDisabled,
+	zoomOutDisabled,
+	resetZoom,
+	increaseZoom,
+	decreaseZoom,
+	syncZoomValue,
+	attachTimelineSync,
+	detachTimelineSync,
+} = useCallWaveZoom(getPlayer, timelinePlugin);
 
-function openCommentMode() {
-	commentsMode.value = true;
-}
+const {
+	volumeLeftGain,
+	volumeRightGain,
+	isPlaying,
+	leftGain,
+	rightGain,
+	initChannelAudioGraph,
+	destroyChannelAudio,
+	onLoad,
+	changedPlaying,
+	playPause,
+	volumeLeftChangeHandler,
+	volumeRightChangeHandler,
+} = useCallWaveSound(getPlayer);
 
-function toggleCommentMode() {
-	if (commentsMode.value) {
-		closeCommentMode();
-	} else {
-		openCommentMode();
-	}
-}
+const isMono = computed(() => rightGain.disabled);
 
-function toggleRate(value) {
-	playbackRate.value = playbackRate.value === value ? 1 : value;
+function toggleRate(rate: number) {
+	playbackRate.value = playbackRate.value === rate ? 1 : rate;
 	player.value?.setPlaybackRate(playbackRate.value, true);
 }
+
+const regions = useCallWaveRegions({
+	regionsPlugin,
+	getPlayer,
+	call: toRef(props, 'call'),
+});
+const {
+	showHolds,
+	showComments,
+	rangeEditComment,
+	isRangeChanged,
+	toggleHolds,
+	toggleComments,
+	renderHoldsLayer,
+	attachDraftSelection,
+	clearDraftSelectionRegions,
+	updateDraftSelectionRange,
+	setCommentHighlight,
+	startRangeEdit,
+	stopRangeEdit,
+} = regions;
+
+const {
+	newComment,
+	isAddingComment,
+	isRangeSaving,
+	deleteConfirmation,
+	getCallDurationSec,
+	openAddNote,
+	closeAddNote,
+	addComment,
+	saveCommentNote,
+	saveCommentRange,
+	askCommentDeleteConfirmation,
+	resetCommentActions,
+} = useCallWaveComments({
+	store,
+	callId: props.call.id,
+	currentFileId,
+	getPlayer,
+	regions,
+});
+const {
+	isVisible: isDeleteConfirmationShown,
+	deleteCount,
+	deleteCallback,
+	closeDelete,
+} = deleteConfirmation;
+
+const { layout, durationSec } = useWaveformLayout(getPlayer);
+const { markers } = useCallWaveCommentMarkers(layout, annotations);
+const { markers: holdMarkers } = useCallWaveHoldMarkers({
+	call: toRef(props, 'call'),
+	layout,
+	durationSec,
+	showHolds: computed(() => showHolds.value && !rangeEditComment.value),
+});
+
+const showCommentMarkers = computed(
+	() => showComments.value && !!commentsSize.value && !rangeEditComment.value,
+);
+
+const commentMarkerTopPx = computed(() =>
+	isMono.value
+		? WAVE_HEIGHT - COMMENT_MARKER_SIZE_PX
+		: WAVE_HEIGHT * 1.5 - COMMENT_MARKER_SIZE_PX,
+);
+
+watch(currentFileId, resetCommentActions);
+
+const stopListeningToPlayer: Array<() => void> = [];
 
 function showProgress(progress: string | number) {
 	isLoading.value = true;
@@ -444,28 +342,6 @@ function hideProgress() {
 	isLoading.value = false;
 }
 
-// New drag: v7 fires `region-created` but not `region-updated` for that path; skip saved regions (`comment-` id).
-function createComment(region: Region) {
-	if (region.start === region.end) {
-		return;
-	}
-	if (region.id.startsWith('comment-')) {
-		return;
-	}
-	if (dragSelectionCleanup.value) {
-		dragSelectionCleanup.value();
-		dragSelectionCleanup.value = null;
-	}
-	selectedComment.value = {
-		fileId: currentFileId.value,
-		startSec: String(annotationSecondsToInt(region.start)),
-		endSec: String(annotationSecondsToInt(region.end)),
-		note: '',
-	};
-	commentsMode.value = true;
-	blockRegionResize();
-}
-
 async function onReady() {
 	onLoad();
 	initChannelAudioGraph();
@@ -473,49 +349,44 @@ async function onReady() {
 	// Loading UI toggles in the same tick as `ready`; wait so layout matches before `reRender()`.
 	await nextTick();
 	resetZoom();
-	await updateRegions();
+	renderHoldsLayer();
 }
 
-function initWave() {
-	const waveSurfer = player.value;
-	if (!waveSurfer) {
-		return;
-	}
-	waveSurfer.on('pause', changedPlaying);
-	waveSurfer.on('finish', changedPlaying);
-	waveSurfer.on('play', changedPlaying);
-	waveSurfer.on('loading', showProgress);
-	waveSurfer.on('ready', onReady);
-	waveSurfer.on('destroy', hideProgress);
-	waveSurfer.on('error', hideProgress);
-	dragSelectionCleanup.value = regionsPlugin.enableDragSelection({
-		...COMMENT_DRAG_OPTIONS,
-	});
-	unsubscribeRegionCreated.value = regionsPlugin.on(
-		'region-created',
-		createComment,
-	);
-	unsubscribeZoomSync.value = waveSurfer.on(
-		'zoom',
-		(minPxPerSecFromWaveSurfer) => {
-			syncZoomValue(minPxPerSecFromWaveSurfer);
-		},
+function listenToPlayer(waveSurfer: WaveSurfer) {
+	stopListeningToPlayer.push(
+		waveSurfer.on('pause', changedPlaying),
+		waveSurfer.on('finish', changedPlaying),
+		waveSurfer.on('play', changedPlaying),
+		waveSurfer.on('load', () => {
+			isRecordingDeleted.value = false;
+		}),
+		waveSurfer.on('loading', showProgress),
+		waveSurfer.on('ready', onReady),
+		waveSurfer.on('destroy', hideProgress),
+		// The recording is listed on the call, so a failed load means the file is gone from storage.
+		waveSurfer.on('error', () => {
+			hideProgress();
+			isRecordingDeleted.value = true;
+		}),
+		waveSurfer.on('zoom', syncZoomValue),
+		// A click moves the cursor: the next note starts there, not at an old selection.
+		waveSurfer.on('interaction', () => {
+			if (!newComment.value) {
+				clearDraftSelectionRegions();
+			}
+		}),
+		attachDraftSelection(),
 	);
 	attachTimelineSync();
 }
 
-// `wavesurfer.vue` loads from `src` only; avoid double `load()` on file change.
+// `wavesurfer.vue` creates the player once and reloads it on `src` change, so listeners are attached once.
 watch(
-	[
-		player,
-		fileUrl,
-	],
-	() => {
-		if (!player.value || !fileUrl.value || waveListenersAttached.value) {
-			return;
+	player,
+	(waveSurfer) => {
+		if (waveSurfer && !stopListeningToPlayer.length) {
+			listenToPlayer(waveSurfer);
 		}
-		initWave();
-		waveListenersAttached.value = true;
 	},
 	{
 		immediate: true,
@@ -523,39 +394,19 @@ watch(
 );
 
 onBeforeUnmount(async () => {
+	stopListeningToPlayer.forEach((stopListening) => {
+		stopListening();
+	});
 	detachTimelineSync();
-	unsubscribeZoomSync.value?.();
-	unsubscribeZoomSync.value = null;
-	unsubscribeRegionCreated.value?.();
-	dragSelectionCleanup.value?.();
 	await destroyChannelAudio();
 });
 </script>
 
 <style scoped>
-.call-visualization-header {
-  margin-bottom: var(--spacing-sm);
-}
-
-.call-wave-page .call-wave-page__file-select {
-  width: 280px;
-}
-
-.call-wave-page .call-wave-page__region-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-xs);
-}
-
 .call-wave-page .call-wave-page-main {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-}
-
-.call-wave-page .call-wave-page-main--hidden {
-  display: none;
 }
 
 .call-wave-page .call-wave-data--grid {
@@ -570,18 +421,6 @@ onBeforeUnmount(async () => {
   align-items: center;
   flex-direction: column;
   justify-content: space-evenly;
-}
-
-.call-wave-page .call-wave-data--grid .call-wave-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--spacing-sm);
-}
-
-.call-wave-page .call-wave-data--grid .call-wave-actions .call-wave-actions-buttons {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
 }
 
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin {
@@ -622,19 +461,11 @@ onBeforeUnmount(async () => {
   height: 96px;
 }
 
-.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  box-sizing: border-box;
-  min-height: 0;
-}
-
-.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker--left {
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-markers__top-channel {
   align-self: start;
 }
 
-.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker--right {
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-markers__bottom-channel {
   align-self: end;
 }
 
@@ -642,13 +473,24 @@ onBeforeUnmount(async () => {
   background-color: var(--secondary-light-color);
 }
 
-:deep(.wavesurfer-mount > div)::part(region) {
-  border-left: 2px solid rgb(0, 0, 0);
-  border-right: 2px solid rgb(0, 0, 0);
+:deep(.wavesurfer-mount > div)::part(region-handle) {
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: var(--comment-color);
+  color: var(--main-color);
+  transform: translateY(-50%);
 }
 
-:deep(.wavesurfer-mount > div)::part(marker) {
-  border-left: 4px solid var(--hold-color);
+:deep(.wavesurfer-mount > div)::part(region-handle-left) {
+  left: -24px;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+:deep(.wavesurfer-mount > div)::part(region-handle-right) {
+  right: -24px;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 
 /* Hover plugin animates opacity/transform and may briefly show x=0 on quick pointer leave/enter. */

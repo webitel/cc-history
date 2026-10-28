@@ -7,7 +7,7 @@ import RegionsPlugin from 'wavesurfer.js/plugins/regions';
 import Timeline from 'wavesurfer.js/plugins/timeline';
 import ZoomPlugin from 'wavesurfer.js/plugins/zoom';
 
-const WAVE_HEIGHT = 96;
+export const WAVE_HEIGHT = 96;
 const TIMELINE_HEIGHT = 20;
 const ZOOM_MAX_PX_PER_SEC = 20000;
 

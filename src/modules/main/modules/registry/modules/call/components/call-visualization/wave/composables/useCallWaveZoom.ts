@@ -8,7 +8,6 @@ import { applyTimelineIntervals } from './timelineIntervals';
 type WaveSurferGetter = () => WaveSurfer | null | undefined;
 
 const MAX_ZOOM_PX_PER_SEC = 20000;
-const MIN_ZOOM_PX_PER_SEC = 0.001;
 
 export function useCallWaveZoom(
 	getPlayer: WaveSurferGetter,
@@ -20,12 +19,10 @@ export function useCallWaveZoom(
 	const zoomInDisabled: ComputedRef<boolean> = computed(
 		() => minPxPerSec.value > MAX_ZOOM_PX_PER_SEC,
 	);
-	const zoomOutDisabled: ComputedRef<boolean> = computed(() => {
-		if (minPxPerSec.value === 0) {
-			return true;
-		}
-		return minPxPerSec.value < MIN_ZOOM_PX_PER_SEC;
-	});
+	// The whole recording already fits the width: wavesurfer stretches it, so zooming out further changes nothing.
+	const zoomOutDisabled: ComputedRef<boolean> = computed(
+		() => minPxPerSec.value <= naturalPxPerSec(),
+	);
 
 	function syncTimelineIntervals(pxPerSec: number) {
 		if (!timelinePlugin) {
@@ -67,7 +64,7 @@ export function useCallWaveZoom(
 
 	function decreaseZoom() {
 		const base = minPxPerSec.value || naturalPxPerSec();
-		minPxPerSec.value = Math.max(base / 2, MIN_ZOOM_PX_PER_SEC);
+		minPxPerSec.value = Math.max(base / 2, naturalPxPerSec());
 		zoomTo(minPxPerSec.value);
 	}
 
