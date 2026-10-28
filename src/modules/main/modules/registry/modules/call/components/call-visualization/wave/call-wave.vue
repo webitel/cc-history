@@ -403,6 +403,11 @@ onBeforeUnmount(async () => {
 </script>
 
 <style scoped>
+.call-wave-page {
+  /* TODO: replace with the designer's token once it is added to the styleguide. */
+  --comment-color: hsla(169, 75%, 40%, 1);
+}
+
 .call-wave-page .call-wave-page-main {
   display: flex;
   flex-direction: column;
