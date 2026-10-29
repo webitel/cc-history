@@ -87,6 +87,12 @@ export function useCallWaveComments({
 		);
 	}
 
+	// A note being added and a range being edited would both own the draft selection.
+	function startCommentRangeEdit(comment: WaveAnnotation) {
+		closeAddNote();
+		regions.startRangeEdit(comment);
+	}
+
 	async function saveCommentRange() {
 		const comment = regions.rangeEditComment.value;
 		const newRange = regions.getRangeEditValue();
@@ -134,6 +140,7 @@ export function useCallWaveComments({
 		closeAddNote,
 		addComment,
 		saveCommentNote,
+		startCommentRangeEdit,
 		saveCommentRange,
 		askCommentDeleteConfirmation,
 		resetCommentActions,

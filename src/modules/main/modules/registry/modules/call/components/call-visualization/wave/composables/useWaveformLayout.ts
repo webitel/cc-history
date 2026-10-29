@@ -100,3 +100,11 @@ export function spreadWithoutOverlap(
 	}
 	return result;
 }
+
+export function isInVisibleWaveform(
+	layout: WaveformLayout,
+	leftPx: number,
+	sizePx: number,
+): boolean {
+	return leftPx > -sizePx && leftPx < layout.visibleWidthPx;
+}

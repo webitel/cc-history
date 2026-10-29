@@ -3,14 +3,15 @@ import { type ComputedRef, computed, type Ref } from 'vue';
 import type { WaveAnnotation } from '../call-wave.types';
 import { annotationSecondsToInt } from './useCallWaveAnnotations';
 import {
+	isInVisibleWaveform,
 	MARKER_GAP_PX,
 	secondsToVisiblePx,
 	spreadWithoutOverlap,
 	type WaveformLayout,
 } from './useWaveformLayout';
 
-export const COMMENT_MARKER_SIZE_PX = 56;
-export const COMMENT_CARD_WIDTH_PX = 300;
+export const COMMENT_MARKER_SIZE_PX = 48;
+export const COMMENT_CARD_WIDTH_PX = 306;
 
 export interface CommentMarker {
 	key: string;
@@ -42,12 +43,6 @@ export function useCallWaveCommentMarkers(
 			return Math.min(startPx, lastAvatarPx);
 		}
 
-		function isVisible(leftPx: number): boolean {
-			return (
-				leftPx > -COMMENT_MARKER_SIZE_PX && leftPx < waveform.visibleWidthPx
-			);
-		}
-
 		const commentsByStart = [
 			...annotations.value,
 		].sort(
@@ -67,7 +62,9 @@ export function useCallWaveCommentMarkers(
 				comment,
 				leftPx: leftPositionsPx[index],
 			}))
-			.filter(({ leftPx }) => isVisible(leftPx));
+			.filter(({ leftPx }) =>
+				isInVisibleWaveform(waveform, leftPx, COMMENT_MARKER_SIZE_PX),
+			);
 	});
 
 	return {

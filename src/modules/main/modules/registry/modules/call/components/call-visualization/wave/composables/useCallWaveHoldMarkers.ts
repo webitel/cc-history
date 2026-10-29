@@ -4,6 +4,7 @@ import { computed, type Ref } from 'vue';
 import type { CallWaveCallRecord } from '../call-wave.types';
 import { getCallHoldsOnWaveform } from './holdTimelinePosition';
 import {
+	isInVisibleWaveform,
 	MARKER_GAP_PX,
 	secondsToVisiblePx,
 	spreadWithoutOverlap,
@@ -65,9 +66,8 @@ export function useCallWaveHoldMarkers({
 				leftPx: leftPositionsPx[index],
 				durationLabel: convertDuration(Math.round(hold.holdSec)),
 			}))
-			.filter(
-				({ leftPx }) =>
-					leftPx > -HOLD_ICON_SIZE_PX && leftPx < waveform.visibleWidthPx,
+			.filter(({ leftPx }) =>
+				isInVisibleWaveform(waveform, leftPx, HOLD_ICON_SIZE_PX),
 			);
 	});
 

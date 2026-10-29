@@ -1,85 +1,79 @@
 <template>
   <article class="call-wave-comment-card">
-    <header class="call-wave-comment-card__header">
-      <wt-avatar :username="authorName" />
-      <div class="call-wave-comment-card__author">
+    <wt-avatar
+      :username="authorName"
+      size="sm"
+    />
+    <div class="call-wave-comment-card__content">
+      <header class="call-wave-comment-card__author">
         <p class="call-wave-comment-card__author-name typo-subtitle-2">
           {{ authorName }}
         </p>
         <p class="typo-caption">
           {{ dateLabel }}
         </p>
+      </header>
+      <wt-divider />
+      <div class="call-wave-comment-card__range">
+        <span class="typo-body-2">{{ rangeLabel }}</span>
+        <wt-icon-btn
+          icon="edit"
+          :disabled="isEditing"
+          @click="emit('edit-range')"
+        />
       </div>
-    </header>
+      <wt-divider />
 
-    <wt-divider />
-    <div class="call-wave-comment-card__range">
-      <span class="typo-body-2">{{ rangeLabel }}</span>
-      <wt-icon-btn
-        icon="edit"
-        :disabled="isEditing"
-        @click="emit('edit-range')"
+      <wt-textarea
+        v-if="isEditing"
+        v-model:model-value="draftNote"
+        class="call-wave-comment-card__textarea wt-scrollbar"
+        :label="t('registry.call.comment', 1)"
       />
-    </div>
-    <wt-divider />
-
-    <wt-textarea
-      v-if="isEditing"
-      v-model:model-value="draftNote"
-      class="call-wave-comment-card__textarea wt-scrollbar"
-      :label="t('registry.call.comment', 1)"
-    />
-    <div
-      v-else
-      class="call-wave-comment-card__note"
-    >
-      <p class="call-wave-comment-card__note-text wt-scrollbar typo-body-2">
+      <p
+        v-else
+        class="call-wave-comment-card__note wt-scrollbar typo-body-2"
+      >
         {{ comment.note }}
       </p>
-      <span
-        v-if="wasEdited"
-        class="call-wave-comment-card__edited-mark typo-caption"
-      >
-        {{ t('registry.call.wave.edited') }}
-      </span>
-    </div>
 
-    <footer class="call-wave-comment-card__actions">
-      <template v-if="isEditing">
-        <wt-button
-          size="sm"
-          :loading="isSaving"
-          :disabled="!draftNote.trim() || draftNote === comment.note"
-          @click="saveNote"
-        >
-          {{ t('reusable.save') }}
-        </wt-button>
-        <wt-button
-          size="sm"
-          color="secondary"
-          :disabled="isSaving"
-          @click="cancelEditing"
-        >
-          {{ t('reusable.cancel') }}
-        </wt-button>
-      </template>
-      <template v-else>
-        <wt-button
-          size="sm"
-          color="secondary"
-          @click="startEditing"
-        >
-          {{ t('reusable.edit') }}
-        </wt-button>
-        <wt-button
-          size="sm"
-          color="secondary"
-          @click="emit('delete')"
-        >
-          {{ t('reusable.delete') }}
-        </wt-button>
-      </template>
-    </footer>
+      <footer class="call-wave-comment-card__actions">
+        <template v-if="isEditing">
+          <wt-button
+            size="sm"
+            :loading="isSaving"
+            :disabled="!draftNote.trim() || draftNote === comment.note"
+            @click="saveNote"
+          >
+            {{ t('reusable.save') }}
+          </wt-button>
+          <wt-button
+            size="sm"
+            color="secondary"
+            :disabled="isSaving"
+            @click="cancelEditing"
+          >
+            {{ t('reusable.cancel') }}
+          </wt-button>
+        </template>
+        <template v-else>
+          <wt-button
+            size="sm"
+            color="secondary"
+            @click="startEditing"
+          >
+            {{ t('reusable.edit') }}
+          </wt-button>
+          <wt-button
+            size="sm"
+            color="secondary"
+            @click="emit('delete')"
+          >
+            {{ t('reusable.delete') }}
+          </wt-button>
+        </template>
+      </footer>
+    </div>
   </article>
 </template>
 
@@ -178,25 +172,28 @@ async function saveNote() {
 <style lang="scss" scoped>
 .call-wave-comment-card {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
   gap: var(--spacing-xs);
   box-sizing: border-box;
   width: v-bind(cardWidth);
   padding: var(--spacing-xs);
-  border-radius: var(--border-radius);
-  background: var(--content-wrapper-color);
-  box-shadow: var(--elevation-10);
+  border-radius: var(--p-overlay-popover-border-radius);
+  background: var(--wt-tooltip-background-color);
+  box-shadow: var(--tooltip-elevation);
 
-  &__header,
-  &__range {
+  &__content {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
+    flex-direction: column;
+    flex: 1;
+    gap: var(--spacing-2xs);
     min-width: 0;
   }
 
   &__range {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: var(--spacing-xs);
   }
 
   &__author {
@@ -210,12 +207,6 @@ async function saveNote() {
   }
 
   &__note {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-3xs);
-  }
-
-  &__note-text {
     max-height: 120px;
     overflow: auto;
     white-space: pre-wrap;
@@ -225,11 +216,6 @@ async function saveNote() {
   &__textarea :deep(.wt-textarea__textarea) {
     min-height: 0;
     height: 120px;
-  }
-
-  &__edited-mark {
-    align-self: flex-end;
-    text-transform: lowercase;
   }
 
   &__actions {

@@ -22,9 +22,9 @@ export default {
   gap: var(--spacing-xs);
   align-items: center;
   flex-wrap: nowrap;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--secondary-color);
-  border-radius: var(--border-radius);
+  padding: var(--spacing-xs);
+  background: var(--p-secondary-highlight-color);
+  border-radius: var(--p-border-radius-lg);
 
   .call-visualization-header__main {
     display: flex;

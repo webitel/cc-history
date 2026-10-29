@@ -1,7 +1,7 @@
 <template>
   <section class="call-visualization">
     <wt-empty
-      v-if="!call.files[EngineCallFileType.FileTypeAudio]"
+      v-if="!call.files?.[EngineCallFileType.FileTypeAudio]?.length"
       :image="NoCallRecordings"
       :title="t('registry.call.wave.noAudio')"
     />

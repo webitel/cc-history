@@ -12,7 +12,10 @@
         @focus="openCard(marker)"
         @blur="scheduleCardClose"
       >
-        <wt-avatar :username="getCommentAuthorName(marker.comment)" />
+        <wt-avatar
+          :username="getCommentAuthorName(marker.comment)"
+          size="sm"
+        />
       </button>
     </div>
 
@@ -153,21 +156,21 @@ onBeforeUnmount(closeCard);
     // Same as the card padding, so the avatar does not move when the card opens over it.
     padding: var(--spacing-xs);
     border: none;
-    border-radius: var(--border-radius);
-    background: var(--content-wrapper-color);
-    box-shadow: var(--elevation-2);
+    border-radius: var(--p-overlay-popover-border-radius);
+    background: var(--wt-tooltip-background-color);
+    box-shadow: var(--tooltip-elevation);
     cursor: pointer;
     pointer-events: auto;
 
     &::before {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    border: var(--spacing-2xs) solid transparent;
-    border-top: none;
-    border-bottom-color: var(--content-wrapper-color);
-    transform: translateX(-50%);
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      border: var(--spacing-2xs) solid transparent;
+      border-top: none;
+      border-bottom-color: var(--wt-tooltip-background-color);
+      transform: translateX(-50%);
     }
   }
 

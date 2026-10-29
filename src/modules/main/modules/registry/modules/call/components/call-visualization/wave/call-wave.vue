@@ -3,7 +3,7 @@
     <call-wave-toolbar
       :file="file"
       :files="audioFiles"
-      :is-loading="isLoading"
+      :show-controls="!isLoading && !isRecordingDeleted"
       :show-holds="showHolds"
       :show-comments="showComments"
       :holds-count="holdsCount"
@@ -82,14 +82,15 @@
           >
             <wavesurfer
               ref="wavesurferComponentRef"
+              class="typo-caption"
               :options="waveOptions"
               :src="fileUrl"
             />
-            <div class="call-wave-markers">
+            <div class="call-wave-markers typo-caption">
               <call-wave-channel-label
                 class="call-wave-markers__top-channel"
                 :name="call.from.name || call.from.number || ' '"
-                color="var(--true-color)"
+                color="var(--success-color)"
               />
               <call-wave-channel-label
                 v-if="!isMono"
@@ -105,7 +106,7 @@
                 :visible-width-px="layout?.visibleWidthPx ?? 0"
                 :save-note-text="saveCommentNote"
                 @active-change="setCommentHighlight"
-                @edit-range="startRangeEdit"
+                @edit-range="startCommentRangeEdit"
                 @delete="askCommentDeleteConfirmation"
               />
             </div>
@@ -278,7 +279,6 @@ const {
 	clearDraftSelectionRegions,
 	updateDraftSelectionRange,
 	setCommentHighlight,
-	startRangeEdit,
 	stopRangeEdit,
 } = regions;
 
@@ -292,6 +292,7 @@ const {
 	closeAddNote,
 	addComment,
 	saveCommentNote,
+	startCommentRangeEdit,
 	saveCommentRange,
 	askCommentDeleteConfirmation,
 	resetCommentActions,
@@ -321,6 +322,9 @@ const { markers: holdMarkers } = useCallWaveHoldMarkers({
 const showCommentMarkers = computed(
 	() => showComments.value && !!commentsSize.value && !rangeEditComment.value,
 );
+
+// The markers overlay is laid out per channel, so it follows the waveform height.
+const waveHeight = `${WAVE_HEIGHT}px`;
 
 const commentMarkerTopPx = computed(() =>
 	isMono.value
@@ -406,6 +410,7 @@ onBeforeUnmount(async () => {
 .call-wave-page {
   /* TODO: replace with the designer's token once it is added to the styleguide. */
   --comment-color: hsla(169, 75%, 40%, 1);
+  --wave-height: v-bind(waveHeight);
 }
 
 .call-wave-page .call-wave-page-main {
@@ -452,18 +457,15 @@ onBeforeUnmount(async () => {
   left: 0;
   right: 0;
   display: grid;
-  grid-template-rows: 96px 96px;
+  grid-template-rows: repeat(2, var(--wave-height));
   align-items: stretch;
-  height: 192px;
   box-sizing: border-box;
   padding: 0 var(--spacing-3xs);
-  font-size: 12px;
   pointer-events: none;
 }
 
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-wave-wrap--mono .call-wave-markers {
-  grid-template-rows: 96px;
-  height: 96px;
+  grid-template-rows: var(--wave-height);
 }
 
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-markers__top-channel {
@@ -478,23 +480,27 @@ onBeforeUnmount(async () => {
   background-color: var(--secondary-light-color);
 }
 
+:deep(.wavesurfer-mount > div)::part(timeline-notch) {
+  border-left-color: var(--content-wrapper-color);
+}
+
 :deep(.wavesurfer-mount > div)::part(region-handle) {
   top: 50%;
-  width: 24px;
-  height: 24px;
+  width: var(--icon-md-size);
+  height: var(--icon-md-size);
   border: none;
   background: var(--comment-color);
-  color: var(--main-color);
+  color: var(--text-on-brand-color);
   transform: translateY(-50%);
 }
 
 :deep(.wavesurfer-mount > div)::part(region-handle-left) {
-  left: -24px;
+  left: calc(-1 * var(--icon-md-size));
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
 :deep(.wavesurfer-mount > div)::part(region-handle-right) {
-  right: -24px;
+  right: calc(-1 * var(--icon-md-size));
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 

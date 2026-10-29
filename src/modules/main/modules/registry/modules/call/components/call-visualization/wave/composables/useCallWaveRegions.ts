@@ -13,13 +13,14 @@ const HOLD_REGION_ID_PREFIX = 'hold-';
 const COMMENT_HIGHLIGHT_REGION_ID = `${COMMENT_REGION_ID_PREFIX}highlight`;
 const COMMENT_RANGE_EDIT_REGION_ID = `${COMMENT_REGION_ID_PREFIX}range-edit`;
 
-// --warning-color has no hsl-channel twin, so its transparency is mixed in.
+// Color tokens have no hsl-channel twins, so region transparency is mixed in.
 const HOLD_RANGE_COLOR =
-	'color-mix(in srgb, var(--warning-color) 25%, transparent)';
-const COMMENT_REGION_COLOR = 'hsla(var(--_positive-color), 0.2)';
+	'color-mix(in srgb, var(--warning-color) 20%, transparent)';
+const COMMENT_REGION_COLOR =
+	'color-mix(in srgb, var(--comment-color) 20%, transparent)';
 // Zero-length regions are drawn as a thin line, so they need a solid color to be seen.
-const HOLD_POINT_COLOR = 'var(--hold-color)';
-const COMMENT_MARKER_COLOR = 'hsl(var(--_positive-color))';
+const HOLD_POINT_COLOR = 'var(--warning-color)';
+const COMMENT_MARKER_COLOR = 'var(--comment-color)';
 const UNSAVED_COMMENT_BORDER = '1px solid var(--comment-color)';
 
 interface SecondsRange {

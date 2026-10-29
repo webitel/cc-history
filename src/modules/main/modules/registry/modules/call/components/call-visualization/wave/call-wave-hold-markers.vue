@@ -45,7 +45,7 @@ defineProps<{
   }
 
   &__icon {
-    --icon-color: var(--hold-color);
+    --icon-color: var(--warning-color);
     cursor: default;
   }
 }

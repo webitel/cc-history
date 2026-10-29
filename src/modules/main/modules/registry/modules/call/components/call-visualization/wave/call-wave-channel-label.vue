@@ -3,11 +3,10 @@
     class="call-wave-channel-label"
     :style="{ color }"
   >
-    <svg
-      width="16"
-      height="16"
-      fill="currentColor"
-    ><use xlink:href="#contacts" /></svg>
+    <wt-icon
+      icon="contacts"
+      size="sm"
+    />
     <span>{{ name }}</span>
   </div>
 </template>
@@ -30,5 +29,6 @@ defineProps<{
   gap: var(--spacing-xs);
   box-sizing: border-box;
   min-height: 0;
+  --icon-color: currentColor;
 }
 </style>

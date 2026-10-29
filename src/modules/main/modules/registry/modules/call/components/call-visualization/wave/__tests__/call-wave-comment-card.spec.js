@@ -40,8 +40,8 @@ describe('Call wave comment card', () => {
 		const wrapper = mountCard({
 			updatedAt: '1700000100000',
 		});
-		expect(wrapper.find('.call-wave-comment-card__edited-mark').exists()).toBe(
-			true,
+		expect(wrapper.find('.call-wave-comment-card__author').text()).toContain(
+			'Edited',
 		);
 	});
 

@@ -11,13 +11,12 @@
         @update:model-value="emit('update:file', $event)"
       />
       <div
-        v-if="!isLoading"
+        v-if="showControls"
         class="call-wave-toolbar__layers"
       >
         <wt-checkbox
           :label="t('registry.call.hold', 2)"
           :selected="showHolds"
-          :value="showHolds"
           @update:selected="emit('toggle-holds')"
         />
         <wt-chip>
@@ -26,7 +25,6 @@
         <wt-checkbox
           :label="t('registry.call.comment', 2)"
           :selected="showComments"
-          :value="showComments"
           @update:selected="emit('toggle-comments')"
         />
         <wt-chip>
@@ -35,7 +33,7 @@
       </div>
     </template>
     <template
-      v-if="!isLoading"
+      v-if="showControls"
       #actions
     >
       <wt-button
@@ -68,7 +66,7 @@ defineOptions({
 defineProps<{
 	file: unknown;
 	files: unknown[];
-	isLoading: boolean;
+	showControls: boolean;
 	showHolds: boolean;
 	showComments: boolean;
 	holdsCount: number;
