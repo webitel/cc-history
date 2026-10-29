@@ -7,9 +7,9 @@ import RegionsPlugin from 'wavesurfer.js/plugins/regions';
 import Timeline from 'wavesurfer.js/plugins/timeline';
 import ZoomPlugin from 'wavesurfer.js/plugins/zoom';
 
-const WAVE_HEIGHT = 96;
+export const WAVE_HEIGHT = 96;
 const TIMELINE_HEIGHT = 20;
-const ZOOM_MAX_PX_PER_SEC = 20000;
+export const ZOOM_MAX_PX_PER_SEC = 20000;
 
 // wavesurfer renders to <canvas>, whose fillStyle can't resolve CSS `var(...)`,
 // so we read the computed value of the styleguide color tokens instead.
@@ -34,10 +34,10 @@ export function useCallWavePlugins(getPlayer?: PlayerGetter) {
 	const timelinePlugin = Timeline.create({
 		height: TIMELINE_HEIGHT,
 		formatTimeCallback: convertDuration,
+		// Timeline sets its own font size; `inherit` takes the `typo-caption` font from the wavesurfer mount.
 		style: {
-			fontFamily: 'Montserrat, monospace',
-			color: 'hsla(225, 20%, 50%, 1)',
-			fontSize: '12px',
+			color: 'var(--text-main-color)',
+			fontSize: 'inherit',
 		},
 	});
 	const zoomPlugin = ZoomPlugin.create({

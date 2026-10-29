@@ -52,6 +52,14 @@ export default {
 			wave: {
 				wave: 'Qo‘ng‘iroqni belgilash',
 				noAudio: 'Qo‘ng‘iroqning audio yozuvi yo‘q',
+				recordingDeleted: 'Afsuski, qo‘ng‘iroq yozuvi o‘chirilgan',
+				addNote: 'Izoh qo‘shish',
+				noteText: 'Izoh matni',
+				created: 'Yaratildi',
+				edited: 'Tahrirlandi',
+				changeNoteRange: 'Izoh oralig‘ini o‘zgartirish',
+				editSuccessful: 'Tahrirlash muvaffaqiyatli',
+				errorEditing: 'Tahrirlash xatosi',
 			},
 			stt: {
 				noTranscript: 'Fayl transkriptsiyasi yo‘q',
