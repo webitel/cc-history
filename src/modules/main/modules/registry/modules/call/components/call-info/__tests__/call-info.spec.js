@@ -14,6 +14,15 @@ const amd = {
 	],
 };
 
+// ui-sdk registers its components as async ones, and wt-expansion-panel
+// loads nested async components too, so wait for two rounds of imports
+const renderAsyncComponents = async () => {
+	for (let round = 0; round < 2; round += 1) {
+		await vi.dynamicImportSettled();
+		await flushPromises();
+	}
+};
+
 const props = {
 	call: {
 		variables,
@@ -35,8 +44,7 @@ describe('Opened call info tab', () => {
 		const wrapper = mount(callInfo, {
 			props,
 		});
-		// wt-expansion-panel renders its default slot content after a tick
-		await flushPromises();
+		await renderAsyncComponents();
 		expect(wrapper.findAll('li.call-info__item').length).toBe(
 			Object.keys(variables).length,
 		);
@@ -47,14 +55,15 @@ describe('Opened call info tab', () => {
 			props,
 		});
 		const varKey = Object.keys(variables)[0];
-		await flushPromises();
+		await renderAsyncComponents();
 		expect(wrapper.find('li > h3.call-info__title').text()).toBe(`${varKey}:`);
 	});
 
-	it('renders a component with call AMD result', () => {
+	it('renders a component with call AMD result', async () => {
 		const wrapper = mount(callInfo, {
 			props,
 		});
+		await renderAsyncComponents();
 		expect(wrapper.find('div.call-info__wrapper').exists()).toBe(true);
 	});
 });
