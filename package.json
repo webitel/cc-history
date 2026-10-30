@@ -40,7 +40,7 @@
 		"jszip": "^3.4.0",
 		"jszip-utils": "^0.1.0",
 		"lodash-es": "^4.x",
-		"pinia": "^3.x",
+		"pinia": "^4.x",
 		"vidstack": "^1.12.13",
 		"vue": "^3.5.x",
 		"vue-chartjs": "^4.1.2",
