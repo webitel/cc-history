@@ -55,6 +55,11 @@ export default {
 				wave: 'Call Wave',
 				noAudio: 'There isn’t a call recording',
 				recordingDeleted: 'Unfortunately, the call recording was deleted',
+				addNote: 'Add note',
+				noteText: 'Note text',
+				created: 'Created',
+				edited: 'Edited',
+				errorEditing: 'Error editing',
 			},
 			stt: {
 				noTranscript: 'There is no transcription for this file',

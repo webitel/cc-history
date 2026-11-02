@@ -56,6 +56,11 @@ export default {
 				noAudio: 'No hay grabación de llamada',
 				recordingDeleted:
 					'Lamentablemente, la grabación de la llamada fue eliminada',
+				addNote: 'Añadir nota',
+				noteText: 'Texto de la nota',
+				created: 'Creado',
+				edited: 'Editado',
+				errorEditing: 'Error de edición',
 			},
 			stt: {
 				noTranscript: 'No hay transcripción para este archivo',

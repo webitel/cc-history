@@ -55,6 +55,11 @@ export default {
 				wave: 'Undă apel',
 				noAudio: 'Nu există înregistrare a apelului',
 				recordingDeleted: 'Din păcate, înregistrarea apelului a fost ștearsă',
+				addNote: 'Adaugă notă',
+				noteText: 'Textul notei',
+				created: 'Creat',
+				edited: 'Editat',
+				errorEditing: 'Eroare la editare',
 			},
 			stt: {
 				noTranscript: 'Nu există transcriere pentru acest fișier',

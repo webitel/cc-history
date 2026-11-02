@@ -55,6 +55,11 @@ export default {
 				wave: 'Oznacz połączenie',
 				noAudio: 'Brak nagrania połączenia',
 				recordingDeleted: 'Niestety nagranie połączenia zostało usunięte',
+				addNote: 'Dodaj notatkę',
+				noteText: 'Treść notatki',
+				created: 'Utworzono',
+				edited: 'Edytowano',
+				errorEditing: 'Błąd edycji',
 			},
 			stt: {
 				noTranscript: 'Brak transkrypcji pliku',
