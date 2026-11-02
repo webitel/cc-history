@@ -6,7 +6,7 @@
       :show-controls="!isLoading && !isRecordingDeleted"
       :show-holds="showHolds"
       :show-comments="showComments"
-      :holds-count="holdsSize"
+      :holds-count="holdsCount"
       :comments-count="commentsSize"
       @update:file="setFile"
       @toggle-holds="toggleHolds"
@@ -80,6 +80,7 @@
                 :name="call.to?.name || call.to?.number || call.destination || ''"
                 color="primary"
               />
+              <call-wave-hold-markers :markers="holdMarkers" />
             </div>
           </div>
         </section>
@@ -129,6 +130,7 @@ import type {
 import CallWaveChannelLabel from './call-wave-channel-label.vue';
 import CallWaveChannelVolume from './call-wave-channel-volume.vue';
 import CallCommentForm from './call-wave-comment-form.vue';
+import CallWaveHoldMarkers from './call-wave-hold-markers.vue';
 import CallWavePlaybackControls from './call-wave-playback-controls.vue';
 import CallWaveToolbar from './call-wave-toolbar.vue';
 import {
@@ -136,6 +138,7 @@ import {
 	useCallWaveAnnotations,
 } from './composables/useCallWaveAnnotations';
 import { useCallWaveFileAnnotations } from './composables/useCallWaveFileAnnotations';
+import { useCallWaveHoldMarkers } from './composables/useCallWaveHoldMarkers';
 import {
 	useCallWavePlugins,
 	WAVE_HEIGHT,
@@ -143,6 +146,7 @@ import {
 import { useCallWaveRegions } from './composables/useCallWaveRegions';
 import { useCallWaveSound } from './composables/useCallWaveSound';
 import { useCallWaveZoom } from './composables/useCallWaveZoom';
+import { useWaveformLayout } from './composables/useWaveformLayout';
 import Wavesurfer from './wavesurfer.vue';
 
 const COMMENT_DRAG_OPTIONS: CommentDragSelectionOptions = {
@@ -179,9 +183,7 @@ const { audioFiles, currentFileId, annotations, commentsSize } =
 
 const callRef = toRef(props, 'call');
 
-const holdsSize = computed(() =>
-	props.call.hold ? props.call.hold.length : 0,
-);
+const holdsCount = computed(() => props.call.hold?.length ?? 0);
 
 const wavesurferComponentRef = ref<InstanceType<typeof Wavesurfer> | null>(
 	null,
@@ -244,6 +246,7 @@ const {
 	showComments,
 	toggleHolds,
 	toggleComments,
+	renderHoldsLayer,
 	updateRegions,
 	updateDraftSelectionRange,
 	blockRegionResize,
@@ -252,7 +255,6 @@ const {
 	regionsPlugin,
 	getPlayer: () => player.value,
 	call: callRef,
-	holdsSize,
 	commentsSize,
 	annotations,
 	editAnnotation,
@@ -260,6 +262,14 @@ const {
 	selectedComment,
 	dragSelectionCleanup,
 	commentDragOptions: COMMENT_DRAG_OPTIONS,
+});
+
+const { layout, durationSec } = useWaveformLayout(() => player.value);
+const { markers: holdMarkers } = useCallWaveHoldMarkers({
+	call: callRef,
+	layout,
+	durationSec,
+	showHolds,
 });
 
 function getCommentFormDuration() {
@@ -329,7 +339,7 @@ function createComment(region: Region) {
 	if (region.start === region.end) {
 		return;
 	}
-	if (region.id.startsWith('comment-')) {
+	if (region.id.startsWith('comment-') || region.id.startsWith('hold-')) {
 		return;
 	}
 	if (dragSelectionCleanup.value) {
@@ -355,6 +365,7 @@ async function onReady() {
 	// Loading UI toggles in the same tick as `ready`; wait so layout matches before `reRender()`.
 	await nextTick();
 	resetZoom();
+	renderHoldsLayer();
 	await updateRegions();
 }
 
@@ -496,15 +507,6 @@ onBeforeUnmount(async () => {
 
 :deep(.wavesurfer-mount > div)::part(timeline-notch) {
   border-left-color: var(--p-secondary-color);
-}
-
-:deep(.wavesurfer-mount > div)::part(region) {
-  border-left: 2px solid rgb(0, 0, 0);
-  border-right: 2px solid rgb(0, 0, 0);
-}
-
-:deep(.wavesurfer-mount > div)::part(marker) {
-  border-left: 4px solid var(--hold-color);
 }
 
 /* Hover plugin animates opacity/transform and may briefly show x=0 on quick pointer leave/enter. */

@@ -1,3 +1,4 @@
+import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { CallDirection } from 'webitel-sdk';
 
 import {
@@ -13,9 +14,12 @@ function toEpochMs(value: unknown): number | null {
 	return Number.isFinite(num) ? num : null;
 }
 
-// Hold length from stop − start.
 function holdDurationMs(hold: CallHoldItem): number {
-	return Math.max(0, Number(hold.stop) - Number(hold.start));
+	const durationMs = Number(hold.stop) - Number(hold.start);
+	if (Number.isFinite(durationMs)) {
+		return Math.max(0, durationMs);
+	}
+	return Math.max(0, Number(hold.sec) || 0) * 1000;
 }
 
 // Sum of hold lengths before the current index (outbound excision offset).
@@ -101,15 +105,21 @@ function waveformStartMs(
 	);
 }
 
+// Outbound recordings have the hold music cut out, inbound ones keep it.
+function isHoldCutFromRecording(call: CallWaveCallRecord): boolean {
+	return call.direction === CallDirection.Outbound;
+}
+
 // All hold starts → waveform seconds for the selected audio file.
-export function mapHoldsToWaveformSeconds(
+function mapHoldsToWaveformSeconds(
 	holds: CallHoldItem[],
 	call: CallWaveCallRecord,
 	audioFile: CallAudioFileSlice,
 	fileDurationSec: number,
 ): number[] {
 	const waveformStartedAtMs = waveformStartMs(call, audioFile);
-	const subtractPreviousHolds = call.direction === CallDirection.Outbound;
+	// Each cut-out hold moves everything after it to the left by its length.
+	const subtractPreviousHolds = isHoldCutFromRecording(call);
 
 	return holds.map((hold, index) =>
 		holdMarkerSec(
@@ -120,4 +130,47 @@ export function mapHoldsToWaveformSeconds(
 			fileDurationSec,
 		),
 	);
+}
+
+export interface HoldOnWaveform {
+	start: number;
+	end: number;
+	holdSec: number;
+}
+
+export function mapHoldsToWaveformRanges(
+	holds: CallHoldItem[],
+	call: CallWaveCallRecord,
+	audioFile: CallAudioFileSlice,
+	fileDurationSec: number,
+): HoldOnWaveform[] {
+	const startPositionsSec = mapHoldsToWaveformSeconds(
+		holds,
+		call,
+		audioFile,
+		fileDurationSec,
+	);
+	const isPoint = isHoldCutFromRecording(call);
+
+	return holds.map((hold, index) => {
+		const start = startPositionsSec[index];
+		const holdSec = holdDurationMs(hold) / 1000;
+		const end = isPoint ? start : clampToFile(start + holdSec, fileDurationSec);
+		return {
+			start,
+			end,
+			holdSec,
+		};
+	});
+}
+
+export function getCallHoldsOnWaveform(
+	call: CallWaveCallRecord,
+	fileDurationSec: number,
+): HoldOnWaveform[] {
+	const audioFile = call.files?.[EngineCallFileType.FileTypeAudio]?.[0];
+	if (!call.hold?.length || !audioFile || !fileDurationSec) {
+		return [];
+	}
+	return mapHoldsToWaveformRanges(call.hold, call, audioFile, fileDurationSec);
 }

@@ -1,8 +1,5 @@
 // WaveSurfer regions for holds and comments: draw layers, overlays, toggles, and comment drag-selection lifecycle.
 
-import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { getIconFromRepository } from '@webitel/ui-sdk/icons';
-import { convertDuration } from '@webitel/ui-sdk/scripts';
 import { type ComputedRef, nextTick, type Ref, ref } from 'vue';
 import type WaveSurfer from 'wavesurfer.js';
 import type RegionsPlugin from 'wavesurfer.js/plugins/regions';
@@ -10,30 +7,32 @@ import type { Region } from 'wavesurfer.js/plugins/regions';
 import hsNoteIcon from '@/app/assets/icons/sprite/hs-note.svg?raw';
 
 import type {
-	CallHoldItem,
 	CallWaveCallRecord,
 	CommentDragSelectionOptions,
 	NewCommentDraft,
 	WaveAnnotation,
 } from '../call-wave.types';
 import { createCommentTooltipContent } from './commentTooltipFactory';
-import { mapHoldsToWaveformSeconds } from './holdTimelinePosition';
+import { getCallHoldsOnWaveform } from './holdTimelinePosition';
 import { annotationSecondsToInt } from './useCallWaveAnnotations';
 import {
 	adjustCommentTooltipPosition,
 	mountRegionIconOverlay,
 } from './waveRegionIcons';
 
-const pauseIcon = getIconFromRepository('pause') || '';
-
 const COMMENT_REGION_ID_PREFIX = 'comment-';
 const HOLD_REGION_ID_PREFIX = 'hold-';
+
+// Color tokens have no hsl-channel twins, so region transparency is mixed in.
+const HOLD_RANGE_COLOR =
+	'color-mix(in srgb, var(--p-warn-color) 20%, transparent)';
+// Zero-length regions are drawn as a thin line, so they need a solid color to be seen.
+const HOLD_POINT_COLOR = 'var(--p-warn-color)';
 
 export interface UseCallWaveRegionsOptions {
 	regionsPlugin: RegionsPlugin;
 	getPlayer: () => WaveSurfer | null | undefined;
 	call: Ref<CallWaveCallRecord>;
-	holdsSize: ComputedRef<number>;
 	commentsSize: ComputedRef<number>;
 	annotations: ComputedRef<WaveAnnotation[]>;
 	editAnnotation: (comment: WaveAnnotation) => void;
@@ -47,7 +46,6 @@ export function useCallWaveRegions({
 	regionsPlugin,
 	getPlayer,
 	call,
-	holdsSize,
 	commentsSize,
 	annotations,
 	editAnnotation,
@@ -127,49 +125,6 @@ export function useCallWaveRegions({
 		});
 	}
 
-	function displayHoldIcons(
-		region: Region,
-		hold: CallHoldItem,
-		player: WaveSurfer,
-	) {
-		mountRegionIconOverlay({
-			region,
-			player,
-			iconFill: 'var(--hold-color)',
-			iconInnerHtml: pauseIcon,
-			tooltipWidth: 'auto',
-			tooltipContent: hold.sec ? convertDuration(hold.sec) : '00:00:00',
-		});
-	}
-
-	function displayHolds(holds: CallHoldItem[], player: WaveSurfer) {
-		const audioFile = call.value.files?.[EngineCallFileType.FileTypeAudio]?.[0];
-		if (!audioFile) {
-			return;
-		}
-
-		const holdPositionsSec = mapHoldsToWaveformSeconds(
-			holds,
-			call.value,
-			audioFile,
-			player.getDuration(),
-		);
-
-		holds.forEach((holdItem, index) => {
-			const holdPositionSec = Number(holdPositionsSec[index].toFixed(2));
-			const region = regionsPlugin.addRegion({
-				id: `${HOLD_REGION_ID_PREFIX}${index}-${holdItem.start}-${holdItem.stop}`,
-				start: holdPositionSec,
-				end: holdPositionSec,
-				color: 'var(--hold-color)',
-				resize: false,
-				drag: false,
-			});
-
-			displayHoldIcons(region, holdItem, player);
-		});
-	}
-
 	async function displayCommentIcons(region: Region, comment: WaveAnnotation) {
 		const player = getPlayer();
 		const iconMountElement = mountRegionIconOverlay({
@@ -211,16 +166,25 @@ export function useCallWaveRegions({
 
 	function renderHoldsLayer() {
 		clearHoldRegions();
-		const player = getPlayer();
-		if (
-			!player ||
-			!showHolds.value ||
-			!holdsSize.value ||
-			!call.value.hold?.length
-		) {
+		if (!showHolds.value) {
 			return;
 		}
-		displayHolds(call.value.hold, player);
+		const durationSec = getPlayer()?.getDuration() ?? 0;
+		getCallHoldsOnWaveform(call.value, durationSec).forEach(
+			({ start, end }, index) => {
+				const isPoint = start === end;
+				const region = regionsPlugin.addRegion({
+					id: `${HOLD_REGION_ID_PREFIX}${index}`,
+					start,
+					end,
+					color: isPoint ? HOLD_POINT_COLOR : HOLD_RANGE_COLOR,
+					resize: false,
+					drag: false,
+				});
+				// Read-only regions must let drag-selection and seeking through to the waveform underneath.
+				region.element?.style.setProperty('pointer-events', 'none');
+			},
+		);
 	}
 
 	async function renderCommentsLayer() {
@@ -263,6 +227,7 @@ export function useCallWaveRegions({
 		showComments,
 		toggleHolds,
 		toggleComments,
+		renderHoldsLayer,
 		updateRegions,
 		updateDraftSelectionRange,
 		blockRegionResize,
