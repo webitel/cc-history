@@ -54,6 +54,7 @@ export default {
 			wave: {
 				wave: 'Разметка звонка',
 				noAudio: 'У звонка нет аудиозаписи',
+				recordingDeleted: 'К сожалению, запись звонка была удалена',
 			},
 			stt: {
 				noTranscript: 'Транскрипция файла отсутствует',

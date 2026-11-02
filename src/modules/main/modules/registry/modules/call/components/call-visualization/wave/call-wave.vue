@@ -12,7 +12,7 @@
           @update:model-value="setFile"
         />
         <div
-          v-if="!isLoading"
+          v-if="!isLoading && !isRecordingDeleted"
           class="call-wave-page__region-actions"
         >
           <wt-checkbox
@@ -36,7 +36,7 @@
         </div>
       </template>
       <template
-        v-if="!isLoading"
+        v-if="!isLoading && !isRecordingDeleted"
         #actions
       >
         <wt-icon-btn
@@ -57,9 +57,13 @@
       :max="100"
       :value="loadProgress"
     />
+    <call-recording-empty
+      v-if="isRecordingDeleted"
+      is-deleted
+    />
+    <!-- v-show keeps wavesurfer mounted, so choosing another file still loads it. -->
     <section
-      v-show="!isLoading"
-      :class="{'call-wave-page-main--hidden': isLoading}"
+      v-show="!isLoading && !isRecordingDeleted"
       class="call-wave-page-main"
     >
       <call-comment-form
@@ -245,6 +249,7 @@ import {
 import { useStore } from 'vuex';
 import type { Region } from 'wavesurfer.js/plugins/regions';
 
+import CallRecordingEmpty from '../call-recording-empty.vue';
 import CallVisualizationHeader from '../call-visualization-header.vue';
 import type {
 	CallWaveCallRecord,
@@ -313,6 +318,7 @@ const player = computed(() => wavesurferComponentRef.value?.waveSurfer ?? null);
 const playbackRate = ref(1);
 const isLoading = ref(true);
 const loadProgress = ref(0);
+const isRecordingDeleted = ref(false);
 const commentsMode = ref(false);
 const selectedComment: Ref<WaveAnnotation | NewCommentDraft | null> = ref(null);
 const dragSelectionCleanup: Ref<(() => void) | null> = ref(null);
@@ -484,10 +490,17 @@ function initWave() {
 	waveSurfer.on('pause', changedPlaying);
 	waveSurfer.on('finish', changedPlaying);
 	waveSurfer.on('play', changedPlaying);
+	waveSurfer.on('load', () => {
+		isRecordingDeleted.value = false;
+	});
 	waveSurfer.on('loading', showProgress);
 	waveSurfer.on('ready', onReady);
 	waveSurfer.on('destroy', hideProgress);
-	waveSurfer.on('error', hideProgress);
+	// The recording is listed on the call, so a failed load means the file is gone from storage.
+	waveSurfer.on('error', () => {
+		hideProgress();
+		isRecordingDeleted.value = true;
+	});
 	dragSelectionCleanup.value = regionsPlugin.enableDragSelection({
 		...COMMENT_DRAG_OPTIONS,
 	});
@@ -552,10 +565,6 @@ onBeforeUnmount(async () => {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-}
-
-.call-wave-page .call-wave-page-main--hidden {
-  display: none;
 }
 
 .call-wave-page .call-wave-data--grid {

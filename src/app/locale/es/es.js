@@ -54,6 +54,8 @@ export default {
 			wave: {
 				wave: 'Onda de llamada',
 				noAudio: 'No hay grabación de llamada',
+				recordingDeleted:
+					'Lamentablemente, la grabación de la llamada fue eliminada',
 			},
 			stt: {
 				noTranscript: 'No hay transcripción para este archivo',

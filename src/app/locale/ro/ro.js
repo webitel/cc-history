@@ -54,6 +54,7 @@ export default {
 			wave: {
 				wave: 'Undă apel',
 				noAudio: 'Nu există înregistrare a apelului',
+				recordingDeleted: 'Din păcate, înregistrarea apelului a fost ștearsă',
 			},
 			stt: {
 				noTranscript: 'Nu există transcriere pentru acest fișier',

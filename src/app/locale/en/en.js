@@ -53,7 +53,8 @@ export default {
 			comment: 'Note | Notes',
 			wave: {
 				wave: 'Call Wave',
-				noAudio: 'There is no call recording',
+				noAudio: 'There isn’t a call recording',
+				recordingDeleted: 'Unfortunately, the call recording was deleted',
 			},
 			stt: {
 				noTranscript: 'There is no transcription for this file',

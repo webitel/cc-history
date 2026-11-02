@@ -54,6 +54,7 @@ export default {
 			wave: {
 				wave: 'Đánh dấu cuộc gọi',
 				noAudio: 'Không có bản ghi âm cuộc gọi',
+				recordingDeleted: 'Rất tiếc, bản ghi âm cuộc gọi đã bị xóa',
 			},
 			stt: {
 				noTranscript: 'Không có bản ghi âm',

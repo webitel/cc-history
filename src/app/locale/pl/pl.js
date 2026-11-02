@@ -54,6 +54,7 @@ export default {
 			wave: {
 				wave: 'Oznacz połączenie',
 				noAudio: 'Brak nagrania połączenia',
+				recordingDeleted: 'Niestety nagranie połączenia zostało usunięte',
 			},
 			stt: {
 				noTranscript: 'Brak transkrypcji pliku',
