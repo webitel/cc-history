@@ -11,6 +11,7 @@ import { annotationSecondsToInt } from './useCallWaveAnnotations';
 const COMMENT_REGION_ID_PREFIX = 'comment-';
 const HOLD_REGION_ID_PREFIX = 'hold-';
 const COMMENT_HIGHLIGHT_REGION_ID = `${COMMENT_REGION_ID_PREFIX}highlight`;
+const COMMENT_RANGE_EDIT_REGION_ID = `${COMMENT_REGION_ID_PREFIX}range-edit`;
 
 // Color tokens have no hsl-channel twins, so region transparency is mixed in.
 const HOLD_RANGE_COLOR =
@@ -81,6 +82,31 @@ function commentRange(comment: WaveAnnotation) {
 	};
 }
 
+// A zero-length region has no resize handles, so a point comment is edited as a 1s range.
+function toEditableRange(
+	range: {
+		start: number;
+		end: number;
+	},
+	durationSec: number,
+) {
+	const hasLength = range.end > range.start;
+	if (hasLength) {
+		return range;
+	}
+	const isAtTheEnd = range.start + 1 > durationSec;
+	if (isAtTheEnd) {
+		return {
+			start: Math.max(durationSec - 1, 0),
+			end: durationSec,
+		};
+	}
+	return {
+		start: range.start,
+		end: range.start + 1,
+	};
+}
+
 export function useCallWaveRegions({
 	regionsPlugin,
 	getPlayer,
@@ -88,8 +114,11 @@ export function useCallWaveRegions({
 }: UseCallWaveRegionsOptions) {
 	const showHolds = ref(false);
 	const showComments = ref(false);
+	const rangeEditComment = ref<WaveAnnotation | null>(null);
+	const isRangeChanged = ref(false);
 
 	let dragSelectionCleanup: (() => void) | null = null;
+	let rangeEditRegion: Region | null = null;
 
 	function removeRegions(predicate: (region: Region) => boolean) {
 		regionsPlugin
@@ -147,7 +176,9 @@ export function useCallWaveRegions({
 	// Fired as soon as a region exists, also at the start of a drag-selection, unlike `region-created`.
 	function onRegionInitialized(region: Region) {
 		addResizeHandleIcons(region);
-		if (isDraftRegion(region) && region.element) {
+		const isCommentInEditing =
+			isDraftRegion(region) || region.id === COMMENT_RANGE_EDIT_REGION_ID;
+		if (isCommentInEditing && region.element) {
 			region.element.style.borderLeft = UNSAVED_COMMENT_BORDER;
 			region.element.style.borderRight = UNSAVED_COMMENT_BORDER;
 		}
@@ -198,7 +229,8 @@ export function useCallWaveRegions({
 
 	function renderHoldsLayer() {
 		removeRegions((region) => hasIdPrefix(region, HOLD_REGION_ID_PREFIX));
-		if (!showHolds.value) {
+		// While a comment range is edited, it is the only thing drawn on the waveform.
+		if (!showHolds.value || rangeEditComment.value) {
 			return;
 		}
 		const durationSec = getPlayer()?.getDuration() ?? 0;
@@ -229,6 +261,49 @@ export function useCallWaveRegions({
 		});
 	}
 
+	function startRangeEdit(comment: WaveAnnotation) {
+		setCommentHighlight(null);
+		clearDraftSelectionRegions();
+		dragSelectionCleanup?.();
+		rangeEditComment.value = comment;
+		isRangeChanged.value = false;
+		renderHoldsLayer();
+
+		const savedRange = commentRange(comment);
+		const durationSec = getPlayer()?.getDuration() ?? savedRange.end;
+		const region = regionsPlugin.addRegion({
+			id: COMMENT_RANGE_EDIT_REGION_ID,
+			...toEditableRange(savedRange, durationSec),
+			color: COMMENT_REGION_COLOR,
+			minLength: 1,
+			resize: true,
+			drag: true,
+		});
+		region.on('update-end', () => {
+			const { startSec, endSec } = toSecondsRange(region);
+			const isSameAsSaved =
+				startSec === savedRange.start && endSec === savedRange.end;
+			isRangeChanged.value = !isSameAsSaved;
+		});
+		rangeEditRegion = region;
+	}
+
+	function getRangeEditValue(): SecondsRange | null {
+		return rangeEditRegion ? toSecondsRange(rangeEditRegion) : null;
+	}
+
+	function stopRangeEdit() {
+		if (!rangeEditComment.value) {
+			return;
+		}
+		rangeEditRegion?.remove();
+		rangeEditRegion = null;
+		rangeEditComment.value = null;
+		isRangeChanged.value = false;
+		renderHoldsLayer();
+		enableDragSelection();
+	}
+
 	function toggleComments() {
 		showComments.value = !showComments.value;
 		if (!showComments.value) {
@@ -244,6 +319,8 @@ export function useCallWaveRegions({
 	return {
 		showHolds,
 		showComments,
+		rangeEditComment,
+		isRangeChanged,
 		toggleHolds,
 		toggleComments,
 		renderHoldsLayer,
@@ -252,5 +329,8 @@ export function useCallWaveRegions({
 		clearDraftSelectionRegions,
 		updateDraftSelectionRange,
 		setCommentHighlight,
+		startRangeEdit,
+		getRangeEditValue,
+		stopRangeEdit,
 	};
 }

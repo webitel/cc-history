@@ -32,6 +32,7 @@
         :key="activeMarker.key"
         :comment="activeMarker.comment"
         :save-note-text="(note) => saveNoteText(activeMarker!.comment, note)"
+        @edit-range="emit('edit-range', activeMarker.comment)"
         @delete="emit('delete', activeMarker.comment)"
         @editing-change="isCardEditing = $event"
       />
@@ -63,6 +64,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
 	(event: 'active-change', value: WaveAnnotation | null): void;
+	(event: 'edit-range', value: WaveAnnotation): void;
 	(event: 'delete', value: WaveAnnotation): void;
 }>();
 

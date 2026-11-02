@@ -59,6 +59,8 @@ export default {
 				noteText: 'Nội dung ghi chú',
 				created: 'Đã tạo',
 				edited: 'Đã chỉnh sửa',
+				changeNoteRange: 'Thay đổi khoảng thời gian ghi chú',
+				editSuccessful: 'Chỉnh sửa thành công',
 				errorEditing: 'Lỗi chỉnh sửa',
 			},
 			stt: {

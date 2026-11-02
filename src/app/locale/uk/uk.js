@@ -59,6 +59,8 @@ export default {
 				noteText: 'Текст коментаря',
 				created: 'Створено',
 				edited: 'Відредаговано',
+				changeNoteRange: 'Зміна діапазону коментаря',
+				editSuccessful: 'Редагування успішне',
 				errorEditing: 'Помилка редагування',
 			},
 			stt: {

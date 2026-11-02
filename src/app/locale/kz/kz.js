@@ -59,6 +59,8 @@ export default {
 				noteText: 'Түсініктеме мәтіні',
 				created: 'Құрылды',
 				edited: 'Өңделді',
+				changeNoteRange: 'Түсініктеме ауқымын өзгерту',
+				editSuccessful: 'Өңдеу сәтті',
 				errorEditing: 'Өңдеу қатесі',
 			},
 			stt: {

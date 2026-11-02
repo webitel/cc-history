@@ -38,9 +38,9 @@
     >
       <wt-button
         color="secondary"
-        variant="outlined"
+        :variant="isRangeEditing ? 'active' : 'outlined'"
         icon="comment"
-        @click="emit('add-note')"
+        @click="!isRangeEditing && emit('add-note')"
       />
       <wt-button
         color="secondary"
@@ -70,6 +70,7 @@ defineProps<{
 	showComments: boolean;
 	holdsCount: number;
 	commentsCount: number;
+	isRangeEditing: boolean;
 }>();
 
 const emit = defineEmits<{

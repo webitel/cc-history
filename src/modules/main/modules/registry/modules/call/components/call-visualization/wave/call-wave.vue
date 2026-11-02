@@ -8,6 +8,7 @@
       :show-comments="showComments"
       :holds-count="holdsCount"
       :comments-count="commentsSize"
+      :is-range-editing="!!rangeEditComment"
       @update:file="setFile"
       @toggle-holds="toggleHolds"
       @toggle-comments="toggleComments"
@@ -29,6 +30,14 @@
       v-show="!isLoading && !isRecordingDeleted"
       class="call-wave-page-main"
     >
+      <call-wave-range-edit-bar
+        v-if="rangeEditComment"
+        :is-changed="isRangeChanged"
+        :is-saving="isRangeSaving"
+        @save="saveCommentRange"
+        @cancel="stopRangeEdit"
+      />
+
       <call-comment-form
         v-if="newComment"
         :call-duration="getCallDurationSec()"
@@ -96,6 +105,7 @@
                 :visible-width-px="layout?.visibleWidthPx ?? 0"
                 :save-note-text="saveCommentNote"
                 @active-change="setCommentHighlight"
+                @edit-range="startCommentRangeEdit"
                 @delete="askCommentDeleteConfirmation"
               />
             </div>
@@ -138,6 +148,7 @@ import CallCommentForm from './call-wave-comment-form.vue';
 import CallWaveCommentMarkers from './call-wave-comment-markers.vue';
 import CallWaveHoldMarkers from './call-wave-hold-markers.vue';
 import CallWavePlaybackControls from './call-wave-playback-controls.vue';
+import CallWaveRangeEditBar from './call-wave-range-edit-bar.vue';
 import CallWaveToolbar from './call-wave-toolbar.vue';
 import {
 	COMMENT_MARKER_SIZE_PX,
@@ -259,6 +270,8 @@ const regions = useCallWaveRegions({
 const {
 	showHolds,
 	showComments,
+	rangeEditComment,
+	isRangeChanged,
 	toggleHolds,
 	toggleComments,
 	renderHoldsLayer,
@@ -266,18 +279,23 @@ const {
 	clearDraftSelectionRegions,
 	updateDraftSelectionRange,
 	setCommentHighlight,
+	stopRangeEdit,
 } = regions;
 
 const {
 	newComment,
 	isAddingComment,
+	isRangeSaving,
 	deleteConfirmation,
 	getCallDurationSec,
 	openAddNote,
 	closeAddNote,
 	addComment,
 	saveCommentNote,
+	startCommentRangeEdit,
+	saveCommentRange,
 	askCommentDeleteConfirmation,
+	resetCommentActions,
 } = useCallWaveComments({
 	store,
 	callId: props.call.id,
@@ -298,11 +316,11 @@ const { markers: holdMarkers } = useCallWaveHoldMarkers({
 	call: toRef(props, 'call'),
 	layout,
 	durationSec,
-	showHolds,
+	showHolds: computed(() => showHolds.value && !rangeEditComment.value),
 });
 
 const showCommentMarkers = computed(
-	() => showComments.value && !!commentsSize.value,
+	() => showComments.value && !!commentsSize.value && !rangeEditComment.value,
 );
 
 // The markers overlay is laid out per channel, so it follows the waveform height.
@@ -315,7 +333,7 @@ const commentMarkerTopPx = computed(() =>
 		: WAVE_HEIGHT + MARKER_GAP_PX,
 );
 
-watch(currentFileId, closeAddNote);
+watch(currentFileId, resetCommentActions);
 
 const stopListeningToPlayer: Array<() => void> = [];
 
