@@ -89,6 +89,7 @@ export function spreadWithoutOverlap(
 	sortedLeftPx: number[],
 	sizePx: number,
 	gapPx: number,
+	maxLeftPx = Number.POSITIVE_INFINITY,
 ): number[] {
 	const result: number[] = [];
 	let previousItemEndPx = Number.NEGATIVE_INFINITY;
@@ -97,6 +98,13 @@ export function spreadWithoutOverlap(
 		const spreadLeftPx = Math.max(leftPx, previousItemEndPx);
 		result.push(spreadLeftPx);
 		previousItemEndPx = spreadLeftPx + sizePx + gapPx;
+	}
+
+	// Items piled up at the waveform end are moved back left, otherwise they are pushed out of view.
+	let nextItemLeftPx = maxLeftPx + sizePx + gapPx;
+	for (let index = result.length - 1; index >= 0; index -= 1) {
+		result[index] = Math.min(result[index], nextItemLeftPx - sizePx - gapPx);
+		nextItemLeftPx = result[index];
 	}
 	return result;
 }

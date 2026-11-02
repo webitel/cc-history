@@ -21,10 +21,9 @@
       :max="100"
       :value="loadProgress"
     />
-    <wt-empty
+    <call-recording-empty
       v-if="isRecordingDeleted"
-      :image="DeletedCallRecording"
-      :title="t('registry.call.wave.recordingDeleted')"
+      is-deleted
     />
     <!-- v-show keeps wavesurfer mounted, so choosing another file still loads it. -->
     <section
@@ -86,17 +85,17 @@
               :options="waveOptions"
               :src="fileUrl"
             />
-            <div class="call-wave-markers typo-caption">
+            <div class="call-wave-markers typo-body-2">
               <call-wave-channel-label
                 class="call-wave-markers__top-channel"
                 :name="call.from.name || call.from.number || ' '"
-                color="var(--success-color)"
+                color="success"
               />
               <call-wave-channel-label
                 v-if="!isMono"
                 class="call-wave-markers__bottom-channel"
                 :name="call.to?.name || call.to?.number || call.destination || ''"
-                color="var(--primary-color)"
+                color="primary"
               />
               <call-wave-hold-markers :markers="holdMarkers" />
               <call-wave-comment-markers
@@ -138,11 +137,10 @@ import {
 } from '@webitel/ui-sdk/modules/FilesExport';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { computed, nextTick, onBeforeUnmount, ref, toRef, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import type WaveSurfer from 'wavesurfer.js';
 
-import DeletedCallRecording from '../assets/deleted-call-recording.svg';
+import CallRecordingEmpty from '../call-recording-empty.vue';
 import type { CallWaveCallRecord, WaveAnnotation } from './call-wave.types';
 import CallWaveChannelLabel from './call-wave-channel-label.vue';
 import CallWaveChannelVolume from './call-wave-channel-volume.vue';
@@ -166,14 +164,16 @@ import {
 import { useCallWaveRegions } from './composables/useCallWaveRegions';
 import { useCallWaveSound } from './composables/useCallWaveSound';
 import { useCallWaveZoom } from './composables/useCallWaveZoom';
-import { useWaveformLayout } from './composables/useWaveformLayout';
+import {
+	MARKER_GAP_PX,
+	useWaveformLayout,
+} from './composables/useWaveformLayout';
 import Wavesurfer from './wavesurfer.vue';
 
 const props = defineProps<{
 	call: CallWaveCallRecord;
 }>();
 
-const { t } = useI18n();
 const store = useStore();
 
 const file = computed(() => store.state.registry.call.selectedRecordingFile);
@@ -326,10 +326,11 @@ const showCommentMarkers = computed(
 // The markers overlay is laid out per channel, so it follows the waveform height.
 const waveHeight = `${WAVE_HEIGHT}px`;
 
+// Stereo: avatars hang just under the top channel, their arrow pointing at the channel border.
 const commentMarkerTopPx = computed(() =>
 	isMono.value
 		? WAVE_HEIGHT - COMMENT_MARKER_SIZE_PX
-		: WAVE_HEIGHT * 1.5 - COMMENT_MARKER_SIZE_PX,
+		: WAVE_HEIGHT + MARKER_GAP_PX,
 );
 
 watch(currentFileId, resetCommentActions);
@@ -349,6 +350,8 @@ function hideProgress() {
 async function onReady() {
 	onLoad();
 	initChannelAudioGraph();
+	// Loading another file resets the media element speed, while the chosen rate stays highlighted.
+	player.value?.setPlaybackRate(playbackRate.value, true);
 	hideProgress();
 	// Loading UI toggles in the same tick as `ready`; wait so layout matches before `reRender()`.
 	await nextTick();
@@ -408,29 +411,26 @@ onBeforeUnmount(async () => {
 
 <style scoped>
 .call-wave-page {
-  /* TODO: replace with the designer's token once it is added to the styleguide. */
-  --comment-color: hsla(169, 75%, 40%, 1);
   --wave-height: v-bind(waveHeight);
 }
 
 .call-wave-page .call-wave-page-main {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
 }
 
 .call-wave-page .call-wave-data--grid {
   display: grid;
-  grid-gap: var(--spacing-sm);
-  grid-template-columns: 70px 1fr;
+  grid-template-columns: calc(var(--icon-md-size) + 2 * var(--spacing-sm)) 1fr;
   grid-template-rows: repeat(2, auto);
 }
 
+/* One volume control per channel, centered on its waveform row. */
 .call-wave-page .call-wave-data--grid .call-wave-data-legs-actions {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-evenly;
+  display: grid;
+  grid-auto-rows: var(--wave-height);
+  place-items: center;
+  align-content: start;
 }
 
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin {
@@ -458,9 +458,6 @@ onBeforeUnmount(async () => {
   right: 0;
   display: grid;
   grid-template-rows: repeat(2, var(--wave-height));
-  align-items: stretch;
-  box-sizing: border-box;
-  padding: 0 var(--spacing-3xs);
   pointer-events: none;
 }
 
@@ -468,20 +465,25 @@ onBeforeUnmount(async () => {
   grid-template-rows: var(--wave-height);
 }
 
+/* Channel names sit at the outer edges: the top one above its wave, the bottom one below. */
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-markers__top-channel {
   align-self: start;
+  justify-self: start;
+  margin: var(--spacing-xs) 0 0 var(--spacing-xs);
 }
 
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-markers__bottom-channel {
   align-self: end;
+  justify-self: start;
+  margin: 0 0 var(--spacing-xs) var(--spacing-xs);
 }
 
 :deep(.wavesurfer-mount > div)::part(timeline) {
-  background-color: var(--secondary-light-color);
+  background-color: var(--p-secondary-highlight-color);
 }
 
 :deep(.wavesurfer-mount > div)::part(timeline-notch) {
-  border-left-color: var(--content-wrapper-color);
+  border-left-color: var(--p-secondary-color);
 }
 
 :deep(.wavesurfer-mount > div)::part(region-handle) {
@@ -489,8 +491,8 @@ onBeforeUnmount(async () => {
   width: var(--icon-md-size);
   height: var(--icon-md-size);
   border: none;
-  background: var(--comment-color);
-  color: var(--text-on-brand-color);
+  background: var(--p-comment-external-color);
+  color: var(--p-comment-external-foreground);
   transform: translateY(-50%);
 }
 

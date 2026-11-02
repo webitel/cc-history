@@ -10,6 +10,7 @@
         <wt-icon
           class="call-wave-hold-markers__icon"
           icon="pause"
+          color="warning"
         />
       </template>
       {{ marker.durationLabel }}
@@ -45,7 +46,6 @@ defineProps<{
   }
 
   &__icon {
-    --icon-color: var(--warning-color);
     cursor: default;
   }
 }

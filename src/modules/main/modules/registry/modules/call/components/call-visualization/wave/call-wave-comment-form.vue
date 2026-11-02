@@ -24,7 +24,8 @@
       </div>
       <wt-textarea
         v-model:model-value="draft.note"
-        class="comment-form__textarea wt-scrollbar"
+        class="wt-scrollbar"
+        :rows="8"
         :placeholder="t('registry.call.wave.noteText')"
       />
     </template>
@@ -261,11 +262,6 @@ watch(
     .wt-timepicker {
       flex: 1;
     }
-  }
-
-  &__textarea :deep(.wt-textarea__textarea) {
-    min-height: 0;
-    height: 150px;
   }
 }
 </style>

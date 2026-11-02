@@ -8,7 +8,7 @@ import Timeline from 'wavesurfer.js/plugins/timeline';
 import ZoomPlugin from 'wavesurfer.js/plugins/zoom';
 
 export const WAVE_HEIGHT = 96;
-const TIMELINE_HEIGHT = 20;
+const TIMELINE_HEIGHT = 16;
 export const ZOOM_MAX_PX_PER_SEC = 20000;
 
 // wavesurfer renders to <canvas>, whose fillStyle can't resolve CSS `var(...)`,
@@ -50,7 +50,7 @@ export function useCallWavePlugins(getPlayer?: PlayerGetter) {
 	// `darkMode` is read so the tokens re-resolve when the theme switches.
 	const waveOptions = computed(() => {
 		void darkMode.value;
-		const waveColor = resolveCssColor('--secondary-color');
+		const waveColor = resolveCssColor('--p-secondary-color');
 
 		return {
 			cursorWidth: 2,
@@ -60,13 +60,13 @@ export function useCallWavePlugins(getPlayer?: PlayerGetter) {
 					height: WAVE_HEIGHT,
 					overlay: false,
 					waveColor,
-					progressColor: resolveCssColor('--success-color'),
+					progressColor: resolveCssColor('--p-success-color'),
 				},
 				{
 					height: WAVE_HEIGHT,
 					overlay: false,
 					waveColor,
-					progressColor: resolveCssColor('--primary-color'),
+					progressColor: resolveCssColor('--p-primary-color'),
 				},
 			],
 			plugins: [

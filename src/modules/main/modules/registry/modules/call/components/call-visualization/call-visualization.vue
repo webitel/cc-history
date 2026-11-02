@@ -1,10 +1,6 @@
 <template>
   <section class="call-visualization">
-    <wt-empty
-      v-if="!call.files?.[EngineCallFileType.FileTypeAudio]?.length"
-      :image="NoCallRecordings"
-      :title="t('registry.call.wave.noAudio')"
-    />
+    <call-recording-empty v-if="!call.files?.[EngineCallFileType.FileTypeAudio]?.length" />
     <call-wave
       v-else
       :call="call"
@@ -36,7 +32,7 @@ import { useUserAccessControl } from '../../../../../../../../app/composables/us
 import { useScreenRecordingsAccess } from '../../../../composables/useScreenRecordingsAccess';
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallEvaluation from '../../modules/call-audit/components/call-audit-section.vue';
-import NoCallRecordings from './assets/no-call-recordings.svg';
+import CallRecordingEmpty from './call-recording-empty.vue';
 import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
 import type { CallWaveCallRecord } from './wave/call-wave.types';
 import CallWave from './wave/call-wave.vue';
@@ -113,9 +109,5 @@ const currentTab = ref<VisualizationTab>(tabValues.value.TRANSCRIPT);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-
-  .call-visualization__filepicker {
-    width: 460px;
-  }
 }
 </style>

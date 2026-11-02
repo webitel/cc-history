@@ -27,7 +27,8 @@
       <wt-textarea
         v-if="isEditing"
         v-model:model-value="draftNote"
-        class="call-wave-comment-card__textarea wt-scrollbar"
+        class="wt-scrollbar"
+        :rows="4"
         :label="t('registry.call.comment', 1)"
       />
       <p
@@ -211,11 +212,6 @@ async function saveNote() {
     overflow: auto;
     white-space: pre-wrap;
     word-break: break-word;
-  }
-
-  &__textarea :deep(.wt-textarea__textarea) {
-    min-height: 0;
-    height: 120px;
   }
 
   &__actions {

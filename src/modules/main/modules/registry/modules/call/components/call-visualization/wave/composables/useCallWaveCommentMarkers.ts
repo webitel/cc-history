@@ -33,13 +33,14 @@ export function useCallWaveCommentMarkers(
 			return [];
 		}
 
+		const lastAvatarPx =
+			waveform.waveformWidthPx - waveform.scrollPx - COMMENT_MARKER_SIZE_PX;
+
 		function getAvatarLeftPx(comment: WaveAnnotation): number {
 			const startPx = secondsToVisiblePx(
 				waveform,
 				annotationSecondsToInt(comment.startSec),
 			);
-			const lastAvatarPx =
-				waveform.waveformWidthPx - waveform.scrollPx - COMMENT_MARKER_SIZE_PX;
 			return Math.min(startPx, lastAvatarPx);
 		}
 
@@ -54,6 +55,7 @@ export function useCallWaveCommentMarkers(
 			commentsByStart.map(getAvatarLeftPx),
 			COMMENT_MARKER_SIZE_PX,
 			MARKER_GAP_PX,
+			lastAvatarPx,
 		);
 
 		return commentsByStart

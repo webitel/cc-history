@@ -58,6 +58,7 @@ export function useCallWaveHoldMarkers({
 			iconLeftPositionsPx,
 			HOLD_ICON_SIZE_PX,
 			MARKER_GAP_PX,
+			waveform.waveformWidthPx - waveform.scrollPx - HOLD_ICON_SIZE_PX,
 		);
 
 		return pointHolds.value

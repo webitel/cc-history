@@ -23,14 +23,14 @@
         :disabled="zoomInDisabled"
         color="secondary"
         variant="outlined"
-        icon="plus"
+        icon="zoom-in"
         @click="emit('zoom-in')"
       />
       <wt-button
         :disabled="zoomOutDisabled"
         color="secondary"
         variant="outlined"
-        icon="minus"
+        icon="zoom-out"
         @click="emit('zoom-out')"
       />
     </div>
@@ -68,12 +68,13 @@ const PLAYBACK_RATES = [
 .call-wave-playback-controls {
   display: flex;
   justify-content: space-between;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
+  padding: var(--spacing-2xs);
 
   &__group {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
   }
 }
 </style>

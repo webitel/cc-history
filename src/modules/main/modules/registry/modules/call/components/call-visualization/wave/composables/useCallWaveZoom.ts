@@ -8,20 +8,21 @@ import { ZOOM_MAX_PX_PER_SEC } from './useCallWavePlugins';
 
 type WaveSurferGetter = () => WaveSurfer | null | undefined;
 
+const FIT_TOLERANCE = 1.01;
+
 export function useCallWaveZoom(
 	getPlayer: WaveSurferGetter,
 	timelinePlugin?: TimelinePlugin,
 ) {
 	const minPxPerSec = ref(0);
+	// The whole recording fits the width: wavesurfer stretches it, so zooming out further changes nothing.
+	const isFitted = ref(true);
 	const unsubscribeFns: Array<() => void> = [];
 
 	const zoomInDisabled: ComputedRef<boolean> = computed(
 		() => minPxPerSec.value >= ZOOM_MAX_PX_PER_SEC,
 	);
-	// The whole recording already fits the width: wavesurfer stretches it, so zooming out further changes nothing.
-	const zoomOutDisabled: ComputedRef<boolean> = computed(
-		() => minPxPerSec.value <= naturalPxPerSec(),
-	);
+	const zoomOutDisabled: ComputedRef<boolean> = computed(() => isFitted.value);
 
 	function syncTimelineIntervals(pxPerSec: number) {
 		if (!timelinePlugin) {
@@ -38,6 +39,11 @@ export function useCallWaveZoom(
 		return width / duration;
 	}
 
+	// The waveform width can change by a pixel between zoom steps, so halving may stop just short of the fitted zoom.
+	function fitsWidth(pxPerSec: number): boolean {
+		return pxPerSec <= naturalPxPerSec() * FIT_TOLERANCE;
+	}
+
 	function zoomTo(pxPerSec: number) {
 		const waveSurfer = getPlayer();
 		if (!waveSurfer) {
@@ -49,6 +55,7 @@ export function useCallWaveZoom(
 
 	function resetZoom() {
 		minPxPerSec.value = 0;
+		isFitted.value = true;
 		const natural = naturalPxPerSec();
 		if (natural > 0) {
 			zoomTo(natural);
@@ -63,12 +70,24 @@ export function useCallWaveZoom(
 
 	function decreaseZoom() {
 		const base = minPxPerSec.value || naturalPxPerSec();
-		minPxPerSec.value = Math.max(base / 2, naturalPxPerSec());
+		if (fitsWidth(base / 2)) {
+			resetZoom();
+			return;
+		}
+		minPxPerSec.value = base / 2;
 		zoomTo(minPxPerSec.value);
 	}
 
 	function syncZoomValue(minPxPerSecFromWaveSurfer: number) {
 		minPxPerSec.value = minPxPerSecFromWaveSurfer;
+		isFitted.value = fitsWidth(minPxPerSecFromWaveSurfer);
+	}
+
+	// A fitted waveform keeps fitting a resized container, instead of overflowing it with the old zoom.
+	function refitOnResize() {
+		if (isFitted.value || fitsWidth(minPxPerSec.value)) {
+			resetZoom();
+		}
 	}
 
 	function attachTimelineSync() {
@@ -85,6 +104,7 @@ export function useCallWaveZoom(
 					getPlayer()?.getRenderer().reRender();
 				});
 			}),
+			waveSurfer.on('resize', refitOnResize),
 		);
 	}
 

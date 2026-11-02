@@ -3,14 +3,14 @@
     <div class="call-wave-range-edit-bar">
       <span class="call-wave-range-edit-bar__title typo-subtitle-1">
         <wt-icon
-          icon="note"
-          icon-prefix="hs"
-          color="success"
+          icon="comment"
+          color="comment-external"
         />
         {{ t('registry.call.wave.changeNoteRange') }}
       </span>
       <div class="call-wave-range-edit-bar__actions">
         <wt-button
+          size="sm"
           :disabled="!isChanged"
           :loading="isSaving"
           @click="emit('save')"
@@ -18,6 +18,7 @@
           {{ t('reusable.save') }}
         </wt-button>
         <wt-button
+          size="sm"
           color="secondary"
           :disabled="isSaving"
           @click="emit('cancel')"
@@ -53,10 +54,10 @@ const { t } = useI18n();
 <style lang="scss" scoped>
 .call-wave-range-edit-bar {
   display: flex;
-  padding-bottom: var(--spacing-xs);
+  padding: var(--spacing-xs);
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
 
   &__title {
     display: flex;

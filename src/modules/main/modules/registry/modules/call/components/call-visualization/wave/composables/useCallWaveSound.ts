@@ -20,38 +20,55 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 
 	// Audio nodes are not rendered, so they stay out of Vue reactivity.
 	let audioContext: AudioContext | null = null;
+	let sourceNode: MediaElementAudioSourceNode | null = null;
 	let audioNodes: AudioNode[] = [];
 	let leftGainNode: GainNode | null = null;
 	let rightGainNode: GainNode | null = null;
 	let soundListenersRegistered = false;
 
+	function disconnectChannelNodes() {
+		sourceNode?.disconnect();
+		audioNodes.forEach((node) => {
+			node.disconnect();
+		});
+		audioNodes = [];
+		leftGainNode = null;
+		rightGainNode = null;
+	}
+
+	// Called on every loaded file: another file of the same call can have another number of channels.
 	function initChannelAudioGraph() {
 		const player = getPlayer();
-		if (audioContext || !player) {
+		if (!player) {
 			return;
 		}
 		const channels = player.getDecodedData()?.numberOfChannels ?? 2;
 
-		audioContext = new AudioContext();
-		const source = audioContext.createMediaElementSource(
-			player.getMediaElement(),
-		);
+		// A media element can be connected to only one source node, so the source is kept for the next files.
+		if (!audioContext || !sourceNode) {
+			audioContext = new AudioContext();
+			sourceNode = audioContext.createMediaElementSource(
+				player.getMediaElement(),
+			);
+		}
+		disconnectChannelNodes();
 		leftGainNode = audioContext.createGain();
+		leftGainNode.gain.value = volumeLeftGain.value;
 
 		if (channels >= 2) {
 			const splitter = audioContext.createChannelSplitter(2);
 			const merger = audioContext.createChannelMerger(2);
 			rightGainNode = audioContext.createGain();
+			rightGainNode.gain.value = volumeRightGain.value;
 			rightGain.disabled = false;
 
-			source.connect(splitter);
+			sourceNode.connect(splitter);
 			splitter.connect(leftGainNode, 0);
 			splitter.connect(rightGainNode, 1);
 			leftGainNode.connect(merger, 0, 0);
 			rightGainNode.connect(merger, 0, 1);
 			merger.connect(audioContext.destination);
 			audioNodes = [
-				source,
 				splitter,
 				merger,
 				leftGainNode,
@@ -59,10 +76,9 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 			];
 		} else {
 			rightGain.disabled = true;
-			source.connect(leftGainNode);
+			sourceNode.connect(leftGainNode);
 			leftGainNode.connect(audioContext.destination);
 			audioNodes = [
-				source,
 				leftGainNode,
 			];
 		}
@@ -75,12 +91,8 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 	}
 
 	async function destroyChannelAudio() {
-		audioNodes.forEach((node) => {
-			node.disconnect();
-		});
-		audioNodes = [];
-		leftGainNode = null;
-		rightGainNode = null;
+		disconnectChannelNodes();
+		sourceNode = null;
 		await audioContext?.close();
 		audioContext = null;
 	}

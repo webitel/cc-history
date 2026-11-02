@@ -39,8 +39,7 @@
       <wt-button
         color="secondary"
         :variant="isRangeEditing ? 'active' : 'outlined'"
-        icon="note"
-        icon-prefix="hs"
+        icon="comment"
         @click="!isRangeEditing && emit('add-note')"
       />
       <wt-button
@@ -87,8 +86,6 @@ const { t } = useI18n();
 
 <style lang="scss" scoped>
 .call-wave-toolbar {
-  margin-bottom: var(--spacing-sm);
-
   &__file-select {
     width: 280px;
   }
