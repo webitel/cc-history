@@ -475,6 +475,8 @@ function createComment(region: Region) {
 async function onReady() {
 	onLoad();
 	initChannelAudioGraph();
+	// Loading another file resets the media element speed, while the chosen rate stays highlighted.
+	player.value?.setPlaybackRate(playbackRate.value, true);
 	hideProgress();
 	// Loading UI toggles in the same tick as `ready`; wait so layout matches before `reRender()`.
 	await nextTick();
