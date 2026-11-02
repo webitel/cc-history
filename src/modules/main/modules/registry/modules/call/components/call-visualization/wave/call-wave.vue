@@ -1,56 +1,19 @@
 <template>
   <section class="call-wave-page">
-    <call-visualization-header>
-      <template #main>
-        <wt-single-select
-          class="call-wave-page__file-select"
-          :model-value="file"
-          :show-clear="false"
-          :placeholder="$t('vocabulary.file')"
-          :options="audioFiles"
-          data-key="id"
-          @update:model-value="setFile"
-        />
-        <div
-          v-if="!isLoading && !isRecordingDeleted"
-          class="call-wave-page__region-actions"
-        >
-          <wt-checkbox
-            :label="$t('registry.call.hold', 2)"
-            :selected="showHolds"
-            :value="showHolds"
-            @update:selected="toggleHolds"
-          />
-          <wt-chip>
-            {{ holdsSize }}
-          </wt-chip>
-          <wt-checkbox
-            :label="$t('registry.call.comment', 2)"
-            :selected="showComments"
-            :value="showComments"
-            @update:selected="toggleComments"
-          />
-          <wt-chip>
-            {{ commentsSize }}
-          </wt-chip>
-        </div>
-      </template>
-      <template
-        v-if="!isLoading && !isRecordingDeleted"
-        #actions
-      >
-        <wt-icon-btn
-          icon="note"
-          icon-prefix="hs"
-          @click="toggleCommentMode"
-        />
-        <wt-icon-btn
-          icon="download-record"
-          icon-prefix="hs"
-          @click="downloadFile"
-        />
-      </template>
-    </call-visualization-header>
+    <call-wave-toolbar
+      :file="file"
+      :files="audioFiles"
+      :show-controls="!isLoading && !isRecordingDeleted"
+      :show-holds="showHolds"
+      :show-comments="showComments"
+      :holds-count="holdsSize"
+      :comments-count="commentsSize"
+      @update:file="setFile"
+      @toggle-holds="toggleHolds"
+      @toggle-comments="toggleComments"
+      @add-note="toggleCommentMode"
+      @download="downloadFile"
+    />
 
     <wt-progress-bar
       v-show="isLoading"
@@ -77,51 +40,18 @@
 
       <section class="call-wave-data--grid">
         <section class="call-wave-data-legs-actions">
-          <wt-popover
+          <call-wave-channel-volume
             v-if="!leftGain.disabled"
-          >
-            <template #activator="{ toggle }">
-              <div
-                @click="toggle"
-              >
-                <wt-icon-btn
-                  :icon="leftGain.muted ? 'sound-off': 'sound-on'"
-                />
-              </div>
-            </template>
-
-            <wt-slider
-              :max="2"
-              :min="0"
-              :step="0.01"
-              :width="130"
-              :model-value="volumeLeftGain"
-              @update:model-value="volumeLeftChangeHandler"
-            />
-          </wt-popover>
-
-          <wt-popover
+            :volume="volumeLeftGain"
+            :muted="leftGain.muted"
+            @update:volume="volumeLeftChangeHandler"
+          />
+          <call-wave-channel-volume
             v-if="!rightGain.disabled"
-          >
-            <template #activator="{ toggle }">
-              <div
-                @click="toggle"
-              >
-                <wt-icon-btn
-                  :icon="rightGain.muted ? 'sound-off': 'sound-on'"
-                />
-              </div>
-            </template>
-
-            <wt-slider
-              :max="2"
-              :min="0"
-              :step="0.01"
-              :width="130"
-              :model-value="volumeRightGain"
-              @update:model-value="volumeRightChangeHandler"
-            />
-          </wt-popover>
+            :volume="volumeRightGain"
+            :muted="rightGain.muted"
+            @update:volume="volumeRightChangeHandler"
+          />
         </section>
 
         <section
@@ -130,101 +60,41 @@
         >
           <div
             class="call-wave-wave-wrap"
-            :class="{ 'call-wave-wave-wrap--mono': rightGain.disabled }"
+            :class="{ 'call-wave-wave-wrap--mono': isMono }"
           >
             <wavesurfer
               ref="wavesurferComponentRef"
+              class="typo-caption"
               :options="waveOptions"
               :src="fileUrl"
             />
-            <div class="call-wave-markers">
-              <div
-                class="call-wave-marker call-wave-marker--left"
-                :style="{ color: channelColorLeft }"
-              >
-                <span class="call-wave-marker__icon">
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                  ><use xlink:href="#contacts" /></svg>
-                </span>
-                <span class="call-wave-marker__label">{{ call.from.name || call.from.number || ' ' }}</span>
-              </div>
-              <div
-                v-if="!rightGain.disabled"
-                class="call-wave-marker call-wave-marker--right"
-                :style="{ color: channelColorRight }"
-              >
-                <span class="call-wave-marker__icon">
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                  ><use xlink:href="#contacts" /></svg>
-                </span>
-                <span class="call-wave-marker__label">{{ call.to?.name || call.to?.number || call.destination }}</span>
-              </div>
+            <div class="call-wave-markers typo-body-2">
+              <call-wave-channel-label
+                class="call-wave-markers__top-channel"
+                :name="call.from.name || call.from.number || ' '"
+                color="success"
+              />
+              <call-wave-channel-label
+                v-if="!isMono"
+                class="call-wave-markers__bottom-channel"
+                :name="call.to?.name || call.to?.number || call.destination || ''"
+                color="primary"
+              />
             </div>
           </div>
         </section>
 
         <div />
-        <section class="call-wave-actions">
-          <section class="call-wave-actions-buttons">
-            <wt-button
-              :color="speedButtonColor(2)"
-              @click="toggleRate(2)"
-            >
-              x2
-            </wt-button>
-            <wt-button
-              :color="speedButtonColor(1.5)"
-              @click="toggleRate(1.5)"
-            >
-              x1.5
-            </wt-button>
-            <wt-button
-              :color="speedButtonColor(0.75)"
-              @click="toggleRate(0.75)"
-            >
-              x0.75
-            </wt-button>
-            <wt-button
-              :color="speedButtonColor(0.5)"
-              @click="toggleRate(0.5)"
-            >
-              x0.5
-            </wt-button>
-            <wt-button
-              :color="isPlaying ? 'primary': 'secondary'"
-              contains-icon
-              @click="playPause"
-            >
-              <wt-icon
-                :icon="!isPlaying ? 'play' : 'pause'"
-              />
-            </wt-button>
-          </section>
-          <section class="call-wave-actions-buttons">
-            <wt-button
-              :disabled="zoomInDisabled"
-              color="secondary"
-              contains-icon
-              @click="increaseZoom"
-            >
-              <wt-icon icon="zoom-in" />
-            </wt-button>
-            <wt-button
-              :disabled="zoomOutDisabled"
-              color="secondary"
-              contains-icon
-              @click="decreaseZoom"
-            >
-              <wt-icon icon="zoom-out" />
-            </wt-button>
-          </section>
-        </section>
+        <call-wave-playback-controls
+          :playback-rate="playbackRate"
+          :is-playing="isPlaying"
+          :zoom-in-disabled="zoomInDisabled"
+          :zoom-out-disabled="zoomOutDisabled"
+          @toggle-rate="toggleRate"
+          @play-pause="playPause"
+          @zoom-in="increaseZoom"
+          @zoom-out="decreaseZoom"
+        />
       </section>
     </section>
   </section>
@@ -250,20 +120,26 @@ import { useStore } from 'vuex';
 import type { Region } from 'wavesurfer.js/plugins/regions';
 
 import CallRecordingEmpty from '../call-recording-empty.vue';
-import CallVisualizationHeader from '../call-visualization-header.vue';
 import type {
 	CallWaveCallRecord,
 	CommentDragSelectionOptions,
 	NewCommentDraft,
 	WaveAnnotation,
 } from './call-wave.types';
+import CallWaveChannelLabel from './call-wave-channel-label.vue';
+import CallWaveChannelVolume from './call-wave-channel-volume.vue';
 import CallCommentForm from './call-wave-comment-form.vue';
+import CallWavePlaybackControls from './call-wave-playback-controls.vue';
+import CallWaveToolbar from './call-wave-toolbar.vue';
 import {
 	annotationSecondsToInt,
 	useCallWaveAnnotations,
 } from './composables/useCallWaveAnnotations';
 import { useCallWaveFileAnnotations } from './composables/useCallWaveFileAnnotations';
-import { useCallWavePlugins } from './composables/useCallWavePlugins';
+import {
+	useCallWavePlugins,
+	WAVE_HEIGHT,
+} from './composables/useCallWavePlugins';
 import { useCallWaveRegions } from './composables/useCallWaveRegions';
 import { useCallWaveSound } from './composables/useCallWaveSound';
 import { useCallWaveZoom } from './composables/useCallWaveZoom';
@@ -306,9 +182,6 @@ const callRef = toRef(props, 'call');
 const holdsSize = computed(() =>
 	props.call.hold ? props.call.hold.length : 0,
 );
-
-const channelColorLeft = computed(() => 'var(--true-color)');
-const channelColorRight = computed(() => 'var(--primary-color)');
 
 const wavesurferComponentRef = ref<InstanceType<typeof Wavesurfer> | null>(
 	null,
@@ -355,6 +228,11 @@ const {
 	volumeLeftChangeHandler,
 	volumeRightChangeHandler,
 } = useCallWaveSound(() => player.value);
+
+const isMono = computed(() => rightGain.disabled);
+
+// The markers overlay is laid out per channel, so it follows the waveform height.
+const waveHeight = `${WAVE_HEIGHT}px`;
 
 function editAnnotation(comment: WaveAnnotation) {
 	selectedComment.value = comment;
@@ -405,10 +283,6 @@ function setFile(payload: unknown) {
 	store.dispatch('registry/call/SET_RECORDING_FILE', payload);
 }
 
-function speedButtonColor(value: number): 'primary' | 'secondary' {
-	return playbackRate.value === value ? 'primary' : 'secondary';
-}
-
 const { saveComment, deleteComment: deleteCommentBySelection } =
 	useCallWaveAnnotations(store, props.call.id, currentFileId, updateRegions);
 const deleteComment = () => deleteCommentBySelection(selectedComment.value);
@@ -435,7 +309,7 @@ function toggleCommentMode() {
 	}
 }
 
-function toggleRate(value) {
+function toggleRate(value: number) {
 	playbackRate.value = playbackRate.value === value ? 1 : value;
 	player.value?.setPlaybackRate(playbackRate.value, true);
 }
@@ -548,51 +422,27 @@ onBeforeUnmount(async () => {
 </script>
 
 <style scoped>
-.call-visualization-header {
-  margin-bottom: var(--spacing-sm);
-}
-
-.call-wave-page .call-wave-page__file-select {
-  width: 280px;
-}
-
-.call-wave-page .call-wave-page__region-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-xs);
+.call-wave-page {
+  --wave-height: v-bind(waveHeight);
 }
 
 .call-wave-page .call-wave-page-main {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
 }
 
 .call-wave-page .call-wave-data--grid {
   display: grid;
-  grid-gap: var(--spacing-sm);
-  grid-template-columns: 70px 1fr;
+  grid-template-columns: calc(var(--icon-md-size) + 2 * var(--spacing-sm)) 1fr;
   grid-template-rows: repeat(2, auto);
 }
 
+/* One volume control per channel, centered on its waveform row. */
 .call-wave-page .call-wave-data--grid .call-wave-data-legs-actions {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.call-wave-page .call-wave-data--grid .call-wave-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--spacing-sm);
-}
-
-.call-wave-page .call-wave-data--grid .call-wave-actions .call-wave-actions-buttons {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
+  display: grid;
+  grid-auto-rows: var(--wave-height);
+  place-items: center;
+  align-content: start;
 }
 
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin {
@@ -619,38 +469,33 @@ onBeforeUnmount(async () => {
   left: 0;
   right: 0;
   display: grid;
-  grid-template-rows: 96px 96px;
-  align-items: stretch;
-  height: 192px;
-  box-sizing: border-box;
-  padding: 0 var(--spacing-3xs);
-  font-size: 12px;
+  grid-template-rows: repeat(2, var(--wave-height));
   pointer-events: none;
 }
 
 .call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-wave-wrap--mono .call-wave-markers {
-  grid-template-rows: 96px;
-  height: 96px;
+  grid-template-rows: var(--wave-height);
 }
 
-.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  box-sizing: border-box;
-  min-height: 0;
-}
-
-.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker--left {
+/* Channel names sit at the outer edges: the top one above its wave, the bottom one below. */
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-markers__top-channel {
   align-self: start;
+  justify-self: start;
+  margin: var(--spacing-xs) 0 0 var(--spacing-xs);
 }
 
-.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-marker--right {
+.call-wave-page .call-wave-data--grid .call-wave-data-plugin .call-wave-markers__bottom-channel {
   align-self: end;
+  justify-self: start;
+  margin: 0 0 var(--spacing-xs) var(--spacing-xs);
 }
 
 :deep(.wavesurfer-mount > div)::part(timeline) {
-  background-color: var(--secondary-light-color);
+  background-color: var(--p-secondary-highlight-color);
+}
+
+:deep(.wavesurfer-mount > div)::part(timeline-notch) {
+  border-left-color: var(--p-secondary-color);
 }
 
 :deep(.wavesurfer-mount > div)::part(region) {
