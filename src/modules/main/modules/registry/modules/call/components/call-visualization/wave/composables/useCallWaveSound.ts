@@ -4,6 +4,8 @@ import type WaveSurfer from 'wavesurfer.js';
 
 type WaveSurferGetter = () => WaveSurfer | null | undefined;
 
+const STEREO_CHANNELS = 2;
+
 export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 	const volumeLeftGain = ref(1);
 	const volumeRightGain = ref(1);
@@ -42,7 +44,8 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 		if (!player) {
 			return;
 		}
-		const channels = player.getDecodedData()?.numberOfChannels ?? 2;
+		const channels =
+			player.getDecodedData()?.numberOfChannels ?? STEREO_CHANNELS;
 
 		// A media element can be connected to only one source node, so the source is kept for the next files.
 		if (!audioContext || !sourceNode) {
@@ -55,9 +58,9 @@ export function useCallWaveSound(getPlayer: WaveSurferGetter) {
 		leftGainNode = audioContext.createGain();
 		leftGainNode.gain.value = volumeLeftGain.value;
 
-		if (channels >= 2) {
-			const splitter = audioContext.createChannelSplitter(2);
-			const merger = audioContext.createChannelMerger(2);
+		if (channels >= STEREO_CHANNELS) {
+			const splitter = audioContext.createChannelSplitter(STEREO_CHANNELS);
+			const merger = audioContext.createChannelMerger(STEREO_CHANNELS);
 			rightGainNode = audioContext.createGain();
 			rightGainNode.gain.value = volumeRightGain.value;
 			rightGain.disabled = false;
