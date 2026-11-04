@@ -1,10 +1,6 @@
 <template>
   <section class="call-visualization">
-    <wt-empty
-      v-if="!call.files[EngineCallFileType.FileTypeAudio]"
-      :image="darkMode ? NoCallRecordingsDark : NoCallRecordings"
-      :title="t('registry.call.wave.noAudio')"
-    />
+    <call-recording-empty v-if="!call.files?.[EngineCallFileType.FileTypeAudio]?.length" />
     <call-wave
       v-else
       :call="call"
@@ -30,14 +26,13 @@
 >
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { WtObject } from '@webitel/ui-sdk/enums';
-import { type Component, computed, inject, ref } from 'vue';
+import { type Component, computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import { useScreenRecordingsAccess } from '../../../../composables/useScreenRecordingsAccess';
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallEvaluation from '../../modules/call-audit/components/call-audit-section.vue';
-import NoCallRecordings from './assets/no-call-recordings.svg';
-import NoCallRecordingsDark from './assets/no-call-recordings-dark.svg';
+import CallRecordingEmpty from './call-recording-empty.vue';
 import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
 import type { CallWaveCallRecord } from './wave/call-wave.types';
 import CallWave from './wave/call-wave.vue';
@@ -64,8 +59,6 @@ const { hasReadAccess: hasScreenRecordingsReadAccess } =
 	useScreenRecordingsAccess();
 
 const { t } = useI18n();
-
-const darkMode = inject('darkMode');
 
 const { hasReadAccess: hasEvaluationReadAccess } = useUserAccessControl(
 	WtObject.AuditRating,
@@ -116,9 +109,5 @@ const currentTab = ref<VisualizationTab>(tabValues.value.TRANSCRIPT);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-
-  .call-visualization__filepicker {
-    width: 460px;
-  }
 }
 </style>
