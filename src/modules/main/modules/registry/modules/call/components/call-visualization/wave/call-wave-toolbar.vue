@@ -37,13 +37,13 @@
       #actions
     >
       <wt-button
-        color="secondary"
+        :color="ButtonColor.SECONDARY"
         variant="outlined"
         icon="comment"
         @click="emit('add-note')"
       />
       <wt-button
-        color="secondary"
+        :color="ButtonColor.SECONDARY"
         variant="outlined"
         icon="download-record"
         icon-prefix="hs"
@@ -54,13 +54,10 @@
 </template>
 
 <script setup lang="ts">
+import { ButtonColor } from '@webitel/ui-sdk/enums';
 import { useI18n } from 'vue-i18n';
 
 import CallVisualizationHeader from '../call-visualization-header.vue';
-
-defineOptions({
-	name: 'CallWaveToolbar',
-});
 
 defineProps<{
 	file: unknown;
