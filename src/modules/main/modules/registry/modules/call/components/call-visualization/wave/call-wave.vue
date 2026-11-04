@@ -86,16 +86,16 @@
               :src="fileUrl"
             />
             <div class="call-wave-markers typo-body-2">
-              <call-wave-channel-label
+              <call-wave-channel-name
                 class="call-wave-markers__top-channel"
                 :name="call.from.name || call.from.number || ' '"
-                color="success"
+                :color="IconColor.SUCCESS"
               />
-              <call-wave-channel-label
+              <call-wave-channel-name
                 v-if="!isMono"
                 class="call-wave-markers__bottom-channel"
                 :name="call.to?.name || call.to?.number || call.destination || ''"
-                color="primary"
+                :color="IconColor.PRIMARY"
               />
               <call-wave-hold-markers :markers="holdMarkers" />
               <call-wave-comment-markers
@@ -131,6 +131,7 @@
 <script setup lang="ts">
 import { getCallMediaUrl } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
+import { IconColor } from '@webitel/ui-sdk/enums';
 import {
 	type ExportedItem,
 	useFilesExport,
@@ -142,7 +143,7 @@ import type WaveSurfer from 'wavesurfer.js';
 
 import CallRecordingEmpty from '../call-recording-empty.vue';
 import type { CallWaveCallRecord, WaveAnnotation } from './call-wave.types';
-import CallWaveChannelLabel from './call-wave-channel-label.vue';
+import CallWaveChannelName from './call-wave-channel-name.vue';
 import CallWaveChannelVolume from './call-wave-channel-volume.vue';
 import CallCommentForm from './call-wave-comment-form.vue';
 import CallWaveCommentMarkers from './call-wave-comment-markers.vue';

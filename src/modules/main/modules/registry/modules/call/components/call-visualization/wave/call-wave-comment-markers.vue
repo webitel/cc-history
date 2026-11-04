@@ -1,6 +1,6 @@
 <template>
   <div class="call-wave-comment-markers">
-    <div class="call-wave-comment-markers__avatars">
+    <div class="call-wave-comment-markers__wrapper">
       <button
         v-for="marker of markers"
         :key="marker.key"
@@ -50,10 +50,6 @@ import {
 	COMMENT_CARD_WIDTH_PX,
 	type CommentMarker,
 } from './composables/useCallWaveCommentMarkers';
-
-defineOptions({
-	name: 'CallWaveCommentMarkers',
-});
 
 const props = defineProps<{
 	markers: CommentMarker[];
@@ -144,7 +140,7 @@ onBeforeUnmount(closeCard);
   // Above the wavesurfer regions container (z-index: 5), so avatars get the pointer.
   z-index: 6;
 
-  &__avatars {
+  &__wrapper {
     position: absolute;
     inset: 0;
     overflow: hidden;

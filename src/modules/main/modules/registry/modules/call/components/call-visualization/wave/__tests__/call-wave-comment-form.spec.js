@@ -45,7 +45,7 @@ const findButtons = (wrapper) =>
 describe('Opened call comment form', () => {
 	it('should render a component', () => {
 		const wrapper = mountForm(draft);
-		expect(wrapper.classes('comment-form')).toBe(true);
+		expect(wrapper.classes('call-wave-comment-form')).toBe(true);
 	});
 
 	it('should emit draft data on add', () => {

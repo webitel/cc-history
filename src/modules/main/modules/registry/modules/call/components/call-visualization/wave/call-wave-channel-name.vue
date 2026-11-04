@@ -1,5 +1,5 @@
 <template>
-  <div class="call-wave-channel-label">
+  <div class="call-wave-channel-name">
     <wt-icon
       icon="user"
       :color="color"
@@ -11,10 +11,6 @@
 <script setup lang="ts">
 import type { IconColor } from '@webitel/ui-sdk/enums';
 
-defineOptions({
-	name: 'CallWaveChannelLabel',
-});
-
 defineProps<{
 	name: string;
 	color: IconColor;
@@ -22,7 +18,7 @@ defineProps<{
 </script>
 
 <style scoped>
-.call-wave-channel-label {
+.call-wave-channel-name {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);

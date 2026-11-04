@@ -21,10 +21,6 @@
 <script setup lang="ts">
 import type { HoldMarker } from './composables/useCallWaveHoldMarkers';
 
-defineOptions({
-	name: 'CallWaveHoldMarkers',
-});
-
 defineProps<{
 	markers: HoldMarker[];
 }>();

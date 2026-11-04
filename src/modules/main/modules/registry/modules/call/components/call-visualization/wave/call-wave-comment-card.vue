@@ -52,7 +52,7 @@
             size="sm"
             color="secondary"
             :disabled="isSaving"
-            @click="cancelEditing"
+            @click="setEditing(false)"
           >
             {{ t('reusable.cancel') }}
           </wt-button>
@@ -91,10 +91,6 @@ import {
 	getCommentAuthorName,
 } from './composables/useCallWaveAnnotations';
 import { COMMENT_CARD_WIDTH_PX } from './composables/useCallWaveCommentMarkers';
-
-defineOptions({
-	name: 'CallWaveCommentCard',
-});
 
 const props = defineProps<{
 	comment: WaveAnnotation;
@@ -151,10 +147,6 @@ function setEditing(value: boolean) {
 function startEditing() {
 	draftNote.value = props.comment.note;
 	setEditing(true);
-}
-
-function cancelEditing() {
-	setEditing(false);
 }
 
 async function saveNote() {
