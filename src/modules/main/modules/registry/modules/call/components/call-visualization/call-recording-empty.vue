@@ -14,10 +14,6 @@ import CallRecordingWasDeletedDark from './assets/call-recording-was-deleted-dar
 import NoCallRecording from './assets/no-call-recording.svg';
 import NoCallRecordingDark from './assets/no-call-recording-dark.svg';
 
-defineOptions({
-	name: 'CallRecordingEmpty',
-});
-
 const props = withDefaults(
 	defineProps<{
 		isDeleted?: boolean;
