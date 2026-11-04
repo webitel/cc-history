@@ -34,10 +34,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
-defineOptions({
-	name: 'CallWaveRangeEditBar',
-});
-
 defineProps<{
 	isChanged: boolean;
 	isSaving: boolean;
