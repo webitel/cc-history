@@ -14,6 +14,15 @@ export const CallFileStartRecord = {
 export type CallFileStartRecord =
 	(typeof CallFileStartRecord)[keyof typeof CallFileStartRecord];
 
+export const PlaybackRate = {
+	X2: 2,
+	X1_5: 1.5,
+	X0_75: 0.75,
+	X0_5: 0.5,
+} as const;
+
+export type PlaybackRate = (typeof PlaybackRate)[keyof typeof PlaybackRate];
+
 export interface CallAudioFileSlice {
 	startAt: number;
 	stopAt: number;

@@ -1,6 +1,6 @@
 <template>
   <section class="call-visualization">
-    <call-recording-empty v-if="!call.files?.[EngineCallFileType.FileTypeAudio]?.length" />
+    <call-recording-empty v-if="!hasAudio" />
     <call-wave
       v-else
       :call="call"
@@ -59,6 +59,10 @@ const { hasReadAccess: hasScreenRecordingsReadAccess } =
 	useScreenRecordingsAccess();
 
 const { t } = useI18n();
+
+const hasAudio = computed(
+	() => !!props.call.files?.[EngineCallFileType.FileTypeAudio]?.length,
+);
 
 const { hasReadAccess: hasEvaluationReadAccess } = useUserAccessControl(
 	WtObject.AuditRating,
