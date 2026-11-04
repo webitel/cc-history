@@ -18,10 +18,6 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({
-	name: 'CallWaveChannelVolume',
-});
-
 defineProps<{
 	volume: number;
 	muted: boolean;
