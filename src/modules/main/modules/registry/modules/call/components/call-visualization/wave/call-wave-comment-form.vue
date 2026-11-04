@@ -1,6 +1,6 @@
 <template>
   <wt-popup
-    class="comment-form"
+    class="call-wave-comment-form"
     size="sm"
     @close="close"
   >
@@ -8,7 +8,7 @@
       {{ t('registry.call.wave.addNote') }}
     </template>
     <template #main>
-      <div class="comment-form__range">
+      <div class="call-wave-comment-form__range">
         <wt-timepicker
           v-model:model-value="draft.startSec"
           :v="startSecValidation"
@@ -60,10 +60,6 @@ import {
 	RangeField,
 	type RangeField as RangeFieldType,
 } from './call-wave.types';
-
-defineOptions({
-	name: 'CallWaveCommentForm',
-});
 
 const props = withDefaults(
 	defineProps<{
@@ -250,7 +246,7 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.comment-form {
+.call-wave-comment-form {
 
   &__range {
     --timepicker-input-width: 100%;
