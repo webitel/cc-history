@@ -21,9 +21,6 @@ export default {
 	headerSection: {
 		filesLoaded: 'Tệp đã tải:',
 		zippingProgress: 'Tiến trình nén',
-		exportPopup: {
-			separator: 'Dấu phân cách',
-		},
 	},
 	export: {
 		audioRecording: 'Ghi âm | Các bản ghi âm',

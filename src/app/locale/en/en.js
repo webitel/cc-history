@@ -21,9 +21,6 @@ export default {
 	headerSection: {
 		filesLoaded: 'Files loaded: ',
 		zippingProgress: 'Zipping progress: ',
-		exportPopup: {
-			separator: 'Separator',
-		},
 	},
 	export: {
 		audioRecording: 'Audio recording | Audio recordings',
