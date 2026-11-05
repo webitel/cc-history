@@ -21,9 +21,6 @@ export default {
 	headerSection: {
 		filesLoaded: 'Файлів завантажено: ',
 		zippingProgress: 'Прогрес архівації: ',
-		exportPopup: {
-			separator: 'Розділювач',
-		},
 	},
 	export: {
 		audioRecording: 'Аудіозапис | Аудіозаписи',

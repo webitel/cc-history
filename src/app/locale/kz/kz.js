@@ -21,9 +21,6 @@ export default {
 	headerSection: {
 		filesLoaded: 'Жүктеп алынған файл:',
 		zippingProgress: 'Мұрағаттау прогресі',
-		exportPopup: {
-			separator: 'Бөлгіш',
-		},
 	},
 	export: {
 		audioRecording: 'Аудиожазба | Аудиожазбалар',

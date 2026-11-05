@@ -19,9 +19,6 @@ export default {
 	headerSection: {
 		filesLoaded: 'Yuklangan fayl:',
 		zippingProgress: 'Arxivlash jarayoni',
-		exportPopup: {
-			separator: 'Ajratgich',
-		},
 	},
 	export: {
 		audioRecording: 'Audio yozuv | Audio yozuvlar',
