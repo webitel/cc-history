@@ -98,9 +98,11 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(event: 'edit-range'): void;
-	(event: 'delete'): void;
-	(event: 'editing-change', value: boolean): void;
+	'edit-range': [];
+	delete: [];
+	'editing-change': [
+		value: boolean,
+	];
 }>();
 
 const { t } = useI18n();
@@ -162,7 +164,7 @@ async function saveNote() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .call-wave-comment-card {
   display: flex;
   align-items: flex-start;
@@ -170,46 +172,46 @@ async function saveNote() {
   box-sizing: border-box;
   width: v-bind(cardWidth);
   padding: var(--spacing-xs);
-  border-radius: var(--p-overlay-popover-border-radius);
+  border-radius: var(--call-wave-popover-border-radius);
   background: var(--wt-tooltip-background-color);
   box-shadow: var(--tooltip-elevation);
+}
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: var(--spacing-2xs);
-    min-width: 0;
-  }
+.call-wave-comment-card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--spacing-2xs);
+  min-width: 0;
+}
 
-  &__range {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-xs);
-  }
+.call-wave-comment-card__range {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
+}
 
-  &__author {
-    min-width: 0;
-  }
+.call-wave-comment-card__author {
+  min-width: 0;
+}
 
-  &__author-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+.call-wave-comment-card__author-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-  &__note {
-    max-height: 120px;
-    overflow: auto;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
+.call-wave-comment-card__note {
+  max-height: 120px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
 
-  &__actions {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-xs);
-  }
+.call-wave-comment-card__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xs);
 }
 </style>

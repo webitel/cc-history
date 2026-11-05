@@ -40,30 +40,30 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(event: 'save'): void;
-	(event: 'cancel'): void;
+	save: [];
+	cancel: [];
 }>();
 
 const { t } = useI18n();
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .call-wave-range-edit-bar {
   display: flex;
   padding: var(--spacing-xs);
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-xs);
+}
 
-  &__title {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-  }
+.call-wave-range-edit-bar__title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
 
-  &__actions {
-    display: flex;
-    gap: var(--spacing-xs);
-  }
+.call-wave-range-edit-bar__actions {
+  display: flex;
+  gap: var(--spacing-xs);
 }
 </style>

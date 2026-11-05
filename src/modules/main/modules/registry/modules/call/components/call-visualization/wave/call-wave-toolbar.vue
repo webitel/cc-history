@@ -71,27 +71,27 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(event: 'update:file', value: unknown): void;
-	(event: 'toggle-holds'): void;
-	(event: 'toggle-comments'): void;
-	(event: 'add-note'): void;
-	(event: 'download'): void;
+	'update:file': [
+		value: unknown,
+	];
+	'toggle-holds': [];
+	'toggle-comments': [];
+	'add-note': [];
+	download: [];
 }>();
 
 const { t } = useI18n();
 </script>
 
-<style lang="scss" scoped>
-.call-wave-toolbar {
-  &__file-select {
-    width: 280px;
-  }
+<style scoped>
+.call-wave-toolbar__file-select {
+  width: 280px;
+}
 
-  &__layers {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-xs);
-  }
+.call-wave-toolbar__layers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
 }
 </style>
