@@ -73,15 +73,16 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(event: 'save', value: CommentFormDraft): void;
-	(event: 'close'): void;
-	(
-		event: 'update-draft-range',
+	save: [
+		value: CommentFormDraft,
+	];
+	close: [];
+	'update-draft-range': [
 		value: {
 			startSec: number;
 			endSec: number;
 		},
-	): void;
+	];
 }>();
 
 const { t } = useI18n();
@@ -245,19 +246,15 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped>
-.call-wave-comment-form {
+<style scoped>
+.call-wave-comment-form__range {
+  --timepicker-input-width: 100%;
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
 
-  &__range {
-    --timepicker-input-width: 100%;
-
-    display: flex;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
-
-    .wt-timepicker {
-      flex: 1;
-    }
-  }
+.call-wave-comment-form__range .wt-timepicker {
+  flex: 1;
 }
 </style>

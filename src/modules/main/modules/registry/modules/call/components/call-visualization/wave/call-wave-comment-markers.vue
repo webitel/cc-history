@@ -58,8 +58,12 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(event: 'active-change', value: WaveAnnotation | null): void;
-	(event: 'delete', value: WaveAnnotation): void;
+	'active-change': [
+		value: WaveAnnotation | null,
+	];
+	delete: [
+		value: WaveAnnotation,
+	];
 }>();
 
 // Lets the pointer travel from an avatar to its card without closing it.
@@ -130,47 +134,47 @@ watch(activeMarker, (marker) => {
 onBeforeUnmount(closeCard);
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .call-wave-comment-markers {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  // Above the wavesurfer regions container (z-index: 5), so avatars get the pointer.
+  /* Above the wavesurfer regions container (z-index: 5), so avatars get the pointer. */
   z-index: 6;
+}
 
-  &__wrapper {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-  }
+.call-wave-comment-markers__wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
 
-  &__avatar {
-    position: absolute;
-    display: flex;
-    // Same as the card padding, so the avatar does not move when the card opens over it.
-    padding: var(--spacing-xs);
-    border: none;
-    border-radius: var(--p-overlay-popover-border-radius);
-    background: var(--wt-tooltip-background-color);
-    box-shadow: var(--tooltip-elevation);
-    cursor: pointer;
-    pointer-events: auto;
+.call-wave-comment-markers__avatar {
+  position: absolute;
+  display: flex;
+  /* Same as the card padding, so the avatar does not move when the card opens over it. */
+  padding: var(--spacing-xs);
+  border: none;
+  border-radius: var(--call-wave-popover-border-radius);
+  background: var(--wt-tooltip-background-color);
+  box-shadow: var(--tooltip-elevation);
+  cursor: pointer;
+  pointer-events: auto;
+}
 
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      border: var(--spacing-2xs) solid transparent;
-      border-top: none;
-      border-bottom-color: var(--wt-tooltip-background-color);
-      transform: translateX(-50%);
-    }
-  }
+.call-wave-comment-markers__avatar::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  border: var(--spacing-2xs) solid transparent;
+  border-top: none;
+  border-bottom-color: var(--wt-tooltip-background-color);
+  transform: translateX(-50%);
+}
 
-  &__card {
-    position: absolute;
-    pointer-events: auto;
-  }
+.call-wave-comment-markers__card {
+  position: absolute;
+  pointer-events: auto;
 }
 </style>

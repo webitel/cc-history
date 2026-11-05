@@ -23,5 +23,9 @@ defineProps<{
 	muted: boolean;
 }>();
 
-const emit = defineEmits<(event: 'update:volume', value: number) => void>();
+const emit = defineEmits<{
+	'update:volume': [
+		value: number,
+	];
+}>();
 </script>
