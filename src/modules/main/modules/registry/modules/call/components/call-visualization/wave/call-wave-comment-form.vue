@@ -1,45 +1,50 @@
 <template>
-  <section class="comment-form">
-    <wt-timepicker
-      v-model:model-value="draft.startSec"
-      :v="startSecValidation"
-      :custom-validators="startCustomValidation"
-      :label="$t('reusable.from')"
-    />
-    <wt-timepicker
-      v-model:model-value="draft.endSec"
-      :v="endSecValidation"
-      :custom-validators="endCustomValidation"
-      :label="$t('reusable.to')"
-    />
-    <div class="comment-form-textarea">
+  <wt-popup
+    class="call-wave-comment-form"
+    size="sm"
+    @close="close"
+  >
+    <template #title>
+      {{ t('registry.call.wave.addNote') }}
+    </template>
+    <template #main>
+      <div class="call-wave-comment-form__range">
+        <wt-timepicker
+          v-model:model-value="draft.startSec"
+          :v="startSecValidation"
+          :custom-validators="startCustomValidation"
+          :label="t('reusable.from')"
+        />
+        <wt-timepicker
+          v-model:model-value="draft.endSec"
+          :v="endSecValidation"
+          :custom-validators="endCustomValidation"
+          :label="t('reusable.to')"
+        />
+      </div>
       <wt-textarea
         v-model:model-value="draft.note"
-        class="comment-form-textarea__textarea wt-scrollbar"
-        :class="{'comment-form-textarea--expanded': isTextareaExpanded}"
-        :label="$t('registry.call.comment', 1)"
+        class="wt-scrollbar"
+        :rows="8"
+        :placeholder="t('registry.call.wave.noteText')"
       />
-      <wt-icon-btn
-        class="comment-form-textarea__expand-btn"
-        icon="expand"
-        size="sm"
-        @click="expandTextarea"
-      />
-    </div>
-    <wt-button
-      :disabled="disableSaving"
-      @click="saveComment"
-    >
-      {{ $t('reusable.save') }}
-    </wt-button>
-    <wt-button
-      v-if="draft.id"
-      color="error"
-      @click="deleteComment"
-    >
-      {{ $t('reusable.delete') }}
-    </wt-button>
-  </section>
+    </template>
+    <template #actions>
+      <wt-button
+        :disabled="disableSaving"
+        :loading="isSaving"
+        @click="saveComment"
+      >
+        {{ t('reusable.add') }}
+      </wt-button>
+      <wt-button
+        color="secondary"
+        @click="close"
+      >
+        {{ t('reusable.cancel') }}
+      </wt-button>
+    </template>
+  </wt-popup>
 </template>
 
 <script setup lang="ts">
@@ -54,28 +59,30 @@ import {
 	type NewCommentDraft,
 	RangeField,
 	type RangeField as RangeFieldType,
-	type WaveAnnotation,
 } from './call-wave.types';
 
-defineOptions({
-	name: 'CallWaveCommentForm',
-});
-
-const props = defineProps<{
-	callDuration: number;
-	comment: WaveAnnotation | NewCommentDraft | null;
-}>();
+const props = withDefaults(
+	defineProps<{
+		callDuration: number;
+		comment: NewCommentDraft;
+		isSaving?: boolean;
+	}>(),
+	{
+		isSaving: false,
+	},
+);
 
 const emit = defineEmits<{
-	(event: 'save', value: CommentFormDraft): void;
-	(event: 'delete'): void;
-	(
-		event: 'update-draft-range',
+	save: [
+		value: CommentFormDraft,
+	];
+	close: [];
+	'update-draft-range': [
 		value: {
 			startSec: number;
 			endSec: number;
 		},
-	): void;
+	];
 }>();
 
 const { t } = useI18n();
@@ -85,7 +92,6 @@ const draft = reactive<CommentFormDraft>({
 	startSec: 0,
 	endSec: 0,
 });
-const isTextareaExpanded = ref(false);
 const lastEditedField = ref<RangeFieldType | null>(null);
 
 const minimalEndCommentValue = computed(() =>
@@ -146,6 +152,7 @@ const endSecValidation = computed(() => draftValidation.value?.endSec);
 
 const disableSaving = computed(() => {
 	const hasInvalidRange = Number(draft.startSec) > Number(draft.endSec);
+	if (!draft.note.trim()) return true;
 	const validation = draftValidation.value;
 	if (!validation) return true;
 
@@ -173,37 +180,21 @@ const endCustomValidation = computed(() =>
 	customValidation(minimalEndCommentValue.value, props.callDuration),
 );
 
-function expandTextarea() {
-	isTextareaExpanded.value = !isTextareaExpanded.value;
-}
-
-function setOptionalDraftField(
-	key: 'id' | 'fileId',
-	value: string | undefined,
-) {
-	if (value) {
-		draft[key] = value;
-		return;
-	}
-	delete draft[key];
-}
-
-function initDraft(newDraft: WaveAnnotation | NewCommentDraft | null) {
-	if (!newDraft) return;
-	const value = deepCopy(newDraft);
-	draft.note = value.note ?? '';
-	draft.startSec = value.startSec ?? 0;
-	draft.endSec = value.endSec ?? 0;
-	setOptionalDraftField('fileId', value.fileId);
-	setOptionalDraftField('id', 'id' in value ? value.id : undefined);
+function initDraft({ note, startSec, endSec, fileId }: NewCommentDraft) {
+	Object.assign(draft, {
+		note,
+		startSec,
+		endSec,
+		fileId,
+	});
 }
 
 function saveComment() {
 	emit('save', deepCopy(draft));
 }
 
-function deleteComment() {
-	emit('delete');
+function close() {
+	emit('close');
 }
 
 function emitDraftRange() {
@@ -255,46 +246,15 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped>
-@use '@webitel/ui-sdk/src/css/main' as *;
-
-.comment-form {
+<style scoped>
+.call-wave-comment-form__range {
+  --timepicker-input-width: 100%;
   display: flex;
-  align-items: flex-start;
   gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
 
-  .wt-timepicker {
-    flex-grow: 0;
-    flex-basis: auto;
-  }
-
-  .comment-form-textarea {
-    flex-grow: 1;
-    position: relative;
-
-    &__textarea::v-deep {
-      .wt-textarea__textarea {
-        min-height: 0;
-        height: 38px;
-        padding-right: 50px;
-      }
-    }
-
-    &--expanded::v-deep {
-      .wt-textarea__textarea {
-        height: 150px;
-      }
-    }
-
-    &__expand-btn {
-      position: absolute;
-      right: 30px;
-      top: 38px
-    }
-  }
-
-  .wt-button {
-    margin-top: 26px; // In order to position button correctly in center of inputs
-  }
+.call-wave-comment-form__range .wt-timepicker {
+  flex: 1;
 }
 </style>

@@ -33,6 +33,7 @@ import { useScreenRecordingsAccess } from '../../../../composables/useScreenReco
 import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallEvaluation from '../../modules/call-audit/components/call-audit-section.vue';
 import CallRecordingEmpty from './call-recording-empty.vue';
+import './call-visualization-tokens.css';
 import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
 import type { CallWaveCallRecord } from './wave/call-wave.types';
 import CallWave from './wave/call-wave.vue';
@@ -105,10 +106,7 @@ const tabs = computed((): VisualizationTab[] => {
 const currentTab = ref<VisualizationTab>(tabValues.value.TRANSCRIPT);
 </script>
 
-<style
-  lang="scss"
-  scoped
->
+<style scoped>
 .call-visualization {
   display: flex;
   flex-direction: column;
