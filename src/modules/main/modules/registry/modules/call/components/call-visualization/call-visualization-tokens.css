@@ -1,0 +1,11 @@
+/*
+ * PrimeVue tokens used outside PrimeVue components, all in one place.
+ * The old semantic has no twins for them: its colors differ from Figma or are missing.
+ * On :root, because wavesurfer reads the wave colors from document.documentElement.
+ */
+:root {
+	--call-visualization-surface-color: var(--p-secondary-highlight-color);
+	--call-visualization-border-radius: var(--p-border-radius-lg);
+	--call-wave-first-channel-color: var(--p-success-color);
+	--call-wave-second-channel-color: var(--p-primary-color);
+}

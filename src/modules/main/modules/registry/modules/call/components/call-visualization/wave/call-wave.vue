@@ -503,11 +503,11 @@ onBeforeUnmount(async () => {
 }
 
 :deep(.wavesurfer-mount > div)::part(timeline) {
-  background-color: var(--p-secondary-highlight-color);
+  background-color: var(--call-visualization-surface-color);
 }
 
 :deep(.wavesurfer-mount > div)::part(timeline-notch) {
-  border-left-color: var(--p-secondary-color);
+  border-left-color: var(--secondary-color);
 }
 
 /* Hover plugin animates opacity/transform and may briefly show x=0 on quick pointer leave/enter. */
