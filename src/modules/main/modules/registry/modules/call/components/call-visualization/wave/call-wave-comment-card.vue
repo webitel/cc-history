@@ -14,7 +14,14 @@
         </p>
       </header>
       <wt-divider />
-      <span class="typo-body-2">{{ rangeLabel }}</span>
+      <div class="call-wave-comment-card__range">
+        <span class="typo-body-2">{{ rangeLabel }}</span>
+        <wt-icon-btn
+          icon="edit"
+          :disabled="isEditing"
+          @click="emit('edit-range')"
+        />
+      </div>
       <wt-divider />
 
       <wt-textarea
@@ -91,6 +98,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
+	'edit-range': [];
 	delete: [];
 	'editing-change': [
 		value: boolean,
@@ -175,6 +183,13 @@ async function saveNote() {
   flex: 1;
   gap: var(--spacing-2xs);
   min-width: 0;
+}
+
+.call-wave-comment-card__range {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
 }
 
 .call-wave-comment-card__author {

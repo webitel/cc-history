@@ -59,6 +59,8 @@ export default {
 				noteText: 'Note text',
 				created: 'Created',
 				edited: 'Edited',
+				changeNoteRange: 'Change note range',
+				editSuccessful: 'Edit successful',
 				errorEditing: 'Error editing',
 			},
 			stt: {

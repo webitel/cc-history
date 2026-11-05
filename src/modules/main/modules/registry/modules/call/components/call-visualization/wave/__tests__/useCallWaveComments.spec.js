@@ -1,11 +1,14 @@
 import { mount } from '@vue/test-utils';
-import { computed, defineComponent, h } from 'vue';
+import { computed, defineComponent, h, ref } from 'vue';
 
 import { useCallWaveComments } from '../composables/useCallWaveComments';
 
 const regionsMock = ({ draftRange = null } = {}) => ({
+	rangeEditComment: ref(null),
 	getDraftRange: () => draftRange,
+	getRangeEditValue: () => null,
 	clearDraftSelectionRegions: vi.fn(),
+	stopRangeEdit: vi.fn(),
 });
 
 const setupComments = (regions) => {

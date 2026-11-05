@@ -57,6 +57,8 @@ export default {
 				noteText: 'Izoh matni',
 				created: 'Yaratildi',
 				edited: 'Tahrirlandi',
+				changeNoteRange: 'Izoh oralig‘ini o‘zgartirish',
+				editSuccessful: 'Tahrirlash muvaffaqiyatli',
 				errorEditing: 'Tahrirlash xatosi',
 			},
 			stt: {

@@ -60,6 +60,8 @@ export default {
 				noteText: 'Texto de la nota',
 				created: 'Creado',
 				edited: 'Editado',
+				changeNoteRange: 'Cambiar el rango de la nota',
+				editSuccessful: 'Edición exitosa',
 				errorEditing: 'Error de edición',
 			},
 			stt: {

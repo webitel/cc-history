@@ -59,6 +59,8 @@ export default {
 				noteText: 'Textul notei',
 				created: 'Creat',
 				edited: 'Editat',
+				changeNoteRange: 'Modificarea intervalului notei',
+				editSuccessful: 'Editare reușită',
 				errorEditing: 'Eroare la editare',
 			},
 			stt: {

@@ -40,6 +40,7 @@ export function useCallWaveComments({
 
 	const newComment = ref<NewCommentDraft | null>(null);
 	const isAddingComment = ref(false);
+	const isRangeSaving = ref(false);
 
 	function getCallDurationSec(): number {
 		return Math.round(getPlayer()?.getDuration() ?? 0);
@@ -86,6 +87,37 @@ export function useCallWaveComments({
 		);
 	}
 
+	// A note being added and a range being edited would both own the draft selection.
+	function startCommentRangeEdit(comment: WaveAnnotation) {
+		closeAddNote();
+		regions.startRangeEdit(comment);
+	}
+
+	async function saveCommentRange() {
+		const comment = regions.rangeEditComment.value;
+		const newRange = regions.getRangeEditValue();
+		if (!comment || !newRange) {
+			return;
+		}
+
+		isRangeSaving.value = true;
+		const isSaved = await saveComment(
+			{
+				...comment,
+				...newRange,
+			},
+			{
+				successText: t('registry.call.wave.editSuccessful'),
+				errorText: t('registry.call.wave.errorEditing'),
+			},
+		);
+		isRangeSaving.value = false;
+
+		if (isSaved) {
+			regions.stopRangeEdit();
+		}
+	}
+
 	function askCommentDeleteConfirmation(comment: WaveAnnotation) {
 		deleteConfirmation.askDeleteConfirmation({
 			deleted: comment,
@@ -93,15 +125,24 @@ export function useCallWaveComments({
 		});
 	}
 
+	function resetCommentActions() {
+		regions.stopRangeEdit();
+		closeAddNote();
+	}
+
 	return {
 		newComment,
 		isAddingComment,
+		isRangeSaving,
 		deleteConfirmation,
 		getCallDurationSec,
 		openAddNote,
 		closeAddNote,
 		addComment,
 		saveCommentNote,
+		startCommentRangeEdit,
+		saveCommentRange,
 		askCommentDeleteConfirmation,
+		resetCommentActions,
 	};
 }

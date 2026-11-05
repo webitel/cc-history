@@ -59,6 +59,8 @@ export default {
 				noteText: 'Treść notatki',
 				created: 'Utworzono',
 				edited: 'Edytowano',
+				changeNoteRange: 'Zmiana zakresu notatki',
+				editSuccessful: 'Edycja zakończona pomyślnie',
 				errorEditing: 'Błąd edycji',
 			},
 			stt: {

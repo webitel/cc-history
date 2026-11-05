@@ -45,6 +45,16 @@ describe('Call wave comment card', () => {
 		);
 	});
 
+	it('emits edit-range from the range edit icon', () => {
+		const wrapper = mountCard();
+		wrapper
+			.findComponent({
+				name: 'wt-icon-btn',
+			})
+			.vm.$emit('click');
+		expect(wrapper.emitted()['edit-range']).toBeTruthy();
+	});
+
 	it('does not allow saving an unchanged note', async () => {
 		const wrapper = mountCard();
 		await findButtons(wrapper)[0].vm.$emit('click');
