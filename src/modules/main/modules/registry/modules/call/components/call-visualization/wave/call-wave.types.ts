@@ -76,11 +76,6 @@ export interface WaveAnnotation {
 	};
 }
 
-export interface CommentDragSelectionOptions {
-	color: string;
-	resize: boolean;
-}
-
 export interface NewCommentDraft {
 	fileId?: string;
 	startSec: string;

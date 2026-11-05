@@ -9,4 +9,7 @@
 	--call-wave-first-channel-color: var(--p-success-color);
 	--call-wave-second-channel-color: var(--p-primary-color);
 	--call-wave-hold-color: var(--p-warn-color);
+	--call-wave-comment-color: var(--p-comment-external-color);
+	--call-wave-comment-foreground-color: var(--p-comment-external-foreground);
+	--call-wave-popover-border-radius: var(--p-overlay-popover-border-radius);
 }
