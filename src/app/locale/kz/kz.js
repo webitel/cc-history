@@ -55,6 +55,13 @@ export default {
 				wave: 'Қоңырауды белгілеу',
 				noAudio: 'Қоңыраудың аудиожазбасы жоқ',
 				recordingDeleted: 'Өкінішке қарай, қоңырау жазбасы жойылды',
+				addNote: 'Түсініктеме қосу',
+				noteText: 'Түсініктеме мәтіні',
+				created: 'Құрылды',
+				edited: 'Өңделді',
+				changeNoteRange: 'Түсініктеме ауқымын өзгерту',
+				editSuccessful: 'Өңдеу сәтті',
+				errorEditing: 'Өңдеу қатесі',
 			},
 			stt: {
 				noTranscript: 'Файлдың транскрипциясы жоқ',
