@@ -50,24 +50,26 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(event: 'toggle-rate', value: number): void;
-	(event: 'play-pause'): void;
-	(event: 'zoom-in'): void;
-	(event: 'zoom-out'): void;
+	'toggle-rate': [
+		value: number,
+	];
+	'play-pause': [];
+	'zoom-in': [];
+	'zoom-out': [];
 }>();
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .call-wave-playback-controls {
   display: flex;
   justify-content: space-between;
   gap: var(--spacing-xs);
   padding: var(--spacing-2xs);
+}
 
-  &__group {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-  }
+.call-wave-playback-controls__group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
 }
 </style>
