@@ -180,7 +180,8 @@ const actions = {
 		context.commit('SET_MAIN_CALL', {
 			...context.state.mainCall,
 			annotations: [
-				...context.state.mainCall.annotations,
+				// A call without comments comes without the field.
+				...(context.state.mainCall.annotations || []),
 				responseAnnotation,
 			],
 		});
