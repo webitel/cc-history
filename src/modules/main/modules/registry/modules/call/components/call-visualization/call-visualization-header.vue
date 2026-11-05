@@ -15,32 +15,28 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .call-visualization-header {
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: var(--spacing-xs);
   align-items: center;
   flex-wrap: nowrap;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--secondary-color);
-  border-radius: var(--border-radius);
+  padding: var(--spacing-xs);
+  background: var(--call-visualization-surface-color);
+  border-radius: var(--call-visualization-border-radius);
+}
 
-  .call-visualization-header__main {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-  }
+.call-visualization-header__main {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
 
-  .call-visualization-header__actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-xs);
-  }
-
-  .call-visualization-header__actions {
-    justify-content: flex-end;
-  }
+.call-visualization-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  justify-content: flex-end;
 }
 </style>
