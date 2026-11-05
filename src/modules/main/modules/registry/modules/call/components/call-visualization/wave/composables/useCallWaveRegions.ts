@@ -25,9 +25,9 @@ const HOLD_REGION_ID_PREFIX = 'hold-';
 
 // Color tokens have no hsl-channel twins, so region transparency is mixed in.
 const HOLD_RANGE_COLOR =
-	'color-mix(in srgb, var(--p-warn-color) 20%, transparent)';
+	'color-mix(in srgb, var(--call-wave-hold-color) 20%, transparent)';
 // Zero-length regions are drawn as a thin line, so they need a solid color to be seen.
-const HOLD_POINT_COLOR = 'var(--p-warn-color)';
+const HOLD_POINT_COLOR = 'var(--call-wave-hold-color)';
 
 export interface UseCallWaveRegionsOptions {
 	regionsPlugin: RegionsPlugin;

@@ -8,4 +8,5 @@
 	--call-visualization-border-radius: var(--p-border-radius-lg);
 	--call-wave-first-channel-color: var(--p-success-color);
 	--call-wave-second-channel-color: var(--p-primary-color);
+	--call-wave-hold-color: var(--p-warn-color);
 }
