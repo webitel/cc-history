@@ -20,12 +20,14 @@
           @refresh="loadDataList"
         />
 
-        <history-export-action
-          :data-list="dataList"
-          :fields="fields"
+        <export-action
           :filters="filters"
+          :fields="fields"
           :selected="selected"
+          :disabled="!dataList.length || !hasExportDataGridAccess"
+          filename="history"
           class="history-action"
+          @fetch="APIRepository.history.exportHistoryToFile"
         />
 
         <history-download-action
@@ -47,15 +49,18 @@
 
 <script lang="ts" setup>
 import { DynamicFilterSearchComponent as DynamicFilterSearch } from '@webitel/ui-datalist/filters';
+import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
+import ExportAction from '@webitel/ui-sdk/src/modules/CSVExport/components/export-action.vue';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import APIRepository from '../../../app/api/APIRepository';
 import { SearchMode } from '../../filters/enums/SearchMode';
 import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store.ts';
+import { useUserinfoStore } from '../../userinfo/stores/userinfoStore';
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryDownloadAction from './actions/history-download-action.vue';
-import HistoryExportAction from './actions/history-export-action.vue';
 import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
 
 const { t } = useI18n();
@@ -79,6 +84,14 @@ const fields = computed(() => {
 });
 
 const filters = computed(() => filtersManager.value.getAllValues());
+
+const userinfoStore = useUserinfoStore();
+
+const hasExportDataGridAccess = computed(() =>
+	userinfoStore.hasSpecialGlobalActionAccess(
+		SpecialGlobalAction.ExportDataGrid,
+	),
+);
 
 const searchModeOptions = computed(() => {
 	return Object.values(SearchMode).map((mode) => {
