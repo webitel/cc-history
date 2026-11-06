@@ -18,10 +18,6 @@ export default {
 		askConfirmation:
 			'Bạn có chắc chắn muốn xóa {count} bản ghi? | Bạn có chắc chắn muốn xóa {count} bản ghi?',
 	},
-	headerSection: {
-		filesLoaded: 'Tệp đã tải:',
-		zippingProgress: 'Tiến trình nén',
-	},
 	export: {
 		audioRecording: 'Ghi âm | Các bản ghi âm',
 		videoRecording: 'Ghi hình | Các bản ghi hình',
