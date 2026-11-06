@@ -57,7 +57,7 @@
 		"@vitest/coverage-v8": "^4.x",
 		"@vue/test-utils": "^2.x",
 		"globals": "^17.x",
-		"happy-dom": "^20.10.6",
+		"happy-dom": "^21.0.4",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.x",
 		"pinia-plugin-persistedstate": "^4.2.0",
