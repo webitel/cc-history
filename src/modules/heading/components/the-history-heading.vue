@@ -30,11 +30,12 @@
           @fetch="APIRepository.history.exportHistoryToFile"
         />
 
-        <history-download-action
-          :data-list="dataList"
-          :filters="filters"
+        <download-action
           :selected="selected"
+          :disabled="!dataList.length"
+          filename="history"
           class="history-action"
+          @fetch="fetchHistoryPage"
         />
 
         <history-delete-action
@@ -49,8 +50,10 @@
 
 <script lang="ts" setup>
 import { DynamicFilterSearchComponent as DynamicFilterSearch } from '@webitel/ui-datalist/filters';
+import type { DownloadFetch } from '@webitel/ui-sdk/modules/FilesExport';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 import ExportAction from '@webitel/ui-sdk/src/modules/CSVExport/components/export-action.vue';
+import DownloadAction from '@webitel/ui-sdk/src/modules/FilesExport/components/download-action.vue';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -60,8 +63,8 @@ import { SearchMode } from '../../filters/enums/SearchMode';
 import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store.ts';
 import { useUserinfoStore } from '../../userinfo/stores/userinfoStore';
 import HistoryDeleteAction from './actions/history-delete-action.vue';
-import HistoryDownloadAction from './actions/history-download-action.vue';
 import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
+import { buildHistoryDownloadParams } from './buildHistoryDownloadParams';
 
 const { t } = useI18n();
 const registryStore = useRegistryStore();
@@ -84,6 +87,14 @@ const fields = computed(() => {
 });
 
 const filters = computed(() => filtersManager.value.getAllValues());
+
+const fetchHistoryPage: DownloadFetch = (params) =>
+	APIRepository.history.getHistory(
+		buildHistoryDownloadParams({
+			...params,
+			filters: filters.value,
+		}),
+	);
 
 const userinfoStore = useUserinfoStore();
 
