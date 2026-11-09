@@ -282,6 +282,7 @@ import get from 'lodash-es/get';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import type { EngineHistoryCall } from 'webitel-sdk';
+import { getMediaUrlAuth } from '../../../../../app/scripts/getMediaUrlAuth';
 import TheHistoryColumnFilter from '../../../../filters/components/the-history-column-filter.vue';
 import { SearchMode } from '../../../../filters/enums/SearchMode';
 import { usePlayMedia } from '../composables/usePlayMedia.ts';
@@ -473,7 +474,9 @@ const closeScreenRecording = () => {
 };
 const setScreenRecording = (data) => {
 	currentScreenRecording.value = data;
-	currentScreenRecording.value.video = getMediaUrl(data.id);
+	currentScreenRecording.value.video = getMediaUrl(data.id, {
+		auth: getMediaUrlAuth(),
+	});
 	closePlayer();
 	isScreenRecordingOpen.value = true;
 };

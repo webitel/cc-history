@@ -67,6 +67,7 @@ import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmat
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { getMediaUrlAuth } from '../../../../../../../../../app/scripts/getMediaUrlAuth';
 import { useRecordingFilesAccess } from '../../../../../composables/useRecordingFilesAccess';
 import EmptyVideo from './_internals/assets/empty-video.svg';
 import EmptyVideoDark from './_internals/assets/empty-video-dark.svg';
@@ -88,7 +89,11 @@ const dataList = ref(props.files || []);
 const currentVideo = ref<EngineCallFile | null>(dataList.value[0] ?? null);
 
 const currentVideoUrl = computed(() => {
-	return currentVideo.value ? getMediaUrl(currentVideo.value.id) : '';
+	return currentVideo.value
+		? getMediaUrl(currentVideo.value.id, {
+				auth: getMediaUrlAuth(),
+			})
+		: '';
 });
 
 const { hasDeleteAccess } = useRecordingFilesAccess();

@@ -9,6 +9,7 @@
       delete: hasDeleteAccess,
     }"
     :on-delete-item="handleDeleteItem"
+    :get-media-url-auth="getMediaUrlAuth"
   >
     <template
       #header="{
@@ -63,6 +64,7 @@ import AgentPdfsTabSdk from '@webitel/ui-sdk/src/modules/AgentPdfs/components/ag
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+import { getMediaUrlAuth } from '../../../../../../../../../app/scripts/getMediaUrlAuth';
 import { useVideocallFilesAccess } from '../../../../../composables/useVideocallFilesAccess';
 import { usePdfsDataListStore } from './store/pdfs';
 

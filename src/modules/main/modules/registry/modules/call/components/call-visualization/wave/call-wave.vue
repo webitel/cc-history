@@ -140,6 +140,7 @@ import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmat
 import { computed, nextTick, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { useStore } from 'vuex';
 import type WaveSurfer from 'wavesurfer.js';
+import { getMediaUrlAuth } from '../../../../../../../../../app/scripts/getMediaUrlAuth';
 
 import CallRecordingEmpty from '../call-recording-empty.vue';
 import type { CallWaveCallRecord, WaveAnnotation } from './call-wave.types';
@@ -186,6 +187,7 @@ const fileOptions = computed(
 );
 const fileUrl = computed(() =>
 	getCallMediaUrl(file.value.id, {
+		auth: getMediaUrlAuth(),
 		download: true,
 	}),
 );
@@ -206,6 +208,7 @@ function setFile(payload: unknown) {
 const { exportFiles: downloadFile } = useFilesExport({
 	getFileURL: (item) =>
 		getCallMediaUrl(item.id as string, {
+			auth: getMediaUrlAuth(),
 			download: true,
 		}),
 	fetch: async () => ({

@@ -3,6 +3,7 @@ import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { useFilesExport } from '@webitel/ui-sdk/modules/FilesExport';
 import { type Ref, ref } from 'vue';
 import APIRepository from '../../../app/api/APIRepository';
+import { getMediaUrlAuth } from '../../../app/scripts/getMediaUrlAuth';
 
 export const useCallFilesExport = ({
 	filters,
@@ -21,6 +22,7 @@ export const useCallFilesExport = ({
 		useFilesExport({
 			getFileURL: (item) =>
 				getCallMediaUrl(item.id as string, {
+					auth: getMediaUrlAuth(),
 					download: true,
 				}),
 			fetch: async ({ page }) => {
