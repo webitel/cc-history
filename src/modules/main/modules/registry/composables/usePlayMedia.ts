@@ -10,6 +10,7 @@ import type {
 	VideoSrc,
 } from 'vidstack';
 import { ref } from 'vue';
+import { getMediaUrlAuth } from '../../../../../app/scripts/getMediaUrlAuth';
 
 export const usePlayMedia = () => {
 	const audioData = ref<
@@ -50,7 +51,9 @@ export const usePlayMedia = () => {
 		audioData.value = {
 			...mediaFile,
 			src: {
-				src: getCallMediaUrl(mediaFile.id),
+				src: getCallMediaUrl(mediaFile.id, {
+					auth: getMediaUrlAuth(),
+				}),
 				type: mediaFile.mimeType as AudioMimeType,
 			},
 		};
@@ -65,7 +68,9 @@ export const usePlayMedia = () => {
 			...mediaFile,
 			src: {
 				...mediaFile,
-				src: getCallMediaUrl(mediaFile.id),
+				src: getCallMediaUrl(mediaFile.id, {
+					auth: getMediaUrlAuth(),
+				}),
 				type: mediaFile.mimeType as VideoMimeType,
 			},
 			text: mediaFile.text,

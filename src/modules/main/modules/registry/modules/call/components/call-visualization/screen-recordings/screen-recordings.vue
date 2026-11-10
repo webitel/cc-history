@@ -2,7 +2,7 @@
   <wt-vidstack-player
     v-if="isVideoOpen && currentVideo"
     closable
-    :src="getMediaUrl(currentVideo.id)"
+    :src="getMediaUrl(currentVideo.id, { auth: getMediaUrlAuth() })"
     :title="currentVideo.viewName || currentVideo.name"
     :mime="currentVideo.mimeType"
     @close="closeVideo"
@@ -52,7 +52,7 @@
         <wt-image
           width="48px"
           overlay-icon="play"
-          :src="getMediaUrl(item.id, true)"
+          :src="getMediaUrl(item.id, { auth: getMediaUrlAuth(), isThumb: true })"
           alt=""
           @click="openVideo(item)"
         />
@@ -122,6 +122,7 @@ import { formatDate } from '@webitel/ui-sdk/utils';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
+import { getMediaUrlAuth } from '../../../../../../../../../app/scripts/getMediaUrlAuth';
 import { useScreenRecordingsAccess } from '../../../../../composables/useScreenRecordingsAccess';
 
 import { buildCallScreenRecordingArchiveParams } from './buildCallScreenRecordingArchiveParams';

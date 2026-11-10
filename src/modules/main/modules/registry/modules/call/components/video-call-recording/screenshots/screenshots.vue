@@ -57,7 +57,7 @@
           <wt-image
             width="48"
             overlay-icon="zoom-in"
-            :src="getMediaUrl(item.id, true)"
+            :src="getMediaUrl(item.id, { auth: getMediaUrlAuth(), isThumb: true })"
             alt=""
             @click="openScreenshot(item.id)"
           />
@@ -112,6 +112,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { EngineHistoryCall } from 'webitel-sdk';
+import { getMediaUrlAuth } from '../../../../../../../../../app/scripts/getMediaUrlAuth';
 import { useVideocallFilesAccess } from '../../../../../composables/useVideocallFilesAccess';
 
 import { headers } from './store/headers/headers';
@@ -164,8 +165,13 @@ const galleriaData = computed(() => {
 	return dataList.value
 		.filter((item) => item?.id && item.name)
 		.map((item) => ({
-			src: getMediaUrl(item.id, false),
-			thumbnailSrc: getMediaUrl(item.id, true),
+			src: getMediaUrl(item.id, {
+				auth: getMediaUrlAuth(),
+			}),
+			thumbnailSrc: getMediaUrl(item.id, {
+				auth: getMediaUrlAuth(),
+				isThumb: true,
+			}),
 			title: item.name,
 			alt: item.name,
 		}));
@@ -236,7 +242,10 @@ const downloadPdf = async () => {
 };
 
 const { exportFiles: downloadZip } = useFilesExport({
-	getFileURL: (item) => getMediaUrl(item.id as string, false),
+	getFileURL: (item) =>
+		getMediaUrl(item.id as string, {
+			auth: getMediaUrlAuth(),
+		}),
 	fetch: async () => ({
 		items: (selected.value.length
 			? selected.value
