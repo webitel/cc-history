@@ -1,7 +1,8 @@
 import './app/assets/icons/sprite';
 import './app/css/main.scss';
 
-import { reloadOnStaleChunk } from '@webitel/ui-sdk/scripts';
+import { setConfig as setApiServicesConfig } from '@webitel/api-services';
+import { eventBus, reloadOnStaleChunk } from '@webitel/ui-sdk/scripts';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 
@@ -25,6 +26,10 @@ const fetchConfig = async () => {
 
 // [Claude] after a release an open tab can request an old lazy chunk that is gone - reload instead of a white page
 reloadOnStaleChunk();
+
+setApiServicesConfig({
+	eventBus,
+});
 
 const pinia = createPinia();
 
