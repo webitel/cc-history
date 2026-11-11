@@ -3,7 +3,7 @@
     v-model:visible="galleriaVisible"
     v-model:active-index="galleriaActiveIndex"
     :value="galleriaData"
-    @download="downloadFile(dataList[galleriaActiveIndex].id, dataList[galleriaActiveIndex].name)"
+    @download="downloadScreenshot(dataList[galleriaActiveIndex])"
     :delete-disabled="!hasDeleteAccess"
     @delete="handleDeleteFromGalleria"
   />
@@ -27,6 +27,18 @@
           })
         "
       >
+        <template #download="{ action, onClick }">
+          <wt-loader
+            v-if="isZipDownloading"
+            :size="ComponentSize.SM"
+          />
+          <wt-icon-action
+            v-else
+            :action="action"
+            :disabled="!dataList.length"
+            @click="onClick"
+          />
+        </template>
       </wt-action-bar>
     </header>
 
@@ -68,9 +80,14 @@
         </template>
 
         <template #actions="{ item }">
+          <wt-loader
+            v-if="isFileDownloading(item.id)"
+            :size="ComponentSize.SM"
+          />
           <wt-icon-action
+            v-else
             action="download"
-            @click="downloadFile(item.id, item.name)"
+            @click="downloadScreenshot(item)"
           />
           <wt-icon-action
             action="delete"
@@ -96,7 +113,12 @@ import {
 	PdfServicesAPI,
 } from '@webitel/api-services/api';
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
-import { FormatDateMode, IconAction } from '@webitel/ui-sdk/enums';
+import { useDownloadAction } from '@webitel/ui-sdk/composables';
+import {
+	ComponentSize,
+	FormatDateMode,
+	IconAction,
+} from '@webitel/ui-sdk/enums';
 import {
 	type ExportedItem,
 	useFilesExport,
@@ -241,19 +263,40 @@ const downloadPdf = async () => {
 	}
 };
 
-const { exportFiles: downloadZip } = useFilesExport({
+const getZipItems = () =>
+	(selected.value.length ? selected.value : dataList.value) as ExportedItem[];
+
+const { exportFiles, downloadStatus: zipDownloadProgress } = useFilesExport({
 	getFileURL: (item) =>
 		getMediaUrl(item.id as string, {
 			auth: getMediaUrlAuth(),
 		}),
 	fetch: async () => ({
-		items: (selected.value.length
-			? selected.value
-			: dataList.value) as ExportedItem[],
+		items: getZipItems(),
 		next: false,
 	}),
 	filename: `screenshots-callId-${callId.value}`,
 });
+
+/* [Claude] separate instances: a row download must not spin the zip icon and vice versa */
+const { isLoading: isZipDownloading, runDownload: runZipDownload } =
+	useDownloadAction();
+const { isKeyLoading: isFileDownloading, runDownload: runFileDownload } =
+	useDownloadAction();
+
+const downloadZip = () =>
+	runZipDownload(exportFiles, {
+		progress: {
+			loaded: () => zipDownloadProgress.value.count,
+			// [Claude] taken at click, so changing the selection mid-download doesn't change the total
+			total: getZipItems().length,
+		},
+	});
+
+const downloadScreenshot = (item: ScreenshotFile) =>
+	runFileDownload(() => downloadFile(item.id, item.name), {
+		key: item.id,
+	});
 
 const handleDeleteFromGalleria = () => {
 	handleDelete([
