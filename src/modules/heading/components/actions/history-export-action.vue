@@ -2,15 +2,12 @@
   <div class="history-export-action">
     <wt-button
       :disabled="!dataList.length || !hasExportDataGridAccess"
+      :loading="isExporting"
       color="secondary"
       @click="handleExport"
     >
       {{ $t('reusable.export') }}
     </wt-button>
-    <files-counter
-      v-show="isCounterVisible"
-      :download-progress="downloadProgress"
-    />
     <wt-popup
       v-if="exportPopup"
       overflow
@@ -63,6 +60,7 @@
 import { useVuelidate } from '@vuelidate/core';
 import { required, requiredIf } from '@vuelidate/validators';
 import { EngineSystemSettingName } from '@webitel/api-services/gen/models';
+import { useDownloadAction } from '@webitel/ui-sdk/composables';
 import { FormatDateMode, TypesExportedSettings } from '@webitel/ui-sdk/enums';
 import { SpecialGlobalAction } from '@webitel/ui-sdk/modules/Userinfo';
 import {
@@ -77,7 +75,6 @@ import { useRoute } from 'vue-router';
 import APIRepository from '../../../../app/api/APIRepository';
 import { useUserinfoStore } from '../../../userinfo/stores/userinfoStore';
 import ConfigurationAPI from '../../api/configuration';
-import FilesCounter from './files-counter.vue';
 
 interface Props {
 	dataList: Record<string, unknown>[];
@@ -113,10 +110,7 @@ const { CSVExportInstance, initCSVExport, exportCSV } = useCSVExport({
 	selected: selectedIds,
 });
 
-const EXPORT_COUNTER_DELAY = 1000;
-
 const downloadProgress = ref(0);
-const isCounterVisible = ref(false);
 
 function wrapFetch(fetchMethod: FetchMethod): FetchMethod {
 	return async (params) => {
@@ -126,16 +120,16 @@ function wrapFetch(fetchMethod: FetchMethod): FetchMethod {
 	};
 }
 
-async function runExport(exportFn: () => Promise<unknown>) {
-	downloadProgress.value = 0;
-	isCounterVisible.value = true;
+const { isLoading: isExporting, runDownload } = useDownloadAction();
 
-	try {
-		await exportFn();
-		await new Promise((resolve) => setTimeout(resolve, EXPORT_COUNTER_DELAY));
-	} finally {
-		isCounterVisible.value = false;
-	}
+/* [Claude] backend gives no total count, so the toast shows only the number of exported records */
+function runExport(exportFn: () => Promise<unknown>) {
+	downloadProgress.value = 0;
+	return runDownload(exportFn, {
+		progress: {
+			loaded: downloadProgress,
+		},
+	});
 }
 
 const XLSExportInstance = ref(null);

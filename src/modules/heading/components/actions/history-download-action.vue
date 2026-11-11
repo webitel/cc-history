@@ -10,11 +10,6 @@
 		>
 			{{ $t('reusable.download') }}...
 		</wt-button-select>
-		<files-counter
-			v-show="isLoading"
-			:download-progress="filesDownloadProgress.count || transcriptsDownloadProgress.count"
-			:zipping-progress="filesZippingProgress.percent || transcriptsZippingProgress.percent"
-		/>
 	</div>
 </template>
 
@@ -22,12 +17,12 @@
 	lang="ts"
 	setup
 >
+import { useDownloadAction } from '@webitel/ui-sdk/composables';
 import { computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useCallFilesExport } from '../../composables/useCallFilesExport';
 import { useCallTranscriptsExport } from '../../composables/useCallTranscriptsExport';
-import FilesCounter from './files-counter.vue';
 
 const props = defineProps<{
 	dataList: Record<string, unknown>[];
@@ -45,9 +40,7 @@ const {
 	exportAudioFiles,
 	exportVideoFiles,
 	exportScreenRecordings,
-	isLoading: isFilesLoading,
 	downloadStatus: filesDownloadProgress,
-	zippingStatus: filesZippingProgress,
 } = useCallFilesExport({
 	filters,
 	selected,
@@ -55,38 +48,44 @@ const {
 
 const {
 	exportFiles: exportTranscripts,
-	isLoading: isTranscriptsLoading,
 	downloadStatus: transcriptsDownloadProgress,
-	zippingStatus: transcriptsZippingProgress,
 } = useCallTranscriptsExport({
 	filters,
 	selected,
 });
 
-const isLoading = computed(
-	() => isFilesLoading.value || isTranscriptsLoading.value,
-);
+const { isLoading, runDownload } = useDownloadAction();
+
+/* [Claude] backend gives no total count, so the toast shows only the number of downloaded files */
+const withProgress = (exportFn: () => Promise<void>) => () =>
+	runDownload(exportFn, {
+		progress: {
+			loaded: () =>
+				filesDownloadProgress.value.count ||
+				transcriptsDownloadProgress.value.count,
+		},
+	});
 
 const downloadOptions = computed(() => [
 	{
 		value: 'audio-recording',
 		text: t('export.audioRecording', 2),
-		handler: exportAudioFiles,
+		handler: withProgress(exportAudioFiles),
 	},
 	{
 		value: 'video-recording',
 		text: t('export.videoRecording', 2),
-		handler: exportVideoFiles,
+		handler: withProgress(exportVideoFiles),
 	},
 	{
 		value: 'screen-recording',
 		text: t('export.screenRecording', 2),
-		handler: exportScreenRecordings,
+		handler: withProgress(exportScreenRecordings),
 	},
 	{
 		value: 'transcript',
 		text: t('export.transcription', 2),
-		handler: exportTranscripts,
+		handler: withProgress(exportTranscripts),
 	},
 ]);
 </script>

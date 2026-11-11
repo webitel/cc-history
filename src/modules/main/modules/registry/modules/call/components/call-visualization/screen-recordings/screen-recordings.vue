@@ -13,7 +13,6 @@
     </h3>
     <wt-action-bar
       :include="[IconAction.DOWNLOAD, IconAction.DELETE]"
-      :disabled:download="!dataList.length || isDownloadingArchive"
       :disabled:delete="!visibleSelected.length || !hasDeleteAccess"
       @click:download="downloadArchive"
       @click:delete="
@@ -22,7 +21,20 @@
           callback: () => handleDelete(visibleSelected),
         })
       "
-    />
+    >
+      <template #download="{ action, onClick }">
+        <wt-loader
+          v-if="isDownloadingArchive"
+          :size="ComponentSize.SM"
+        />
+        <wt-icon-action
+          v-else
+          :action="action"
+          :disabled="!dataList.length"
+          @click="onClick"
+        />
+      </template>
+    </wt-action-bar>
   </header>
 
   <delete-confirmation-popup
@@ -71,9 +83,14 @@
       </template>
 
       <template #actions="{ item }">
+        <wt-loader
+          v-if="isFileDownloading(item.id)"
+          :size="ComponentSize.SM"
+        />
         <wt-icon-action
+          v-else
           action="download"
-          @click="downloadFile(item.id, item.viewName || item.name)"
+          @click="downloadRecording(item)"
         />
         <wt-icon-action
           action="delete"
@@ -111,8 +128,12 @@ import {
 	WtTimeTooltip,
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
-import { FormatDateMode, IconAction } from '@webitel/ui-sdk/enums';
-import { eventBus } from '@webitel/ui-sdk/scripts';
+import { useDownloadAction } from '@webitel/ui-sdk/composables';
+import {
+	ComponentSize,
+	FormatDateMode,
+	IconAction,
+} from '@webitel/ui-sdk/enums';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
 import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
@@ -160,7 +181,12 @@ const visibleSelected = computed(() =>
 		dataList.value.some((row) => row.id === item.id),
 	),
 );
-const isDownloadingArchive = ref(false);
+
+/* [Claude] separate instances: a row download must not spin the archive icon and vice versa */
+const { isKeyLoading: isFileDownloading, runDownload: runFileDownload } =
+	useDownloadAction();
+const { isLoading: isDownloadingArchive, runDownload: runArchiveDownload } =
+	useDownloadAction();
 
 const callId = computed(() => {
 	if (props.call?.id != null) return String(props.call.id);
@@ -226,11 +252,15 @@ const loadDataList = async () => {
 	}
 };
 
-const downloadArchive = async () => {
-	if (!callId.value || isDownloadingArchive.value) return;
+const downloadRecording = (item: StorageFile) =>
+	runFileDownload(() => downloadFile(item.id, item.viewName || item.name), {
+		key: item.id,
+	});
 
-	isDownloadingArchive.value = true;
-	try {
+const downloadArchive = () => {
+	if (!callId.value) return;
+
+	return runArchiveDownload(async () => {
 		const response = await PdfServicesAPI.downloadCallScreenrecordingArchive({
 			callId: callId.value,
 			...buildCallScreenRecordingArchiveParams({
@@ -245,14 +275,7 @@ const downloadArchive = async () => {
 			fileFormat: FileFormat.ZIP,
 			filename: `screen-recordings-${callId.value}-${new Date().toISOString().slice(0, 10)}`,
 		});
-	} catch (e) {
-		eventBus.$emit('notification', {
-			type: 'error',
-			text: e?.response?.data?.detail || e?.message,
-		});
-	} finally {
-		isDownloadingArchive.value = false;
-	}
+	});
 };
 
 const handleDelete = async (items: StorageFile[]) => {
