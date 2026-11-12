@@ -21,9 +21,6 @@ export default {
 	headerSection: {
 		filesLoaded: 'Fișiere încărcate: ',
 		zippingProgress: 'Progres arhivare: ',
-		exportPopup: {
-			separator: 'Separator',
-		},
 	},
 	export: {
 		audioRecording: 'Înregistrare audio | Înregistrări audio',
