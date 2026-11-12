@@ -1,10 +1,11 @@
 import { CallHistoryAPI } from '@webitel/api-services/api';
-import { extractVariableFilters } from '@webitel/ui-datalist/filters';
-import { getDefaultGetListResponse } from '@webitel/ui-sdk/api/defaults/index';
-import applyTransform, {
+import { getDefaultGetListResponse } from '@webitel/api-services/api/defaults';
+import {
+	applyTransform,
 	merge,
 	snakeToCamel,
-} from '@webitel/ui-sdk/api/transformers/index';
+} from '@webitel/api-services/api/transformers';
+import { extractVariableFilters } from '@webitel/ui-datalist/filters';
 import { FormatDateMode } from '@webitel/ui-sdk/enums';
 import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
