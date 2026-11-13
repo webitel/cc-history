@@ -269,6 +269,7 @@ import {
 	WtTimeTooltip,
 	WtVidstackPlayer,
 } from '@webitel/ui-sdk/components';
+import { usePlayMedia } from '@webitel/ui-sdk/composables';
 import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
 import {
 	isVariableHeader,
@@ -285,7 +286,6 @@ import type { EngineHistoryCall } from 'webitel-sdk';
 import { getMediaUrlAuth } from '../../../../../app/scripts/getMediaUrlAuth';
 import TheHistoryColumnFilter from '../../../../filters/components/the-history-column-filter.vue';
 import { SearchMode } from '../../../../filters/enums/SearchMode';
-import { usePlayMedia } from '../composables/usePlayMedia.ts';
 import SttPopup from '../modules/stt/components/registry/stt-popup.vue';
 import SttAction from '../modules/stt/components/registry/table-stt-action.vue';
 import { namespace } from '../namespace.ts';
