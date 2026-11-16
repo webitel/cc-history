@@ -237,7 +237,6 @@ export default {
 		postProcessing: 'Постобработка',
 		contact: 'Контакт',
 		mos: 'MOS',
-		userAgent: 'Происхождение',
 	},
 	variableColumnSelect: {
 		title: 'Выбрать колонки с переменными',

@@ -237,7 +237,6 @@ export default {
 		postProcessing: 'Postprocesamiento',
 		contact: 'Contacto',
 		mos: 'MOS',
-		userAgent: 'Origen',
 	},
 	variableColumnSelect: {
 		title: 'Seleccionar columnas de variables',
