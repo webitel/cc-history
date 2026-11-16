@@ -317,11 +317,13 @@ const rawHeaders: DatalistTableHeader[] = [
 		field: 'contact',
 		filter: filterConfigs[FilterOption.Contact],
 	},
+	/* Origin moved to 26.12 [WTEL-8721]: denied, so a persisted `user_agent` is dropped, not revived as a blank column */
 	{
 		value: 'userAgent',
 		show: false,
 		sort: null,
 		field: 'user_agent',
+		access: () => false,
 	},
 ];
 

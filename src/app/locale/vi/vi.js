@@ -236,7 +236,6 @@ export default {
 		contact: 'Liên hệ',
 		hangupPhrase: 'Cụm từ kết thúc',
 		mos: 'MOS',
-		userAgent: 'Nguồn gốc',
 	},
 	variableColumnSelect: {
 		title: 'Chọn cột biến',
