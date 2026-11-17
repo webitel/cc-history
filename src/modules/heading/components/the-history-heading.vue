@@ -60,9 +60,9 @@ import APIRepository from '../../../app/api/APIRepository';
 import { SearchMode } from '../../filters/enums/SearchMode';
 import { useRegistryStore } from '../../main/modules/registry/store/new/registry.store.ts';
 import { useUserinfoStore } from '../../userinfo/stores/userinfoStore';
+import { buildHistoryDownloadParams } from '../scripts/buildHistoryDownloadParams';
 import HistoryDeleteAction from './actions/history-delete-action.vue';
 import HistoryTranscribeAction from './actions/history-transcribe-action.vue';
-import { buildHistoryDownloadParams } from './buildHistoryDownloadParams';
 
 const { t } = useI18n();
 const registryStore = useRegistryStore();
