@@ -42,20 +42,6 @@ export default {
 			noVideoFile: 'Здесь нет видеофайла',
 			noMessages: 'Здесь нет сообщений',
 			pdfs: 'PDFs',
-			hold: 'Удержание | Удержания',
-			comment: 'Комментарий | Комментарии',
-			wave: {
-				wave: 'Разметка звонка',
-				noAudio: 'У звонка нет аудиозаписи',
-				recordingDeleted: 'К сожалению, запись звонка была удалена',
-				addNote: 'Добавить комментарий',
-				noteText: 'Текст комментария',
-				created: 'Создано',
-				edited: 'Отредактировано',
-				changeNoteRange: 'Изменение диапазона комментария',
-				editSuccessful: 'Редактирование успешное',
-				errorEditing: 'Ошибка редактирования',
-			},
 			stt: {
 				noTranscript: 'Транскрипция файла отсутствует',
 				transcribingInProgress:

@@ -42,20 +42,6 @@ export default {
 			noVideoFile: 'Brak pliku wideo',
 			noMessages: 'Brak wiadomości',
 			pdfs: 'PDFs',
-			hold: 'Zawieszenie | Zawieszenie',
-			comment: 'Komentarz | Komentarze',
-			wave: {
-				wave: 'Oznacz połączenie',
-				noAudio: 'Brak nagrania połączenia',
-				recordingDeleted: 'Niestety nagranie połączenia zostało usunięte',
-				addNote: 'Dodaj notatkę',
-				noteText: 'Treść notatki',
-				created: 'Utworzono',
-				edited: 'Edytowano',
-				changeNoteRange: 'Zmiana zakresu notatki',
-				editSuccessful: 'Edycja zakończona pomyślnie',
-				errorEditing: 'Błąd edycji',
-			},
 			stt: {
 				noTranscript: 'Brak transkrypcji pliku',
 				transcribingInProgress:
