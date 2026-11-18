@@ -6,7 +6,6 @@ import { headers } from '../../../store/headers/headers';
 import evaluation from '../modules/call-audit/store/evaluation.js';
 
 const historyAPI = APIRepository.history;
-const annotationsAPI = APIRepository.annotations;
 const REQUIRED_MAIN_CALL_FIELDS = [
 	'variables',
 	'has_children',
@@ -95,8 +94,6 @@ const getters = {
 			id,
 			name: id,
 		})),
-
-	CALL_ANNOTATIONS: (state) => state.mainCall.annotations || [],
 };
 
 const actions = {
@@ -173,52 +170,6 @@ const actions = {
 		await context.dispatch('evaluation/RESET_EVALUATION_RESULT');
 	},
 
-	ADD_ANNOTATION: async (context, annotationDraft) => {
-		const responseAnnotation = await annotationsAPI.add({
-			itemInstance: annotationDraft,
-		});
-		context.commit('SET_MAIN_CALL', {
-			...context.state.mainCall,
-			annotations: [
-				// A call without comments comes without the field.
-				...(context.state.mainCall.annotations || []),
-				responseAnnotation,
-			],
-		});
-	},
-	EDIT_ANNOTATION: async (context, annotationDraft) => {
-		const responseAnnotation = await annotationsAPI.update({
-			itemInstance: annotationDraft,
-		});
-		const editedAnnotationIndex = context.state.mainCall.annotations.findIndex(
-			(annotation) => annotation.id === annotationDraft.id,
-		);
-
-		if (editedAnnotationIndex !== -1) {
-			const newAnnotations = [
-				...context.state.mainCall.annotations,
-			];
-			newAnnotations[editedAnnotationIndex] = responseAnnotation;
-			context.commit('SET_MAIN_CALL', {
-				...context.state.mainCall,
-				annotations: newAnnotations,
-			});
-		} else {
-			await context.dispatch('LOAD_MAIN_CALL');
-		}
-	},
-	DELETE_ANNOTATION: async (context, annotationDraft) => {
-		const responseAnnotation = await annotationsAPI.delete({
-			itemInstance: annotationDraft,
-		});
-		context.commit('SET_MAIN_CALL', {
-			...context.state.mainCall,
-			annotations: context.state.mainCall.annotations.filter(
-				(annotation) => annotation.id !== responseAnnotation.id,
-			),
-		});
-	},
-
 	INITIALIZE_RECORDING_FILE: (context) => {
 		context.dispatch(
 			'SET_RECORDING_FILE',
@@ -272,6 +223,12 @@ const mutations = {
 
 	SET_RECORDING_FILE: (state, file) => {
 		state.selectedRecordingFile = file;
+	},
+	SET_ANNOTATIONS: (state, annotations) => {
+		state.mainCall = {
+			...state.mainCall,
+			annotations,
+		};
 	},
 };
 
