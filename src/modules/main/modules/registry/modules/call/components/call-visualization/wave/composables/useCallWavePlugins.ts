@@ -50,7 +50,7 @@ export function useCallWavePlugins(getPlayer?: PlayerGetter) {
 	// `darkMode` is read so the tokens re-resolve when the theme switches.
 	const waveOptions = computed(() => {
 		void darkMode.value;
-		const waveColor = resolveCssColor('--secondary-color');
+		const waveColor = resolveCssColor('--call-wave-color');
 
 		return {
 			cursorWidth: 2,
