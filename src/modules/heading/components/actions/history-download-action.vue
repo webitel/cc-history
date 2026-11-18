@@ -57,7 +57,7 @@ const {
 const { isLoading, runDownload } = useDownloadAction();
 
 /* [Claude] backend gives no total count, so the toast shows only the number of downloaded files */
-const withProgress = (exportFn: () => Promise<void>) => () =>
+const withProgress = (exportFn: () => Promise<unknown>) => () =>
 	runDownload(exportFn, {
 		progress: {
 			loaded: () =>
