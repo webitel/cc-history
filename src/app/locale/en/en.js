@@ -42,20 +42,6 @@ export default {
 			noVideoFile: 'There is no video file',
 			noMessages: 'There is no messages',
 			pdfs: 'PDFs',
-			hold: 'Hold | Holds',
-			comment: 'Note | Notes',
-			wave: {
-				wave: 'Call Wave',
-				noAudio: 'There isn’t a call recording',
-				recordingDeleted: 'Unfortunately, the call recording was deleted',
-				addNote: 'Add note',
-				noteText: 'Note text',
-				created: 'Created',
-				edited: 'Edited',
-				changeNoteRange: 'Change note range',
-				editSuccessful: 'Edit successful',
-				errorEditing: 'Error editing',
-			},
 			stt: {
 				noTranscript: 'There is no transcription for this file',
 				transcribingInProgress:

@@ -42,20 +42,6 @@ export default {
 			noVideoFile: 'Тут немає відеофайлу',
 			noMessages: 'Тут немає повідомлень',
 			pdfs: 'PDFs',
-			hold: 'Утримання | Утримання',
-			comment: 'Коментар | Коментарі',
-			wave: {
-				wave: 'Розмітка дзвінка',
-				noAudio: 'Дзвінок не має аудіозапису',
-				recordingDeleted: 'На жаль, запис дзвінка було видалено',
-				addNote: 'Додати коментар',
-				noteText: 'Текст коментаря',
-				created: 'Створено',
-				edited: 'Відредаговано',
-				changeNoteRange: 'Зміна діапазону коментаря',
-				editSuccessful: 'Редагування успішне',
-				errorEditing: 'Помилка редагування',
-			},
 			stt: {
 				noTranscript: 'Транскрипція файлу відсутня',
 				transcribingInProgress:
