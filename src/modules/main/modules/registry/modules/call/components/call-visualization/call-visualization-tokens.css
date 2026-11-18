@@ -12,5 +12,10 @@
 	--call-wave-comment-color: var(--p-comment-external-color);
 	--call-wave-comment-foreground-color: var(--p-comment-external-foreground);
 	--call-wave-popover-border-radius: var(--p-overlay-popover-border-radius);
-	--call-wave-color: var(--p-secondary-foreground);
+	--call-wave-color: var(--p-gray-400);
+}
+
+/* [Claude] Unplayed wave is lighter in dark mode. */
+:root.theme--dark {
+	--call-wave-color: var(--p-gray-300);
 }
