@@ -12,4 +12,5 @@
 	--call-wave-comment-color: var(--p-comment-external-color);
 	--call-wave-comment-foreground-color: var(--p-comment-external-foreground);
 	--call-wave-popover-border-radius: var(--p-overlay-popover-border-radius);
+	--call-wave-color: var(--p-secondary-foreground);
 }
