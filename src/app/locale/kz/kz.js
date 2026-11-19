@@ -42,11 +42,6 @@ export default {
 			noVideoFile: 'Бейне файл жоқ',
 			noMessages: 'Хабарлар жоқ',
 			pdfs: 'PDFs',
-			stt: {
-				noTranscript: 'Файлдың транскрипциясы жоқ',
-				transcribingInProgress:
-					'Файл транскрипциялануда. Бір минуттан кейін бетті жаңартыңыз.',
-			},
 			evaluation: {
 				rateTheCall: 'Қоңырауға баға беріңіз',
 				evaluation: 'Бағалау',
@@ -78,7 +73,6 @@ export default {
 		},
 		stt: {
 			transcription: 'Транскрипция | Транскрипциялар',
-			downloadTxt: 'TXT жүктеп алу',
 			transcribe: 'Транскриберлеу',
 			jobState: {
 				idle: 'Күтуде',
