@@ -97,7 +97,6 @@ async function handleDeleteTranscription() {
 		fileId: deletedTranscript.id,
 	});
 	emit('delete', deletedTranscript);
-	call.transcripts.splice(call.transcripts.indexOf(deletedTranscript), 1);
 	transcript.value = call.transcripts[0];
 	if (!transcript.value) emit('close');
 }
