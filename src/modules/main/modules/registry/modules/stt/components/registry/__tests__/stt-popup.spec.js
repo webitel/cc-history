@@ -45,24 +45,53 @@ describe('SttPopup', () => {
 		});
 	});
 	it('closes popup if no transcripts after delete', async () => {
+		const call = {
+			id: '1',
+			transcripts: [
+				{
+					id: '177',
+					name: 'recording.wav',
+				},
+			],
+		};
+		const onDelete = vi.fn(() => call.transcripts.splice(0, 1));
+		const wrapper = shallowMount(SttPopup, {
+			props: {
+				call,
+			},
+			attrs: {
+				onDelete,
+			},
+		});
+		await wrapper.vm.handleDeleteTranscription();
+		expect(wrapper.emitted().close).toBeTruthy();
+	});
+	it('emits delete with deleted transcript', async () => {
+		const transcript = {
+			id: '177',
+			name: 'recording.wav',
+		};
+		const onDelete = vi.fn();
 		const wrapper = shallowMount(SttPopup, {
 			props: {
 				call: {
 					id: '1',
 					transcripts: [
-						{
-							id: '177',
-							name: 'recording.wav',
-						},
+						transcript,
 					],
 				},
+			},
+			attrs: {
+				onDelete,
 			},
 		});
 		await wrapper.vm.handleDeleteTranscription();
 		expect(CallTranscriptAPI.delete).toHaveBeenCalledWith({
 			fileId: '177',
 		});
-		expect(wrapper.emitted().delete).toBeTruthy();
-		expect(wrapper.emitted().close).toBeTruthy();
+		expect(wrapper.emitted().delete[0]).toEqual([
+			transcript,
+		]);
+		expect(onDelete).toHaveBeenCalledWith(transcript);
 	});
 });
