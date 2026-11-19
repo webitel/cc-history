@@ -42,11 +42,6 @@ export default {
 			noVideoFile: 'There is no video file',
 			noMessages: 'There is no messages',
 			pdfs: 'PDFs',
-			stt: {
-				noTranscript: 'There is no transcription for this file',
-				transcribingInProgress:
-					'Transcription is in progress now. Please, refresh page in a minute.',
-			},
 			evaluation: {
 				rateTheCall: 'Rate the call',
 				evaluation: 'Evaluation',
@@ -78,7 +73,6 @@ export default {
 		},
 		stt: {
 			transcription: 'Transcription | Transcriptions',
-			downloadTxt: 'Download TXT',
 			transcribe: 'Transcribe',
 			jobState: {
 				idle: 'Idle',

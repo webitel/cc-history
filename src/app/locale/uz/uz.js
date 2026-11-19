@@ -40,11 +40,6 @@ export default {
 			noVideoFile: 'Video fayl yo‘q',
 			noMessages: 'Xabarlar yo‘q',
 			pdfs: 'PDFs',
-			stt: {
-				noTranscript: 'Fayl transkriptsiyasi yo‘q',
-				transcribingInProgress:
-					'Fayl transkriptsiya qilinmoqda. Bir daqiqadan so‘ng sahifani yangilang.',
-			},
 			evaluation: {
 				rateTheCall: 'Qo‘ng‘iroqni baholang',
 				evaluation: 'Baholash',
@@ -76,7 +71,6 @@ export default {
 		},
 		stt: {
 			transcription: 'Transkriptsiya | Transkriptsiyalar',
-			downloadTxt: 'TXT yuklab olish',
 			transcribe: 'Transkriptsiya qilish',
 			jobState: {
 				idle: 'Kutilmoqda',

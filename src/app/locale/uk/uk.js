@@ -42,11 +42,6 @@ export default {
 			noVideoFile: 'Тут немає відеофайлу',
 			noMessages: 'Тут немає повідомлень',
 			pdfs: 'PDFs',
-			stt: {
-				noTranscript: 'Транскрипція файлу відсутня',
-				transcribingInProgress:
-					'Виконується транскрипція файлу. Будь ласка, оновіть сторінку через хвилину.',
-			},
 			evaluation: {
 				rateTheCall: 'Оцінити дзвінок',
 				evaluation: 'Оцінювання',
@@ -78,7 +73,6 @@ export default {
 		},
 		stt: {
 			transcription: 'Транскрипція | Транскрипції',
-			downloadTxt: 'Завантажити TXT',
 			transcribe: 'Транскрибувати',
 			jobState: {
 				idle: 'Очікує',
