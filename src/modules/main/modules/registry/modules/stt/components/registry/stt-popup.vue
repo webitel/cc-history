@@ -3,7 +3,7 @@
     v-bind="$attrs"
     class="stt-popup"
     :min-width="720"
-    @close="$emit('close')"
+    @close="emit('close')"
   >
     <template #title>
       {{ $t('registry.stt.transcription', 1) }}
@@ -14,12 +14,12 @@
           v-model:model-value="transcript"
           :show-clear="false"
           :label="$t('vocabulary.file')"
-          :options="call.transcripts"
+          :options="call?.transcripts"
           option-label="name"
           data-key="fileId"
         />
         <div class="stt-popup-toolbar__actions">
-          <stt-download-action @click="downloadTxt(data)" />
+          <stt-download-action @click="downloadTxt" />
           <stt-delete-action @click="handleDeleteTranscription" />
         </div>
       </div>
@@ -27,7 +27,7 @@
       <div class="stt-popup__table-wrapper wt-scrollbar">
         <wt-table
           v-show="!isLoading"
-          :data="data"
+          :data="rows"
           :headers="headers"
           :selectable="false"
           :grid-actions="false"
@@ -37,51 +37,69 @@
   </wt-popup>
 </template>
 
-<script>
-import transcriptPhrasesMixin from '../../mixins/transcriptPhrasesMixin';
-import SttDeleteAction from '../utils/stt-delete-action.vue';
-import SttDownloadAction from '../utils/stt-download-action.vue';
+<script setup lang="ts">
+import { CallTranscriptAPI } from '@webitel/api-services/api';
+import type {
+	CallTranscriptCall,
+	CallTranscriptItem,
+} from '@webitel/ui-sdk/modules/CallVisualization';
+import {
+	downloadTranscriptTxt,
+	useCallTranscriptPhrases,
+} from '@webitel/ui-sdk/modules/CallVisualization';
+import {
+	SttDeleteAction,
+	SttDownloadAction,
+} from '@webitel/ui-sdk/modules/Stt';
+import { ref, watch } from 'vue';
 
-export default {
-	name: 'SttPopup',
-	components: {
-		SttDeleteAction,
-		SttDownloadAction,
+type SttPopupCall = Omit<CallTranscriptCall, 'files' | 'filesJob'>;
+
+const { call = null } = defineProps<{
+	call?: SttPopupCall | null;
+}>();
+
+const emit = defineEmits<{
+	close: [];
+	delete: [
+		transcript: CallTranscriptItem,
+	];
+}>();
+
+const transcript = ref<CallTranscriptItem>();
+
+const { isLoading, headers, rows } = useCallTranscriptPhrases({
+	call: () => call ?? {},
+	transcript: () => transcript.value,
+});
+
+watch(
+	() => call,
+	(value) => {
+		if (value) [transcript.value] = value.transcripts || [];
 	},
-	mixins: [
-		transcriptPhrasesMixin,
-	],
-	props: {
-		call: {
-			type: Object,
-			default: null,
-		},
+	{
+		immediate: true,
 	},
-	data: () => ({
-		transcript: null,
-	}),
-	watch: {
-		call: {
-			handler(value) {
-				if (value) this.initCurrentTranscript();
-			},
-			immediate: true,
-		},
-	},
-	methods: {
-		initCurrentTranscript() {
-			[this.transcript] = this.call?.transcripts || [];
-		},
-		async handleDeleteTranscription() {
-			await this.deleteTranscription();
-			this.call.transcripts.splice(
-				this.call.transcripts.indexOf(this.transcript),
-				1,
-			);
-			this.transcript = this.call.transcripts[0] || this.$emit('close');
-		},
-	},
-};
+);
+
+function downloadTxt() {
+	return downloadTranscriptTxt({
+		rows: rows.value,
+		transcriptId: transcript.value?.id,
+		callCreatedAt: call?.createdAt,
+	});
+}
+
+async function handleDeleteTranscription() {
+	const deletedTranscript = transcript.value;
+	await CallTranscriptAPI.delete({
+		fileId: deletedTranscript.id,
+	});
+	emit('delete', deletedTranscript);
+	transcript.value = call.transcripts[0];
+	if (!transcript.value) emit('close');
+}
 </script>
 
 <style

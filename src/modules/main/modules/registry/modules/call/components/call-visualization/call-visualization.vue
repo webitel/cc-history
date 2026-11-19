@@ -15,8 +15,9 @@
       />
       <component
         :is="currentTab.component"
-        :call="call"
-        :namespace="currentTab.namespace"
+        v-bind="currentTabProps"
+        @refresh="refreshCall"
+        @deleted="removeTranscript"
       />
     </div>
   </section>
@@ -29,40 +30,29 @@
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { WtObject } from '@webitel/ui-sdk/enums';
 import type {
-	CallWaveCallRecord,
+	CallTranscriptItem,
 	CallWaveFile,
 	WaveAnnotation,
 } from '@webitel/ui-sdk/modules/CallVisualization';
 import {
 	CallRecordingEmpty,
+	CallTranscript,
 	CallWave,
 } from '@webitel/ui-sdk/modules/CallVisualization';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
-import { type Component, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import { useScreenRecordingsAccess } from '../../../../composables/useScreenRecordingsAccess';
-import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallEvaluation from '../../modules/call-audit/components/call-audit-section.vue';
-import './call-visualization-tokens.css';
+import type {
+	CallVisualizationProps,
+	VisualizationTab,
+} from '../../types/callVisualization';
 import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
 
-interface VisualizationTab {
-	text: string;
-	component: Component;
-	value: string;
-	namespace: string;
-}
-
-interface Props {
-	call: CallWaveCallRecord & {
-		allowEvaluation?: boolean;
-	};
-	namespace?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CallVisualizationProps>(), {
 	namespace: '',
 });
 
@@ -77,6 +67,19 @@ const selectedRecordingFile = computed({
 
 function updateAnnotations(annotations: WaveAnnotation[]) {
 	store.commit(`${props.namespace}/SET_ANNOTATIONS`, annotations);
+}
+
+function refreshCall() {
+	return store.dispatch(`${props.namespace}/LOAD_MAIN_CALL`);
+}
+
+function removeTranscript(transcript: CallTranscriptItem) {
+	store.commit(`${props.namespace}/SET_MAIN_CALL`, {
+		...props.call,
+		transcripts: (props.call.transcripts || []).filter(
+			({ id }) => id !== transcript.id,
+		),
+	});
 }
 
 const { hasReadAccess: hasScreenRecordingsReadAccess } =
@@ -98,19 +101,28 @@ const tabValues = computed(
 			text: t('registry.stt.transcription'),
 			component: CallTranscript,
 			value: 'call-transcript',
-			namespace: props.namespace,
+			props: {
+				call: props.call,
+				file: selectedRecordingFile.value,
+			},
 		},
 		EVALUATION: {
 			text: t('registry.call.evaluation.evaluation'),
 			component: CallEvaluation,
 			value: 'call-evaluation',
-			namespace: `${props.namespace}/evaluation`,
+			props: {
+				call: props.call,
+				namespace: `${props.namespace}/evaluation`,
+			},
 		},
 		SCREEN_RECORDINGS: {
 			text: t('objects.screenRecordings', 2),
 			component: CallScreenRecordings,
 			value: 'call-screen-recordings',
-			namespace: props.namespace,
+			props: {
+				call: props.call,
+				namespace: props.namespace,
+			},
 		},
 	}),
 );
@@ -127,6 +139,13 @@ const tabs = computed((): VisualizationTab[] => {
 });
 
 const currentTab = ref<VisualizationTab>(tabValues.value.TRANSCRIPT);
+
+const currentTabProps = computed(
+	() =>
+		Object.values(tabValues.value).find(
+			({ value }) => value === currentTab.value.value,
+		)?.props,
+);
 </script>
 
 <style scoped>
