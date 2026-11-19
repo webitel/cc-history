@@ -42,11 +42,6 @@ export default {
 			noVideoFile: 'Không có tệp video',
 			noMessages: 'Không có tin nhắn',
 			pdfs: 'PDFs',
-			stt: {
-				noTranscript: 'Không có bản ghi âm',
-				transcribingInProgress:
-					'Đang chuyển đổi bản ghi. Vui lòng làm mới trang sau một phút.',
-			},
 			evaluation: {
 				rateTheCall: 'Đánh giá cuộc gọi',
 				evaluation: 'Đánh giá',
@@ -78,7 +73,6 @@ export default {
 		},
 		stt: {
 			transcription: 'Bản ghi | Các bản ghi',
-			downloadTxt: 'Tải TXT',
 			transcribe: 'Chuyển đổi bản ghi',
 			jobState: {
 				idle: 'Chờ',

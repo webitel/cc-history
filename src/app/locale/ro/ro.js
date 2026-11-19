@@ -42,11 +42,6 @@ export default {
 			noVideoFile: 'Nu există fișier video',
 			noMessages: 'Nu există mesaje',
 			pdfs: 'PDFs',
-			stt: {
-				noTranscript: 'Nu există transcriere pentru acest fișier',
-				transcribingInProgress:
-					'Transcrierea este în curs. Vă rugăm să reîmprospătați pagina într-un minut.',
-			},
 			evaluation: {
 				rateTheCall: 'Evaluează apelul',
 				evaluation: 'Evaluare',
@@ -78,7 +73,6 @@ export default {
 		},
 		stt: {
 			transcription: 'Transcriere | Transcrieri',
-			downloadTxt: 'Descarcă TXT',
 			transcribe: 'Transcrie',
 			jobState: {
 				idle: 'Inactiv',
