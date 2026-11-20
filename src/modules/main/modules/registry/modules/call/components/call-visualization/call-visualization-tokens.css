@@ -1,0 +1,9 @@
+/* [Claude] On :root, because wavesurfer reads the wave colors from document.documentElement. */
+:root {
+	--call-wave-color: var(--p-gray-400);
+}
+
+/* [Claude] Unplayed wave is lighter in dark mode. */
+:root.theme--dark {
+	--call-wave-color: var(--p-gray-300);
+}
