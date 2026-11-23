@@ -7,11 +7,8 @@ import {
 } from '@webitel/api-services/api/transformers';
 import { extractVariableFilters } from '@webitel/ui-datalist/filters';
 import { FormatDateMode } from '@webitel/ui-sdk/enums';
-import {
-	convertDuration,
-	groupFilesByType,
-	normalizeToTimestamp,
-} from '@webitel/ui-sdk/scripts';
+import { toCallVisualizationCall } from '@webitel/ui-sdk/modules/CallVisualization';
+import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { startOfToday } from 'date-fns';
@@ -47,72 +44,44 @@ const computeDateAndTime = (timestamp) => {
 	return formatDate(date, FormatDateMode.DATETIME);
 };
 
-const mapDefaultComments = (item) => {
-	const defaultComment = {
-		startSec: 0,
-		endSec: 0,
-		note: '',
-	};
-
-	return item.annotations
-		? item.annotations.map((comment) => ({
-				...defaultComment,
-				...comment,
-			}))
-		: [];
-};
-
-const mapTranscripts = (item) => {
-	return item.transcripts
-		? item.transcripts.map((transcript) => ({
-				...transcript,
-				name: transcript.file?.name,
-			}))
-		: [];
-};
-
 const transformResponseItems = (items) => {
 	const defaultObject = {
 		_isSelected: false,
 	};
-	return items.map((item) => ({
-		...defaultObject,
-		...item,
-		// Epoch copies for hold markers: the same fields below become display strings.
-		timestamps: {
-			createdAt: item.createdAt,
-			answeredAt: item.answeredAt,
-			bridgedAt: item.bridgedAt,
-			queueBridgedAt: item.queueBridgedAt,
-			duration: item.duration,
-			billSec: item.billSec,
-		},
-		createdAt: item.createdAt
-			? formatDate(+item.createdAt, FormatDateMode.DATETIME)
-			: null,
-		bridgedAt: computeTimeWithSec(item.bridgedAt),
-		queueBridgedAt: computeTimeWithSec(item.queueBridgedAt),
-		answeredAt: computeTimeWithSec(item.answeredAt),
-		joinedAt: computeTimeWithSec(item.joinedAt),
-		leavingAt: computeTimeWithSec(item.leavingAt),
-		hangupAt: computeTimeWithSec(item.hangupAt),
-		reportingAt: computeTimeWithSec(item.reportingAt),
-		duration: convertDuration(item.duration),
-		holdSec: convertDuration(item.holdSec),
-		waitSec: convertDuration(item.waitSec),
-		billSec: convertDuration(item.billSec),
-		talkSec: convertDuration(item.talkSec),
-		reportingSec: convertDuration(item.reportingSec),
-		queueWaitSec: convertDuration(item.queueWaitSec),
-		queueDurationSec: convertDuration(item.queueDurationSec),
-		annotations: mapDefaultComments(item),
-		hangupDisposition: item.hangupDisposition
-			? converters.snakeToCamel(item.hangupDisposition)
-			: '',
-		score: item.scoreRequired ? item.scoreRequired.toFixed(2) : null,
-		transcripts: mapTranscripts(item),
-		files: groupFilesByType(item.files),
-	}));
+	return items.map((item) => {
+		const { timestamps, files, annotations, transcripts } =
+			toCallVisualizationCall(item);
+		return {
+			...defaultObject,
+			...item,
+			timestamps,
+			createdAt: item.createdAt
+				? formatDate(+item.createdAt, FormatDateMode.DATETIME)
+				: null,
+			bridgedAt: computeTimeWithSec(item.bridgedAt),
+			queueBridgedAt: computeTimeWithSec(item.queueBridgedAt),
+			answeredAt: computeTimeWithSec(item.answeredAt),
+			joinedAt: computeTimeWithSec(item.joinedAt),
+			leavingAt: computeTimeWithSec(item.leavingAt),
+			hangupAt: computeTimeWithSec(item.hangupAt),
+			reportingAt: computeTimeWithSec(item.reportingAt),
+			duration: convertDuration(item.duration),
+			holdSec: convertDuration(item.holdSec),
+			waitSec: convertDuration(item.waitSec),
+			billSec: convertDuration(item.billSec),
+			talkSec: convertDuration(item.talkSec),
+			reportingSec: convertDuration(item.reportingSec),
+			queueWaitSec: convertDuration(item.queueWaitSec),
+			queueDurationSec: convertDuration(item.queueDurationSec),
+			annotations,
+			hangupDisposition: item.hangupDisposition
+				? converters.snakeToCamel(item.hangupDisposition)
+				: '',
+			score: item.scoreRequired ? item.scoreRequired.toFixed(2) : null,
+			transcripts,
+			files,
+		};
+	});
 };
 
 /*
