@@ -42,20 +42,6 @@ export default {
 			noVideoFile: 'Nu există fișier video',
 			noMessages: 'Nu există mesaje',
 			pdfs: 'PDFs',
-			hold: 'Așteptare | Așteptări',
-			comment: 'Notă | Note',
-			wave: {
-				wave: 'Undă apel',
-				noAudio: 'Nu există înregistrare a apelului',
-				recordingDeleted: 'Din păcate, înregistrarea apelului a fost ștearsă',
-				addNote: 'Adaugă notă',
-				noteText: 'Textul notei',
-				created: 'Creat',
-				edited: 'Editat',
-				changeNoteRange: 'Modificarea intervalului notei',
-				editSuccessful: 'Editare reușită',
-				errorEditing: 'Eroare la editare',
-			},
 			stt: {
 				noTranscript: 'Nu există transcriere pentru acest fișier',
 				transcribingInProgress:

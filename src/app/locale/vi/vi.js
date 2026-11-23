@@ -42,20 +42,6 @@ export default {
 			noVideoFile: 'Không có tệp video',
 			noMessages: 'Không có tin nhắn',
 			pdfs: 'PDFs',
-			hold: 'Giữ máy | Giữ máy',
-			comment: 'Bình luận | Các bình luận',
-			wave: {
-				wave: 'Đánh dấu cuộc gọi',
-				noAudio: 'Không có bản ghi âm cuộc gọi',
-				recordingDeleted: 'Rất tiếc, bản ghi âm cuộc gọi đã bị xóa',
-				addNote: 'Thêm ghi chú',
-				noteText: 'Nội dung ghi chú',
-				created: 'Đã tạo',
-				edited: 'Đã chỉnh sửa',
-				changeNoteRange: 'Thay đổi khoảng thời gian ghi chú',
-				editSuccessful: 'Chỉnh sửa thành công',
-				errorEditing: 'Lỗi chỉnh sửa',
-			},
 			stt: {
 				noTranscript: 'Không có bản ghi âm',
 				transcribingInProgress:
