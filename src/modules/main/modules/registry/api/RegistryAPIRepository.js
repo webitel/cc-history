@@ -7,7 +7,11 @@ import {
 } from '@webitel/api-services/api/transformers';
 import { extractVariableFilters } from '@webitel/ui-datalist/filters';
 import { FormatDateMode } from '@webitel/ui-sdk/enums';
-import { convertDuration, normalizeToTimestamp } from '@webitel/ui-sdk/scripts';
+import {
+	convertDuration,
+	groupFilesByType,
+	normalizeToTimestamp,
+} from '@webitel/ui-sdk/scripts';
 import * as converters from '@webitel/ui-sdk/scripts/caseConverters';
 import { formatDate } from '@webitel/ui-sdk/utils';
 import { startOfToday } from 'date-fns';
@@ -65,15 +69,6 @@ const mapTranscripts = (item) => {
 				name: transcript.file?.name,
 			}))
 		: [];
-};
-
-const groupFilesByType = (files) => {
-	if (!files) return {};
-	return files.reduce((acc, file) => {
-		acc[file.type] = acc[file.type] || [];
-		acc[file.type].push(file);
-		return acc;
-	}, {});
 };
 
 const transformResponseItems = (items) => {

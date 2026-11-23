@@ -16,13 +16,6 @@ export default {
 		askConfirmation:
 			'{count} yozuvni o‘chirishga ishonchingiz komilmi? | {count} yozuvni o‘chirishga ishonchingiz komilmi?',
 	},
-	headerSection: {
-		filesLoaded: 'Yuklangan fayl:',
-		zippingProgress: 'Arxivlash jarayoni',
-		exportPopup: {
-			separator: 'Ajratgich',
-		},
-	},
 	export: {
 		audioRecording: 'Audio yozuv | Audio yozuvlar',
 		videoRecording: 'Video yozuv | Video yozuvlar',
