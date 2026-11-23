@@ -18,10 +18,6 @@ export default {
 		askConfirmation:
 			'{count} жазбасын  жойғыңыз келетініне сенімдісіз бе?  | {count} жазбасын  жойғыңыз келетініне сенімдісіз бе?',
 	},
-	headerSection: {
-		filesLoaded: 'Жүктеп алынған файл:',
-		zippingProgress: 'Мұрағаттау прогресі',
-	},
 	export: {
 		audioRecording: 'Аудиожазба | Аудиожазбалар',
 		videoRecording: 'Бейнежазба | Бейнежазбалар',

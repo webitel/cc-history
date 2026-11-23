@@ -18,10 +18,6 @@ export default {
 		askConfirmation:
 			'Sigur doriți să ștergeți {count} element? | Sigur doriți să ștergeți {count} elemente?',
 	},
-	headerSection: {
-		filesLoaded: 'Fișiere încărcate: ',
-		zippingProgress: 'Progres arhivare: ',
-	},
 	export: {
 		audioRecording: 'Înregistrare audio | Înregistrări audio',
 		videoRecording: 'Înregistrare video | Înregistrări video',

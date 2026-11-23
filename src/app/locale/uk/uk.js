@@ -18,10 +18,6 @@ export default {
 		askConfirmation:
 			'Ви впевнені що хочете видалити {count} запис? | Ви впевнені що хочете видалити {count} записів?',
 	},
-	headerSection: {
-		filesLoaded: 'Файлів завантажено: ',
-		zippingProgress: 'Прогрес архівації: ',
-	},
 	export: {
 		audioRecording: 'Аудіозапис | Аудіозаписи',
 		videoRecording: 'Відеозапис | Відеозаписи',

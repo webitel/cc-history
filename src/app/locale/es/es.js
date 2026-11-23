@@ -18,10 +18,6 @@ export default {
 		askConfirmation:
 			'¿Está seguro de que desea eliminar {count} elemento? | ¿Está seguro de que desea eliminar {count} elementos?',
 	},
-	headerSection: {
-		filesLoaded: 'Archivos cargados: ',
-		zippingProgress: 'Progreso de compresión: ',
-	},
 	export: {
 		audioRecording: 'Grabación de audio | Grabaciones de audio',
 		videoRecording: 'Grabación de vídeo | Grabaciones de vídeo',
