@@ -18,13 +18,6 @@ export default {
 		askConfirmation:
 			'Czy na pewno chcesz usunąć {count} wpis? | Czy na pewno chcesz usunąć {count} wpisów?',
 	},
-	headerSection: {
-		filesLoaded: 'Załadowany plik:',
-		zippingProgress: 'Postęp archiwizacji',
-		exportPopup: {
-			separator: 'Separator',
-		},
-	},
 	export: {
 		audioRecording: 'Nagranie audio | Nagrania audio',
 		videoRecording: 'Nagranie wideo | Nagrania wideo',

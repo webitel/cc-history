@@ -18,13 +18,6 @@ export default {
 		askConfirmation:
 			'Are you sure you want to delete {count} item? | Are you sure you want to delete {count} items?',
 	},
-	headerSection: {
-		filesLoaded: 'Files loaded: ',
-		zippingProgress: 'Zipping progress: ',
-		exportPopup: {
-			separator: 'Separator',
-		},
-	},
 	export: {
 		audioRecording: 'Audio recording | Audio recordings',
 		videoRecording: 'Video recording | Video recordings',

@@ -18,13 +18,6 @@ export default {
 		askConfirmation:
 			'Вы уверенны что хотите удалить {count} запись? | Вы уверенны что хотите удалить {count} записей?',
 	},
-	headerSection: {
-		filesLoaded: 'Файлов скачано: ',
-		zippingProgress: 'Прогресс архивации: ',
-		exportPopup: {
-			separator: 'Разделитель',
-		},
-	},
 	export: {
 		audioRecording: 'Аудиозапись | Аудиозаписи',
 		videoRecording: 'Видеозапись | Видеозаписи',
