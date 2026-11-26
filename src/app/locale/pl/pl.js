@@ -42,11 +42,6 @@ export default {
 			noVideoFile: 'Brak pliku wideo',
 			noMessages: 'Brak wiadomości',
 			pdfs: 'PDFs',
-			stt: {
-				noTranscript: 'Brak transkrypcji pliku',
-				transcribingInProgress:
-					'Trwa transkrypcja pliku. Odśwież stronę za minutę.',
-			},
 			evaluation: {
 				rateTheCall: 'Oceń połączenie',
 				evaluation: 'Ocena',
@@ -78,7 +73,6 @@ export default {
 		},
 		stt: {
 			transcription: 'Transkrypcja | Transkrypcje',
-			downloadTxt: 'Pobierz TXT',
 			transcribe: 'Transkrybuj',
 			jobState: {
 				idle: 'Oczekuje',
