@@ -1,24 +1,16 @@
 <template>
-  <wt-vidstack-player
-    v-if="isVideoOpen && currentVideo"
-    closable
-    :src="getMediaUrl(currentVideo.id, { auth: getMediaUrlAuth() })"
-    :title="currentVideo.viewName || currentVideo.name"
-    :mime="currentVideo.mimeType"
-    @close="closeVideo"
-  />
   <header class="table-title">
     <h3 class="table-title__title">
       {{ t('objects.screenRecordings', 2) }}
     </h3>
     <wt-action-bar
       :include="[IconAction.DOWNLOAD, IconAction.DELETE]"
-      :disabled:delete="!visibleSelected.length || !hasDeleteAccess"
+      :disabled:delete="!selected.length || !hasDeleteAccess"
       @click:download="downloadArchive"
       @click:delete="
         askDeleteConfirmation({
-          deleted: visibleSelected,
-          callback: () => handleDelete(visibleSelected),
+          deleted: selected,
+          callback: () => deleteRecordings(selected),
         })
       "
     >
@@ -44,110 +36,36 @@
     @close="closeDelete"
   />
 
-  <div class="table-section__table-wrapper">
-    <wt-empty
-      v-show="showEmpty"
-      :image="imageEmpty"
-      :text="textEmpty"
-    />
-
-    <wt-loader v-show="isLoading" />
-
-    <wt-table
-      v-show="dataList.length && !isLoading"
-      v-model:selected="selected"
-      :data="dataList"
-      :headers="headers"
-      sortable
-    >
-      <template #screenRecordings="{ item }">
-        <wt-image
-          width="48px"
-          overlay-icon="play"
-          :src="getMediaUrl(item.id, { auth: getMediaUrlAuth(), isThumb: true })"
-          alt=""
-          @click="openVideo(item)"
-        />
-      </template>
-
-      <template #name="{ item }">
-        {{ item.viewName || item.name }}
-      </template>
-
-      <template #dateTime="{ item }">
-        <wt-time-tooltip :text="prettifyTimestamp(item)" />
-      </template>
-
-      <template #recordingDuration="{ item }">
-        {{ calcDuration(item) }}
-      </template>
-
-      <template #actions="{ item }">
-        <wt-loader
-          v-if="isFileDownloading(item.id)"
-          :size="ComponentSize.SM"
-        />
-        <wt-icon-action
-          v-else
-          action="download"
-          @click="downloadRecording(item)"
-        />
-        <wt-icon-action
-          action="delete"
-          :disabled="!hasDeleteAccess"
-          @click="
-            askDeleteConfirmation({
-              deleted: [item],
-              callback: () => handleDelete([item]),
-            })
-          "
-        />
-      </template>
-    </wt-table>
-  </div>
+  <screen-recordings
+    v-model:selected="selected"
+    :data-list="dataList"
+    :is-loading="isLoading"
+    :has-delete-access="hasDeleteAccess"
+    @delete="
+      askDeleteConfirmation({
+        deleted: [$event],
+        callback: () => deleteRecordings([$event]),
+      })
+    "
+  />
 </template>
 
 <script setup lang="ts">
-import {
-	downloadFile,
-	FileServicesAPI,
-	getMediaUrl,
-	PdfServicesAPI,
-} from '@webitel/api-services/api';
-import {
-	SearchScreenRecordingsByCallChannel,
-	SearchScreenRecordingsByCallType,
-	type StorageFile,
-} from '@webitel/api-services/gen/models';
-import {
-	FileFormat,
-	downloadFile as saveArchiveFile,
-} from '@webitel/api-services/scripts';
-import {
-	WtEmpty,
-	WtTimeTooltip,
-	WtVidstackPlayer,
-} from '@webitel/ui-sdk/components';
 import { useDownloadAction } from '@webitel/ui-sdk/composables';
+import { ComponentSize, IconAction } from '@webitel/ui-sdk/enums';
 import {
-	ComponentSize,
-	FormatDateMode,
-	IconAction,
-} from '@webitel/ui-sdk/enums';
+	downloadScreenRecordingsArchive,
+	ScreenRecordings,
+	useCallScreenRecordings,
+} from '@webitel/ui-sdk/modules/ScreenRecordings';
 import DeleteConfirmationPopup from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/components/delete-confirmation-popup.vue';
 import { useDeleteConfirmationPopup } from '@webitel/ui-sdk/src/modules/DeleteConfirmationPopup/composables/useDeleteConfirmationPopup';
-import { useTableEmpty } from '@webitel/ui-sdk/src/modules/TableComponentModule/composables/useTableEmpty';
-import convertDuration from '@webitel/ui-sdk/src/scripts/convertDuration';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
-import { formatDate } from '@webitel/ui-sdk/utils';
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import { getMediaUrlAuth } from '../../../../../../../../../app/scripts/getMediaUrlAuth';
-import { useScreenRecordingsAccess } from '../../../../../composables/useScreenRecordingsAccess';
 
-import { buildCallScreenRecordingArchiveParams } from './buildCallScreenRecordingArchiveParams';
-import { headers } from './store/headers/headers';
+import { useScreenRecordingsAccess } from '../../../../../composables/useScreenRecordingsAccess';
 
 const props = defineProps({
 	call: {
@@ -163,31 +81,6 @@ const store = useStore();
 
 const { t } = useI18n();
 
-const dataList = ref<StorageFile[]>([]);
-const isLoading = ref(false);
-const error = ref('');
-
-const startAtFrom = ref<number | null>(null);
-const startAtTo = ref<number | null>(null);
-
-const dateFilters = computed(() => ({
-	from: startAtFrom.value,
-	to: startAtTo.value,
-}));
-
-const selected = ref<StorageFile[]>([]);
-const visibleSelected = computed(() =>
-	selected.value.filter((item) =>
-		dataList.value.some((row) => row.id === item.id),
-	),
-);
-
-/* [Claude] separate instances: a row download must not spin the archive icon and vice versa */
-const { isKeyLoading: isFileDownloading, runDownload: runFileDownload } =
-	useDownloadAction();
-const { isLoading: isDownloadingArchive, runDownload: runArchiveDownload } =
-	useDownloadAction();
-
 const callId = computed(() => {
 	if (props.call?.id != null) return String(props.call.id);
 
@@ -195,100 +88,22 @@ const callId = computed(() => {
 	return id == null ? '' : String(id);
 });
 
-const currentVideo = ref<StorageFile | null>(null);
-const isVideoOpen = ref(false);
-
-const recordingStartAt = (item: StorageFile) =>
-	item.properties?.startTime ?? item.uploadedAt;
-
-const prettifyTimestamp = (item: StorageFile) => {
-	const startAt = recordingStartAt(item);
-	return startAt ? formatDate(+startAt, FormatDateMode.DATETIME) : '';
-};
-
-const calcDuration = (item: StorageFile) => {
-	const startAt = Number(item.properties?.startTime);
-	const stopAt = Number(item.properties?.endTime);
-	if (!Number.isFinite(startAt) || !Number.isFinite(stopAt)) return '';
-
-	return convertDuration(Math.floor((stopAt - startAt) / 1000));
-};
+const { dataList, isLoading, selected, deleteRecordings } =
+	useCallScreenRecordings({
+		callId,
+	});
 
 const { hasDeleteAccess } = useScreenRecordingsAccess();
 
-const loadDataList = async () => {
-	if (!callId.value) {
-		dataList.value = [];
-		return;
-	}
+const { isLoading: isDownloadingArchive, runDownload } = useDownloadAction();
 
-	isLoading.value = true;
-	error.value = '';
-
-	try {
-		const { items } = await FileServicesAPI.getScreenRecordingsByCall({
+const downloadArchive = () =>
+	runDownload(() =>
+		downloadScreenRecordingsArchive({
 			callId: callId.value,
-			type: SearchScreenRecordingsByCallType.Screensharing,
-			channel: SearchScreenRecordingsByCallChannel.Screenrecording,
-			size: 100,
-			fields: [
-				'name',
-				'uploaded_at',
-				'properties',
-			],
-			startAtFrom: startAtFrom.value?.toString(),
-			startAtTo: startAtTo.value?.toString(),
-		});
-
-		dataList.value = items;
-		selected.value = selected.value.filter((item) =>
-			items.some((row) => row.id === item.id),
-		);
-	} catch (e) {
-		dataList.value = [];
-		error.value = e?.response?.data?.detail || e?.message || 'error';
-	} finally {
-		isLoading.value = false;
-	}
-};
-
-const downloadRecording = (item: StorageFile) =>
-	runFileDownload(() => downloadFile(item.id, item.viewName || item.name), {
-		key: item.id,
-	});
-
-const downloadArchive = () => {
-	if (!callId.value) return;
-
-	return runArchiveDownload(async () => {
-		const response = await PdfServicesAPI.downloadCallScreenrecordingArchive({
-			callId: callId.value,
-			...buildCallScreenRecordingArchiveParams({
-				selected: visibleSelected.value,
-				from: startAtFrom.value,
-				to: startAtTo.value,
-			}),
-		});
-
-		saveArchiveFile({
-			response,
-			fileFormat: FileFormat.ZIP,
-			filename: `screen-recordings-${callId.value}-${new Date().toISOString().slice(0, 10)}`,
-		});
-	});
-};
-
-const handleDelete = async (items: StorageFile[]) => {
-	const deleteIds = items
-		.map((item) => item.id)
-		.filter((id): id is string => id != null);
-
-	try {
-		await FileServicesAPI.delete(deleteIds);
-	} finally {
-		await loadDataList();
-	}
-};
+			selected: selected.value,
+		}),
+	);
 
 const {
 	isVisible: isDeleteConfirmationPopup,
@@ -298,31 +113,6 @@ const {
 	askDeleteConfirmation,
 	closeDelete,
 } = useDeleteConfirmationPopup();
-
-const {
-	showEmpty,
-	image: imageEmpty,
-	text: textEmpty,
-} = useTableEmpty({
-	dataList,
-	filters: dateFilters,
-	error,
-	isLoading,
-});
-
-const openVideo = (item: StorageFile) => {
-	currentVideo.value = item;
-	isVideoOpen.value = true;
-};
-
-const closeVideo = () => {
-	currentVideo.value = null;
-	isVideoOpen.value = false;
-};
-
-watch(callId, loadDataList, {
-	immediate: true,
-});
 </script>
 
 <style scoped>
