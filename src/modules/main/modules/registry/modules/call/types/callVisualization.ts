@@ -8,7 +8,7 @@ export interface VisualizationTab {
 	text: string;
 	component: Component;
 	value: string;
-	props: Record<string, unknown>;
+	namespace: string;
 }
 
 export type CallVisualizationCall = CallWaveCallRecord &

@@ -15,7 +15,9 @@
       />
       <component
         :is="currentTab.component"
-        v-bind="currentTabProps"
+        :call="call"
+        :namespace="currentTab.namespace"
+        :file="selectedRecordingFile"
         @refresh="refreshCall"
         @deleted="removeTranscript"
       />
@@ -101,28 +103,19 @@ const tabValues = computed(
 			text: t('registry.stt.transcription'),
 			component: CallTranscript,
 			value: 'call-transcript',
-			props: {
-				call: props.call,
-				file: selectedRecordingFile.value,
-			},
+			namespace: props.namespace,
 		},
 		EVALUATION: {
 			text: t('registry.call.evaluation.evaluation'),
 			component: CallEvaluation,
 			value: 'call-evaluation',
-			props: {
-				call: props.call,
-				namespace: `${props.namespace}/evaluation`,
-			},
+			namespace: `${props.namespace}/evaluation`,
 		},
 		SCREEN_RECORDINGS: {
 			text: t('objects.screenRecordings', 2),
 			component: CallScreenRecordings,
 			value: 'call-screen-recordings',
-			props: {
-				call: props.call,
-				namespace: props.namespace,
-			},
+			namespace: props.namespace,
 		},
 	}),
 );
@@ -139,13 +132,6 @@ const tabs = computed((): VisualizationTab[] => {
 });
 
 const currentTab = ref<VisualizationTab>(tabValues.value.TRANSCRIPT);
-
-const currentTabProps = computed(
-	() =>
-		Object.values(tabValues.value).find(
-			({ value }) => value === currentTab.value.value,
-		)?.props,
-);
 </script>
 
 <style scoped>
