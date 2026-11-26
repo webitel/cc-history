@@ -19,7 +19,7 @@
           data-key="fileId"
         />
         <div class="stt-popup-toolbar__actions">
-          <stt-download-action @click="downloadTxt" />
+          <stt-download-action @click="downloadTranscript()" />
           <stt-delete-action @click="handleDeleteTranscription" />
         </div>
       </div>
@@ -38,15 +38,11 @@
 </template>
 
 <script setup lang="ts">
-import { CallTranscriptAPI } from '@webitel/api-services/api';
 import type {
 	CallTranscriptCall,
 	CallTranscriptItem,
 } from '@webitel/ui-sdk/modules/CallVisualization';
-import {
-	downloadTranscriptTxt,
-	useCallTranscriptPhrases,
-} from '@webitel/ui-sdk/modules/CallVisualization';
+import { useCallTranscriptPhrases } from '@webitel/ui-sdk/modules/CallVisualization';
 import {
 	SttDeleteAction,
 	SttDownloadAction,
@@ -61,17 +57,18 @@ const { call = null } = defineProps<{
 
 const emit = defineEmits<{
 	close: [];
-	delete: [
+	deleted: [
 		transcript: CallTranscriptItem,
 	];
 }>();
 
 const transcript = ref<CallTranscriptItem>();
 
-const { isLoading, headers, rows } = useCallTranscriptPhrases({
-	call: () => call ?? {},
-	transcript: () => transcript.value,
-});
+const { isLoading, headers, rows, downloadTranscript, deleteTranscript } =
+	useCallTranscriptPhrases({
+		call: () => call ?? {},
+		transcript: () => transcript.value,
+	});
 
 watch(
 	() => call,
@@ -83,20 +80,9 @@ watch(
 	},
 );
 
-function downloadTxt() {
-	return downloadTranscriptTxt({
-		rows: rows.value,
-		transcriptId: transcript.value?.id,
-		callCreatedAt: call?.createdAt,
-	});
-}
-
 async function handleDeleteTranscription() {
-	const deletedTranscript = transcript.value;
-	await CallTranscriptAPI.delete({
-		fileId: deletedTranscript.id,
-	});
-	emit('delete', deletedTranscript);
+	const deletedTranscript = await deleteTranscript();
+	emit('deleted', deletedTranscript);
 	transcript.value = call.transcripts[0];
 	if (!transcript.value) emit('close');
 }

@@ -60,13 +60,13 @@ describe('SttPopup', () => {
 				call,
 			},
 			attrs: {
-				onDelete,
+				onDeleted: onDelete,
 			},
 		});
 		await wrapper.vm.handleDeleteTranscription();
 		expect(wrapper.emitted().close).toBeTruthy();
 	});
-	it('emits delete with deleted transcript', async () => {
+	it('emits deleted with deleted transcript', async () => {
 		const transcript = {
 			id: '177',
 			name: 'recording.wav',
@@ -82,14 +82,14 @@ describe('SttPopup', () => {
 				},
 			},
 			attrs: {
-				onDelete,
+				onDeleted: onDelete,
 			},
 		});
 		await wrapper.vm.handleDeleteTranscription();
 		expect(CallTranscriptAPI.delete).toHaveBeenCalledWith({
 			fileId: '177',
 		});
-		expect(wrapper.emitted().delete[0]).toEqual([
+		expect(wrapper.emitted().deleted[0]).toEqual([
 			transcript,
 		]);
 		expect(onDelete).toHaveBeenCalledWith(transcript);
