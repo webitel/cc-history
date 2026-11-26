@@ -17,6 +17,9 @@
         :is="currentTab.component"
         :call="call"
         :namespace="currentTab.namespace"
+        :file="selectedRecordingFile"
+        @refresh="refreshCall"
+        @deleted="removeTranscript"
       />
     </div>
   </section>
@@ -29,40 +32,29 @@
 import { EngineCallFileType } from '@webitel/api-services/gen/models';
 import { WtObject } from '@webitel/ui-sdk/enums';
 import type {
-	CallWaveCallRecord,
+	CallTranscriptItem,
 	CallWaveFile,
 	WaveAnnotation,
 } from '@webitel/ui-sdk/modules/CallVisualization';
 import {
 	CallRecordingEmpty,
+	CallTranscript,
 	CallWave,
 } from '@webitel/ui-sdk/modules/CallVisualization';
 import getNamespacedState from '@webitel/ui-sdk/src/store/helpers/getNamespacedState';
-import { type Component, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useUserAccessControl } from '../../../../../../../../app/composables/useUserAccessControl';
 import { useScreenRecordingsAccess } from '../../../../composables/useScreenRecordingsAccess';
-import CallTranscript from '../../../stt/components/call-page/call-transcript-section.vue';
 import CallEvaluation from '../../modules/call-audit/components/call-audit-section.vue';
-import './call-visualization-tokens.css';
+import type {
+	CallVisualizationProps,
+	VisualizationTab,
+} from '../../types/callVisualization';
 import CallScreenRecordings from './screen-recordings/screen-recordings.vue';
 
-interface VisualizationTab {
-	text: string;
-	component: Component;
-	value: string;
-	namespace: string;
-}
-
-interface Props {
-	call: CallWaveCallRecord & {
-		allowEvaluation?: boolean;
-	};
-	namespace?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CallVisualizationProps>(), {
 	namespace: '',
 });
 
@@ -77,6 +69,19 @@ const selectedRecordingFile = computed({
 
 function updateAnnotations(annotations: WaveAnnotation[]) {
 	store.commit(`${props.namespace}/SET_ANNOTATIONS`, annotations);
+}
+
+function refreshCall() {
+	return store.dispatch(`${props.namespace}/LOAD_MAIN_CALL`);
+}
+
+function removeTranscript(transcript: CallTranscriptItem) {
+	store.commit(`${props.namespace}/SET_MAIN_CALL`, {
+		...props.call,
+		transcripts: (props.call.transcripts || []).filter(
+			({ id }) => id !== transcript.id,
+		),
+	});
 }
 
 const { hasReadAccess: hasScreenRecordingsReadAccess } =

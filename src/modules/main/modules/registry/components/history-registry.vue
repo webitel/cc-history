@@ -37,7 +37,7 @@
       :call="sttPopupCall"
       :shown="sttPopupCall"
       @close="sttPopupCall = null"
-      @delete="handleTranscriptDelete({ callId: sttPopupCall?.id, transcript: $event })"
+      @deleted="handleTranscriptDelete({ callId: sttPopupCall?.id, transcript: $event })"
     />
     <div class="table-section__table-wrapper">
       <wt-loader v-show="isLoading" />

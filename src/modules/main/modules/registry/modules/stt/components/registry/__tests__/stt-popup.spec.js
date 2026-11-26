@@ -1,7 +1,14 @@
 import { shallowMount } from '@vue/test-utils';
+import { CallTranscriptAPI } from '@webitel/api-services/api';
 
-import transcriptPhrasesMixin from '../../../mixins/transcriptPhrasesMixin';
 import SttPopup from '../stt-popup.vue';
+
+vi.mock('@webitel/api-services/api', () => ({
+	CallTranscriptAPI: {
+		get: vi.fn(() => Promise.resolve([])),
+		delete: vi.fn(() => Promise.resolve()),
+	},
+}));
 
 const props = {
 	call: {
@@ -11,15 +18,6 @@ const props = {
 };
 
 describe('SttPopup', () => {
-	vi.spyOn(
-		transcriptPhrasesMixin.methods,
-		'loadCallTranscript',
-	).mockImplementation(vi.fn());
-	vi.spyOn(
-		transcriptPhrasesMixin.methods,
-		'deleteTranscription',
-	).mockImplementation(vi.fn());
-
 	it('renders a component', () => {
 		const wrapper = shallowMount(SttPopup, {
 			props,
@@ -47,10 +45,53 @@ describe('SttPopup', () => {
 		});
 	});
 	it('closes popup if no transcripts after delete', async () => {
+		const call = {
+			id: '1',
+			transcripts: [
+				{
+					id: '177',
+					name: 'recording.wav',
+				},
+			],
+		};
+		const onDelete = vi.fn(() => call.transcripts.splice(0, 1));
 		const wrapper = shallowMount(SttPopup, {
-			props,
+			props: {
+				call,
+			},
+			attrs: {
+				onDeleted: onDelete,
+			},
 		});
 		await wrapper.vm.handleDeleteTranscription();
 		expect(wrapper.emitted().close).toBeTruthy();
+	});
+	it('emits deleted with deleted transcript', async () => {
+		const transcript = {
+			id: '177',
+			name: 'recording.wav',
+		};
+		const onDelete = vi.fn();
+		const wrapper = shallowMount(SttPopup, {
+			props: {
+				call: {
+					id: '1',
+					transcripts: [
+						transcript,
+					],
+				},
+			},
+			attrs: {
+				onDeleted: onDelete,
+			},
+		});
+		await wrapper.vm.handleDeleteTranscription();
+		expect(CallTranscriptAPI.delete).toHaveBeenCalledWith({
+			fileId: '177',
+		});
+		expect(wrapper.emitted().deleted[0]).toEqual([
+			transcript,
+		]);
+		expect(onDelete).toHaveBeenCalledWith(transcript);
 	});
 });
